@@ -1,0 +1,529 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { 
+  Github, 
+  Linkedin, 
+  Mail, 
+  BookOpen, 
+  Code, 
+  FileText, 
+  Terminal,
+  ExternalLink,
+  ChevronRight,
+  X,
+  Moon,
+  Sun,
+  Globe
+} from 'lucide-react';
+
+// --- 1. UTILITIES ---
+
+// Simple Markdown Parser
+const SimpleMarkdown = ({ content }) => {
+  if (!content) return <div className="text-gray-400 italic">No content available.</div>;
+
+  let clean = content
+    .replace(/^# (.*$)/gim, '') 
+    .replace(/^## (.*$)/gim, '<h2 class="text-xl font-bold mt-6 mb-3 text-slate-800 dark:text-slate-100">$1</h2>')
+    .replace(/^### (.*$)/gim, '<h3 class="text-lg font-bold mt-4 mb-2 text-slate-700 dark:text-slate-200">$1</h3>')
+    .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
+    .replace(/\*(.*)\*/gim, '<em>$1</em>')
+    .replace(/^- (.*$)/gim, '<li class="ml-4 list-disc">$1</li>')
+    .replace(/`([^`]+)`/gim, '<code class="bg-gray-100 dark:bg-slate-800 rounded px-1 py-0.5 text-sm font-mono text-pink-600 dark:text-pink-400">$1</code>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/gim, '<a href="$2" target="_blank" class="text-blue-600 hover:underline">$1</a>')
+    .replace(/\n/gim, '<br />');
+
+  return <div className="leading-relaxed text-slate-600 dark:text-slate-300" dangerouslySetInnerHTML={{ __html: clean }} />;
+};
+
+// --- 2. COMPONENTS ---
+
+// The "Cool Character" Animation Canvas
+const CharacterCanvas = () => {
+  const canvasRef = useRef(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (canvasRef.current) {
+        const rect = canvasRef.current.getBoundingClientRect();
+        setMousePos({
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top
+        });
+      }
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    let animationFrameId;
+    let time = 0;
+
+    const render = () => {
+      time += 0.05;
+      const width = canvas.width;
+      const height = canvas.height;
+
+      ctx.clearRect(0, 0, width, height);
+
+      // --- DRAW CHARACTER ---
+      const centerX = width / 2;
+      const centerY = height / 2 + Math.sin(time) * 10; 
+
+      // Body
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 60, 0, 2 * Math.PI);
+      ctx.fillStyle = '#3b82f6'; 
+      ctx.fill();
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = '#1d4ed8'; 
+      ctx.stroke();
+
+      // Antenna
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY - 60);
+      ctx.lineTo(centerX, centerY - 90);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(centerX, centerY - 90, 8, 0, 2 * Math.PI);
+      ctx.fillStyle = time % 2 > 1 ? '#ef4444' : '#22c55e';
+      ctx.fill();
+
+      // Eyes
+      const eyeOffsetX = 20;
+      const eyeOffsetY = -10;
+      const eyeRadius = 12;
+      const pupilRadius = 4;
+
+      const dx = mousePos.x - centerX;
+      const dy = mousePos.y - centerY;
+      const angle = Math.atan2(dy, dx);
+      const lookDistance = Math.min(5, Math.sqrt(dx*dx + dy*dy) / 20);
+      
+      const pupilX = Math.cos(angle) * lookDistance;
+      const pupilY = Math.sin(angle) * lookDistance;
+
+      // Draw Eyes
+      [1, -1].forEach(side => {
+        ctx.beginPath();
+        ctx.fillStyle = 'white';
+        ctx.arc(centerX + (eyeOffsetX * side), centerY + eyeOffsetY, eyeRadius, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.fillStyle = 'black';
+        ctx.arc(centerX + (eyeOffsetX * side) + pupilX, centerY + eyeOffsetY + pupilY, pupilRadius, 0, 2 * Math.PI);
+        ctx.fill();
+      });
+
+      // Reflection
+      ctx.beginPath();
+      ctx.arc(centerX - 25, centerY - 25, 10, 0, 2 * Math.PI);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.fill();
+
+      animationFrameId = window.requestAnimationFrame(render);
+    };
+    render();
+
+    return () => window.cancelAnimationFrame(animationFrameId);
+  }, [mousePos]);
+
+  return (
+    <canvas 
+      ref={canvasRef} 
+      width={300} 
+      height={300} 
+      className="w-full max-w-[300px] h-auto cursor-crosshair mx-auto"
+    />
+  );
+};
+
+const Sidebar = ({ activeSection, setActiveSection, toggleTheme, isDark }) => {
+  const navItems = [
+    { id: 'about', label: 'About', icon: <Terminal size={18} /> },
+    { id: 'projects', label: 'Projects', icon: <Code size={18} /> },
+    { id: 'cv', label: 'CV / Resume', icon: <FileText size={18} /> },
+    { id: 'blog', label: 'Blog', icon: <BookOpen size={18} /> },
+  ];
+
+  return (
+    <aside className="w-full md:w-64 md:fixed md:h-screen bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col transition-colors duration-300 z-50">
+      <div className="p-8 flex flex-col items-center text-center border-b border-slate-100 dark:border-slate-800">
+        <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-50 dark:border-slate-800 mb-4 shadow-lg group">
+          <img 
+            src="https://github.com/JuanSync7.png" 
+            alt="Profile" 
+            className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500"
+            onError={(e) => {e.target.src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=Juan'}}
+          />
+        </div>
+        <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-1">JuanSync7</h1>
+        <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">Developer & Creative Engineer</p>
+        
+        <div className="flex gap-3 justify-center">
+          <a href="https://github.com/JuanSync7" target="_blank" className="text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors">
+            <Github size={20} />
+          </a>
+          <a href="#" className="text-slate-400 hover:text-blue-600 transition-colors">
+            <Linkedin size={20} />
+          </a>
+          <a href="mailto:contact@example.com" className="text-slate-400 hover:text-red-500 transition-colors">
+            <Mail size={20} />
+          </a>
+        </div>
+      </div>
+
+      <nav className="flex-1 p-4">
+        <ul className="space-y-2">
+          {navItems.map((item) => (
+            <li key={item.id}>
+              <button
+                onClick={() => setActiveSection(item.id)}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+                  activeSection === item.id 
+                    ? 'bg-blue-50 text-blue-600 dark:bg-slate-800 dark:text-blue-400 shadow-sm' 
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                }`}
+              >
+                {item.icon}
+                {item.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div className="p-4 border-t border-slate-100 dark:border-slate-800">
+        <button 
+          onClick={toggleTheme}
+          className="w-full flex items-center justify-center gap-2 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors text-sm"
+        >
+          {isDark ? <Sun size={16} /> : <Moon size={16} />}
+          {isDark ? 'Light Mode' : 'Dark Mode'}
+        </button>
+      </div>
+    </aside>
+  );
+};
+
+const ProjectCard = ({ repo, onClick }) => (
+  <div 
+    onClick={() => onClick(repo)}
+    className="group bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full"
+  >
+    <div className="flex justify-between items-start mb-4">
+      <div className="p-2 bg-blue-50 dark:bg-slate-700 rounded-lg text-blue-600 dark:text-blue-400">
+        <BookOpen size={20} />
+      </div>
+      <div className="flex gap-2">
+        <span className="text-xs px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-full">
+          {repo.language || 'Code'}
+        </span>
+        <span className="text-xs px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-full flex items-center gap-1">
+          ★ {repo.stargazers_count}
+        </span>
+      </div>
+    </div>
+    
+    <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+      {repo.name}
+    </h3>
+    <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-3 mb-4 flex-1">
+      {repo.description || "No description available. Check the README."}
+    </p>
+    
+    <div className="flex items-center text-sm text-blue-600 dark:text-blue-400 font-medium mt-auto">
+      Read details <ChevronRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
+    </div>
+  </div>
+);
+
+const ReadmeModal = ({ repo, onClose }) => {
+  const [content, setContent] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchReadme = async () => {
+      try {
+        const branches = ['main', 'master'];
+        let found = false;
+        
+        for (const branch of branches) {
+          const res = await fetch(`https://raw.githubusercontent.com/${repo.owner.login}/${repo.name}/${branch}/README.md`);
+          if (res.ok) {
+            const text = await res.text();
+            setContent(text);
+            found = true;
+            break;
+          }
+        }
+        if (!found) setContent('# No README found\nThis repository does not appear to have a README.md file.');
+      } catch (err) {
+        setContent('# Error\nFailed to load README.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchReadme();
+  }, [repo]);
+
+  return (
+    <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+      <div className="bg-white dark:bg-slate-900 w-full max-w-3xl h-[80vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200">
+        <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-800/50">
+          <h2 className="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
+            <Github size={18} /> {repo.name}
+          </h2>
+          <button onClick={onClose} className="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full transition-colors">
+            <X size={20} className="text-slate-500" />
+          </button>
+        </div>
+        
+        <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+          {loading ? (
+            <div className="flex flex-col items-center justify-center h-full gap-4 text-slate-400">
+              <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+              Loading README...
+            </div>
+          ) : (
+            <div className="prose dark:prose-invert max-w-none">
+              <SimpleMarkdown content={content} />
+            </div>
+          )}
+        </div>
+
+        <div className="p-4 border-t border-slate-200 dark:border-slate-800 flex justify-end">
+          <a 
+            href={repo.html_url} 
+            target="_blank" 
+            className="flex items-center gap-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+          >
+            View on GitHub <ExternalLink size={16} />
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// --- 3. MAIN APP ---
+
+export default function App() {
+  const [activeSection, setActiveSection] = useState('about');
+  const [isDark, setIsDark] = useState(false);
+  const [repos, setRepos] = useState([]);
+  const [selectedRepo, setSelectedRepo] = useState(null);
+  const [loadingRepos, setLoadingRepos] = useState(false);
+
+  // Theme & Title Update
+  useEffect(() => {
+    // Check system preference
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      setIsDark(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Dynamic Title for Browser Tab
+    document.title = `JuanSync7 | ${activeSection.charAt(0).toUpperCase() + activeSection.slice(1)}`;
+  }, [activeSection]);
+
+  // Fetch Repos
+  useEffect(() => {
+    if (activeSection === 'projects') {
+      setLoadingRepos(true);
+      fetch('https://api.github.com/users/JuanSync7/repos?sort=updated&per_page=12')
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data)) setRepos(data);
+        })
+        .catch(err => console.error(err))
+        .finally(() => setLoadingRepos(false));
+    }
+  }, [activeSection]);
+
+  const toggleTheme = () => setIsDark(!isDark);
+
+  return (
+    <div className={`min-h-screen font-sans ${isDark ? 'dark' : ''}`}>
+      <div className="bg-white dark:bg-slate-950 min-h-screen text-slate-800 dark:text-slate-200 transition-colors duration-300">
+        
+        <Sidebar 
+          activeSection={activeSection} 
+          setActiveSection={setActiveSection} 
+          toggleTheme={toggleTheme}
+          isDark={isDark}
+        />
+
+        {/* Main Content Area */}
+        <main className="md:ml-64 min-h-screen flex flex-col">
+          
+          <div className="flex-1">
+            {/* Section: About (Hero) */}
+            {activeSection === 'about' && (
+              <div className="max-w-4xl mx-auto p-8 md:p-16 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+                  <div>
+                    <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6 text-slate-900 dark:text-white">
+                      Hi, I'm <span className="text-blue-600">Juan</span>.
+                    </h1>
+                    <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-8">
+                      I build interactive web experiences and robust backend systems. 
+                      This page is my personal hub where code meets creativity. 
+                      Check out my custom bot on the right—he's watching you!
+                    </p>
+                    
+                    <div className="flex gap-4">
+                      <button 
+                        onClick={() => setActiveSection('projects')}
+                        className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors shadow-lg shadow-blue-500/30"
+                      >
+                        View Projects
+                      </button>
+                      <button 
+                        onClick={() => setActiveSection('cv')}
+                        className="px-6 py-3 border border-slate-300 dark:border-slate-700 hover:border-slate-800 dark:hover:border-slate-500 rounded-lg font-medium transition-colors"
+                      >
+                        See CV
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className="relative h-[300px] bg-slate-50 dark:bg-slate-900 rounded-3xl flex items-center justify-center border border-slate-100 dark:border-slate-800 shadow-inner">
+                    <CharacterCanvas />
+                    <div className="absolute bottom-4 text-xs text-slate-400 font-mono flex items-center gap-2">
+                      <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                      SYSTEM ONLINE
+                    </div>
+                  </div>
+                </div>
+
+                <div className="prose dark:prose-invert max-w-none">
+                  <h3 className="text-2xl font-bold mb-4">Current Focus</h3>
+                  <p>
+                    Currently working on expanding my knowledge in <strong>Autonomous AI Agents</strong> and <strong>Full Stack Engineering</strong>. 
+                    My GitHub repositories reflect my journey through various technologies including React, Node.js, and Python.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Section: Projects */}
+            {activeSection === 'projects' && (
+              <div className="max-w-6xl mx-auto p-8 md:p-16 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="mb-12">
+                  <h2 className="text-3xl font-bold mb-4 text-slate-900 dark:text-white">Selected Projects</h2>
+                  <p className="text-slate-500 dark:text-slate-400">
+                    Fetched live from <a href="https://github.com/JuanSync7" className="text-blue-600 hover:underline">github.com/JuanSync7</a>
+                  </p>
+                </div>
+
+                {loadingRepos ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {[1,2,3,4,5,6].map(i => (
+                      <div key={i} className="h-64 bg-slate-100 dark:bg-slate-900 rounded-xl animate-pulse" />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {repos.length > 0 ? repos.map(repo => (
+                      <ProjectCard key={repo.id} repo={repo} onClick={setSelectedRepo} />
+                    )) : (
+                      <div className="col-span-full text-center py-20 text-slate-400">
+                        <Github size={48} className="mx-auto mb-4 opacity-50" />
+                        <p>No public repositories found for JuanSync7.</p>
+                        <p className="text-sm">Try adding some public repos to your GitHub!</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Section: CV */}
+            {activeSection === 'cv' && (
+              <div className="max-w-3xl mx-auto p-8 md:p-16 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="flex justify-between items-end mb-12 border-b border-slate-200 dark:border-slate-800 pb-8">
+                  <div>
+                    <h2 className="text-3xl font-bold mb-2 text-slate-900 dark:text-white">Curriculum Vitae</h2>
+                    <p className="text-slate-500 dark:text-slate-400">Professional Experience & Education</p>
+                  </div>
+                  <button className="flex items-center gap-2 px-4 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-lg text-sm font-medium hover:opacity-90">
+                    <FileText size={16} /> Download PDF
+                  </button>
+                </div>
+
+                <div className="space-y-12">
+                  <div className="relative pl-8 border-l-2 border-slate-200 dark:border-slate-800">
+                    <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-600 ring-4 ring-white dark:ring-slate-950" />
+                    <span className="text-sm font-mono text-blue-600 dark:text-blue-400 mb-1 block">2024 - Present</span>
+                    <h3 className="text-xl font-bold text-slate-800 dark:text-white">Senior Frontend Engineer (Placeholder)</h3>
+                    <div className="text-slate-500 dark:text-slate-400 mb-4">Tech Company Inc. • San Francisco, CA</div>
+                    <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                      Spearheaded the development of the new design system using React and Tailwind. 
+                      Improved site performance by 40% through code splitting and asset optimization.
+                    </p>
+                  </div>
+
+                  <div className="relative pl-8 border-l-2 border-slate-200 dark:border-slate-800">
+                    <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-300 dark:bg-slate-700 ring-4 ring-white dark:ring-slate-950" />
+                    <span className="text-sm font-mono text-slate-400 mb-1 block">2021 - 2024</span>
+                    <h3 className="text-xl font-bold text-slate-800 dark:text-white">Full Stack Developer</h3>
+                    <div className="text-slate-500 dark:text-slate-400 mb-4">Creative Agency • Remote</div>
+                    <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                      Built dynamic web applications for diverse clients. Managed database migrations and API integrations.
+                    </p>
+                  </div>
+
+                  <div className="mt-16">
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+                      <BookOpen size={20} className="text-blue-600" /> Education
+                    </h3>
+                    <div className="bg-slate-50 dark:bg-slate-900 p-6 rounded-xl border border-slate-100 dark:border-slate-800">
+                      <div className="flex justify-between mb-2">
+                        <h4 className="font-bold text-slate-800 dark:text-white">B.S. Computer Science</h4>
+                        <span className="text-sm text-slate-500 font-mono">2017 - 2021</span>
+                      </div>
+                      <div className="text-slate-600 dark:text-slate-400">University of Technology</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Section: Blog */}
+            {activeSection === 'blog' && (
+              <div className="max-w-4xl mx-auto p-8 md:p-16 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="text-center py-20">
+                  <div className="bg-blue-50 dark:bg-slate-800 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-blue-600 dark:text-blue-400">
+                    <Terminal size={32} />
+                  </div>
+                  <h2 className="text-3xl font-bold mb-4 text-slate-900 dark:text-white">Blog Under Construction</h2>
+                  <p className="text-slate-600 dark:text-slate-300 max-w-md mx-auto">
+                    I plan to connect this section to my GitHub Issues or a dedicated <code>/blog</code> repository.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Footer for Deployment */}
+          <footer className="p-8 border-t border-slate-200 dark:border-slate-800 text-center text-slate-400 dark:text-slate-600 text-sm">
+            <p className="flex items-center justify-center gap-2">
+              <Globe size={14} /> 
+              Hosted on GitHub Pages • © {new Date().getFullYear()} JuanSync7
+            </p>
+          </footer>
+
+        </main>
+      </div>
+
+      {selectedRepo && (
+        <ReadmeModal repo={selectedRepo} onClose={() => setSelectedRepo(null)} />
+      )}
+    </div>
+  );
+}
