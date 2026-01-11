@@ -47,8 +47,6 @@
         html { scroll-behavior: smooth; }
 
         /* --- DYNAMIC THEME ENGINE --- */
-
-        /* Light Mode: Simple Monotone Green (Solid Colors) */
         .theme-gradient-text {
             color: #16a34a; /* green-600 */
         }
@@ -58,7 +56,6 @@
             transition: background-color 0.3s ease;
         }
         
-        /* Hover state for light mode buttons */
         .theme-gradient-bg-hover:hover {
             background-color: #14532d; /* green-900 */
         }
@@ -70,28 +67,42 @@
             background-size: 40px 40px;
         }
 
-        /* Dark Mode: Full Spectrum Gradient & Grid */
+        /* Dark Mode */
         .dark .bg-grid-pattern {
-            /* Increased opacity from 0.05 to 0.15 for better visibility in dark mode */
-            background-image: linear-gradient(to right, rgba(163, 230, 53, 0.13) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(163, 230, 53, 0.13) 1px, transparent 1px);
+            background-image: linear-gradient(to right, rgba(163, 230, 53, 0.08) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(163, 230, 53, 0.08) 1px, transparent 1px);
         }
 
         .dark .theme-gradient-text {
-            background-image: linear-gradient(to right, #fde047, #a3e635, #22c55e); /* yellow-300 -> green-500 */
+            background-image: linear-gradient(to right, #fde047, #a3e635, #22c55e); 
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
         
         .dark .theme-gradient-bg {
-            background-image: linear-gradient(to right, #eab308, #84cc16, #16a34a); /* yellow-500 -> green-600 */
+            background-image: linear-gradient(to right, #eab308, #84cc16, #16a34a);
             background-color: transparent; 
         }
         
         .dark .theme-gradient-bg-hover:hover {
-            background-image: linear-gradient(to right, #ca8a04, #65a30d, #15803d); /* darker gradient on hover */
-            box-shadow: 0 0 15px rgba(132, 204, 22, 0.4); /* Glow effect */
+            background-image: linear-gradient(to right, #ca8a04, #65a30d, #15803d);
+            box-shadow: 0 0 15px rgba(132, 204, 22, 0.4);
+        }
+
+        /* Metallic Pin Gradient */
+        .pin-gradient {
+            background: linear-gradient(90deg, #94a3b8 0%, #e2e8f0 50%, #94a3b8 100%);
+        }
+        .dark .pin-gradient {
+            background: linear-gradient(90deg, #475569 0%, #cbd5e1 50%, #475569 100%);
+        }
+        /* Vertical Pin Gradient */
+        .pin-gradient-v {
+            background: linear-gradient(180deg, #94a3b8 0%, #e2e8f0 50%, #94a3b8 100%);
+        }
+        .dark .pin-gradient-v {
+            background: linear-gradient(180deg, #475569 0%, #cbd5e1 50%, #475569 100%);
         }
     </style>
     <script>
@@ -140,35 +151,28 @@
 
         // --- COMPONENTS ---
 
-        // NEW: Inverter Chain Divider Component (ASIC Theme)
-        // Replaces the static WaveformDivider with an animated logic gate chain
         const InverterChainDivider = ({ isDark }) => {
             const [tick, setTick] = useState(0);
-            const count = 40; // Enough gates to span most screens
-
+            const count = 40; 
             useEffect(() => {
                 let frame;
                 const animate = () => {
-                    setTick(t => t + 0.04); // Speed of the pulse
+                    setTick(t => t + 0.04);
                     frame = requestAnimationFrame(animate);
                 };
                 animate();
                 return () => cancelAnimationFrame(frame);
             }, []);
 
-            // Ping-pong math: (sin(t) + 1) / 2 moves from 0 to 1 and back to 0
-            // Multiply by count to map to the gate index
             const activeIndex = (Math.sin(tick) + 1) / 2 * (count - 1);
 
             return (
                 <div className="w-full h-24 flex items-center justify-center my-4 overflow-hidden bg-transparent relative">
-                    {/* Fade edges to blend with background */}
-                    <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white dark:from-slate-950 to-transparent z-10"></div>
-                    <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white dark:from-slate-950 to-transparent z-10"></div>
+                    <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-stone-50 dark:from-slate-950 to-transparent z-10"></div>
+                    <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-stone-50 dark:from-slate-950 to-transparent z-10"></div>
 
                     <svg width="100%" height="40" className="min-w-[1200px] max-w-full opacity-90">
                         <defs>
-                            {/* Glow filter for the active pulse */}
                             <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
                                 <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
                                 <feMerge>
@@ -179,56 +183,27 @@
                         </defs>
                         <g transform="translate(0, 10)">
                         {Array.from({ length: count }).map((_, i) => {
-                            const unitWidth = 45; // Width of one inverter + wire
-                            const x = i * unitWidth + 20; // Centering offset
+                            const unitWidth = 45;
+                            const x = i * unitWidth + 20;
                             const y = 10;
-                            
-                            // Calculate distance from the "active" signal pulse
                             const dist = Math.abs(i - activeIndex);
-                            
-                            // Intensity falls off quickly (Gaussian-like)
                             const intensity = Math.max(0, 1 - dist / 2.5); 
                             const isActive = intensity > 0.1;
-
-                            // Theme Colors
-                            // Inactive state (dim)
-                            const strokeInactive = isDark ? '#365314' : '#bbf7d0'; // Dark-lime-900 / Green-200
+                            const strokeInactive = isDark ? '#365314' : '#bbf7d0'; 
                             const fillInactive = 'transparent';
-                            
-                            // Active state (bright)
-                            const strokeActive = isDark ? '#a3e635' : '#16a34a'; // Lime-400 / Green-600
+                            const strokeActive = isDark ? '#a3e635' : '#16a34a'; 
                             const fillActive = isDark ? '#a3e635' : '#16a34a'; 
-
-                            // Dynamic styles based on intensity
                             const currentStroke = isActive ? strokeActive : strokeInactive;
                             const currentFill = isActive ? fillActive : fillInactive;
-                            const bubbleRadius = 3 + (intensity * 1); // Slight size pulse
+                            const bubbleRadius = 3 + (intensity * 1);
                             const opacity = isActive ? 1 : 0.4;
 
                             return (
                                 <g key={i} style={{ opacity }}>
-                                    {/* Input Wire */}
-                                    <line x1={x - 10} y1={y} x2={x} y2={y} 
-                                          stroke={currentStroke} strokeWidth="2" />
-                                    
-                                    {/* Inverter Triangle Body */}
-                                    <path d={`M ${x} ${y-8} L ${x} ${y+8} L ${x+14} ${y} Z`} 
-                                          fill="none" 
-                                          stroke={currentStroke} 
-                                          strokeWidth="2" 
-                                    />
-                                    
-                                    {/* Output Bubble (The "LED") */}
-                                    <circle cx={x + 18} cy={y} r={bubbleRadius} 
-                                            fill={currentFill} 
-                                            stroke={currentStroke} 
-                                            strokeWidth={isActive ? 0 : 2}
-                                            filter={isActive ? "url(#glow)" : ""}
-                                    />
-                                    
-                                    {/* Connecting Wire to next gate */}
-                                    <line x1={x + 22} y1={y} x2={x + unitWidth - 10} y2={y} 
-                                          stroke={currentStroke} strokeWidth="2" />
+                                    <line x1={x - 10} y1={y} x2={x} y2={y} stroke={currentStroke} strokeWidth="2" />
+                                    <path d={`M ${x} ${y-8} L ${x} ${y+8} L ${x+14} ${y} Z`} fill="none" stroke={currentStroke} strokeWidth="2" />
+                                    <circle cx={x + 18} cy={y} r={bubbleRadius} fill={currentFill} stroke={currentStroke} strokeWidth={isActive ? 0 : 2} filter={isActive ? "url(#glow)" : ""} />
+                                    <line x1={x + 22} y1={y} x2={x + unitWidth - 10} y2={y} stroke={currentStroke} strokeWidth="2" />
                                 </g>
                             );
                         })}
@@ -267,28 +242,21 @@
                     
                     const centerX = width / 2;
                     const centerY = height / 2 + Math.sin(time) * 10; 
-
-                    // --- COLOR LOGIC ---
-                    let bodyFill;
-                    let strokeColor;
-                    let antennaColor;
+                    let bodyFill, strokeColor, antennaColor;
 
                     if (isDark) {
-                        // Gradient Mode (Dark)
                         const gradient = ctx.createLinearGradient(centerX - 60, centerY - 60, centerX + 60, centerY + 60);
-                        gradient.addColorStop(0, '#a3e635'); // Lime-400
-                        gradient.addColorStop(1, '#16a34a'); // Green-600
+                        gradient.addColorStop(0, '#a3e635'); 
+                        gradient.addColorStop(1, '#16a34a'); 
                         bodyFill = gradient;
                         strokeColor = '#15803d';
-                        antennaColor = time % 2 > 1 ? '#eab308' : '#84cc16'; // Blinking yellow/lime
+                        antennaColor = time % 2 > 1 ? '#eab308' : '#84cc16'; 
                     } else {
-                        // Monotone Green Mode (Light)
-                        bodyFill = '#16a34a'; // Vibrant Green-600
-                        strokeColor = '#14532d'; // Darker Green-900
-                        antennaColor = time % 2 > 1 ? '#16a34a' : '#86efac'; // Blinking
+                        bodyFill = '#16a34a'; 
+                        strokeColor = '#14532d'; 
+                        antennaColor = time % 2 > 1 ? '#16a34a' : '#86efac'; 
                     }
 
-                    // Body
                     ctx.beginPath();
                     ctx.arc(centerX, centerY, 60, 0, 2 * Math.PI);
                     ctx.fillStyle = bodyFill; 
@@ -297,7 +265,6 @@
                     ctx.strokeStyle = strokeColor;
                     ctx.stroke();
 
-                    // Antenna
                     ctx.beginPath();
                     ctx.moveTo(centerX, centerY - 60);
                     ctx.lineTo(centerX, centerY - 90);
@@ -308,7 +275,6 @@
                     ctx.fillStyle = antennaColor;
                     ctx.fill();
 
-                    // Eyes logic
                     const eyeOffsetX = 20;
                     const eyeOffsetY = -10;
                     const eyeRadius = 12;
@@ -326,12 +292,11 @@
                         ctx.arc(centerX + (eyeOffsetX * side), centerY + eyeOffsetY, eyeRadius, 0, 2 * Math.PI);
                         ctx.fill();
                         ctx.beginPath();
-                        ctx.fillStyle = '#0f172a'; // Dark pupil
+                        ctx.fillStyle = '#0f172a'; 
                         ctx.arc(centerX + (eyeOffsetX * side) + pupilX, centerY + eyeOffsetY + pupilY, pupilRadius, 0, 2 * Math.PI);
                         ctx.fill();
                     });
                     
-                    // Reflection
                     ctx.beginPath();
                     ctx.arc(centerX - 25, centerY - 25, 10, 0, 2 * Math.PI);
                     ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
@@ -343,11 +308,108 @@
                 return () => window.cancelAnimationFrame(animationFrameId);
             }, [mousePos, isDark]);
 
-            return <canvas ref={canvasRef} width={300} height={300} className="w-full max-w-[300px] h-auto cursor-crosshair mx-auto" />;
+            return <canvas ref={canvasRef} width={300} height={300} className="w-full max-w-[250px] md:max-w-[300px] h-auto cursor-crosshair mx-auto" />;
+        };
+
+        const ChipPackage = ({ children, isDark }) => {
+            const pinsH = 6; // pins per vertical side
+            const pinsW = 8; // pins per horizontal side
+
+            return (
+                <div className="relative p-6 md:p-12 mx-auto max-w-5xl my-12">
+                    {/* --- TRACES UNDERLAY --- */}
+                    <div className="absolute inset-0 pointer-events-none -z-10 opacity-30 dark:opacity-20 hidden md:block">
+                         {/* We can draw SVG traces here if we want complex background routing */}
+                    </div>
+
+                    {/* --- THE CHIP BODY --- */}
+                    <div className="relative bg-[#1a1a1a] rounded-2xl md:rounded-3xl shadow-2xl border-4 border-[#2d2d2d] z-20 overflow-visible">
+                        
+                        {/* Inner Matte Texture */}
+                        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20 pointer-events-none rounded-2xl md:rounded-3xl"></div>
+                        
+                        {/* Pin 1 Indicator (Notch/Dot) */}
+                        <div className="absolute top-4 left-4 w-4 h-4 md:w-6 md:h-6 rounded-full bg-[#111] shadow-[inset_0_2px_4px_rgba(0,0,0,0.8)] border border-gray-800 z-30"></div>
+
+                        {/* Branding Silk Screen */}
+                        <div className="absolute bottom-4 right-6 text-[10px] md:text-xs font-mono text-gray-500 opacity-60 tracking-widest pointer-events-none z-30 transform -rotate-0">
+                            SJK-SOC-2025-X1
+                            <br/>
+                            ARM64-ARCH
+                        </div>
+
+                        {/* --- PINS (Decoration) --- */}
+                        {/* Left Pins */}
+                        <div className="absolute left-0 top-12 bottom-12 flex flex-col justify-between -ml-[12px] md:-ml-[16px] py-4">
+                            {Array.from({length: pinsH}).map((_, i) => (
+                                <div key={`l-${i}`} className="w-3 md:w-4 h-6 md:h-8 pin-gradient rounded-l-sm border-r border-gray-600 shadow-sm relative group">
+                                    <div className="absolute right-full top-1/2 -translate-y-1/2 h-[2px] w-4 md:w-8 bg-green-500/20 group-hover:bg-green-500 transition-colors"></div>
+                                </div>
+                            ))}
+                        </div>
+                        {/* Right Pins */}
+                        <div className="absolute right-0 top-12 bottom-12 flex flex-col justify-between -mr-[12px] md:-mr-[16px] py-4">
+                            {Array.from({length: pinsH}).map((_, i) => (
+                                <div key={`r-${i}`} className="w-3 md:w-4 h-6 md:h-8 pin-gradient rounded-r-sm border-l border-gray-600 shadow-sm relative group">
+                                     <div className="absolute left-full top-1/2 -translate-y-1/2 h-[2px] w-4 md:w-8 bg-green-500/20 group-hover:bg-green-500 transition-colors"></div>
+                                </div>
+                            ))}
+                        </div>
+                        {/* Top Pins */}
+                        <div className="absolute top-0 left-12 right-12 flex justify-between -mt-[12px] md:-mt-[16px] px-4">
+                            {Array.from({length: pinsW}).map((_, i) => (
+                                <div key={`t-${i}`} className="h-3 md:h-4 w-6 md:w-8 pin-gradient-v rounded-t-sm border-b border-gray-600 shadow-sm relative group">
+                                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 w-[2px] h-4 md:h-8 bg-green-500/20 group-hover:bg-green-500 transition-colors"></div>
+                                </div>
+                            ))}
+                        </div>
+                        {/* Bottom Pins */}
+                        <div className="absolute bottom-0 left-12 right-12 flex justify-between -mb-[12px] md:-mb-[16px] px-4">
+                            {Array.from({length: pinsW}).map((_, i) => (
+                                <div key={`b-${i}`} className="h-3 md:h-4 w-6 md:w-8 pin-gradient-v rounded-b-sm border-t border-gray-600 shadow-sm relative group">
+                                     {/* This trace connects to buttons potentially */}
+                                     <div className="absolute top-full left-1/2 -translate-x-1/2 w-[2px] h-4 md:h-8 bg-green-500/20 group-hover:bg-green-500 transition-colors"></div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* --- CONTENT AREA --- */}
+                        <div className="relative z-20 p-8 md:p-12 text-gray-200">
+                             {children}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+        
+        const OutputTraceButton = ({ label, onClick, icon, secondary }) => {
+            return (
+                <div className="flex flex-col items-center group cursor-pointer" onClick={onClick}>
+                    {/* The Trace Line */}
+                    <div className="h-12 w-[2px] bg-gray-300 dark:bg-gray-700 group-hover:bg-green-500 transition-colors relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-full bg-green-500 -translate-y-full group-hover:animate-[flow_1s_linear_infinite]" style={{ animationDuration: '0.5s' }}></div>
+                    </div>
+                    
+                    {/* The Component/Button */}
+                    <div className={`
+                        relative px-6 py-4 rounded-lg border-2 transition-all duration-300 transform group-hover:scale-105 shadow-lg
+                        ${secondary 
+                            ? 'bg-slate-100 dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 group-hover:border-green-500' 
+                            : 'bg-green-600 dark:bg-green-700 border-green-700 dark:border-green-600 text-white group-hover:shadow-green-500/50'
+                        }
+                    `}>
+                        {/* Tiny pins on component */}
+                        <div className="absolute -top-[2px] left-1/2 -translate-x-1/2 w-2 h-[2px] bg-gray-400"></div>
+                        
+                        <div className="flex items-center gap-3 font-mono text-sm font-bold">
+                            {icon} {label}
+                        </div>
+                    </div>
+                </div>
+            );
         };
 
         const Sidebar = ({ activeSection, onNavigate, toggleTheme, isDark }) => {
-            // Using Binary numbering for ASIC feel
             const navItems = [
                 { id: 'about', label: 'About', index: '00', icon: <Terminal size={18} /> },
                 { id: 'projects', label: 'Projects', index: '01', icon: <Code size={18} /> },
@@ -359,7 +421,6 @@
                 <aside className="w-full md:w-64 md:fixed md:h-screen bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col transition-colors duration-300 z-50">
                     <div className="p-8 flex flex-col items-center text-center border-b border-slate-100 dark:border-slate-800">
                         <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-slate-100 dark:border-slate-800 mb-4 shadow-lg group relative">
-                             {/* Gradient ring only on dark mode hover, or solid green in light */}
                              <div className="absolute inset-0 rounded-full border-4 border-transparent group-hover:border-green-600 dark:group-hover:border-lime-400 transition-colors z-10 pointer-events-none"></div>
                             <img src="https://github.com/JuanSync7.png" alt="Profile" className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" onError={(e) => {e.target.src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=Juan'}} />
                         </div>
@@ -398,8 +459,7 @@
 
         const ProjectCard = ({ repo, onClick }) => (
             <div onClick={() => onClick(repo)} className="group bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full hover:border-green-300 dark:hover:border-lime-700 relative overflow-hidden">
-                {/* Tech corner decoration (chip notch look) */}
-                <div className="absolute top-0 right-0 w-8 h-8 bg-slate-50 dark:bg-slate-900 -mr-4 -mt-4 rotate-45 border border-slate-200 dark:border-slate-700"></div>
+                <div className="absolute top-0 right-0 w-8 h-8 bg-stone-50 dark:bg-slate-900 -mr-4 -mt-4 rotate-45 border border-slate-200 dark:border-slate-700"></div>
 
                 <div className="flex justify-between items-start mb-4">
                     <div className="p-2 bg-green-50 dark:bg-lime-900/20 rounded-lg text-green-700 dark:text-lime-400"><BookOpen size={20} /></div>
@@ -471,7 +531,6 @@
         };
 
         const SkillBadge = ({ name, type }) => {
-            // Updated to look like standard cells/pins
             const colors = {
                 hardware: "bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-800",
                 eda: "bg-teal-50 text-teal-800 border-teal-200 dark:bg-lime-900/30 dark:text-lime-300 dark:border-lime-800",
@@ -479,7 +538,6 @@
             };
             return (
                 <span className={`px-3 py-1 rounded-sm text-xs font-mono font-medium border ${colors[type] || colors.code} mr-2 mb-2 inline-block relative hover:scale-105 transition-transform cursor-default`}>
-                    {/* Small visual 'pins' on the left/right for that chip look */}
                     <span className="absolute left-0 top-1/2 -translate-x-full w-[2px] h-[4px] bg-current opacity-30 -mt-[2px]"></span>
                     <span className="absolute right-0 top-1/2 translate-x-full w-[2px] h-[4px] bg-current opacity-30 -mt-[2px]"></span>
                     {name}
@@ -535,51 +593,56 @@
 
             return (
                 <div className={`min-h-screen font-sans ${isDark ? 'dark' : ''}`}>
-                    {/* Background Grid Pattern */}
-                    <div className="bg-white dark:bg-slate-950 min-h-screen text-slate-800 dark:text-slate-200 transition-colors duration-300 bg-grid-pattern bg-fixed">
+                    <div className="bg-stone-50 dark:bg-slate-950 min-h-screen text-slate-800 dark:text-slate-200 transition-colors duration-300 bg-grid-pattern bg-fixed">
                         
                         <Sidebar activeSection={activeSection} onNavigate={scrollToSection} toggleTheme={toggleTheme} isDark={isDark} />
                         
                         <main className="md:ml-64 min-h-screen flex flex-col relative z-10">
                             <div className="flex-1 pb-24 space-y-16">
                                 
-                                {/* ABOUT SECTION */}
-                                <section id="about" className="min-h-screen flex flex-col justify-center max-w-4xl mx-auto p-8 md:p-16 animate-in">
-                                    <div className="grid md:grid-cols-2 gap-12 items-center">
-                                        <div>
-                                            <div className="font-mono text-sm text-green-600 dark:text-lime-400 mb-2 opacity-80">// 0x00. Introduction</div>
-                                            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6 text-slate-900 dark:text-white">
-                                                Hi, I'm <span className="theme-gradient-text">Shew Juan Kok</span>.
-                                            </h1>
-                                            <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-8">
-                                                I am an experienced <strong>ASIC Design Engineer</strong> with expertise in SoC architecture and functional verification.
-                                                <br/><br/>
-                                                Currently, I am exploring the integration of <strong>AI Agents</strong>, MCP, and RAG-based systems to fully automate chip design workflows.
-                                                <br/><br/>
-                                                Welcome to my personal hub where hardware meets AI innovation.
-                                            </p>
-                                            <div className="flex gap-4">
-                                                <button onClick={() => scrollToSection('projects')} 
-                                                    className="px-6 py-3 theme-gradient-bg theme-gradient-bg-hover text-white rounded-lg font-medium transition-all shadow-lg shadow-green-900/10 hover:shadow-green-900/20 dark:shadow-lime-500/10 dark:hover:shadow-lime-500/40 font-mono text-sm">
-                                                    ./View_Projects
-                                                </button>
-                                                <button onClick={() => scrollToSection('cv')} 
-                                                    className="px-6 py-3 border border-slate-300 dark:border-slate-700 hover:border-green-600 dark:hover:border-lime-500 rounded-lg font-medium transition-colors font-mono text-sm">
-                                                    ./See_CV
-                                                </button>
+                                {/* --- NEW CHIP-STYLE ABOUT SECTION --- */}
+                                <section id="about" className="min-h-screen flex flex-col justify-center max-w-6xl mx-auto px-4 md:px-16 py-8 animate-in relative">
+                                    
+                                    <ChipPackage isDark={isDark}>
+                                        <div className="grid md:grid-cols-2 gap-8 items-center">
+                                            {/* Text Content inside Chip */}
+                                            <div className="order-2 md:order-1">
+                                                <div className="font-mono text-sm text-green-400 mb-2">// 0x00. Introduction</div>
+                                                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6 text-white">
+                                                    Hi, I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-lime-300">Shew Juan Kok</span>.
+                                                </h1>
+                                                <p className="text-lg text-gray-400 leading-relaxed mb-4">
+                                                    I am an experienced <strong>ASIC Design Engineer</strong> with expertise in SoC architecture and functional verification.
+                                                </p>
+                                                <p className="text-lg text-gray-400 leading-relaxed">
+                                                    Currently, I am exploring the integration of <strong>AI Agents</strong>, MCP, and RAG-based systems to fully automate chip design workflows.
+                                                </p>
+                                            </div>
+
+                                            {/* Canvas inside Chip */}
+                                            <div className="order-1 md:order-2 flex justify-center items-center">
+                                                <div className="relative w-full max-w-[300px] aspect-square bg-gray-900/50 rounded-full border border-gray-700 shadow-inner flex items-center justify-center">
+                                                    <CharacterCanvas isDark={true} /> 
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="relative h-[300px] bg-slate-50 dark:bg-slate-900 rounded-3xl flex items-center justify-center border border-slate-100 dark:border-slate-800 shadow-inner overflow-hidden">
-                                            {/* Background glow: Green in Light Mode, Lime in Dark Mode */}
-                                            <div className="absolute top-0 right-0 w-32 h-32 bg-green-200/50 dark:bg-lime-400/10 rounded-full blur-3xl"></div>
-                                            
-                                            <CharacterCanvas isDark={isDark} />
-                                            
-                                            <div className="absolute bottom-4 text-xs text-slate-400 font-mono flex items-center gap-2 bg-white/50 dark:bg-black/20 px-3 py-1 rounded-full backdrop-blur-sm border border-slate-200 dark:border-slate-800">
-                                                <span className="w-2 h-2 bg-green-600 dark:bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(22,163,74,0.6)]"></span> SYSTEM ONLINE
-                                            </div>
-                                        </div>
+                                    </ChipPackage>
+
+                                    {/* --- OUTPUT TRACES & BUTTONS --- */}
+                                    <div className="flex justify-center gap-16 md:gap-32 mt-[-48px] md:mt-[-48px] relative z-10">
+                                        <OutputTraceButton 
+                                            label="View_Projects" 
+                                            onClick={() => scrollToSection('projects')}
+                                            icon={<CircuitBoard size={16} />} 
+                                        />
+                                        <OutputTraceButton 
+                                            label="See_CV.pdf" 
+                                            secondary 
+                                            onClick={() => scrollToSection('cv')}
+                                            icon={<FileText size={16} />}
+                                        />
                                     </div>
+
                                 </section>
                                 
                                 <InverterChainDivider isDark={isDark} />
