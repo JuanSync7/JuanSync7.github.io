@@ -1,0 +1,131 @@
+# KOK SHEW JUAN - MASTER CV DATABASE
+# Instructions: 
+# 1. Set 'selected: true' to include a section or item.
+# 2. Set 'selected: false' to hide it from the generated CV.
+
+identity:
+  name: "Shew Juan, Kok"
+  title: "Senior Design Engineer"
+  address: "Reading, Berkshire"
+  phone: "+447387729605"
+  email: "kokshewjuan_job@outlook.com"
+  linkedin: "LinkedIn"
+  linkedin_url: "https://linkedin.com/in/placeholder" 
+
+# GLOBAL TOGGLE: Professional Summary
+summary:
+  selected: true
+  content: >
+    Experienced ASIC Design Engineer with expertise in SoC architecture, front-end design flows, and
+    functional verification. Proven track record in HDL coding, code coverage analysis, constraint-random
+    verification, synthesis, DFT implementation and early back-end design explorations. Currently exploring
+    the integration of AI agents, AI workflows, Model Context Protocol (MCP), and Retrieval-Augmented
+    Generation (RAG) to develop fully automated workflow systems for chip design. Eager to apply extensive
+    hardware experience to pioneering roles in AI-integrated ASIC development, focusing on leveraging AI
+    agents and advanced automation to accelerate the future of chip design.
+
+# GLOBAL TOGGLE: Work Experience
+work_experience:
+  selected: true
+  jobs:
+    - company: "Aion Silicon"
+      role: "Senior Design Engineer"
+      location: "London, UK"
+      date_range: "Aug, 2025 - Present"
+      selected: true
+      responsibilities:
+        - text: "Automated front-end design flows using Python, TCL, and Shell scripting, significantly reducing manual effort and improving design cycle efficiency."
+          selected: true
+        - text: "Re-engineered a RISC-V vector core to interface with an external VPU accelerator, implementing custom logic for instruction dispatch, hazard detection, and synchronized retirement to ensure ISA compliance."
+          selected: true
+        - text: "Mentored junior engineers on UVM methodologies."
+          selected: false # Example of a hidden item
+
+    - company: "Aion Silicon"
+      role: "ASIC Design Engineer"
+      location: "Reading, UK"
+      date_range: "Sep, 2023 - July, 2025"
+      selected: true
+      responsibilities:
+        - text: "Automated front-end design flows using Python, TCL, and Shell scripting, significantly reducing manual effort and improving design cycle efficiency."
+          selected: true
+        - text: "Led front-end design initiatives using SystemVerilog for complex IP and SoC projects, driving development from architectural specification through to implementation."
+          selected: true
+        - text: "Executed comprehensive functional verification plans using constrained-random methodologies and assertions to ensure designs met rigorous specification requirements."
+          selected: true
+        - text: "Managed DFT implementation for large-scale, ASIL-B compliant SoCs, developing and debugging ATPG patterns with Synopsys TestMax to achieve over 90% test coverage."
+          selected: true
+        - text: "Established and integrated a company-wide linting methodology using Synopsys and Siemens tools, enhancing code quality and consistency across all design teams."
+          selected: true
+        - text: "Performed early-stage design exploration for critical subsystems using Synopsys RTL-Architect, optimizing for performance and area to 'shift left' the design process with early global placement and routing."
+          selected: true
+        - text: "Designed and architected system-level solutions, including the integration of third-party and in-house IP for advanced SoC implementations."
+          selected: true
+
+# GLOBAL TOGGLE: Education
+education:
+  selected: true
+  degrees:
+    - degree: "Master of Engineering (MEng) in Electrical and Electronics Engineering"
+      year: 2023
+      institution: "University of Southampton"
+      selected: true
+
+# GLOBAL TOGGLE: Skills
+skills:
+  selected: true
+  categories:
+    hardware_design_and_verification:
+      label: "Hardware Design & Verification"
+      selected: true
+      items:
+        - { text: "SystemVerilog - RTL coding, constrained random verification, functional verification", selected: true }
+        - { text: "HDL Design Patterns - Pipelined architectures, FSM implementation, parameterizable IP blocks, consistent RTL coding practices, ECC and redundancy checks for safety-critical implementations", selected: true }
+        - { text: "IP Design - Created in-house IP and integrated external IP for various SoC design", selected: true }
+        - { text: "Industry Protocols - AMBA AXI/AHB protocols, PCIe, DDR interfaces", selected: true }
+
+    eda_tools:
+      label: "EDA Tools"
+      selected: true
+      items:
+        - { text: "DFT Tools - Synopsys TestMax for DFT ATPG pattern development and debugging at SoCs level", selected: true }
+        - { text: "Front-end Tools - Synopsys Design Compiler, RTL-Architect, Platform Architect for synthesis and exploration", selected: true }
+        - { text: "Static Formal Tools - Questa Static Formal / VC Spyglass, code quality check and best practices", selected: true }
+        - { text: "Verification Tools - Verdi, VCS, coverage analysis tools and waveform analysis", selected: true }
+        - { text: "Open Source Tools - Verible, Slang, Verilator for self-exploration", selected: true }
+
+    version_control:
+      label: "Version Control"
+      selected: true
+      items:
+        - { text: "Git and SVN (subversion) for proper team collaboration", selected: true }
+    
+    # EXAMPLE: Your requested section
+    scripting_and_languages:
+      label: "Scripting & Languages"
+      selected: true
+      items:
+        - { text: "Scripting - Python, TCL, Bash", selected: true }
+        - { text: "SystemC - TLM modeling, high-level synthesis", selected: true }
+        - { text: "Rust (Learning)", selected: false } # Currently hidden
+        - { text: "Documentation - Markdown", selected: true }
+
+# GLOBAL TOGGLE: Professional Interests
+professional_interests:
+  selected: true
+  items:
+    - { text: "Integrating AI agents and RAG-based systems into chip design pipelines for enhanced automation", selected: true }
+    - { text: "Developing AI-driven specifications and methodologies for advanced chip design workflows", selected: true }
+    - { text: "Building web-based tools and applications for personal productivity and design automation", selected: true }
+    - { text: "Machine learning hardware optimization and neural network implementation architectures", selected: true }
+    - { text: "System-level hardware-software co-optimization for AI-centric applications", selected: true }
+    - { text: "Exploring advanced verification methodologies and AI-driven automated verification techniques for advanced node technologies", selected: true }
+
+# GLOBAL TOGGLE: Additional Info
+additional_information:
+  selected: true
+  items:
+    - { text: "Requires skilled worker visa sponsorship in the UK", selected: true }
+    - { text: "Strong collaborative and communication skills", selected: true }
+    - { text: "Excellent problem solving skills and proactive learner", selected: true }
+    - { text: "Continuous learning mindset with focus on AI/ML hardware trends", selected: true }
