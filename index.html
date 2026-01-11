@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JuanSync7 | Developer Portfolio</title>
+    <title>Shew Juan Kok | ASIC Design Engineer</title>
     
     <!-- 1. Tailwind CSS (via CDN for standalone usage) -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -23,7 +23,7 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Portfolio of JuanSync7 - Developer & Engineer" />
+    <meta name="description" content="Portfolio of Shew Juan Kok - ASIC Design Engineer" />
     <style>
         /* Custom scrollbar for the modal */
         .custom-scrollbar::-webkit-scrollbar { width: 8px; }
@@ -56,7 +56,8 @@
         import { createRoot } from 'react-dom/client';
         import { 
             Github, Linkedin, Mail, BookOpen, Code, FileText, 
-            Terminal, ExternalLink, ChevronRight, X, Moon, Sun, Globe 
+            Terminal, ExternalLink, ChevronRight, X, Moon, Sun, Globe,
+            Cpu, CircuitBoard, Download, GraduationCap, Briefcase
         } from 'lucide-react';
 
         // --- UTILITIES ---
@@ -166,8 +167,8 @@
         const Sidebar = ({ activeSection, setActiveSection, toggleTheme, isDark }) => {
             const navItems = [
                 { id: 'about', label: 'About', icon: <Terminal size={18} /> },
-                { id: 'projects', label: 'Projects', icon: <Code size={18} /> },
                 { id: 'cv', label: 'CV / Resume', icon: <FileText size={18} /> },
+                { id: 'projects', label: 'Projects', icon: <Code size={18} /> },
                 { id: 'blog', label: 'Blog', icon: <BookOpen size={18} /> },
             ];
 
@@ -177,12 +178,12 @@
                         <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-50 dark:border-slate-800 mb-4 shadow-lg group">
                             <img src="https://github.com/JuanSync7.png" alt="Profile" className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" onError={(e) => {e.target.src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=Juan'}} />
                         </div>
-                        <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-1">JuanSync7</h1>
-                        <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">Developer & Creative Engineer</p>
+                        <h1 className="text-xl font-bold text-slate-800 dark:text-white mb-1">Shew Juan Kok</h1>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 mb-4 uppercase tracking-wider">ASIC Design Engineer</p>
                         <div className="flex gap-3 justify-center">
                             <a href="https://github.com/JuanSync7" target="_blank" className="text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors"><Github size={20} /></a>
-                            <a href="#" className="text-slate-400 hover:text-blue-600 transition-colors"><Linkedin size={20} /></a>
-                            <a href="mailto:contact@example.com" className="text-slate-400 hover:text-red-500 transition-colors"><Mail size={20} /></a>
+                            <a href="https://www.linkedin.com/in/shewjuankok/" target="_blank" className="text-slate-400 hover:text-blue-600 transition-colors"><Linkedin size={20} /></a>
+                            <a href="mailto:kokshewjuan7@outlook.com" className="text-slate-400 hover:text-red-500 transition-colors"><Mail size={20} /></a>
                         </div>
                     </div>
                     <nav className="flex-1 p-4">
@@ -276,6 +277,19 @@
             );
         };
 
+        const SkillBadge = ({ name, type }) => {
+            const colors = {
+                hardware: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300 border-orange-200 dark:border-orange-800",
+                eda: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-800",
+                code: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800"
+            };
+            return (
+                <span className={`px-3 py-1 rounded-full text-xs font-medium border ${colors[type] || colors.code} mr-2 mb-2 inline-block`}>
+                    {name}
+                </span>
+            );
+        };
+
         const App = () => {
             const [activeSection, setActiveSection] = useState('about');
             const [isDark, setIsDark] = useState(false);
@@ -310,14 +324,17 @@
                                     <div className="max-w-4xl mx-auto p-8 md:p-16 animate-in">
                                         <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
                                             <div>
-                                                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6 text-slate-900 dark:text-white">Hi, I'm <span className="text-blue-600">Juan</span>.</h1>
+                                                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6 text-slate-900 dark:text-white">Hi, I'm <span className="text-blue-600">Shew Juan Kok</span>.</h1>
                                                 <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-8">
-                                                    I build interactive web experiences and robust backend systems. 
-                                                    This page is my personal hub where code meets creativity.
+                                                    I am an experienced <strong>ASIC Design Engineer</strong> with expertise in SoC architecture and functional verification.
+                                                    <br/><br/>
+                                                    Currently, I am exploring the integration of <strong>AI Agents</strong>, MCP, and RAG-based systems to fully automate chip design workflows.
+                                                    <br/><br/>
+                                                    Welcome to my personal hub where hardware meets AI innovation.
                                                 </p>
                                                 <div className="flex gap-4">
-                                                    <button onClick={() => setActiveSection('projects')} className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors shadow-lg shadow-blue-500/30">View Projects</button>
-                                                    <button onClick={() => setActiveSection('cv')} className="px-6 py-3 border border-slate-300 dark:border-slate-700 hover:border-slate-800 dark:hover:border-slate-500 rounded-lg font-medium transition-colors">See CV</button>
+                                                    <button onClick={() => setActiveSection('cv')} className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors shadow-lg shadow-blue-500/30">View CV / Resume</button>
+                                                    <button onClick={() => setActiveSection('projects')} className="px-6 py-3 border border-slate-300 dark:border-slate-700 hover:border-slate-800 dark:hover:border-slate-500 rounded-lg font-medium transition-colors">Github Projects</button>
                                                 </div>
                                             </div>
                                             <div className="relative h-[300px] bg-slate-50 dark:bg-slate-900 rounded-3xl flex items-center justify-center border border-slate-100 dark:border-slate-800 shadow-inner">
@@ -345,23 +362,142 @@
                                     </div>
                                 )}
                                 {activeSection === 'cv' && (
-                                    <div className="max-w-3xl mx-auto p-8 md:p-16 animate-in">
-                                        <div className="flex justify-between items-end mb-12 border-b border-slate-200 dark:border-slate-800 pb-8">
-                                            <div><h2 className="text-3xl font-bold mb-2 text-slate-900 dark:text-white">Curriculum Vitae</h2></div>
-                                        </div>
-                                        <div className="space-y-12">
-                                            <div className="relative pl-8 border-l-2 border-slate-200 dark:border-slate-800">
-                                                <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-600 ring-4 ring-white dark:ring-slate-950" />
-                                                <span className="text-sm font-mono text-blue-600 dark:text-blue-400 mb-1 block">2024 - Present</span>
-                                                <h3 className="text-xl font-bold text-slate-800 dark:text-white">Senior Frontend Engineer (Placeholder)</h3>
+                                    <div className="max-w-4xl mx-auto p-8 md:p-16 animate-in">
+                                        <div className="flex justify-between items-start mb-8 border-b border-slate-200 dark:border-slate-800 pb-8">
+                                            <div>
+                                                <h2 className="text-3xl font-bold mb-2 text-slate-900 dark:text-white">Curriculum Vitae</h2>
+                                                <p className="text-slate-500">ASIC Design Engineer | Hardware-Software Co-optimization</p>
                                             </div>
-                                            {/* Add more CV items here */}
+                                            <a href="./Kok_Shew_Juan_CV_2025.pdf" download className="flex items-center gap-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity">
+                                                <Download size={16} /> Download PDF
+                                            </a>
+                                        </div>
+
+                                        {/* Summary */}
+                                        <div className="bg-blue-50 dark:bg-slate-900 p-6 rounded-xl border border-blue-100 dark:border-slate-800 mb-12">
+                                            <h3 className="text-sm font-bold text-blue-800 dark:text-blue-400 uppercase mb-2 tracking-wider">Professional Summary</h3>
+                                            <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-sm md:text-base">
+                                                Experienced ASIC Design Engineer with expertise in SoC architecture, front-end design flows, and functional verification. 
+                                                Proven track record in HDL coding, code coverage analysis, constraint-random verification, synthesis, DFT implementation, 
+                                                and early back-end design explorations. Currently pioneering the integration of AI agents, MCP, and RAG to develop 
+                                                fully automated workflow systems for chip design.
+                                            </p>
+                                        </div>
+
+                                        <div className="grid md:grid-cols-3 gap-12">
+                                            {/* Main Column */}
+                                            <div className="md:col-span-2 space-y-12">
+                                                
+                                                {/* Experience */}
+                                                <section>
+                                                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+                                                        <Briefcase className="text-blue-600" size={24} /> Work Experience
+                                                    </h3>
+                                                    <div className="relative pl-8 border-l-2 border-slate-200 dark:border-slate-800 space-y-12">
+                                                        <div className="relative">
+                                                            <div className="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-blue-600 ring-4 ring-white dark:ring-slate-950 flex items-center justify-center">
+                                                                <div className="w-2 h-2 bg-white rounded-full" />
+                                                            </div>
+                                                            <span className="text-sm font-mono text-blue-600 dark:text-blue-400 mb-1 block">Sep 2023 - Present</span>
+                                                            <h4 className="text-lg font-bold text-slate-800 dark:text-white">ASIC Design Engineer</h4>
+                                                            <p className="text-slate-500 text-sm mb-4">Aion Silicon | Reading, UK</p>
+                                                            <ul className="space-y-3 text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                                                                <li>• Automated front-end design flows using <strong>Python, TCL, and Shell</strong>, significantly reducing manual effort.</li>
+                                                                <li>• Led front-end design initiatives using <strong>SystemVerilog</strong> for complex IP and SoC projects.</li>
+                                                                <li>• Executed comprehensive functional verification plans using <strong>constrained-random methodologies</strong>.</li>
+                                                                <li>• Managed <strong>DFT implementation</strong> for large-scale, ASIL-B compliant SoCs (90%+ coverage).</li>
+                                                                <li>• Established company-wide linting methodologies using Synopsys and Siemens tools.</li>
+                                                                <li>• Performed early-stage design exploration using Synopsys RTL-Architect.</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </section>
+
+                                                {/* Education */}
+                                                <section>
+                                                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+                                                        <GraduationCap className="text-blue-600" size={24} /> Education
+                                                    </h3>
+                                                    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6">
+                                                        <div className="flex justify-between items-start mb-2">
+                                                            <h4 className="font-bold text-slate-800 dark:text-white">University of Southampton</h4>
+                                                            <span className="text-sm bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-slate-600 dark:text-slate-400">2023</span>
+                                                        </div>
+                                                        <p className="text-blue-600 dark:text-blue-400 text-sm">Master of Engineering (MEng) in Electrical and Electronics Engineering</p>
+                                                    </div>
+                                                </section>
+                                            </div>
+
+                                            {/* Sidebar Column */}
+                                            <div className="space-y-8">
+                                                
+                                                {/* Skills */}
+                                                <section>
+                                                    <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                                                        <CircuitBoard size={20} /> Technical Skills
+                                                    </h3>
+                                                    
+                                                    <div className="mb-4">
+                                                        <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Hardware Design</h4>
+                                                        <div className="flex flex-wrap">
+                                                            <SkillBadge name="SystemVerilog" type="hardware" />
+                                                            <SkillBadge name="RTL Coding" type="hardware" />
+                                                            <SkillBadge name="UVM / Verification" type="hardware" />
+                                                            <SkillBadge name="AMBA AXI/AHB" type="hardware" />
+                                                            <SkillBadge name="PCIe / DDR" type="hardware" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="mb-4">
+                                                        <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">EDA Tools</h4>
+                                                        <div className="flex flex-wrap">
+                                                            <SkillBadge name="Synopsys TestMax" type="eda" />
+                                                            <SkillBadge name="Design Compiler" type="eda" />
+                                                            <SkillBadge name="RTL-Architect" type="eda" />
+                                                            <SkillBadge name="Verdi / VCS" type="eda" />
+                                                            <SkillBadge name="Verilator" type="eda" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div>
+                                                        <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Scripting & Code</h4>
+                                                        <div className="flex flex-wrap">
+                                                            <SkillBadge name="Python" type="code" />
+                                                            <SkillBadge name="TCL / Bash" type="code" />
+                                                            <SkillBadge name="SystemC" type="code" />
+                                                            <SkillBadge name="Rust (Learning)" type="code" />
+                                                            <SkillBadge name="Git / SVN" type="code" />
+                                                        </div>
+                                                    </div>
+                                                </section>
+
+                                                {/* Interests */}
+                                                <section>
+                                                    <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                                                        <Cpu size={20} /> Interests
+                                                    </h3>
+                                                    <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                                                        <li className="flex items-start gap-2">
+                                                            <span className="text-blue-500 mt-1">•</span> AI Agents & RAG in Chip Design
+                                                        </li>
+                                                        <li className="flex items-start gap-2">
+                                                            <span className="text-blue-500 mt-1">•</span> Web-based Automation Tools
+                                                        </li>
+                                                        <li className="flex items-start gap-2">
+                                                            <span className="text-blue-500 mt-1">•</span> ML Hardware Optimization
+                                                        </li>
+                                                        <li className="flex items-start gap-2">
+                                                            <span className="text-blue-500 mt-1">•</span> Advanced Verification Tech
+                                                        </li>
+                                                    </ul>
+                                                </section>
+                                            </div>
                                         </div>
                                     </div>
                                 )}
                             </div>
                             <footer className="p-8 border-t border-slate-200 dark:border-slate-800 text-center text-slate-400 dark:text-slate-600 text-sm">
-                                <p className="flex items-center justify-center gap-2"><Globe size={14} /> Hosted on GitHub Pages • © {new Date().getFullYear()} JuanSync7</p>
+                                <p className="flex items-center justify-center gap-2"><Globe size={14} /> Hosted on GitHub Pages • © {new Date().getFullYear()} Shew Juan Kok</p>
                             </footer>
                         </main>
                     </div>
