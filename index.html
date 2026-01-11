@@ -35,17 +35,26 @@
         @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
         .animate-in { animation: fade-in 0.5s ease-out forwards; }
         
+        /* Clock Signal Animation */
+        @keyframes flow {
+            from { stroke-dashoffset: 24; }
+            to { stroke-dashoffset: 0; }
+        }
+        .animate-waveform {
+            animation: flow 1s linear infinite;
+        }
+
         html { scroll-behavior: smooth; }
 
         /* --- DYNAMIC THEME ENGINE --- */
 
         /* Light Mode: Simple Monotone Green (Solid Colors) */
         .theme-gradient-text {
-            color: #16a34a; 
+            color: #16a34a; /* green-600 */
         }
         
         .theme-gradient-bg {
-            background-color: #16a34a;
+            background-color: #16a34a; /* green-600 */
             transition: background-color 0.3s ease;
         }
         
@@ -54,7 +63,19 @@
             background-color: #14532d; /* green-900 */
         }
 
-        /* Dark Mode: Full Spectrum Gradient */
+        /* Floorplan Grid Pattern (ASIC Theme) */
+        .bg-grid-pattern {
+            background-image: linear-gradient(to right, rgba(22, 163, 74, 0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(22, 163, 74, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Dark Mode: Full Spectrum Gradient & Grid */
+        .dark .bg-grid-pattern {
+            background-image: linear-gradient(to right, rgba(163, 230, 53, 0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(163, 230, 53, 0.05) 1px, transparent 1px);
+        }
+
         .dark .theme-gradient-text {
             background-image: linear-gradient(to right, #fde047, #a3e635, #22c55e); /* yellow-300 -> green-500 */
             -webkit-background-clip: text;
@@ -77,7 +98,10 @@
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    fontFamily: { 
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
+                    },
                 }
             }
         }
@@ -94,7 +118,7 @@
         import { 
             Github, Linkedin, Mail, BookOpen, Code, FileText, 
             Terminal, ExternalLink, ChevronRight, X, Moon, Sun, Globe,
-            Cpu, CircuitBoard, Download, GraduationCap, Briefcase
+            Cpu, CircuitBoard, Download, GraduationCap, Briefcase, Activity
         } from 'lucide-react';
 
         // --- UTILITIES ---
@@ -114,6 +138,105 @@
         };
 
         // --- COMPONENTS ---
+
+        // NEW: Inverter Chain Divider Component (ASIC Theme)
+        // Replaces the static WaveformDivider with an animated logic gate chain
+        const InverterChainDivider = ({ isDark }) => {
+            const [tick, setTick] = useState(0);
+            const count = 40; // Enough gates to span most screens
+
+            useEffect(() => {
+                let frame;
+                const animate = () => {
+                    setTick(t => t + 0.04); // Speed of the pulse
+                    frame = requestAnimationFrame(animate);
+                };
+                animate();
+                return () => cancelAnimationFrame(frame);
+            }, []);
+
+            // Ping-pong math: (sin(t) + 1) / 2 moves from 0 to 1 and back to 0
+            // Multiply by count to map to the gate index
+            const activeIndex = (Math.sin(tick) + 1) / 2 * (count - 1);
+
+            return (
+                <div className="w-full h-24 flex items-center justify-center my-4 overflow-hidden bg-transparent relative">
+                    {/* Fade edges to blend with background */}
+                    <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white dark:from-slate-950 to-transparent z-10"></div>
+                    <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white dark:from-slate-950 to-transparent z-10"></div>
+
+                    <svg width="100%" height="40" className="min-w-[1200px] max-w-full opacity-90">
+                        <defs>
+                            {/* Glow filter for the active pulse */}
+                            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <g transform="translate(0, 10)">
+                        {Array.from({ length: count }).map((_, i) => {
+                            const unitWidth = 45; // Width of one inverter + wire
+                            const x = i * unitWidth + 20; // Centering offset
+                            const y = 10;
+                            
+                            // Calculate distance from the "active" signal pulse
+                            const dist = Math.abs(i - activeIndex);
+                            
+                            // Intensity falls off quickly (Gaussian-like)
+                            const intensity = Math.max(0, 1 - dist / 2.5); 
+                            const isActive = intensity > 0.1;
+
+                            // Theme Colors
+                            // Inactive state (dim)
+                            const strokeInactive = isDark ? '#365314' : '#bbf7d0'; // Dark-lime-900 / Green-200
+                            const fillInactive = 'transparent';
+                            
+                            // Active state (bright)
+                            const strokeActive = isDark ? '#a3e635' : '#16a34a'; // Lime-400 / Green-600
+                            const fillActive = isDark ? '#a3e635' : '#16a34a'; 
+
+                            // Dynamic styles based on intensity
+                            const currentStroke = isActive ? strokeActive : strokeInactive;
+                            const currentFill = isActive ? fillActive : fillInactive;
+                            const bubbleRadius = 3 + (intensity * 1); // Slight size pulse
+                            const opacity = isActive ? 1 : 0.4;
+
+                            return (
+                                <g key={i} style={{ opacity }}>
+                                    {/* Input Wire */}
+                                    <line x1={x - 10} y1={y} x2={x} y2={y} 
+                                          stroke={currentStroke} strokeWidth="2" />
+                                    
+                                    {/* Inverter Triangle Body */}
+                                    <path d={`M ${x} ${y-8} L ${x} ${y+8} L ${x+14} ${y} Z`} 
+                                          fill="none" 
+                                          stroke={currentStroke} 
+                                          strokeWidth="2" 
+                                    />
+                                    
+                                    {/* Output Bubble (The "LED") */}
+                                    <circle cx={x + 18} cy={y} r={bubbleRadius} 
+                                            fill={currentFill} 
+                                            stroke={currentStroke} 
+                                            strokeWidth={isActive ? 0 : 2}
+                                            filter={isActive ? "url(#glow)" : ""}
+                                    />
+                                    
+                                    {/* Connecting Wire to next gate */}
+                                    <line x1={x + 22} y1={y} x2={x + unitWidth - 10} y2={y} 
+                                          stroke={currentStroke} strokeWidth="2" />
+                                </g>
+                            );
+                        })}
+                        </g>
+                    </svg>
+                </div>
+            )
+        }
+
         const CharacterCanvas = ({ isDark }) => {
             const canvasRef = useRef(null);
             const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -159,9 +282,9 @@
                         antennaColor = time % 2 > 1 ? '#eab308' : '#84cc16'; // Blinking yellow/lime
                     } else {
                         // Monotone Green Mode (Light)
-                        bodyFill = '#15803d'; // Solid Green-700
+                        bodyFill = '#16a34a'; // Vibrant Green-600
                         strokeColor = '#14532d'; // Darker Green-900
-                        antennaColor = time % 2 > 1 ? '#15803d' : '#86efac'; // Blinking dark green / light green
+                        antennaColor = time % 2 > 1 ? '#16a34a' : '#86efac'; // Blinking
                     }
 
                     // Body
@@ -223,11 +346,12 @@
         };
 
         const Sidebar = ({ activeSection, onNavigate, toggleTheme, isDark }) => {
+            // Using Binary numbering for ASIC feel
             const navItems = [
-                { id: 'about', label: 'About', icon: <Terminal size={18} /> },
-                { id: 'projects', label: 'Projects', icon: <Code size={18} /> },
-                { id: 'cv', label: 'CV / Resume', icon: <FileText size={18} /> },
-                { id: 'blog', label: 'Blog', icon: <BookOpen size={18} /> },
+                { id: 'about', label: 'About', index: '00', icon: <Terminal size={18} /> },
+                { id: 'projects', label: 'Projects', index: '01', icon: <Code size={18} /> },
+                { id: 'cv', label: 'CV / Resume', index: '10', icon: <FileText size={18} /> },
+                { id: 'blog', label: 'Blog', index: '11', icon: <BookOpen size={18} /> },
             ];
 
             return (
@@ -239,7 +363,7 @@
                             <img src="https://github.com/JuanSync7.png" alt="Profile" className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" onError={(e) => {e.target.src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=Juan'}} />
                         </div>
                         <h1 className="text-xl font-bold text-slate-800 dark:text-white mb-1">Shew Juan Kok</h1>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 mb-4 uppercase tracking-wider">ASIC Design Engineer</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 mb-4 uppercase tracking-wider font-mono">ASIC Design Engineer</p>
                         <div className="flex gap-3 justify-center">
                             <a href="https://github.com/JuanSync7" target="_blank" className="text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors"><Github size={20} /></a>
                             <a href="https://www.linkedin.com/in/shewjuankok/" target="_blank" className="text-slate-400 hover:text-blue-600 transition-colors"><Linkedin size={20} /></a>
@@ -251,10 +375,11 @@
                             {navItems.map((item) => (
                                 <li key={item.id}>
                                     <button onClick={() => onNavigate(item.id)} 
-                                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all 
+                                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all group
                                         ${activeSection === item.id 
                                             ? 'bg-green-50 text-green-800 border-green-200 dark:bg-lime-900/20 dark:text-lime-400 shadow-sm border dark:border-lime-900/30' 
                                             : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'}`}>
+                                        <span className={`font-mono text-xs opacity-50 ${activeSection === item.id ? 'text-green-600 dark:text-lime-500' : 'group-hover:text-green-600'}`}>{item.index}</span>
                                         {item.icon} {item.label}
                                     </button>
                                 </li>
@@ -271,15 +396,18 @@
         };
 
         const ProjectCard = ({ repo, onClick }) => (
-            <div onClick={() => onClick(repo)} className="group bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full hover:border-green-300 dark:hover:border-lime-700">
+            <div onClick={() => onClick(repo)} className="group bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full hover:border-green-300 dark:hover:border-lime-700 relative overflow-hidden">
+                {/* Tech corner decoration (chip notch look) */}
+                <div className="absolute top-0 right-0 w-8 h-8 bg-slate-50 dark:bg-slate-900 -mr-4 -mt-4 rotate-45 border border-slate-200 dark:border-slate-700"></div>
+
                 <div className="flex justify-between items-start mb-4">
                     <div className="p-2 bg-green-50 dark:bg-lime-900/20 rounded-lg text-green-700 dark:text-lime-400"><BookOpen size={20} /></div>
                     <div className="flex gap-2">
-                        <span className="text-xs px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-full">{repo.language || 'Code'}</span>
-                        <span className="text-xs px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-full flex items-center gap-1">★ {repo.stargazers_count}</span>
+                        <span className="text-xs px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-sm font-mono">{repo.language || 'Verilog'}</span>
+                        <span className="text-xs px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-sm flex items-center gap-1 font-mono">★ {repo.stargazers_count}</span>
                     </div>
                 </div>
-                <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-2 group-hover:text-green-700 dark:group-hover:text-lime-400 transition-colors">{repo.name}</h3>
+                <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-2 group-hover:text-green-700 dark:group-hover:text-lime-400 transition-colors font-mono tracking-tight">{repo.name}</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-3 mb-4 flex-1">{repo.description || "No description available. Check the README."}</p>
                 <div className="flex items-center text-sm text-green-700 dark:text-lime-400 font-medium mt-auto">
                     Read details <ChevronRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
@@ -319,7 +447,7 @@
                 <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
                     <div className="bg-white dark:bg-slate-900 w-full max-w-3xl h-[80vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200">
                         <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-800/50">
-                            <h2 className="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2"><Github size={18} /> {repo.name}</h2>
+                            <h2 className="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2 font-mono"><Github size={18} /> {repo.name}</h2>
                             <button onClick={onClose} className="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full transition-colors"><X size={20} className="text-slate-500" /></button>
                         </div>
                         <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
@@ -328,7 +456,7 @@
                                     <div className="w-8 h-8 border-4 border-green-600 dark:border-lime-500 border-t-transparent rounded-full animate-spin" /> Loading README...
                                 </div>
                             ) : (
-                                <div className="prose dark:prose-invert max-w-none prose-a:text-green-700 dark:prose-a:text-lime-600 hover:prose-a:text-green-500 prose-code:text-green-700 dark:prose-code:text-lime-400"><SimpleMarkdown content={content} /></div>
+                                <div className="prose dark:prose-invert max-w-none prose-a:text-green-700 dark:prose-a:text-lime-600 hover:prose-a:text-green-500 prose-code:text-green-700 dark:prose-code:text-lime-400 font-mono"><SimpleMarkdown content={content} /></div>
                             )}
                         </div>
                         <div className="p-4 border-t border-slate-200 dark:border-slate-800 flex justify-end">
@@ -342,15 +470,17 @@
         };
 
         const SkillBadge = ({ name, type }) => {
-            // Light Mode: Monotone-ish (variations of green/teal/emerald)
-            // Dark Mode: Distinct colors for clarity
+            // Updated to look like standard cells/pins
             const colors = {
                 hardware: "bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-800",
                 eda: "bg-teal-50 text-teal-800 border-teal-200 dark:bg-lime-900/30 dark:text-lime-300 dark:border-lime-800",
                 code: "bg-green-50 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800"
             };
             return (
-                <span className={`px-3 py-1 rounded-full text-xs font-medium border ${colors[type] || colors.code} mr-2 mb-2 inline-block`}>
+                <span className={`px-3 py-1 rounded-sm text-xs font-mono font-medium border ${colors[type] || colors.code} mr-2 mb-2 inline-block relative hover:scale-105 transition-transform cursor-default`}>
+                    {/* Small visual 'pins' on the left/right for that chip look */}
+                    <span className="absolute left-0 top-1/2 -translate-x-full w-[2px] h-[4px] bg-current opacity-30 -mt-[2px]"></span>
+                    <span className="absolute right-0 top-1/2 translate-x-full w-[2px] h-[4px] bg-current opacity-30 -mt-[2px]"></span>
                     {name}
                 </span>
             );
@@ -367,7 +497,6 @@
                 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) setIsDark(true);
             }, []);
 
-            // Scroll Handler
             const scrollToSection = (id) => {
                 if (id === 'blog') return; 
                 const element = document.getElementById(id);
@@ -405,15 +534,19 @@
 
             return (
                 <div className={`min-h-screen font-sans ${isDark ? 'dark' : ''}`}>
-                    <div className="bg-white dark:bg-slate-950 min-h-screen text-slate-800 dark:text-slate-200 transition-colors duration-300">
+                    {/* Background Grid Pattern */}
+                    <div className="bg-white dark:bg-slate-950 min-h-screen text-slate-800 dark:text-slate-200 transition-colors duration-300 bg-grid-pattern bg-fixed">
+                        
                         <Sidebar activeSection={activeSection} onNavigate={scrollToSection} toggleTheme={toggleTheme} isDark={isDark} />
-                        <main className="md:ml-64 min-h-screen flex flex-col">
-                            <div className="flex-1 pb-24 space-y-24">
+                        
+                        <main className="md:ml-64 min-h-screen flex flex-col relative z-10">
+                            <div className="flex-1 pb-24 space-y-16">
                                 
                                 {/* ABOUT SECTION */}
                                 <section id="about" className="min-h-screen flex flex-col justify-center max-w-4xl mx-auto p-8 md:p-16 animate-in">
                                     <div className="grid md:grid-cols-2 gap-12 items-center">
                                         <div>
+                                            <div className="font-mono text-sm text-green-600 dark:text-lime-400 mb-2 opacity-80">// 0x00. Introduction</div>
                                             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6 text-slate-900 dark:text-white">
                                                 Hi, I'm <span className="theme-gradient-text">Shew Juan Kok</span>.
                                             </h1>
@@ -426,12 +559,12 @@
                                             </p>
                                             <div className="flex gap-4">
                                                 <button onClick={() => scrollToSection('projects')} 
-                                                    className="px-6 py-3 theme-gradient-bg theme-gradient-bg-hover text-white rounded-lg font-medium transition-all shadow-lg shadow-green-900/10 hover:shadow-green-900/20 dark:shadow-lime-500/10 dark:hover:shadow-lime-500/40">
-                                                    View Projects
+                                                    className="px-6 py-3 theme-gradient-bg theme-gradient-bg-hover text-white rounded-lg font-medium transition-all shadow-lg shadow-green-900/10 hover:shadow-green-900/20 dark:shadow-lime-500/10 dark:hover:shadow-lime-500/40 font-mono text-sm">
+                                                    ./View_Projects
                                                 </button>
                                                 <button onClick={() => scrollToSection('cv')} 
-                                                    className="px-6 py-3 border border-slate-300 dark:border-slate-700 hover:border-green-600 dark:hover:border-lime-500 rounded-lg font-medium transition-colors">
-                                                    See CV
+                                                    className="px-6 py-3 border border-slate-300 dark:border-slate-700 hover:border-green-600 dark:hover:border-lime-500 rounded-lg font-medium transition-colors font-mono text-sm">
+                                                    ./See_CV
                                                 </button>
                                             </div>
                                         </div>
@@ -439,21 +572,25 @@
                                             {/* Background glow: Green in Light Mode, Lime in Dark Mode */}
                                             <div className="absolute top-0 right-0 w-32 h-32 bg-green-200/50 dark:bg-lime-400/10 rounded-full blur-3xl"></div>
                                             
-                                            {/* Pass isDark to Canvas to toggle between Solid and Gradient drawing modes */}
                                             <CharacterCanvas isDark={isDark} />
                                             
-                                            <div className="absolute bottom-4 text-xs text-slate-400 font-mono flex items-center gap-2">
+                                            <div className="absolute bottom-4 text-xs text-slate-400 font-mono flex items-center gap-2 bg-white/50 dark:bg-black/20 px-3 py-1 rounded-full backdrop-blur-sm border border-slate-200 dark:border-slate-800">
                                                 <span className="w-2 h-2 bg-green-600 dark:bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(22,163,74,0.6)]"></span> SYSTEM ONLINE
                                             </div>
                                         </div>
                                     </div>
                                 </section>
+                                
+                                <InverterChainDivider isDark={isDark} />
 
                                 {/* PROJECTS SECTION */}
                                 <section id="projects" className="max-w-6xl mx-auto p-8 md:p-16 scroll-mt-10">
                                     <div className="mb-12">
-                                        <h2 className="text-3xl font-bold mb-4 text-slate-900 dark:text-white">Selected Projects</h2>
-                                        <p className="text-slate-500 dark:text-slate-400">Fetched live from <a href="https://github.com/JuanSync7" className="text-green-700 dark:text-lime-600 hover:underline">github.com/JuanSync7</a></p>
+                                        <div className="font-mono text-sm text-green-600 dark:text-lime-400 mb-2 opacity-80">// 0x01. Portfolio</div>
+                                        <h2 className="text-3xl font-bold mb-4 text-slate-900 dark:text-white font-mono">module selected_projects;</h2>
+                                        <p className="text-slate-500 dark:text-slate-400 font-mono text-sm">
+                                            // Fetched live from <a href="https://github.com/JuanSync7" className="text-green-700 dark:text-lime-600 hover:underline">github.com/JuanSync7</a>
+                                        </p>
                                     </div>
                                     {loadingRepos ? (
                                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -466,26 +603,29 @@
                                     )}
                                 </section>
 
+                                <InverterChainDivider isDark={isDark} />
+
                                 {/* CV SECTION */}
                                 <section id="cv" className="max-w-4xl mx-auto p-8 md:p-16 scroll-mt-10">
                                     <div className="flex justify-between items-start mb-8 border-b border-slate-200 dark:border-slate-800 pb-8">
                                         <div>
-                                            <h2 className="text-3xl font-bold mb-2 text-slate-900 dark:text-white">Curriculum Vitae</h2>
-                                            <p className="text-slate-500">ASIC Design Engineer | Hardware-Software Co-optimization</p>
+                                            <div className="font-mono text-sm text-green-600 dark:text-lime-400 mb-2 opacity-80">// 0x02. Qualifications</div>
+                                            <h2 className="text-3xl font-bold mb-2 text-slate-900 dark:text-white font-mono">Curriculum Vitae</h2>
+                                            <p className="text-slate-500 font-mono text-xs">ASIC Design Engineer | Hardware-Software Co-optimization</p>
                                         </div>
-                                        <a href="./Kok_Shew_Juan_CV_2025.pdf" download className="flex items-center gap-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity">
-                                            <Download size={16} /> Download PDF
+                                        <a href="./Kok_Shew_Juan_CV_2025.pdf" download className="flex items-center gap-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity font-mono">
+                                            <Download size={16} /> Download_PDF
                                         </a>
                                     </div>
 
                                     {/* Summary */}
                                     <div className="bg-green-50/50 dark:bg-slate-900 p-6 rounded-xl border border-green-100 dark:border-slate-800 mb-12">
-                                        <h3 className="text-sm font-bold text-green-800 dark:text-lime-400 uppercase mb-2 tracking-wider">Professional Summary</h3>
+                                        <h3 className="text-sm font-bold text-green-800 dark:text-lime-400 uppercase mb-2 tracking-wider font-mono">/* Professional Summary */</h3>
                                         <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-sm md:text-base">
                                             Experienced ASIC Design Engineer with expertise in SoC architecture, front-end design flows, and functional verification. 
                                             Proven track record in HDL coding, code coverage analysis, constraint-random verification, synthesis, DFT implementation, 
                                             and early back-end design explorations. Currently exploring the integration of <strong>AI agents, MCP, and RAG</strong> to develop 
-                                            fully automated workflow systems for chip design. Eager to apply extensive hardware experience to pioneering roles in AI-integrated ASIC development.
+                                            fully automated workflow systems for chip design.
                                         </p>
                                     </div>
 
@@ -495,8 +635,8 @@
                                             
                                             {/* Experience */}
                                             <div className="section-block">
-                                                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-                                                    <Briefcase className="text-green-700 dark:text-lime-500" size={24} /> Work Experience
+                                                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2 font-mono">
+                                                    <Briefcase className="text-green-700 dark:text-lime-500" size={20} /> Work_Experience
                                                 </h3>
                                                 <div className="relative pl-8 border-l-2 border-slate-200 dark:border-slate-800 space-y-12">
                                                     
@@ -536,15 +676,16 @@
 
                                             {/* Education */}
                                             <div className="section-block">
-                                                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-                                                    <GraduationCap className="text-green-700 dark:text-lime-500" size={24} /> Education
+                                                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2 font-mono">
+                                                    <GraduationCap className="text-green-700 dark:text-lime-500" size={20} /> Education
                                                 </h3>
-                                                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6">
-                                                    <div className="flex justify-between items-start mb-2">
+                                                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 relative overflow-hidden">
+                                                    <div className="absolute top-0 right-0 w-12 h-12 bg-green-50 dark:bg-slate-800 rounded-bl-full z-0"></div>
+                                                    <div className="flex justify-between items-start mb-2 relative z-10">
                                                         <h4 className="font-bold text-slate-800 dark:text-white">University of Southampton</h4>
-                                                        <span className="text-sm bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-slate-600 dark:text-slate-400">2023</span>
+                                                        <span className="text-sm bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-slate-600 dark:text-slate-400 font-mono">2023</span>
                                                     </div>
-                                                    <p className="text-green-700 dark:text-lime-400 text-sm">Master of Engineering (MEng) in Electrical and Electronics Engineering</p>
+                                                    <p className="text-green-700 dark:text-lime-400 text-sm relative z-10">Master of Engineering (MEng) in Electrical and Electronics Engineering</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -554,24 +695,24 @@
                                             
                                             {/* Skills */}
                                             <div className="section-block">
-                                                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-                                                    <CircuitBoard size={20} /> Technical Skills
+                                                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2 font-mono">
+                                                    <CircuitBoard size={20} /> Technical_Skills
                                                 </h3>
                                                 
                                                 <div className="mb-4">
-                                                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Hardware Design</h4>
+                                                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 font-mono">Hardware Design</h4>
                                                     <div className="flex flex-wrap">
                                                         <SkillBadge name="SystemVerilog" type="hardware" />
                                                         <SkillBadge name="RTL Coding" type="hardware" />
-                                                        <SkillBadge name="UVM / Verification" type="hardware" />
+                                                        <SkillBadge name="UVM" type="hardware" />
                                                         <SkillBadge name="AMBA AXI/AHB" type="hardware" />
                                                         <SkillBadge name="PCIe / DDR" type="hardware" />
-                                                        <SkillBadge name="Safety Critical (ECC)" type="hardware" />
+                                                        <SkillBadge name="ECC Safety" type="hardware" />
                                                     </div>
                                                 </div>
 
                                                 <div className="mb-4">
-                                                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">EDA Tools</h4>
+                                                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 font-mono">EDA Tools</h4>
                                                     <div className="flex flex-wrap">
                                                         <SkillBadge name="Synopsys TestMax" type="eda" />
                                                         <SkillBadge name="Design Compiler" type="eda" />
@@ -583,7 +724,7 @@
                                                 </div>
 
                                                 <div>
-                                                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Scripting & Code</h4>
+                                                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 font-mono">Scripting & Code</h4>
                                                     <div className="flex flex-wrap">
                                                         <SkillBadge name="Python" type="code" />
                                                         <SkillBadge name="TCL / Bash" type="code" />
@@ -596,24 +737,24 @@
 
                                             {/* Interests */}
                                             <div className="section-block">
-                                                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                                                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2 font-mono">
                                                     <Cpu size={20} /> Interests
                                                 </h3>
-                                                <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                                                <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400 font-mono text-xs">
                                                     <li className="flex items-start gap-2">
-                                                        <span className="text-green-600 dark:text-lime-500 mt-1">•</span> AI Agents & RAG in Chip Design
+                                                        <span className="text-green-600 dark:text-lime-500 mt-0.5">&gt;</span> AI Agents & RAG in Chip Design
                                                     </li>
                                                     <li className="flex items-start gap-2">
-                                                        <span className="text-green-600 dark:text-lime-500 mt-1">•</span> AI-driven Specifications
+                                                        <span className="text-green-600 dark:text-lime-500 mt-0.5">&gt;</span> AI-driven Specifications
                                                     </li>
                                                     <li className="flex items-start gap-2">
-                                                        <span className="text-green-600 dark:text-lime-500 mt-1">•</span> Web-based Automation Tools
+                                                        <span className="text-green-600 dark:text-lime-500 mt-0.5">&gt;</span> Web-based Automation Tools
                                                     </li>
                                                     <li className="flex items-start gap-2">
-                                                        <span className="text-green-600 dark:text-lime-500 mt-1">•</span> ML Hardware Optimization
+                                                        <span className="text-green-600 dark:text-lime-500 mt-0.5">&gt;</span> ML Hardware Optimization
                                                     </li>
                                                     <li className="flex items-start gap-2">
-                                                        <span className="text-green-600 dark:text-lime-500 mt-1">•</span> Automated Verification Tech
+                                                        <span className="text-green-600 dark:text-lime-500 mt-0.5">&gt;</span> Automated Verification Tech
                                                     </li>
                                                 </ul>
                                             </div>
@@ -621,7 +762,7 @@
                                     </div>
                                 </section>
                             </div>
-                            <footer className="p-8 border-t border-slate-200 dark:border-slate-800 text-center text-slate-400 dark:text-slate-600 text-sm">
+                            <footer className="p-8 border-t border-slate-200 dark:border-slate-800 text-center text-slate-400 dark:text-slate-600 text-sm font-mono">
                                 <p className="flex items-center justify-center gap-2"><Globe size={14} /> Hosted on GitHub Pages • © {new Date().getFullYear()} Shew Juan Kok</p>
                             </footer>
                         </main>
