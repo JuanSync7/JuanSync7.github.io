@@ -37,13 +37,38 @@
         
         /* Smooth scrolling for the whole page */
         html { scroll-behavior: smooth; }
+
+        /* Custom Gradient Utilities */
+        /* Light mode gradient: Darker colors for contrast against white */
+        .theme-gradient-text {
+            background-image: linear-gradient(to right, #ca8a04, #65a30d, #15803d); /* yellow-600, lime-600, green-700 */
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Dark mode gradient: Brighter neon colors for contrast against dark */
+        .dark .theme-gradient-text {
+            background-image: linear-gradient(to right, #fde047, #a3e635, #22c55e); /* yellow-300, lime-400, green-500 */
+        }
+        
+        .theme-gradient-bg {
+            background-image: linear-gradient(to right, #eab308, #84cc16, #16a34a); /* yellow-500, lime-500, green-600 */
+        }
+        
+        .theme-gradient-bg-hover:hover {
+            background-image: linear-gradient(to right, #ca8a04, #65a30d, #15803d);
+        }
     </style>
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        // Customizing slate to be slightly warmer if needed, or keeping standard
+                    }
                 }
             }
         }
@@ -73,8 +98,8 @@
                 .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
                 .replace(/\*(.*)\*/gim, '<em>$1</em>')
                 .replace(/^- (.*$)/gim, '<li class="ml-4 list-disc">$1</li>')
-                .replace(/`([^`]+)`/gim, '<code class="bg-gray-100 dark:bg-slate-800 rounded px-1 py-0.5 text-sm font-mono text-pink-600 dark:text-pink-400">$1</code>')
-                .replace(/\[([^\]]+)\]\(([^)]+)\)/gim, '<a href="$2" target="_blank" class="text-blue-600 hover:underline">$1</a>')
+                .replace(/`([^`]+)`/gim, '<code class="bg-gray-100 dark:bg-slate-800 rounded px-1 py-0.5 text-sm font-mono text-lime-600 dark:text-lime-400">$1</code>')
+                .replace(/\[([^\]]+)\]\(([^)]+)\)/gim, '<a href="$2" target="_blank" class="text-lime-600 hover:underline">$1</a>')
                 .replace(/\n/gim, '<br />');
             return <div className="leading-relaxed text-slate-600 dark:text-slate-300" dangerouslySetInnerHTML={{ __html: clean }} />;
         };
@@ -110,23 +135,29 @@
                     const centerX = width / 2;
                     const centerY = height / 2 + Math.sin(time) * 10; 
 
+                    // Body Gradient Fill (Lime Green theme)
+                    const gradient = ctx.createLinearGradient(centerX - 60, centerY - 60, centerX + 60, centerY + 60);
+                    gradient.addColorStop(0, '#a3e635'); // Lime-400
+                    gradient.addColorStop(1, '#16a34a'); // Green-600
+
                     // Body
                     ctx.beginPath();
                     ctx.arc(centerX, centerY, 60, 0, 2 * Math.PI);
-                    ctx.fillStyle = '#3b82f6'; 
+                    ctx.fillStyle = gradient; 
                     ctx.fill();
                     ctx.lineWidth = 4;
-                    ctx.strokeStyle = '#1d4ed8'; 
+                    ctx.strokeStyle = '#15803d'; // Green-700
                     ctx.stroke();
 
                     // Antenna
                     ctx.beginPath();
                     ctx.moveTo(centerX, centerY - 60);
                     ctx.lineTo(centerX, centerY - 90);
+                    ctx.strokeStyle = '#15803d';
                     ctx.stroke();
                     ctx.beginPath();
                     ctx.arc(centerX, centerY - 90, 8, 0, 2 * Math.PI);
-                    ctx.fillStyle = time % 2 > 1 ? '#ef4444' : '#22c55e';
+                    ctx.fillStyle = time % 2 > 1 ? '#eab308' : '#84cc16'; // Yellow / Lime blink
                     ctx.fill();
 
                     // Eyes logic
@@ -147,7 +178,7 @@
                         ctx.arc(centerX + (eyeOffsetX * side), centerY + eyeOffsetY, eyeRadius, 0, 2 * Math.PI);
                         ctx.fill();
                         ctx.beginPath();
-                        ctx.fillStyle = 'black';
+                        ctx.fillStyle = '#0f172a'; // Dark pupil
                         ctx.arc(centerX + (eyeOffsetX * side) + pupilX, centerY + eyeOffsetY + pupilY, pupilRadius, 0, 2 * Math.PI);
                         ctx.fill();
                     });
@@ -155,7 +186,7 @@
                     // Reflection
                     ctx.beginPath();
                     ctx.arc(centerX - 25, centerY - 25, 10, 0, 2 * Math.PI);
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
                     ctx.fill();
 
                     animationFrameId = window.requestAnimationFrame(render);
@@ -172,14 +203,15 @@
                 { id: 'about', label: 'About', icon: <Terminal size={18} /> },
                 { id: 'projects', label: 'Projects', icon: <Code size={18} /> },
                 { id: 'cv', label: 'CV / Resume', icon: <FileText size={18} /> },
-                // Blog placeholder - kept for future use
                 { id: 'blog', label: 'Blog', icon: <BookOpen size={18} /> },
             ];
 
             return (
                 <aside className="w-full md:w-64 md:fixed md:h-screen bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col transition-colors duration-300 z-50">
                     <div className="p-8 flex flex-col items-center text-center border-b border-slate-100 dark:border-slate-800">
-                        <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-50 dark:border-slate-800 mb-4 shadow-lg group">
+                        <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-lime-100 dark:border-slate-800 mb-4 shadow-lg group relative">
+                             {/* Added a subtle gradient ring on hover */}
+                             <div className="absolute inset-0 rounded-full border-4 border-transparent group-hover:border-lime-400 transition-colors z-10 pointer-events-none"></div>
                             <img src="https://github.com/JuanSync7.png" alt="Profile" className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" onError={(e) => {e.target.src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=Juan'}} />
                         </div>
                         <h1 className="text-xl font-bold text-slate-800 dark:text-white mb-1">Shew Juan Kok</h1>
@@ -194,7 +226,11 @@
                         <ul className="space-y-2">
                             {navItems.map((item) => (
                                 <li key={item.id}>
-                                    <button onClick={() => onNavigate(item.id)} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${activeSection === item.id ? 'bg-blue-50 text-blue-600 dark:bg-slate-800 dark:text-blue-400 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'}`}>
+                                    <button onClick={() => onNavigate(item.id)} 
+                                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all 
+                                        ${activeSection === item.id 
+                                            ? 'bg-lime-50 text-lime-700 dark:bg-lime-900/20 dark:text-lime-400 shadow-sm border border-lime-100 dark:border-lime-900/30' 
+                                            : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'}`}>
                                         {item.icon} {item.label}
                                     </button>
                                 </li>
@@ -202,7 +238,7 @@
                         </ul>
                     </nav>
                     <div className="p-4 border-t border-slate-100 dark:border-slate-800">
-                        <button onClick={toggleTheme} className="w-full flex items-center justify-center gap-2 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors text-sm">
+                        <button onClick={toggleTheme} className="w-full flex items-center justify-center gap-2 py-2 rounded-lg font-medium transition-all theme-gradient-bg text-white shadow-md hover:shadow-lg hover:opacity-90 text-sm">
                             {isDark ? <Sun size={16} /> : <Moon size={16} />} {isDark ? 'Light Mode' : 'Dark Mode'}
                         </button>
                     </div>
@@ -211,17 +247,17 @@
         };
 
         const ProjectCard = ({ repo, onClick }) => (
-            <div onClick={() => onClick(repo)} className="group bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
+            <div onClick={() => onClick(repo)} className="group bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full hover:border-lime-300 dark:hover:border-lime-700">
                 <div className="flex justify-between items-start mb-4">
-                    <div className="p-2 bg-blue-50 dark:bg-slate-700 rounded-lg text-blue-600 dark:text-blue-400"><BookOpen size={20} /></div>
+                    <div className="p-2 bg-lime-50 dark:bg-lime-900/20 rounded-lg text-lime-600 dark:text-lime-400"><BookOpen size={20} /></div>
                     <div className="flex gap-2">
                         <span className="text-xs px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-full">{repo.language || 'Code'}</span>
                         <span className="text-xs px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-full flex items-center gap-1">★ {repo.stargazers_count}</span>
                     </div>
                 </div>
-                <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{repo.name}</h3>
+                <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-2 group-hover:text-lime-600 dark:group-hover:text-lime-400 transition-colors">{repo.name}</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-3 mb-4 flex-1">{repo.description || "No description available. Check the README."}</p>
-                <div className="flex items-center text-sm text-blue-600 dark:text-blue-400 font-medium mt-auto">
+                <div className="flex items-center text-sm text-lime-600 dark:text-lime-400 font-medium mt-auto">
                     Read details <ChevronRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
                 </div>
             </div>
@@ -265,10 +301,10 @@
                         <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
                             {loading ? (
                                 <div className="flex flex-col items-center justify-center h-full gap-4 text-slate-400">
-                                    <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" /> Loading README...
+                                    <div className="w-8 h-8 border-4 border-lime-500 border-t-transparent rounded-full animate-spin" /> Loading README...
                                 </div>
                             ) : (
-                                <div className="prose dark:prose-invert max-w-none"><SimpleMarkdown content={content} /></div>
+                                <div className="prose dark:prose-invert max-w-none prose-a:text-lime-600 hover:prose-a:text-lime-500 prose-code:text-lime-600 dark:prose-code:text-lime-400"><SimpleMarkdown content={content} /></div>
                             )}
                         </div>
                         <div className="p-4 border-t border-slate-200 dark:border-slate-800 flex justify-end">
@@ -282,10 +318,11 @@
         };
 
         const SkillBadge = ({ name, type }) => {
+            // Updated colors to match Yellow/Lime/Green theme
             const colors = {
-                hardware: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300 border-orange-200 dark:border-orange-800",
-                eda: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-800",
-                code: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800"
+                hardware: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300 border-yellow-200 dark:border-yellow-800",
+                eda: "bg-lime-100 text-lime-800 dark:bg-lime-900/30 dark:text-lime-300 border-lime-200 dark:border-lime-800",
+                code: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-green-200 dark:border-green-800"
             };
             return (
                 <span className={`px-3 py-1 rounded-full text-xs font-medium border ${colors[type] || colors.code} mr-2 mb-2 inline-block`}>
@@ -307,7 +344,7 @@
 
             // Scroll Handler
             const scrollToSection = (id) => {
-                if (id === 'blog') return; // Blog is placeholder for now
+                if (id === 'blog') return; 
                 const element = document.getElementById(id);
                 if (element) {
                     element.scrollIntoView({ behavior: 'smooth' });
@@ -315,7 +352,6 @@
                 }
             };
 
-            // Intersection Observer to update active Sidebar item on scroll
             useEffect(() => {
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
@@ -331,7 +367,6 @@
                 return () => observer.disconnect();
             }, []);
 
-            // Fetch repos on mount
             useEffect(() => {
                 setLoadingRepos(true);
                 fetch('https://api.github.com/users/JuanSync7/repos?sort=updated&per_page=12')
@@ -354,7 +389,9 @@
                                 <section id="about" className="min-h-screen flex flex-col justify-center max-w-4xl mx-auto p-8 md:p-16 animate-in">
                                     <div className="grid md:grid-cols-2 gap-12 items-center">
                                         <div>
-                                            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6 text-slate-900 dark:text-white">Hi, I'm <span className="text-blue-600">Shew Juan Kok</span>.</h1>
+                                            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6 text-slate-900 dark:text-white">
+                                                Hi, I'm <span className="theme-gradient-text">Shew Juan Kok</span>.
+                                            </h1>
                                             <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-8">
                                                 I am an experienced <strong>ASIC Design Engineer</strong> with expertise in SoC architecture and functional verification.
                                                 <br/><br/>
@@ -363,13 +400,23 @@
                                                 Welcome to my personal hub where hardware meets AI innovation.
                                             </p>
                                             <div className="flex gap-4">
-                                                <button onClick={() => scrollToSection('projects')} className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors shadow-lg shadow-blue-500/30">View Projects</button>
-                                                <button onClick={() => scrollToSection('cv')} className="px-6 py-3 border border-slate-300 dark:border-slate-700 hover:border-slate-800 dark:hover:border-slate-500 rounded-lg font-medium transition-colors">See CV</button>
+                                                <button onClick={() => scrollToSection('projects')} 
+                                                    className="px-6 py-3 theme-gradient-bg theme-gradient-bg-hover text-white rounded-lg font-medium transition-all shadow-lg shadow-lime-500/20 dark:shadow-lime-500/10 hover:shadow-lime-500/40">
+                                                    View Projects
+                                                </button>
+                                                <button onClick={() => scrollToSection('cv')} 
+                                                    className="px-6 py-3 border border-slate-300 dark:border-slate-700 hover:border-lime-500 dark:hover:border-lime-500 rounded-lg font-medium transition-colors">
+                                                    See CV
+                                                </button>
                                             </div>
                                         </div>
-                                        <div className="relative h-[300px] bg-slate-50 dark:bg-slate-900 rounded-3xl flex items-center justify-center border border-slate-100 dark:border-slate-800 shadow-inner">
+                                        <div className="relative h-[300px] bg-slate-50 dark:bg-slate-900 rounded-3xl flex items-center justify-center border border-slate-100 dark:border-slate-800 shadow-inner overflow-hidden">
+                                            {/* Decorative background element for the canvas */}
+                                            <div className="absolute top-0 right-0 w-32 h-32 bg-lime-400/10 rounded-full blur-3xl"></div>
                                             <CharacterCanvas />
-                                            <div className="absolute bottom-4 text-xs text-slate-400 font-mono flex items-center gap-2"><span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> SYSTEM ONLINE</div>
+                                            <div className="absolute bottom-4 text-xs text-slate-400 font-mono flex items-center gap-2">
+                                                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span> SYSTEM ONLINE
+                                            </div>
                                         </div>
                                     </div>
                                 </section>
@@ -378,7 +425,7 @@
                                 <section id="projects" className="max-w-6xl mx-auto p-8 md:p-16 scroll-mt-10">
                                     <div className="mb-12">
                                         <h2 className="text-3xl font-bold mb-4 text-slate-900 dark:text-white">Selected Projects</h2>
-                                        <p className="text-slate-500 dark:text-slate-400">Fetched live from <a href="https://github.com/JuanSync7" className="text-blue-600 hover:underline">github.com/JuanSync7</a></p>
+                                        <p className="text-slate-500 dark:text-slate-400">Fetched live from <a href="https://github.com/JuanSync7" className="text-lime-600 hover:underline">github.com/JuanSync7</a></p>
                                     </div>
                                     {loadingRepos ? (
                                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -404,8 +451,8 @@
                                     </div>
 
                                     {/* Summary */}
-                                    <div className="bg-blue-50 dark:bg-slate-900 p-6 rounded-xl border border-blue-100 dark:border-slate-800 mb-12">
-                                        <h3 className="text-sm font-bold text-blue-800 dark:text-blue-400 uppercase mb-2 tracking-wider">Professional Summary</h3>
+                                    <div className="bg-lime-50/50 dark:bg-slate-900 p-6 rounded-xl border border-lime-100 dark:border-slate-800 mb-12">
+                                        <h3 className="text-sm font-bold text-lime-700 dark:text-lime-400 uppercase mb-2 tracking-wider">Professional Summary</h3>
                                         <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-sm md:text-base">
                                             Experienced ASIC Design Engineer with expertise in SoC architecture, front-end design flows, and functional verification. 
                                             Proven track record in HDL coding, code coverage analysis, constraint-random verification, synthesis, DFT implementation, 
@@ -421,16 +468,16 @@
                                             {/* Experience */}
                                             <div className="section-block">
                                                 <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-                                                    <Briefcase className="text-blue-600" size={24} /> Work Experience
+                                                    <Briefcase className="text-lime-600 dark:text-lime-500" size={24} /> Work Experience
                                                 </h3>
                                                 <div className="relative pl-8 border-l-2 border-slate-200 dark:border-slate-800 space-y-12">
                                                     
                                                     {/* Job 1 */}
                                                     <div className="relative">
-                                                        <div className="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-blue-600 ring-4 ring-white dark:ring-slate-950 flex items-center justify-center">
+                                                        <div className="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-lime-600 ring-4 ring-white dark:ring-slate-950 flex items-center justify-center">
                                                             <div className="w-2 h-2 bg-white rounded-full" />
                                                         </div>
-                                                        <span className="text-sm font-mono text-blue-600 dark:text-blue-400 mb-1 block">Aug 2025 - Present</span>
+                                                        <span className="text-sm font-mono text-lime-600 dark:text-lime-400 mb-1 block">Aug 2025 - Present</span>
                                                         <h4 className="text-lg font-bold text-slate-800 dark:text-white">Senior Design Engineer</h4>
                                                         <p className="text-slate-500 text-sm mb-4">Aion Silicon | London, UK</p>
                                                         <ul className="space-y-3 text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
@@ -462,14 +509,14 @@
                                             {/* Education */}
                                             <div className="section-block">
                                                 <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-                                                    <GraduationCap className="text-blue-600" size={24} /> Education
+                                                    <GraduationCap className="text-lime-600 dark:text-lime-500" size={24} /> Education
                                                 </h3>
                                                 <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6">
                                                     <div className="flex justify-between items-start mb-2">
                                                         <h4 className="font-bold text-slate-800 dark:text-white">University of Southampton</h4>
                                                         <span className="text-sm bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-slate-600 dark:text-slate-400">2023</span>
                                                     </div>
-                                                    <p className="text-blue-600 dark:text-blue-400 text-sm">Master of Engineering (MEng) in Electrical and Electronics Engineering</p>
+                                                    <p className="text-lime-700 dark:text-lime-400 text-sm">Master of Engineering (MEng) in Electrical and Electronics Engineering</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -526,19 +573,19 @@
                                                 </h3>
                                                 <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
                                                     <li className="flex items-start gap-2">
-                                                        <span className="text-blue-500 mt-1">•</span> AI Agents & RAG in Chip Design
+                                                        <span className="text-lime-500 mt-1">•</span> AI Agents & RAG in Chip Design
                                                     </li>
                                                     <li className="flex items-start gap-2">
-                                                        <span className="text-blue-500 mt-1">•</span> AI-driven Specifications
+                                                        <span className="text-lime-500 mt-1">•</span> AI-driven Specifications
                                                     </li>
                                                     <li className="flex items-start gap-2">
-                                                        <span className="text-blue-500 mt-1">•</span> Web-based Automation Tools
+                                                        <span className="text-lime-500 mt-1">•</span> Web-based Automation Tools
                                                     </li>
                                                     <li className="flex items-start gap-2">
-                                                        <span className="text-blue-500 mt-1">•</span> ML Hardware Optimization
+                                                        <span className="text-lime-500 mt-1">•</span> ML Hardware Optimization
                                                     </li>
                                                     <li className="flex items-start gap-2">
-                                                        <span className="text-blue-500 mt-1">•</span> Automated Verification Tech
+                                                        <span className="text-lime-500 mt-1">•</span> Automated Verification Tech
                                                     </li>
                                                 </ul>
                                             </div>
