@@ -1,11 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export", // Required for GitHub Pages static generation
+  output: "export",
   images: {
-    unoptimized: true, // Required for static export
+    unoptimized: true,
   },
-  // Ensure trailing slashes are handled correctly for GitHub Pages
   trailingSlash: true,
+  // Add base path for GitHub Pages deployment
+  // Replace 'JuanSync7.github.io' with your repository name if it differs
+  basePath: "/JuanSync7.github.io",
+  assetPrefix: "/JuanSync7.github.io",
 };
 
 export default nextConfig;
