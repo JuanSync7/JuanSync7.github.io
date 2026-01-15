@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
     Github, Linkedin, Mail, BookOpen, Code, FileText, 
     Terminal, ExternalLink, ChevronRight, X, Moon, Sun, Globe,
-    Cpu, CircuitBoard, Download, GraduationCap, Briefcase, Activity
+    Cpu, CircuitBoard, Activity
 } from 'lucide-react';
 import Sidebar from '@/components/Sidebar';
 import ProjectCard from '@/components/ProjectCard';
@@ -13,6 +13,7 @@ import ChipPackage from '@/components/ChipPackage';
 import OutputTraceButton from '@/components/OutputTraceButton';
 import LifeCycleFSM from '@/components/LifeCycleFSM';
 import CharacterCanvas from '@/components/CharacterCanvas';
+import CVSection from '@/components/CVSection';
 
 const Home = () => {
     const [activeSection, setActiveSection] = useState('about');
@@ -89,16 +90,22 @@ const Home = () => {
                             </div>
                         </ChipPackage>
 
-                        <div className="flex justify-center gap-16 md:gap-32 mt-[-48px] md:mt-[-48px] relative z-10">
+                        <div className="flex flex-wrap justify-center gap-4 md:gap-8 mt-[-48px] md:mt-[-48px] relative z-10">
                             <OutputTraceButton 
-                                label="View_Projects"
+                                label="View Projects"
                                 onClick={() => scrollToSection('projects')}
                                 icon={<CircuitBoard size={16} />} secondary={undefined}                            />
                             <OutputTraceButton 
-                                label="See_CV.pdf" 
+                                label="See CV.pdf" 
                                 secondary 
                                 onClick={() => scrollToSection('cv')}
                                 icon={<FileText size={16} />}
+                            />
+                             <OutputTraceButton 
+                                label="Silicon By AI" 
+                                secondary 
+                                onClick={() => window.open('https://juansync7.github.io/Project_Chimera/', '_blank')}
+                                icon={<ExternalLink size={16} />}
                             />
                         </div>
 
@@ -130,9 +137,7 @@ const Home = () => {
 
                     <InverterChainDivider isDark={isDark} />
                     
-                    <section id="cv" className="max-w-4xl mx-auto p-8 md:p-16 scroll-mt-10">
-                         {/* CV Content Here */}
-                    </section>
+                    <CVSection />
                 </div>
 
                 <div className="flex justify-center pb-12 relative z-10">
