@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  /* Custom scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 20px;
+  }
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #334155;
+  }
+
+  /* --- DYNAMIC THEME ENGINE --- */
+  .theme-gradient-text {
+    color: #16a34a; /* green-600 */
+  }
+
+  .theme-gradient-bg {
+    background-color: #16a34a; /* green-600 */
+    transition: background-color 0.3s ease;
+  }
+
+  .theme-gradient-bg-hover:hover {
+    background-color: #14532d; /* green-900 */
+  }
+
+  /* Floorplan Grid Pattern (ASIC Theme) */
+  .bg-grid-pattern {
+    background-image: linear-gradient(
+        to right,
+        rgba(22, 163, 74, 0.05) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, rgba(22, 163, 74, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Dark Mode */
+  .dark .bg-grid-pattern {
+    background-image: linear-gradient(
+        to right,
+        rgba(163, 230, 53, 0.08) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, rgba(163, 230, 53, 0.08) 1px, transparent 1px);
+  }
+
+  .dark .theme-gradient-text {
+    background-image: linear-gradient(to right, #fde047, #a3e635, #22c55e);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .dark .theme-gradient-bg {
+    background-image: linear-gradient(to right, #eab308, #84cc16, #16a34a);
+    background-color: transparent;
+  }
+
+  .dark .theme-gradient-bg-hover:hover {
+    background-image: linear-gradient(to right, #ca8a04, #65a30d, #15803d);
+    box-shadow: 0 0 15px rgba(132, 204, 22, 0.4);
+  }
+
+  /* Metallic Pin Gradient */
+  .pin-gradient {
+    background: linear-gradient(
+      90deg,
+      #94a3b8 0%,
+      #e2e8f0 50%,
+      #94a3b8 100%
+    );
+  }
+  .dark .pin-gradient {
+    background: linear-gradient(
+      90deg,
+      #475569 0%,
+      #cbd5e1 50%,
+      #475569 100%
+    );
+  }
+  /* Vertical Pin Gradient */
+  .pin-gradient-v {
+    background: linear-gradient(
+      180deg,
+      #94a3b8 0%,
+      #e2e8f0 50%,
+      #94a3b8 100%
+    );
+  }
+  .dark .pin-gradient-v {
+    background: linear-gradient(
+      180deg,
+      #475569 0%,
+      #cbd5e1 50%,
+      #475569 100%
+    );
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
