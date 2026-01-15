@@ -13,7 +13,7 @@ const Sidebar = ({ activeSection, onNavigate, toggleTheme, isDark }) => {
             <div className="p-8 flex flex-col items-center text-center border-b border-slate-100 dark:border-slate-800">
                 <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-slate-100 dark:border-slate-800 mb-4 shadow-lg group relative">
                      <div className="absolute inset-0 rounded-full border-4 border-transparent group-hover:border-green-600 dark:group-hover:border-lime-400 transition-colors z-10 pointer-events-none"></div>
-                    <img src="https://github.com/JuanSync7.png" alt="Profile" className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" onError={(e) => {e.target.src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=Juan'}} />
+                    <img src="https://github.com/JuanSync7.png" alt="Profile" className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" onError={(e) => {(e.target as HTMLImageElement).src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=Juan'}} />
                 </div>
                 <h1 className="text-xl font-bold text-slate-800 dark:text-white mb-1">Shew Juan Kok</h1>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mb-4 uppercase tracking-wider font-mono">ASIC Design Engineer</p>

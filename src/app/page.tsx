@@ -91,10 +91,9 @@ const Home = () => {
 
                         <div className="flex justify-center gap-16 md:gap-32 mt-[-48px] md:mt-[-48px] relative z-10">
                             <OutputTraceButton 
-                                label="View_Projects" 
+                                label="View_Projects"
                                 onClick={() => scrollToSection('projects')}
-                                icon={<CircuitBoard size={16} />} 
-                            />
+                                icon={<CircuitBoard size={16} />} secondary={undefined}                            />
                             <OutputTraceButton 
                                 label="See_CV.pdf" 
                                 secondary 
