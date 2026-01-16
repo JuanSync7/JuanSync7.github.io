@@ -8,7 +8,6 @@ import {
 import Sidebar from '@/components/Sidebar';
 import ProjectCard from '@/components/ProjectCard';
 import ReadmeModal from '@/components/ReadmeModal';
-import MarkdownModal from '@/components/MarkdownModal';
 import InverterChainDivider from '@/components/InverterChainDivider';
 import ChipPackage from '@/components/ChipPackage';
 import OutputTraceButton from '@/components/OutputTraceButton';
@@ -21,7 +20,6 @@ const Home = () => {
     const [isDark, setIsDark] = useState(false);
     const [repos, setRepos] = useState([]);
     const [selectedRepo, setSelectedRepo] = useState(null);
-    const [markdownFile, setMarkdownFile] = useState(null);
     const [loadingRepos, setLoadingRepos] = useState(false);
 
     useEffect(() => {
@@ -68,12 +66,6 @@ const Home = () => {
         setIsDark(!isDark);
         document.documentElement.classList.toggle('dark');
     };
-    
-    const onSkillClick = (skill) => {
-        if(skill.name === "Systemverilog") {
-            setMarkdownFile("/SystemVerilog.md")
-        }
-    }
 
     return (
         <div className="bg-stone-50 dark:bg-slate-950 min-h-screen text-slate-800 dark:text-slate-200 transition-colors duration-300 bg-grid-pattern bg-fixed">
@@ -144,7 +136,7 @@ const Home = () => {
 
                     <InverterChainDivider isDark={isDark} />
                     
-                    <CVSection onSkillClick={onSkillClick}/>
+                    <CVSection />
                 </div>
 
                 <div className="flex justify-center pb-12 relative z-10">
@@ -156,7 +148,6 @@ const Home = () => {
                 </footer>
             </main>
             {selectedRepo && <ReadmeModal repo={selectedRepo} onClose={() => setSelectedRepo(null)} />}
-            {markdownFile && <MarkdownModal filePath={markdownFile} onClose={() => setMarkdownFile(null)} />}
         </div>
     );
 };
