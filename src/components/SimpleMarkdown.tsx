@@ -21,10 +21,10 @@ const SimpleMarkdown = ({ content }) => {
             <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
-                    code({node, inline, className, children, ...props}) {
+                    code({node, inline, className, children, ...props}: any) {
                         const match = /language-(\w+)/.exec(className || '');
                         return !inline && match ? (
-                            <div className="bg-slate-800 rounded-xl shadow-lg overflow-hidden my-4">
+                            <div className="bg-slate-700 rounded-xl shadow-lg overflow-hidden my-4">
                                 <div className="flex items-center justify-between px-4 py-2 bg-slate-700/50">
                                     <div className="flex space-x-2">
                                         <span className="w-3 h-3 rounded-full bg-red-500"></span>

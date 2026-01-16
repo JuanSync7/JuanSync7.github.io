@@ -64,10 +64,7 @@ const CharacterCanvas = ({ isDark }) => {
             if (containerRef.current) {
                 if (isHittingBottom) {
                     if (isDark) {
-                        containerRef.current.style.background = `
-                            linear-gradient(#0f172a, #0f172a) padding-box,
-                            linear-gradient(to right, #fde047, #a3e635, #22c55e) border-box
-                        `;
+                        containerRef.current.style.background = '#0f172a';
                         containerRef.current.style.borderColor = "transparent";
                         containerRef.current.style.boxShadow = "0 0 20px rgba(163, 230, 53, 0.4)";
                     } else {
@@ -76,7 +73,7 @@ const CharacterCanvas = ({ isDark }) => {
                         containerRef.current.style.boxShadow = "0 0 20px rgba(22, 163, 74, 0.5)";
                     }
                 } else {
-                    containerRef.current.style.background = isDark ? "rgba(15, 23, 42, 0.4)" : "rgba(255, 255, 255, 0.4)";
+                    containerRef.current.style.background = 'transparent';
                     containerRef.current.style.borderColor = isDark ? "rgba(71, 85, 105, 0.5)" : "rgba(203, 213, 225, 0.8)";
                     containerRef.current.style.boxShadow = "0 10px 15px -3px rgba(0, 0, 0, 0.1)";
                 }
