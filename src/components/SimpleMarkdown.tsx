@@ -23,34 +23,56 @@ const SimpleMarkdown = ({ content }) => {
                 components={{
                     code({node, inline, className, children, ...props}: any) {
                         const match = /language-(\w+)/.exec(className || '');
-                        return !inline && match ? (
-                            <div className="bg-slate-700 rounded-xl shadow-lg overflow-hidden my-4">
-                                <div className="flex items-center justify-between px-4 py-2 bg-slate-700/50">
-                                    <div className="flex space-x-2">
-                                        <span className="w-3 h-3 rounded-full bg-red-500"></span>
-                                        <span className="w-3 h-3 rounded-full bg-yellow-500"></span>
-                                        <span className="w-3 h-3 rounded-full bg-green-500"></span>
+                        if (!inline && match) {
+                            if (match[1] === 'systemverilog') {
+                                return (
+                                    <div className="bg-slate-700 rounded-xl shadow-lg overflow-hidden my-4">
+                                        <div className="flex items-center justify-between px-4 py-2 bg-slate-700/50">
+                                            <div className="flex space-x-2">
+                                                <span className="w-3 h-3 rounded-full bg-red-500"></span>
+                                                <span className="w-3 h-3 rounded-full bg-yellow-500"></span>
+                                                <span className="w-3 h-3 rounded-full bg-green-500"></span>
+                                            </div>
+                                            <span className="text-xs text-slate-400 font-mono">code.systemverilog</span>
+                                        </div>
+                                        <pre className="p-6 text-white overflow-x-auto text-sm m-0 border-0 shadow-none" style={{color: 'white'}}>
+                                            <code style={{color: 'white'}}>
+                                                {String(children).replace(/\n$/, '')}
+                                            </code>
+                                        </pre>
                                     </div>
-                                    <span className="text-xs text-slate-400 font-mono">{`code.${match[1]}`}</span>
+                                )
+                            }
+                            return (
+                                <div className="bg-slate-700 rounded-xl shadow-lg overflow-hidden my-4">
+                                    <div className="flex items-center justify-between px-4 py-2 bg-slate-700/50">
+                                        <div className="flex space-x-2">
+                                            <span className="w-3 h-3 rounded-full bg-red-500"></span>
+                                            <span className="w-3 h-3 rounded-full bg-yellow-500"></span>
+                                            <span className="w-3 h-3 rounded-full bg-green-500"></span>
+                                        </div>
+                                        <span className="text-xs text-slate-400 font-mono">{`code.${match[1]}`}</span>
+                                    </div>
+                                    <SyntaxHighlighter
+                                        style={materialDark}
+                                        language={match[1]}
+                                        PreTag="div"
+                                        {...props}
+                                        customStyle={{
+                                            backgroundColor: 'inherit',
+                                            padding: '1.5rem',
+                                            margin: 0,
+                                            border: 'none',
+                                            boxShadow: 'none',
+                                            fontSize: '0.875rem'
+                                        }}
+                                    >
+                                        {String(children).replace(/\n$/, '')}
+                                    </SyntaxHighlighter>
                                 </div>
-                                <SyntaxHighlighter
-                                    style={materialDark}
-                                    language={match[1]}
-                                    PreTag="div"
-                                    {...props}
-                                    customStyle={{
-                                        backgroundColor: 'inherit',
-                                        padding: '1.5rem',
-                                        margin: 0,
-                                        border: 'none',
-                                        boxShadow: 'none',
-                                        fontSize: '0.875rem'
-                                    }}
-                                >
-                                    {String(children).replace(/\n$/, '')}
-                                </SyntaxHighlighter>
-                            </div>
-                        ) : (
+                            );
+                        }
+                        return (
                             <code className={className} {...props}>
                                 {children}
                             </code>
