@@ -45,7 +45,7 @@ const MarkdownModal = ({ filePath, onClose }) => {
                             <div className="w-8 h-8 border-4 border-green-600 dark:border-lime-500 border-t-transparent rounded-full animate-spin" /> Loading...
                         </div>
                     ) : (
-                        <div className="prose dark:prose-invert max-w-none prose-a:text-green-700 dark:prose-a:text-lime-600 hover:prose-a:text-green-500 prose-code:text-green-700 dark:prose-code:text-lime-400 font-mono"><SimpleMarkdown content={content} /></div>
+                        <div className="prose dark:prose-invert max-w-none prose-a:text-green-700 dark:prose-a:text-lime-600 hover:prose-a:text-green-500 font-mono"><SimpleMarkdown content={content} /></div>
                     )}
                 </div>
             </div>
