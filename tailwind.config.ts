@@ -27,8 +27,25 @@ const config: Config = {
         waveform: "flow 1s linear infinite",
         "in": "fade-in 0.5s ease-out forwards",
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            'code::before': {
+              content: '""',
+            },
+            'code::after': {
+              content: '""',
+            },
+            pre: {
+                backgroundColor: 'transparent',
+                padding: '0',
+                margin: '0',
+            },
+          },
+        },
+      },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 };
 export default config;

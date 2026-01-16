@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 interface SkillBadgeProps {
   name: string;
@@ -11,13 +12,20 @@ const SkillBadge: React.FC<SkillBadgeProps> = ({ name, type }) => {
     eda: "bg-teal-50 text-teal-800 border-teal-200 dark:bg-lime-900/30 dark:text-lime-300 dark:border-lime-800",
     code: "bg-green-50 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800"
   };
-  
+
+  const isClickable = name.toLowerCase() === 'systemverilog';
+  const Tag = isClickable ? Link : 'span';
+  const href = isClickable ? `/skills/${name.toLowerCase()}` : undefined;
+
   return (
-    <span className={`px-3 py-1 rounded-sm text-xs font-mono font-medium border ${colors[type] || colors.code} mr-2 mb-2 inline-block relative hover:scale-105 transition-transform cursor-default`}>
+    <Tag 
+      href={href}
+      className={`px-3 py-1 rounded-sm text-xs font-mono font-medium border ${colors[type] || colors.code} mr-2 mb-2 inline-block relative hover:scale-105 transition-transform ${isClickable ? 'cursor-pointer' : 'cursor-default'}`}
+    >
       <span className="absolute left-0 top-1/2 -translate-x-full w-[2px] h-[4px] bg-current opacity-30 -mt-[2px]"></span>
       <span className="absolute right-0 top-1/2 translate-x-full w-[2px] h-[4px] bg-current opacity-30 -mt-[2px]"></span>
       {name}
-    </span>
+    </Tag>
   );
 };
 

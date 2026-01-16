@@ -8,6 +8,7 @@ import {
 import Sidebar from '@/components/Sidebar';
 import ProjectCard from '@/components/ProjectCard';
 import ReadmeModal from '@/components/ReadmeModal';
+import MarkdownModal from '@/components/MarkdownModal';
 import InverterChainDivider from '@/components/InverterChainDivider';
 import ChipPackage from '@/components/ChipPackage';
 import OutputTraceButton from '@/components/OutputTraceButton';
@@ -20,6 +21,7 @@ const Home = () => {
     const [isDark, setIsDark] = useState(false);
     const [repos, setRepos] = useState([]);
     const [selectedRepo, setSelectedRepo] = useState(null);
+    const [markdownFile, setMarkdownFile] = useState(null);
     const [loadingRepos, setLoadingRepos] = useState(false);
 
     useEffect(() => {
@@ -66,6 +68,12 @@ const Home = () => {
         setIsDark(!isDark);
         document.documentElement.classList.toggle('dark');
     };
+    
+    const onSkillClick = (skill) => {
+        if(skill.name === "Systemverilog") {
+            setMarkdownFile("/SystemVerilog.md")
+        }
+    }
 
     return (
         <div className="bg-stone-50 dark:bg-slate-950 min-h-screen text-slate-800 dark:text-slate-200 transition-colors duration-300 bg-grid-pattern bg-fixed">
@@ -126,8 +134,7 @@ const Home = () => {
                         </div>
                         {loadingRepos ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {[1,2,3,4,5,6].map(i => <div key={i} className="h-64 bg-slate-100 dark:bg-slate-900 rounded-xl animate-pulse" />)}
-                            </div>
+                                {[1,2,3,4,5,6].map(i => <div key={i} className="h-64 bg-slate-100 dark:bg-slate-900 rounded-xl animate-pulse" />)}                            </div>
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {repos.length > 0 ? repos.map(repo => <ProjectCard key={repo.id} repo={repo} onClick={setSelectedRepo} />) : <div className="col-span-full text-center py-20 text-slate-400">No public repositories found.</div>}
@@ -137,7 +144,7 @@ const Home = () => {
 
                     <InverterChainDivider isDark={isDark} />
                     
-                    <CVSection />
+                    <CVSection onSkillClick={onSkillClick}/>
                 </div>
 
                 <div className="flex justify-center pb-12 relative z-10">
@@ -149,6 +156,7 @@ const Home = () => {
                 </footer>
             </main>
             {selectedRepo && <ReadmeModal repo={selectedRepo} onClose={() => setSelectedRepo(null)} />}
+            {markdownFile && <MarkdownModal filePath={markdownFile} onClose={() => setMarkdownFile(null)} />}
         </div>
     );
 };

@@ -3,7 +3,7 @@ import React from 'react';
 import { Download, Briefcase, GraduationCap, CircuitBoard } from 'lucide-react';
 import SkillBadge from './SkillBadge';
 
-const CVSection = () => {
+const CVSection = ({onSkillClick}) => {
     return (
         <section id="cv" className="max-w-4xl mx-auto p-8 md:p-16 scroll-mt-10">
             <div className="flex justify-between items-start mb-8 border-b border-slate-200 dark:border-slate-800 pb-8">
@@ -101,7 +101,7 @@ const CVSection = () => {
                         <div className="mb-4">
                             <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 font-mono">Hardware Design</h4>
                             <div className="flex flex-wrap">
-                                <SkillBadge name="SystemVerilog" type="hardware" />
+                                <SkillBadge name="SystemVerilog" type="hardware" onClick={() => onSkillClick({name: 'Systemverilog'})} />
                                 <SkillBadge name="RTL Coding" type="hardware" />
                                 <SkillBadge name="UVM" type="hardware" />
                                 <SkillBadge name="AMBA AXI/AHB" type="hardware" />

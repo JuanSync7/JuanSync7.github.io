@@ -36,11 +36,15 @@
     "react-day-picker": "^9.0.4",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.52.1",
+    "react-markdown": "^10.1.0",
+    "react-syntax-highlighter": "^16.1.0",
+    "remark-gfm": "^4.0.1",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^14.2.35",
+    "@tailwindcss/typography": "^0.5.19",
     "@types/node": "^20.14.10",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
