@@ -11,7 +11,7 @@ const SimpleMarkdown = ({ content }) => {
     if (!content) return <div className="text-gray-400 italic">No content available.</div>;
 
     return (
-        <div className="prose dark:prose-invert max-w-none">
+        <div className="prose dark:prose-invert max-w-none font-serif animate-pop font-medium">
             <div className="mb-8">
                 <Link href="/" className="inline-flex items-center text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors no-underline">
                     <ArrowLeft size={16} className="mr-2" />
@@ -35,7 +35,7 @@ const SimpleMarkdown = ({ content }) => {
                                             </div>
                                             <span className="text-xs text-slate-400 font-mono">code.systemverilog</span>
                                         </div>
-                                        <pre className="p-6 text-white overflow-x-auto text-sm m-0 border-0 shadow-none" style={{color: 'white'}}>
+                                        <pre className="p-6 text-white overflow-x-auto text-sm m-0 border-0 shadow-none font-normal">
                                             <code style={{color: 'white'}}>
                                                 {String(children).replace(/\n$/, '')}
                                             </code>
@@ -64,7 +64,8 @@ const SimpleMarkdown = ({ content }) => {
                                             margin: 0,
                                             border: 'none',
                                             boxShadow: 'none',
-                                            fontSize: '0.875rem'
+                                            fontSize: '0.875rem',
+                                            fontWeight: 'normal'
                                         }}
                                     >
                                         {String(children).replace(/\n$/, '')}

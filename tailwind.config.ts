@@ -10,8 +10,9 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
-        mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
+        sans: ["var(--font-inter)"],
+        mono: ["var(--font-source-code-pro)"],
+        serif: ["Georgia", "serif"],
       },
       keyframes: {
         flow: {
@@ -22,10 +23,15 @@ const config: Config = {
           from: { opacity: "0" },
           to: { opacity: "1" },
         },
+        "pop-in": {
+          "0%": { transform: "scale(0.9)", opacity: "0" },
+          "100%": { transform: "scale(1)", opacity: "1" },
+        }
       },
       animation: {
         waveform: "flow 1s linear infinite",
         "in": "fade-in 0.5s ease-out forwards",
+        "pop": "pop-in 0.3s ease-out forwards",
       },
       typography: {
         DEFAULT: {

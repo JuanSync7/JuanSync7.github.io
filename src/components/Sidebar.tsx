@@ -40,6 +40,9 @@ const Sidebar = ({ activeSection, onNavigate, toggleTheme, isDark }) => {
                 </ul>
             </nav>
             <div className="p-4 border-t border-slate-100 dark:border-slate-800">
+                <a href="https://github.com/JuanSync7/JuanSync7.github.io/raw/main/Kok_Shew_Juan_CV_2025.pdf" target="_blank" download className="w-full flex items-center justify-center gap-2 py-2 mb-2 rounded-lg font-medium transition-all bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 shadow-sm hover:shadow-md text-sm">
+                    <FileText size={16} /> Download CV
+                </a>
                 <button onClick={toggleTheme} className="w-full flex items-center justify-center gap-2 py-2 rounded-lg font-medium transition-all theme-gradient-bg theme-gradient-bg-hover text-white shadow-md hover:shadow-lg text-sm">
                     {isDark ? <Sun size={16} /> : <Moon size={16} />} {isDark ? 'Light Mode' : 'Dark Mode'}
                 </button>
