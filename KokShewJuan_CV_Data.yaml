@@ -16,13 +16,9 @@ identity:
 summary:
   selected: true
   content: >
-    Experienced ASIC Design Engineer with expertise in SoC architecture, front-end design flows, and
-    functional verification. Proven track record in HDL coding, code coverage analysis, constraint-random
-    verification, synthesis, DFT implementation and early back-end design explorations. Currently exploring
-    the integration of AI agents, AI workflows, Model Context Protocol (MCP), and Retrieval-Augmented
-    Generation (RAG) to develop fully automated workflow systems for chip design. Eager to apply extensive
-    hardware experience to pioneering roles in AI-integrated ASIC development, focusing on leveraging AI
-    agents and advanced automation to accelerate the future of chip design.
+    Senior ASIC Design Engineer and Infrastructure Architect with a focus on 'Zero-Configuration' design flows and complex RISC-V integrations. 
+    Proven expertise in building automated, company-wide linting and front-end pipelines that eliminate engineering overhead, 
+    alongside deep technical mastery in OoO hazard management and VPU-accelerator synchronization.
 
 # GLOBAL TOGGLE: Work Experience
 work_experience:
@@ -34,9 +30,9 @@ work_experience:
       date_range: "Aug, 2025 - Present"
       selected: true
       responsibilities:
-        - text: "Automated front-end design flows using Python, TCL, and Shell scripting, significantly reducing manual effort and improving design cycle efficiency."
+        - text: "Developed a centralized Python/TCL automation suite for front-end flows, removing manual intervention from RTL-to-Synthesis; empowered design teams to focus on architecture by reducing flow setup time"
           selected: true
-        - text: "Re-engineered a RISC-V vector core to interface with an external VPU accelerator, implementing custom logic for instruction dispatch, hazard detection, and synchronized retirement to ensure ISA compliance."
+        - text: "Engineered a high-performance OoO interface between a RISC-V core and VPU; designed custom handshaking protocols to ensure signal integrity and ISA compliance across asynchronous boundaries."
           selected: true
         - text: "Mentored junior engineers on UVM methodologies."
           selected: false # Example of a hidden item
@@ -47,17 +43,15 @@ work_experience:
       date_range: "Sep, 2023 - July, 2025"
       selected: true
       responsibilities:
-        - text: "Automated front-end design flows using Python, TCL, and Shell scripting, significantly reducing manual effort and improving design cycle efficiency."
-          selected: true
         - text: "Led front-end design initiatives using SystemVerilog for complex IP and SoC projects, driving development from architectural specification through to implementation."
           selected: true
         - text: "Executed comprehensive functional verification plans using constrained-random methodologies and assertions to ensure designs met rigorous specification requirements."
           selected: true
         - text: "Managed DFT implementation for large-scale, ASIL-B compliant SoCs, developing and debugging ATPG patterns with Synopsys TestMax to achieve over 90% test coverage."
           selected: true
-        - text: "Established and integrated a company-wide linting methodology using Synopsys and Siemens tools, enhancing code quality and consistency across all design teams."
+        - text: "Architected a unified, 'Zero-Configuration' linting framework from the ground up for a startup environment; abstracted tool complexity to allow teams to achieve 100% project compliance with minimal onboarding time."
           selected: true
-        - text: "Performed early-stage design exploration for critical subsystems using Synopsys RTL-Architect, optimizing for performance and area to 'shift left' the design process with early global placement and routing."
+        - text: "Optimized PPA (Power-Performance-Area) targets by leveraging RTL-Architect for early physical congestion analysis to 'shift left' the design process with early global placement and routing."
           selected: true
         - text: "Designed and architected system-level solutions, including the integration of third-party and in-house IP for advanced SoC implementations."
           selected: true
@@ -83,7 +77,15 @@ skills:
         - { text: "HDL Design Patterns - Pipelined architectures, FSM implementation, parameterizable IP blocks, consistent RTL coding practices, ECC and redundancy checks for safety-critical implementations", selected: true }
         - { text: "IP Design - Created in-house IP and integrated external IP for various SoC design", selected: true }
         - { text: "Industry Protocols - AMBA AXI/AHB protocols, PCIe, DDR interfaces", selected: true }
-
+        - { text: "Out-of-Order (OoO) Execution - Hazard Management", selected: true }
+        - { text: "RISC-V ISA - Vector instruction set", selected: true }
+        - { text: "ASIL-B Compliance - ECC and Dual Core lock-step implementation", selected: true }
+    flow:
+      label: "Flow":
+      selected: true
+      items:
+        - { text: "Infrastructure-as-code - Automate ASIC design flows", selected: true }
+        
     eda_tools:
       label: "EDA Tools"
       selected: true
