@@ -20,7 +20,15 @@ function Nav() {
           <a key={l} href={'#' + l.split(' ')[1]} className="hf-nav-link">{l}</a>
         ))}
       </div>
-      <a href="#" className="hf-nav-cta">cv.pdf ↓</a>
+      <a 
+        href="./Kok_Shew_Juan_CV_2025.pdf" 
+        download="KokShewJuan_CV_2025.pdf"
+        target="_blank"
+        rel="noopener"
+        className="hf-nav-cta"
+      >
+        cv.pdf ↓
+      </a>
     </nav>
   );
 }
