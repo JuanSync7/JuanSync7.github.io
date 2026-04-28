@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>juan_kok — CV v2.0</title>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="styles-core.css"/>
+  <link rel="stylesheet" href="styles-sections.css"/>
+  <link rel="stylesheet" href="cockpit.css"/>
+</head>
+<body>
+  <div id="starfield-root"></div>
+  <div id="root"></div>
+
+  <script type="text/babel" src="stars.jsx"></script>
+  <script type="text/babel" src="shared.jsx"></script>
+  <script type="text/babel" src="nav.jsx"></script>
+  <script type="text/babel" src="hero.jsx"></script>
+  <script type="text/babel" src="routine.jsx"></script>
+  <script type="text/babel" src="terminal.jsx"></script>
+  <script type="text/babel" src="fsm.jsx"></script>
+  <script type="text/babel" src="cockpit.jsx"></script>
+  <script type="text/babel" src="projects.jsx"></script>
+  <script type="text/babel" src="lofi.jsx"></script>
+  <script type="text/babel" src="footer.jsx"></script>
+
+  <script type="text/babel">
+    function App() {
+      return (
+        <>
+          <Nav />
+          <Hero />
+          <Terminal />
+          <FSM />
+          <Cockpit />
+          <Projects />
+          <PurpleSkyTransition />
+          <LofiRoom />
+          <SceneTransition from="purple" to="dark" />
+          <Footer />
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('starfield-root')).render(<GlobalStarfield />);
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
