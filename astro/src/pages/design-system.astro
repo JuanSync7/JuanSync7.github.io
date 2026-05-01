@@ -11,231 +11,504 @@ import CloudTransition from '../components/ui/CloudTransition.tsx';
 import PurpleSkyTransition from '../components/ui/PurpleSkyTransition.tsx';
 import SceneTransition from '../components/ui/SceneTransition.tsx';
 import Placeholder from '../components/ui/Placeholder.tsx';
-import { IDENTITY } from '../data/site';
+import { IDENTITY, CAREER_STATS } from '../data/site';
+
+/* All tokens read from src/styles/tokens/*.css. Hex values are resolved
+   at runtime by the inline script at the bottom of this page so this list
+   stays a single source of truth — never hardcode hex here. */
 
 const COLOR_TOKENS = [
-  { name: 'bg',          token: '--hf-bg' },
-  { name: 'bg-2',        token: '--hf-bg-2' },
-  { name: 'surface',     token: '--hf-surface' },
-  { name: 'surface-2',   token: '--hf-surface-2' },
-  { name: 'cockpit-bg',  token: '--hf-cockpit-bg' },
-  { name: 'cockpit-panel', token: '--hf-cockpit-panel' },
-  { name: 'ink',         token: '--hf-ink' },
-  { name: 'ink-soft',    token: '--hf-ink-soft' },
-  { name: 'ink-muted',   token: '--hf-ink-muted' },
-  { name: 'ink-pale',    token: '--hf-ink-pale' },
-  { name: 'line',        token: '--hf-line' },
-  { name: 'line-strong', token: '--hf-line-strong' },
-  { name: 'accent',      token: '--hf-accent' },
-  { name: 'accent-2',    token: '--hf-accent-2' },
-  { name: 'accent-3',    token: '--hf-accent-3' },
-  { name: 'cyan',        token: '--hf-cyan' },
-  { name: 'magenta',     token: '--hf-magenta' },
-  { name: 'violet',      token: '--hf-violet' },
-  { name: 'cp-asic',     token: '--cp-asic' },
-  { name: 'cp-ai',       token: '--cp-ai' },
-  { name: 'cp-eda',      token: '--cp-eda' },
-  { name: 'cp-script',   token: '--cp-script' },
+  { group: 'surfaces', tokens: [
+    { name: 'bg', token: '--hf-bg' },
+    { name: 'bg-2', token: '--hf-bg-2' },
+    { name: 'surface', token: '--hf-surface' },
+    { name: 'surface-2', token: '--hf-surface-2' },
+    { name: 'cockpit-bg', token: '--hf-cockpit-bg' },
+    { name: 'cockpit-panel', token: '--hf-cockpit-panel' },
+    { name: 'cockpit-panel-2', token: '--hf-cockpit-panel-2' },
+  ]},
+  { group: 'ink', tokens: [
+    { name: 'ink', token: '--hf-ink' },
+    { name: 'ink-pale', token: '--hf-ink-pale' },
+    { name: 'ink-soft', token: '--hf-ink-soft' },
+    { name: 'ink-muted', token: '--hf-ink-muted' },
+  ]},
+  { group: 'lines', tokens: [
+    { name: 'line', token: '--hf-line' },
+    { name: 'line-strong', token: '--hf-line-strong' },
+  ]},
+  { group: 'brand accents', tokens: [
+    { name: 'accent (lime)', token: '--hf-accent' },
+    { name: 'accent-2 (teal)', token: '--hf-accent-2' },
+    { name: 'accent-3 (mint)', token: '--hf-accent-3' },
+  ]},
+  { group: 'category accents', tokens: [
+    { name: 'cp-asic', token: '--cp-asic' },
+    { name: 'cp-ai', token: '--cp-ai' },
+    { name: 'cp-ai-orange', token: '--cp-ai-orange' },
+    { name: 'cp-eda', token: '--cp-eda' },
+    { name: 'cp-script', token: '--cp-script' },
+    { name: 'cp-ok', token: '--cp-ok' },
+  ]},
+  { group: 'specialty', tokens: [
+    { name: 'terminal-glow', token: '--hf-terminal-glow' },
+    { name: 'cyan', token: '--hf-cyan' },
+    { name: 'magenta', token: '--hf-magenta' },
+    { name: 'violet', token: '--hf-violet' },
+  ]},
+  { group: 'lofi / purple', tokens: [
+    { name: 'purple-deep', token: '--hf-purple-deep' },
+    { name: 'purple-mid', token: '--hf-purple-mid' },
+    { name: 'purple-shadow', token: '--hf-purple-shadow' },
+    { name: 'lofi-accent', token: '--lofi-accent' },
+    { name: 'lofi-accent-2', token: '--lofi-accent-2' },
+    { name: 'lofi-bg', token: '--lofi-bg' },
+  ]},
 ];
 
 const GRADIENT_TOKENS = [
-  { name: 'cockpit',           token: '--hf-grad-cockpit' },
-  { name: 'purple-sky',        token: '--hf-grad-purple-sky' },
-  { name: 'purple-bar',        token: '--hf-grad-purple-bar' },
-  { name: 'fade-x',            token: '--hf-grad-fade-x' },
-  { name: 'scene-green-navy',  token: '--hf-grad-scene-green-navy' },
-  { name: 'scene-navy-green',  token: '--hf-grad-scene-navy-green' },
-  { name: 'scene-green-purple', token: '--hf-grad-scene-green-purple' },
-  { name: 'scene-purple-dark', token: '--hf-grad-scene-purple-dark' },
+  { name: 'cockpit cosmic',  token: '--hf-grad-cockpit',           note: 'multi-layered radial + linear, used behind cockpit dashboard' },
+  { name: 'purple sky',      token: '--hf-grad-purple-sky',        note: 'dark → glowing purple band above lofi' },
+  { name: 'purple bar',      token: '--hf-grad-purple-bar',        note: 'horizontal sweep for animated section dividers' },
+  { name: 'fade-x',          token: '--hf-grad-fade-x',            note: 'horizontal fade-to-edges mask' },
+  { name: 'scene green→navy', token: '--hf-grad-scene-green-navy', note: 'overview → projects' },
+  { name: 'scene navy→green', token: '--hf-grad-scene-navy-green', note: 'projects → terminal' },
+  { name: 'scene green→purple', token: '--hf-grad-scene-green-purple', note: 'cockpit → lofi' },
+  { name: 'scene purple→dark', token: '--hf-grad-scene-purple-dark', note: 'lofi → footer' },
 ];
 
 const TYPE_RAMP = [
-  { token: '--hf-fs-xs',   sample: 'The quick brown fox' },
-  { token: '--hf-fs-sm',   sample: 'The quick brown fox' },
-  { token: '--hf-fs-base', sample: 'The quick brown fox' },
-  { token: '--hf-fs-md',   sample: 'The quick brown fox' },
-  { token: '--hf-fs-lg',   sample: 'The quick brown fox' },
-  { token: '--hf-fs-xl',   sample: 'The quick brown fox' },
-  { token: '--hf-fs-2xl',  sample: 'The quick brown fox' },
+  { token: '--hf-fs-xs',   px: '10px' },
+  { token: '--hf-fs-sm',   px: '11px' },
+  { token: '--hf-fs-base', px: '12px' },
+  { token: '--hf-fs-md',   px: '13px' },
+  { token: '--hf-fs-lg',   px: '14px' },
+  { token: '--hf-fs-xl',   px: '16px' },
+  { token: '--hf-fs-2xl',  px: '20px' },
 ];
 
-const SPACING_TOKENS = ['--hf-space-1','--hf-space-2','--hf-space-3','--hf-space-4','--hf-space-5','--hf-space-6','--hf-space-8','--hf-space-10','--hf-space-12'];
-const RADIUS_TOKENS = ['--hf-radius-xs','--hf-radius-sm','--hf-radius-md','--hf-radius-lg','--hf-radius-pill'];
-const SHADOW_TOKENS = ['--hf-shadow-sm','--hf-shadow-md','--hf-shadow-lg'];
+const SPACING_TOKENS = [
+  { token: '--hf-space-1',  px: '4px'  },
+  { token: '--hf-space-2',  px: '8px'  },
+  { token: '--hf-space-3',  px: '12px' },
+  { token: '--hf-space-4',  px: '16px' },
+  { token: '--hf-space-5',  px: '20px' },
+  { token: '--hf-space-6',  px: '24px' },
+  { token: '--hf-space-8',  px: '32px' },
+  { token: '--hf-space-10', px: '40px' },
+  { token: '--hf-space-12', px: '48px' },
+];
+
+const RADIUS_TOKENS = [
+  { token: '--hf-radius-xs',   label: '2px'  },
+  { token: '--hf-radius-sm',   label: '4px'  },
+  { token: '--hf-radius-md',   label: '8px'  },
+  { token: '--hf-radius-lg',   label: '12px' },
+  { token: '--hf-radius-pill', label: 'pill' },
+];
+
+const SHADOW_TOKENS = ['--hf-shadow-sm', '--hf-shadow-md', '--hf-shadow-lg'];
 ---
 
 <Layout title={`${IDENTITY.shortName} — design system`}>
   <main class="ds-wrap">
     <a href="/" class="ds-back">← back to site</a>
 
-    <header class="ds-hdr">
-      <div class="ds-eyebrow">// design_system.md</div>
-      <h1 class="ds-title">design system</h1>
-      <p class="ds-lede">
+    <header class="ds-header">
+      <div class="ds-title">// design_system.sv</div>
+      <div class="ds-subtitle">
         Living reference for {IDENTITY.shortName}. Every value below reads from
-        the same token files and components the production site uses — so this
-        page tells the truth, and components that look broken here are not yet
-        reusable.
-      </p>
+        the same token files and shared components the production site uses.
+        Click any code label to copy it.
+      </div>
     </header>
 
+    {/* ───────────────────────── 01 COLOR PALETTE ───────────────────────── */}
     <section class="ds-section">
-      <h2 class="ds-section-h">colors</h2>
-      <div class="ds-section-sub">Source: src/styles/tokens/colors.css</div>
-      <div class="ds-grid">
-        {COLOR_TOKENS.map((c) => (
-          <div class="ds-swatch">
-            <div class="ds-swatch-fill" style={`--ds-fill: var(${c.token});`} />
-            <div class="ds-swatch-meta">
-              <div class="ds-swatch-name">{c.name}</div>
-              <div class="ds-swatch-token">var({c.token})</div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
+      <div class="ds-section-title">01 — color palette</div>
+      <div class="ds-section-sub">Source: <code>src/styles/tokens/colors.css</code>. Click a swatch to copy <code>var(--token)</code>.</div>
 
-    <section class="ds-section">
-      <h2 class="ds-section-h">gradients</h2>
-      <div class="ds-section-sub">Source: src/styles/tokens/gradients.css</div>
-      <div class="ds-grid">
-        {GRADIENT_TOKENS.map((g) => (
-          <div class="ds-swatch">
-            <div class="ds-swatch-fill" style={`--ds-fill: var(${g.token});`} />
-            <div class="ds-swatch-meta">
-              <div class="ds-swatch-name">{g.name}</div>
-              <div class="ds-swatch-token">var({g.token})</div>
-            </div>
+      {COLOR_TOKENS.map((g) => (
+        <>
+          <div class="ds-group-label">{g.group}</div>
+          <div class="ds-swatch-grid">
+            {g.tokens.map((c) => (
+              <div class="ds-swatch ds-copyable" data-copy={`var(${c.token})`} title="click to copy">
+                <div class="ds-swatch-color" style={`background: var(${c.token});`}></div>
+                <div class="ds-swatch-info">
+                  <div class="ds-swatch-name">{c.name}</div>
+                  <div class="ds-swatch-hex" data-resolve-hex={c.token}>—</div>
+                  <div class="ds-swatch-var">{c.token}</div>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-    </section>
-
-    <section class="ds-section">
-      <h2 class="ds-section-h">typography</h2>
-      <div class="ds-section-sub">Source: src/styles/tokens/typography.css</div>
-      {TYPE_RAMP.map((t) => (
-        <div class="ds-type-row">
-          <span class="ds-type-label">var({t.token})</span>
-          <span class="ds-type-sample" style={`font-size: var(${t.token});`}>{t.sample}</span>
-        </div>
+        </>
       ))}
-      <div class="ds-type-row" style="margin-top: var(--hf-space-6);">
-        <span class="ds-type-label">--hf-mono</span>
-        <span class="ds-type-sample" style="font-family: var(--hf-mono); font-size: var(--hf-fs-lg);">JetBrains Mono — code, terminal</span>
-      </div>
-      <div class="ds-type-row">
-        <span class="ds-type-label">--hf-display</span>
-        <span class="ds-type-sample" style="font-family: var(--hf-display); font-size: var(--hf-fs-xl);">Special Elite — section headers</span>
-      </div>
-      <div class="ds-type-row">
-        <span class="ds-type-label">--hf-hand</span>
-        <span class="ds-type-sample" style="font-family: var(--hf-hand); font-size: 22px;">Caveat — handwritten accents</span>
-      </div>
     </section>
 
+    {/* ───────────────────────── 02 GRADIENTS ───────────────────────── */}
     <section class="ds-section">
-      <h2 class="ds-section-h">spacing</h2>
-      <div class="ds-section-sub">Source: src/styles/tokens/spacing.css · 4px base scale</div>
-      <div class="ds-stack">
-        {SPACING_TOKENS.map((s) => (
-          <div class="ds-bar-row">
-            <span class="ds-bar-token">var({s})</span>
-            <span class="ds-bar-fill" style={`width: var(${s});`} />
+      <div class="ds-section-title">02 — gradients</div>
+      <div class="ds-section-sub">Source: <code>src/styles/tokens/gradients.css</code>.</div>
+      <div class="ds-grad-row">
+        {GRADIENT_TOKENS.map((g) => (
+          <div class="ds-grad-card ds-copyable" data-copy={`var(${g.token})`} title="click to copy">
+            <div class="ds-grad-strip" style={`background: var(${g.token});`}></div>
+            <div class="ds-grad-info">
+              <div class="ds-grad-name">{g.name}</div>
+              <div class="ds-grad-code">{g.token}</div>
+              <div class="ds-grad-note">{g.note}</div>
+            </div>
           </div>
         ))}
       </div>
     </section>
 
+    {/* ───────────────────────── 03 TYPOGRAPHY ───────────────────────── */}
     <section class="ds-section">
-      <h2 class="ds-section-h">radii</h2>
-      <div class="ds-grid">
-        {RADIUS_TOKENS.map((r) => (
-          <div class="ds-tile" style={`border-radius: var(${r}); background: var(--hf-cockpit-panel); color: var(--hf-ink-pale);`}>
-            var({r})
+      <div class="ds-section-title">03 — typography</div>
+      <div class="ds-section-sub">Source: <code>src/styles/tokens/typography.css</code>.</div>
+
+      <div class="ds-font-row">
+        <div class="ds-font-card">
+          <div class="ds-font-label">--hf-mono · primary</div>
+          <div class="ds-font-display" style="font-family: var(--hf-mono); font-size: 24px;">JetBrains Mono</div>
+          <div class="ds-font-sample" style="font-family: var(--hf-mono);">
+            ABCDEFGHIJKLM abcdefghijklm 0123456789<br/>
+            The quick brown fox jumps over the lazy dog.
+          </div>
+          <div class="ds-font-meta">Body, code, labels, nav, dashboard UI · 400/500/600/700</div>
+        </div>
+        <div class="ds-font-card">
+          <div class="ds-font-label">--hf-display · display</div>
+          <div class="ds-font-display" style="font-family: var(--hf-display); font-size: 32px;">Special Elite</div>
+          <div class="ds-font-sample" style="font-family: var(--hf-display);">
+            ABCDEFGHIJKLM abcdefghijklm 0123456789<br/>
+            The quick brown fox jumps over the lazy dog.
+          </div>
+          <div class="ds-font-meta">Hero headings, project titles, signature badge</div>
+        </div>
+        <div class="ds-font-card">
+          <div class="ds-font-label">--hf-hand · handwritten</div>
+          <div class="ds-font-display" style="font-family: var(--hf-hand); font-size: 28px;">Caveat</div>
+          <div class="ds-font-sample" style="font-family: var(--hf-hand); font-size: 16px;">
+            ABCDEFGHIJKLM abcdefghijklm 0123456789<br/>
+            The quick brown fox jumps over the lazy dog.
+          </div>
+          <div class="ds-font-meta">Lofi annotations, casual accents · 400/600</div>
+        </div>
+      </div>
+
+      <div class="ds-group-label" style="margin-top: 24px;">size scale</div>
+      <div class="ds-type-ramp">
+        {TYPE_RAMP.map((t) => (
+          <div class="ds-type-row">
+            <span class="ds-type-label">{t.token}</span>
+            <span class="ds-type-px">{t.px}</span>
+            <span class="ds-type-sample" style={`font-size: var(${t.token});`}>The quick brown fox jumps over the lazy dog.</span>
           </div>
         ))}
       </div>
     </section>
 
+    {/* ───────────────────────── 04 ATMOSPHERIC EFFECTS ───────────────────────── */}
     <section class="ds-section">
-      <h2 class="ds-section-h">shadows</h2>
-      <div class="ds-grid">
+      <div class="ds-section-title">04 — atmospheric effects</div>
+      <div class="ds-section-sub">Live components from <code>src/components/ui/</code>. Each one self-positions — drop it anywhere.</div>
+
+      <div class="ds-atmo-stack">
+        <div class="ds-atmo-item">
+          <div class="ds-atmo-stage"><PixelTransition client:load variant={0} /></div>
+          <div class="ds-atmo-cap">&lt;PixelTransition variant=0&gt; — lime accent pixel band</div>
+        </div>
+        <div class="ds-atmo-item">
+          <div class="ds-atmo-stage"><PixelTransition client:load variant={1} /></div>
+          <div class="ds-atmo-cap">&lt;PixelTransition variant=1&gt; — teal accent pixel band</div>
+        </div>
+        <div class="ds-atmo-item">
+          <div class="ds-atmo-stage"><CloudTransition client:load /></div>
+          <div class="ds-atmo-cap">&lt;CloudTransition&gt; — SVG cloud mask, drifts horizontally</div>
+        </div>
+        <div class="ds-atmo-item">
+          <div class="ds-atmo-stage"><PurpleSkyTransition client:load /></div>
+          <div class="ds-atmo-cap">&lt;PurpleSkyTransition&gt; — dark to deep-purple sky with stars</div>
+        </div>
+        <div class="ds-atmo-item">
+          <div class="ds-atmo-stage" style="height: 220px;"><SceneTransition client:load from="green" to="purple" /></div>
+          <div class="ds-atmo-cap">&lt;SceneTransition from="green" to="purple"&gt;</div>
+        </div>
+        <div class="ds-atmo-item">
+          <div class="ds-atmo-stage" style="height: 220px;"><SceneTransition client:load from="purple" to="dark" /></div>
+          <div class="ds-atmo-cap">&lt;SceneTransition from="purple" to="dark"&gt;</div>
+        </div>
+      </div>
+    </section>
+
+    {/* ───────────────────────── 05 CONTAINERS ───────────────────────── */}
+    <section class="ds-section">
+      <div class="ds-section-title">05 — containers</div>
+      <div class="ds-section-sub">Common surface treatments. All values come from tokens — no inline hex.</div>
+
+      <div class="ds-container-grid">
+        <div class="ds-container-demo" style="background: var(--hf-cockpit-bg); border: 1px solid var(--hf-alpha-white-06); border-radius: var(--hf-radius-lg); box-shadow: inset 0 0 60px rgba(0,229,255,0.04), inset 0 0 120px rgba(168,85,247,0.03), inset 0 1px 0 var(--hf-alpha-white-05), 0 0 40px var(--hf-alpha-black-40);">
+          <div class="ds-container-label">cp-dash</div>
+          <div class="ds-container-desc">Cockpit dashboard panel — flat dark bg with cyan + purple inner glow.</div>
+          <div class="ds-container-meta">bg: --hf-cockpit-bg · border: --hf-alpha-white-06 · radius: --hf-radius-lg</div>
+        </div>
+        <div class="ds-container-demo" style="background: #080c0a; border: 1.5px solid var(--hf-line-strong); border-radius: var(--hf-radius-md);">
+          <div class="ds-container-label">terminal</div>
+          <div class="ds-container-desc">Terminal window — near-black bg with traffic lights.</div>
+          <div class="ds-traffic-row">
+            <span class="ds-traffic" style="background: #ff5f57;"></span>
+            <span class="ds-traffic" style="background: #febc2e;"></span>
+            <span class="ds-traffic" style="background: #28c840;"></span>
+          </div>
+          <div class="ds-container-meta">border: --hf-line-strong · radius: --hf-radius-md</div>
+        </div>
+        <div class="ds-container-demo" style="background: var(--hf-surface); border: 1.5px solid var(--hf-line); border-radius: var(--hf-radius-md);">
+          <div class="ds-container-label">card</div>
+          <div class="ds-container-desc">Project cards, stat cards — surface bg, thin border.</div>
+          <div class="ds-container-meta">bg: --hf-surface · border: --hf-line · radius: --hf-radius-md</div>
+        </div>
+        <div class="ds-container-demo" style="background: var(--hf-alpha-white-02); border: 1.5px solid var(--hf-cockpit-panel-2); border-radius: var(--hf-radius-sm); border-left: 3px solid var(--hf-accent); padding-left: 12px;">
+          <div class="ds-container-label">block</div>
+          <div class="ds-container-desc">Terminal output block — accent left border, near-transparent bg.</div>
+          <div class="ds-container-meta">border-left: 3px solid --hf-accent · bg: --hf-alpha-white-02</div>
+        </div>
+      </div>
+
+      <div class="ds-group-label" style="margin-top: 24px;">shadow tokens</div>
+      <div class="ds-shadow-row">
         {SHADOW_TOKENS.map((s) => (
-          <div class="ds-tile" style={`box-shadow: var(${s}); background: var(--hf-surface-2);`}>
-            var({s})
+          <div class="ds-shadow-tile" style={`box-shadow: var(${s});`}>
+            <span>{s}</span>
           </div>
         ))}
       </div>
     </section>
 
+    {/* ───────────────────────── 06 UI COMPONENTS ───────────────────────── */}
     <section class="ds-section">
-      <h2 class="ds-section-h">components</h2>
-      <div class="ds-section-sub">Live previews — components rendered from src/components/ui/</div>
+      <div class="ds-section-title">06 — UI components</div>
+      <div class="ds-section-sub">
+        Live previews from <code>src/components/ui/</code>. Every shared component <em>must</em> appear here —
+        new components added without a preview don't count as reusable.
+      </div>
 
-      <div class="ds-preview-row">
-        <div>
-          <div class="ds-preview"><NeonText client:load>NEON_TEXT</NeonText></div>
-          <span class="ds-preview-caption">&lt;NeonText&gt; — flickering accent</span>
+      <div class="ds-comp-grid">
+        <div class="ds-comp-card">
+          <div class="ds-comp-label">&lt;NeonText&gt;</div>
+          <div class="ds-comp-stage"><NeonText client:load>NEON_TEXT</NeonText></div>
+          <div class="ds-comp-note">flickering accent — wraps any inline text</div>
         </div>
-        <div>
-          <div class="ds-preview">
-            <KineticWord client:load word="status" altWord="online" delay={1200} loop={true} strikePrefix="//" />
+
+        <div class="ds-comp-card">
+          <div class="ds-comp-label">&lt;KineticWord&gt;</div>
+          <div class="ds-comp-stage"><KineticWord client:load word="status" altWord="online" delay={1200} loop={true} strikePrefix="//" /></div>
+          <div class="ds-comp-note">strike-then-replace cycle</div>
+        </div>
+
+        <div class="ds-comp-card">
+          <div class="ds-comp-label">&lt;StrikeThrough&gt;</div>
+          <div class="ds-comp-stage"><StrikeThrough client:load delay={800}>strike-through copy</StrikeThrough></div>
+          <div class="ds-comp-note">animated cross-out on mount</div>
+        </div>
+
+        <div class="ds-comp-card">
+          <div class="ds-comp-label">&lt;NotGateDivider&gt;</div>
+          <div class="ds-comp-stage"><NotGateDivider client:load label="design_system.boundary" /></div>
+          <div class="ds-comp-note">section divider with logic-gate motif</div>
+        </div>
+
+        <div class="ds-comp-card ds-comp-card-wide">
+          <div class="ds-comp-label">&lt;SegmentedBar&gt;</div>
+          <div class="ds-comp-stage ds-comp-stage-stack">
+            <SegmentedBar client:load value={3} max={5} segments={5} />
+            <SegmentedBar client:load value={7} max={10} segments={10} color="var(--cp-ai)" />
+            <SegmentedBar client:load value={9} max={10} segments={10} color="var(--cp-eda)" />
           </div>
-          <span class="ds-preview-caption">&lt;KineticWord&gt; — strike-then-replace</span>
+          <div class="ds-comp-note">value / max / color / segments — used in cockpit meters</div>
+        </div>
+
+        <div class="ds-comp-card">
+          <div class="ds-comp-label">&lt;Placeholder&gt;</div>
+          <div class="ds-comp-stage"><Placeholder client:load name="placeholder.module" /></div>
+          <div class="ds-comp-note">fallback panel for missing/loading content</div>
+        </div>
+
+        <div class="ds-comp-card">
+          <div class="ds-comp-label">stat card</div>
+          <div class="ds-comp-stage" style="gap: 8px;">
+            <div class="ds-stat-card" style="--stat-c: var(--cp-asic);">
+              <div class="ds-stat-num">{CAREER_STATS.skills}</div>
+              <div class="ds-stat-lbl">Skills</div>
+            </div>
+            <div class="ds-stat-card" style="--stat-c: var(--cp-ai-orange);">
+              <div class="ds-stat-num">{CAREER_STATS.years}</div>
+              <div class="ds-stat-lbl">Years</div>
+            </div>
+            <div class="ds-stat-card" style="--stat-c: var(--cp-ai);">
+              <div class="ds-stat-num">{CAREER_STATS.tapeouts}</div>
+              <div class="ds-stat-lbl">Tape-outs</div>
+            </div>
+          </div>
+          <div class="ds-comp-note">cockpit vitals — top accent stripe by category</div>
+        </div>
+
+        <div class="ds-comp-card">
+          <div class="ds-comp-label">pill buttons</div>
+          <div class="ds-comp-stage" style="flex-wrap: wrap; gap: 8px;">
+            <span class="ds-pill" style="--pill-c: var(--cp-asic);">▸ asic.core</span>
+            <span class="ds-pill" style="--pill-c: var(--cp-ai);">▸ ai.pipeline</span>
+            <span class="ds-pill" style="--pill-c: var(--cp-eda);">▸ eda.toolchain</span>
+            <span class="ds-pill" style="--pill-c: var(--cp-script);">▸ scripts.src</span>
+          </div>
+          <div class="ds-comp-note">cockpit nav — color tinted by category accent</div>
         </div>
       </div>
+    </section>
 
-      <div class="ds-preview" style="margin-top: var(--hf-space-4);">
-        <StrikeThrough client:load delay={800}>strike-through copy</StrikeThrough>
-      </div>
-      <span class="ds-preview-caption">&lt;StrikeThrough&gt;</span>
+    {/* ───────────────────────── 07 NAMING CONVENTIONS ───────────────────────── */}
+    <section class="ds-section">
+      <div class="ds-section-title">07 — naming conventions</div>
+      <div class="ds-naming-card">
+        <div class="ds-naming-group">section headers (// prefix)</div>
+        <div><span class="ds-naming-tag">// vitals</span> — stat cards row</div>
+        <div><span class="ds-naming-tag">// output rate — live</span> — speedometer gauge</div>
+        <div><span class="ds-naming-tag">// proficiency</span> — donut chart, skill breakdown by category</div>
+        <div><span class="ds-naming-tag">// skill growth — live</span> — animated bar chart</div>
+        <div><span class="ds-naming-tag">// commit streak</span> — heatmap</div>
+        <div><span class="ds-naming-tag">// explore</span> — navigation buttons</div>
 
-      <div class="ds-preview" style="margin-top: var(--hf-space-4);">
-        <NotGateDivider client:load label="design_system.boundary" />
-      </div>
-      <span class="ds-preview-caption">&lt;NotGateDivider&gt; — section divider</span>
+        <div class="ds-naming-group">page headers (dot notation)</div>
+        <div><span class="ds-naming-tag2">// asic.core</span> · <span class="ds-naming-tag2">// ai.pipeline</span> · <span class="ds-naming-tag2">// eda.toolchain</span> · <span class="ds-naming-tag2">// scripts.src</span></div>
 
-      <div class="ds-preview" style="margin-top: var(--hf-space-4); flex-direction: column; gap: var(--hf-space-3); align-items: stretch;">
-        <SegmentedBar client:load value={3} max={5} segments={5} />
-        <SegmentedBar client:load value={7} max={10} segments={10} color="var(--cp-ai)" />
-        <SegmentedBar client:load value={9} max={10} segments={10} color="var(--cp-eda)" />
+        <div class="ds-naming-group">stat cards (real portfolio data only)</div>
+        <div>Skills: {CAREER_STATS.skills} · Commits: {CAREER_STATS.commits} · Years: {CAREER_STATS.years} · Tape-outs: {CAREER_STATS.tapeouts} · Projects: {CAREER_STATS.projects}</div>
       </div>
-      <span class="ds-preview-caption">&lt;SegmentedBar&gt; — value / max / color / segments</span>
+    </section>
 
-      <div class="ds-preview-row" style="margin-top: var(--hf-space-4);">
-        <div>
-          <div class="ds-stage"><PixelTransition client:load variant={0} /></div>
-          <span class="ds-preview-caption">&lt;PixelTransition variant=0&gt;</span>
-        </div>
-        <div>
-          <div class="ds-stage"><PixelTransition client:load variant={1} /></div>
-          <span class="ds-preview-caption">&lt;PixelTransition variant=1&gt;</span>
-        </div>
+    {/* ───────────────────────── 08 BENTO GRID LAYOUT ───────────────────────── */}
+    <section class="ds-section">
+      <div class="ds-section-title">08 — bento grid layout</div>
+      <div class="ds-section-sub">Overview page uses an asymmetric 2-column bento grid. Full-width tiles span both columns.</div>
+      <div class="ds-naming-card">
+        <div class="ds-naming-group">grid structure</div>
+        <div><span class="ds-naming-tag">.cp-bento</span> — <code>display: grid; grid-template-columns: 2fr 3fr; gap: 14px</code></div>
+        <div><span class="ds-naming-tag">.cp-tile</span> — base tile: subtle bg, 1px border, --hf-radius-lg</div>
+        <div><span class="ds-naming-tag">.cp-tile-full</span> — spans both columns (<code>grid-column: 1 / -1</code>)</div>
+        <div><span class="ds-naming-tag">.cp-tile-a / -b</span> — left (narrow) / right (wide) column</div>
+        <div><span class="ds-naming-tag">.cp-bento-row3</span> — sub-grid: <code>grid-template-columns: 3fr 2fr</code></div>
+
+        <div class="ds-naming-group">layout map</div>
+        <pre class="ds-bento-map">┌──────────────────────────────────┐
+│  vitals (stat cards)    ▸ full   │
+├──────────┬───────────────────────┤
+│ output   │  proficiency          │
+│ rate     │  (donut chart, large) │
+│ (small)  │                       │
+├──────────┴──────┬────────────────┤
+│ skill growth    │  commit streak │
+│ (bar chart)     │  (heatmap)     │
+├─────────────────┴────────────────┤
+│  ticker + explore       ▸ full   │
+└──────────────────────────────────┘</pre>
+
+        <div class="ds-naming-group">responsive</div>
+        <div>≤640px: single column stack, all tiles and sub-grids collapse to full-width.</div>
+      </div>
+    </section>
+
+    {/* ───────────────────────── 09 SPACING & RADII ───────────────────────── */}
+    <section class="ds-section">
+      <div class="ds-section-title">09 — spacing & radii</div>
+      <div class="ds-section-sub">Source: <code>src/styles/tokens/spacing.css</code> · 4px base scale.</div>
+
+      <div class="ds-group-label">spacing scale</div>
+      <div class="ds-spacing-row">
+        {SPACING_TOKENS.map((s) => (
+          <div class="ds-spacing-item">
+            <div class="ds-spacing-bar" style={`height: var(${s.token}); width: var(${s.token});`}></div>
+            <div class="ds-spacing-lbl">{s.px}</div>
+            <div class="ds-spacing-tok">{s.token}</div>
+          </div>
+        ))}
       </div>
 
-      <div class="ds-preview-row" style="margin-top: var(--hf-space-4);">
-        <div>
-          <div class="ds-stage"><CloudTransition client:load /></div>
-          <span class="ds-preview-caption">&lt;CloudTransition&gt;</span>
-        </div>
-        <div>
-          <div class="ds-stage"><PurpleSkyTransition client:load /></div>
-          <span class="ds-preview-caption">&lt;PurpleSkyTransition&gt;</span>
-        </div>
+      <div class="ds-group-label" style="margin-top: 24px;">border radii</div>
+      <div class="ds-radius-row">
+        {RADIUS_TOKENS.map((r) => (
+          <div class="ds-radius-tile" style={`border-radius: var(${r.token});`}>
+            <div class="ds-radius-lbl">{r.label}</div>
+            <div class="ds-radius-tok">{r.token}</div>
+          </div>
+        ))}
       </div>
+    </section>
 
-      <div class="ds-stage" style="margin-top: var(--hf-space-4); height: 220px;">
-        <SceneTransition client:load from="purple" to="dark" />
+    {/* ───────────────────────── 10 ANIMATION TOKENS ───────────────────────── */}
+    <section class="ds-section">
+      <div class="ds-section-title">10 — animation tokens</div>
+      <div class="ds-naming-card">
+        <div><span class="ds-naming-tag2">twinkle</span> — stars, 2s ease-in-out infinite alternate, opacity 0.15→1</div>
+        <div><span class="ds-naming-tag2">pulse</span> — nav dot, 3s ease-in-out infinite, box-shadow glow</div>
+        <div><span class="ds-naming-tag2">blink</span> — cursor, 1s steps(2) infinite, opacity toggle</div>
+        <div><span class="ds-naming-tag2">neon</span> — hero text, text-shadow flicker with random off states</div>
+        <div><span class="ds-naming-tag2">glitch</span> — hero text, color cycling + translate shake, 0.1–0.15s</div>
+        <div><span class="ds-naming-tag2">ticker</span> — portfolio stats scroll, 35s linear infinite translateX</div>
+        <div><span class="ds-naming-tag2">card-in</span> — project cards, 0.4s ease-out, opacity + translateY(12px)</div>
+        <div><span class="ds-naming-tag2">cloud-mask-drift</span> — &lt;CloudTransition&gt;, 20s ease-in-out infinite alternate</div>
+        <div><span class="ds-naming-tag2">star-twinkle</span> — &lt;PurpleSkyTransition&gt; stars, 2s alternate</div>
       </div>
-      <span class="ds-preview-caption">&lt;SceneTransition from="purple" to="dark"&gt;</span>
-
-      <div class="ds-preview" style="margin-top: var(--hf-space-4);">
-        <Placeholder client:load name="placeholder.module" />
-      </div>
-      <span class="ds-preview-caption">&lt;Placeholder&gt; — fallback panel</span>
     </section>
 
     <a href="/" class="ds-back">← back to site</a>
   </main>
+
+  <div id="ds-toast" class="ds-toast">copied</div>
+
+  <script is:inline>
+    // Resolve hex values for swatches at runtime so the displayed values
+    // always match what the tokens actually compute to.
+    function rgbToHex(rgb) {
+      const m = rgb.match(/rgba?\(([^)]+)\)/);
+      if (!m) return rgb;
+      const parts = m[1].split(',').map((s) => s.trim());
+      const [r, g, b] = parts.slice(0, 3).map(Number);
+      const a = parts[3] !== undefined ? Number(parts[3]) : 1;
+      const toHex = (n) => Number(n).toString(16).padStart(2, '0');
+      const hex = '#' + toHex(r) + toHex(g) + toHex(b);
+      return a < 1 ? hex + ' · α' + a.toFixed(2) : hex;
+    }
+    document.querySelectorAll('[data-resolve-hex]').forEach((el) => {
+      const tok = el.getAttribute('data-resolve-hex');
+      const val = getComputedStyle(document.documentElement).getPropertyValue(tok).trim();
+      if (!val) { el.textContent = '—'; return; }
+      if (val.startsWith('#')) { el.textContent = val; return; }
+      if (val.startsWith('rgb')) { el.textContent = rgbToHex(val); return; }
+      el.textContent = val;
+    });
+
+    // Click-to-copy for swatches and gradient cards.
+    const toast = document.getElementById('ds-toast');
+    let toastTimer;
+    function flash(msg) {
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.add('ds-show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('ds-show'), 1100);
+    }
+    document.querySelectorAll('.ds-copyable').forEach((el) => {
+      el.addEventListener('click', () => {
+        const txt = el.getAttribute('data-copy') || '';
+        if (!txt) return;
+        navigator.clipboard?.writeText(txt).then(
+          () => flash('copied: ' + (txt.length > 40 ? txt.slice(0, 38) + '…' : txt)),
+          () => flash('copy failed'),
+        );
+      });
+    });
+  </script>
 </Layout>

@@ -24,6 +24,7 @@ These rules apply to all code in this repo. They are enforced where possible by 
 4. **Shared primitives** go in `src/components/ui/` (buttons, cards, glow effects, etc.).
 5. **Layout chrome** (Nav, Footer) lives in `src/components/layout/`.
 6. **Naming:** PascalCase for components, kebab-case for CSS files, camelCase for hooks (`useFoo`).
+7. **Every new shared component (anything in `src/components/ui/`) must also be rendered in `src/pages/design-system.astro`** under section 06 with a caption. The design system is the live reusability ledger — if a component isn't there, treat it as not-yet-shared. Same rule for new design tokens (colors, gradients, spacing, radii, shadows, typography sizes): they must appear in the corresponding section of `design-system.astro`.
 
 ## Styling rules
 
