@@ -34,9 +34,9 @@ export const GITHUB = {
  */
 export const CAREER_STATS = {
   skills: 22,
-  commits: 847,
-  years: 5,
-  tapeouts: 3,
+  commits: 2130,
+  years: 3,
+  tapeouts: 2,
   projects: 12,
 } as const;
 
