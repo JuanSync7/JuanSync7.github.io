@@ -1,13 +1,19 @@
+import type { CSSProperties } from 'react';
 import { LANG_COLOR, timeAgo, type Repo } from './projects-data';
 
 interface Props {
   repo: Repo;
 }
 
+interface CardStyle extends CSSProperties {
+  '--card-accent': string;
+}
+
 export default function ProjectCard({ repo }: Props) {
   const langColor = (repo.language && LANG_COLOR[repo.language]) || 'var(--hf-ink-soft)';
+  const style: CardStyle = { '--card-accent': langColor };
   return (
-    <a className="pj-card" href={repo.html_url} target="_blank" rel="noopener noreferrer">
+    <a className="pj-card" style={style} href={repo.html_url} target="_blank" rel="noopener noreferrer">
       <div className="pj-card-head">
         <span className="pj-card-name">{repo.name}</span>
         <span className="pj-card-arr">↗</span>
