@@ -1,9 +1,11 @@
-export const GH_USER = 'JuanSync7';
-export const GH_API = `https://api.github.com/users/${GH_USER}/repos?sort=updated&per_page=100`;
+import { GITHUB } from '@/data/site';
 
-export const EXCLUDE = new Set(['juansync7.github.io']);
+export const GH_USER = GITHUB.user;
+export const GH_API = GITHUB.apiUrl;
+
+export const EXCLUDE = new Set<string>(GITHUB.excludeRepos);
 export const PINNED: readonly string[] = [];
-export const MAX_CARDS = 6;
+export const MAX_CARDS = GITHUB.maxCards;
 
 export const LANG_COLOR: Record<string, string> = {
   Python: '#3572A5', JavaScript: '#f1e05a', TypeScript: '#3178c6',

@@ -3,6 +3,7 @@ import { drawDonut } from './draw/donut';
 import SysLog from './SysLog';
 import Heatmap from './Heatmap';
 import Ticker from './Ticker';
+import { CAREER_STATS } from '@/data/site';
 
 interface Props {
   gpuRef: RefObject<HTMLCanvasElement>;
@@ -23,11 +24,11 @@ interface Stat {
 }
 
 const STATS: Stat[] = [
-  { color: 'var(--cp-asic)',    val: '22',  label: 'Skills' },
-  { color: 'var(--cp-script)',  val: '847', label: 'Commits' },
-  { color: 'var(--cp-ai-orange)', val: '5', label: 'Years' },
-  { color: 'var(--cp-ai)',      val: '3',   label: 'Tape-outs' },
-  { color: 'var(--cp-eda)',     val: '12',  label: 'Projects' },
+  { color: 'var(--cp-asic)',      val: String(CAREER_STATS.skills),   label: 'Skills' },
+  { color: 'var(--cp-script)',    val: String(CAREER_STATS.commits),  label: 'Commits' },
+  { color: 'var(--cp-ai-orange)', val: String(CAREER_STATS.years),    label: 'Years' },
+  { color: 'var(--cp-ai)',        val: String(CAREER_STATS.tapeouts), label: 'Tape-outs' },
+  { color: 'var(--cp-eda)',       val: String(CAREER_STATS.projects), label: 'Projects' },
 ];
 
 interface Cat {

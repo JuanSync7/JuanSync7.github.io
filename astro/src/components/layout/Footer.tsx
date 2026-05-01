@@ -1,3 +1,5 @@
+import { CONTACT } from '@/data/site';
+
 export default function Footer() {
   return (
     <footer className="hf-footer">
@@ -5,14 +7,14 @@ export default function Footer() {
         <div className="hf-footer-col">
           <div className="hf-footer-h">// contact.sh</div>
           <div className="hf-footer-links">
-            <a href="mailto:kokshewjuan7_job@outlook.com" className="hf-footer-link">
-              email → kokshewjuan7_job@outlook.com
+            <a href={`mailto:${CONTACT.email}`} className="hf-footer-link">
+              email → {CONTACT.email}
             </a>
-            <a href="https://github.com/JuanSync7" className="hf-footer-link" target="_blank" rel="noreferrer">
-              github → @JuanSync7
+            <a href={`https://github.com/${CONTACT.github}`} className="hf-footer-link" target="_blank" rel="noreferrer">
+              github → @{CONTACT.github}
             </a>
-            <a href="https://www.linkedin.com/in/shewjuankok/" className="hf-footer-link" target="_blank" rel="noreferrer">
-              linkedin → shewjuankok
+            <a href={CONTACT.linkedinUrl} className="hf-footer-link" target="_blank" rel="noreferrer">
+              linkedin → {CONTACT.linkedin}
             </a>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import { GRAD, PALETTE } from '../cockpit-palette';
+import { SKILL_BREAKDOWN } from '@/data/site';
 
 interface DonutCat {
   l: string;
@@ -16,10 +17,10 @@ export function drawDonut(canvas: HTMLCanvasElement | null): void {
   ctx.clearRect(0, 0, w, h);
 
   const cats: DonutCat[] = [
-    { l: 'ASIC',   v: 6, c1: GRAD.emeraldOrange[0], c2: GRAD.emeraldOrange[1] },
-    { l: 'AI',     v: 5, c1: GRAD.coralPurple[0],   c2: GRAD.coralPurple[1] },
-    { l: 'EDA',    v: 6, c1: GRAD.cyanMagenta[0],   c2: GRAD.cyanMagenta[1] },
-    { l: 'Script', v: 5, c1: GRAD.yellowRed[0],     c2: GRAD.yellowRed[1] },
+    { l: 'ASIC',   v: SKILL_BREAKDOWN.asic,   c1: GRAD.emeraldOrange[0], c2: GRAD.emeraldOrange[1] },
+    { l: 'AI',     v: SKILL_BREAKDOWN.ai,     c1: GRAD.coralPurple[0],   c2: GRAD.coralPurple[1] },
+    { l: 'EDA',    v: SKILL_BREAKDOWN.eda,    c1: GRAD.cyanMagenta[0],   c2: GRAD.cyanMagenta[1] },
+    { l: 'Script', v: SKILL_BREAKDOWN.script, c1: GRAD.yellowRed[0],     c2: GRAD.yellowRed[1] },
   ];
   const total = cats.reduce((s, c) => s + c.v, 0);
   const cx = w / 2;

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { IDENTITY } from '@/data/site';
 
 const LINKS = [
   { label: '00 about', anchor: 'about' },
@@ -21,7 +22,7 @@ export default function Nav() {
     <nav className={`hf-nav ${scrolled ? 'hf-nav-scrolled' : ''}`}>
       <div className="hf-nav-brand">
         <span className="hf-nav-dot" />
-        <span className="hf-nav-name">juan_kok</span>
+        <span className="hf-nav-name">{IDENTITY.shortName}</span>
         <span className="hf-nav-tag">v2.0</span>
       </div>
       <div className="hf-nav-links">
@@ -32,8 +33,8 @@ export default function Nav() {
         ))}
       </div>
       <a
-        href="/Kok_Shew_Juan_CV_2025.pdf"
-        download="Kok_Shew_Juan_CV_2025.pdf"
+        href={IDENTITY.cvFile}
+        download={IDENTITY.cvFile.replace(/^\//, '')}
         rel="noopener"
         className="hf-nav-cta"
       >
