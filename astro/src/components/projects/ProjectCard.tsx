@@ -3,17 +3,18 @@ import { LANG_COLOR, timeAgo, type Repo } from './projects-data';
 
 interface Props {
   repo: Repo;
+  onSelect: (repo: Repo) => void;
 }
 
 interface CardStyle extends CSSProperties {
   '--card-accent': string;
 }
 
-export default function ProjectCard({ repo }: Props) {
+export default function ProjectCard({ repo, onSelect }: Props) {
   const langColor = (repo.language && LANG_COLOR[repo.language]) || 'var(--hf-ink-soft)';
   const style: CardStyle = { '--card-accent': langColor };
   return (
-    <a className="pj-card" style={style} href={repo.html_url} target="_blank" rel="noopener noreferrer">
+    <button type="button" className="pj-card" style={style} onClick={() => onSelect(repo)}>
       <div className="pj-card-head">
         <span className="pj-card-name">{repo.name}</span>
         <span className="pj-card-arr">↗</span>
@@ -43,6 +44,6 @@ export default function ProjectCard({ repo }: Props) {
           ))}
         </div>
       )}
-    </a>
+    </button>
   );
 }

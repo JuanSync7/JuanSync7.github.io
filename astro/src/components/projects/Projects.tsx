@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useOnScreen } from '@/hooks/useOnScreen';
 import ProjectCard from './ProjectCard';
+import ProjectModal from './ProjectModal';
 import { GH_API, GH_USER, sortRepos, type Repo } from './projects-data';
 
 type State =
@@ -12,6 +13,7 @@ export default function Projects() {
   const ref = useRef<HTMLElement>(null);
   const visible = useOnScreen(ref, 0.1);
   const [state, setState] = useState<State>({ status: 'loading' });
+  const [selected, setSelected] = useState<Repo | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -79,7 +81,7 @@ export default function Projects() {
         <>
           <div className="pj-grid">
             {state.repos.map((r) => (
-              <ProjectCard key={r.id} repo={r} />
+              <ProjectCard key={r.id} repo={r} onSelect={setSelected} />
             ))}
           </div>
           <div className="pj-footer">
@@ -94,6 +96,8 @@ export default function Projects() {
           </div>
         </>
       )}
+
+      {selected && <ProjectModal repo={selected} onClose={() => setSelected(null)} />}
     </section>
   );
 }
