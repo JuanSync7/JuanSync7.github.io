@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/layout/Nav.tsx';
+import PurpleSkyTransition from '../components/ui/PurpleSkyTransition.tsx';
+import SceneTransition from '../components/ui/SceneTransition.tsx';
+import Hero from '../components/hero/Hero.tsx';
+import Terminal from '../components/terminal/Terminal.tsx';
+import FSM from '../components/fsm/FSM.tsx';
+import Projects from '../components/projects/Projects.tsx';
+import LofiRoom from '../components/lofi/LofiRoom.tsx';
+import Footer from '../components/layout/Footer.tsx';
+import Cockpit from '../components/cockpit/Cockpit.tsx';
+---
+
+<Layout title="juan_kok — CV v2.0">
+  <main id="root">
+    <Nav client:load />
+    <Hero client:load />
+    <Terminal client:load />
+    <FSM client:load />
+    <Cockpit client:load />
+    <Projects client:load />
+    <PurpleSkyTransition client:load />
+    <LofiRoom client:load />
+    <SceneTransition client:load from="purple" to="dark" />
+    <Footer />
+  </main>
+</Layout>

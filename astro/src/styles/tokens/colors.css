@@ -1,0 +1,101 @@
+/* Color tokens — single source of truth.
+   Add new colors here, never inline raw hex/rgb in component CSS. */
+
+:root {
+  /* Surfaces — backgrounds (darkest → lightest) */
+  --hf-bg: #0a0a0a;
+  --hf-bg-2: #0e0e0e;
+  --hf-surface: #121212;
+  --hf-surface-2: #161616;
+
+  /* Cockpit-section surfaces (deep navy) */
+  --hf-cockpit-bg: #0c1420;
+  --hf-cockpit-panel: #1a2230;
+  --hf-cockpit-panel-2: #2a3a50;
+
+  /* Ink — text on dark backgrounds */
+  --hf-ink: #e4ecd8;
+  --hf-ink-soft: #7a9a88;
+  --hf-ink-muted: #4a6a55;
+  --hf-ink-pale: #c0d8cc;
+
+  /* Lines & borders */
+  --hf-line: #243028;
+  --hf-line-strong: #3a5042;
+
+  /* Brand accents */
+  --hf-accent: #c8d837;       /* lime */
+  --hf-accent-2: #1ba0a0;     /* teal */
+  --hf-accent-3: #6dbf8b;     /* mint */
+
+  /* Specialty colors */
+  --hf-terminal-glow: #39ff14;
+  --hf-cyan: #05d9e8;
+  --hf-magenta: #ff2a6d;
+  --hf-violet: #d300c5;
+
+  /* Purple / lofi family */
+  --hf-purple-deep: #4a2048;
+  --hf-purple-mid: #5a2858;
+  --hf-purple-shadow: #3a1838;
+  --lofi-accent: #b08cd8;
+  --lofi-accent-2: #8a6aaa;
+  --lofi-bg: #1a1028;
+  --lofi-surface: rgba(30, 20, 48, 0.85);
+
+  /* Alpha overlays — translucent white/black for stacking */
+  --hf-alpha-white-02: rgba(255, 255, 255, 0.02);
+  --hf-alpha-white-03: rgba(255, 255, 255, 0.03);
+  --hf-alpha-white-05: rgba(255, 255, 255, 0.05);
+  --hf-alpha-white-06: rgba(255, 255, 255, 0.06);
+  --hf-alpha-white-25: rgba(255, 255, 255, 0.25);
+  --hf-alpha-black-03: rgba(0, 0, 0, 0.03);
+  --hf-alpha-black-06: rgba(0, 0, 0, 0.06);
+  --hf-alpha-black-12: rgba(0, 0, 0, 0.12);
+  --hf-alpha-black-20: rgba(0, 0, 0, 0.2);
+  --hf-alpha-black-30: rgba(0, 0, 0, 0.3);
+  --hf-alpha-black-40: rgba(0, 0, 0, 0.4);
+  --hf-alpha-black-50: rgba(0, 0, 0, 0.5);
+
+  /* Tinted alphas — for accent glows and section moods */
+  --hf-accent-glow: rgba(200, 216, 55, 0.4);
+  --hf-accent-soft: rgba(200, 216, 55, 0.1);
+  --hf-accent-faint: rgba(200, 216, 55, 0.03);
+  --hf-teal-soft: rgba(27, 160, 160, 0.1);
+  --hf-teal-glow: rgba(27, 160, 160, 0.25);
+
+  /* Scene-transition dot colors */
+  --hf-dot-purple: #3a2855;
+  --hf-dot-navy: #1a3050;
+  --hf-dot-green: #1a3020;
+
+  /* Cloud-transition default bottom */
+  --hf-cloud-bot-default: #12101e;
+
+  /* Solid white & near-black green (used in SVGs / icons) */
+  --hf-white: #ffffff;
+  --hf-pacman-eye: #0a1a0a;
+
+  /* Accent fills with specific opacities used by FSM/cockpit */
+  --hf-accent-fill: rgba(200, 216, 55, 0.12);
+  --hf-alpha-white-35: rgba(255, 255, 255, 0.35);
+  --hf-alpha-white-12: rgba(255, 255, 255, 0.12);
+
+  /* Cockpit page accents (chart palette — values mirrored in cockpit-palette.ts) */
+  --cp-asic: #1ba0a0;
+  --cp-ai: #ff6b6b;
+  --cp-ai-orange: #ffa94d;
+  --cp-eda: #6ec8e6;
+  --cp-script: #c8d837;
+  --cp-track: #1a2230;
+  --cp-ok: #4ade80;
+
+  /* Lofi scene illustration palette (pixel-art mug, string lights) */
+  --lofi-string-wire: #4a3860;
+  --lofi-mug-rim: #3a1a08;
+  --lofi-mug-body: #e8d8c4;
+  --lofi-mug-shadow: #d0c0a8;
+  --lofi-mug-highlight: #f0e4d4;
+  --lofi-bean: #8B4513;
+  --lofi-bean-line: #5a2a08;
+}

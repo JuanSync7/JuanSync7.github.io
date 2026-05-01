@@ -1,0 +1,32 @@
+/* Spacing, radii, and shadow tokens. */
+
+:root {
+  /* Spacing scale (4px base) */
+  --hf-space-1: 4px;
+  --hf-space-2: 8px;
+  --hf-space-3: 12px;
+  --hf-space-4: 16px;
+  --hf-space-5: 20px;
+  --hf-space-6: 24px;
+  --hf-space-8: 32px;
+  --hf-space-10: 40px;
+  --hf-space-12: 48px;
+
+  /* Radii */
+  --hf-radius-xs: 2px;
+  --hf-radius-sm: 4px;
+  --hf-radius-md: 8px;
+  --hf-radius-lg: 12px;
+  --hf-radius-pill: 999px;
+
+  /* Shadows */
+  --hf-shadow-sm: 0 1px 2px var(--hf-alpha-black-20);
+  --hf-shadow-md: 0 4px 12px var(--hf-alpha-black-30);
+  --hf-shadow-lg: 0 8px 24px var(--hf-alpha-black-40);
+
+  /* Z-indices */
+  --hf-z-base: 0;
+  --hf-z-content: 1;
+  --hf-z-nav: 50;
+  --hf-z-overlay: 100;
+}

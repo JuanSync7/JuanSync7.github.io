@@ -1,0 +1,39 @@
+/* Gradient tokens — named gradients used across sections. */
+
+:root {
+  /* Cockpit cosmic background — multi-layered radial + linear */
+  --hf-grad-cockpit:
+    radial-gradient(ellipse 120% 35% at 50% 50%, rgba(16, 30, 55, 0.6) 0%, transparent 100%),
+    radial-gradient(ellipse 80% 20% at 45% 48%, rgba(20, 40, 70, 0.35) 0%, transparent 100%),
+    radial-gradient(ellipse 60% 12% at 55% 52%, rgba(25, 50, 85, 0.2) 0%, transparent 100%),
+    linear-gradient(
+      180deg,
+      var(--hf-bg) 0%,
+      #080a10 8%,
+      #0a0e18 18%,
+      #0c1424 30%,
+      #0e1a30 42%,
+      #101e38 50%,
+      #0e1a30 58%,
+      #0c1424 70%,
+      #0a0e18 82%,
+      #080a10 92%,
+      var(--hf-bg) 100%
+    );
+
+  /* Purple sky transition (above lofi room) */
+  --hf-grad-purple-sky: linear-gradient(180deg, #1a0b2e 0%, #4a1a6b 100%);
+
+  /* Section divider sweep — used for animated bars */
+  --hf-grad-purple-bar: linear-gradient(90deg, var(--hf-purple-deep) 0%, var(--hf-purple-mid) 50%, var(--hf-purple-deep) 100%);
+  --hf-grad-purple-bar-shadow: linear-gradient(90deg, var(--hf-purple-shadow) 0%, var(--hf-purple-deep) 60%, var(--hf-purple-shadow) 100%);
+
+  /* Generic horizontal fade-to-edges */
+  --hf-grad-fade-x: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+
+  /* Scene-transition gradients — section-to-section vertical fades */
+  --hf-grad-scene-green-navy: linear-gradient(180deg, var(--hf-bg) 0%, #060c14 40%, #020810 100%);
+  --hf-grad-scene-navy-green: linear-gradient(180deg, #101828 0%, #0a1218 50%, var(--hf-bg) 100%);
+  --hf-grad-scene-green-purple: linear-gradient(180deg, var(--hf-bg) 0%, #0c0c16 30%, #151020 60%, #1a1028 100%);
+  --hf-grad-scene-purple-dark: linear-gradient(180deg, #151020 0%, #100c18 50%, var(--hf-bg) 100%);
+}

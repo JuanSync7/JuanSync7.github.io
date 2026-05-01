@@ -1,0 +1,8 @@
+/* Token entrypoint — import this once from Layout.astro.
+   Order matters: typography first (loads webfonts), then colors,
+   then gradients/spacing which may reference colors. */
+
+@import './typography.css';
+@import './colors.css';
+@import './gradients.css';
+@import './spacing.css';
