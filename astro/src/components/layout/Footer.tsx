@@ -23,7 +23,7 @@ export default function Footer() {
           <div className="hf-footer-text">
             <div>no EDA tools were used in the making of this site.</div>
             <div>just vim, coffee, and spite.</div>
-            <a href="design-system.html" className="hf-footer-link hf-footer-ds-link">design system →</a>
+            <a href="/design-system.html" className="hf-footer-link hf-footer-ds-link">design system →</a>
           </div>
         </div>
         <div className="hf-footer-col hf-footer-right">
