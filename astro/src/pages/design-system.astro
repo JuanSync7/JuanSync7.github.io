@@ -1,0 +1,241 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/design-system.css';
+import NeonText from '../components/ui/NeonText.tsx';
+import KineticWord from '../components/ui/KineticWord.tsx';
+import StrikeThrough from '../components/ui/StrikeThrough.tsx';
+import NotGateDivider from '../components/ui/NotGateDivider.tsx';
+import SegmentedBar from '../components/ui/SegmentedBar.tsx';
+import PixelTransition from '../components/ui/PixelTransition.tsx';
+import CloudTransition from '../components/ui/CloudTransition.tsx';
+import PurpleSkyTransition from '../components/ui/PurpleSkyTransition.tsx';
+import SceneTransition from '../components/ui/SceneTransition.tsx';
+import Placeholder from '../components/ui/Placeholder.tsx';
+import { IDENTITY } from '../data/site';
+
+const COLOR_TOKENS = [
+  { name: 'bg',          token: '--hf-bg' },
+  { name: 'bg-2',        token: '--hf-bg-2' },
+  { name: 'surface',     token: '--hf-surface' },
+  { name: 'surface-2',   token: '--hf-surface-2' },
+  { name: 'cockpit-bg',  token: '--hf-cockpit-bg' },
+  { name: 'cockpit-panel', token: '--hf-cockpit-panel' },
+  { name: 'ink',         token: '--hf-ink' },
+  { name: 'ink-soft',    token: '--hf-ink-soft' },
+  { name: 'ink-muted',   token: '--hf-ink-muted' },
+  { name: 'ink-pale',    token: '--hf-ink-pale' },
+  { name: 'line',        token: '--hf-line' },
+  { name: 'line-strong', token: '--hf-line-strong' },
+  { name: 'accent',      token: '--hf-accent' },
+  { name: 'accent-2',    token: '--hf-accent-2' },
+  { name: 'accent-3',    token: '--hf-accent-3' },
+  { name: 'cyan',        token: '--hf-cyan' },
+  { name: 'magenta',     token: '--hf-magenta' },
+  { name: 'violet',      token: '--hf-violet' },
+  { name: 'cp-asic',     token: '--cp-asic' },
+  { name: 'cp-ai',       token: '--cp-ai' },
+  { name: 'cp-eda',      token: '--cp-eda' },
+  { name: 'cp-script',   token: '--cp-script' },
+];
+
+const GRADIENT_TOKENS = [
+  { name: 'cockpit',           token: '--hf-grad-cockpit' },
+  { name: 'purple-sky',        token: '--hf-grad-purple-sky' },
+  { name: 'purple-bar',        token: '--hf-grad-purple-bar' },
+  { name: 'fade-x',            token: '--hf-grad-fade-x' },
+  { name: 'scene-green-navy',  token: '--hf-grad-scene-green-navy' },
+  { name: 'scene-navy-green',  token: '--hf-grad-scene-navy-green' },
+  { name: 'scene-green-purple', token: '--hf-grad-scene-green-purple' },
+  { name: 'scene-purple-dark', token: '--hf-grad-scene-purple-dark' },
+];
+
+const TYPE_RAMP = [
+  { token: '--hf-fs-xs',   sample: 'The quick brown fox' },
+  { token: '--hf-fs-sm',   sample: 'The quick brown fox' },
+  { token: '--hf-fs-base', sample: 'The quick brown fox' },
+  { token: '--hf-fs-md',   sample: 'The quick brown fox' },
+  { token: '--hf-fs-lg',   sample: 'The quick brown fox' },
+  { token: '--hf-fs-xl',   sample: 'The quick brown fox' },
+  { token: '--hf-fs-2xl',  sample: 'The quick brown fox' },
+];
+
+const SPACING_TOKENS = ['--hf-space-1','--hf-space-2','--hf-space-3','--hf-space-4','--hf-space-5','--hf-space-6','--hf-space-8','--hf-space-10','--hf-space-12'];
+const RADIUS_TOKENS = ['--hf-radius-xs','--hf-radius-sm','--hf-radius-md','--hf-radius-lg','--hf-radius-pill'];
+const SHADOW_TOKENS = ['--hf-shadow-sm','--hf-shadow-md','--hf-shadow-lg'];
+---
+
+<Layout title={`${IDENTITY.shortName} — design system`}>
+  <main class="ds-wrap">
+    <a href="/" class="ds-back">← back to site</a>
+
+    <header class="ds-hdr">
+      <div class="ds-eyebrow">// design_system.md</div>
+      <h1 class="ds-title">design system</h1>
+      <p class="ds-lede">
+        Living reference for {IDENTITY.shortName}. Every value below reads from
+        the same token files and components the production site uses — so this
+        page tells the truth, and components that look broken here are not yet
+        reusable.
+      </p>
+    </header>
+
+    <section class="ds-section">
+      <h2 class="ds-section-h">colors</h2>
+      <div class="ds-section-sub">Source: src/styles/tokens/colors.css</div>
+      <div class="ds-grid">
+        {COLOR_TOKENS.map((c) => (
+          <div class="ds-swatch">
+            <div class="ds-swatch-fill" style={`--ds-fill: var(${c.token});`} />
+            <div class="ds-swatch-meta">
+              <div class="ds-swatch-name">{c.name}</div>
+              <div class="ds-swatch-token">var({c.token})</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="ds-section">
+      <h2 class="ds-section-h">gradients</h2>
+      <div class="ds-section-sub">Source: src/styles/tokens/gradients.css</div>
+      <div class="ds-grid">
+        {GRADIENT_TOKENS.map((g) => (
+          <div class="ds-swatch">
+            <div class="ds-swatch-fill" style={`--ds-fill: var(${g.token});`} />
+            <div class="ds-swatch-meta">
+              <div class="ds-swatch-name">{g.name}</div>
+              <div class="ds-swatch-token">var({g.token})</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="ds-section">
+      <h2 class="ds-section-h">typography</h2>
+      <div class="ds-section-sub">Source: src/styles/tokens/typography.css</div>
+      {TYPE_RAMP.map((t) => (
+        <div class="ds-type-row">
+          <span class="ds-type-label">var({t.token})</span>
+          <span class="ds-type-sample" style={`font-size: var(${t.token});`}>{t.sample}</span>
+        </div>
+      ))}
+      <div class="ds-type-row" style="margin-top: var(--hf-space-6);">
+        <span class="ds-type-label">--hf-mono</span>
+        <span class="ds-type-sample" style="font-family: var(--hf-mono); font-size: var(--hf-fs-lg);">JetBrains Mono — code, terminal</span>
+      </div>
+      <div class="ds-type-row">
+        <span class="ds-type-label">--hf-display</span>
+        <span class="ds-type-sample" style="font-family: var(--hf-display); font-size: var(--hf-fs-xl);">Special Elite — section headers</span>
+      </div>
+      <div class="ds-type-row">
+        <span class="ds-type-label">--hf-hand</span>
+        <span class="ds-type-sample" style="font-family: var(--hf-hand); font-size: 22px;">Caveat — handwritten accents</span>
+      </div>
+    </section>
+
+    <section class="ds-section">
+      <h2 class="ds-section-h">spacing</h2>
+      <div class="ds-section-sub">Source: src/styles/tokens/spacing.css · 4px base scale</div>
+      <div class="ds-stack">
+        {SPACING_TOKENS.map((s) => (
+          <div class="ds-bar-row">
+            <span class="ds-bar-token">var({s})</span>
+            <span class="ds-bar-fill" style={`width: var(${s});`} />
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="ds-section">
+      <h2 class="ds-section-h">radii</h2>
+      <div class="ds-grid">
+        {RADIUS_TOKENS.map((r) => (
+          <div class="ds-tile" style={`border-radius: var(${r}); background: var(--hf-cockpit-panel); color: var(--hf-ink-pale);`}>
+            var({r})
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="ds-section">
+      <h2 class="ds-section-h">shadows</h2>
+      <div class="ds-grid">
+        {SHADOW_TOKENS.map((s) => (
+          <div class="ds-tile" style={`box-shadow: var(${s}); background: var(--hf-surface-2);`}>
+            var({s})
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="ds-section">
+      <h2 class="ds-section-h">components</h2>
+      <div class="ds-section-sub">Live previews — components rendered from src/components/ui/</div>
+
+      <div class="ds-preview-row">
+        <div>
+          <div class="ds-preview"><NeonText client:load>NEON_TEXT</NeonText></div>
+          <span class="ds-preview-caption">&lt;NeonText&gt; — flickering accent</span>
+        </div>
+        <div>
+          <div class="ds-preview">
+            <KineticWord client:load word="status" altWord="online" delay={1200} loop={true} strikePrefix="//" />
+          </div>
+          <span class="ds-preview-caption">&lt;KineticWord&gt; — strike-then-replace</span>
+        </div>
+      </div>
+
+      <div class="ds-preview" style="margin-top: var(--hf-space-4);">
+        <StrikeThrough client:load delay={800}>strike-through copy</StrikeThrough>
+      </div>
+      <span class="ds-preview-caption">&lt;StrikeThrough&gt;</span>
+
+      <div class="ds-preview" style="margin-top: var(--hf-space-4);">
+        <NotGateDivider client:load label="design_system.boundary" />
+      </div>
+      <span class="ds-preview-caption">&lt;NotGateDivider&gt; — section divider</span>
+
+      <div class="ds-preview" style="margin-top: var(--hf-space-4); flex-direction: column; gap: var(--hf-space-3); align-items: stretch;">
+        <SegmentedBar client:load value={3} max={5} segments={5} />
+        <SegmentedBar client:load value={7} max={10} segments={10} color="var(--cp-ai)" />
+        <SegmentedBar client:load value={9} max={10} segments={10} color="var(--cp-eda)" />
+      </div>
+      <span class="ds-preview-caption">&lt;SegmentedBar&gt; — value / max / color / segments</span>
+
+      <div class="ds-preview-row" style="margin-top: var(--hf-space-4);">
+        <div>
+          <div class="ds-stage"><PixelTransition client:load variant={0} /></div>
+          <span class="ds-preview-caption">&lt;PixelTransition variant=0&gt;</span>
+        </div>
+        <div>
+          <div class="ds-stage"><PixelTransition client:load variant={1} /></div>
+          <span class="ds-preview-caption">&lt;PixelTransition variant=1&gt;</span>
+        </div>
+      </div>
+
+      <div class="ds-preview-row" style="margin-top: var(--hf-space-4);">
+        <div>
+          <div class="ds-stage"><CloudTransition client:load /></div>
+          <span class="ds-preview-caption">&lt;CloudTransition&gt;</span>
+        </div>
+        <div>
+          <div class="ds-stage"><PurpleSkyTransition client:load /></div>
+          <span class="ds-preview-caption">&lt;PurpleSkyTransition&gt;</span>
+        </div>
+      </div>
+
+      <div class="ds-stage" style="margin-top: var(--hf-space-4); height: 220px;">
+        <SceneTransition client:load from="purple" to="dark" />
+      </div>
+      <span class="ds-preview-caption">&lt;SceneTransition from="purple" to="dark"&gt;</span>
+
+      <div class="ds-preview" style="margin-top: var(--hf-space-4);">
+        <Placeholder client:load name="placeholder.module" />
+      </div>
+      <span class="ds-preview-caption">&lt;Placeholder&gt; — fallback panel</span>
+    </section>
+
+    <a href="/" class="ds-back">← back to site</a>
+  </main>
+</Layout>

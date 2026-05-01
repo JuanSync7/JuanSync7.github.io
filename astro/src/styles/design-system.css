@@ -1,0 +1,178 @@
+/* Design-system page layout. Visual styling pulls from token files;
+   this only adds page-specific structural glue (grids, swatch cards). */
+
+.ds-wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--hf-space-12) var(--hf-space-10) var(--hf-space-12);
+  font-family: var(--hf-mono);
+  color: var(--hf-ink);
+  position: relative;
+  z-index: var(--hf-z-content);
+}
+
+.ds-hdr {
+  margin-bottom: var(--hf-space-12);
+  padding-bottom: var(--hf-space-6);
+  border-bottom: 1px solid var(--hf-line);
+}
+.ds-eyebrow {
+  font-size: var(--hf-fs-sm);
+  color: var(--hf-ink-soft);
+  letter-spacing: var(--hf-tracking-wider);
+  margin-bottom: var(--hf-space-2);
+}
+.ds-title {
+  font-family: var(--hf-display);
+  font-size: 36px;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.ds-lede {
+  margin-top: var(--hf-space-3);
+  color: var(--hf-ink-pale);
+  font-size: var(--hf-fs-md);
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.ds-section { margin-bottom: var(--hf-space-12); }
+.ds-section-h {
+  font-size: var(--hf-fs-xl);
+  color: var(--hf-ink);
+  margin: 0 0 var(--hf-space-2);
+}
+.ds-section-h::before { content: '// '; color: var(--hf-ink-soft); }
+.ds-section-sub {
+  color: var(--hf-ink-soft);
+  font-size: var(--hf-fs-md);
+  margin-bottom: var(--hf-space-6);
+}
+
+/* Swatch grid — colors and gradients */
+.ds-grid {
+  display: grid;
+  gap: var(--hf-space-4);
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+.ds-swatch {
+  border: 1px solid var(--hf-line);
+  border-radius: var(--hf-radius-md);
+  overflow: hidden;
+  background: var(--hf-surface);
+}
+.ds-swatch-fill {
+  height: 80px;
+  border-bottom: 1px solid var(--hf-line);
+  background: var(--ds-fill, var(--hf-surface-2));
+}
+.ds-swatch-meta { padding: var(--hf-space-3); }
+.ds-swatch-name {
+  font-size: var(--hf-fs-md);
+  color: var(--hf-ink);
+  margin-bottom: var(--hf-space-1);
+}
+.ds-swatch-token {
+  font-size: var(--hf-fs-xs);
+  color: var(--hf-ink-soft);
+  word-break: break-all;
+}
+
+/* Type ramp */
+.ds-type-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--hf-space-6);
+  padding: var(--hf-space-3) 0;
+  border-bottom: 1px dashed var(--hf-line);
+}
+.ds-type-row:last-child { border-bottom: 0; }
+.ds-type-label {
+  flex: 0 0 120px;
+  font-size: var(--hf-fs-xs);
+  color: var(--hf-ink-soft);
+  letter-spacing: var(--hf-tracking-wide);
+}
+.ds-type-sample { color: var(--hf-ink); }
+
+/* Spacing bars */
+.ds-stack { display: flex; flex-direction: column; gap: var(--hf-space-3); }
+.ds-bar-row {
+  display: flex;
+  align-items: center;
+  gap: var(--hf-space-4);
+  font-size: var(--hf-fs-xs);
+  color: var(--hf-ink-soft);
+}
+.ds-bar-token { flex: 0 0 110px; }
+.ds-bar-fill {
+  height: 14px;
+  background: var(--hf-accent);
+  border-radius: var(--hf-radius-xs);
+}
+
+/* Radii + shadow tiles */
+.ds-tile {
+  background: var(--hf-surface-2);
+  border: 1px solid var(--hf-line);
+  padding: var(--hf-space-6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--hf-fs-xs);
+  color: var(--hf-ink-soft);
+  min-height: 90px;
+}
+
+/* Component preview cards */
+.ds-preview {
+  background: var(--hf-surface);
+  border: 1px solid var(--hf-line);
+  border-radius: var(--hf-radius-md);
+  padding: var(--hf-space-8) var(--hf-space-6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+}
+.ds-preview-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hf-space-4);
+}
+.ds-preview-row {
+  display: grid;
+  gap: var(--hf-space-4);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+.ds-preview-caption {
+  display: block;
+  margin-top: var(--hf-space-2);
+  font-size: var(--hf-fs-xs);
+  color: var(--hf-ink-soft);
+  text-align: center;
+}
+
+/* Transition previews need a fixed-height stage so absolute children render */
+.ds-stage {
+  position: relative;
+  height: 180px;
+  background: var(--hf-bg);
+  border: 1px solid var(--hf-line);
+  border-radius: var(--hf-radius-md);
+  overflow: hidden;
+}
+
+.ds-back {
+  display: inline-block;
+  margin-bottom: var(--hf-space-6);
+  color: var(--hf-accent-2);
+  text-decoration: none;
+  font-size: var(--hf-fs-md);
+}
+.ds-back:hover { text-decoration: underline; }
+
+@media (max-width: 600px) {
+  .ds-wrap { padding: var(--hf-space-8) var(--hf-space-5); }
+  .ds-title { font-size: 28px; }
+}
