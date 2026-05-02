@@ -219,27 +219,27 @@ const SHADOW_TOKENS = ['--hf-shadow-sm', '--hf-shadow-md', '--hf-shadow-lg'];
 
       <div class="ds-atmo-stack">
         <div class="ds-atmo-item">
-          <div class="ds-atmo-stage"><PixelTransition client:load variant={0} /></div>
+          <div class="ds-atmo-stage ds-atmo-stage-pixel"><PixelTransition client:load variant={0} /></div>
           <div class="ds-atmo-cap">&lt;PixelTransition variant=0&gt; — lime accent pixel band</div>
         </div>
         <div class="ds-atmo-item">
-          <div class="ds-atmo-stage"><PixelTransition client:load variant={1} /></div>
+          <div class="ds-atmo-stage ds-atmo-stage-pixel"><PixelTransition client:load variant={1} /></div>
           <div class="ds-atmo-cap">&lt;PixelTransition variant=1&gt; — teal accent pixel band</div>
         </div>
         <div class="ds-atmo-item">
-          <div class="ds-atmo-stage"><CloudTransition client:load /></div>
-          <div class="ds-atmo-cap">&lt;CloudTransition&gt; — SVG cloud mask, drifts horizontally</div>
+          <div class="ds-atmo-stage"><CloudTransition client:load topColor="var(--hf-cockpit-bg)" bottomColor="var(--hf-purple-deep)" /></div>
+          <div class="ds-atmo-cap">&lt;CloudTransition&gt; — SVG cloud mask between two backdrops, drifts horizontally</div>
         </div>
         <div class="ds-atmo-item">
           <div class="ds-atmo-stage"><PurpleSkyTransition client:load /></div>
           <div class="ds-atmo-cap">&lt;PurpleSkyTransition&gt; — dark to deep-purple sky with stars</div>
         </div>
         <div class="ds-atmo-item">
-          <div class="ds-atmo-stage" style="height: 220px;"><SceneTransition client:load from="green" to="purple" /></div>
+          <div class="ds-atmo-stage"><SceneTransition client:load from="green" to="purple" /></div>
           <div class="ds-atmo-cap">&lt;SceneTransition from="green" to="purple"&gt;</div>
         </div>
         <div class="ds-atmo-item">
-          <div class="ds-atmo-stage" style="height: 220px;"><SceneTransition client:load from="purple" to="dark" /></div>
+          <div class="ds-atmo-stage"><SceneTransition client:load from="purple" to="dark" /></div>
           <div class="ds-atmo-cap">&lt;SceneTransition from="purple" to="dark"&gt;</div>
         </div>
       </div>
