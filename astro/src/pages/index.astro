@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/layout/Nav.tsx';
 import PurpleSkyTransition from '../components/ui/PurpleSkyTransition.tsx';
-import SceneTransition from '../components/ui/SceneTransition.tsx';
+import LofiFooterFade from '../components/ui/LofiFooterFade.tsx';
 import Hero from '../components/hero/Hero.tsx';
 import Terminal from '../components/terminal/Terminal.tsx';
 import FSM from '../components/fsm/FSM.tsx';
@@ -22,7 +22,7 @@ import Cockpit from '../components/cockpit/Cockpit.tsx';
     <Projects client:load />
     <PurpleSkyTransition client:load />
     <LofiRoom client:load />
-    <SceneTransition client:load from="purple" to="dark" />
+    <LofiFooterFade client:load />
     <Footer />
   </main>
 </Layout>

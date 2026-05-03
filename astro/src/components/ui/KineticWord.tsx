@@ -5,7 +5,9 @@ interface Props {
   altWord?: string;
   delay?: number;
   loop?: boolean;
+  /** Must be a literal prefix of `word`; the prefix renders struck-through, the rest unstruck. */
   strikePrefix?: string;
+  /** Must be a literal prefix of `altWord`; the prefix renders underlined, the rest plain. */
   underlinePrefix?: string;
   variant?: 1 | 2;
 }

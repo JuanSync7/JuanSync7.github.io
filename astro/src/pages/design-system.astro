@@ -6,11 +6,11 @@ import KineticWord from '../components/ui/KineticWord.tsx';
 import StrikeThrough from '../components/ui/StrikeThrough.tsx';
 import NotGateDivider from '../components/ui/NotGateDivider.tsx';
 import SegmentedBar from '../components/ui/SegmentedBar.tsx';
-import PixelTransition from '../components/ui/PixelTransition.tsx';
-import CloudTransition from '../components/ui/CloudTransition.tsx';
 import PurpleSkyTransition from '../components/ui/PurpleSkyTransition.tsx';
-import SceneTransition from '../components/ui/SceneTransition.tsx';
+import StarfieldStage from '../components/ui/StarfieldStage.tsx';
+import LofiFooterFade from '../components/ui/LofiFooterFade.tsx';
 import Placeholder from '../components/ui/Placeholder.tsx';
+import NebulaStars from '../components/ui/NebulaStars.tsx';
 import { IDENTITY, CAREER_STATS } from '../data/site';
 
 /* All tokens read from src/styles/tokens/*.css. Hex values are resolved
@@ -67,14 +67,16 @@ const COLOR_TOKENS = [
 ];
 
 const GRADIENT_TOKENS = [
-  { name: 'cockpit cosmic',  token: '--hf-grad-cockpit',           note: 'multi-layered radial + linear, used behind cockpit dashboard' },
-  { name: 'purple sky',      token: '--hf-grad-purple-sky',        note: 'dark → glowing purple band above lofi' },
-  { name: 'purple bar',      token: '--hf-grad-purple-bar',        note: 'horizontal sweep for animated section dividers' },
-  { name: 'fade-x',          token: '--hf-grad-fade-x',            note: 'horizontal fade-to-edges mask' },
-  { name: 'scene green→navy', token: '--hf-grad-scene-green-navy', note: 'overview → projects' },
-  { name: 'scene navy→green', token: '--hf-grad-scene-navy-green', note: 'projects → terminal' },
-  { name: 'scene green→purple', token: '--hf-grad-scene-green-purple', note: 'cockpit → lofi' },
-  { name: 'scene purple→dark', token: '--hf-grad-scene-purple-dark', note: 'lofi → footer' },
+  { name: 'purple bar',         token: '--hf-grad-purple-bar',        note: 'horizontal sweep for animated section dividers' },
+  { name: 'purple bar shadow',  token: '--hf-grad-purple-bar-shadow', note: 'darker mirror of purple bar — drop-shadow under the dividers' },
+  { name: 'fade-x',             token: '--hf-grad-fade-x',            note: 'horizontal fade-to-edges mask' },
+  { name: 'chart lime → yellow',     token: '--hf-grad-chart-lime-yellow',     note: 'cockpit code-activity bars (GRAD.greenYellow)' },
+  { name: 'chart rose → gold',       token: '--hf-grad-chart-rose-gold',       note: 'cockpit donut/speedo accent (GRAD.roseGold)' },
+  { name: 'chart periwinkle → mint', token: '--hf-grad-chart-periwinkle-mint', note: 'cockpit donut/speedo accent (GRAD.periwinkleMint)' },
+  { name: 'chart coral → purple',    token: '--hf-grad-chart-coral-purple',    note: 'cockpit donut/speedo accent (GRAD.coralPurple)' },
+  { name: 'chart cyan → magenta',    token: '--hf-grad-chart-cyan-magenta',    note: 'cockpit donut/speedo accent (GRAD.cyanMagenta)' },
+  { name: 'chart emerald → orange',  token: '--hf-grad-chart-emerald-orange',  note: 'cockpit donut/speedo accent (GRAD.emeraldOrange)' },
+  { name: 'chart yellow → red',      token: '--hf-grad-chart-yellow-red',      note: 'cockpit donut/speedo accent (GRAD.yellowRed)' },
 ];
 
 const TYPE_RAMP = [
@@ -107,7 +109,6 @@ const RADIUS_TOKENS = [
   { token: '--hf-radius-pill', label: 'pill' },
 ];
 
-const SHADOW_TOKENS = ['--hf-shadow-sm', '--hf-shadow-md', '--hf-shadow-lg'];
 ---
 
 <Layout title={`${IDENTITY.shortName} — design system`}>
@@ -219,28 +220,30 @@ const SHADOW_TOKENS = ['--hf-shadow-sm', '--hf-shadow-md', '--hf-shadow-lg'];
 
       <div class="ds-atmo-stack">
         <div class="ds-atmo-item">
-          <div class="ds-atmo-stage ds-atmo-stage-pixel"><PixelTransition client:load variant={0} /></div>
-          <div class="ds-atmo-cap">&lt;PixelTransition variant=0&gt; — lime accent pixel band</div>
+          <div class="ds-atmo-stage ds-atmo-stage-band ds-atmo-stage-starfield ds-copyable" data-copy="<StarfieldStage />" title="click to copy">
+            <StarfieldStage client:load />
+          </div>
+          <div class="ds-atmo-cap">&lt;StarfieldStage&gt; — twinkling stars + periodic shooting stars on black bg (scoped canvas; the global version is wired in <code>Layout.astro</code>)</div>
         </div>
         <div class="ds-atmo-item">
-          <div class="ds-atmo-stage ds-atmo-stage-pixel"><PixelTransition client:load variant={1} /></div>
-          <div class="ds-atmo-cap">&lt;PixelTransition variant=1&gt; — teal accent pixel band</div>
-        </div>
-        <div class="ds-atmo-item">
-          <div class="ds-atmo-stage"><CloudTransition client:load topColor="var(--hf-cockpit-bg)" bottomColor="var(--hf-purple-deep)" /></div>
-          <div class="ds-atmo-cap">&lt;CloudTransition&gt; — SVG cloud mask between two backdrops, drifts horizontally</div>
-        </div>
-        <div class="ds-atmo-item">
-          <div class="ds-atmo-stage"><PurpleSkyTransition client:load /></div>
+          <div class="ds-atmo-stage ds-copyable" data-copy="<PurpleSkyTransition />" title="click to copy"><PurpleSkyTransition client:load /></div>
           <div class="ds-atmo-cap">&lt;PurpleSkyTransition&gt; — dark to deep-purple sky with stars</div>
         </div>
         <div class="ds-atmo-item">
-          <div class="ds-atmo-stage"><SceneTransition client:load from="green" to="purple" /></div>
-          <div class="ds-atmo-cap">&lt;SceneTransition from="green" to="purple"&gt;</div>
+          <div class="ds-atmo-stage ds-copyable" data-copy="<LofiFooterFade />" title="click to copy"><LofiFooterFade client:load /></div>
+          <div class="ds-atmo-cap">&lt;LofiFooterFade&gt; — purple → page bg fade with drifting dots, between lofi room and footer</div>
         </div>
         <div class="ds-atmo-item">
-          <div class="ds-atmo-stage"><SceneTransition client:load from="purple" to="dark" /></div>
-          <div class="ds-atmo-cap">&lt;SceneTransition from="purple" to="dark"&gt;</div>
+          <div class="ds-atmo-stage ds-atmo-stage-band hf-band-cosmic ds-copyable" data-copy="hf-band-cosmic" title="click to copy class">
+            <NebulaStars client:load count={40} />
+          </div>
+          <div class="ds-atmo-cap">.hf-band-cosmic + &lt;NebulaStars&gt; — cockpit cosmic backdrop, <code>var(--hf-grad-cockpit)</code></div>
+        </div>
+        <div class="ds-atmo-item">
+          <div class="ds-atmo-stage ds-atmo-stage-band hf-band-nebula ds-copyable" data-copy="hf-band-nebula" title="click to copy class">
+            <NebulaStars client:load count={40} />
+          </div>
+          <div class="ds-atmo-cap">.hf-band-nebula + &lt;NebulaStars&gt; — terminal nebula backdrop, <code>var(--hf-grad-nebula)</code></div>
         </div>
       </div>
     </section>
@@ -278,14 +281,6 @@ const SHADOW_TOKENS = ['--hf-shadow-sm', '--hf-shadow-md', '--hf-shadow-lg'];
         </div>
       </div>
 
-      <div class="ds-group-label" style="margin-top: 24px;">shadow tokens</div>
-      <div class="ds-shadow-row">
-        {SHADOW_TOKENS.map((s) => (
-          <div class="ds-shadow-tile" style={`box-shadow: var(${s});`}>
-            <span>{s}</span>
-          </div>
-        ))}
-      </div>
     </section>
 
     {/* ───────────────────────── 06 UI COMPONENTS ───────────────────────── */}
@@ -299,19 +294,19 @@ const SHADOW_TOKENS = ['--hf-shadow-sm', '--hf-shadow-md', '--hf-shadow-lg'];
       <div class="ds-comp-grid">
         <div class="ds-comp-card">
           <div class="ds-comp-label">&lt;NeonText&gt;</div>
-          <div class="ds-comp-stage"><NeonText client:load>NEON_TEXT</NeonText></div>
+          <div class="ds-comp-stage ds-comp-stage-display"><NeonText client:load>NEON_TEXT</NeonText></div>
           <div class="ds-comp-note">flickering accent — wraps any inline text</div>
         </div>
 
         <div class="ds-comp-card">
           <div class="ds-comp-label">&lt;KineticWord&gt;</div>
-          <div class="ds-comp-stage"><KineticWord client:load word="status" altWord="online" delay={1200} loop={true} strikePrefix="//" /></div>
+          <div class="ds-comp-stage ds-comp-stage-display"><KineticWord client:load word="kinetic" altWord="glitched" delay={1500} loop={true} /></div>
           <div class="ds-comp-note">strike-then-replace cycle</div>
         </div>
 
         <div class="ds-comp-card">
           <div class="ds-comp-label">&lt;StrikeThrough&gt;</div>
-          <div class="ds-comp-stage"><StrikeThrough client:load delay={800}>strike-through copy</StrikeThrough></div>
+          <div class="ds-comp-stage ds-comp-stage-display"><StrikeThrough client:load delay={800}>strike-through copy</StrikeThrough></div>
           <div class="ds-comp-note">animated cross-out on mount</div>
         </div>
 
@@ -401,19 +396,35 @@ const SHADOW_TOKENS = ['--hf-shadow-sm', '--hf-shadow-md', '--hf-shadow-lg'];
         <div><span class="ds-naming-tag">.cp-tile-a / -b</span> — left (narrow) / right (wide) column</div>
         <div><span class="ds-naming-tag">.cp-bento-row3</span> — sub-grid: <code>grid-template-columns: 3fr 2fr</code></div>
 
-        <div class="ds-naming-group">layout map</div>
-        <pre class="ds-bento-map">┌──────────────────────────────────┐
-│  vitals (stat cards)    ▸ full   │
-├──────────┬───────────────────────┤
-│ output   │  proficiency          │
-│ rate     │  (donut chart, large) │
-│ (small)  │                       │
-├──────────┴──────┬────────────────┤
-│ skill growth    │  commit streak │
-│ (bar chart)     │  (heatmap)     │
-├─────────────────┴────────────────┤
-│  ticker + explore       ▸ full   │
-└──────────────────────────────────┘</pre>
+        <div class="ds-naming-group">layout map (live grid — real <code>.cp-bento</code> classes)</div>
+        <div class="cp-bento ds-bento-live">
+          <div class="cp-tile cp-tile-full">
+            <div class="ds-bento-lbl">.cp-tile-full</div>
+            <div class="ds-bento-role">vitals · stat cards row</div>
+          </div>
+          <div class="cp-tile cp-tile-a">
+            <div class="ds-bento-lbl">.cp-tile-a</div>
+            <div class="ds-bento-role">output rate · speedometer</div>
+          </div>
+          <div class="cp-tile cp-tile-b">
+            <div class="ds-bento-lbl">.cp-tile-b</div>
+            <div class="ds-bento-role">proficiency · donut chart</div>
+          </div>
+          <div class="cp-bento-row3">
+            <div class="cp-tile">
+              <div class="ds-bento-lbl">.cp-tile (in .cp-bento-row3 · 3fr)</div>
+              <div class="ds-bento-role">skill growth · bar chart</div>
+            </div>
+            <div class="cp-tile">
+              <div class="ds-bento-lbl">.cp-tile (in .cp-bento-row3 · 2fr)</div>
+              <div class="ds-bento-role">commit streak · heatmap</div>
+            </div>
+          </div>
+          <div class="cp-tile cp-tile-full">
+            <div class="ds-bento-lbl">.cp-tile-full</div>
+            <div class="ds-bento-role">ticker + explore</div>
+          </div>
+        </div>
 
         <div class="ds-naming-group">responsive</div>
         <div>≤640px: single column stack, all tiles and sub-grids collapse to full-width.</div>
@@ -458,7 +469,6 @@ const SHADOW_TOKENS = ['--hf-shadow-sm', '--hf-shadow-md', '--hf-shadow-lg'];
         <div><span class="ds-naming-tag2">glitch</span> — hero text, color cycling + translate shake, 0.1–0.15s</div>
         <div><span class="ds-naming-tag2">ticker</span> — portfolio stats scroll, 35s linear infinite translateX</div>
         <div><span class="ds-naming-tag2">card-in</span> — project cards, 0.4s ease-out, opacity + translateY(12px)</div>
-        <div><span class="ds-naming-tag2">cloud-mask-drift</span> — &lt;CloudTransition&gt;, 20s ease-in-out infinite alternate</div>
         <div><span class="ds-naming-tag2">star-twinkle</span> — &lt;PurpleSkyTransition&gt; stars, 2s alternate</div>
       </div>
     </section>
@@ -500,14 +510,25 @@ const SHADOW_TOKENS = ['--hf-shadow-sm', '--hf-shadow-md', '--hf-shadow-lg'];
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => toast.classList.remove('ds-show'), 1100);
     }
+    function copyText(txt) {
+      if (!txt) return;
+      navigator.clipboard?.writeText(txt).then(
+        () => flash('copied: ' + (txt.length > 40 ? txt.slice(0, 38) + '…' : txt)),
+        () => flash('copy failed'),
+      );
+    }
+    // Every <code> on the page is click-to-copy (its own textContent).
+    document.querySelectorAll('code').forEach((el) => {
+      el.classList.add('ds-code-copy');
+      el.title = 'click to copy';
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        copyText(el.textContent || '');
+      });
+    });
     document.querySelectorAll('.ds-copyable').forEach((el) => {
       el.addEventListener('click', () => {
-        const txt = el.getAttribute('data-copy') || '';
-        if (!txt) return;
-        navigator.clipboard?.writeText(txt).then(
-          () => flash('copied: ' + (txt.length > 40 ? txt.slice(0, 38) + '…' : txt)),
-          () => flash('copy failed'),
-        );
+        copyText(el.getAttribute('data-copy') || '');
       });
     });
   </script>

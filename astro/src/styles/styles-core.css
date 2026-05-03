@@ -141,10 +141,7 @@ body {
   line-height: 0.95;
 }
 .hf-kinetic {
-  font-family: var(--hf-display);
-  font-size: clamp(48px, 8vw, 80px);
   color: var(--hf-ink);
-  line-height: 0.95;
   transition: color 0.3s;
 }
 .hf-kinetic-active {
@@ -277,10 +274,7 @@ body {
 
 /* Neon flicker */
 .hf-neon {
-  font-family: var(--hf-display);
-  font-size: clamp(48px, 8vw, 80px);
   color: var(--hf-accent);
-  line-height: 0.95;
   text-shadow:
     0 0 6px rgba(200,216,55,0.9),
     0 0 20px rgba(200,216,55,0.5),
@@ -296,20 +290,28 @@ body {
 
 /* Strike-through */
 .hf-strike {
-  font-family: var(--hf-display);
-  font-size: clamp(48px, 8vw, 80px);
   color: var(--hf-ink-soft);
-  line-height: 0.95;
   position: relative; display: inline-block;
 }
 .hf-strike-line {
-  position: absolute; top: 52%; left: -4px; right: -4px;
-  height: 3px; background: var(--hf-accent);
+  position: absolute; top: 52%; left: -0.05em; right: -0.05em;
+  height: max(2px, 0.06em); background: var(--hf-accent);
   transform: scaleX(0); transform-origin: left;
   transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
 }
 .hf-struck .hf-strike-line { transform: scaleX(1); }
 .hf-struck { color: var(--hf-ink-muted); }
+
+/* Hero-scoped display sizing for kinetic / neon / strike primitives.
+   Without this, those primitives inherit ambient font from their context
+   (design-system previews, future blog usage, etc.). */
+.hf-hero-display .hf-kinetic,
+.hf-hero-display .hf-neon,
+.hf-hero-display .hf-strike {
+  font-family: var(--hf-display);
+  font-size: clamp(48px, 8vw, 80px);
+  line-height: 0.95;
+}
 
 /* Underline prefix (or maybe) */
 .hf-underline-prefix {
@@ -409,6 +411,20 @@ body {
   box-shadow: 0 0 8px var(--hf-accent-glow);
 }
 
+/* ─── BAND PAINTERS ─── */
+/* Reusable atmospheric backdrops — paint only, no layout. Combine with
+   layout classes (full-bleed wrappers, section padding, etc.) where used. */
+.hf-band-cosmic {
+  position: relative;
+  overflow: hidden;
+  background: var(--hf-grad-cockpit);
+}
+.hf-band-nebula {
+  position: relative;
+  overflow: hidden;
+  background: var(--hf-grad-nebula);
+}
+
 /* ─── TERMINAL ─── */
 /* ─── EXPERIENCE NEBULA BAND ─── */
 .hf-term-section {
@@ -418,28 +434,7 @@ body {
   padding: 120px 48px !important;
   overflow: hidden;
   position: relative;
-  background:
-    /* Nebula glow layers */
-    radial-gradient(ellipse 50% 40% at 25% 45%, rgba(120,20,60,0.18) 0%, transparent 100%),
-    radial-gradient(ellipse 40% 35% at 70% 55%, rgba(60,30,120,0.16) 0%, transparent 100%),
-    radial-gradient(ellipse 35% 25% at 50% 50%, rgba(180,60,100,0.1) 0%, transparent 100%),
-    radial-gradient(ellipse 30% 18% at 40% 48%, rgba(200,180,220,0.06) 0%, transparent 100%),
-    radial-gradient(ellipse 45% 30% at 60% 42%, rgba(40,50,140,0.14) 0%, transparent 100%),
-    radial-gradient(ellipse 120% 40% at 50% 50%, rgba(80,20,80,0.12) 0%, transparent 100%),
-    /* Main vertical gradient */
-    linear-gradient(180deg,
-      var(--hf-bg) 0%,
-      #0c0810 8%,
-      #120a16 18%,
-      #1a0e20 30%,
-      #1e1028 42%,
-      #20122c 50%,
-      #1e1028 58%,
-      #1a0e20 70%,
-      #120a16 82%,
-      #0c0810 92%,
-      var(--hf-bg) 100%
-    );
+  background: var(--hf-grad-nebula);
 }
 /* Nebula stars */
 .hf-term-nebula {

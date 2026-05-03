@@ -1,4 +1,4 @@
-// Cockpit chart palette — values mirror tokens in styles/tokens/colors.css.
+// Cockpit chart palette — GRAD pairs mirror --hf-grad-chart-* tokens in styles/tokens/gradients.css.
 // Canvas drawing needs raw color strings, not CSS vars; keep these in sync.
 
 export const GRAD = {

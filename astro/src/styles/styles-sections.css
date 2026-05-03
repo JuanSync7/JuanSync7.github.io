@@ -11,20 +11,12 @@
 .hf-notgate-flip { transform: scaleX(-1); }
 .hf-notgate-lbl { font-size: 11px; letter-spacing: 0.08em; white-space: nowrap; }
 
-/* ─── PIXEL TRANSITIONS ─── */
-.hf-pixel-trans { max-width: 960px; margin: 0 auto; padding: 0 48px; height: 10px; overflow: hidden; }
-.hf-pixel-row { display: flex; gap: 2px; height: 100%; }
-.hf-pixel {
-  flex: 1; background: var(--hf-accent);
-  animation: px-fade 2s ease-in-out infinite alternate;
-  opacity: 0.15;
-}
-@keyframes px-fade { 0% { opacity: 0.04; } 100% { opacity: 0.25; } }
-.hf-pixel-trans[data-variant="1"] .hf-pixel { background: var(--hf-accent-2); }
-.hf-pixel-trans[data-variant="2"] .hf-pixel { background: var(--hf-accent-3); }
+/* ─── STARFIELD STAGE — scoped canvas demo ─── */
+.hf-starfield-stage { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
 
 /* ─── SCENE TRANSITIONS ─── */
 .hf-scene-trans { position: relative; height: 100px; overflow: hidden; }
+.hf-fade-lofi-footer { background: var(--hf-grad-fade-lofi-footer); }
 .hf-trans-noise { position: absolute; inset: 0; }
 .hf-trans-dot {
   position: absolute; border-radius: 1px;
@@ -541,7 +533,6 @@
 }
 .hf-chill .hf-neon { animation: none !important; text-shadow: 0 0 6px rgba(200,216,55,0.5); }
 .hf-chill .lofi-rain { animation-duration: 1.5s !important; }
-.hf-chill .hf-pixel { animation-duration: 6s !important; }
 
 /* Hyperactive: speed everything up, add extra glow */
 .hf-hyper .hf-neon { animation: neon-hyper 0.3s steps(2) infinite !important; }
@@ -551,44 +542,9 @@
   50% { opacity: 0.8; }
 }
 .hf-hyper .lofi-rain { animation-duration: 0.25s !important; }
-.hf-hyper .hf-pixel { animation-duration: 0.5s !important; }
 .hf-hyper .hf-routine-state { transition-duration: 0.15s !important; }
 .hf-hyper .cp-btn:hover { transform: scale(1.1); }
 .hf-hyper .hf-proj-card:hover { transform: translateY(-8px) scale(1.02); }
-
-/* ═════════════════════════════════════════════
-   SVG CLOUD MASK TRANSITION (legacy)
-   ═════════════════════════════════════════════ */
-.cloud-transition {
-  position: relative;
-  height: 180px;
-  margin-top: -1px;
-  margin-bottom: -1px;
-  overflow: hidden;
-}
-.cloud-transition-top {
-  position: absolute; top: 0; left: 0; right: 0;
-  height: 50%;
-  background: var(--hf-bg);
-}
-.cloud-transition-bottom {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  height: 50%;
-  background: linear-gradient(180deg, #12101e 0%, #1a1028 100%);
-}
-.cloud-transition-svg {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  left: 0; top: 0;
-}
-.cloud-transition-drift {
-  animation: cloud-mask-drift 20s ease-in-out infinite alternate;
-}
-@keyframes cloud-mask-drift {
-  0% { transform: translateX(-8px); }
-  100% { transform: translateX(8px); }
-}
 
 /* ═════════════════════════════════════════════
    PURPLE SKY TRANSITION — dark to glowing purple

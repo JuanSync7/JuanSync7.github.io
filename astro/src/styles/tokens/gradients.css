@@ -21,6 +21,28 @@
       var(--hf-bg) 100%
     );
 
+  /* Experience nebula band — multi-layered radial + linear, magenta/purple */
+  --hf-grad-nebula:
+    radial-gradient(ellipse 50% 40% at 25% 45%, rgba(120,20,60,0.18) 0%, transparent 100%),
+    radial-gradient(ellipse 40% 35% at 70% 55%, rgba(60,30,120,0.16) 0%, transparent 100%),
+    radial-gradient(ellipse 35% 25% at 50% 50%, rgba(180,60,100,0.1) 0%, transparent 100%),
+    radial-gradient(ellipse 30% 18% at 40% 48%, rgba(200,180,220,0.06) 0%, transparent 100%),
+    radial-gradient(ellipse 45% 30% at 60% 42%, rgba(40,50,140,0.14) 0%, transparent 100%),
+    radial-gradient(ellipse 120% 40% at 50% 50%, rgba(80,20,80,0.12) 0%, transparent 100%),
+    linear-gradient(180deg,
+      var(--hf-bg) 0%,
+      #0c0810 8%,
+      #120a16 18%,
+      #1a0e20 30%,
+      #1e1028 42%,
+      #20122c 50%,
+      #1e1028 58%,
+      #1a0e20 70%,
+      #120a16 82%,
+      #0c0810 92%,
+      var(--hf-bg) 100%
+    );
+
   /* Purple sky transition (above lofi room) */
   --hf-grad-purple-sky: linear-gradient(180deg, #1a0b2e 0%, #4a1a6b 100%);
 
@@ -31,9 +53,16 @@
   /* Generic horizontal fade-to-edges */
   --hf-grad-fade-x: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
 
-  /* Scene-transition gradients — section-to-section vertical fades */
-  --hf-grad-scene-green-navy: linear-gradient(180deg, var(--hf-bg) 0%, #060c14 40%, #020810 100%);
-  --hf-grad-scene-navy-green: linear-gradient(180deg, #101828 0%, #0a1218 50%, var(--hf-bg) 100%);
-  --hf-grad-scene-green-purple: linear-gradient(180deg, var(--hf-bg) 0%, #0c0c16 30%, #151020 60%, #1a1028 100%);
-  --hf-grad-scene-purple-dark: linear-gradient(180deg, #151020 0%, #100c18 50%, var(--hf-bg) 100%);
+  /* Lofi-room → footer fade — purple edge fades back to page bg */
+  --hf-grad-fade-lofi-footer: linear-gradient(180deg, #151020 0%, #100c18 50%, var(--hf-bg) 100%);
+
+  /* Cockpit chart gradients — mirror GRAD pairs in cockpit-palette.ts.
+     Canvas needs raw hex for createLinearGradient; keep these in sync. */
+  --hf-grad-chart-lime-yellow:      linear-gradient(135deg, #22c55e, #facc15);
+  --hf-grad-chart-rose-gold:        linear-gradient(135deg, #f472b6, #fbbf24);
+  --hf-grad-chart-periwinkle-mint:  linear-gradient(135deg, #818cf8, #34d399);
+  --hf-grad-chart-coral-purple:     linear-gradient(135deg, #ff6b6b, #a855f7);
+  --hf-grad-chart-cyan-magenta:     linear-gradient(135deg, #00d4ff, #ff00aa);
+  --hf-grad-chart-emerald-orange:   linear-gradient(135deg, #14b8a6, #f97316);
+  --hf-grad-chart-yellow-red:       linear-gradient(135deg, #facc15, #ef4444);
 }

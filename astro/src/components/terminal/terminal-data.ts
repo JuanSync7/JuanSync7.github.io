@@ -99,23 +99,3 @@ export const EASTER_EGGS: Record<string, string> = {
                          Languages: SV, Py, TCL, Rust
                          Uptime: since 1999`,
 };
-
-export interface NebulaStar {
-  x: number;
-  y: number;
-  r: number;
-  o: number;
-  d: number;
-  dur: number;
-}
-
-export function makeNebulaStars(count = 120): NebulaStar[] {
-  return Array.from({ length: count }, () => ({
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    r: 0.3 + Math.random() * 1.4,
-    o: 0.06 + Math.random() * 0.4,
-    d: Math.random() * 5,
-    dur: 1.5 + Math.random() * 2.5,
-  }));
-}

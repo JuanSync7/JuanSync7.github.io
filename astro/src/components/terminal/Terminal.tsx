@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
 import { useOnScreen } from '@/hooks/useOnScreen';
 import { useInView } from '@/hooks/useInView';
-import TerminalNebula from './TerminalNebula';
+import NebulaStars from '@/components/ui/NebulaStars';
 import TerminalLine from './TerminalLine';
 import { useAutoTyping } from './useAutoTyping';
 import { EASTER_EGGS, FILE_BLOCKS, SCRIPT, type Line } from './terminal-data';
@@ -85,7 +85,7 @@ export default function Terminal() {
 
   return (
     <section id="work" className="hf-section hf-term-section" ref={ref}>
-      {inView && <TerminalNebula />}
+      {inView && <NebulaStars />}
       <div className="hf-term-window" onClick={focusInput}>
         <div className="hf-term-bar">
           <span className="hf-term-dot hf-term-dot-r" />
