@@ -109,6 +109,54 @@ const RADIUS_TOKENS = [
   { token: '--hf-radius-pill', label: 'pill' },
 ];
 
+/* Snippet builders — every artifact below carries a `data-ds-snippet`
+   string showing the code needed to reproduce it. Click an artifact to
+   open the snippet modal. */
+
+const colorSnippet = (token: string, name: string) =>
+  `/* ${name} — token from src/styles/tokens/colors.css */
+.element {
+  background: var(${token});
+  /* also: color | border-color | fill | box-shadow color */
+}`;
+
+const gradSnippet = (token: string, name: string) =>
+  `/* ${name} — token from src/styles/tokens/gradients.css */
+.element {
+  background: var(${token});
+}`;
+
+const fontSnippet = (token: string, label: string) =>
+  `/* ${label} — token from src/styles/tokens/typography.css */
+.element {
+  font-family: var(${token});
+}`;
+
+const fontSizeSnippet = (token: string, px: string) =>
+  `/* size token (${px}) — typography.css */
+.element {
+  font-size: var(${token});
+}`;
+
+const spacingSnippet = (token: string, px: string) =>
+  `/* spacing token (${px}) — spacing.css */
+.element {
+  padding: var(${token});
+  /* also: margin | gap | top/right/bottom/left */
+}`;
+
+const radiusSnippet = (token: string, label: string) =>
+  `/* radius token (${label}) — spacing.css */
+.element {
+  border-radius: var(${token});
+}`;
+
+const componentImportSnippet = (name: string, importPath: string, usage: string) =>
+  `import ${name} from '${importPath}';
+
+// in JSX
+${usage}`;
+
 ---
 
 <Layout title={`${IDENTITY.shortName} — design system`}>
@@ -120,7 +168,8 @@ const RADIUS_TOKENS = [
       <div class="ds-subtitle">
         Living reference for {IDENTITY.shortName}. Every value below reads from
         the same token files and shared components the production site uses.
-        Click any code label to copy it.
+        Click any artifact to view the code needed to build it; click any
+        inline <code>token</code> label to copy it raw.
       </div>
     </header>
 
@@ -134,7 +183,7 @@ const RADIUS_TOKENS = [
           <div class="ds-group-label">{g.group}</div>
           <div class="ds-swatch-grid">
             {g.tokens.map((c) => (
-              <div class="ds-swatch ds-copyable" data-copy={`var(${c.token})`} title="click to copy">
+              <div class="ds-swatch ds-copyable" data-ds-snippet={colorSnippet(c.token, c.name)} title="click for code">
                 <div class="ds-swatch-color" style={`background: var(${c.token});`}></div>
                 <div class="ds-swatch-info">
                   <div class="ds-swatch-name">{c.name}</div>
@@ -154,7 +203,7 @@ const RADIUS_TOKENS = [
       <div class="ds-section-sub">Source: <code>src/styles/tokens/gradients.css</code>.</div>
       <div class="ds-grad-row">
         {GRADIENT_TOKENS.map((g) => (
-          <div class="ds-grad-card ds-copyable" data-copy={`var(${g.token})`} title="click to copy">
+          <div class="ds-grad-card ds-copyable" data-ds-snippet={gradSnippet(g.token, g.name)} title="click for code">
             <div class="ds-grad-strip" style={`background: var(${g.token});`}></div>
             <div class="ds-grad-info">
               <div class="ds-grad-name">{g.name}</div>
@@ -172,7 +221,7 @@ const RADIUS_TOKENS = [
       <div class="ds-section-sub">Source: <code>src/styles/tokens/typography.css</code>.</div>
 
       <div class="ds-font-row">
-        <div class="ds-font-card">
+        <div class="ds-font-card ds-copyable" data-ds-snippet={fontSnippet('--hf-mono', 'JetBrains Mono — primary')} title="click for code">
           <div class="ds-font-label">--hf-mono · primary</div>
           <div class="ds-font-display" style="font-family: var(--hf-mono); font-size: 24px;">JetBrains Mono</div>
           <div class="ds-font-sample" style="font-family: var(--hf-mono);">
@@ -181,7 +230,7 @@ const RADIUS_TOKENS = [
           </div>
           <div class="ds-font-meta">Body, code, labels, nav, dashboard UI · 400/500/600/700</div>
         </div>
-        <div class="ds-font-card">
+        <div class="ds-font-card ds-copyable" data-ds-snippet={fontSnippet('--hf-display', 'Special Elite — display')} title="click for code">
           <div class="ds-font-label">--hf-display · display</div>
           <div class="ds-font-display" style="font-family: var(--hf-display); font-size: 32px;">Special Elite</div>
           <div class="ds-font-sample" style="font-family: var(--hf-display);">
@@ -190,7 +239,7 @@ const RADIUS_TOKENS = [
           </div>
           <div class="ds-font-meta">Hero headings, project titles, signature badge</div>
         </div>
-        <div class="ds-font-card">
+        <div class="ds-font-card ds-copyable" data-ds-snippet={fontSnippet('--hf-hand', 'Caveat — handwritten')} title="click for code">
           <div class="ds-font-label">--hf-hand · handwritten</div>
           <div class="ds-font-display" style="font-family: var(--hf-hand); font-size: 28px;">Caveat</div>
           <div class="ds-font-sample" style="font-family: var(--hf-hand); font-size: 16px;">
@@ -204,7 +253,7 @@ const RADIUS_TOKENS = [
       <div class="ds-group-label" style="margin-top: 24px;">size scale</div>
       <div class="ds-type-ramp">
         {TYPE_RAMP.map((t) => (
-          <div class="ds-type-row">
+          <div class="ds-type-row ds-copyable" data-ds-snippet={fontSizeSnippet(t.token, t.px)} title="click for code">
             <span class="ds-type-label">{t.token}</span>
             <span class="ds-type-px">{t.px}</span>
             <span class="ds-type-sample" style={`font-size: var(${t.token});`}>The quick brown fox jumps over the lazy dog.</span>
@@ -220,27 +269,37 @@ const RADIUS_TOKENS = [
 
       <div class="ds-atmo-stack">
         <div class="ds-atmo-item">
-          <div class="ds-atmo-stage ds-atmo-stage-band ds-atmo-stage-starfield ds-copyable" data-copy="<StarfieldStage />" title="click to copy">
+          <div class="ds-atmo-stage ds-atmo-stage-band ds-atmo-stage-starfield ds-copyable" data-ds-snippet={componentImportSnippet('StarfieldStage', '../components/ui/StarfieldStage', '<StarfieldStage client:load />')} title="click for code">
             <StarfieldStage client:load />
           </div>
           <div class="ds-atmo-cap">&lt;StarfieldStage&gt; — twinkling stars + periodic shooting stars on black bg (scoped canvas; the global version is wired in <code>Layout.astro</code>)</div>
         </div>
         <div class="ds-atmo-item">
-          <div class="ds-atmo-stage ds-copyable" data-copy="<PurpleSkyTransition />" title="click to copy"><PurpleSkyTransition client:load /></div>
+          <div class="ds-atmo-stage ds-copyable" data-ds-snippet={componentImportSnippet('PurpleSkyTransition', '../components/ui/PurpleSkyTransition', '<PurpleSkyTransition client:load />')} title="click for code"><PurpleSkyTransition client:load /></div>
           <div class="ds-atmo-cap">&lt;PurpleSkyTransition&gt; — dark to deep-purple sky with stars</div>
         </div>
         <div class="ds-atmo-item">
-          <div class="ds-atmo-stage ds-copyable" data-copy="<LofiFooterFade />" title="click to copy"><LofiFooterFade client:load /></div>
+          <div class="ds-atmo-stage ds-copyable" data-ds-snippet={componentImportSnippet('LofiFooterFade', '../components/ui/LofiFooterFade', '<LofiFooterFade client:load />')} title="click for code"><LofiFooterFade client:load /></div>
           <div class="ds-atmo-cap">&lt;LofiFooterFade&gt; — purple → page bg fade with drifting dots, between lofi room and footer</div>
         </div>
         <div class="ds-atmo-item">
-          <div class="ds-atmo-stage ds-atmo-stage-band hf-band-cosmic ds-copyable" data-copy="hf-band-cosmic" title="click to copy class">
+          <div class="ds-atmo-stage ds-atmo-stage-band hf-band-cosmic ds-copyable" data-ds-snippet={`import NebulaStars from '../components/ui/NebulaStars';
+
+// in JSX — backdrop class + nebula stars layered on top
+<div class="hf-band-cosmic">
+  <NebulaStars client:load count={40} />
+</div>`} title="click for code">
             <NebulaStars client:load count={40} />
           </div>
           <div class="ds-atmo-cap">.hf-band-cosmic + &lt;NebulaStars&gt; — cockpit cosmic backdrop, <code>var(--hf-grad-cockpit)</code></div>
         </div>
         <div class="ds-atmo-item">
-          <div class="ds-atmo-stage ds-atmo-stage-band hf-band-nebula ds-copyable" data-copy="hf-band-nebula" title="click to copy class">
+          <div class="ds-atmo-stage ds-atmo-stage-band hf-band-nebula ds-copyable" data-ds-snippet={`import NebulaStars from '../components/ui/NebulaStars';
+
+// in JSX — backdrop class + nebula stars layered on top
+<div class="hf-band-nebula">
+  <NebulaStars client:load count={40} />
+</div>`} title="click for code">
             <NebulaStars client:load count={40} />
           </div>
           <div class="ds-atmo-cap">.hf-band-nebula + &lt;NebulaStars&gt; — terminal nebula backdrop, <code>var(--hf-grad-nebula)</code></div>
@@ -254,12 +313,34 @@ const RADIUS_TOKENS = [
       <div class="ds-section-sub">Common surface treatments. All values come from tokens — no inline hex.</div>
 
       <div class="ds-container-grid">
-        <div class="ds-container-demo" style="background: var(--hf-cockpit-bg); border: 1px solid var(--hf-alpha-white-06); border-radius: var(--hf-radius-lg); box-shadow: inset 0 0 60px rgba(0,229,255,0.04), inset 0 0 120px rgba(168,85,247,0.03), inset 0 1px 0 var(--hf-alpha-white-05), 0 0 40px var(--hf-alpha-black-40);">
+        <div class="ds-container-demo ds-copyable" data-ds-snippet={`/* cp-dash — cockpit dashboard panel */
+.cp-dash {
+  background: var(--hf-cockpit-bg);
+  border: 1px solid var(--hf-alpha-white-06);
+  border-radius: var(--hf-radius-lg);
+  box-shadow:
+    inset 0 0 60px rgba(0, 229, 255, 0.04),
+    inset 0 0 120px rgba(168, 85, 247, 0.03),
+    inset 0 1px 0 var(--hf-alpha-white-05),
+    0 0 40px var(--hf-alpha-black-40);
+}`} title="click for code" style="background: var(--hf-cockpit-bg); border: 1px solid var(--hf-alpha-white-06); border-radius: var(--hf-radius-lg); box-shadow: inset 0 0 60px rgba(0,229,255,0.04), inset 0 0 120px rgba(168,85,247,0.03), inset 0 1px 0 var(--hf-alpha-white-05), 0 0 40px var(--hf-alpha-black-40);">
           <div class="ds-container-label">cp-dash</div>
           <div class="ds-container-desc">Cockpit dashboard panel — flat dark bg with cyan + purple inner glow.</div>
           <div class="ds-container-meta">bg: --hf-cockpit-bg · border: --hf-alpha-white-06 · radius: --hf-radius-lg</div>
         </div>
-        <div class="ds-container-demo" style="background: #080c0a; border: 1.5px solid var(--hf-line-strong); border-radius: var(--hf-radius-md);">
+        <div class="ds-container-demo ds-copyable" data-ds-snippet={`/* terminal — window with traffic lights */
+.terminal {
+  background: #080c0a;
+  border: 1.5px solid var(--hf-line-strong);
+  border-radius: var(--hf-radius-md);
+}
+.terminal .traffic { display: flex; gap: 6px; }
+.terminal .traffic span {
+  width: 10px; height: 10px; border-radius: 50%;
+}
+.terminal .traffic .red    { background: #ff5f57; }
+.terminal .traffic .yellow { background: #febc2e; }
+.terminal .traffic .green  { background: #28c840; }`} title="click for code" style="background: #080c0a; border: 1.5px solid var(--hf-line-strong); border-radius: var(--hf-radius-md);">
           <div class="ds-container-label">terminal</div>
           <div class="ds-container-desc">Terminal window — near-black bg with traffic lights.</div>
           <div class="ds-traffic-row">
@@ -269,12 +350,24 @@ const RADIUS_TOKENS = [
           </div>
           <div class="ds-container-meta">border: --hf-line-strong · radius: --hf-radius-md</div>
         </div>
-        <div class="ds-container-demo" style="background: var(--hf-surface); border: 1.5px solid var(--hf-line); border-radius: var(--hf-radius-md);">
+        <div class="ds-container-demo ds-copyable" data-ds-snippet={`/* card — project / stat surface */
+.card {
+  background: var(--hf-surface);
+  border: 1.5px solid var(--hf-line);
+  border-radius: var(--hf-radius-md);
+}`} title="click for code" style="background: var(--hf-surface); border: 1.5px solid var(--hf-line); border-radius: var(--hf-radius-md);">
           <div class="ds-container-label">card</div>
           <div class="ds-container-desc">Project cards, stat cards — surface bg, thin border.</div>
           <div class="ds-container-meta">bg: --hf-surface · border: --hf-line · radius: --hf-radius-md</div>
         </div>
-        <div class="ds-container-demo" style="background: var(--hf-alpha-white-02); border: 1.5px solid var(--hf-cockpit-panel-2); border-radius: var(--hf-radius-sm); border-left: 3px solid var(--hf-accent); padding-left: 12px;">
+        <div class="ds-container-demo ds-copyable" data-ds-snippet={`/* block — terminal output, accent left rule */
+.block {
+  background: var(--hf-alpha-white-02);
+  border: 1.5px solid var(--hf-cockpit-panel-2);
+  border-left: 3px solid var(--hf-accent);
+  border-radius: var(--hf-radius-sm);
+  padding-left: 12px;
+}`} title="click for code" style="background: var(--hf-alpha-white-02); border: 1.5px solid var(--hf-cockpit-panel-2); border-radius: var(--hf-radius-sm); border-left: 3px solid var(--hf-accent); padding-left: 12px;">
           <div class="ds-container-label">block</div>
           <div class="ds-container-desc">Terminal output block — accent left border, near-transparent bg.</div>
           <div class="ds-container-meta">border-left: 3px solid --hf-accent · bg: --hf-alpha-white-02</div>
@@ -292,31 +385,36 @@ const RADIUS_TOKENS = [
       </div>
 
       <div class="ds-comp-grid">
-        <div class="ds-comp-card">
+        <div class="ds-comp-card ds-copyable" data-ds-snippet={componentImportSnippet('NeonText', '../components/ui/NeonText', '<NeonText client:load>NEON_TEXT</NeonText>')} title="click for code">
           <div class="ds-comp-label">&lt;NeonText&gt;</div>
           <div class="ds-comp-stage ds-comp-stage-display"><NeonText client:load>NEON_TEXT</NeonText></div>
           <div class="ds-comp-note">flickering accent — wraps any inline text</div>
         </div>
 
-        <div class="ds-comp-card">
+        <div class="ds-comp-card ds-copyable" data-ds-snippet={componentImportSnippet('KineticWord', '../components/ui/KineticWord', '<KineticWord client:load word="kinetic" altWord="glitched" delay={1500} loop />')} title="click for code">
           <div class="ds-comp-label">&lt;KineticWord&gt;</div>
           <div class="ds-comp-stage ds-comp-stage-display"><KineticWord client:load word="kinetic" altWord="glitched" delay={1500} loop={true} /></div>
           <div class="ds-comp-note">strike-then-replace cycle</div>
         </div>
 
-        <div class="ds-comp-card">
+        <div class="ds-comp-card ds-copyable" data-ds-snippet={componentImportSnippet('StrikeThrough', '../components/ui/StrikeThrough', '<StrikeThrough client:load delay={800}>strike-through copy</StrikeThrough>')} title="click for code">
           <div class="ds-comp-label">&lt;StrikeThrough&gt;</div>
           <div class="ds-comp-stage ds-comp-stage-display"><StrikeThrough client:load delay={800}>strike-through copy</StrikeThrough></div>
           <div class="ds-comp-note">animated cross-out on mount</div>
         </div>
 
-        <div class="ds-comp-card">
+        <div class="ds-comp-card ds-copyable" data-ds-snippet={componentImportSnippet('NotGateDivider', '../components/ui/NotGateDivider', '<NotGateDivider client:load label="design_system.boundary" />')} title="click for code">
           <div class="ds-comp-label">&lt;NotGateDivider&gt;</div>
           <div class="ds-comp-stage"><NotGateDivider client:load label="design_system.boundary" /></div>
           <div class="ds-comp-note">section divider with logic-gate motif</div>
         </div>
 
-        <div class="ds-comp-card ds-comp-card-wide">
+        <div class="ds-comp-card ds-comp-card-wide ds-copyable" data-ds-snippet={`import SegmentedBar from '../components/ui/SegmentedBar';
+
+// in JSX
+<SegmentedBar client:load value={3} max={5} segments={5} />
+<SegmentedBar client:load value={7} max={10} segments={10} color="var(--cp-ai)" />
+<SegmentedBar client:load value={9} max={10} segments={10} color="var(--cp-eda)" />`} title="click for code">
           <div class="ds-comp-label">&lt;SegmentedBar&gt;</div>
           <div class="ds-comp-stage ds-comp-stage-stack">
             <SegmentedBar client:load value={3} max={5} segments={5} />
@@ -326,13 +424,44 @@ const RADIUS_TOKENS = [
           <div class="ds-comp-note">value / max / color / segments — used in cockpit meters</div>
         </div>
 
-        <div class="ds-comp-card">
+        <div class="ds-comp-card ds-copyable" data-ds-snippet={componentImportSnippet('Placeholder', '../components/ui/Placeholder', '<Placeholder client:load name="placeholder.module" />')} title="click for code">
           <div class="ds-comp-label">&lt;Placeholder&gt;</div>
           <div class="ds-comp-stage"><Placeholder client:load name="placeholder.module" /></div>
           <div class="ds-comp-note">fallback panel for missing/loading content</div>
         </div>
 
-        <div class="ds-comp-card">
+        <div class="ds-comp-card ds-copyable" data-ds-snippet={`/* stat card — cockpit vitals tile */
+.stat-card {
+  flex: 1;
+  padding: var(--hf-space-3);
+  background: var(--hf-alpha-white-03);
+  border: 1px solid var(--hf-alpha-white-06);
+  border-radius: var(--hf-radius-md);
+  position: relative;
+  overflow: hidden;
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--stat-c); /* per-card category accent */
+}
+.stat-card .num {
+  font-size: var(--hf-fs-2xl);
+  font-weight: 700;
+  color: var(--stat-c);
+}
+.stat-card .lbl {
+  font-size: var(--hf-fs-xs);
+  color: var(--hf-ink-pale);
+}
+
+/* usage */
+<div class="stat-card" style="--stat-c: var(--cp-asic);">
+  <div class="num">42</div>
+  <div class="lbl">Skills</div>
+</div>`} title="click for code">
           <div class="ds-comp-label">stat card</div>
           <div class="ds-comp-stage" style="gap: 8px;">
             <div class="ds-stat-card" style="--stat-c: var(--cp-asic);">
@@ -351,7 +480,23 @@ const RADIUS_TOKENS = [
           <div class="ds-comp-note">cockpit vitals — top accent stripe by category</div>
         </div>
 
-        <div class="ds-comp-card">
+        <div class="ds-comp-card ds-copyable" data-ds-snippet={`/* pill button — cockpit nav, tinted by category */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid color-mix(in srgb, var(--pill-c) 35%, transparent);
+  background: color-mix(in srgb, var(--pill-c) 8%, transparent);
+  color: var(--pill-c);
+  border-radius: var(--hf-radius-md);
+  font-size: var(--hf-fs-md);
+  font-weight: 600;
+  letter-spacing: var(--hf-tracking-wide);
+}
+
+/* usage */
+<span class="pill" style="--pill-c: var(--cp-asic);">▸ asic.core</span>`} title="click for code">
           <div class="ds-comp-label">pill buttons</div>
           <div class="ds-comp-stage" style="flex-wrap: wrap; gap: 8px;">
             <span class="ds-pill" style="--pill-c: var(--cp-asic);">▸ asic.core</span>
@@ -397,7 +542,40 @@ const RADIUS_TOKENS = [
         <div><span class="ds-naming-tag">.cp-bento-row3</span> — sub-grid: <code>grid-template-columns: 3fr 2fr</code></div>
 
         <div class="ds-naming-group">layout map (live grid — real <code>.cp-bento</code> classes)</div>
-        <div class="cp-bento ds-bento-live">
+        <div class="cp-bento ds-bento-live ds-copyable" data-ds-snippet={`/* bento layout — overview page grid */
+.cp-bento {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: 14px;
+}
+.cp-tile {
+  background: var(--hf-alpha-white-03);
+  border: 1px solid var(--hf-line);
+  border-radius: var(--hf-radius-lg);
+  padding: var(--hf-space-4);
+}
+.cp-tile-full { grid-column: 1 / -1; }
+.cp-bento-row3 {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 14px;
+}
+@media (max-width: 640px) {
+  .cp-bento, .cp-bento-row3 { grid-template-columns: 1fr; }
+}
+
+/* usage */
+<div class="cp-bento">
+  <div class="cp-tile cp-tile-full">vitals row</div>
+  <div class="cp-tile cp-tile-a">speedometer</div>
+  <div class="cp-tile cp-tile-b">donut</div>
+  <div class="cp-bento-row3">
+    <div class="cp-tile">bar chart</div>
+    <div class="cp-tile">heatmap</div>
+  </div>
+  <div class="cp-tile cp-tile-full">ticker</div>
+</div>`} title="click for code">
           <div class="cp-tile cp-tile-full">
             <div class="ds-bento-lbl">.cp-tile-full</div>
             <div class="ds-bento-role">vitals · stat cards row</div>
@@ -439,7 +617,7 @@ const RADIUS_TOKENS = [
       <div class="ds-group-label">spacing scale</div>
       <div class="ds-spacing-row">
         {SPACING_TOKENS.map((s) => (
-          <div class="ds-spacing-item">
+          <div class="ds-spacing-item ds-copyable" data-ds-snippet={spacingSnippet(s.token, s.px)} title="click for code">
             <div class="ds-spacing-bar" style={`height: var(${s.token}); width: var(${s.token});`}></div>
             <div class="ds-spacing-lbl">{s.px}</div>
             <div class="ds-spacing-tok">{s.token}</div>
@@ -450,7 +628,7 @@ const RADIUS_TOKENS = [
       <div class="ds-group-label" style="margin-top: 24px;">border radii</div>
       <div class="ds-radius-row">
         {RADIUS_TOKENS.map((r) => (
-          <div class="ds-radius-tile" style={`border-radius: var(${r.token});`}>
+          <div class="ds-radius-tile ds-copyable" data-ds-snippet={radiusSnippet(r.token, r.label)} title="click for code" style={`border-radius: var(${r.token});`}>
             <div class="ds-radius-lbl">{r.label}</div>
             <div class="ds-radius-tok">{r.token}</div>
           </div>
@@ -477,6 +655,20 @@ const RADIUS_TOKENS = [
   </main>
 
   <div id="ds-toast" class="ds-toast">copied</div>
+
+  <div id="ds-modal" class="ds-modal" role="dialog" aria-hidden="true" aria-labelledby="ds-modal-title">
+    <div class="ds-modal-backdrop" data-ds-close></div>
+    <div class="ds-modal-card">
+      <div class="ds-modal-head">
+        <div id="ds-modal-title" class="ds-modal-title">code snippet</div>
+        <div class="ds-modal-actions">
+          <button id="ds-modal-copy" class="ds-modal-btn" type="button">copy</button>
+          <button class="ds-modal-btn ds-modal-btn-ghost" type="button" data-ds-close aria-label="close">×</button>
+        </div>
+      </div>
+      <pre id="ds-modal-pre" class="ds-modal-pre"><code id="ds-modal-code"></code></pre>
+    </div>
+  </div>
 
   <script is:inline>
     // Resolve hex values for swatches at runtime so the displayed values
@@ -526,10 +718,39 @@ const RADIUS_TOKENS = [
         copyText(el.textContent || '');
       });
     });
+    // Snippet modal — every artifact with `data-ds-snippet` opens a modal
+    // showing the code needed to reproduce it.
+    const modal = document.getElementById('ds-modal');
+    const modalCode = document.getElementById('ds-modal-code');
+    const modalCopy = document.getElementById('ds-modal-copy');
+    let currentSnippet = '';
+    function openModal(snippet) {
+      if (!modal || !modalCode) return;
+      currentSnippet = snippet;
+      modalCode.textContent = snippet;
+      modal.classList.add('ds-show');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+    function closeModal() {
+      if (!modal) return;
+      modal.classList.remove('ds-show');
+      modal.setAttribute('aria-hidden', 'true');
+    }
     document.querySelectorAll('.ds-copyable').forEach((el) => {
-      el.addEventListener('click', () => {
-        copyText(el.getAttribute('data-copy') || '');
+      el.addEventListener('click', (e) => {
+        const target = e.target;
+        if (target instanceof Element && target.closest('code')) return;
+        const snippet = el.getAttribute('data-ds-snippet') || el.getAttribute('data-copy') || '';
+        if (!snippet) return;
+        openModal(snippet);
       });
+    });
+    document.querySelectorAll('[data-ds-close]').forEach((el) => {
+      el.addEventListener('click', closeModal);
+    });
+    modalCopy?.addEventListener('click', () => copyText(currentSnippet));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
     });
   </script>
 </Layout>

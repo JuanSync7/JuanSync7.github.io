@@ -500,8 +500,107 @@
   transform: translateX(-50%) translateY(0);
 }
 
+/* ─── Snippet modal ─── */
+.ds-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--hf-z-modal, 9999);
+}
+.ds-modal.ds-show { display: flex; }
+.ds-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--hf-alpha-black-40);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.ds-modal-card {
+  position: relative;
+  width: min(720px, calc(100vw - 32px));
+  max-height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+  background: var(--hf-cockpit-bg);
+  border: 1px solid var(--hf-line-strong);
+  border-radius: var(--hf-radius-lg);
+  box-shadow:
+    inset 0 1px 0 var(--hf-alpha-white-05),
+    0 20px 60px var(--hf-alpha-black-40);
+  overflow: hidden;
+}
+.ds-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--hf-space-3);
+  padding: var(--hf-space-3) var(--hf-space-4);
+  border-bottom: 1px solid var(--hf-line);
+  background: var(--hf-surface);
+}
+.ds-modal-title {
+  font-family: var(--hf-mono);
+  font-size: var(--hf-fs-xs);
+  color: var(--hf-accent-2);
+  letter-spacing: var(--hf-tracking-wider);
+  text-transform: uppercase;
+}
+.ds-modal-actions {
+  display: flex;
+  gap: var(--hf-space-2);
+}
+.ds-modal-btn {
+  font-family: var(--hf-mono);
+  font-size: var(--hf-fs-xs);
+  letter-spacing: var(--hf-tracking-wide);
+  color: var(--hf-bg);
+  background: var(--hf-accent);
+  border: 0;
+  padding: 4px 12px;
+  border-radius: var(--hf-radius-sm);
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.ds-modal-btn:hover { opacity: 0.85; }
+.ds-modal-btn-ghost {
+  background: transparent;
+  color: var(--hf-ink-soft);
+  border: 1px solid var(--hf-line);
+  font-size: var(--hf-fs-md);
+  line-height: 1;
+  padding: 2px 10px;
+}
+.ds-modal-btn-ghost:hover {
+  color: var(--hf-ink);
+  border-color: var(--hf-line-strong);
+}
+.ds-modal-pre {
+  margin: 0;
+  padding: var(--hf-space-4);
+  overflow: auto;
+  font-family: var(--hf-mono);
+  font-size: var(--hf-fs-base);
+  line-height: 1.55;
+  color: var(--hf-ink);
+  background: var(--hf-bg-2);
+  white-space: pre;
+  tab-size: 2;
+}
+.ds-modal-pre code {
+  font-family: inherit;
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+
+/* All artifact tiles get a tactile click affordance */
+.ds-copyable { cursor: pointer; }
+
 @media (max-width: 640px) {
   .ds-wrap { padding: var(--hf-space-8) var(--hf-space-5); }
   .ds-title { font-size: 28px; }
   .ds-swatch-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+  .ds-modal-pre { font-size: var(--hf-fs-sm); }
 }
