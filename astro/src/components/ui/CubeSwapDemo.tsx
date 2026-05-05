@@ -10,13 +10,17 @@ const FACES = [
 
 interface Cube { from: number; to: number; dir: 'left' | 'right'; }
 
+const HOLD_MS = 1600;   // dwell on a face before kicking off the next rotation
+const ROT_MS  = 620;    // rotation duration (matches keyframe + a small buffer)
+
 export default function CubeSwapDemo() {
   const [idx, setIdx] = useState(0);
   const [cube, setCube] = useState<Cube | null>(null);
   const stageRef = useRef<HTMLDivElement>(null);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const idxRef = useRef(0);
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
-  useEffect(() => () => { if (timer.current) clearTimeout(timer.current); }, []);
+  useEffect(() => { idxRef.current = idx; }, [idx]);
 
   // Keep --csd-d (half panel width) in sync so cube faces stay tangent.
   useEffect(() => {
@@ -32,16 +36,33 @@ export default function CubeSwapDemo() {
     return () => ro.disconnect();
   }, []);
 
-  const goTo = (next: number, dir: 'left' | 'right') => {
-    if (next === idx || cube) return;
-    const wrapped = ((next % FACES.length) + FACES.length) % FACES.length;
-    setCube({ from: idx, to: wrapped, dir });
-    if (timer.current) clearTimeout(timer.current);
-    timer.current = setTimeout(() => {
-      setIdx(wrapped);
-      setCube(null);
-    }, 620);
-  };
+  // Auto-cycle: idle (HOLD) → rotate to next face (ROT) → swap + idle …
+  useEffect(() => {
+    let cancelled = false;
+
+    const cycle = () => {
+      if (cancelled) return;
+      timers.current.push(setTimeout(() => {
+        if (cancelled) return;
+        const from = idxRef.current;
+        const to = (from + 1) % FACES.length;
+        setCube({ from, to, dir: 'right' });
+        timers.current.push(setTimeout(() => {
+          if (cancelled) return;
+          setIdx(to);
+          setCube(null);
+          cycle();
+        }, ROT_MS));
+      }, HOLD_MS));
+    };
+
+    cycle();
+    return () => {
+      cancelled = true;
+      timers.current.forEach(clearTimeout);
+      timers.current = [];
+    };
+  }, []);
 
   const faceClass = (i: number) => {
     if (cube) {
@@ -57,9 +78,8 @@ export default function CubeSwapDemo() {
   return (
     <div className="csd-wrap">
       <div className="csd-hdr">
-        <div className="csd-arr" onClick={() => goTo(idx - 1, 'left')}>◀</div>
         <div className="csd-title">// {cur.title}</div>
-        <div className="csd-arr" onClick={() => goTo(idx + 1, 'right')}>▶</div>
+        <div className="csd-auto">auto</div>
       </div>
 
       <div ref={stageRef} className="csd-stage">

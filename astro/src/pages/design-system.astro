@@ -706,17 +706,16 @@ ${CubeSwapCss}
 
 /* ─── src/components/ui/CubeSwapDemo.tsx ─── */
 ${CubeSwapDemoSrc}`} title="click for code">
-          <div class="ds-comp-label">&lt;CubeSwapDemo&gt; — 3D cube rotation (left / right arrow nav)</div>
+          <div class="ds-comp-label">&lt;CubeSwapDemo&gt; — 3D cube rotation (used for arrow nav in cockpit)</div>
           <div class="ds-comp-stage" style="min-height: 240px; padding: var(--hf-space-4);">
             <CubeSwapDemo client:load />
           </div>
           <div class="ds-comp-note">
-            each face is a page. <code>◀</code> pivots rotor <code>+90°</code>,
-            <code>▶</code> pivots <code>-90°</code>. Faces stay tangent because
-            a <code>ResizeObserver</code> writes <code>--csd-d = stageWidth/2</code>.
-            Keyframe (not transition) so the rotor's <code>translateZ(-D)</code>
-            applies on frame 1 alongside the face's <code>translateZ(+D)</code> —
-            no pre-rotation pop-in.
+            each face is a page; rotor pivots <code>-90°</code> per cycle.
+            Faces stay tangent because a <code>ResizeObserver</code> writes
+            <code>--csd-d = stageWidth/2</code>. Keyframe (not transition) so the
+            rotor's <code>translateZ(-D)</code> applies on frame 1 alongside the
+            face's <code>translateZ(+D)</code> — no pre-rotation pop-in.
           </div>
         </div>
       </div>

@@ -27,14 +27,12 @@
   letter-spacing: var(--hf-tracking-wide);
 }
 .csd-title { color: var(--hf-accent); }
-.csd-arr {
-  cursor: pointer;
+.csd-auto {
+  font-size: 9px;
   color: var(--hf-ink-muted);
-  user-select: none;
-  padding: 0 var(--hf-space-2);
-  transition: color 0.15s;
+  letter-spacing: var(--hf-tracking-wider);
+  text-transform: uppercase;
 }
-.csd-arr:hover { color: var(--hf-accent); }
 
 .csd-stage {
   position: relative;
