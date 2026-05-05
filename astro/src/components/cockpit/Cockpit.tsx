@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useOnScreen } from '@/hooks/useOnScreen';
 import { useInView } from '@/hooks/useInView';
 import PageOverview from './PageOverview';
@@ -6,37 +6,16 @@ import PageASIC from './PageASIC';
 import PageAI from './PageAI';
 import PageEDA from './PageEDA';
 import PageScripting from './PageScripting';
+import CockpitStars from './CockpitStars';
 import { drawBars } from './draw/bars';
 import { drawSpeedometer } from './draw/speedometer';
 import { initBarData, initTpData, PAGE_COLORS, PAGE_NAMES, TOTAL_PAGES } from './cockpit-data';
 import { GRAD } from './cockpit-palette';
 
-interface Star {
-  x: number;
-  y: number;
-  r: number;
-  o: number;
-  d: number;
-  dur: number;
-}
-
-function makeStars(count: number): Star[] {
-  return Array.from({ length: count }, () => ({
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    r: 0.4 + Math.random() * 1.6,
-    o: 0.08 + Math.random() * 0.5,
-    d: Math.random() * 4,
-    dur: 1.5 + Math.random() * 2.5,
-  }));
-}
-
 export default function Cockpit() {
   const sectionRef = useRef<HTMLElement>(null);
   const sectionVisible = useOnScreen(sectionRef, 0.1);
   const inView = useInView(sectionRef, '300px 0px');
-
-  const stars = useMemo(() => makeStars(150), []);
 
   const [page, setPage] = useState(0);
   const [playing, setPlaying] = useState(true);
@@ -159,25 +138,7 @@ export default function Cockpit() {
       className={`hf-section hf-cockpit${sectionVisible ? ' hf-visible' : ''}`}
       ref={sectionRef}
     >
-      {inView && (
-        <div className="cp-stars">
-          {stars.map((s, i) => (
-            <span
-              key={i}
-              className="cp-star"
-              style={{
-                left: `${s.x}%`,
-                top: `${s.y}%`,
-                width: `${s.r}px`,
-                height: `${s.r}px`,
-                opacity: s.o,
-                animationDelay: `${s.d}s`,
-                animationDuration: `${s.dur}s`,
-              }}
-            />
-          ))}
-        </div>
-      )}
+      {inView && <CockpitStars count={150} />}
 
       <div
         ref={dashRef}
