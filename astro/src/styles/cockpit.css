@@ -377,21 +377,23 @@
   position: relative;
   transform-style: preserve-3d;
   transform: translateZ(0);
-  /* No default transition — when the rotation class is removed at the end
-     of the cube transition, the rotor must snap back to identity instantly,
-     otherwise the rotor animates a second time back to 0° which reads as a
-     phantom counter-rotation. The transition lives on the rotation classes. */
+  /* No default transition — when the rotation class is removed at end of
+     cube transition, the rotor snaps back to identity instantly. */
 }
-.cp-cube-rotor-right,
-.cp-cube-rotor-left {
-  transition: transform 600ms cubic-bezier(0.65, 0, 0.35, 1);
+
+/* Drive the rotation with a keyframe animation (not a transition) so the
+   `from` state — which already pulls the rotor back by -D — applies on
+   frame 1 at the same time the face gets translateZ(+D). Net z stays at
+   0 from the start, so there's no pre-rotation zoom-in. */
+.cp-cube-rotor-right { animation: cp-cube-rot-right 600ms cubic-bezier(0.65, 0, 0.35, 1) forwards; }
+.cp-cube-rotor-left  { animation: cp-cube-rot-left  600ms cubic-bezier(0.65, 0, 0.35, 1) forwards; }
+@keyframes cp-cube-rot-right {
+  from { transform: translateZ(calc(var(--cp-cube-d, 480px) * -1)) rotateY(  0deg); }
+  to   { transform: translateZ(calc(var(--cp-cube-d, 480px) * -1)) rotateY(-90deg); }
 }
-.cp-cube-rotor-right {
-  /* Pull camera back by the cube depth then rotate so the right face fronts. */
-  transform: translateZ(calc(var(--cp-cube-d, 480px) * -1)) rotateY(-90deg);
-}
-.cp-cube-rotor-left {
-  transform: translateZ(calc(var(--cp-cube-d, 480px) * -1)) rotateY(90deg);
+@keyframes cp-cube-rot-left {
+  from { transform: translateZ(calc(var(--cp-cube-d, 480px) * -1)) rotateY( 0deg); }
+  to   { transform: translateZ(calc(var(--cp-cube-d, 480px) * -1)) rotateY(90deg); }
 }
 .cp-cube-face {
   display: block !important;
