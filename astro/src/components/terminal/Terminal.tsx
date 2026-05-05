@@ -122,7 +122,7 @@ export default function Terminal() {
             </div>
           )}
         </div>
-        <div className="hf-term-hint">click to type · try: whoami, sudo hire-me, neofetch</div>
+        <div className="hf-term-hint">click to type · try: ls (list files), cat &lt;file&gt; (read one), whoami, sudo hire-me, neofetch, clear (reset)</div>
       </div>
     </section>
   );

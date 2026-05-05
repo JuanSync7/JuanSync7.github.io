@@ -364,6 +364,57 @@
 .cp-page-active { display: block; opacity: 1; }
 .cp-page { will-change: transform, opacity; }
 
+/* ─── Cube rotation (left/right arrow navigation) ───
+   Each skill page is a face of a cube. Clicking the right arrow rotates the
+   rotor by -90° so the next face swings into view; left arrow does +90°.
+   --cp-cube-d (set from JS = half panel width) keeps adjacent faces tangent. */
+.cp-cube-stage {
+  position: relative;
+  perspective: 1600px;
+  perspective-origin: 50% 50%;
+}
+.cp-cube-rotor {
+  position: relative;
+  transform-style: preserve-3d;
+  transform: translateZ(0);
+  /* No default transition — when the rotation class is removed at the end
+     of the cube transition, the rotor must snap back to identity instantly,
+     otherwise the rotor animates a second time back to 0° which reads as a
+     phantom counter-rotation. The transition lives on the rotation classes. */
+}
+.cp-cube-rotor-right,
+.cp-cube-rotor-left {
+  transition: transform 600ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+.cp-cube-rotor-right {
+  /* Pull camera back by the cube depth then rotate so the right face fronts. */
+  transform: translateZ(calc(var(--cp-cube-d, 480px) * -1)) rotateY(-90deg);
+}
+.cp-cube-rotor-left {
+  transform: translateZ(calc(var(--cp-cube-d, 480px) * -1)) rotateY(90deg);
+}
+.cp-cube-face {
+  display: block !important;
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.cp-cube-face-front { transform: translateZ(var(--cp-cube-d, 480px)); }
+.cp-cube-face-right { transform: rotateY( 90deg) translateZ(var(--cp-cube-d, 480px)); }
+.cp-cube-face-left  { transform: rotateY(-90deg) translateZ(var(--cp-cube-d, 480px)); }
+
+/* Give the rotor real height during the transition so absolutely-positioned
+   faces don't collapse the layout. The "from" page acts as the height ref. */
+.cp-dash-cube .cp-cube-rotor {
+  position: relative;
+}
+.cp-dash-cube .cp-cube-face-front {
+  /* Front face stays in flow as the height reference for the rotor. */
+  position: relative;
+  inset: auto;
+}
+
 /* Sequenced page transition — the dashboard zooms OUT, then the section
    scrolls up, then the new page is swapped in and the panel zooms back IN.
    Driven by .cp-dash-out / .cp-dash-in classes toggled from Cockpit.tsx. */

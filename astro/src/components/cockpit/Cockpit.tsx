@@ -43,7 +43,23 @@ export default function Cockpit() {
   const [smooth, setSmooth] = useState(true);
   const [mode, setMode] = useState(0);
   const [phase, setPhase] = useState<'idle' | 'out' | 'in'>('idle');
+  const [cube, setCube] = useState<{ from: number; to: number; dir: 'left' | 'right' } | null>(null);
   const phaseTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const dashRef = useRef<HTMLDivElement>(null);
+
+  // Keep --cp-cube-d (half the dash width) in sync so cube faces stay tangent.
+  useEffect(() => {
+    const el = dashRef.current;
+    if (!el) return;
+    const apply = () => {
+      const w = el.getBoundingClientRect().width;
+      el.style.setProperty('--cp-cube-d', `${w / 2}px`);
+    };
+    apply();
+    const ro = new ResizeObserver(apply);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   const gpuRef = useRef<HTMLCanvasElement>(null);
   const tpRef = useRef<HTMLCanvasElement>(null);
@@ -60,13 +76,25 @@ export default function Cockpit() {
     fc: 0,
   });
 
-  const goTo = useCallback((p: number) => {
+  const goTo = useCallback((p: number, dir?: 'left' | 'right') => {
     const next = ((p % TOTAL_PAGES) + TOTAL_PAGES) % TOTAL_PAGES;
     setPage((prev) => {
       if (next === prev) return prev;
-      // Sequenced transition: zoom out → scroll up → swap content → zoom back in.
       phaseTimers.current.forEach(clearTimeout);
       phaseTimers.current = [];
+
+      if (dir) {
+        // Cube rotation for arrow navigation. The rotor pivots ±90° so the
+        // adjacent face swings into view, then we snap state and reset.
+        setCube({ from: prev, to: next, dir });
+        phaseTimers.current.push(setTimeout(() => {
+          setPage(next);
+          setCube(null);
+        }, 620));
+        return prev;
+      }
+
+      // Sequenced zoom transition for non-adjacent jumps (dots / category btns).
       setPhase('out');
       phaseTimers.current.push(setTimeout(() => {
         sectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -114,7 +142,16 @@ export default function Cockpit() {
     return () => cancelAnimationFrame(raf);
   }, [inView, playing]);
 
-  const pageClass = (idx: number) => `cp-page ${page === idx ? 'cp-page-active' : 'cp-page-hidden'}`;
+  const pageClass = (idx: number) => {
+    if (cube) {
+      if (idx === cube.from) return 'cp-page cp-cube-face cp-cube-face-front';
+      if (idx === cube.to) {
+        return `cp-page cp-cube-face cp-cube-face-${cube.dir === 'right' ? 'right' : 'left'}`;
+      }
+      return 'cp-page cp-page-hidden';
+    }
+    return `cp-page ${page === idx ? 'cp-page-active' : 'cp-page-hidden'}`;
+  };
 
   return (
     <section
@@ -142,12 +179,15 @@ export default function Cockpit() {
         </div>
       )}
 
-      <div className={`cp-dash${phase !== 'idle' ? ` cp-dash-${phase}` : ''}`}>
+      <div
+        ref={dashRef}
+        className={`cp-dash${phase !== 'idle' ? ` cp-dash-${phase}` : ''}${cube ? ` cp-dash-cube cp-dash-cube-${cube.dir}` : ''}`}
+      >
         <div className="cp-scanline" />
 
         <div className="cp-hdr">
           <div className="cp-hdr-left">
-            <div className="cp-arr" onClick={() => goTo(page - 1)}>◀</div>
+            <div className="cp-arr" onClick={() => goTo(page - 1, 'left')}>◀</div>
             <span className="cp-hdr-title">// skill_monitor.sv</span>
           </div>
           <div className="cp-dots">
@@ -164,10 +204,12 @@ export default function Cockpit() {
               <span className="cp-sdot" style={{ background: PAGE_COLORS[page] }} />
               [{page + 1}/{TOTAL_PAGES}] {PAGE_NAMES[page]}
             </span>
-            <div className="cp-arr" onClick={() => goTo(page + 1)}>▶</div>
+            <div className="cp-arr" onClick={() => goTo(page + 1, 'right')}>▶</div>
           </div>
         </div>
 
+        <div className="cp-cube-stage">
+          <div className={`cp-cube-rotor${cube ? ` cp-cube-rotor-${cube.dir}` : ''}`}>
         <div className={pageClass(0)}>
           <PageOverview
             gpuRef={gpuRef}
@@ -192,6 +234,8 @@ export default function Cockpit() {
         </div>
         <div className={pageClass(4)}>
           <PageScripting />
+        </div>
+          </div>
         </div>
       </div>
     </section>
