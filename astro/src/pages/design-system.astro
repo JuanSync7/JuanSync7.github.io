@@ -11,6 +11,7 @@ import StarfieldStage from '../components/ui/StarfieldStage.tsx';
 import LofiFooterFade from '../components/ui/LofiFooterFade.tsx';
 import Placeholder from '../components/ui/Placeholder.tsx';
 import NebulaStars from '../components/ui/NebulaStars.tsx';
+import ZoomSwapDemo from '../components/ui/ZoomSwapDemo.tsx';
 import { IDENTITY, CAREER_STATS } from '../data/site';
 
 /* Raw component source — Vite `?raw` returns the file as a string at
@@ -26,6 +27,8 @@ import StarfieldStageSrc from '../components/ui/StarfieldStage.tsx?raw';
 import PurpleSkyTransitionSrc from '../components/ui/PurpleSkyTransition.tsx?raw';
 import LofiFooterFadeSrc from '../components/ui/LofiFooterFade.tsx?raw';
 import NebulaStarsSrc from '../components/ui/NebulaStars.tsx?raw';
+import ZoomSwapDemoSrc from '../components/ui/ZoomSwapDemo.tsx?raw';
+import ZoomSwapCss from '../components/ui/zoom-swap.css?raw';
 
 /* All tokens read from src/styles/tokens/*.css. Hex values are resolved
    at runtime by the inline script at the bottom of this page so this list
@@ -667,6 +670,33 @@ ${NebulaStarsSrc}
         <div><span class="ds-naming-tag2">ticker</span> — portfolio stats scroll, 35s linear infinite translateX</div>
         <div><span class="ds-naming-tag2">card-in</span> — project cards, 0.4s ease-out, opacity + translateY(12px)</div>
         <div><span class="ds-naming-tag2">star-twinkle</span> — &lt;PurpleSkyTransition&gt; stars, 2s alternate</div>
+      </div>
+    </section>
+
+    {/* ───────────────────────── 11 PAGE TRANSITIONS ───────────────────────── */}
+    <section class="ds-section">
+      <div class="ds-section-title">11 — page transitions</div>
+      <div class="ds-section-sub">
+        Sequenced zoom-out → scroll → zoom-in pattern used by the cockpit
+        when navigating between skill pages. Click ◀ ▶ or a dot to play it.
+      </div>
+
+      <div class="ds-comp-grid">
+        <div class="ds-comp-card ds-copyable" data-ds-snippet={`/* ─── src/components/ui/zoom-swap.css ─── */
+${ZoomSwapCss}
+
+/* ─── src/components/ui/ZoomSwapDemo.tsx ─── */
+${ZoomSwapDemoSrc}`} title="click for code">
+          <div class="ds-comp-label">&lt;ZoomSwapDemo&gt; — sequenced page transition</div>
+          <div class="ds-comp-stage" style="min-height: 220px; padding: var(--hf-space-4);">
+            <ZoomSwapDemo client:load />
+          </div>
+          <div class="ds-comp-note">
+            phase machine: <code>idle → out</code> (scale 0.78 + blur, 320ms) →
+            <code>scroll</code> (in real cockpit) →
+            <code>in</code> (scale back to 1, 380ms springy ease) → <code>idle</code>
+          </div>
+        </div>
       </div>
     </section>
 

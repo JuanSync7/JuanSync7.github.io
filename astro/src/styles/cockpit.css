@@ -362,7 +362,37 @@
 .cp-stars { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 .cp-page-hidden { display: none; }
 .cp-page-active { display: block; opacity: 1; }
-.cp-page { transition: opacity 0.3s ease, transform 0.3s ease; }
+.cp-page { will-change: transform, opacity; }
+
+/* Sequenced page transition — the dashboard zooms OUT, then the section
+   scrolls up, then the new page is swapped in and the panel zooms back IN.
+   Driven by .cp-dash-out / .cp-dash-in classes toggled from Cockpit.tsx. */
+.cp-dash {
+  transform-origin: 50% 50%;
+  transform: scale(1);
+  opacity: 1;
+  will-change: transform, opacity, filter;
+  transition:
+    transform 320ms cubic-bezier(0.4, 0, 0.6, 1),
+    opacity   320ms ease,
+    filter    320ms ease;
+}
+.cp-dash-out {
+  transform: scale(0.78);
+  opacity: 0.35;
+  filter: blur(3px);
+}
+.cp-dash-in {
+  /* Re-entry — same target as idle but on a slower, springier curve so the
+     panel reads as zooming back IN rather than snapping. */
+  transform: scale(1);
+  opacity: 1;
+  filter: blur(0);
+  transition:
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity   380ms ease,
+    filter    380ms ease;
+}
 
 /* System log stream — macOS window */
 .cp-syslog-win {

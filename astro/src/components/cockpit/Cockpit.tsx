@@ -42,6 +42,8 @@ export default function Cockpit() {
   const [playing, setPlaying] = useState(true);
   const [smooth, setSmooth] = useState(true);
   const [mode, setMode] = useState(0);
+  const [phase, setPhase] = useState<'idle' | 'out' | 'in'>('idle');
+  const phaseTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   const gpuRef = useRef<HTMLCanvasElement>(null);
   const tpRef = useRef<HTMLCanvasElement>(null);
@@ -62,10 +64,23 @@ export default function Cockpit() {
     const next = ((p % TOTAL_PAGES) + TOTAL_PAGES) % TOTAL_PAGES;
     setPage((prev) => {
       if (next === prev) return prev;
-      sectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      return next;
+      // Sequenced transition: zoom out → scroll up → swap content → zoom back in.
+      phaseTimers.current.forEach(clearTimeout);
+      phaseTimers.current = [];
+      setPhase('out');
+      phaseTimers.current.push(setTimeout(() => {
+        sectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 320));
+      phaseTimers.current.push(setTimeout(() => {
+        setPage(next);
+        setPhase('in');
+      }, 700));
+      phaseTimers.current.push(setTimeout(() => setPhase('idle'), 1080));
+      return prev;
     });
   }, []);
+
+  useEffect(() => () => { phaseTimers.current.forEach(clearTimeout); }, []);
 
   useEffect(() => {
     if (!inView) return;
@@ -127,7 +142,7 @@ export default function Cockpit() {
         </div>
       )}
 
-      <div className="cp-dash">
+      <div className={`cp-dash${phase !== 'idle' ? ` cp-dash-${phase}` : ''}`}>
         <div className="cp-scanline" />
 
         <div className="cp-hdr">

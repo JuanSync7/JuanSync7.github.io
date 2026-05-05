@@ -1,0 +1,102 @@
+/* ZoomSwapDemo — sequenced page transition pattern.
+   Phase machine: idle → out (zoom out + fade) → [scroll happens here in
+   the real cockpit] → in (zoom back + clear) → idle. */
+
+.zsd-wrap {
+  display: flex;
+  justify-content: center;
+  padding: var(--hf-space-3);
+  width: 100%;
+}
+
+.zsd-panel {
+  width: 100%;
+  max-width: 420px;
+  background: var(--hf-cockpit-bg);
+  border: 1px solid var(--hf-alpha-white-06);
+  border-radius: var(--hf-radius-lg);
+  padding: var(--hf-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--hf-space-3);
+  transform-origin: 50% 50%;
+  transform: scale(1);
+  opacity: 1;
+  will-change: transform, opacity, filter;
+  box-shadow:
+    inset 0 1px 0 var(--hf-alpha-white-05),
+    0 0 40px var(--hf-alpha-black-40);
+  transition:
+    transform 320ms cubic-bezier(0.4, 0, 0.6, 1),
+    opacity   320ms ease,
+    filter    320ms ease;
+}
+.zsd-panel-out {
+  transform: scale(0.78);
+  opacity: 0.35;
+  filter: blur(3px);
+}
+.zsd-panel-in {
+  transform: scale(1);
+  opacity: 1;
+  filter: blur(0);
+  transition:
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity   380ms ease,
+    filter    380ms ease;
+}
+
+.zsd-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--hf-mono);
+  font-size: var(--hf-fs-sm);
+  color: var(--hf-accent-2);
+  letter-spacing: var(--hf-tracking-wide);
+}
+.zsd-arr {
+  cursor: pointer;
+  color: var(--hf-ink-muted);
+  user-select: none;
+  padding: 0 var(--hf-space-2);
+  transition: color 0.15s;
+}
+.zsd-arr:hover { color: var(--hf-accent); }
+.zsd-title { color: var(--hf-accent); }
+
+.zsd-page {
+  background: var(--hf-alpha-white-02);
+  border: 1px solid var(--hf-line);
+  border-radius: var(--hf-radius-md);
+  padding: var(--hf-space-5) var(--hf-space-4);
+  text-align: center;
+  font-family: var(--hf-mono);
+}
+.zsd-tag {
+  font-size: var(--hf-fs-2xl);
+  font-weight: 700;
+  color: var(--hf-accent);
+  letter-spacing: -0.02em;
+}
+.zsd-body {
+  margin-top: var(--hf-space-2);
+  font-size: var(--hf-fs-sm);
+  color: var(--hf-ink-soft);
+}
+
+.zsd-dots {
+  display: flex;
+  justify-content: center;
+  gap: var(--hf-space-2);
+}
+.zsd-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--hf-alpha-white-06);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.zsd-dot:hover { background: var(--hf-alpha-white-05); }
+.zsd-dot-on { background: var(--hf-accent); }
