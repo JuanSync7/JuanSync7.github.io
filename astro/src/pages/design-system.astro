@@ -13,6 +13,20 @@ import Placeholder from '../components/ui/Placeholder.tsx';
 import NebulaStars from '../components/ui/NebulaStars.tsx';
 import { IDENTITY, CAREER_STATS } from '../data/site';
 
+/* Raw component source — Vite `?raw` returns the file as a string at
+   build time so the snippet modal can show the full component code,
+   not just an import-and-use stub. */
+import NeonTextSrc from '../components/ui/NeonText.tsx?raw';
+import KineticWordSrc from '../components/ui/KineticWord.tsx?raw';
+import StrikeThroughSrc from '../components/ui/StrikeThrough.tsx?raw';
+import NotGateDividerSrc from '../components/ui/NotGateDivider.tsx?raw';
+import SegmentedBarSrc from '../components/ui/SegmentedBar.tsx?raw';
+import PlaceholderSrc from '../components/ui/Placeholder.tsx?raw';
+import StarfieldStageSrc from '../components/ui/StarfieldStage.tsx?raw';
+import PurpleSkyTransitionSrc from '../components/ui/PurpleSkyTransition.tsx?raw';
+import LofiFooterFadeSrc from '../components/ui/LofiFooterFade.tsx?raw';
+import NebulaStarsSrc from '../components/ui/NebulaStars.tsx?raw';
+
 /* All tokens read from src/styles/tokens/*.css. Hex values are resolved
    at runtime by the inline script at the bottom of this page so this list
    stays a single source of truth — never hardcode hex here. */
@@ -151,12 +165,6 @@ const radiusSnippet = (token: string, label: string) =>
   border-radius: var(${token});
 }`;
 
-const componentImportSnippet = (name: string, importPath: string, usage: string) =>
-  `import ${name} from '${importPath}';
-
-// in JSX
-${usage}`;
-
 ---
 
 <Layout title={`${IDENTITY.shortName} — design system`}>
@@ -269,36 +277,52 @@ ${usage}`;
 
       <div class="ds-atmo-stack">
         <div class="ds-atmo-item">
-          <div class="ds-atmo-stage ds-atmo-stage-band ds-atmo-stage-starfield ds-copyable" data-ds-snippet={componentImportSnippet('StarfieldStage', '../components/ui/StarfieldStage', '<StarfieldStage client:load />')} title="click for code">
+          <div class="ds-atmo-stage ds-atmo-stage-band ds-atmo-stage-starfield ds-copyable" data-ds-snippet={`// src/components/ui/StarfieldStage.tsx\n${StarfieldStageSrc}`} title="click for code">
             <StarfieldStage client:load />
           </div>
           <div class="ds-atmo-cap">&lt;StarfieldStage&gt; — twinkling stars + periodic shooting stars on black bg (scoped canvas; the global version is wired in <code>Layout.astro</code>)</div>
         </div>
         <div class="ds-atmo-item">
-          <div class="ds-atmo-stage ds-copyable" data-ds-snippet={componentImportSnippet('PurpleSkyTransition', '../components/ui/PurpleSkyTransition', '<PurpleSkyTransition client:load />')} title="click for code"><PurpleSkyTransition client:load /></div>
+          <div class="ds-atmo-stage ds-copyable" data-ds-snippet={`// src/components/ui/PurpleSkyTransition.tsx\n${PurpleSkyTransitionSrc}`} title="click for code"><PurpleSkyTransition client:load /></div>
           <div class="ds-atmo-cap">&lt;PurpleSkyTransition&gt; — dark to deep-purple sky with stars</div>
         </div>
         <div class="ds-atmo-item">
-          <div class="ds-atmo-stage ds-copyable" data-ds-snippet={componentImportSnippet('LofiFooterFade', '../components/ui/LofiFooterFade', '<LofiFooterFade client:load />')} title="click for code"><LofiFooterFade client:load /></div>
+          <div class="ds-atmo-stage ds-copyable" data-ds-snippet={`// src/components/ui/LofiFooterFade.tsx\n${LofiFooterFadeSrc}`} title="click for code"><LofiFooterFade client:load /></div>
           <div class="ds-atmo-cap">&lt;LofiFooterFade&gt; — purple → page bg fade with drifting dots, between lofi room and footer</div>
         </div>
         <div class="ds-atmo-item">
-          <div class="ds-atmo-stage ds-atmo-stage-band hf-band-cosmic ds-copyable" data-ds-snippet={`import NebulaStars from '../components/ui/NebulaStars';
+          <div class="ds-atmo-stage ds-atmo-stage-band hf-band-cosmic ds-copyable" data-ds-snippet={`/* ─── Backdrop CSS — paste into a global stylesheet ─── */
+.hf-band-cosmic {
+  position: relative;
+  overflow: hidden;
+  background: var(--hf-grad-cockpit);
+}
 
-// in JSX — backdrop class + nebula stars layered on top
+/* ─── NebulaStars component — src/components/ui/NebulaStars.tsx ─── */
+${NebulaStarsSrc}
+
+/* ─── Usage ─── */
 <div class="hf-band-cosmic">
-  <NebulaStars client:load count={40} />
+  <NebulaStars count={40} />
 </div>`} title="click for code">
             <NebulaStars client:load count={40} />
           </div>
           <div class="ds-atmo-cap">.hf-band-cosmic + &lt;NebulaStars&gt; — cockpit cosmic backdrop, <code>var(--hf-grad-cockpit)</code></div>
         </div>
         <div class="ds-atmo-item">
-          <div class="ds-atmo-stage ds-atmo-stage-band hf-band-nebula ds-copyable" data-ds-snippet={`import NebulaStars from '../components/ui/NebulaStars';
+          <div class="ds-atmo-stage ds-atmo-stage-band hf-band-nebula ds-copyable" data-ds-snippet={`/* ─── Backdrop CSS — paste into a global stylesheet ─── */
+.hf-band-nebula {
+  position: relative;
+  overflow: hidden;
+  background: var(--hf-grad-nebula);
+}
 
-// in JSX — backdrop class + nebula stars layered on top
+/* ─── NebulaStars component — src/components/ui/NebulaStars.tsx ─── */
+${NebulaStarsSrc}
+
+/* ─── Usage ─── */
 <div class="hf-band-nebula">
-  <NebulaStars client:load count={40} />
+  <NebulaStars count={40} />
 </div>`} title="click for code">
             <NebulaStars client:load count={40} />
           </div>
@@ -385,36 +409,31 @@ ${usage}`;
       </div>
 
       <div class="ds-comp-grid">
-        <div class="ds-comp-card ds-copyable" data-ds-snippet={componentImportSnippet('NeonText', '../components/ui/NeonText', '<NeonText client:load>NEON_TEXT</NeonText>')} title="click for code">
+        <div class="ds-comp-card ds-copyable" data-ds-snippet={`// src/components/ui/NeonText.tsx\n${NeonTextSrc}`} title="click for code">
           <div class="ds-comp-label">&lt;NeonText&gt;</div>
           <div class="ds-comp-stage ds-comp-stage-display"><NeonText client:load>NEON_TEXT</NeonText></div>
           <div class="ds-comp-note">flickering accent — wraps any inline text</div>
         </div>
 
-        <div class="ds-comp-card ds-copyable" data-ds-snippet={componentImportSnippet('KineticWord', '../components/ui/KineticWord', '<KineticWord client:load word="kinetic" altWord="glitched" delay={1500} loop />')} title="click for code">
+        <div class="ds-comp-card ds-copyable" data-ds-snippet={`// src/components/ui/KineticWord.tsx\n${KineticWordSrc}`} title="click for code">
           <div class="ds-comp-label">&lt;KineticWord&gt;</div>
           <div class="ds-comp-stage ds-comp-stage-display"><KineticWord client:load word="kinetic" altWord="glitched" delay={1500} loop={true} /></div>
           <div class="ds-comp-note">strike-then-replace cycle</div>
         </div>
 
-        <div class="ds-comp-card ds-copyable" data-ds-snippet={componentImportSnippet('StrikeThrough', '../components/ui/StrikeThrough', '<StrikeThrough client:load delay={800}>strike-through copy</StrikeThrough>')} title="click for code">
+        <div class="ds-comp-card ds-copyable" data-ds-snippet={`// src/components/ui/StrikeThrough.tsx\n${StrikeThroughSrc}`} title="click for code">
           <div class="ds-comp-label">&lt;StrikeThrough&gt;</div>
           <div class="ds-comp-stage ds-comp-stage-display"><StrikeThrough client:load delay={800}>strike-through copy</StrikeThrough></div>
           <div class="ds-comp-note">animated cross-out on mount</div>
         </div>
 
-        <div class="ds-comp-card ds-copyable" data-ds-snippet={componentImportSnippet('NotGateDivider', '../components/ui/NotGateDivider', '<NotGateDivider client:load label="design_system.boundary" />')} title="click for code">
+        <div class="ds-comp-card ds-copyable" data-ds-snippet={`// src/components/ui/NotGateDivider.tsx\n${NotGateDividerSrc}`} title="click for code">
           <div class="ds-comp-label">&lt;NotGateDivider&gt;</div>
           <div class="ds-comp-stage"><NotGateDivider client:load label="design_system.boundary" /></div>
           <div class="ds-comp-note">section divider with logic-gate motif</div>
         </div>
 
-        <div class="ds-comp-card ds-comp-card-wide ds-copyable" data-ds-snippet={`import SegmentedBar from '../components/ui/SegmentedBar';
-
-// in JSX
-<SegmentedBar client:load value={3} max={5} segments={5} />
-<SegmentedBar client:load value={7} max={10} segments={10} color="var(--cp-ai)" />
-<SegmentedBar client:load value={9} max={10} segments={10} color="var(--cp-eda)" />`} title="click for code">
+        <div class="ds-comp-card ds-comp-card-wide ds-copyable" data-ds-snippet={`// src/components/ui/SegmentedBar.tsx\n${SegmentedBarSrc}`} title="click for code">
           <div class="ds-comp-label">&lt;SegmentedBar&gt;</div>
           <div class="ds-comp-stage ds-comp-stage-stack">
             <SegmentedBar client:load value={3} max={5} segments={5} />
@@ -424,7 +443,7 @@ ${usage}`;
           <div class="ds-comp-note">value / max / color / segments — used in cockpit meters</div>
         </div>
 
-        <div class="ds-comp-card ds-copyable" data-ds-snippet={componentImportSnippet('Placeholder', '../components/ui/Placeholder', '<Placeholder client:load name="placeholder.module" />')} title="click for code">
+        <div class="ds-comp-card ds-copyable" data-ds-snippet={`// src/components/ui/Placeholder.tsx\n${PlaceholderSrc}`} title="click for code">
           <div class="ds-comp-label">&lt;Placeholder&gt;</div>
           <div class="ds-comp-stage"><Placeholder client:load name="placeholder.module" /></div>
           <div class="ds-comp-note">fallback panel for missing/loading content</div>
