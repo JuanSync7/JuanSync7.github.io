@@ -3,6 +3,8 @@ import '../styles/tokens/index.css';
 import '../styles/styles-core.css';
 import '../styles/styles-sections.css';
 import '../styles/cockpit.css';
+import '../components/ui/page-zoom.css';
+import { ViewTransitions } from 'astro:transitions';
 import GlobalStarfield from '../components/effects/GlobalStarfield.tsx';
 
 interface Props {
@@ -13,7 +15,7 @@ const { title = 'juan_kok — CV v2.0' } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" transition:animate="none">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -26,11 +28,18 @@ const { title = 'juan_kok — CV v2.0' } = Astro.props;
       is:inline
       src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
     ></script>
+    <ViewTransitions />
   </head>
   <body>
     <div id="starfield-root">
       <GlobalStarfield client:load />
     </div>
-    <slot />
+    <div id="page-zoom-stage">
+      <slot />
+    </div>
+    <script>
+      import { initPageZoom } from '../components/ui/page-zoom';
+      initPageZoom();
+    </script>
   </body>
 </html>

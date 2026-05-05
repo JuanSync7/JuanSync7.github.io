@@ -27,6 +27,7 @@ import PlaceholderSrc from '../components/ui/Placeholder.tsx?raw';
 import StarfieldStageSrc from '../components/ui/StarfieldStage.tsx?raw';
 import PurpleSkyTransitionSrc from '../components/ui/PurpleSkyTransition.tsx?raw';
 import LofiFooterFadeSrc from '../components/ui/LofiFooterFade.tsx?raw';
+import PageZoomSrc from '../components/ui/page-zoom.ts?raw';
 import NebulaStarsSrc from '../components/ui/NebulaStars.tsx?raw';
 import ZoomSwapDemoSrc from '../components/ui/ZoomSwapDemo.tsx?raw';
 import ZoomSwapCss from '../components/ui/zoom-swap.css?raw';
@@ -175,7 +176,7 @@ const radiusSnippet = (token: string, label: string) =>
 
 <Layout title={`${IDENTITY.shortName} — design system`}>
   <main class="ds-wrap">
-    <a href="/" class="ds-back">← back to site</a>
+    <a href="/" class="ds-back" data-zoom>← back to site</a>
 
     <header class="ds-header">
       <div class="ds-title">// design_system.sv</div>
@@ -531,6 +532,18 @@ ${NebulaStarsSrc}
           </div>
           <div class="ds-comp-note">cockpit nav — color tinted by category accent</div>
         </div>
+
+        <div class="ds-comp-card ds-comp-card-wide ds-copyable" data-ds-snippet={`// src/components/ui/page-zoom.ts\n${PageZoomSrc}`} title="click for code">
+          <div class="ds-comp-label">&lt;PageZoom&gt;</div>
+          <div class="ds-comp-stage" style="justify-content: center;">
+            <a href="/design-system" class="ds-pill" data-zoom style="--pill-c: var(--hf-accent); cursor: pointer;">▸ trigger zoom →</a>
+          </div>
+          <div class="ds-comp-note">
+            full-page transition — fires on any <code>&lt;a data-zoom&gt;</code>. Zooms the current
+            page out to a point, navigates, then zooms the next page back in. Wired into the
+            footer's "design system" link and this page's "back to site".
+          </div>
+        </div>
       </div>
     </section>
 
@@ -721,7 +734,7 @@ ${CubeSwapDemoSrc}`} title="click for code">
       </div>
     </section>
 
-    <a href="/" class="ds-back">← back to site</a>
+    <a href="/" class="ds-back" data-zoom>← back to site</a>
   </main>
 
   <div id="ds-toast" class="ds-toast">copied</div>

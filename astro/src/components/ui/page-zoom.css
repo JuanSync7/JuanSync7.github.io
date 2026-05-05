@@ -1,0 +1,16 @@
+/* page-zoom — full-page transition that zooms the live page DOM out to
+   nothing, navigates via ClientRouter, then zooms the next page in.
+   The starfield uses transition:persist so it stays alive across the
+   navigation and never re-initializes. */
+
+#page-zoom-stage {
+  /* Origin overridden in JS to viewport-center based on scroll, so the
+     zoom pivots around what the user is actually looking at. */
+  transform-origin: 50vw 50vh;
+}
+
+.page-zoom-active #page-zoom-stage {
+  position: relative;
+  z-index: 1;
+  will-change: transform, opacity;
+}
