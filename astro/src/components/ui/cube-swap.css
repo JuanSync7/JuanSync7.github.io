@@ -1,0 +1,124 @@
+/* CubeSwapDemo — each "page" is a face of a cube. Left/right arrows
+   pivot the rotor ±90° so the adjacent face swings into view.
+   --csd-d (set from JS = half stage width) keeps faces tangent. */
+
+.csd-wrap {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  background: var(--hf-cockpit-bg);
+  border: 1px solid var(--hf-alpha-white-06);
+  border-radius: var(--hf-radius-lg);
+  padding: var(--hf-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--hf-space-3);
+  box-shadow:
+    inset 0 1px 0 var(--hf-alpha-white-05),
+    0 0 40px var(--hf-alpha-black-40);
+}
+
+.csd-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--hf-mono);
+  font-size: var(--hf-fs-sm);
+  letter-spacing: var(--hf-tracking-wide);
+}
+.csd-title { color: var(--hf-accent); }
+.csd-arr {
+  cursor: pointer;
+  color: var(--hf-ink-muted);
+  user-select: none;
+  padding: 0 var(--hf-space-2);
+  transition: color 0.15s;
+}
+.csd-arr:hover { color: var(--hf-accent); }
+
+.csd-stage {
+  position: relative;
+  perspective: 1600px;
+  perspective-origin: 50% 50%;
+  min-height: 120px;
+}
+
+.csd-rotor {
+  position: relative;
+  width: 100%;
+  min-height: 120px;
+  transform-style: preserve-3d;
+  transform: translateZ(0);
+}
+
+/* Drive the rotation with a keyframe animation (not a transition) so the
+   `from` state — which already pulls the rotor back by -D — applies on
+   frame 1 at the same time the face gets translateZ(+D). Net z stays at
+   0 from frame 1, so there's no pre-rotation pop-in. */
+.csd-rotor-right { animation: csd-rot-right 600ms cubic-bezier(0.65, 0, 0.35, 1) forwards; }
+.csd-rotor-left  { animation: csd-rot-left  600ms cubic-bezier(0.65, 0, 0.35, 1) forwards; }
+@keyframes csd-rot-right {
+  from { transform: translateZ(calc(var(--csd-d, 200px) * -1)) rotateY(  0deg); }
+  to   { transform: translateZ(calc(var(--csd-d, 200px) * -1)) rotateY(-90deg); }
+}
+@keyframes csd-rot-left {
+  from { transform: translateZ(calc(var(--csd-d, 200px) * -1)) rotateY( 0deg); }
+  to   { transform: translateZ(calc(var(--csd-d, 200px) * -1)) rotateY(90deg); }
+}
+
+.csd-face {
+  background: var(--hf-alpha-white-02);
+  border: 1px solid var(--hf-line);
+  border-radius: var(--hf-radius-md);
+  padding: var(--hf-space-5) var(--hf-space-4);
+  text-align: center;
+  font-family: var(--hf-mono);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.csd-face-active { display: block; }
+.csd-face-hidden { display: none; }
+
+/* During a cube transition the front face stays in flow as the height
+   reference; the incoming face is absolute-positioned over it in 3D. */
+.csd-face-front,
+.csd-face-right,
+.csd-face-left {
+  display: block;
+}
+.csd-face-front {
+  position: relative;
+  transform: translateZ(var(--csd-d, 200px));
+}
+.csd-face-right,
+.csd-face-left {
+  position: absolute;
+  inset: 0;
+}
+.csd-face-right { transform: rotateY( 90deg) translateZ(var(--csd-d, 200px)); }
+.csd-face-left  { transform: rotateY(-90deg) translateZ(var(--csd-d, 200px)); }
+
+.csd-tag {
+  font-size: var(--hf-fs-2xl);
+  font-weight: 700;
+  color: var(--hf-accent);
+  letter-spacing: -0.02em;
+}
+.csd-body {
+  margin-top: var(--hf-space-2);
+  font-size: var(--hf-fs-sm);
+  color: var(--hf-ink-soft);
+}
+
+.csd-dots {
+  display: flex;
+  justify-content: center;
+  gap: var(--hf-space-2);
+}
+.csd-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--hf-alpha-white-06);
+}
+.csd-dot-on { background: var(--hf-accent); }

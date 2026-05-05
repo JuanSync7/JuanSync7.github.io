@@ -12,6 +12,7 @@ import LofiFooterFade from '../components/ui/LofiFooterFade.tsx';
 import Placeholder from '../components/ui/Placeholder.tsx';
 import NebulaStars from '../components/ui/NebulaStars.tsx';
 import ZoomSwapDemo from '../components/ui/ZoomSwapDemo.tsx';
+import CubeSwapDemo from '../components/ui/CubeSwapDemo.tsx';
 import { IDENTITY, CAREER_STATS } from '../data/site';
 
 /* Raw component source — Vite `?raw` returns the file as a string at
@@ -29,6 +30,8 @@ import LofiFooterFadeSrc from '../components/ui/LofiFooterFade.tsx?raw';
 import NebulaStarsSrc from '../components/ui/NebulaStars.tsx?raw';
 import ZoomSwapDemoSrc from '../components/ui/ZoomSwapDemo.tsx?raw';
 import ZoomSwapCss from '../components/ui/zoom-swap.css?raw';
+import CubeSwapDemoSrc from '../components/ui/CubeSwapDemo.tsx?raw';
+import CubeSwapCss from '../components/ui/cube-swap.css?raw';
 
 /* All tokens read from src/styles/tokens/*.css. Hex values are resolved
    at runtime by the inline script at the bottom of this page so this list
@@ -687,7 +690,7 @@ ${ZoomSwapCss}
 
 /* ─── src/components/ui/ZoomSwapDemo.tsx ─── */
 ${ZoomSwapDemoSrc}`} title="click for code">
-          <div class="ds-comp-label">&lt;ZoomSwapDemo&gt; — sequenced page transition</div>
+          <div class="ds-comp-label">&lt;ZoomSwapDemo&gt; — sequenced zoom transition (dot / category nav)</div>
           <div class="ds-comp-stage" style="min-height: 220px; padding: var(--hf-space-4);">
             <ZoomSwapDemo client:load />
           </div>
@@ -695,6 +698,25 @@ ${ZoomSwapDemoSrc}`} title="click for code">
             phase machine: <code>idle → out</code> (scale 0.78 + blur, 320ms) →
             <code>scroll</code> (in real cockpit) →
             <code>in</code> (scale back to 1, 380ms springy ease) → <code>idle</code>
+          </div>
+        </div>
+
+        <div class="ds-comp-card ds-copyable" data-ds-snippet={`/* ─── src/components/ui/cube-swap.css ─── */
+${CubeSwapCss}
+
+/* ─── src/components/ui/CubeSwapDemo.tsx ─── */
+${CubeSwapDemoSrc}`} title="click for code">
+          <div class="ds-comp-label">&lt;CubeSwapDemo&gt; — 3D cube rotation (left / right arrow nav)</div>
+          <div class="ds-comp-stage" style="min-height: 240px; padding: var(--hf-space-4);">
+            <CubeSwapDemo client:load />
+          </div>
+          <div class="ds-comp-note">
+            each face is a page. <code>◀</code> pivots rotor <code>+90°</code>,
+            <code>▶</code> pivots <code>-90°</code>. Faces stay tangent because
+            a <code>ResizeObserver</code> writes <code>--csd-d = stageWidth/2</code>.
+            Keyframe (not transition) so the rotor's <code>translateZ(-D)</code>
+            applies on frame 1 alongside the face's <code>translateZ(+D)</code> —
+            no pre-rotation pop-in.
           </div>
         </div>
       </div>

@@ -10,26 +10,48 @@ const SLIDES = [
 
 type Phase = 'idle' | 'out' | 'in';
 
+const HOLD_MS = 1400;   // dwell on a slide before starting the next transition
+const OUT_MS  = 700;    // out + scroll-pause window before the swap
+const IN_MS   = 380;    // in animation duration
+
 export default function ZoomSwapDemo() {
   const [idx, setIdx] = useState(0);
   const [phase, setPhase] = useState<Phase>('idle');
+  const idxRef = useRef(0);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
-  useEffect(() => () => { timers.current.forEach(clearTimeout); }, []);
+  useEffect(() => { idxRef.current = idx; }, [idx]);
 
-  const goTo = (next: number) => {
-    if (next === idx || phase !== 'idle') return;
-    timers.current.forEach(clearTimeout);
-    timers.current = [];
-    setPhase('out');
-    // Demo has no real scroll target — the brief pause between out/in
-    // mirrors the time the cockpit spends scrolling into view.
-    timers.current.push(setTimeout(() => {
-      setIdx(next);
-      setPhase('in');
-    }, 700));
-    timers.current.push(setTimeout(() => setPhase('idle'), 1080));
-  };
+  // Auto-cycle: idle (HOLD) → out (OUT) → swap + in (IN) → idle …
+  useEffect(() => {
+    let cancelled = false;
+
+    const cycle = () => {
+      if (cancelled) return;
+      timers.current.push(setTimeout(() => {
+        if (cancelled) return;
+        setPhase('out');
+        timers.current.push(setTimeout(() => {
+          if (cancelled) return;
+          const next = (idxRef.current + 1) % SLIDES.length;
+          setIdx(next);
+          setPhase('in');
+          timers.current.push(setTimeout(() => {
+            if (cancelled) return;
+            setPhase('idle');
+            cycle();
+          }, IN_MS));
+        }, OUT_MS));
+      }, HOLD_MS));
+    };
+
+    cycle();
+    return () => {
+      cancelled = true;
+      timers.current.forEach(clearTimeout);
+      timers.current = [];
+    };
+  }, []);
 
   const slide = SLIDES[idx];
 
@@ -37,9 +59,8 @@ export default function ZoomSwapDemo() {
     <div className="zsd-wrap">
       <div className={`zsd-panel${phase !== 'idle' ? ` zsd-panel-${phase}` : ''}`}>
         <div className="zsd-hdr">
-          <div className="zsd-arr" onClick={() => goTo((idx - 1 + SLIDES.length) % SLIDES.length)}>◀</div>
           <div className="zsd-title">// {slide.title}</div>
-          <div className="zsd-arr" onClick={() => goTo((idx + 1) % SLIDES.length)}>▶</div>
+          <div className="zsd-auto">auto</div>
         </div>
         <div className="zsd-page">
           <div className="zsd-tag">{slide.tag}</div>
@@ -47,11 +68,7 @@ export default function ZoomSwapDemo() {
         </div>
         <div className="zsd-dots">
           {SLIDES.map((_, i) => (
-            <span
-              key={i}
-              className={`zsd-dot${i === idx ? ' zsd-dot-on' : ''}`}
-              onClick={() => goTo(i)}
-            />
+            <span key={i} className={`zsd-dot${i === idx ? ' zsd-dot-on' : ''}`} />
           ))}
         </div>
       </div>

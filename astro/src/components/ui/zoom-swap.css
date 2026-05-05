@@ -55,15 +55,14 @@
   color: var(--hf-accent-2);
   letter-spacing: var(--hf-tracking-wide);
 }
-.zsd-arr {
-  cursor: pointer;
-  color: var(--hf-ink-muted);
-  user-select: none;
-  padding: 0 var(--hf-space-2);
-  transition: color 0.15s;
-}
-.zsd-arr:hover { color: var(--hf-accent); }
 .zsd-title { color: var(--hf-accent); }
+.zsd-auto {
+  font-size: 9px;
+  color: var(--hf-ink-muted);
+  letter-spacing: var(--hf-tracking-wider);
+  text-transform: uppercase;
+}
+.zsd-dot { cursor: default; }
 
 .zsd-page {
   background: var(--hf-alpha-white-02);
