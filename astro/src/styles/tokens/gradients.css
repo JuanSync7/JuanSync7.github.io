@@ -65,4 +65,15 @@
   --hf-grad-chart-cyan-magenta:     linear-gradient(135deg, #00d4ff, #ff00aa);
   --hf-grad-chart-emerald-orange:   linear-gradient(135deg, #14b8a6, #f97316);
   --hf-grad-chart-yellow-red:       linear-gradient(135deg, #facc15, #ef4444);
+
+  /* Rainbow spectrum red → indigo (ROYGBI), 90deg horizontal sweep. */
+  --hf-grad-rainbow-red-indigo: linear-gradient(
+    90deg,
+    #ff0000 0%,
+    #ff7f00 20%,
+    #ffff00 40%,
+    #00ff00 60%,
+    #0000ff 80%,
+    #4b0082 100%
+  );
 }
