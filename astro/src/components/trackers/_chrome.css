@@ -43,6 +43,7 @@
 .vtl-v { font-family: var(--mono); font-size: 12px; color: var(--txt); font-weight: 600; }
 .vtl-item.active .vtl-v { color: var(--accent); }
 .vtl-item.note .vtl-v { color: var(--muted); font-weight: 400; }
+.vtl-item.note .vtl-dot { background: transparent; }
 .vtl-date { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-top: 1px; }
 .vtl-sum { font-family: var(--sans); font-size: 11px; color: var(--muted); line-height: 1.45; margin-top: 4px; max-width: 172px;
   display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
