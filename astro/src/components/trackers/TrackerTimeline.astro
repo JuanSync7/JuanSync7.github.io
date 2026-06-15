@@ -2,14 +2,15 @@
 import type { Edition } from './editions';
 interface Props { editions: Edition[]; current: string; }
 const { editions, current } = Astro.props;
+const versionCount = editions.filter((e) => !e.isNote).length;
 const fmt = (s: string) => new Date(s).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 ---
-<div class="vtl-head">// version history</div>
+<div class="vtl-head">// {versionCount} version{versionCount === 1 ? '' : 's'}</div>
 <nav class="vtl">
   {editions.map((e) => (
     <a class={`vtl-item ${e.date === current ? 'active' : ''} ${e.isNote ? 'note' : ''}`} href={e.href}>
       <span class="vtl-dot"></span>
-      <span class="vtl-v">v{e.version}{e.isNote && <span class="vtl-tag">note</span>}</span>
+      <span class="vtl-v">{e.isNote ? <span class="vtl-tag">note</span> : `v${e.version}`}</span>
       <div class="vtl-date">{fmt(e.date)}</div>
       {e.summary && <div class="vtl-sum">{e.summary}</div>}
     </a>

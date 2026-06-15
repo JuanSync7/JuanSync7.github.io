@@ -2,16 +2,20 @@ export interface SnapMeta { date: string; summary: string; }
 export interface PostMeta { date: string; slug: string; title: string; summary: string; }
 export interface Edition {
   date: string;
-  version: number;
+  version: number; // 0 for note-only editions (no snapshot)
   summary: string;
   href: string;
   isNote: boolean;
 }
 
-/** Merge dated snapshots (viewable dashboards) with release posts (notes) into a
- *  single linear, version-numbered timeline. Oldest = v1; returned newest-first. */
+/** Build the left version timeline. Only dated SNAPSHOTS are numbered versions
+ *  (v1 = oldest snapshot). Release posts on dates without a snapshot appear as
+ *  un-numbered "note" editions. Returned newest-first. */
 export function buildEditions(tracker: string, snaps: SnapMeta[], posts: PostMeta[]): Edition[] {
   const snapDates = new Set(snaps.map((s) => s.date));
+  const versionByDate = new Map<string, number>();
+  [...snaps].sort((a, b) => a.date.localeCompare(b.date)).forEach((s, i) => versionByDate.set(s.date, i + 1));
+
   const summaryByDate = new Map<string, string>();
   snaps.forEach((s) => summaryByDate.set(s.date, s.summary));
   const postByDate = new Map<string, PostMeta>();
@@ -19,12 +23,12 @@ export function buildEditions(tracker: string, snaps: SnapMeta[], posts: PostMet
 
   const dates = Array.from(new Set([...snaps.map((s) => s.date), ...posts.map((p) => p.date)])).sort();
   return dates
-    .map((date, i) => {
+    .map((date) => {
       const hasDash = snapDates.has(date);
       const post = postByDate.get(date);
       const summary = summaryByDate.get(date) || (post ? post.summary : '');
       const href = hasDash ? `/trackers/${tracker}/${date}` : post ? `/trackers/releases/${post.slug}` : '#';
-      return { date, version: i + 1, summary, href, isNote: !hasDash };
+      return { date, version: hasDash ? (versionByDate.get(date) ?? 0) : 0, summary, href, isNote: !hasDash };
     })
     .reverse();
 }
