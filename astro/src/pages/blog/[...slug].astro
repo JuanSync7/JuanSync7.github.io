@@ -1,0 +1,51 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/layout/Nav.tsx';
+import PostImage from '../../components/blog/PostImage.tsx';
+import ReadingProgress from '../../components/blog/ReadingProgress.tsx';
+import ShareButtons from '../../components/blog/ShareButtons.tsx';
+import BackToTop from '../../components/blog/BackToTop.tsx';
+import { catColor } from '../../components/blog/theme';
+import '../../components/blog/blog.css';
+import '../../components/blog/blog-post.css';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('blog');
+  return entries.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
+}
+
+type Props = { entry: CollectionEntry<'blog'> };
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const { data } = entry;
+const c = catColor(data.category);
+const dateStr = data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+---
+
+<Layout title={`${data.title} — blog.terminal`}>
+  <Nav client:load />
+  <ReadingProgress client:load color={c} />
+  <article class="bp blog-root" style={`--cat: ${c}`}>
+    <a class="bp-back" href="/blog">← cd ../blog</a>
+    <div class="bp-hero">
+      <PostImage category={data.category} slug={entry.slug} height={220} borderRadius="12px" />
+    </div>
+    <div class="bp-meta">
+      <span class="bp-cat">{data.category}</span>
+      <span class="bp-dim">{dateStr}</span>
+      <span class="bp-dim">·</span>
+      <span class="bp-dim">{data.readTime}</span>
+    </div>
+    <h1 class="bp-title">{data.title}</h1>
+    <p class="bp-excerpt">{data.excerpt}</p>
+    <div class="bp-rule"></div>
+    <div class="bp-body">
+      <Content />
+    </div>
+    <div class="bp-share">
+      <ShareButtons client:load slug={entry.slug} title={data.title} color={c} />
+    </div>
+  </article>
+  <BackToTop client:load />
+</Layout>

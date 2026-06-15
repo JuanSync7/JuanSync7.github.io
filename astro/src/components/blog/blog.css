@@ -1,0 +1,65 @@
+/* Blog — keyframes and layout helpers used by the cyberpunk blog islands.
+   Palette literals here intentionally mirror tokens/colors.css; the blog uses
+   a self-contained effect layer. */
+
+@keyframes navDotPulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(200, 216, 55, 0.4); }
+  50% { box-shadow: 0 0 20px rgba(200, 216, 55, 0.4), 0 0 40px rgba(200, 216, 55, 0.15); }
+}
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes glitchShake {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-2px, 1px); }
+  40% { transform: translate(2px, -1px); }
+  60% { transform: translate(-1px, -2px); }
+  80% { transform: translate(1px, 2px); }
+  100% { transform: translate(0, 0); }
+}
+@keyframes holoShift {
+  0% { background-position: 200% 200%; }
+  50% { background-position: 0% 0%; }
+  100% { background-position: 200% 200%; }
+}
+@keyframes neonPulse {
+  0%, 100% { text-shadow: 0 0 6px rgba(5, 217, 232, 0.6), 0 0 20px rgba(5, 217, 232, 0.3); }
+  50% { text-shadow: 0 0 12px rgba(5, 217, 232, 0.9), 0 0 40px rgba(5, 217, 232, 0.4), 0 0 80px rgba(5, 217, 232, 0.2); }
+}
+@keyframes gridPulse { 0%, 100% { opacity: 0.015; } 50% { opacity: 0.03; } }
+@keyframes tickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-33.333%); } }
+@keyframes fpProgress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+.blog-root { background: var(--hf-bg); color: var(--hf-ink); min-height: 100vh; }
+
+.hf-nav-link-active { color: var(--hf-accent) !important; border-bottom: 1px solid var(--hf-accent); }
+
+.filter-pill {
+  font-family: var(--hf-mono); font-size: 11px; letter-spacing: 0.06em;
+  padding: 6px 16px; border-radius: 999px; cursor: pointer;
+  border: 1px solid #243028; background: transparent; color: #7a9a88;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); text-transform: uppercase;
+}
+.filter-pill:hover { border-color: #c8d837; color: #c8d837; }
+.filter-pill.active {
+  background: #c8d837; color: #0a0a0a; border-color: #c8d837; font-weight: 600;
+  box-shadow: 0 0 12px rgba(200, 216, 55, 0.3);
+}
+
+.bento-grid { display: grid; gap: 16px; grid-template-columns: repeat(4, 1fr); grid-auto-rows: minmax(160px, auto); }
+.bento-grid.layout-asymmetric { grid-template-columns: repeat(4, 1fr); }
+.bento-grid.layout-masonry { grid-template-columns: repeat(3, 1fr); grid-auto-rows: minmax(180px, auto); }
+
+.blog-starfield { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.blog-grid-bg {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(5, 217, 232, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(5, 217, 232, 0.02) 1px, transparent 1px);
+  background-size: 60px 60px; animation: gridPulse 4s ease-in-out infinite;
+}
+
+@media (max-width: 860px) {
+  .bento-grid, .bento-grid.layout-masonry { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .bento-grid, .bento-grid.layout-masonry { grid-template-columns: 1fr; }
+}

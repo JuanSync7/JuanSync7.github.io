@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/layout/Nav.tsx';
+import BlogApp from '../../components/blog/BlogApp.tsx';
+import '../../components/blog/blog.css';
+
+const entries = await getCollection('blog');
+const posts = entries
+  .map((e) => ({
+    slug: e.slug,
+    title: e.data.title,
+    excerpt: e.data.excerpt,
+    category: e.data.category,
+    date: e.data.date.toISOString(),
+    readTime: e.data.readTime,
+    tags: e.data.tags,
+    featured: e.data.featured,
+    size: e.data.size,
+  }))
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+---
+
+<Layout title="blog.terminal — where silicon meets syntax">
+  <Nav client:load />
+  <BlogApp client:load posts={posts} />
+</Layout>
