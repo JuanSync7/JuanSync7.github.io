@@ -54,7 +54,8 @@ export default function BlogApp({ posts }: { posts: Post[] }) {
   const onFilter = (c: string) => { setFilter(c); setPage(1); setGridKey((k) => k + 1); };
   const onSearch = (q: string) => { setSearch(q); setPage(1); setGridKey((k) => k + 1); };
   const onPage = (p: number) => { setPage(p); setGridKey((k) => k + 1); window.scrollTo({ top: 300, behavior: 'smooth' }); };
-  const onOpenSeries = (s: Series) => { setViewingSeries(s); window.scrollTo(0, 0); };
+  const onCardClick = (p: Post) => { if (p.externalUrl) { window.location.href = p.externalUrl; return; } setSelected(p); };
+  const onOpenSeries = (s: Series) => { if (s.url) { window.location.href = s.url; return; } setViewingSeries(s); window.scrollTo(0, 0); };
 
   return (
     <div className="blog-root">
@@ -81,7 +82,7 @@ export default function BlogApp({ posts }: { posts: Post[] }) {
           onFilter={onFilter}
           onSearch={onSearch}
           onPage={onPage}
-          onCardClick={setSelected}
+          onCardClick={onCardClick}
           onOpenSeries={onOpenSeries}
         />
       )}

@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>How Inference Chips Are Built — Inference Silicon</title>
+<meta name="description" content="The memory wall, GPU vs ASIC tradeoffs, how ASICs go from RTL to silicon, and what Cerebras, Fractile, Groq, Etched, and Tenstorrent are doing differently." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#07080f; --panel:#0d0f18; --panel2:#12141f; --line:#1e2235;
+  --txt:#ffffff; --muted:#9aa0b8; --amber:#c8ff00; --teal:#4daaff; --bad:#ff7a7a; --chip:#12141f;
+  --serif:'DM Serif Display',Georgia,serif; --sans:'DM Sans',sans-serif; --mono:'DM Mono',monospace;
+  --ease:cubic-bezier(0.4,0,0.2,1); --r:14px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--txt);font-family:var(--sans);line-height:1.55;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% -8%, rgba(77,170,255,0.07) 0%, transparent 70%),
+    repeating-linear-gradient(0deg, transparent 0 31px, rgba(255,255,255,0.018) 31px 32px),
+    repeating-linear-gradient(90deg, transparent 0 31px, rgba(255,255,255,0.018) 31px 32px),
+    var(--bg);
+  background-attachment:fixed;}
+a{color:var(--teal);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px 80px}
+
+/* nav */
+.sitenav{position:sticky;top:0;z-index:40;backdrop-filter:blur(8px);background:rgba(7,8,15,.72);border-bottom:1px solid var(--line)}
+.sitenav .inner{max-width:1180px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{font-family:var(--serif);font-size:18px;color:var(--txt);display:flex;align-items:center;gap:8px}
+.brand:hover{text-decoration:none}
+.brand .dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 12px var(--teal)}
+.navlinks{display:flex;gap:6px;flex-wrap:wrap}
+.navlinks a{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:7px 13px;border-radius:8px;border:1px solid transparent;transition:.18s var(--ease)}
+.navlinks a:hover{color:var(--txt);border-color:var(--line);text-decoration:none}
+.navlinks a.active{color:var(--amber);border-color:#3f5512}
+
+/* header */
+header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px;border-bottom:1px solid var(--line);padding:40px 0 22px;margin-bottom:8px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+h1{font-family:var(--serif);font-weight:400;font-size:40px;margin:0;letter-spacing:-.5px;line-height:1.08}
+h1 em{font-style:italic;color:var(--teal);text-shadow:0 0 22px rgba(77,170,255,.35)}
+.sub{color:var(--muted);margin-top:10px;font-size:14px;max-width:620px}
+.meta{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--muted);text-align:right;line-height:1.9}
+.meta b{color:var(--amber);font-weight:500}
+
+/* stat bar */
+.bar{display:flex;flex-wrap:wrap;gap:14px;margin:26px 0 6px}
+.stat{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;flex:1;min-width:150px;transition:transform .25s var(--ease),border-color .25s var(--ease)}
+.stat:hover{transform:translateY(-3px);border-color:#1e2a4a}
+.stat .n{font-family:var(--serif);font-size:30px;line-height:1;color:var(--amber)}
+.stat .l{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-top:8px}
+
+/* section headings */
+h2.section{font-family:var(--serif);font-weight:400;font-size:26px;margin:50px 0 4px;letter-spacing:-.3px}
+h2.section em{font-style:italic;color:var(--teal)}
+.section-sub{color:var(--muted);font-size:13.5px;margin:0 0 16px}
+
+/* lead text */
+.ig-lead{color:#d0d8f0;font-size:15.5px;line-height:1.72;max-width:880px;margin:6px 0 18px}
+.ig-lead b{color:var(--txt);font-weight:600}
+.ig-lead i{color:var(--teal);font-style:normal}
+
+/* mermaid figures */
+.ig-fig{margin:18px 0 8px}
+.ig-mermaid{max-width:860px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px 16px;box-shadow:0 14px 40px rgba(0,0,0,.32);overflow-x:auto;transition:border-color .25s var(--ease)}
+.ig-mermaid:hover{border-color:#1e2a4a}
+.ig-mermaid pre.mermaid{margin:0;background:transparent;border:0;padding:0;text-align:center}
+.ig-mermaid svg{min-width:560px;max-width:100%;height:auto;display:block;margin:0 auto}
+.ig-figcap{display:flex;gap:16px;justify-content:space-between;align-items:baseline;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:10px;line-height:1.55}
+
+/* callouts */
+.ig-two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0 6px}
+.ig-two.ig-three{grid-template-columns:1fr 1fr 1fr}
+@media(max-width:760px){.ig-two,.ig-two.ig-three{grid-template-columns:1fr}}
+.ig-callout{background:var(--panel2);border:1px solid var(--line);border-left:2px solid var(--teal);border-radius:10px;padding:15px 17px;font-size:13.6px;line-height:1.62;color:#d0d8f0}
+.ig-callout h4{margin:0 0 7px;font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.14em;color:var(--teal)}
+.ig-callout b{color:var(--txt);font-weight:600}
+.ig-callout i{color:var(--teal);font-style:normal}
+.ig-callout.amber{border-left-color:var(--amber)}.ig-callout.amber h4{color:var(--amber)}
+.ig-callout.warn{border-left-color:var(--bad)}.ig-callout.warn h4{color:var(--bad)}
+
+/* design flow */
+.flow-steps{display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:18px 0 8px;background:var(--panel)}
+.flow-step{flex:1;min-width:130px;padding:16px;border-right:1px solid var(--line)}
+.flow-step:last-child{border-right:none}
+.flow-step .sn{font-family:var(--mono);font-size:10px;color:var(--amber);letter-spacing:.1em;margin-bottom:6px;text-transform:uppercase}
+.flow-step .st{font-size:14px;font-weight:500;color:var(--txt);margin-bottom:4px}
+.flow-step .sd{font-size:12px;color:var(--muted);line-height:1.55}
+@media(max-width:700px){.flow-step{border-right:none;border-bottom:1px solid var(--line)}.flow-step:last-child{border-bottom:none}}
+
+/* approach grid */
+.approach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin:20px 0}
+.approach-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.approach-card .label{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.14em;margin-bottom:8px}
+.approach-card h3{font-family:var(--serif);font-size:18px;font-weight:400;margin:0 0 8px;color:var(--txt)}
+.approach-card p{font-size:13.5px;color:var(--muted);margin:0;line-height:1.55}
+
+/* compare grid */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+@media(max-width:600px){.compare-grid{grid-template-columns:1fr}}
+.compare-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.compare-card h3{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.12em;margin:0 0 12px}
+.compare-card h3.gpu-h{color:var(--amber)}
+.compare-card h3.asic-h{color:var(--teal)}
+.compare-card ul{margin:0;padding-left:16px}
+.compare-card li{font-size:13.5px;color:var(--muted);margin:6px 0;line-height:1.5}
+.compare-card li strong{color:var(--txt)}
+
+/* table */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:14px 0;background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:640px;background:var(--panel)}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--panel2);color:var(--muted);font-family:var(--mono);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.1em;position:sticky;top:0}
+tbody tr:hover td{background:var(--panel2)}
+td b{color:var(--txt);font-weight:600}
+.pill{font-family:var(--mono);font-size:11px;padding:3px 8px;border-radius:6px;background:var(--chip);border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+
+/* live calculator */
+.ig-calc{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;margin:0 0 8px}
+.ig-calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 22px}
+@media(max-width:680px){.ig-calc-grid{grid-template-columns:1fr}}
+.ig-calc label{display:flex;flex-direction:column;gap:8px;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.ig-calc label b{color:var(--amber);font-weight:600;text-transform:none;letter-spacing:0}
+.ig-calc select{background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-family:var(--sans);font-size:14px;cursor:pointer}
+.ig-calc input[type=range]{width:100%;accent-color:var(--amber)}
+.ig-calc-out{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:16px}
+@media(max-width:680px){.ig-calc-out{grid-template-columns:1fr}}
+.ig-out{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.ig-out .n{font-family:var(--serif);font-size:26px;line-height:1;color:var(--txt)}
+.ig-out .l{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-top:8px}
+.ig-out.hot{border-color:#1e2a4a}.ig-out.hot .n{color:var(--amber)}
+.ig-out.go{border-color:#1a3a6a}.ig-out.go .n{color:var(--teal)}
+.ig-out.bad{border-color:#5a1a1a}.ig-out.bad .n{color:var(--bad)}
+.ig-calc-note{color:var(--muted);font-size:13px;margin:14px 0 0;line-height:1.6}
+.ig-calc-spec{margin:14px 0 4px;font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.ig-calc-spec b{color:var(--teal)}
+
+/* formula */
+.ig-formula{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;margin:8px 0 18px}
+.ig-formula-main{font-family:var(--mono);font-size:16px;color:var(--txt);letter-spacing:.01em;line-height:1.7}
+.ig-formula-main .hl{color:var(--amber);font-weight:600}
+.ig-formula-sub{font-family:var(--mono);font-size:13.5px;color:var(--muted);margin-top:8px;line-height:1.7}
+.ig-formula-key{margin:14px 0 0;padding-left:18px;color:#d0d8f0;font-size:13.4px;line-height:1.6}
+.ig-formula-key li{margin:5px 0}
+.ig-formula-key b{color:var(--teal);font-weight:500;font-family:var(--mono)}
+
+/* sources */
+.ig-sources{margin-top:34px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px 22px}
+.ig-sources h4{margin:0 0 10px;font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.14em;color:var(--amber)}
+.ig-sources ul{margin:0;padding-left:18px}
+.ig-sources li{margin:7px 0;font-size:13.5px}
+
+/* chips-specific tier pills in text */
+.t-gpu   {color:#c8ff00;font-family:var(--mono);font-size:11px;background:#0a0f02;border:1px solid #3f5512;border-radius:5px;padding:2px 7px}
+.t-wafer {color:#00d4ff;font-family:var(--mono);font-size:11px;background:#001a22;border:1px solid #005a80;border-radius:5px;padding:2px 7px}
+.t-df    {color:#ff9a3c;font-family:var(--mono);font-size:11px;background:#1a0a00;border:1px solid #7a4000;border-radius:5px;padding:2px 7px}
+.t-asic  {color:#4daaff;font-family:var(--mono);font-size:11px;background:#001428;border:1px solid #1a3a6a;border-radius:5px;padding:2px 7px}
+.t-rv    {color:#b57bff;font-family:var(--mono);font-size:11px;background:#0f0028;border:1px solid #4a2080;border-radius:5px;padding:2px 7px}
+
+/* company profile cards */
+.co-grid{display:flex;flex-direction:column;gap:10px;margin:20px 0}
+.co-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:border-color .2s var(--ease)}
+.co-card:hover,.co-card.open{border-color:#1e3a6a}
+.co-card.open{background:var(--panel2)}
+.co-head{padding:16px 50px 16px 18px;position:relative;cursor:pointer;user-select:none}
+.co-hrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.co-name{font-family:var(--serif);font-size:19px;font-weight:400;color:var(--txt)}
+.co-product{font-family:var(--mono);font-size:11px;color:var(--teal);letter-spacing:.04em;margin-bottom:3px}
+.co-tagline{font-size:13px;color:var(--muted);line-height:1.5;margin:0 0 6px}
+.co-quick{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+.co-quick b{color:var(--amber);font-weight:500}
+.co-arr{position:absolute;top:50%;right:16px;transform:translateY(-50%);font-size:12px;color:var(--muted);transition:transform .25s var(--ease);pointer-events:none}
+.co-card.open .co-arr{transform:translateY(-50%) rotate(180deg)}
+.co-body{display:none;padding:0 18px 18px;border-top:1px solid var(--line)}
+.co-card.open .co-body{display:block}
+.co-body>p{color:#d0d8f0;font-size:13.8px;line-height:1.68;margin:14px 0 10px}
+.co-bet{background:var(--bg);border-left:2px solid var(--teal);border-radius:8px;padding:11px 15px;margin:10px 0 14px}
+.co-bet .co-bet-lbl{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.14em;color:var(--teal);margin-bottom:5px}
+.co-bet p{font-size:13.4px;margin:0;color:#d0d8f0;line-height:1.62}
+.co-nums{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px;margin:10px 0 14px}
+.co-num{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:11px 13px}
+.co-num .cn{font-family:var(--serif);font-size:21px;color:var(--amber);line-height:1}
+.co-num .cl{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-top:5px}
+.co-sr{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+@media(max-width:580px){.co-sr{grid-template-columns:1fr}}
+.co-s,.co-r{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:11px 14px}
+.co-s{border-left:2px solid #4dff6e}.co-r{border-left:2px solid var(--bad)}
+.co-s h5,.co-r h5{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.14em;margin:0 0 7px;font-weight:500}
+.co-s h5{color:#4dff6e}.co-r h5{color:var(--bad)}
+.co-s ul,.co-r ul,.co-news ul{margin:0;padding-left:14px}
+.co-s li,.co-r li{font-size:12.5px;color:var(--muted);margin:4px 0;line-height:1.5}
+.co-news{margin:12px 0 6px}
+.co-news h5{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.14em;color:var(--amber);margin:0 0 7px;font-weight:500}
+.co-news li{font-size:12.5px;color:#d0d8f0;margin:5px 0;line-height:1.5}
+.co-link{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);border:1px solid #1e3a6a;border-radius:7px;padding:7px 13px;transition:.18s var(--ease)}
+.co-link:hover{background:rgba(77,170,255,.08);text-decoration:none}
+.co-badge{font-family:var(--mono);font-size:9.5px;padding:2.5px 7px;border-radius:5px;letter-spacing:.05em;white-space:nowrap}
+.co-badge.ga{background:#0a1a0a;border:1px solid #2a5a2a;color:#4dff6e}
+.co-badge.sampling{background:#001428;border:1px solid #1a3a6a;color:var(--teal)}
+.co-badge.prega{background:#1a1200;border:1px solid #5a4000;color:var(--amber)}
+.co-badge.acq{background:#1a0a22;border:1px solid #5a2a7a;color:#d07aff}
+.co-badge.cloud{background:#001a28;border:1px solid #005a80;color:#00d4ff}
+
+footer{margin-top:54px;color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:.03em;line-height:1.8;border-top:1px solid var(--line);padding-top:20px}
+footer a{color:var(--teal)}
+@keyframes riseIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.reveal{animation:riseIn .55s var(--ease) both}
+@media(prefers-reduced-motion:reduce){.reveal{animation:none}}
+</style>
+</head>
+<body>
+<header class="sitenav">
+  <div class="inner">
+    <a class="brand" href="#top"><span class="dot"></span> Inference Silicon</a>
+    <nav class="navlinks">
+      <a href="/">Dashboard</a>
+      <a href="#memory-wall" class="active">Chip Design</a>
+      <a href="#asic-flow">ASIC Flow</a>
+      <a href="#architectures">Approaches</a>
+      <a href="#companies">Companies</a>
+      <a href="#gpu-vs-asic">GPU vs ASIC</a>
+      <a href="#calculator">Calculator</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+  <header class="top reveal">
+    <div>
+      <div class="eyebrow">Chip design deep-dive · how inference silicon is built</div>
+      <h1>How inference <em>chips</em> are designed</h1>
+      <div class="sub">Why GPUs are inefficient for LLM inference, how ASICs go from RTL to silicon, and what Cerebras, Fractile, Groq, Etched, and Tenstorrent are doing differently to overcome the memory wall.</div>
+    </div>
+    <div class="meta">Sections <b>7</b><br />Companies <b>11</b><br />Read <b>~20 min</b></div>
+  </header>
+
+  <div class="bar">
+    <div class="stat"><div class="n">~70%</div><div class="l">of inference power — data movement, not compute</div></div>
+    <div class="stat"><div class="n">21 PB/s</div><div class="l">Cerebras WSE-3 on-chip bandwidth</div></div>
+    <div class="stat"><div class="n">$50–200M</div><div class="l">NRE cost for a frontier ASIC at 3–5 nm</div></div>
+    <div class="stat"><div class="n">100×</div><div class="l">Fractile's claimed speedup over GPU inference</div></div>
+  </div>
+
+  <!-- ── 1. MEMORY WALL ── -->
+  <h2 class="section" id="memory-wall">The <em>memory wall</em> — why moving data kills inference</h2>
+  <p class="ig-lead">The core bottleneck in LLM inference isn't compute — it's shuttling billions of weight bytes from memory to arithmetic units on <b>every single token generated</b>.</p>
+  <p class="ig-lead">When a GPU generates one token, it must load the <b>entire model's weight matrices</b> from HBM into the compute cores. For a 70B-parameter model in FP16, that is ~140 GB of data — fetched every token, at up to 3.35 TB/s on an H100. The GPU's tensor cores can do arithmetic far faster than HBM can deliver the data to feed them. You are <i>memory-bound</i>, not compute-bound.</p>
+
+  <div class="ig-formula">
+    <div class="ig-formula-main">Arithmetic Intensity = <span class="hl">FLOPs ÷ bytes accessed</span></div>
+    <div class="ig-formula-sub">Ridge point = Peak TFLOPS ÷ Peak BW (TB/s) &nbsp;·&nbsp; LLM decode sits far LEFT of this ridge → memory bound</div>
+    <ul class="ig-formula-key">
+      <li><b>H100 ridge point:</b> 989 TFLOPS ÷ 3.35 TB/s = ~295 FLOPs/byte. Decode has ~2 FLOPs/byte. 150× below the ridge.</li>
+      <li><b>B200 ridge point:</b> 2,250 TFLOPS (BF16) ÷ 8.0 TB/s = ~281 FLOPs/byte. Same problem, different numbers.</li>
+      <li><b>The fix:</b> raise arithmetic intensity (batching), reduce bytes-accessed (quantisation), or eliminate off-chip hops entirely (ASIC on-chip SRAM).</li>
+    </ul>
+  </div>
+
+  <figure class="ig-fig">
+    <div class="ig-mermaid"><pre class="mermaid">graph TD
+  req["Generate 1 token — autoregressive decode"]
+  fetch["Load ALL weight matrices from HBM — 140 GB for 70B FP16"]
+  bw["H100 HBM bandwidth ceiling: 3.35 TB/s"]
+  math["Matrix-vector multiply — tiny FLOPs, enormous bytes"]
+  idle["GPU tensor cores: &gt;98% idle, waiting for data"]
+  token["1 token emitted"]
+  prob["Core insight: adding more CUDA cores does NOT help"]
+  fix1["Fix A — Batching: 1 weight read serves B tokens → intensity × B"]
+  fix2["Fix B — Quantisation: FP4 halves bytes → 2× effective BW"]
+  fix3["Fix C — On-chip SRAM (ASIC): weights never leave the chip"]
+  req-->fetch-->bw-->math-->idle-->token
+  token-->prob
+  prob-->fix1
+  prob-->fix2
+  prob-->fix3
+  class req silver
+  class fetch amber
+  class bw amber
+  class math silver
+  class idle red
+  class token teal
+  class prob red
+  class fix1 blue
+  class fix2 blue
+  class fix3 blue
+  classDef amber fill:#12141f,stroke:#c8ff00,stroke-width:1.5px,color:#d0d8f0;
+  classDef teal fill:#12141f,stroke:#4daaff,stroke-width:1.5px,color:#d0d8f0;
+  classDef blue fill:#12141f,stroke:#4daaff,stroke-width:1.5px,color:#d0d8f0;
+  classDef orange fill:#12141f,stroke:#ff9a3c,stroke-width:1.5px,color:#d0d8f0;
+  classDef violet fill:#12141f,stroke:#b57bff,stroke-width:1.5px,color:#d0d8f0;
+  classDef red fill:#12141f,stroke:#ff7a7a,stroke-width:1.5px,color:#d0d8f0;
+  classDef silver fill:#12141f,stroke:#1e2235,stroke-width:1.3px,color:#9aa0b8;</pre></div>
+    <figcaption class="ig-figcap"><span>Every decode token requires a full sweep of all model weights through HBM. The GPU compute sits idle waiting for data — adding FLOPs doesn't help.</span></figcaption>
+  </figure>
+
+  <div class="ig-two">
+    <div class="ig-callout amber"><h4>Why batching helps</h4>Batch B requests together: one weight read now serves B tokens simultaneously. Arithmetic intensity rises ~B×, dragging decode toward the compute-bound regime. Continuous batching (vLLM, SGLang) is the single biggest throughput win on GPUs — and the reason ASICs must also support it.</div>
+    <div class="ig-callout"><h4>Why ASICs win</h4>On-chip SRAM sits nanometres from compute units with 1000× higher bandwidth than HBM. Cerebras WSE-3 delivers 21 PB/s on-chip vs 3.35 TB/s HBM on an H100 — a 6,250× bandwidth advantage. Weights live on-chip permanently; the memory wall does not exist.</div>
+  </div>
+
+  <!-- ── 2. GPU ARCHITECTURE ── -->
+  <h2 class="section" id="gpu-arch">How a <em>GPU handles inference</em> — and why it's wasteful</h2>
+  <p class="ig-lead">GPUs were designed for highly parallel, compute-intensive workloads — graphics rendering, then deep learning training. LLM autoregressive inference is neither.</p>
+  <p class="ig-lead">An H100 has 528 Streaming Multiprocessors (SMs), each with 128 CUDA cores — 67,584 cores total. They execute via <b>SIMT</b> (Single Instruction, Multiple Threads): one instruction fans out to many threads in parallel. For training matrix multiplications across a batch of thousands of examples, this is excellent. For generating one token per decode step, you are running a handful of threads on silicon built for tens of thousands.</p>
+
+  <figure class="ig-fig">
+    <div class="ig-mermaid"><pre class="mermaid">graph LR
+  subgraph GPU["GPU — SIMT Model"]
+    direction TB
+    g1["Runtime scheduler — decides each cycle what runs"]
+    g2["67,584 CUDA cores — most idle during decode"]
+    g3["Cache hierarchy — frequent HBM misses"]
+    g4["Non-deterministic latency — variable per request"]
+  end
+  subgraph LPU["Groq LPU — Dataflow Model"]
+    direction TB
+    l1["Compiler schedules everything at compile time"]
+    l2["All compute units always busy — no idle cores"]
+    l3["~230 MB on-chip SRAM — data always present"]
+    l4["Deterministic latency — same every invocation"]
+  end
+  GPU-->|"vs"|LPU
+  class g1 amber
+  class g2 red
+  class g3 red
+  class g4 red
+  class l1 blue
+  class l2 blue
+  class l3 blue
+  class l4 teal
+  classDef amber fill:#12141f,stroke:#c8ff00,stroke-width:1.5px,color:#d0d8f0;
+  classDef teal fill:#12141f,stroke:#4daaff,stroke-width:1.5px,color:#d0d8f0;
+  classDef blue fill:#12141f,stroke:#4daaff,stroke-width:1.5px,color:#d0d8f0;
+  classDef red fill:#12141f,stroke:#ff7a7a,stroke-width:1.5px,color:#d0d8f0;
+  classDef silver fill:#12141f,stroke:#1e2235,stroke-width:1.3px,color:#9aa0b8;</pre></div>
+    <figcaption class="ig-figcap"><span>SIMT (GPU) vs dataflow (LPU): the GPU decides at runtime; the LPU compiler decides everything statically. The result is deterministic latency and zero stalls on the LPU.</span></figcaption>
+  </figure>
+
+  <div class="ig-callout amber"><h4>The GPU's real moat: software, not silicon</h4>CUDA, PyTorch, vLLM, SGLang, TensorRT-LLM — a decade of optimisation that no ASIC startup can replicate overnight. Any challenger must either build an equivalent stack (years of work) or offer a cloud API that hides the software problem entirely. This is why Cerebras, Groq, and SambaNova all lead with managed cloud services, not bare silicon.</div>
+
+  <!-- ── 3. ASIC DESIGN FLOW ── -->
+  <h2 class="section" id="asic-flow">How inference <em>ASICs are designed</em> — from idea to silicon</h2>
+  <p class="ig-lead">Building a custom chip is a multi-year, $50M–$200M endeavour. Here is the pipeline every inference ASIC startup has to run before shipping a single chip.</p>
+
+  <div class="flow-steps">
+    <div class="flow-step"><div class="sn">01</div><div class="st">Architecture Definition</div><div class="sd">Decide memory hierarchy, compute paradigm (systolic, dataflow, in-memory), and target workloads. Months of simulation in Python/MATLAB before any RTL is written.</div></div>
+    <div class="flow-step"><div class="sn">02</div><div class="st">RTL Design</div><div class="sd">Register Transfer Level code (Verilog / SystemVerilog / Chisel) describes the chip logic cycle-by-cycle. The architecture becomes a formal hardware description.</div></div>
+    <div class="flow-step"><div class="sn">03</div><div class="st">Verification (DV)</div><div class="sd">Simulation and formal verification against a golden spec. Design Verification consumes ~50% of total engineering effort. Bugs here cost weeks; post-tapeout bugs cost $20M+.</div></div>
+    <div class="flow-step"><div class="sn">04</div><div class="st">Synthesis</div><div class="sd">EDA tools (Synopsys Design Compiler, Cadence Genus) translate RTL into a gate-level netlist from the foundry's standard cell library at the target process node.</div></div>
+    <div class="flow-step"><div class="sn">05</div><div class="st">Place &amp; Route</div><div class="sd">Physical layout: every transistor, wire, via placed on the die. Timing closure ensures signals propagate within one clock cycle. Takes weeks on large EDA server clusters.</div></div>
+    <div class="flow-step"><div class="sn">06</div><div class="st">DRC / LVS / Sign-off</div><div class="sd">Design Rule Check verifies geometries meet fab rules. Layout vs Schematic checks layout matches netlist. Power, timing, and signal integrity sign-off required.</div></div>
+    <div class="flow-step"><div class="sn">07</div><div class="st">Tape-out</div><div class="sd">Final GDSII file sent to the foundry (TSMC, Samsung). Mask set costs $5M–$20M at 3–5 nm. Point of no return — any bug found after this costs a full re-spin.</div></div>
+    <div class="flow-step"><div class="sn">08</div><div class="st">Fab, Package &amp; Test</div><div class="sd">12–18 months lead time at TSMC. Wafer-level test, singulation, packaging (OSAT), final system test. First silicon characterisation and bring-up begins.</div></div>
+  </div>
+
+  <figure class="ig-fig">
+    <div class="ig-mermaid"><pre class="mermaid">graph LR
+  arch["Architecture &amp; Micro-arch — months of simulation"]
+  rtl["RTL (Verilog/Chisel) — cycle-accurate description"]
+  dv["Design Verification — 50% of engineering effort"]
+  synth["Synthesis — RTL → gate netlist at target node"]
+  pnr["Place &amp; Route — physical layout, timing closure"]
+  signoff["DRC / LVS / Sign-off — fab rule compliance"]
+  tapeout["GDSII Tape-out — $5–20M mask set, no return"]
+  fab["TSMC Wafer Fab — 12–18 months lead time"]
+  test["Package &amp; Test — bring-up, characterisation"]
+  arch-->rtl-->dv-->synth-->pnr-->signoff-->tapeout-->fab-->test
+  class arch silver
+  class rtl teal
+  class dv orange
+  class synth teal
+  class pnr teal
+  class signoff amber
+  class tapeout red
+  class fab amber
+  class test blue
+  classDef amber fill:#12141f,stroke:#c8ff00,stroke-width:1.5px,color:#d0d8f0;
+  classDef teal fill:#12141f,stroke:#4daaff,stroke-width:1.5px,color:#d0d8f0;
+  classDef blue fill:#12141f,stroke:#4daaff,stroke-width:1.5px,color:#d0d8f0;
+  classDef orange fill:#12141f,stroke:#ff9a3c,stroke-width:1.5px,color:#d0d8f0;
+  classDef red fill:#12141f,stroke:#ff7a7a,stroke-width:1.5px,color:#d0d8f0;
+  classDef silver fill:#12141f,stroke:#1e2235,stroke-width:1.3px,color:#9aa0b8;</pre></div>
+    <figcaption class="ig-figcap"><span>The full ASIC pipeline: architecture → RTL → verification → synthesis → place & route → sign-off → tape-out → fab → test. Every stage compounds risk; tape-out is the $20M point of no return.</span></figcaption>
+  </figure>
+
+  <div class="ig-two">
+    <div class="ig-callout warn"><h4>NRE cost reality</h4>Non-Recurring Engineering for a frontier ASIC at 3–5 nm — including EDA tool licences ($5M+/year), mask sets ($5–20M per tapeout), engineering staff (~50–200 engineers × 2–3 years), and validation — runs $50–200M before the first chip ships. This is why Fractile needed $220M before having a product.</div>
+    <div class="ig-callout"><h4>Foundry concentration risk</h4>TSMC (Taiwan) produces virtually all leading-edge inference chips: Cerebras WSE-3 (5 nm), Groq 3 (~4 nm), Etched Sohu (3 nm), Fractile (likely 3 nm). TSMC's process nodes are licensed to no one else at the frontier — creating the geopolitical risk driving UK, EU, and US domestic semiconductor investment.</div>
+  </div>
+
+  <!-- ── 4. FIVE ARCHITECTURES ── -->
+  <h2 class="section" id="architectures">Five <em>architectural bets</em> against the memory wall</h2>
+  <p class="ig-lead">Every inference ASIC company is attacking the memory wall from a different angle. Here is the taxonomy.</p>
+
+  <figure class="ig-fig">
+    <div class="ig-mermaid"><pre class="mermaid">graph TD
+  prob["The Memory Wall: weights too far from compute — every decode token pays the HBM tax"]
+  prob --> w1["Wafer-Scale — eliminate chip boundaries entirely (Cerebras)"]
+  prob --> w2["Dataflow — compile away the runtime scheduler (Groq, SambaNova)"]
+  prob --> w3["SRAM Memory-Compute Fusion — fuse storage and ALUs on the same die (Fractile)"]
+  prob --> w4["Digital In-Memory Compute — compute inside the DRAM cell array (d-Matrix)"]
+  prob --> w5["Fixed-Function Silicon — hardwire the transformer math permanently (Etched)"]
+  prob --> w6["RISC-V Mesh — open programmable tiles with local SRAM (Tenstorrent)"]
+  class prob red
+  class w1 amber
+  class w2 orange
+  class w3 blue
+  class w4 blue
+  class w5 teal
+  class w6 violet
+  classDef amber fill:#12141f,stroke:#c8ff00,stroke-width:1.5px,color:#d0d8f0;
+  classDef teal fill:#12141f,stroke:#4daaff,stroke-width:1.5px,color:#d0d8f0;
+  classDef blue fill:#12141f,stroke:#4daaff,stroke-width:1.5px,color:#d0d8f0;
+  classDef orange fill:#12141f,stroke:#ff9a3c,stroke-width:1.5px,color:#d0d8f0;
+  classDef violet fill:#12141f,stroke:#b57bff,stroke-width:1.5px,color:#d0d8f0;
+  classDef red fill:#12141f,stroke:#ff7a7a,stroke-width:1.5px,color:#d0d8f0;
+  classDef silver fill:#12141f,stroke:#1e2235,stroke-width:1.3px,color:#9aa0b8;</pre></div>
+    <figcaption class="ig-figcap"><span>Six different architectural responses to the same root problem. Each sacrifices something different — flexibility, manufacturability, model capacity, or software maturity — to close the gap.</span></figcaption>
+  </figure>
+
+  <div class="approach-grid">
+    <div class="approach-card">
+      <div class="label" style="color:#00d4ff">Wafer-Scale · Cerebras WSE-3</div>
+      <h3>Eliminate chip boundaries</h3>
+      <p>The full 300 mm silicon wafer becomes one chip — 46,225 mm², 4 trillion transistors. No PCB traces, no HBM stacks. 44 GB of SRAM sits on-die with 21 PB/s bandwidth. Weights are always local to compute. Cost: manufacturing yield is brutal and the chip requires a full CS-3 system, not a PCIe card.</p>
+    </div>
+    <div class="approach-card">
+      <div class="label" style="color:#ff9a3c">Dataflow / LPU · Groq, SambaNova</div>
+      <h3>Replace the scheduler with a compiler</h3>
+      <p>Instead of a runtime scheduler (GPU's SIMT), a dataflow processor compiles all scheduling statically. Data flows through compute units in a fixed pipeline — no stalls, no cache misses, deterministic latency. Hundreds of MB of on-chip SRAM stores weights close to the pipeline, permanently. SambaNova's RDU adds reconfigurability: the dataflow graph reloads per-model.</p>
+    </div>
+    <div class="approach-card">
+      <div class="label" style="color:#4daaff">SRAM Memory-Compute Fusion · Fractile</div>
+      <h3>Fuse memory and compute on the same die</h3>
+      <p>SRAM arrays and MAC units sit side-by-side on the die, with no bus between them. Data never moves — compute happens where weights live. Eliminates the off-chip memory bottleneck at the physics level. The constraint: SRAM is ~50× more expensive per bit than DRAM, so die area is enormous and model capacity is limited.</p>
+    </div>
+    <div class="approach-card">
+      <div class="label" style="color:#4daaff">Digital In-Memory Compute · d-Matrix</div>
+      <h3>Compute inside the DRAM cells</h3>
+      <p>Logic gates placed directly inside the DRAM die — MAC operations execute in-situ within the memory array. Weights are never fetched to a separate compute unit. DRAM density gives 128 GB capacity (vs SRAM's high cost per bit), making this practical for large models that would not fit in an SRAM-only design.</p>
+    </div>
+    <div class="approach-card">
+      <div class="label" style="color:#4daaff">Fixed-Function Silicon · Etched Sohu</div>
+      <h3>Hardwire the transformer into silicon</h3>
+      <p>The transformer IS the chip. Attention heads, MLP layers, and layer normalisation are physical circuits — no instruction fetch, no scheduling, no general-purpose pipeline. The claimed 20× throughput advantage over GPU baselines is physically plausible. The catch: if you run anything other than a standard transformer (SSMs, MoE variants), the chip is a paperweight.</p>
+    </div>
+    <div class="approach-card">
+      <div class="label" style="color:#b57bff">RISC-V Mesh · Tenstorrent Blackhole</div>
+      <h3>Open, programmable compute tiles</h3>
+      <p>Each Tensix tile is a self-contained RISC-V processor with local SRAM and dedicated matrix units, connected via a 2D mesh NoC. Data moves short distances within the mesh. TT-Metal SDK is fully open-source; Tenstorrent licenses the IP so third parties can build derivative chips. Jim Keller's bet on open hardware commoditising AI compute.</p>
+    </div>
+  </div>
+
+  <!-- ── 5. THE COMPANIES ── -->
+  <h2 class="section" id="companies">The <em>companies</em> — who's building inference silicon in 2026</h2>
+  <p class="ig-lead">Eleven companies. Six architectural bets. One common enemy: the memory wall. Click any card to expand the full company profile — what they're doing, why they think it wins, and what the risks are.</p>
+
+  <div class="co-grid">
+
+    <!-- NVIDIA -->
+    <div class="co-card" onclick="toggleCo(this)">
+      <div class="co-head">
+        <div class="co-arr">▼</div>
+        <div class="co-hrow"><span class="t-gpu">gpu</span><span class="co-name">NVIDIA</span><span class="co-badge ga">GA</span></div>
+        <div class="co-product">H100 SXM5 · B200 / GB200 NVL72</div>
+        <div class="co-tagline">The incumbent — CUDA moat and generational hardware dominance</div>
+        <div class="co-quick"><span>Founded <b>1993</b></span><span>Santa Clara, CA</span><span>Market cap <b>~$3.5T</b></span></div>
+      </div>
+      <div class="co-body">
+        <p>NVIDIA built the AI compute stack from scratch. The H100 SXM5 remains the default production chip for almost all AI inference — not because GPUs are optimal for the task, but because 20+ years of CUDA investment means every framework, library, and engineer defaults to NVIDIA silicon. The B200 "Blackwell" generation pushes HBM3e bandwidth to 8 TB/s and ships in NVL72 rack systems (72 GPUs, 13.8 TB total memory) to hyperscalers.</p>
+        <p>In December 2025, NVIDIA acquired Groq for $20B — absorbing the LPU dataflow architecture and 1M+ GroqCloud developers into the NVIDIA NIM ecosystem. Groq 3 debuted at GTC 2026 as a "NIM Accelerator", giving NVIDIA a sub-millisecond latency offering alongside its GPU throughput story.</p>
+        <div class="co-bet"><div class="co-bet-lbl">The bet</div><p>Continuous generational HBM bandwidth improvement (3.35 → 8.0 → ~15+ TB/s next gen) + CUDA software lock-in makes the memory wall "manageable" without requiring a new paradigm. Acquisitions neutralise the best challengers.</p></div>
+        <div class="co-nums">
+          <div class="co-num"><div class="cn">3.35 TB/s</div><div class="cl">H100 HBM3 bandwidth</div></div>
+          <div class="co-num"><div class="cn">8.0 TB/s</div><div class="cl">B200 HBM3e bandwidth</div></div>
+          <div class="co-num"><div class="cn">4,500 TFLOPS</div><div class="cl">B200 FP4 peak</div></div>
+          <div class="co-num"><div class="cn">$20B</div><div class="cl">Groq acquisition (Dec 2025)</div></div>
+        </div>
+        <div class="co-sr">
+          <div class="co-s"><h5>Strengths</h5><ul><li>Total ecosystem dominance — CUDA, PyTorch, vLLM, TensorRT-LLM</li><li>Same hardware for training and inference</li><li>TSMC manufacturing scale and priority access</li><li>Acquisitions absorb top challengers (Groq $20B)</li></ul></div>
+          <div class="co-r"><h5>Risks</h5><ul><li>Inference-specific ASICs erode efficiency margin at scale</li><li>US export controls cut off Chinese market</li><li>Antitrust scrutiny over CUDA bundling practices</li></ul></div>
+        </div>
+        <div class="co-news"><h5>Latest moves</h5><ul><li>B200 / NVL72 rack systems shipping to hyperscalers (2026)</li><li>Groq acquired for $20B (Dec 2025); Groq 3 LPU at GTC 2026</li><li>Rubin (R100) architecture in development for 2027</li></ul></div>
+        <a class="co-link" href="https://www.nvidia.com/en-us/ai-data-center/" target="_blank" rel="noopener">nvidia.com →</a>
+      </div>
+    </div>
+
+    <!-- AMD -->
+    <div class="co-card" onclick="toggleCo(this)">
+      <div class="co-head">
+        <div class="co-arr">▼</div>
+        <div class="co-hrow"><span class="t-gpu">gpu</span><span class="co-name">AMD</span><span class="co-badge ga">GA</span></div>
+        <div class="co-product">MI325X (GA) · MI350X (late 2026)</div>
+        <div class="co-tagline">The GPU challenger — memory capacity moat and maturing ROCm ecosystem</div>
+        <div class="co-quick"><span>Founded <b>1969</b></span><span>Santa Clara, CA</span><span>Revenue <b>~$25B</b></span></div>
+      </div>
+      <div class="co-body">
+        <p>AMD is the only credible GPU alternative to NVIDIA for AI inference. The MI325X offers 288 GB HBM3e — the largest capacity of any GPU — at 5.3 TB/s, making it the chip of choice when memory capacity matters more than raw throughput (very large models, long-context workloads). ROCm 6.x now has production-grade PyTorch and vLLM support, closing significant gaps with CUDA.</p>
+        <p>AMD's strategy is competing where NVIDIA is weakest: the B200's 192 GB HBM falls short for 70B+ models at high batch sizes; the MI325X's 288 GB fills that gap. The MI350X on TSMC 3nm is expected late 2026, targeting 6+ TB/s bandwidth.</p>
+        <div class="co-bet"><div class="co-bet-lbl">The bet</div><p>Win the memory-capacity axis where NVIDIA's B200 falls short + ROCm ecosystem maturation → a "good enough" CUDA alternative for inference-only deployments where VRAM capacity is the binding constraint.</p></div>
+        <div class="co-nums">
+          <div class="co-num"><div class="cn">5.3 TB/s</div><div class="cl">MI325X HBM3e BW</div></div>
+          <div class="co-num"><div class="cn">288 GB</div><div class="cl">HBM capacity (GPU record)</div></div>
+          <div class="co-num"><div class="cn">1,307 TFLOPS</div><div class="cl">MI325X FP16 peak</div></div>
+        </div>
+        <div class="co-sr">
+          <div class="co-s"><h5>Strengths</h5><ul><li>Memory capacity leader — 288 GB vs B200's 192 GB</li><li>ROCm 6.x production-grade for inference (vLLM, SGLang)</li><li>EPYC CPU synergy for rack-level deployments</li></ul></div>
+          <div class="co-r"><h5>Risks</h5><ul><li>CUDA software gravity — engineers still default to NVIDIA</li><li>ROCm operator coverage gaps remain for some model ops</li><li>Training workload mindshare heavily NVIDIA-dominated</li></ul></div>
+        </div>
+        <div class="co-news"><h5>Latest moves</h5><ul><li>MI350X on TSMC 3nm — expected late 2026</li><li>ROCm gaining ground; vLLM and SGLang now production-grade on ROCm</li><li>AMD-powered nodes appearing in select hyperscaler inference clusters</li></ul></div>
+        <a class="co-link" href="https://www.amd.com/en/products/accelerators/instinct.html" target="_blank" rel="noopener">amd.com →</a>
+      </div>
+    </div>
+
+    <!-- Cerebras -->
+    <div class="co-card" onclick="toggleCo(this)">
+      <div class="co-head">
+        <div class="co-arr">▼</div>
+        <div class="co-hrow"><span class="t-wafer">wafer</span><span class="co-name">Cerebras</span><span class="co-badge ga">GA</span></div>
+        <div class="co-product">WSE-3 (CS-3 system) · Condor Galaxy clusters</div>
+        <div class="co-tagline">Wafer-scale — eliminate the chip boundary and the memory wall simultaneously</div>
+        <div class="co-quick"><span>Founded <b>2016</b></span><span>Sunnyvale, CA</span><span>IPO <b>CBRS</b> (late 2024)</span><span>~$750M raised</span></div>
+      </div>
+      <div class="co-body">
+        <p>Cerebras took the most radical approach to the memory wall: make the entire 300mm silicon wafer one chip. The WSE-3 is 46,225 mm² — 57× larger than an H100 (815 mm²). With 44 GB of on-chip SRAM and 21 PB/s bandwidth, transformer weights live permanently on chip with sub-nanosecond access. The memory wall does not exist on this architecture.</p>
+        <p>The CS-3 system houses the WSE-3 in a water-cooled unit (~23 kW) and connects to external weight-streaming servers for model swap. Condor Galaxy clusters (9–54 CS-3 systems) are deployed with Abu Dhabi's G42, University of Texas, and others. The company completed its IPO (CBRS) in late 2024.</p>
+        <div class="co-bet"><div class="co-bet-lbl">The bet</div><p>Wafer-scale integration physically eliminates the HBM/bandwidth bottleneck. 21 PB/s on-chip is 6,250× H100's HBM3 bandwidth. Models that are memory-bound on GPUs run at full arithmetic throughput on WSE-3. There is no incremental fix — only a different paradigm.</p></div>
+        <div class="co-nums">
+          <div class="co-num"><div class="cn">21 PB/s</div><div class="cl">on-chip SRAM bandwidth</div></div>
+          <div class="co-num"><div class="cn">44 GB</div><div class="cl">on-chip SRAM total</div></div>
+          <div class="co-num"><div class="cn">46,225 mm²</div><div class="cl">die area (57× H100)</div></div>
+          <div class="co-num"><div class="cn">6.7×</div><div class="cl">faster vs GPU cloud on 1T model</div></div>
+        </div>
+        <div class="co-sr">
+          <div class="co-s"><h5>Strengths</h5><ul><li>Fastest single-chip inference for large models — no close second</li><li>Sub-10 ms TTFT on 405B+ models</li><li>No HBM stacks — weights always on-chip</li><li>Public company — balance sheet visible and reasonably stable</li></ul></div>
+          <div class="co-r"><h5>Risks</h5><ul><li>44 GB SRAM limits native model capacity (weight streaming mitigates but adds latency)</li><li>~23 kW per CS-3 — massive power and cooling infrastructure requirement</li><li>Cluster economics prohibitive for small-scale deployments</li></ul></div>
+        </div>
+        <div class="co-news"><h5>Latest moves</h5><ul><li>Condor Galaxy 3 (9× CS-3) operational — 21,000 tokens/sec on Llama 3 405B</li><li>CBRS IPO completed late 2024; trading publicly</li><li>Expanding enterprise inference cloud offering</li></ul></div>
+        <a class="co-link" href="https://www.cerebras.ai" target="_blank" rel="noopener">cerebras.ai →</a>
+      </div>
+    </div>
+
+    <!-- Groq -->
+    <div class="co-card" onclick="toggleCo(this)">
+      <div class="co-head">
+        <div class="co-arr">▼</div>
+        <div class="co-hrow"><span class="t-df">dataflow</span><span class="co-name">Groq</span><span class="co-badge acq">NVIDIA-acquired</span></div>
+        <div class="co-product">Groq LPU · Groq 3 (NIM Accelerator)</div>
+        <div class="co-tagline">Deterministic dataflow — sub-millisecond first-token latency that GPUs cannot match</div>
+        <div class="co-quick"><span>Founded <b>2016</b></span><span>Mountain View, CA</span><span>Acquired by NVIDIA for <b>$20B</b> (Dec 2025)</span></div>
+      </div>
+      <div class="co-body">
+        <p>Groq was founded by ex-Google TPU engineers with a single goal: eliminate unpredictable GPU latency. The LPU (Language Processing Unit) uses statically-compiled dataflow — all scheduling decisions made at compile time, so the chip never stalls. The result is deterministic latency every invocation, and a first-token time below 1 ms — physically impossible on a GPU's runtime-scheduled SIMT model.</p>
+        <p>NVIDIA acquired Groq for $20B in December 2025, the largest AI chip startup acquisition ever. Groq 3 debuted at GTC 2026 as a "NIM Accelerator" integrated into NVIDIA's inference serving platform. GroqCloud (1M+ registered developers) is now accessible through NVIDIA NIM endpoints.</p>
+        <div class="co-bet"><div class="co-bet-lbl">The bet (pre-acquisition)</div><p>Compile-time static scheduling → deterministic, stall-free dataflow → sub-ms TTFT → ideal for interactive and agentic applications where latency matters more than throughput. The $20B acquisition validated the thesis — NVIDIA bought it rather than outcompete it.</p></div>
+        <div class="co-nums">
+          <div class="co-num"><div class="cn">&lt;1 ms</div><div class="cl">TTFT on 7B models</div></div>
+          <div class="co-num"><div class="cn">500+ tok/s</div><div class="cl">7B FP8 throughput</div></div>
+          <div class="co-num"><div class="cn">$20B</div><div class="cl">NVIDIA acquisition price</div></div>
+          <div class="co-num"><div class="cn">1M+</div><div class="cl">GroqCloud developers</div></div>
+        </div>
+   

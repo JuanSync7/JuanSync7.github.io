@@ -17,6 +17,7 @@ const posts = entries
     tags: e.data.tags,
     featured: e.data.featured,
     size: e.data.size,
+    ...(e.data.externalUrl ? { externalUrl: e.data.externalUrl } : {}),
   }))
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 ---

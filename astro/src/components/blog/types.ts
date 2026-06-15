@@ -17,6 +17,7 @@ export interface Post {
   size: CardSize;
   series?: string;
   week?: string;
+  externalUrl?: string;
 }
 
 export interface Tweaks {

@@ -12,7 +12,9 @@ import '../../components/blog/blog-post.css';
 
 export async function getStaticPaths() {
   const entries = await getCollection('blog');
-  return entries.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
+  return entries
+    .filter((entry) => !entry.data.externalUrl)
+    .map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
 }
 
 type Props = { entry: CollectionEntry<'blog'> };
