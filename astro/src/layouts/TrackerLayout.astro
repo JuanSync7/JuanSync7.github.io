@@ -1,0 +1,38 @@
+---
+import './../components/trackers/_chrome.css';
+interface Props { title?: string; active?: string; }
+const { title = 'Trackers · juan.kok', active = '' } = Astro.props;
+const links = [
+  { id: 'engines', href: '/trackers/inference-engines', label: 'Engines' },
+  { id: 'models', href: '/trackers/frontier-models', label: 'Models' },
+  { id: 'silicon', href: '/trackers/inference-silicon', label: 'Silicon' },
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="sitenav">
+      <div class="inner">
+        <a class="brand tnav-back" href="/blog"><span class="dot"></span> ← juan.kok / blog</a>
+        <nav class="navlinks">
+          {links.map((l) => <a href={l.href} class={active === l.id ? 'active' : ''}>{l.label}</a>)}
+          <a href="/learn/inference-end-to-end.html">Learn</a>
+        </nav>
+      </div>
+    </header>
+    <main class="wrap">
+      <slot />
+    </main>
+  </body>
+</html>

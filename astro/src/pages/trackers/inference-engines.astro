@@ -1,0 +1,34 @@
+---
+import TrackerLayout from '../../layouts/TrackerLayout.astro';
+import Dashboard from '../../components/trackers/EnginesDashboard.jsx';
+import data from '../../data/trackers/engines.json';
+import { getCollection } from 'astro:content';
+import '../../components/trackers/engines.css';
+const releases = (await getCollection('releases'))
+  .filter((r) => r.slug.startsWith('inference-engines/'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+---
+<TrackerLayout title="Inference Engines Tracker" active="engines">
+  <header class="top reveal">
+    <div>
+      <div class="eyebrow">Live landscape · refreshed weekly</div>
+      <h1>The Inference <em>Engine</em> Room</h1>
+      <div class="sub">A running read on the LLM inference-engine landscape — versions, trade-offs, and where each one earns its place.</div>
+    </div>
+    <div class="meta">Updated <b>{data.meta.lastUpdated}</b><br />Cadence <b>{data.meta.cadence}</b><br />Tracking <b>{data.engines.length}</b> engines</div>
+  </header>
+  <Dashboard client:load />
+  <h2 class="section">Release <em>history</em></h2>
+  <p class="section-sub">Each weekly refresh is published as a dated post. Newest first.</p>
+  <div class="releases">
+    {releases.length === 0 && <p class="section-sub">No releases yet.</p>}
+    {releases.map((p) => (
+      <a class="release-row" href={`/trackers/releases/${p.slug}`}>
+        <span class="rd">{fmt(p.data.date)}</span>
+        <span><span class="rt">{p.data.title}</span>{p.data.summary && <div class="rs">{p.data.summary}</div>}</span>
+        <span class="rx">→</span>
+      </a>
+    ))}
+  </div>
+</TrackerLayout>

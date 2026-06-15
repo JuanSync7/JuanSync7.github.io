@@ -1,0 +1,25 @@
+---
+import TrackerLayout from '../../../layouts/TrackerLayout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import '../../../components/trackers/engines.css';
+
+export async function getStaticPaths() {
+  const releases = await getCollection('releases');
+  return releases.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
+}
+type Props = { entry: CollectionEntry<'releases'> };
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const tracker = entry.slug.split('/')[0];
+const active = tracker === 'inference-engines' ? 'engines' : tracker === 'frontier-models' ? 'models' : 'silicon';
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+<TrackerLayout title={`${entry.data.title} · releases`} active={active}>
+  <article class="release-article">
+    <a class="back" href={`/trackers/${tracker}`}>← back to tracker</a>
+    <div class="eyebrow">{fmt(entry.data.date)}</div>
+    <h1>{entry.data.title}</h1>
+    {entry.data.summary && <p class="sub">{entry.data.summary}</p>}
+    <div class="prose"><Content /></div>
+  </article>
+</TrackerLayout>

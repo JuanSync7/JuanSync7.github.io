@@ -1,0 +1,30 @@
+---
+import TrackerLayout from '../../layouts/TrackerLayout.astro';
+import '../../components/trackers/engines.css';
+import engines from '../../data/trackers/engines.json';
+import models from '../../data/trackers/models.json';
+import chips from '../../data/trackers/chips.json';
+const cards = [
+  { href: '/trackers/inference-engines', title: 'Inference Engines', n: engines.engines.length, unit: 'engines', blurb: 'vLLM, SGLang, TensorRT-LLM, LMDeploy, llama.cpp and friends — versions, trade-offs, throughput.', when: engines.meta.cadence },
+  { href: '/trackers/frontier-models', title: 'Frontier Models', n: models.models.length, unit: 'models & frameworks', blurb: 'Frontier closed/open, small & on-device, agentic frameworks, classifiers — benchmarks and pipelines.', when: models.meta.cadence },
+  { href: '/trackers/inference-silicon', title: 'Inference Silicon', n: chips.chips.length, unit: 'chips', blurb: 'GPUs, wafer-scale, dataflow LPUs, inference ASICs and RISC-V — specs, trade-offs, who is shipping.', when: chips.meta.cadence },
+];
+---
+<TrackerLayout title="Trackers · juan.kok">
+  <header class="top reveal">
+    <div>
+      <div class="eyebrow">Weekly deep-research · auto-refreshed</div>
+      <h1>The <em>trackers</em></h1>
+      <div class="sub">Three weekly-refreshed reads on the AI inference stack — the engines, the models, and the silicon underneath. Each runs on its own cadence and publishes a dated release post.</div>
+    </div>
+  </header>
+  <div class="tracker-hub" style="margin-top:8px">
+    {cards.map((c) => (
+      <a class="card" href={c.href}>
+        <h3>{c.title}</h3>
+        <p>{c.blurb}</p>
+        <div class="go">{c.n} {c.unit} · {c.when} →</div>
+      </a>
+    ))}
+  </div>
+</TrackerLayout>
