@@ -57,9 +57,9 @@ export default function PageAI({ gpuRef, tpRef }: Props) {
 
       <div className="cp-topic"><span className="cp-slash" style={{ color: RED }}>//</span> bench</div>
       <div className="cp-meter-row">
-        <Meter label="Accuracy" value={91} displayVal="91.3%" color={RED} />
-        <Meter label="Tokens/s" value={78} displayVal="156"   color={ORA} />
-        <Meter label="Context"  value={64} displayVal="32k"   color={RED} />
+        <Meter label="Test Cov" value={90}  displayVal="90%+" color={RED} />
+        <Meter label="Tests"    value={100} displayVal="322"  color={ORA} />
+        <Meter label="Context"  value={64}  displayVal="32k"  color={RED} />
       </div>
 
       <Ticker />

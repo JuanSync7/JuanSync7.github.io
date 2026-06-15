@@ -8,15 +8,13 @@ interface Stat {
 const STATS: Stat[] = [
   { label: 'SKILLS', value: '22' },
   { label: 'COMMITS', value: '847' },
-  { label: 'TAPE_OUTS', value: '3' },
-  { label: 'YEARS_EXP', value: '5' },
-  { label: 'COVERAGE', value: '98.7%' },
+  { label: 'TAPE_OUTS', value: '2' },
+  { label: 'YEARS_EXP', value: '3' },
+  { label: 'ATPG_COV', value: '90%+' },
   { label: 'LANGUAGES', value: '6' },
-  { label: 'TOOLS', value: '12' },
+  { label: 'EDA_TOOLS', value: '12' },
   { label: 'PROJECTS', value: '12' },
-  { label: 'CERTIFICATIONS', value: '2' },
-  { label: 'PUBLICATIONS', value: '1' },
-  { label: 'GIT_STREAK', value: '14d' },
+  { label: 'OSS_REPOS', value: '4' },
 ];
 
 function TickerRun() {

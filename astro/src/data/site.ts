@@ -9,13 +9,13 @@
 export const IDENTITY = {
   name: 'Shew Juan Kok',
   shortName: 'juan_kok',
-  title: 'Senior Design Engineer',
-  blurb: 'Senior Design Engineer — front-end design, verification, SoC architecture, synthesis & DFT.',
-  cvFile: '/Kok_Shew_Juan_CV_2025.pdf',
+  title: 'Senior Design & AI Engineer',
+  blurb: 'Senior Design & AI Engineer — ASIC front-end, verification, SoC architecture & DFT, plus production AI platforms (agentic systems, RAG, MCP).',
+  cvFile: '/Kok_Shew_Juan_CV_2026.pdf',
 } as const;
 
 export const CONTACT = {
-  email: 'kokshewjuan7_job@outlook.com',
+  email: 'kokshewjuan_job@outlook.com',
   github: 'JuanSync7',
   linkedin: 'shewjuankok',
   linkedinUrl: 'https://www.linkedin.com/in/shewjuankok/',
@@ -34,7 +34,7 @@ export const GITHUB = {
  */
 export const CAREER_STATS = {
   skills: 22,
-  commits: 2130,
+  commits: 847,
   years: 3,
   tapeouts: 2,
   projects: 12,

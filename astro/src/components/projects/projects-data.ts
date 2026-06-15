@@ -4,7 +4,7 @@ export const GH_USER = GITHUB.user;
 export const GH_API = GITHUB.apiUrl;
 
 export const EXCLUDE = new Set<string>(GITHUB.excludeRepos);
-export const PINNED: readonly string[] = [];
+export const PINNED: readonly string[] = ['ai-synapse', 'code-doc-monitor', 'KGWeave'];
 export const MAX_CARDS = GITHUB.maxCards;
 
 export const LANG_COLOR: Record<string, string> = {

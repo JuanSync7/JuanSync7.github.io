@@ -21,25 +21,26 @@ export const SCRIPT: ScriptStep[] = [
   {
     type: 'block',
     title: '# professional summary',
-    meta: 'ASIC Design Engineer · Hardware-Software Co-optimization',
+    meta: 'Senior Design & AI Engineer · ASIC + production AI systems',
     items: [
-      '> expertise in SoC architecture, front-end design flows, functional verification',
-      '> HDL coding, code coverage analysis, constraint-random verification, synthesis, DFT',
-      '> exploring AI agents, MCP & RAG for automated chip design workflows',
+      '> SoC architecture, front-end design flows, functional verification, synthesis, DFT',
+      '> HDL coding, code coverage analysis, constrained-random verification w/ SVA',
+      '> architecting AI Harness — internal agentic AI platform (LangGraph, RAG, MCP, observability)',
     ],
   },
   { type: 'cmd', text: 'ls -t ~/career/' },
-  { type: 'out', text: ['aion-senior.md*', 'aion-asic.md', 'southampton.md'] },
+  { type: 'out', text: ['aion-ai-eng.md*', 'aion-asic.md', 'southampton.md'] },
   { type: 'hint', text: '# 3 files found — reading latest first...' },
-  { type: 'cmd', text: 'cat aion-senior.md' },
+  { type: 'cmd', text: 'cat aion-ai-eng.md' },
   {
     type: 'block',
-    title: '# senior design engineer',
-    meta: 'aion silicon · london · aug 2025 — present',
+    title: '# senior design & ai engineer',
+    meta: 'aion silicon · london · feb 2026 — present',
     items: [
-      '> automated front-end flows w/ python, tcl, shell — reduced manual effort',
-      '> re-engineered risc-v vector core → external vpu accelerator',
-      '> ensured ISA compliance & efficient hazard detection',
+      '> architecting AI Harness — reusable AI platform: APIs, data services, durable workflows',
+      '> built business case + IT security review that brought Claude into production company-wide',
+      '> re-engineered risc-v vector core → external vpu accelerator (dispatch/hazard/retirement)',
+      '> automated synthesis, lint & DFT loops w/ python, tcl, shell',
     ],
   },
   { type: 'cmd', text: 'cat aion-asic.md' },
@@ -70,7 +71,7 @@ export const FILE_BLOCKS: Record<string, BlockLine> = SCRIPT.reduce(
     if (step.type === 'block') {
       const key =
         step.title === '# professional summary' ? 'summary.md'
-        : step.title === '# senior design engineer' ? 'aion-senior.md'
+        : step.title === '# senior design & ai engineer' ? 'aion-ai-eng.md'
         : step.title === '# asic design engineer' ? 'aion-asic.md'
         : step.title === '# meng, electrical & electronic eng' ? 'southampton.md'
         : null;

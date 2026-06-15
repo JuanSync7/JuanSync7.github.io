@@ -28,4 +28,4 @@ export const PALETTE = {
 } as const;
 
 export const TICKER_MSG =
-  'SKILLS: <b>22</b> | COMMITS: <b>847</b> | TAPE_OUTS: <b>3</b> | YEARS_EXP: <b>5</b> | COVERAGE: <b>98.7%</b> | LANGUAGES: <b>6</b> | TOOLS: <b>12</b> | PROJECTS: <b>12</b> | CERTIFICATIONS: <b>2</b> | PUBLICATIONS: <b>1</b> | GIT_STREAK: <b>14d</b>';
+  'SKILLS: <b>22</b> | COMMITS: <b>847</b> | TAPE_OUTS: <b>2</b> | YEARS_EXP: <b>3</b> | ATPG_COV: <b>90%+</b> | LANGUAGES: <b>6</b> | EDA_TOOLS: <b>12</b> | PROJECTS: <b>12</b> | OSS_REPOS: <b>4</b>';

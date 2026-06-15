@@ -42,8 +42,9 @@ export default function Hero() {
         <div className="hf-meta-card">
           <div className="hf-meta-lbl">now</div>
           <div className="hf-meta-val">
-            Senior Design Engineer — front-end design, verification, SoC architecture, synthesis & DFT.
-            Exploring AI agents, MCP & RAG to automate chip design workflows.
+            Senior Design &amp; AI Engineer — ASIC front-end, verification, SoC architecture &amp; DFT.
+            Now architecting AI Harness, an internal agentic AI platform (LangGraph, RAG, MCP),
+            and brought Claude into production company-wide.
           </div>
         </div>
         <div className="hf-meta-card">

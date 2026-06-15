@@ -41,9 +41,9 @@ export default function PageASIC() {
 
       <div className="cp-topic"><span className="cp-slash" style={{ color: TEAL }}>//</span> bench</div>
       <div className="cp-meter-row">
-        <Meter label="Coverage" value={98} displayVal="98.7%"   color={TEAL} />
-        <Meter label="Timing"   value={88} displayVal="+0.12ns" color={TEAL} />
-        <Meter label="Area"     value={72} displayVal="0.8mm²"  color={TEAL} />
+        <Meter label="ATPG Cov" value={90}  displayVal="90%+"   color={TEAL} />
+        <Meter label="Lint"     value={100} displayVal="clean"  color={TEAL} />
+        <Meter label="Safety"   value={100} displayVal="ASIL-B" color={TEAL} />
       </div>
 
       <Ticker />
