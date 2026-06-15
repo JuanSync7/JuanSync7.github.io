@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import data from '../../data/trackers/models.json';
 
 const FILTERS = [
   ['all', 'All'],
@@ -10,7 +9,7 @@ const FILTERS = [
   ['encoder', 'Classifiers & Encoders'],
 ];
 
-export default function Dashboard() {
+export default function Dashboard({ data }) {
   const [active, setActive] = useState('all');
   const [modalId, setModalId] = useState(null);
 

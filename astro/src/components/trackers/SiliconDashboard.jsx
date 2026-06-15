@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import data from '../../data/trackers/chips.json';
 
 const FILTERS = [
   ['all', 'All'],
@@ -18,7 +17,7 @@ const STATUS_CLASS = {
   'Cloud-only': 'status-cloud',
 };
 
-export default function Dashboard() {
+export default function Dashboard({ data }) {
   const [active, setActive] = useState('all');
   const [modalId, setModalId] = useState(null);
 

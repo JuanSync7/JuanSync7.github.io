@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import data from '../../data/trackers/engines.json';
 
 const tierClass = (t) => (t === 'server' ? 'server' : t === 'legacy' ? 'legacy' : 'local');
 const FILTERS = [
@@ -9,7 +8,7 @@ const FILTERS = [
   ['legacy', 'Legacy'],
 ];
 
-export default function Dashboard() {
+export default function Dashboard({ data }) {
   const [active, setActive] = useState('all');
   const [modalId, setModalId] = useState(null);
 

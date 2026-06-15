@@ -1,13 +1,19 @@
 ---
 import TrackerLayout from '../../layouts/TrackerLayout.astro';
 import '../../components/trackers/engines.css';
-import engines from '../../data/trackers/engines.json';
-import models from '../../data/trackers/models.json';
-import chips from '../../data/trackers/chips.json';
+import type { TrackerData } from '../../components/trackers/editions';
+
+function latest(mods: Record<string, { default: TrackerData }>): TrackerData {
+  const entries = Object.entries(mods).sort((a, b) => a[0].localeCompare(b[0]));
+  return entries[entries.length - 1][1].default;
+}
+const engines = latest(import.meta.glob<{ default: TrackerData }>('../../data/trackers/engines/*.json', { eager: true }));
+const models = latest(import.meta.glob<{ default: TrackerData }>('../../data/trackers/models/*.json', { eager: true }));
+const chips = latest(import.meta.glob<{ default: TrackerData }>('../../data/trackers/chips/*.json', { eager: true }));
 const cards = [
-  { href: '/trackers/inference-engines', title: 'Inference Engines', n: engines.engines.length, unit: 'engines', blurb: 'vLLM, SGLang, TensorRT-LLM, LMDeploy, llama.cpp and friends — versions, trade-offs, throughput.', when: engines.meta.cadence },
-  { href: '/trackers/frontier-models', title: 'Frontier Models', n: models.models.length, unit: 'models & frameworks', blurb: 'Frontier closed/open, small & on-device, agentic frameworks, classifiers — benchmarks and pipelines.', when: models.meta.cadence },
-  { href: '/trackers/inference-silicon', title: 'Inference Silicon', n: chips.chips.length, unit: 'chips', blurb: 'GPUs, wafer-scale, dataflow LPUs, inference ASICs and RISC-V — specs, trade-offs, who is shipping.', when: chips.meta.cadence },
+  { href: '/trackers/inference-engines', title: 'Inference Engines', n: (engines.engines ?? []).length, unit: 'engines', blurb: 'vLLM, SGLang, TensorRT-LLM, LMDeploy, llama.cpp and friends — versions, trade-offs, throughput.', when: engines.meta.cadence },
+  { href: '/trackers/frontier-models', title: 'Frontier Models', n: (models.models ?? []).length, unit: 'models & frameworks', blurb: 'Frontier closed/open, small & on-device, agentic frameworks, classifiers — benchmarks and pipelines.', when: models.meta.cadence },
+  { href: '/trackers/inference-silicon', title: 'Inference Silicon', n: (chips.chips ?? []).length, unit: 'chips', blurb: 'GPUs, wafer-scale, dataflow LPUs, inference ASICs and RISC-V — specs, trade-offs, who is shipping.', when: chips.meta.cadence },
 ];
 ---
 <TrackerLayout title="Trackers · juan.kok">
@@ -15,7 +21,7 @@ const cards = [
     <div>
       <div class="eyebrow">Weekly deep-research · auto-refreshed</div>
       <h1>The <em>trackers</em></h1>
-      <div class="sub">Three weekly-refreshed reads on the AI inference stack — the engines, the models, and the silicon underneath. Each runs on its own cadence and publishes a dated release post.</div>
+      <div class="sub">Three weekly-refreshed reads on the AI inference stack — the engines, the models, and the silicon underneath. Each version is snapshotted; step through the history down the left of any tracker.</div>
     </div>
   </header>
   <div class="tracker-hub" style="margin-top:8px">

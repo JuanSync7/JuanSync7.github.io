@@ -1,0 +1,52 @@
+---
+import TrackerLayout from '../../../layouts/TrackerLayout.astro';
+import Dashboard from '../../../components/trackers/ModelsDashboard.jsx';
+import TrackerTimeline from '../../../components/trackers/TrackerTimeline.astro';
+import { buildEditions, type TrackerData } from '../../../components/trackers/editions';
+import { getCollection } from 'astro:content';
+import '../../../components/trackers/models.css';
+
+export async function getStaticPaths() {
+  const mods = import.meta.glob<{ default: TrackerData }>('../../../data/trackers/models/*.json', { eager: true });
+  const snaps = Object.entries(mods)
+    .map(([p, m]) => {
+      const mm = p.match(/(\d{4}-\d{2}-\d{2})/);
+      return { date: mm ? mm[1] : '', data: m.default };
+    })
+    .sort((a, b) => a.date.localeCompare(b.date));
+  const posts = (await getCollection('releases'))
+    .filter((r) => r.slug.startsWith('frontier-models/'))
+    .map((r) => ({ date: r.data.date.toISOString().slice(0, 10), slug: r.slug, title: r.data.title, summary: r.data.summary ?? '' }));
+  const latest = snaps[snaps.length - 1];
+  const paths: { params: { slug?: string }; props: { selected: typeof latest; snaps: typeof snaps; posts: typeof posts } }[] = [
+    { params: { slug: undefined }, props: { selected: latest, snaps, posts } },
+  ];
+  for (const s of snaps) paths.push({ params: { slug: s.date }, props: { selected: s, snaps, posts } });
+  return paths;
+}
+
+interface SnapEntry { date: string; data: TrackerData; }
+interface PostEntry { date: string; slug: string; title: string; summary: string; }
+const { selected, snaps, posts } = Astro.props as { selected: SnapEntry; snaps: SnapEntry[]; posts: PostEntry[] };
+const editions = buildEditions('frontier-models', snaps.map((s) => ({ date: s.date, summary: s.data.meta.summary ?? '' })), posts);
+const data = selected.data;
+const count = (data.models ?? []).length;
+---
+<TrackerLayout title="The Frontier Models Room · juan.kok" active="models">
+  <div class="tracker-grid">
+    <aside class="tracker-side">
+      <TrackerTimeline editions={editions} current={selected.date} />
+    </aside>
+    <div class="tracker-main">
+      <header class="top reveal">
+        <div>
+          <div class="eyebrow">Snapshot · {selected.date}</div>
+          <h1>The Frontier Models Room</h1>
+          <div class="sub">A weekly read on the AI model landscape — frontier closed/open, small & on-device, agentic frameworks, and classifiers.</div>
+        </div>
+        <div class="meta">Updated <b>{data.meta.lastUpdated}</b><br />Cadence <b>{data.meta.cadence}</b><br />Tracking <b>{count}</b> models</div>
+      </header>
+      <Dashboard data={data} client:load />
+    </div>
+  </div>
+</TrackerLayout>
