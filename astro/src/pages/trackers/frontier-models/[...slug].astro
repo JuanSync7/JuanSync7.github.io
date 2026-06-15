@@ -30,6 +30,7 @@ interface PostEntry { date: string; slug: string; title: string; summary: string
 const { selected, snaps, posts } = Astro.props as { selected: SnapEntry; snaps: SnapEntry[]; posts: PostEntry[] };
 const editions = buildEditions('frontier-models', snaps.map((s) => ({ date: s.date, summary: s.data.meta.summary ?? '' })), posts);
 const data = selected.data;
+const note = posts.find((p) => p.date === selected.date);
 const count = (data.models ?? []).length;
 ---
 <TrackerLayout title="The Frontier Models Room · juan.kok" active="models">
@@ -40,7 +41,7 @@ const count = (data.models ?? []).length;
     <div class="tracker-main">
       <header class="top reveal">
         <div>
-          <div class="eyebrow">Snapshot · {selected.date}</div>
+          <div class="eyebrow">Snapshot · {selected.date}{note && <a class="note-link" href={`/trackers/releases/${note.slug}`}> · read the note ↗</a>}</div>
           <h1>The Frontier Models Room</h1>
           <div class="sub">A weekly read on the AI model landscape — frontier closed/open, small & on-device, agentic frameworks, and classifiers.</div>
         </div>

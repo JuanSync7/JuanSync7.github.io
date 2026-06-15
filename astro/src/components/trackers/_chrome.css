@@ -56,3 +56,6 @@
   .vtl-item { flex: 0 0 auto; width: 150px; border: 1px solid var(--line); border-radius: 8px; padding: 10px; }
   .vtl-dot { display: none; }
 }
+
+.note-link { color: var(--accent2); text-decoration: none; }
+.note-link:hover { text-decoration: underline; }

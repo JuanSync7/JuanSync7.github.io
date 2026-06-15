@@ -30,6 +30,7 @@ interface PostEntry { date: string; slug: string; title: string; summary: string
 const { selected, snaps, posts } = Astro.props as { selected: SnapEntry; snaps: SnapEntry[]; posts: PostEntry[] };
 const editions = buildEditions('inference-engines', snaps.map((s) => ({ date: s.date, summary: s.data.meta.summary ?? '' })), posts);
 const data = selected.data;
+const note = posts.find((p) => p.date === selected.date);
 const count = (data.engines ?? []).length;
 ---
 <TrackerLayout title="The Inference Engine Room · juan.kok" active="engines">
@@ -40,7 +41,7 @@ const count = (data.engines ?? []).length;
     <div class="tracker-main">
       <header class="top reveal">
         <div>
-          <div class="eyebrow">Snapshot · {selected.date}</div>
+          <div class="eyebrow">Snapshot · {selected.date}{note && <a class="note-link" href={`/trackers/releases/${note.slug}`}> · read the note ↗</a>}</div>
           <h1>The Inference Engine Room</h1>
           <div class="sub">A running read on the LLM inference-engine landscape — versions, trade-offs, and where each one earns its place.</div>
         </div>

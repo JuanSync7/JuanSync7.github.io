@@ -30,6 +30,7 @@ interface PostEntry { date: string; slug: string; title: string; summary: string
 const { selected, snaps, posts } = Astro.props as { selected: SnapEntry; snaps: SnapEntry[]; posts: PostEntry[] };
 const editions = buildEditions('inference-silicon', snaps.map((s) => ({ date: s.date, summary: s.data.meta.summary ?? '' })), posts);
 const data = selected.data;
+const note = posts.find((p) => p.date === selected.date);
 const count = (data.chips ?? []).length;
 ---
 <TrackerLayout title="The Inference Silicon Room · juan.kok" active="silicon">
@@ -40,7 +41,7 @@ const count = (data.chips ?? []).length;
     <div class="tracker-main">
       <header class="top reveal">
         <div>
-          <div class="eyebrow">Snapshot · {selected.date}</div>
+          <div class="eyebrow">Snapshot · {selected.date}{note && <a class="note-link" href={`/trackers/releases/${note.slug}`}> · read the note ↗</a>}</div>
           <h1>The Inference Silicon Room</h1>
           <div class="sub">A weekly read on the chips powering AI inference — GPUs, wafer-scale, dataflow LPUs, inference ASICs, and RISC-V.</div>
         </div>
