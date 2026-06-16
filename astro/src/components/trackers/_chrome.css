@@ -17,16 +17,30 @@
 .release-article .back:hover { color: var(--accent); }
 .release-article h1 { font-family: var(--serif); font-size: 34px; line-height: 1.15; margin: 6px 0 10px; }
 .release-article .sub { color: var(--muted); font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
-.release-article .prose { font-family: var(--sans); color: var(--txt); line-height: 1.7; margin-top: 18px; }
-.release-article .prose h2 { font-family: var(--serif); font-size: 22px; margin: 28px 0 10px; color: var(--accent2); }
-.release-article .prose h3 { font-family: var(--serif); font-size: 18px; margin: 22px 0 8px; }
-.release-article .prose p { margin: 0 0 16px; }
-.release-article .prose ul, .release-article .prose ol { padding-left: 22px; margin: 0 0 16px; }
-.release-article .prose li { margin-bottom: 6px; }
+.release-article .prose { font-family: var(--sans); color: var(--txt); font-size: 17px; line-height: 1.85; margin-top: 26px; }
+.release-article .prose h2 { font-family: var(--serif); font-size: 25px; margin: 48px 0 14px; color: var(--accent2); }
+.release-article .prose h3 { font-family: var(--serif); font-size: 19px; margin: 34px 0 10px; }
+.release-article .prose p { margin: 0 0 22px; }
+.release-article .prose ul, .release-article .prose ol { padding-left: 24px; margin: 0 0 22px; }
+.release-article .prose li { margin-bottom: 10px; }
 .release-article .prose a { color: var(--accent2); }
 .release-article .prose strong { color: var(--txt); }
-.release-article .prose code { font-family: var(--mono); background: var(--panel2); padding: 1px 6px; border-radius: 4px; font-size: 0.92em; }
-.release-article .prose pre { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; overflow-x: auto; margin: 0 0 18px; }
+
+/* inline code vs. code block — reset the nested <code> inside <pre> so it isn't double-boxed */
+.release-article .prose code { font-family: var(--mono); font-size: 0.88em; background: var(--panel2); border: 1px solid var(--line); padding: 1.5px 6px; border-radius: 5px; color: var(--txt); }
+.release-article .prose pre { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; overflow-x: auto; margin: 0 0 24px; line-height: 1.6; font-size: 14px; }
+.release-article .prose pre code { background: none; border: 0; padding: 0; border-radius: 0; font-size: inherit; color: inherit; }
+
+/* note / callout block (blockquote) */
+.release-article .prose blockquote { background: var(--panel2); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; margin: 26px 0; padding: 18px 22px; color: var(--txt); font-style: normal; }
+.release-article .prose blockquote p { margin: 0 0 10px; }
+.release-article .prose blockquote p:last-child { margin-bottom: 0; }
+.release-article .prose blockquote strong { color: var(--accent); }
+
+/* prose tables — flat, hairline, themed */
+.release-article .prose table { border-collapse: collapse; width: 100%; margin: 0 0 24px; font-size: 14.5px; }
+.release-article .prose th, .release-article .prose td { border: 1px solid var(--line); padding: 10px 14px; text-align: left; vertical-align: top; }
+.release-article .prose th { background: var(--panel2); font-family: var(--mono); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
 
 .tracker-hub { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
 .tracker-hub .card { display: block; padding: 22px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); text-decoration: none; transition: border-color .2s, transform .2s; }
