@@ -62,11 +62,11 @@ export default function Dashboard({ data }) {
             <span className={'cat ' + tierClass(e.tier)}>{e.category}</span>
             <div className="tl">{e.tagline}</div>
             <div className="ver">
-              <span>Latest <b>{e.latestVersion}</b></span>
-              <span>{e.releaseDate}</span>
-              <span>{e.license}</span>
+              <div className="vk"><span className="vlabel">Version</span><span className="vval">{e.latestVersion}</span></div>
+              <div className="vk"><span className="vlabel">Released</span><span className="vval">{e.releaseDate}</span></div>
+              <div className="vk"><span className="vlabel">License</span><span className="vval">{e.license}</span></div>
             </div>
-            <div className="more">View details →</div>
+            <div className="more">View details <span className="arr">→</span></div>
           </button>
         ))}
       </div>
@@ -78,19 +78,17 @@ export default function Dashboard({ data }) {
         <table>
           <thead>
             <tr>
-              <th>Engine</th><th>Tier</th><th>Latest</th><th>License</th><th>Hardware</th><th>Best for</th><th>Watch-outs</th>
+              <th>Engine</th><th>Tier</th><th>Latest</th><th>License</th><th>Hardware</th>
             </tr>
           </thead>
           <tbody>
             {engines.map((e) => (
               <tr key={e.id}>
                 <td><b>{e.name}</b></td>
-                <td><span className="pill">{e.category}</span></td>
-                <td>{e.latestVersion}<br /><span className="pill">{e.releaseDate}</span></td>
+                <td>{e.category}</td>
+                <td>{e.latestVersion}<br /><span className="rdate">{e.releaseDate}</span></td>
                 <td>{e.license}</td>
                 <td>{e.hardware.slice(0, 3).join(', ')}{e.hardware.length > 3 ? '…' : ''}</td>
-                <td>{e.bestUseCases[0]}</td>
-                <td>{e.tradeoffs[0]}</td>
               </tr>
             ))}
           </tbody>
@@ -117,10 +115,10 @@ export default function Dashboard({ data }) {
           <div className="uccard" key={i}>
             <div className="q">
               {w.name}{' '}
-              <a href={w.link} target="_blank" rel="noreferrer" style={{ fontSize: '11px', fontFamily: 'var(--mono)' }}>↗</a>
+              <a href={w.link} target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--mono)' }}><span className="arr">↗</span></a>
             </div>
             <div className="a">{w.note}</div>
-            <div className="a" style={{ marginTop: '8px', color: 'var(--teal)' }}>
+            <div className="a" style={{ marginTop: '14px' }}>
               <b style={{ color: 'var(--teal)' }}>Why watch:</b> {w.why}
             </div>
           </div>
@@ -152,8 +150,8 @@ export default function Dashboard({ data }) {
             <div className="sect"><h4>Recent updates</h4><ul>{modal.recent.map((f, i) => <li key={i}>{f}</li>)}</ul></div>
             <div className="sect"><h4>Links</h4>
               <div className="chips">
-                <span><a href={modal.links.repo} target="_blank" rel="noreferrer">Repository ↗</a></span>
-                <span><a href={modal.links.docs} target="_blank" rel="noreferrer">Docs ↗</a></span>
+                <span><a href={modal.links.repo} target="_blank" rel="noreferrer">Repository <span className="arr">↗</span></a></span>
+                <span><a href={modal.links.docs} target="_blank" rel="noreferrer">Docs <span className="arr">↗</span></a></span>
               </div>
             </div>
           </div>

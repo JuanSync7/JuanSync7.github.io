@@ -41,7 +41,7 @@ const count = (data.engines ?? []).length;
     <div class="tracker-main">
       <header class="top reveal">
         <div>
-          <div class="eyebrow">Snapshot · {selected.date}{note && <a class="note-link" href={`/trackers/releases/${note.slug}`}> · read the note ↗</a>}</div>
+          <div class="eyebrow">Snapshot · {selected.date}{note && <a class="note-link" href={`/trackers/releases/${note.slug}`}> · read the note <span class="arr">↗</span></a>}</div>
           <h1>The Inference Engine Room</h1>
           <div class="sub">A running read on the LLM inference-engine landscape — versions, trade-offs, and where each one earns its place.</div>
         </div>

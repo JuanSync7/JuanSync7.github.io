@@ -3,6 +3,12 @@
 .tnav-back { color: var(--muted); }
 .tnav-back:hover { color: var(--accent); }
 
+/* light/dark toggle */
+.theme-toggle { font-family: var(--mono); font-size: 15px; line-height: 1; color: var(--muted);
+  background: none; border: 1px solid var(--line); border-radius: 8px; width: 36px; height: 32px;
+  cursor: pointer; transition: color .18s, border-color .18s; }
+.theme-toggle:hover { color: var(--txt); border-color: var(--muted); }
+
 .release-article { max-width: 760px; margin: 0 auto; }
 .release-article .back {
   display: inline-block; margin-bottom: 18px; color: var(--muted);
@@ -30,8 +36,9 @@
 .tracker-hub .card .go { color: var(--accent); font-family: var(--mono); font-size: 12px; }
 
 
-/* Versioned tracker layout: left timeline flush to the back-button's left edge */
-.tracker-grid { display: grid; grid-template-columns: 188px minmax(0, 1fr); gap: 30px; align-items: start; }
+/* Versioned tracker layout: timeline is a flush-left nav rail; main panel centers in the space beside it */
+.tracker-grid { display: grid; grid-template-columns: 188px minmax(0, 1fr); gap: 56px; align-items: start; }
+.tracker-main { min-width: 0; max-width: 1200px; margin: 0 auto; }
 .tracker-side { position: sticky; top: 84px; }
 .vtl-head { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
 .vtl { position: relative; }                         /* no left indent: text is flush-left */
