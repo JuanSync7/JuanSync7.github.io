@@ -2,6 +2,7 @@
   --bg:#08090b; --panel:#0e0f12; --panel2:#141519; --line:#23252b;
   --txt:#ededed; --muted:#888d96; --amber:#bccba9; --teal:#2fd4bb;
   --accent:var(--teal); --accent2:var(--teal); --bad:#d98c86; --chip:#141519; --hover:#14161c;
+  --term-r:#ff5f56; --term-y:#febc2e; --term-g:#28c840;  /* macOS traffic-light dots (theme-independent) */
   --serif:'DM Serif Display',Georgia,serif; --sans:'DM Sans',sans-serif; --mono:'DM Mono',monospace;
   --ease:cubic-bezier(0.4,0,0.2,1);
 }
