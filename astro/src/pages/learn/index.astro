@@ -1,6 +1,7 @@
 ---
 import TrackerLayout from '../../layouts/TrackerLayout.astro';
 import { getCollection } from 'astro:content';
+import '../../components/trackers/tracker-skin.css';
 
 const entries = (await getCollection('learn')).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),

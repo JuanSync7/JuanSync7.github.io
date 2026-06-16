@@ -1,6 +1,7 @@
 ---
 import TrackerLayout from '../../layouts/TrackerLayout.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
+import '../../components/trackers/tracker-skin.css';
 
 export async function getStaticPaths() {
   const entries = await getCollection('learn');
