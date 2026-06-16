@@ -65,11 +65,11 @@ export default function Dashboard({ data }) {
             <div className="tl">{m.tagline}</div>
             {m.metric && <div className="metric">{m.metric}</div>}
             <div className="ver">
-              <span>Latest <b>{m.latestVersion}</b></span>
-              <span>{m.releaseDate}</span>
-              <span>{m.license}</span>
+              <div className="vk"><span className="vlabel">Latest</span><span className="vval">{m.latestVersion}</span></div>
+              <div className="vk"><span className="vlabel">Released</span><span className="vval">{m.releaseDate}</span></div>
+              <div className="vk"><span className="vlabel">License</span><span className="vval">{m.license}</span></div>
             </div>
-            <div className="more">View details →</div>
+            <div className="more">View details <span className="arr">→</span></div>
           </button>
         ))}
       </div>
@@ -87,9 +87,9 @@ export default function Dashboard({ data }) {
           <tbody>
             {shown.map((m) => (
               <tr key={m.id}>
-                <td><b>{m.name}</b><br /><span className="pill">{m.maintainer}</span></td>
-                <td><span className="pill">{m.category}</span></td>
-                <td>{m.latestVersion}<br /><span className="pill">{m.releaseDate}</span></td>
+                <td><b>{m.name}</b><br /><span className="rdate">{m.maintainer}</span></td>
+                <td>{m.category}</td>
+                <td>{m.latestVersion}<br /><span className="rdate">{m.releaseDate}</span></td>
                 <td>{m.license}</td>
                 <td>{m.metric}</td>
                 <td>{m.bestUseCases[0]}</td>
@@ -132,7 +132,7 @@ export default function Dashboard({ data }) {
           <div className="uccard" key={i}>
             <div className="q">
               {w.name}{' '}
-              <a href={w.link} target="_blank" rel="noreferrer" style={{ fontSize: '11px', fontFamily: 'var(--mono)' }}>↗</a>
+              <a href={w.link} target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--mono)' }}><span className="arr">↗</span></a>
             </div>
             <div className="a">{w.note}</div>
             <div className="a" style={{ marginTop: '8px', color: 'var(--teal)' }}>
@@ -151,10 +151,10 @@ export default function Dashboard({ data }) {
             <span className={'cat ' + modal.tier}>{modal.category}</span>
             <div className="tl" style={{ marginTop: '8px' }}>{modal.tagline}</div>
             <div className="ver" style={{ marginBottom: '16px' }}>
-              <span>Latest <b>{modal.latestVersion}</b></span>
-              <span>Released {modal.releaseDate}</span>
-              <span>{modal.license}</span>
-              <span>{modal.maintainer}</span>
+              <div className="vk"><span className="vlabel">Latest</span><span className="vval">{modal.latestVersion}</span></div>
+              <div className="vk"><span className="vlabel">Released</span><span className="vval">{modal.releaseDate}</span></div>
+              <div className="vk"><span className="vlabel">License</span><span className="vval">{modal.license}</span></div>
+              <div className="vk"><span className="vlabel">Maintainer</span><span className="vval">{modal.maintainer}</span></div>
             </div>
             <div className="sect"><h4>Headline / performance</h4><div className="perf">{modal.perfNote}</div></div>
             <div className="sect"><h4>Key facts</h4>
@@ -176,8 +176,8 @@ export default function Dashboard({ data }) {
             )}
             <div className="sect"><h4>Links</h4>
               <div className="chips">
-                <span><a href={modal.links.primary.url} target="_blank" rel="noreferrer">{modal.links.primary.label} ↗</a></span>
-                <span><a href={modal.links.secondary.url} target="_blank" rel="noreferrer">{modal.links.secondary.label} ↗</a></span>
+                <span><a href={modal.links.primary.url} target="_blank" rel="noreferrer">{modal.links.primary.label} <span className="arr">↗</span></a></span>
+                <span><a href={modal.links.secondary.url} target="_blank" rel="noreferrer">{modal.links.secondary.label} <span className="arr">↗</span></a></span>
               </div>
             </div>
           </div>

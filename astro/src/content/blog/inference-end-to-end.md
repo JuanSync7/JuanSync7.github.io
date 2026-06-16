@@ -7,7 +7,7 @@ readTime: "18 min"
 tags: ["Inference", "KV-cache", "GPU"]
 featured: true
 size: large
-externalUrl: /learn/inference-end-to-end.html
+externalUrl: /learn/inference-end-to-end
 ---
 
 An interactive, diagram-driven explainer. Opens the full-screen flowchart.

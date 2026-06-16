@@ -7,7 +7,7 @@ readTime: "16 min"
 tags: ["Silicon", "ASIC", "Hardware"]
 featured: true
 size: medium
-externalUrl: /learn/how-chips-are-built.html
+externalUrl: /learn/how-inference-chips-are-built
 ---
 
 An interactive, diagram-driven explainer. Opens the full-screen flowchart.

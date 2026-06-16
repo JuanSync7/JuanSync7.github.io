@@ -1,0 +1,24 @@
+---
+import TrackerLayout from '../../layouts/TrackerLayout.astro';
+import { getCollection } from 'astro:content';
+
+const entries = (await getCollection('learn')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+---
+<TrackerLayout title="Learn · juan.kok">
+  <article class="release-article">
+    <div class="eyebrow">Field guides</div>
+    <h1>Learn</h1>
+    <p class="sub">Deep dives on how inference actually runs and how the silicon underneath it is built — companions to the trackers.</p>
+  </article>
+  <div class="tracker-hub" style="margin-top:28px">
+    {entries.map((entry) => (
+      <a class="card" href={`/learn/${entry.slug}`}>
+        <h3>{entry.data.title}</h3>
+        {entry.data.summary && <p>{entry.data.summary}</p>}
+        <span class="go">read →</span>
+      </a>
+    ))}
+  </div>
+</TrackerLayout>

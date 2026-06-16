@@ -24,4 +24,15 @@ const releases = defineCollection({
   }),
 });
 
-export const collections = { blog, releases };
+const learn = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    summary: z.string().optional(),
+    eyebrow: z.string().optional(),
+    tracker: z.enum(['inference-engines', 'frontier-models', 'inference-silicon']).optional(),
+    date: z.coerce.date(),
+  }),
+});
+
+export const collections = { blog, releases, learn };

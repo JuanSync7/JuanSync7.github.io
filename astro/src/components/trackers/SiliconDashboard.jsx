@@ -77,10 +77,10 @@ export default function Dashboard({ data }) {
             <div className="tl">{c.tagline}</div>
             <div className="metric-line">{c.metric}</div>
             <div className="ver">
-              <span>{c.process}</span>
-              <span><b>{c.company}</b></span>
+              <div className="vk"><span className="vlabel">Process</span><span className="vval">{c.process}</span></div>
+              <div className="vk"><span className="vlabel">Company</span><span className="vval">{c.company}</span></div>
             </div>
-            <div className="more">View details →</div>
+            <div className="more">View details <span className="arr">→</span></div>
           </button>
         ))}
       </div>
@@ -108,7 +108,7 @@ export default function Dashboard({ data }) {
               const memStr = [memFact?.v, bwFact?.v].filter(Boolean).join(' · ') || '—';
               return (
                 <tr key={c.id}>
-                  <td><b>{c.name}</b><br /><span className="pill">{c.company}</span></td>
+                  <td><b>{c.name}</b><br /><span className="rdate">{c.company}</span></td>
                   <td><span className={'cat ' + c.tier}>{c.category}</span></td>
                   <td>{c.process}</td>
                   <td>{memStr}</td>
@@ -154,7 +154,7 @@ export default function Dashboard({ data }) {
           <div className="uccard" key={i}>
             <div className="q">
               {w.name}{' '}
-              <a href={w.link} target="_blank" rel="noreferrer" style={{ fontSize: '11px', fontFamily: 'var(--mono)' }}>↗</a>
+              <a href={w.link} target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--mono)' }}><span className="arr">↗</span></a>
             </div>
             <div className="a">{w.note}</div>
             <div className="a" style={{ marginTop: '8px', color: 'var(--teal)' }}>
@@ -170,10 +170,10 @@ export default function Dashboard({ data }) {
           <div className="sheet">
             <button className="x" type="button" onClick={() => setModalId(null)} aria-label="Close">×</button>
             <h2>{modal.name}</h2>
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center', margin: '8px 0' }}>
+            <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', alignItems: 'center', margin: '8px 0' }}>
               <span className={'cat ' + modal.tier}>{modal.category}</span>
               <span className={'status-badge ' + (STATUS_CLASS[modal.status] || 'status-prega')}>{modal.status}</span>
-              <span style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: 'var(--muted)' }}>{modal.process}</span>
+              <span className="rdate">{modal.process}</span>
             </div>
             <div className="tl" style={{ marginTop: '8px' }}>{modal.tagline}</div>
             <div className="metric-line" style={{ margin: '6px 0 16px' }}>{modal.metric}</div>
@@ -201,8 +201,8 @@ export default function Dashboard({ data }) {
 
             <div className="sect"><h4>Links</h4>
               <div className="chips">
-                <span><a href={modal.links.primary.url} target="_blank" rel="noreferrer">{modal.links.primary.label} ↗</a></span>
-                <span><a href={modal.links.secondary.url} target="_blank" rel="noreferrer">{modal.links.secondary.label} ↗</a></span>
+                <span><a href={modal.links.primary.url} target="_blank" rel="noreferrer">{modal.links.primary.label} <span className="arr">↗</span></a></span>
+                <span><a href={modal.links.secondary.url} target="_blank" rel="noreferrer">{modal.links.secondary.label} <span className="arr">↗</span></a></span>
               </div>
             </div>
           </div>
