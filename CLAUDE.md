@@ -32,6 +32,7 @@ These rules apply to all code in this repo. They are enforced where possible by 
 2. **Tokens are the single source of truth.** If a value isn't in tokens, add it there first, then reference via `var(--token-name)`.
 3. **Component-scoped CSS** lives next to the `.tsx` (e.g. `cockpit/cockpit.css`), imported by the component. Site-global CSS (reset, typography, layout primitives) lives in `astro/src/styles/`.
 4. **No Tailwind.** Plain CSS + variables is the chosen idiom. Don't introduce utility-class systems.
+5. **Tracker chrome is left-flushed, not centered.** On tracker pages (`/trackers/**`), the version-history timeline and the back/nav button sit at the page's left edge — `.wrap` and `.sitenav .inner` use `margin: 0` (not `margin: 0 auto`) so content anchors left with a shared 22px gutter. Keep them aligned to the same left gutter across all three trackers (engines/models/silicon) and their release/hub pages.
 
 ## React rules
 
