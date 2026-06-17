@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import type { Post } from './types';
 import FeaturedParallax from './FeaturedParallax';
 import CarouselArrow from './CarouselArrow';
+import { palette, alpha } from '../../styles/tokens/palette';
 
 interface Props {
   posts: Post[];
@@ -9,7 +10,7 @@ interface Props {
   interval?: number;
 }
 
-const ACCENT = '#ff2a6d';
+const ACCENT = palette.magenta;
 
 export default function FeaturedCarousel({ posts, onClick, interval = 7000 }: Props) {
   const [index, setIndex] = useState(0);
@@ -30,10 +31,10 @@ export default function FeaturedCarousel({ posts, onClick, interval = 7000 }: Pr
   return (
     <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} style={{ position: 'relative', marginBottom: 48 }}>
       <div style={{ marginBottom: 28 }}>
-        <div style={{ height: 1, background: '#243028', marginBottom: 30 }} />
+        <div style={{ height: 1, background: palette.line, marginBottom: 30 }} />
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, flexWrap: 'wrap', padding: '20px 0' }}>
           <span style={{ fontFamily: 'var(--hf-mono)', color: ACCENT, letterSpacing: '0.08em', fontSize: 23 }}>//</span>
-          <h2 style={{ fontFamily: 'var(--hf-display)', color: '#e4ecd8', lineHeight: 1, margin: 0, fontSize: 50 }}>featured</h2>
+          <h2 style={{ fontFamily: 'var(--hf-display)', color: palette.ink, lineHeight: 1, margin: 0, fontSize: 50 }}>featured</h2>
         </div>
       </div>
       <div style={{ position: 'relative', borderRadius: 12 }}>
@@ -54,9 +55,9 @@ export default function FeaturedCarousel({ posts, onClick, interval = 7000 }: Pr
       <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 16 }}>
         {posts.map((p, i) => (
           <button key={p.slug} type="button" onClick={() => setIndex(i)} aria-label={`Go to featured ${i + 1}`}
-            style={{ position: 'relative', height: 4, border: 'none', cursor: 'pointer', padding: 0, width: i === index ? 32 : 14, borderRadius: 999, background: i === index ? ACCENT : '#243028', boxShadow: i === index ? `0 0 10px ${ACCENT}88` : 'none', transition: 'all 0.4s cubic-bezier(0.4,0,0.2,1)', overflow: 'hidden' }}>
+            style={{ position: 'relative', height: 4, border: 'none', cursor: 'pointer', padding: 0, width: i === index ? 32 : 14, borderRadius: 999, background: i === index ? ACCENT : palette.line, boxShadow: i === index ? `0 0 10px ${alpha(ACCENT, 0.533)}` : 'none', transition: 'all 0.4s cubic-bezier(0.4,0,0.2,1)', overflow: 'hidden' }}>
             {i === index && !paused && (
-              <span key={index} style={{ position: 'absolute', inset: 0, transformOrigin: 'left', background: 'rgba(255,255,255,0.55)', animation: `fpProgress ${interval}ms linear forwards` }} />
+              <span key={index} style={{ position: 'absolute', inset: 0, transformOrigin: 'left', background: alpha(palette.white, 0.55), animation: `fpProgress ${interval}ms linear forwards` }} />
             )}
           </button>
         ))}

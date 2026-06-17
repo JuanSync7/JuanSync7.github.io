@@ -10,6 +10,7 @@ import BlogCard from './BlogCard';
 import EntriesPager from './EntriesPager';
 import BulletinBoard from './BulletinBoard';
 import NewsletterSignup from './NewsletterSignup';
+import { palette } from '../../styles/tokens/palette';
 
 interface Props {
   posts: Post[];
@@ -45,11 +46,11 @@ export default function BlogLanding(props: Props) {
         <SeriesLibrary mode={tweaks.seriesView} onOpen={props.onOpenSeries} />
 
         <div style={{ marginBottom: 40 }}>
-          <div style={{ width: '100vw', marginLeft: 'calc(50% - 50vw)', height: 1, background: '#243028', marginTop: 56, marginBottom: 56 }} />
+          <div style={{ width: '100vw', marginLeft: 'calc(50% - 50vw)', height: 1, background: palette.line, marginTop: 56, marginBottom: 56 }} />
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', padding: '20px 0' }}>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>
-              <span style={{ fontFamily: 'var(--hf-mono)', color: '#c8d837', letterSpacing: '0.08em', fontSize: 23 }}>// 0x02.</span>
-              <h2 style={{ fontFamily: 'var(--hf-display)', color: '#e4ecd8', lineHeight: 1, margin: 0, fontSize: 50 }}>entries</h2>
+              <span style={{ fontFamily: 'var(--hf-mono)', color: palette.lime, letterSpacing: '0.08em', fontSize: 23 }}>// 0x02.</span>
+              <h2 style={{ fontFamily: 'var(--hf-display)', color: palette.ink, lineHeight: 1, margin: 0, fontSize: 50 }}>entries</h2>
             </div>
             <EntriesPager total={total} perPage={perPage} page={page} onPage={props.onPage} />
           </div>
@@ -65,7 +66,7 @@ export default function BlogLanding(props: Props) {
             ))}
           </div>
         ) : (
-          <div style={{ textAlign: 'center', padding: '60px 20px', fontFamily: 'var(--hf-mono)', color: '#4a6a55' }}>
+          <div style={{ textAlign: 'center', padding: '60px 20px', fontFamily: 'var(--hf-mono)', color: palette.inkMuted }}>
             <div style={{ fontSize: 14, marginBottom: 8 }}>no matching entries found</div>
             <div style={{ fontSize: 11 }}>try adjusting your search or filters</div>
           </div>

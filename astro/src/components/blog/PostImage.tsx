@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import { imageKindForCategory } from '../../config/registry';
+import { palette, alpha } from '../../styles/tokens/palette';
 
 interface Gen {
   background: string;
@@ -22,26 +23,26 @@ const STYLES: Record<string, Generator> = {
   silicon: (id) => ({
     background: `
       linear-gradient(${45 + id * 15}deg, ${ok(0.25, 0.04, 185 + (id * 17) % 30)} 0%, ${ok(0.12, 0.02, 340 + (id * 13) % 40)} 100%),
-      repeating-linear-gradient(${90 + id * 10}deg, transparent, transparent ${8 + id}px, rgba(5,217,232,0.06) ${8 + id}px, rgba(5,217,232,0.06) ${9 + id}px),
-      repeating-linear-gradient(${id * 20}deg, transparent, transparent ${12 + id * 2}px, rgba(255,42,109,0.04) ${12 + id * 2}px, rgba(255,42,109,0.04) ${13 + id * 2}px)`,
-    overlay: `radial-gradient(circle at ${30 + (id * 23) % 40}% ${20 + (id * 19) % 60}%, rgba(5,217,232,0.15) 0%, transparent 50%),
-      radial-gradient(circle at ${60 + (id * 11) % 30}% ${50 + (id * 7) % 40}%, rgba(200,216,55,0.1) 0%, transparent 40%)`,
+      repeating-linear-gradient(${90 + id * 10}deg, transparent, transparent ${8 + id}px, ${alpha(palette.cyan, 0.06)} ${8 + id}px, ${alpha(palette.cyan, 0.06)} ${9 + id}px),
+      repeating-linear-gradient(${id * 20}deg, transparent, transparent ${12 + id * 2}px, ${alpha(palette.magenta, 0.04)} ${12 + id * 2}px, ${alpha(palette.magenta, 0.04)} ${13 + id * 2}px)`,
+    overlay: `radial-gradient(circle at ${30 + (id * 23) % 40}% ${20 + (id * 19) % 60}%, ${alpha(palette.cyan, 0.15)} 0%, transparent 50%),
+      radial-gradient(circle at ${60 + (id * 11) % 30}% ${50 + (id * 7) % 40}%, ${alpha(palette.lime, 0.1)} 0%, transparent 40%)`,
   }),
   software: (id) => ({
     background: `
       linear-gradient(${160 + (id * 12) % 40}deg, ${ok(0.15, 0.06, 145)} 0%, ${ok(0.08, 0.03, 200)} 100%),
-      repeating-linear-gradient(180deg, transparent, transparent 3px, rgba(200,216,55,0.03) 3px, rgba(200,216,55,0.03) 4px)`,
-    overlay: `radial-gradient(ellipse at ${20 + (id * 31) % 60}% 50%, rgba(200,216,55,0.12) 0%, transparent 60%)`,
+      repeating-linear-gradient(180deg, transparent, transparent 3px, ${alpha(palette.lime, 0.03)} 3px, ${alpha(palette.lime, 0.03)} 4px)`,
+    overlay: `radial-gradient(ellipse at ${20 + (id * 31) % 60}% 50%, ${alpha(palette.lime, 0.12)} 0%, transparent 60%)`,
   }),
   tutorials: (id) => {
     const spacing = 16 + (id * 3) % 12;
     return {
       background: `
         linear-gradient(180deg, ${ok(0.12, 0.05, 260)} 0%, ${ok(0.08, 0.04, 300)} 100%),
-        linear-gradient(rgba(255,42,109,0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,42,109,0.05) 1px, transparent 1px)`,
+        linear-gradient(${alpha(palette.magenta, 0.05)} 1px, transparent 1px),
+        linear-gradient(90deg, ${alpha(palette.magenta, 0.05)} 1px, transparent 1px)`,
       backgroundSize: `100% 100%, ${spacing}px ${spacing}px, ${spacing}px ${spacing}px`,
-      overlay: `radial-gradient(circle at ${50 + (id * 17) % 30}% ${50 + (id * 13) % 30}%, rgba(255,42,109,0.15) 0%, transparent 50%)`,
+      overlay: `radial-gradient(circle at ${50 + (id * 17) % 30}% ${50 + (id * 13) % 30}%, ${alpha(palette.magenta, 0.15)} 0%, transparent 50%)`,
     };
   },
   thoughts: (id) => ({
@@ -59,7 +60,7 @@ const STYLES: Record<string, Generator> = {
         conic-gradient(from ${a1}deg at ${30 + (id * 11) % 40}% ${40 + (id * 7) % 30}%,
           ${ok(0.15, 0.05, 160)} 0deg, ${ok(0.1, 0.03, 200)} 120deg, ${ok(0.12, 0.04, 180)} 240deg, ${ok(0.15, 0.05, 160)} 360deg),
         linear-gradient(${a2}deg, ${ok(0.1, 0.04, 160)} 0%, ${ok(0.06, 0.02, 200)} 100%)`,
-      overlay: `linear-gradient(${a1 + 45}deg, rgba(109,191,139,0.1) 0%, transparent 50%)`,
+      overlay: `linear-gradient(${a1 + 45}deg, ${alpha(palette.mint, 0.1)} 0%, transparent 50%)`,
     };
   },
 };
@@ -108,7 +109,7 @@ export default function PostImage({ category, slug, height = 160, borderRadius =
       <div
         style={{
           position: 'absolute', bottom: 8, right: 12, fontFamily: 'var(--hf-mono)', fontSize: 10,
-          letterSpacing: '0.1em', color: 'rgba(255,255,255,0.12)', textTransform: 'uppercase',
+          letterSpacing: '0.1em', color: alpha(palette.white, 0.12), textTransform: 'uppercase',
         }}
       >
         {category}

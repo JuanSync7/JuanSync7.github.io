@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { palette } from '../../../styles/tokens/palette';
 
 type Corner = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 
@@ -20,7 +21,7 @@ const ROT: Record<Corner, number> = {
   'bottom-left': 270,
 };
 
-export default function HUDCorner({ position = 'top-left', color = '#05d9e8' }: Props) {
+export default function HUDCorner({ position = 'top-left', color = palette.cyan }: Props) {
   const size = 20;
   const thickness = 1.5;
   return (

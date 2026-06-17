@@ -1,6 +1,7 @@
 import type { Post } from '../types';
 import { registerSeriesColor } from '../theme';
 import { registerImageKind } from '../PostImage';
+import { palette } from '../../../styles/tokens/palette';
 
 export interface Metric { label: string; value: string; }
 export interface Edition {
@@ -14,16 +15,16 @@ export interface Series {
 }
 
 export const STATUS_META: Record<string, { color: string; label: string; pulse: boolean }> = {
-  active: { color: '#6dbf8b', label: 'active', pulse: true },
-  paused: { color: '#ffa94d', label: 'paused', pulse: false },
-  queued: { color: '#7a9a88', label: 'queued', pulse: false },
+  active: { color: palette.mint, label: 'active', pulse: true },
+  paused: { color: palette.aiOrange, label: 'paused', pulse: false },
+  queued: { color: palette.inkSoft, label: 'queued', pulse: false },
 };
 
 export const BLOG_SERIES: Series[] = [
   {
     id: 'inference-engines', title: 'inference engines',
     blurb: 'weekly tracker of the LLM inference-engine landscape — vLLM, SGLang, TensorRT-LLM, LMDeploy, llama.cpp and friends. open the live dashboard →',
-    accent: '#05d9e8', imageKind: 'silicon', cadence: 'weekly', status: 'active', cron: '0 8 * * 1',
+    accent: palette.cyan, imageKind: 'silicon', cadence: 'weekly', status: 'active', cron: '0 8 * * 1',
     nextRunISO: '2026-06-22T08:00:00', runs: [3, 4, 2, 5, 4, 6, 5, 7], url: '/trackers/inference-engines',
     editions: [
       { eid: 2401, week: 'W24', date: '2026-06-15', readTime: 'live', isNew: true, title: 'engines dashboard — live', excerpt: 'Interactive comparison of 9 engines across server, local/edge and legacy tiers, refreshed every Monday.', tags: ['vLLM', 'SGLang', 'TRT-LLM'], metrics: [{ label: 'engines', value: '9' }, { label: 'tok/s leader', value: 'SGLang' }, { label: 'refresh', value: 'Mon' }] },
@@ -33,7 +34,7 @@ export const BLOG_SERIES: Series[] = [
   {
     id: 'frontier-models', title: 'frontier models',
     blurb: 'weekly tracker of the AI model landscape — frontier closed/open, small & on-device, agentic frameworks, classifiers. open the live dashboard →',
-    accent: '#c8d837', imageKind: 'software', cadence: 'weekly', status: 'active', cron: '15 8 * * 3',
+    accent: palette.lime, imageKind: 'software', cadence: 'weekly', status: 'active', cron: '15 8 * * 3',
     nextRunISO: '2026-06-17T08:00:00', runs: [2, 3, 4, 3, 5], url: '/trackers/frontier-models',
     editions: [
       { eid: 3401, week: 'W24', date: '2026-06-10', readTime: 'live', isNew: true, title: 'models dashboard — live', excerpt: 'Five categories: frontier closed/open, small/on-device, agentic frameworks, classifiers — with benchmarks, pipelines and a watchlist.', tags: ['Claude', 'GPT', 'DeepSeek'], metrics: [{ label: 'categories', value: '5' }, { label: 'refresh', value: 'Wed' }] },
@@ -43,7 +44,7 @@ export const BLOG_SERIES: Series[] = [
   {
     id: 'inference-silicon', title: 'inference silicon',
     blurb: 'weekly tracker of the chips powering inference — NVIDIA/AMD GPUs, wafer-scale, dataflow LPUs, inference ASICs, RISC-V. open the live dashboard →',
-    accent: '#ff2a6d', imageKind: 'projects', cadence: 'weekly', status: 'active', cron: '15 8 * * 5',
+    accent: palette.magenta, imageKind: 'projects', cadence: 'weekly', status: 'active', cron: '15 8 * * 5',
     nextRunISO: '2026-06-19T08:00:00', runs: [4, 3, 5, 4, 6], url: '/trackers/inference-silicon',
     editions: [
       { eid: 4401, week: 'W24', date: '2026-06-13', readTime: 'live', isNew: true, title: 'silicon dashboard — live', excerpt: '12 chips across GPUs, wafer-scale, dataflow/LPU, inference ASICs, RISC-V and cloud-only — specs, trade-offs, who is shipping.', tags: ['NVIDIA', 'wafer-scale', 'LPU'], metrics: [{ label: 'chips', value: '12' }, { label: 'refresh', value: 'Fri' }] },

@@ -1,4 +1,5 @@
 import { useState, type CSSProperties } from 'react';
+import { palette, alpha } from '../../styles/tokens/palette';
 
 interface Props {
   total: number;
@@ -12,12 +13,12 @@ function Arrow({ glyph, label, disabled, accent, onClick }: { glyph: string; lab
   const [h, setH] = useState(false);
   const style: CSSProperties = {
     width: 38, height: 38, display: 'grid', placeItems: 'center', borderRadius: '50%',
-    border: `1px solid ${disabled ? '#243028' : h ? accent : 'rgba(228,236,216,0.18)'}`,
-    background: h && !disabled ? 'rgba(10,10,10,0.82)' : 'rgba(10,10,10,0.5)',
-    color: disabled ? '#243028' : h ? accent : '#e4ecd8',
+    border: `1px solid ${disabled ? palette.line : h ? accent : alpha(palette.ink, 0.18)}`,
+    background: h && !disabled ? alpha(palette.bg, 0.82) : alpha(palette.bg, 0.5),
+    color: disabled ? palette.line : h ? accent : palette.ink,
     fontFamily: 'var(--hf-mono)', fontSize: 19, lineHeight: 1,
     cursor: disabled ? 'default' : 'pointer', transition: 'all 0.2s',
-    boxShadow: h && !disabled ? `0 0 16px ${accent}55` : 'none',
+    boxShadow: h && !disabled ? `0 0 16px ${alpha(accent, 0.333)}` : 'none',
     transform: h && !disabled ? 'scale(1.06)' : 'none',
   };
   return (
@@ -28,7 +29,7 @@ function Arrow({ glyph, label, disabled, accent, onClick }: { glyph: string; lab
   );
 }
 
-export default function EntriesPager({ total, perPage, page, onPage, accent = '#c8d837' }: Props) {
+export default function EntriesPager({ total, perPage, page, onPage, accent = palette.lime }: Props) {
   const pages = Math.ceil(total / perPage);
   if (pages <= 1) return null;
   return (

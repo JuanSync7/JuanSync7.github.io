@@ -1,4 +1,5 @@
 import { useState, type CSSProperties, type MouseEvent } from 'react';
+import { palette, alpha } from '../../styles/tokens/palette';
 
 interface Props {
   slug: string;
@@ -6,7 +7,7 @@ interface Props {
   color?: string;
 }
 
-export default function ShareButtons({ slug, title, color = '#05d9e8' }: Props) {
+export default function ShareButtons({ slug, title, color = palette.cyan }: Props) {
   const [copied, setCopied] = useState(false);
   const url = `https://juansync7.github.io/blog/${slug}`;
 
@@ -27,22 +28,22 @@ export default function ShareButtons({ slug, title, color = '#05d9e8' }: Props) 
   };
 
   const btn: CSSProperties = {
-    background: 'none', border: `1px solid ${color}33`, borderRadius: 4, color,
+    background: 'none', border: `1px solid ${alpha(color, 0.2)}`, borderRadius: 4, color,
     fontFamily: 'var(--hf-mono)', fontSize: 10, padding: '5px 12px', cursor: 'pointer',
     transition: 'all 0.2s', letterSpacing: '0.04em',
   };
   const enter = (e: MouseEvent<HTMLButtonElement>) => {
-    e.currentTarget.style.background = `${color}15`;
+    e.currentTarget.style.background = `${alpha(color, 0.082)}`;
     e.currentTarget.style.borderColor = color;
   };
   const leave = (e: MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.style.background = 'none';
-    e.currentTarget.style.borderColor = `${color}33`;
+    e.currentTarget.style.borderColor = `${alpha(color, 0.2)}`;
   };
 
   return (
     <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-      <span style={{ fontFamily: 'var(--hf-mono)', fontSize: 10, color: '#4a6a55', marginRight: 4 }}>share:</span>
+      <span style={{ fontFamily: 'var(--hf-mono)', fontSize: 10, color: palette.inkMuted, marginRight: 4 }}>share:</span>
       <button type="button" style={btn} onClick={() => share('twitter')} onMouseEnter={enter} onMouseLeave={leave}>twitter</button>
       <button type="button" style={btn} onClick={() => share('linkedin')} onMouseEnter={enter} onMouseLeave={leave}>linkedin</button>
       <button type="button" style={btn} onClick={copyLink} onMouseEnter={enter} onMouseLeave={leave}>{copied ? 'copied!' : 'copy link'}</button>

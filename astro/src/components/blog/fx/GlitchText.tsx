@@ -1,5 +1,6 @@
 import { createElement, useEffect, useState, type CSSProperties, type ElementType, type ReactNode } from 'react';
 import type { GlitchIntensity } from '../types';
+import { palette, alpha } from '../../../styles/tokens/palette';
 
 interface Props {
   children: ReactNode;
@@ -24,7 +25,7 @@ export default function GlitchText({ children, style = {}, as = 'span', intensit
 
   const glitchStyle: CSSProperties = glitching
     ? {
-        textShadow: '2px 0 #ff2a6d, -2px 0 #05d9e8, 0 0 8px rgba(5,217,232,0.5)',
+        textShadow: `2px 0 ${palette.magenta}, -2px 0 ${palette.cyan}, 0 0 8px ${alpha(palette.cyan, 0.5)}`,
         animation: 'glitchShake 0.1s linear infinite',
         filter: 'blur(0.3px)',
       }

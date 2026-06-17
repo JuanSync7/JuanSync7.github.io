@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { palette, alpha } from '../../styles/tokens/palette';
 
 interface Props {
   query: string;
@@ -25,15 +26,15 @@ export default function SearchBar({ query, onSearch }: Props) {
     <div
       style={{
         position: 'relative', marginBottom: 20,
-        border: `1.5px solid ${focused ? '#05d9e8' : '#243028'}`,
-        borderRadius: 8, background: '#0e0e0e',
+        border: `1.5px solid ${focused ? palette.cyan : palette.line}`,
+        borderRadius: 8, background: palette.bg2,
         transition: 'border-color 0.2s, box-shadow 0.2s',
-        boxShadow: focused ? '0 0 16px rgba(5,217,232,0.15)' : 'none',
+        boxShadow: focused ? `0 0 16px ${alpha(palette.cyan, 0.15)}` : 'none',
         display: 'flex', alignItems: 'center', gap: 10, padding: '0 16px',
       }}
     >
-      <span style={{ color: '#c8d837', fontFamily: 'var(--hf-mono)', fontSize: 13, flexShrink: 0 }}>$</span>
-      <span style={{ color: '#1ba0a0', fontFamily: 'var(--hf-mono)', fontSize: 12, flexShrink: 0 }}>grep</span>
+      <span style={{ color: palette.lime, fontFamily: 'var(--hf-mono)', fontSize: 13, flexShrink: 0 }}>$</span>
+      <span style={{ color: palette.teal, fontFamily: 'var(--hf-mono)', fontSize: 12, flexShrink: 0 }}>grep</span>
       <input
         ref={inputRef}
         type="text"
@@ -44,18 +45,18 @@ export default function SearchBar({ query, onSearch }: Props) {
         placeholder="search posts..."
         style={{
           flex: 1, background: 'none', border: 'none', outline: 'none',
-          color: '#e4ecd8', fontFamily: 'var(--hf-mono)', fontSize: 13,
-          padding: '12px 0', caretColor: '#c8d837',
+          color: palette.ink, fontFamily: 'var(--hf-mono)', fontSize: 13,
+          padding: '12px 0', caretColor: palette.lime,
         }}
       />
       {!query && (
-        <span style={{ fontFamily: 'var(--hf-mono)', fontSize: 10, color: '#4a6a55', border: '1px solid #243028', borderRadius: 3, padding: '2px 6px' }}>/</span>
+        <span style={{ fontFamily: 'var(--hf-mono)', fontSize: 10, color: palette.inkMuted, border: `1px solid ${palette.line}`, borderRadius: 3, padding: '2px 6px' }}>/</span>
       )}
       {query && (
         <button
           type="button"
           onClick={() => onSearch('')}
-          style={{ background: 'none', border: 'none', color: '#7a9a88', cursor: 'pointer', fontFamily: 'var(--hf-mono)', fontSize: 14, padding: '2px 6px' }}
+          style={{ background: 'none', border: 'none', color: palette.inkSoft, cursor: 'pointer', fontFamily: 'var(--hf-mono)', fontSize: 14, padding: '2px 6px' }}
         >
           ×
         </button>

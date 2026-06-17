@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { palette, alpha } from '../../styles/tokens/palette';
 
 export default function BackToTop() {
   const [visible, setVisible] = useState(false);
@@ -18,10 +19,10 @@ export default function BackToTop() {
       aria-label="Back to top"
       style={{
         position: 'fixed', bottom: 24, right: 24, zIndex: 90, width: 40, height: 40, borderRadius: 8,
-        background: '#121212', border: '1.5px solid #243028', color: '#7a9a88',
+        background: palette.surface, border: `1.5px solid ${palette.line}`, color: palette.inkSoft,
         fontFamily: 'var(--hf-mono)', fontSize: 16, cursor: 'pointer',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        transition: 'all 0.2s', boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+        transition: 'all 0.2s', boxShadow: `0 4px 12px ${alpha(palette.black, 0.3)}`,
       }}
     >
       ↑

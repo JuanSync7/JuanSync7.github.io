@@ -1,8 +1,10 @@
+import { palette, alpha } from '../../../styles/tokens/palette';
+
 interface Props {
   color?: string;
 }
 
-export default function TermCursor({ color = '#c8d837' }: Props) {
+export default function TermCursor({ color = palette.lime }: Props) {
   return (
     <span
       style={{
@@ -13,7 +15,7 @@ export default function TermCursor({ color = '#c8d837' }: Props) {
         marginLeft: 2,
         verticalAlign: 'text-bottom',
         animation: 'blink 1s steps(2) infinite',
-        boxShadow: `0 0 6px ${color}66`,
+        boxShadow: `0 0 6px ${alpha(color, 0.4)}`,
       }}
     />
   );

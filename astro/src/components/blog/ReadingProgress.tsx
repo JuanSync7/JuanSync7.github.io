@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
+import { palette, alpha } from '../../styles/tokens/palette';
 
 interface Props {
   color?: string;
 }
 
-export default function ReadingProgress({ color = '#05d9e8' }: Props) {
+export default function ReadingProgress({ color = palette.cyan }: Props) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -19,12 +20,12 @@ export default function ReadingProgress({ color = '#05d9e8' }: Props) {
   }, []);
 
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200, height: 3, background: '#0a0a0a' }}>
+    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200, height: 3, background: palette.bg }}>
       <div
         style={{
           height: '100%', width: `${progress}%`,
-          background: `linear-gradient(90deg, ${color}, #ff2a6d)`,
-          boxShadow: `0 0 8px ${color}66`, transition: 'width 0.1s linear',
+          background: `linear-gradient(90deg, ${color}, ${palette.magenta})`,
+          boxShadow: `0 0 8px ${alpha(color, 0.4)}`, transition: 'width 0.1s linear',
         }}
       />
     </div>
