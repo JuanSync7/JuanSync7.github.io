@@ -1,25 +1,132 @@
 ---
 import TrackerLayout from '../../layouts/TrackerLayout.astro';
+import ArticleArt from '../../components/trackers/ArticleArt.astro';
 import { getCollection } from 'astro:content';
+import { learnArt } from '../../lib/content';
 import '../../components/trackers/tracker-skin.css';
 
 const entries = (await getCollection('learn')).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
+const cards = entries.map((e) => ({ entry: e, art: learnArt(e.data) }));
+
+// Build the client search index at compile time: weighted fields per article.
+const clean = (s: string) =>
+  s.replace(/<[^>]*>/g, ' ').replace(/&[a-z]+;/gi, ' ').replace(/[#>*_`~\[\]()!|=-]+/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+const searchIndex = entries.map((e) => ({
+  slug: e.slug,
+  title: e.data.title.toLowerCase(),
+  meta: [e.data.summary, e.data.eyebrow, e.data.tracker].filter(Boolean).join(' ').toLowerCase(),
+  body: clean(e.body).slice(0, 5000),
+}));
 ---
-<TrackerLayout title="Learn · juan.kok">
-  <article class="release-article">
-    <div class="eyebrow">Field guides</div>
-    <h1>Learn</h1>
-    <p class="sub">Deep dives on how inference actually runs and how the silicon underneath it is built — companions to the trackers.</p>
+<TrackerLayout title="Learn · juan.kok" mainWidth="1200px">
+  <article class="release-article learn-head" style="max-width:1200px">
+    <div class="lh-text">
+      <div class="eyebrow">Field guides</div>
+      <h1>Learn</h1>
+      <p class="sub">Deep dives on how inference actually runs and how the silicon underneath it is built — companions to the trackers.</p>
+    </div>
+    <div class="learn-search">
+      <input id="learn-q" type="search" placeholder="Search articles…" autocomplete="off" spellcheck="false" aria-label="Search articles" />
+    </div>
   </article>
-  <div class="tracker-hub" style="margin-top:28px">
-    {entries.map((entry) => (
-      <a class="card" href={`/learn/${entry.slug}`}>
-        <h3>{entry.data.title}</h3>
-        {entry.data.summary && <p>{entry.data.summary}</p>}
-        <span class="go">read →</span>
+  <div class="learn-grid">
+    {cards.map(({ entry, art }) => (
+      <a class="learn-card" href={`/learn/${entry.slug}`} data-slug={entry.slug}>
+        <ArticleArt seed={entry.slug} motif={art.motif} space={art.space} height={200} />
+        <div class="lc-body">
+          <h3>{entry.data.title}</h3>
+          {entry.data.summary && <p>{entry.data.summary}</p>}
+          <span class="go">read →</span>
+        </div>
       </a>
     ))}
+    <div class="learn-card is-stub" aria-hidden="true">
+      <ArticleArt seed="stub-soon" motif="mesh" space="none" height={200} />
+      <div class="lc-body">
+        <h3>More soon</h3>
+        <p>Another field guide is in the works — this is a stub to preview the third column.</p>
+        <span class="go">coming soon</span>
+      </div>
+    </div>
   </div>
+  <p class="learn-empty" hidden>No articles match <b id="learn-empty-q"></b>.</p>
+
+  <script type="application/json" id="learn-search-data" is:inline set:html={JSON.stringify(searchIndex)}></script>
+  <script>
+    interface SearchItem { slug: string; title: string; meta: string; body: string }
+
+    const dataEl = document.getElementById('learn-search-data');
+    const input = document.getElementById('learn-q');
+    const grid = document.querySelector('.learn-grid');
+    const empty = document.querySelector('.learn-empty');
+    const emptyQ = document.getElementById('learn-empty-q');
+    if (dataEl && input instanceof HTMLInputElement && grid instanceof HTMLElement) {
+      const items: SearchItem[] = JSON.parse(dataEl.textContent || '[]');
+      const byId = new Map(items.map((i) => [i.slug, i]));
+
+      // word-boundary > prefix > substring scoring within one field
+      const fieldScore = (tok: string, text: string, wWord: number, wPrefix: number, wSub: number) => {
+        if (!text) return 0;
+        const words = text.split(/[^a-z0-9]+/);
+        if (words.includes(tok)) return wWord;
+        if (words.some((w) => w.length > tok.length && w.startsWith(tok))) return wPrefix;
+        return text.includes(tok) ? wSub : 0;
+      };
+      // fuzzy: are the query chars a subsequence of the text?
+      const subseq = (tok: string, text: string) => {
+        let i = 0;
+        for (let k = 0; k < text.length && i < tok.length; k++) if (text[k] === tok[i]) i++;
+        return i === tok.length;
+      };
+      // total relevance; 0 means "excluded" (every token must match something)
+      const score = (q: string, art: SearchItem) => {
+        const toks = q.toLowerCase().split(/\s+/).filter(Boolean);
+        if (!toks.length) return 0;
+        let total = 0;
+        for (const t of toks) {
+          let best = fieldScore(t, art.title, 12, 9, 6);
+          best = Math.max(best, fieldScore(t, art.meta, 6, 5, 3));
+          best = Math.max(best, fieldScore(t, art.body, 2, 1.5, 1));
+          if (best === 0 && subseq(t, art.title)) best = 1.2;
+          if (best === 0) return 0;
+          total += best;
+        }
+        return total;
+      };
+
+      const cards = Array.from(grid.querySelectorAll('.learn-card'));
+      const reset = () => {
+        for (const c of cards) {
+          if (c instanceof HTMLElement) { c.style.display = ''; c.style.order = ''; c.style.borderLeft = ''; c.style.borderTop = ''; }
+        }
+        if (empty instanceof HTMLElement) empty.hidden = true;
+      };
+      const apply = () => {
+        const q = input.value.trim();
+        if (!q) { reset(); return; }
+        const ranked: { c: HTMLElement; s: number }[] = [];
+        for (const c of cards) {
+          if (!(c instanceof HTMLElement)) continue;
+          const slug = c.dataset.slug;
+          const art = slug ? byId.get(slug) : undefined;
+          const s = art ? score(q, art) : 0; // stub (no slug) → 0 → hidden
+          if (s > 0) ranked.push({ c, s }); else c.style.display = 'none';
+        }
+        ranked.sort((a, b) => b.s - a.s);
+        ranked.forEach(({ c }, idx) => {
+          c.style.display = '';
+          c.style.order = String(idx);
+          c.style.borderLeft = idx % 3 === 0 ? 'none' : '1px solid var(--line)';
+          c.style.borderTop = idx >= 3 ? '1px solid var(--line)' : 'none';
+        });
+        if (empty instanceof HTMLElement) {
+          empty.hidden = ranked.length > 0;
+          if (emptyQ) emptyQ.textContent = `“${q}”`;
+        }
+      };
+      input.addEventListener('input', apply);
+    }
+  </script>
 </TrackerLayout>

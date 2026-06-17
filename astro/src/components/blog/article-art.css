@@ -1,0 +1,11 @@
+.article-art {
+  --art-ink: var(--txt, #ffffff);
+  --art-dim: var(--line, rgba(255, 255, 255, 0.12));
+  --art-mute: var(--muted, #888d96);
+  --art-bg: var(--bg, #08090b);
+  --art-accent: var(--teal, #2fd4bb);
+  width: 100%;
+  overflow: hidden;
+  background: none;
+}
+.article-art svg { display: block; width: 100%; height: 100%; }

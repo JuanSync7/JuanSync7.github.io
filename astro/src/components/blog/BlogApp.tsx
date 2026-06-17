@@ -52,8 +52,8 @@ export default function BlogApp({ posts }: { posts: Post[] }) {
   }, [posts]);
 
   const onFilter = (c: string) => { setFilter(c); setPage(1); setGridKey((k) => k + 1); };
-  const onSearch = (q: string) => { setSearch(q); setPage(1); setGridKey((k) => k + 1); };
-  const onPage = (p: number) => { setPage(p); setGridKey((k) => k + 1); window.scrollTo({ top: 300, behavior: 'smooth' }); };
+  const onSearch = (q: string) => { setSearch(q); setPage(1); }; // no remount/scroll while typing
+  const onPage = (p: number) => { setPage(p); }; // no remount (no jump), no scroll — stay in place
   const onCardClick = (p: Post) => { if (p.externalUrl) { window.location.href = p.externalUrl; return; } setSelected(p); };
   const onOpenSeries = (s: Series) => { if (s.url) { window.location.href = s.url; return; } setViewingSeries(s); window.scrollTo(0, 0); };
 

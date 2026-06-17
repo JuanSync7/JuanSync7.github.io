@@ -14,7 +14,7 @@ const tracker = entry.slug.split('/')[0];
 const active = tracker === 'inference-engines' ? 'engines' : tracker === 'frontier-models' ? 'models' : 'silicon';
 const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
-<TrackerLayout title={`${entry.data.title} · releases`} active={active}>
+<TrackerLayout title={`${entry.data.title} · releases`} active={active} mainWidth="760px">
   <article class="release-article">
     <a class="back" href={`/trackers/${tracker}`}>← back to tracker</a>
     <div class="eyebrow">{fmt(entry.data.date)}</div>

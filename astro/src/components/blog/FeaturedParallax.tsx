@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { Post } from './types';
 import { catColor } from './theme';
 import { getGsap, getScrollTrigger } from './gsap';
-import PostImage from './PostImage';
+import ArticleArt, { motifForCategory } from './ArticleArt';
 import { GlitchText, HoloShimmer, HUDCorner } from './fx';
 
 interface Props {
@@ -25,7 +25,7 @@ export default function FeaturedParallax({ post, onClick, animate = true }: Prop
     if (!g || !st) { setReady(true); return; }
     const ctx = g.context(() => {
       const tl = g.timeline({ scrollTrigger: { trigger: sectionRef.current, start: 'top 85%', toggleActions: 'play none none none' } });
-      tl.fromTo(imageRef.current, { opacity: 0, x: -60, clipPath: 'polygon(0 0, 0% 0, 0% 100%, 0 100%)' }, { opacity: 1, x: 0, clipPath: 'polygon(0 0, 100% 0, 85% 100%, 0 100%)', duration: 0.8, ease: 'power3.out' });
+      tl.fromTo(imageRef.current, { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' });
       tl.fromTo(textRef.current, { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.7, ease: 'power3.out' }, '-=0.5');
       tl.fromTo('.fp-meta > *', { opacity: 0, y: 12 }, { opacity: 1, y: 0, stagger: 0.06, duration: 0.35 }, '-=0.3');
       g.to(imageRef.current, { y: -30, scrollTrigger: { trigger: sectionRef.current, start: 'top bottom', end: 'bottom top', scrub: 1 } });
@@ -39,14 +39,13 @@ export default function FeaturedParallax({ post, onClick, animate = true }: Prop
   return (
     <div ref={sectionRef} onClick={() => onClick(post)} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
       style={{ position: 'relative', marginBottom: 48, cursor: 'pointer', display: 'grid', gridTemplateColumns: '1.1fr 1fr', minHeight: 320, borderRadius: 12, overflow: 'hidden', border: `1.5px solid ${hovered ? '#ff2a6d' : '#243028'}`, transition: 'border-color 0.3s, box-shadow 0.3s, transform 0.3s', transform: hovered ? 'translateY(-3px)' : 'none', boxShadow: hovered ? '0 12px 48px rgba(255,42,109,0.15), 0 0 30px rgba(255,42,109,0.08)' : '0 4px 20px rgba(0,0,0,0.3)' }}>
-      <div ref={imageRef} style={{ position: 'relative', overflow: 'hidden', opacity: hidden ? 0 : 1, clipPath: 'polygon(0 0, 100% 0, 85% 100%, 0 100%)' }}>
-        <PostImage category={post.category} slug={post.slug} height="100%" borderRadius="0" style={{ position: 'absolute', inset: 0, height: '100%' }} />
-        <div style={{ position: 'absolute', top: 0, right: -1, bottom: 0, width: 80, background: 'linear-gradient(to right, transparent 0%, #0e0e0e 100%)', clipPath: 'polygon(100% 0, 100% 100%, 0 100%)' }} />
+      <div ref={imageRef} style={{ position: 'relative', overflow: 'hidden', opacity: hidden ? 0 : 1 }}>
+        <ArticleArt seed={post.slug} motif={post.artMotif ?? motifForCategory(post.category)} space={post.artSpace} height={320} className="fp-art" style={{ position: 'absolute', inset: 0, height: '100%' }} />
         <div style={{ position: 'absolute', top: 16, left: 16, fontFamily: 'var(--hf-mono)', fontSize: 9, color: '#ff2a6d', letterSpacing: '0.15em', textTransform: 'uppercase', padding: '4px 10px', background: 'rgba(0,0,0,0.6)', border: '1px solid #ff2a6d44', borderRadius: 4, backdropFilter: 'blur(4px)' }}>★ featured</div>
         <HUDCorner position="top-left" color="#ff2a6d" />
         <HUDCorner position="bottom-left" color="#05d9e8" />
       </div>
-      <div ref={textRef} style={{ background: '#0e0e0e', padding: '32px 36px 32px 24px', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative', opacity: hidden ? 0 : 1 }}>
+      <div ref={textRef} style={{ background: '#0e0e0e', padding: '32px 36px', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative', opacity: hidden ? 0 : 1 }}>
         <HUDCorner position="top-right" color="#ff2a6d" />
         <HUDCorner position="bottom-right" color="#05d9e8" />
         <HoloShimmer active={hovered} />

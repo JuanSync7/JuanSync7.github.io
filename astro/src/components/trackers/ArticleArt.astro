@@ -1,0 +1,239 @@
+---
+/* ── Article art (Linear /now style) — thin SSG renderer ─────────────────────
+   ONE template, many motifs. ALL geometry lives in ../art/artGeometry.ts (the
+   shared core, also consumed by the React island blog/ArticleArt.tsx). This file
+   only maps the computed scene to SVG — edit geometry in the core, never here.
+   Shared rules so the set reads as a series:
+     · transparent ground, pure ink line-work (var(--txt))
+     · faint structure in var(--line); labels in var(--muted); ONE solid accent
+     · a single centred metaphor, generous negative space
+     · seeded by slug for unique-but-on-template composition ───────────────────── */
+import { computeArt, type Motif, type Space, type Relation } from '../art/artGeometry';
+
+interface Props { seed?: string; motif?: Motif; space?: Space; variant?: Relation; height?: number; class?: string }
+const { seed = 'article', motif = 'loop', space = 'auto', variant = 'mm', height = 200, class: cls = '' } = Astro.props;
+
+const {
+  W, H, cx, cy, accentColor, f, brackets,
+  spaceMode, showSpace, vpX, vpY, rayTargets, depth, cbF, cbB, cubeEdges, cubeFloor, lnRings, lnSpokes,
+  lR, lNodes, lPath, lHi,
+  fNodes, fToks, fAcc, fX0, fX1, fY, lensR,
+  bonds, atoms, atomAcc,
+  orbits, sats, oHi,
+  stacks, stW, stH, stHi,
+  waves, wHi,
+  mVerts, mEdges, mAcc,
+  tFrame, tWins, tStatus, tHorizon, tFloor,
+  dObjs, dObjAcc,
+  pxCells, pxSize, pxAcc,
+  sX0, sX1, sTop, sBandH, sTopY, sDimY, sDimX0, sGuides, sDots,
+  vRings, vArmPaths, vDots,
+  hubR, hLeft, hRight, chHubs, chIn, chOut, chMid,
+  blId, blGV, blGH, blF, blB, blC, blStripe, blDimR, blDimB,
+} = computeArt({ seed, motif, space, variant });
+---
+<div class={`article-art ${cls}`} style={`height:${height}px;--art-accent:${accentColor}`} aria-hidden="true">
+  <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" role="presentation">
+    {showSpace && (
+      <g stroke="var(--art-dim)" stroke-width="1" fill="none" opacity="0.7">
+        {spaceMode === 'cube' ? (
+          <Fragment>
+            <rect x={cbF.x0} y={cbF.y0} width={cbF.x1 - cbF.x0} height={cbF.y1 - cbF.y0} />
+            <rect x={cbB.x0} y={cbB.y0} width={cbB.x1 - cbB.x0} height={cbB.y1 - cbB.y0} />
+            {cubeEdges.map((e) => <line x1={e[0]} y1={e[1]} x2={e[2]} y2={e[3]} />)}
+            {cubeFloor.map((l) => <line x1={l.x1} y1={l.y} x2={l.x2} y2={l.y} />)}
+          </Fragment>
+        ) : spaceMode === 'lens' ? (
+          <Fragment>
+            {lnSpokes.map((s) => <line x1={s.x1} y1={s.y1} x2={s.x2} y2={s.y2} />)}
+            {lnRings.map((r) => <circle cx={cx} cy={cy} r={r} />)}
+            <circle cx={cx} cy={cy} r="22" />
+          </Fragment>
+        ) : (
+          <Fragment>
+            {rayTargets.map((t) => <line x1={vpX} y1={vpY} x2={t.x} y2={t.y} />)}
+            {depth.map((d) => <rect x={d.x} y={d.y} width={d.w} height={d.h} rx="6" />)}
+          </Fragment>
+        )}
+      </g>
+    )}
+    {motif === 'loop' && (
+      <Fragment>
+        {[1, 1.38].map((m) => <circle cx={cx} cy={cy} r={lR * m} fill="none" stroke="var(--art-dim)" stroke-width="1" />)}
+        <path d={lPath} fill="none" stroke="var(--art-ink)" stroke-opacity="0.5" stroke-width="1.5" />
+        {lNodes.map((p, i) => <circle cx={p.x} cy={p.y} r={p.r} fill="none" stroke="var(--art-ink)" stroke-opacity={i === lHi ? 0.95 : 0.38} stroke-width="1.5" />)}
+        <circle cx={lNodes[lHi].x} cy={lNodes[lHi].y} r={lNodes[lHi].r * 0.42} fill="var(--art-accent)" />
+      </Fragment>
+    )}
+    {motif === 'flow' && (
+      <Fragment>
+        <line x1={fX0} y1={fY} x2={fX1} y2={fY} stroke="var(--art-dim)" stroke-width="1" />
+        {fNodes.slice(1).map((n, i) => <path d={`M${f((fNodes[i].x + n.x) / 2 - 6)} ${f(fY - 6)} L${f((fNodes[i].x + n.x) / 2 + 4)} ${fY} L${f((fNodes[i].x + n.x) / 2 - 6)} ${f(fY + 6)}`} fill="none" stroke="var(--art-ink)" stroke-opacity="0.32" stroke-width="1.5" />)}
+        {fToks.map((t) => <circle cx={t.x} cy={t.y} r={t.r} fill="var(--art-ink)" fill-opacity="0.45" />)}
+        {fNodes.map((n, i) => <circle cx={n.x} cy={n.y} r={i === fAcc ? 24 : 15} fill="none" stroke="var(--art-ink)" stroke-opacity={i === fAcc ? 0.95 : 0.5} stroke-width="1.5" />)}
+        <path d={`M${f(fNodes[fAcc].x - lensR)} ${fY} Q ${fNodes[fAcc].x} ${f(fY - lensR * 0.7)} ${f(fNodes[fAcc].x + lensR)} ${fY}`} fill="none" stroke="var(--art-ink)" stroke-width="1.5" />
+        <path d={`M${f(fNodes[fAcc].x - lensR)} ${fY} Q ${fNodes[fAcc].x} ${f(fY + lensR * 0.7)} ${f(fNodes[fAcc].x + lensR)} ${fY}`} fill="none" stroke="var(--art-ink)" stroke-width="1.5" />
+        <circle cx={fNodes[fAcc].x} cy={fY} r="4" fill="var(--art-accent)" />
+        {brackets(fNodes[fAcc].x, fY, 40).map((d) => <path d={d} fill="none" stroke="var(--art-ink)" stroke-opacity="0.85" stroke-width="1.5" />)}
+        {fNodes.map((n, i) => <text x={n.x} y={fY + 54} text-anchor="middle" font-family="var(--mono)" font-size="22" letter-spacing="1.5" fill={i === fAcc ? 'var(--art-ink)' : 'var(--art-mute)'}>{n.label}</text>)}
+      </Fragment>
+    )}
+    {motif === 'lattice' && (
+      <Fragment>
+        <text x={cx} y={cy - 152} text-anchor="middle" font-family="var(--mono)" font-size="21" letter-spacing="2.5" fill="var(--art-mute)">SILICON LATTICE</text>
+        {bonds.map((b) => <line x1={b.x1} y1={b.y1} x2={b.x2} y2={b.y2} stroke="var(--art-ink)" stroke-opacity="0.3" stroke-width="1.5" />)}
+        {atoms.map((a, i) => i === atomAcc
+          ? <circle cx={a.x} cy={a.y} r="8" fill="var(--art-accent)" />
+          : <circle cx={a.x} cy={a.y} r={4 + a.d * 3} fill="none" stroke="var(--art-ink)" stroke-opacity={0.4 + a.d * 0.5} stroke-width="1.5" />)}
+        {brackets(atoms[atomAcc].x, atoms[atomAcc].y, 30).map((d) => <path d={d} fill="none" stroke="var(--art-ink)" stroke-opacity="0.85" stroke-width="1.5" />)}
+        <text x={atoms[atomAcc].x + 18} y={atoms[atomAcc].y + 5} font-family="var(--mono)" font-size="17" fill="var(--art-mute)">Si</text>
+      </Fragment>
+    )}
+    {motif === 'orbit' && (
+      <Fragment>
+        {orbits.map((o) => <ellipse cx={cx} cy={cy} rx={o.rx} ry={o.ry} fill="none" stroke="var(--art-dim)" stroke-width="1" />)}
+        {sats.map((s, i) => <circle cx={s.x} cy={s.y} r={s.r} fill="none" stroke="var(--art-ink)" stroke-opacity={i === oHi ? 0.95 : 0.45} stroke-width="1.5" />)}
+        <circle cx={cx} cy={cy} r="7" fill="var(--art-accent)" />
+      </Fragment>
+    )}
+    {motif === 'stack' && (
+      <Fragment>
+        {stacks.map((s, i) => <rect x={s.x} y={s.y} width={stW} height={stH} rx="12" fill={i === stHi ? 'var(--art-accent)' : 'none'} fill-opacity={i === stHi ? 0.12 : 0} stroke={i === stHi ? 'var(--art-accent)' : 'var(--art-ink)'} stroke-opacity={i === stHi ? 0.95 : 0.4} stroke-width="1.5" />)}
+      </Fragment>
+    )}
+    {motif === 'wave' && (
+      <Fragment>
+        {waves.map((w, i) => <path d={w.d} fill="none" stroke="var(--art-ink)" stroke-opacity={i === wHi ? 0.95 : 0.4} stroke-width="1.5" />)}
+        <circle cx={cx} cy={waves[wHi].baseY} r="6" fill="var(--art-accent)" />
+      </Fragment>
+    )}
+    {motif === 'mesh' && (
+      <Fragment>
+        {mEdges.map((e) => <line x1={mVerts[e[0]].x} y1={mVerts[e[0]].y} x2={mVerts[e[1]].x} y2={mVerts[e[1]].y} stroke="var(--art-ink)" stroke-opacity="0.4" stroke-width="1.5" />)}
+        {mVerts.map((v, i) => i === mAcc ? <circle cx={v.x} cy={v.y} r="7" fill="var(--art-accent)" /> : <circle cx={v.x} cy={v.y} r="5" fill="none" stroke="var(--art-ink)" stroke-opacity="0.7" stroke-width="1.5" />)}
+        {brackets(mVerts[mAcc].x, mVerts[mAcc].y, 26).map((d) => <path d={d} fill="none" stroke="var(--art-ink)" stroke-opacity="0.85" stroke-width="1.5" />)}
+      </Fragment>
+    )}
+    {motif === 'terminal' && (
+      <Fragment>
+        <rect x={tFrame.x} y={tFrame.y} width={tFrame.w} height={tFrame.h} fill="none" stroke="var(--art-dim)" stroke-width="1.5" />
+        {tFloor.map((y) => <line x1={tFrame.x} y1={y} x2={tFrame.x + tFrame.w} y2={y} stroke="var(--art-dim)" stroke-width="1" />)}
+        <line x1={tFrame.x} y1={tFrame.y + tFrame.h} x2={cx} y2={tHorizon} stroke="var(--art-dim)" stroke-width="1" stroke-dasharray="4 7" />
+        <line x1={tFrame.x + tFrame.w} y1={tFrame.y + tFrame.h} x2={cx} y2={tHorizon} stroke="var(--art-dim)" stroke-width="1" stroke-dasharray="4 7" />
+        {tWins.map((wn) => <g>
+          <rect x={wn.x} y={wn.y} width={wn.w} height={wn.h} fill="var(--art-bg)" stroke="var(--art-ink)" stroke-opacity="0.55" stroke-width="1.5" />
+          <rect x={wn.x} y={wn.y - 23} width={wn.tab.length * 8.6 + 16} height="23" fill="var(--art-mute)" />
+          <text x={wn.x + 8} y={wn.y - 7} font-family="var(--mono)" font-size="13" fill="var(--art-bg)">{wn.tab}</text>
+          {wn.body.map((ln, k) => <text x={wn.x + 14} y={wn.y + 26 + k * 19} font-family="var(--mono)" font-size="12.5" fill={ln.startsWith('[[') ? 'var(--art-accent)' : 'var(--art-mute)'}>{ln}</text>)}
+        </g>)}
+        <rect x={tStatus.x} y={tStatus.y} width={tStatus.w} height={tStatus.h} fill="var(--art-bg)" stroke="var(--art-ink)" stroke-width="1.5" />
+        <rect x={tStatus.x} y={tStatus.y - 23} width="70" height="23" fill="var(--art-accent)" />
+        <text x={tStatus.x + 8} y={tStatus.y - 7} font-family="var(--mono)" font-size="13" fill="var(--art-bg)">STATUS</text>
+        {[0, 1, 2].map((k) => <circle cx={tStatus.x + tStatus.w / 2} cy={tStatus.y + 42 + k * 38} r="11" fill={k === 0 ? 'var(--art-accent)' : 'none'} stroke={k === 0 ? 'var(--art-accent)' : 'var(--art-ink)'} stroke-opacity={k === 0 ? 1 : 0.5} stroke-width="1.5" />)}
+      </Fragment>
+    )}
+    {motif === 'detect' && (
+      <Fragment>
+        {dObjs.map((o, i) => <g>
+          <rect x={o.x} y={o.y} width={o.w} height={o.h} rx="3" fill="none" stroke={i === dObjAcc ? 'var(--art-accent)' : 'var(--art-ink)'} stroke-opacity={i === dObjAcc ? 1 : 0.5} stroke-width="1.5" stroke-dasharray={i === dObjAcc ? 'none' : '5 4'} />
+          <text x={o.x + 6} y={o.y - 9} font-family="var(--mono)" font-size="16" fill="var(--art-mute)">{o.tag}</text>
+          {o.shape === 'circle' && <circle cx={o.x + o.w / 2} cy={o.y + o.h / 2} r={Math.min(o.w, o.h) / 3.2} fill="none" stroke="var(--art-ink)" stroke-opacity="0.75" stroke-width="1.5" />}
+          {o.shape === 'tri' && <path d={`M${f(o.x + o.w / 2)} ${f(o.y + o.h * 0.28)} L${f(o.x + o.w * 0.76)} ${f(o.y + o.h * 0.72)} L${f(o.x + o.w * 0.24)} ${f(o.y + o.h * 0.72)} Z`} fill="none" stroke="var(--art-ink)" stroke-opacity="0.75" stroke-width="1.5" />}
+          {o.shape === 'diamond' && <path d={`M${f(o.x + o.w / 2)} ${f(o.y + o.h * 0.26)} L${f(o.x + o.w * 0.74)} ${f(o.y + o.h / 2)} L${f(o.x + o.w / 2)} ${f(o.y + o.h * 0.74)} L${f(o.x + o.w * 0.26)} ${f(o.y + o.h / 2)} Z`} fill="none" stroke="var(--art-ink)" stroke-opacity="0.75" stroke-width="1.5" />}
+        </g>)}
+      </Fragment>
+    )}
+    {motif === 'pixel' && (
+      <Fragment>
+        {pxCells.map((p, i) => <rect x={p.x} y={p.y} width={pxSize - 4} height={pxSize - 4} rx="2" fill={i === pxAcc ? 'var(--art-accent)' : 'var(--art-ink)'} fill-opacity={i === pxAcc ? 1 : 0.55} />)}
+      </Fragment>
+    )}
+    {motif === 'scatter' && (
+      <Fragment>
+        <line x1={sX0} y1={sTopY} x2={sX1} y2={sTopY} stroke="var(--art-dim)" stroke-width="1" stroke-dasharray="2 7" />
+        <line x1={sX0} y1={sTopY} x2={sX0} y2={sTopY + 13} stroke="var(--art-dim)" stroke-width="1" />
+        <line x1={sX1} y1={sTopY} x2={sX1} y2={sTopY + 13} stroke="var(--art-dim)" stroke-width="1" />
+        {sGuides.map((g) => <line x1={sX0 + g * (sX1 - sX0)} y1={sTop - 8} x2={sX0 + g * (sX1 - sX0)} y2={sTop + sBandH + 8} stroke="var(--art-dim)" stroke-width="1" stroke-opacity="0.55" />)}
+        {sDots.map((d) => <circle cx={d.x} cy={d.y} r="2.7" fill="var(--art-ink)" fill-opacity="0.8" />)}
+        <line x1={sDimX0} y1={sDimY} x2={sX1} y2={sDimY} stroke="var(--art-accent)" stroke-width="1.5" />
+        <path d={`M${f(sDimX0 + 11)} ${f(sDimY - 6)} L${f(sDimX0)} ${f(sDimY)} L${f(sDimX0 + 11)} ${f(sDimY + 6)}`} fill="none" stroke="var(--art-accent)" stroke-width="1.5" />
+        <path d={`M${f(sX1 - 11)} ${f(sDimY - 6)} L${f(sX1)} ${f(sDimY)} L${f(sX1 - 11)} ${f(sDimY + 6)}`} fill="none" stroke="var(--art-accent)" stroke-width="1.5" />
+        <text x={(sDimX0 + sX1) / 2} y={sDimY + 22} text-anchor="middle" font-family="var(--mono)" font-size="20" letter-spacing="2" fill="var(--art-mute)">RESOLVED</text>
+      </Fragment>
+    )}
+    {motif === 'vortex' && (
+      <Fragment>
+        {vRings.map((r) => <circle cx={cx} cy={cy} r={r} fill="none" stroke="var(--art-dim)" stroke-width="1" />)}
+        {vArmPaths.map((d) => <path d={d} fill="none" stroke="var(--art-ink)" stroke-opacity="0.5" stroke-width="1.5" />)}
+        {vDots.map((p) => <circle cx={p.x} cy={p.y} r={p.r} fill="var(--art-ink)" fill-opacity="0.7" />)}
+        <circle cx={cx} cy={cy} r="9" fill="var(--art-accent)" />
+        {brackets(cx, cy, 30).map((d) => <path d={d} fill="none" stroke="var(--art-ink)" stroke-opacity="0.85" stroke-width="1.5" />)}
+      </Fragment>
+    )}
+    {motif === 'hub' && (
+      <Fragment>
+        {variant === 'chain' ? (
+          <Fragment>
+            {[...chIn, ...chOut].map((l) => <path d={l.d} fill="none" stroke="var(--art-ink)" stroke-opacity="0.5" stroke-width="1.5" />)}
+            {chMid.map((d) => <path d={d} fill="none" stroke="var(--art-ink)" stroke-opacity="0.55" stroke-width="1.5" />)}
+            {chIn.map((l) => <path d={`M${f(159)} ${f(l.ay - 5)} L${f(150)} ${f(l.ay)} L${f(159)} ${f(l.ay + 5)}`} fill="none" stroke="var(--art-ink)" stroke-opacity="0.6" stroke-width="1.5" />)}
+            {chOut.map((l) => <path d={`M${f(W - 159)} ${f(l.ay - 5)} L${f(W - 150)} ${f(l.ay)} L${f(W - 159)} ${f(l.ay + 5)}`} fill="none" stroke="var(--art-ink)" stroke-opacity="0.6" stroke-width="1.5" />)}
+            {chHubs.map((hx, i) => <circle cx={hx} cy={cy} r={hubR} fill={i === 1 ? 'var(--art-accent)' : 'var(--art-bg)'} stroke={i === 1 ? 'var(--art-accent)' : 'var(--art-ink)'} stroke-opacity={i === 1 ? 1 : 0.7} stroke-width="1.5" />)}
+            {brackets(chHubs[1], cy, 26).map((d) => <path d={d} fill="none" stroke="var(--art-ink)" stroke-opacity="0.85" stroke-width="1.5" />)}
+          </Fragment>
+        ) : (
+          <Fragment>
+            {[...hLeft, ...hRight].map((l) => <path d={l.d} fill="none" stroke="var(--art-ink)" stroke-opacity="0.5" stroke-width="1.5" stroke-dasharray={l.dash ? '5 5' : 'none'} />)}
+            {[...hLeft, ...hRight].map((l) => <path d={`M${f(l.ax + l.dir * 9)} ${f(l.ay - 5)} L${f(l.ax)} ${f(l.ay)} L${f(l.ax + l.dir * 9)} ${f(l.ay + 5)}`} fill="none" stroke="var(--art-ink)" stroke-opacity="0.6" stroke-width="1.5" />)}
+            <circle cx={cx} cy={cy} r={hubR} fill="var(--art-accent)" />
+            <circle cx={cx} cy={cy} r={hubR * 0.45} fill="var(--art-bg)" />
+            {brackets(cx, cy, 28).map((d) => <path d={d} fill="none" stroke="var(--art-ink)" stroke-opacity="0.85" stroke-width="1.5" />)}
+          </Fragment>
+        )}
+      </Fragment>
+    )}
+    {motif === 'blueprint' && (
+      <Fragment>
+        {blGV.map((x) => <line x1={x} y1="78" x2={x} y2="442" stroke="var(--art-dim)" stroke-width="1" stroke-dasharray="2 8" />)}
+        {blGH.map((y) => <line x1="40" y1={y} x2={W - 40} y2={y} stroke="var(--art-dim)" stroke-width="1" stroke-dasharray="2 8" />)}
+        <rect x={blF.x} y={blF.y} width={blF.s} height={blF.s} rx={blF.r} fill="none" stroke="var(--art-ink)" stroke-opacity="0.45" stroke-width="1.5" />
+        <rect x={blB.x} y={blB.y} width={blB.s} height={blB.s} fill="none" stroke="var(--art-ink)" stroke-opacity="0.3" stroke-width="1" />
+        <defs><clipPath id={blId}><circle cx={blC.x} cy={blC.y} r={blC.r} /></clipPath></defs>
+        <circle cx={blC.x} cy={blC.y} r={blC.r} fill="var(--art-accent)" />
+        <g clip-path={`url(#${blId})`}>
+          {blStripe.map((s) => <line x1={s.x1} y1={s.y1} x2={s.x2} y2={s.y2} stroke="var(--art-bg)" stroke-width="14" />)}
+        </g>
+        <line x1={blDimR} y1={blB.y} x2={blDimR} y2={blB.y + blB.s} stroke="var(--art-ink)" stroke-opacity="0.6" stroke-width="1.5" />
+        <path d={`M${f(blDimR - 5)} ${f(blB.y + 9)} L${f(blDimR)} ${f(blB.y)} L${f(blDimR + 5)} ${f(blB.y + 9)}`} fill="none" stroke="var(--art-ink)" stroke-opacity="0.6" stroke-width="1.5" />
+        <path d={`M${f(blDimR - 5)} ${f(blB.y + blB.s - 9)} L${f(blDimR)} ${f(blB.y + blB.s)} L${f(blDimR + 5)} ${f(blB.y + blB.s - 9)}`} fill="none" stroke="var(--art-ink)" stroke-opacity="0.6" stroke-width="1.5" />
+        <text x={blDimR + 12} y={cy + 5} font-family="var(--mono)" font-size="18" fill="var(--art-mute)">90px</text>
+        <line x1={blB.x} y1={blDimB} x2={blB.x + blB.s} y2={blDimB} stroke="var(--art-ink)" stroke-opacity="0.6" stroke-width="1.5" />
+        <path d={`M${f(blB.x + 9)} ${f(blDimB - 5)} L${f(blB.x)} ${f(blDimB)} L${f(blB.x + 9)} ${f(blDimB + 5)}`} fill="none" stroke="var(--art-ink)" stroke-opacity="0.6" stroke-width="1.5" />
+        <path d={`M${f(blB.x + blB.s - 9)} ${f(blDimB - 5)} L${f(blB.x + blB.s)} ${f(blDimB)} L${f(blB.x + blB.s - 9)} ${f(blDimB + 5)}`} fill="none" stroke="var(--art-ink)" stroke-opacity="0.6" stroke-width="1.5" />
+        <text x={cx} y={blDimB + 22} text-anchor="middle" font-family="var(--mono)" font-size="18" fill="var(--art-mute)">120px</text>
+        <rect x={blF.x - 2} y={blF.y - 2} width="18" height="18" rx="5" fill="none" stroke="var(--art-ink)" stroke-opacity="0.55" stroke-width="1.5" />
+        <line x1={blF.x - 2} y1={blF.y + 16} x2={blF.x + 16} y2={blF.y - 2} stroke="var(--art-ink)" stroke-opacity="0.55" stroke-width="1" />
+        <text x={blF.x - 14} y={blF.y + 11} text-anchor="end" font-family="var(--mono)" font-size="16" fill="var(--art-mute)">23.33%</text>
+        <rect x={blF.x - 150} y={cy - 12} width="22" height="22" rx="6" fill="none" stroke="var(--art-ink)" stroke-opacity="0.55" stroke-width="1.5" />
+        <line x1={blF.x - 145} y1={cy + 5} x2={blF.x - 133} y2={cy - 7} stroke="var(--art-ink)" stroke-opacity="0.7" stroke-width="1.5" />
+        <text x={blF.x - 120} y={cy + 4} font-family="var(--mono)" font-size="16" fill="var(--art-mute)">45°</text>
+        <text x={blF.x + blF.s + 70} y={blF.y + 8} font-family="var(--mono)" font-size="16" letter-spacing="1" fill="var(--art-mute)">SCALE 1:1</text>
+        <text x={blF.x + blF.s + 70} y={blF.y + 30} font-family="var(--mono)" font-size="16" letter-spacing="1" fill="var(--art-mute)">RGB 255, 255, 255</text>
+      </Fragment>
+    )}
+  </svg>
+</div>
+
+<style>
+  .article-art {
+    --art-ink: var(--txt, #ffffff);
+    --art-dim: var(--line, rgba(255, 255, 255, 0.12));
+    --art-mute: var(--muted, #888d96);
+    --art-bg: var(--bg, #08090b);
+    --art-accent: var(--teal, #2fd4bb);
+    width: 100%;
+    overflow: hidden;
+    background: none;
+  }
+  .article-art svg { display: block; width: 100%; height: 100%; }
+</style>

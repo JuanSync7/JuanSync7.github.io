@@ -1,3 +1,5 @@
+import type { Motif, Space } from './ArticleArt';
+
 export type Category = 'silicon' | 'software' | 'tutorials' | 'thoughts' | 'projects';
 export type CardSize = 'large' | 'medium' | 'small';
 export type LayoutMode = 'bento' | 'asymmetric' | 'masonry';
@@ -18,6 +20,9 @@ export interface Post {
   series?: string;
   week?: string;
   externalUrl?: string;
+  /** canonical article art — inherited from the matching learn article (by slug) or set per-post */
+  artMotif?: Motif;
+  artSpace?: Space;
 }
 
 export interface Tweaks {

@@ -1,0 +1,48 @@
+---
+/* Renders every <pre class="mermaid"> on the page as a flowchart, themed from the
+   design tokens (neutral nodes + a single teal accent on `:::accent` focal nodes).
+   Re-renders on the dark/light theme toggle so colours always match the page. */
+---
+<script>
+  import mermaid from 'mermaid';
+
+  const readTokens = () => {
+    const s = getComputedStyle(document.documentElement);
+    const g = (n: string) => s.getPropertyValue(n).trim();
+    return { bg: g('--bg'), panel: g('--panel'), line: g('--line'), txt: g('--txt'), muted: g('--muted'), teal: g('--teal'), mono: g('--mono') };
+  };
+
+  const render = () => {
+    const nodes = Array.from(document.querySelectorAll<HTMLElement>('pre.mermaid'));
+    if (!nodes.length) return;
+    const t = readTokens();
+    for (const n of nodes) {
+      if (!n.dataset.src) n.dataset.src = (n.textContent || '').trim();
+      else { n.innerHTML = n.dataset.src; n.removeAttribute('data-processed'); }
+    }
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: 'loose',
+      theme: 'base',
+      fontFamily: t.mono || 'monospace',
+      themeVariables: {
+        background: t.bg, primaryColor: t.panel, secondaryColor: t.panel, tertiaryColor: t.panel,
+        primaryBorderColor: t.line, primaryTextColor: t.txt, textColor: t.txt, lineColor: t.muted,
+        mainBkg: t.panel, nodeBorder: t.line, clusterBkg: t.panel, titleColor: t.txt,
+        edgeLabelBackground: t.bg, fontSize: '15px',
+      },
+      themeCSS:
+        `.node rect,.node polygon,.node path,.node circle{stroke:${t.line};fill:${t.panel}}`
+        + `.node .nodeLabel{color:${t.txt}}`
+        + `.node.accent rect,.node.accent polygon,.node.accent path,.node.accent circle{stroke:${t.teal};stroke-width:1.7px}`
+        + `.edgePaths path{stroke:${t.muted}}`
+        + `.edgeLabel,.edgeLabel p{background:${t.bg};color:${t.muted}}`
+        + `marker{fill:${t.muted};stroke:${t.muted}}`,
+      flowchart: { curve: 'basis', htmlLabels: true, padding: 14, nodeSpacing: 46, rankSpacing: 52, useMaxWidth: true },
+    });
+    mermaid.run({ nodes });
+  };
+
+  render();
+  new MutationObserver(render).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+</script>

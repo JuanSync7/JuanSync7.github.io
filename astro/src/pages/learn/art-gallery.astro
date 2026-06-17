@@ -1,0 +1,94 @@
+---
+/* Preview of the article-art system (dev/reference page).
+   Two separate layers: MAIN ART (the subject) and 3D BACKGROUNDS (the space). */
+import TrackerLayout from '../../layouts/TrackerLayout.astro';
+import ArticleArt from '../../components/trackers/ArticleArt.astro';
+import '../../components/trackers/tracker-skin.css';
+
+const arts = [
+  { m: 'flow', note: 'inference pipeline · tokenize→stream, focal attention lens' },
+  { m: 'lattice', note: 'silicon crystal lattice · atoms (nodes) + bonds (edges), 3D' },
+  { m: 'loop', note: 'circles forming a loop · cycles' },
+  { m: 'orbit', note: 'elliptical orbits + satellites · systems (3D)' },
+  { m: 'stack', note: 'offset layered panels · layers / memory (3D)' },
+  { m: 'wave', note: 'stacked signal waves · throughput' },
+  { m: 'mesh', note: 'wireframe polyhedron · edges + nodes geometry (3D)' },
+  { m: 'terminal', note: 'multiple terminal windows over receding floor lines · agents / many writers (3D)' },
+  { m: 'detect', note: 'object-detection boxes + confidence tags · perception' },
+  { m: 'pixel', note: 'dot-matrix glyph · pixel words / icons' },
+  { m: 'scatter', note: 'noise resolving into a grid · signal → structure (scatter/flow)' },
+  { m: 'vortex', note: 'log-spiral arms winding into a core · convergence / pull' },
+  { m: 'blueprint', note: 'dotted grid + central icon + dimension specs (owns its field)' },
+] as const;
+
+const relations = [
+  { v: 'mm', note: 'many-to-many — hub with fan-in + fan-out' },
+  { v: 'm1', note: 'many-to-one — many sources into one hub' },
+  { v: '1m', note: 'one-to-many — one source out to many' },
+  { v: 'chain', note: 'chain — hubs in series (chains of these)' },
+] as const;
+
+const spaces = [
+  { s: 'fan', note: 'floor fan — rays to a low vanishing point' },
+  { s: 'burst', note: 'vertical burst — rays to top + bottom' },
+  { s: 'tunnel', note: 'corner tunnel — rays to the corners + depth frames' },
+  { s: 'cube', note: 'cube interior — floor lines (bottom face) + central front edge' },
+  { s: 'lens', note: 'camera lens — circular barrel rings + radial spokes to a centre point' },
+] as const;
+---
+<TrackerLayout title="Article art · system" mainWidth="900px">
+  <article class="release-article" style="max-width:900px">
+    <a class="back" href="/learn"><span class="arr">←</span> back to learn</a>
+    <div class="eyebrow">Template concept</div>
+    <h1>Article art</h1>
+    <p class="sub">Two layers, composed per article: a <b>main art</b> (the subject) and an optional <b>3D background</b> (the space). Rule: if the main art already emulates a 3D object, it gets no background. Pure ink line-work, one solid accent, seeded by slug.</p>
+  </article>
+
+  <section style="max-width:900px;margin:40px auto 0">
+    <h2 class="section" style="font-family:var(--display);font-size:24px;margin:0 0 4px">Main art</h2>
+    <p style="color:var(--muted);font-size:14px;margin:0 0 20px">The subject, shown with no background.</p>
+    <div style="display:grid;gap:48px">
+      {arts.map((x) => (
+        <div>
+          <ArticleArt seed={`gal-${x.m}`} motif={x.m} space="none" height={260} />
+          <div style="margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.04em"><b style="color:var(--txt)">{x.m}</b> · {x.note}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section style="max-width:900px;margin:56px auto 0">
+    <h2 class="section" style="font-family:var(--display);font-size:24px;margin:0 0 4px">Relationships (hub)</h2>
+    <p style="color:var(--muted);font-size:14px;margin:0 0 20px">One <code>hub</code> motif, four <code>variant</code>s: many-to-many, many-to-one, one-to-many, and chains.</p>
+    <div style="display:grid;gap:48px">
+      {relations.map((x) => (
+        <div>
+          <ArticleArt seed={`gal-hub-${x.v}`} motif="hub" variant={x.v} space="none" height={260} />
+          <div style="margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.04em"><b style="color:var(--txt)">{x.v}</b> · {x.note}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section style="max-width:900px;margin:56px auto 0">
+    <h2 class="section" style="font-family:var(--display);font-size:24px;margin:0 0 4px">3D backgrounds</h2>
+    <p style="color:var(--muted);font-size:14px;margin:0 0 20px">The space layer, shown on its own. Sits behind flat main arts only.</p>
+    <div style="display:grid;gap:48px">
+      {spaces.map((x) => (
+        <div>
+          <ArticleArt seed={`gal-bg-${x.s}`} motif="none" space={x.s} height={240} />
+          <div style="margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.04em"><b style="color:var(--txt)">{x.s}</b> · {x.note}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section style="max-width:900px;margin:56px auto 0">
+    <h2 class="section" style="font-family:var(--display);font-size:24px;margin:0 0 4px">Composed</h2>
+    <p style="color:var(--muted);font-size:14px;margin:0 0 20px">Flat main art + auto background (how it ships on an article).</p>
+    <div style="display:grid;gap:48px">
+      <div><ArticleArt seed="inference-end-to-end" motif="flow" height={280} /><div style="margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--muted)">flow + auto space</div></div>
+      <div><ArticleArt seed="how-inference-chips-are-built" motif="lattice" height={280} /><div style="margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--muted)">lattice (3D → no background)</div></div>
+    </div>
+  </section>
+</TrackerLayout>

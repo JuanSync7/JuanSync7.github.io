@@ -1,6 +1,9 @@
 ---
 import TrackerLayout from '../../layouts/TrackerLayout.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
+import ArticleArt from '../../components/trackers/ArticleArt.astro';
+import Mermaid from '../../components/trackers/Mermaid.astro';
+import { learnArt } from '../../lib/content';
 import '../../components/trackers/tracker-skin.css';
 
 export async function getStaticPaths() {
@@ -12,13 +15,16 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 const tracker = entry.data.tracker;
 const active = tracker === 'inference-engines' ? 'engines' : tracker === 'frontier-models' ? 'models' : tracker === 'inference-silicon' ? 'silicon' : '';
+const { motif, space } = learnArt(entry.data);
 ---
-<TrackerLayout title={`${entry.data.title} · learn`} active={active}>
+<TrackerLayout title={`${entry.data.title} · learn`} active={active} mainWidth="760px">
   <article class="release-article">
-    <a class="back" href="/learn">← back to learn</a>
+    <a class="back" href="/learn"><span class="arr">←</span> back to learn</a>
+    <ArticleArt seed={entry.slug} motif={motif} space={space} height={220} class="article-hero" />
     {entry.data.eyebrow && <div class="eyebrow">{entry.data.eyebrow}</div>}
     <h1>{entry.data.title}</h1>
     {entry.data.summary && <p class="sub">{entry.data.summary}</p>}
     <div class="prose"><Content /></div>
   </article>
+  <Mermaid />
 </TrackerLayout>

@@ -7,7 +7,7 @@ import SeriesLibrary from './series/SeriesLibrary';
 import SearchBar from './SearchBar';
 import FilterBar from './FilterBar';
 import BlogCard from './BlogCard';
-import Pagination from './Pagination';
+import EntriesPager from './EntriesPager';
 import BulletinBoard from './BulletinBoard';
 import NewsletterSignup from './NewsletterSignup';
 
@@ -33,7 +33,8 @@ interface Props {
 
 export default function BlogLanding(props: Props) {
   const { featured, paginated, total, perPage, filter, search, page, tweaks } = props;
-  const showFeatured = filter === 'all' && !search && page === 1 && featured.length > 0;
+  // Featured stays visible across pages so the entries section never shifts when paging.
+  const showFeatured = filter === 'all' && !search && featured.length > 0;
 
   return (
     <>
@@ -44,10 +45,13 @@ export default function BlogLanding(props: Props) {
         <SeriesLibrary mode={tweaks.seriesView} onOpen={props.onOpenSeries} />
 
         <div style={{ marginBottom: 40 }}>
-          <div style={{ width: '100vw', marginLeft: 'calc(50% - 50vw)', height: 1, background: '#243028', marginBottom: 30 }} />
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, flexWrap: 'wrap', padding: '20px 0' }}>
-            <span style={{ fontFamily: 'var(--hf-mono)', color: '#c8d837', letterSpacing: '0.08em', fontSize: 23 }}>// 0x02.</span>
-            <h2 style={{ fontFamily: 'var(--hf-display)', color: '#e4ecd8', lineHeight: 1, margin: 0, fontSize: 50 }}>entries</h2>
+          <div style={{ width: '100vw', marginLeft: 'calc(50% - 50vw)', height: 1, background: '#243028', marginTop: 56, marginBottom: 56 }} />
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', padding: '20px 0' }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>
+              <span style={{ fontFamily: 'var(--hf-mono)', color: '#c8d837', letterSpacing: '0.08em', fontSize: 23 }}>// 0x02.</span>
+              <h2 style={{ fontFamily: 'var(--hf-display)', color: '#e4ecd8', lineHeight: 1, margin: 0, fontSize: 50 }}>entries</h2>
+            </div>
+            <EntriesPager total={total} perPage={perPage} page={page} onPage={props.onPage} />
           </div>
         </div>
 
@@ -55,7 +59,7 @@ export default function BlogLanding(props: Props) {
         <FilterBar active={filter} onFilter={props.onFilter} />
 
         {paginated.length > 0 ? (
-          <div key={props.gridKey} className={`bento-grid layout-${tweaks.layout}`}>
+          <div key={props.gridKey} className={`bento-grid layout-${tweaks.layout}`} style={{ minHeight: 460 }}>
             {paginated.map((post, i) => (
               <BlogCard key={post.slug} post={post} index={i} layout={tweaks.layout} onClick={props.onCardClick} />
             ))}
@@ -67,7 +71,6 @@ export default function BlogLanding(props: Props) {
           </div>
         )}
 
-        <Pagination total={total} perPage={perPage} page={page} onPage={props.onPage} />
         <BulletinBoard posts={props.posts} onPostClick={props.onCardClick} />
         <NewsletterSignup />
       </main>

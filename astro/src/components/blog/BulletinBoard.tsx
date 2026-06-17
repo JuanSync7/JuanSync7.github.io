@@ -23,7 +23,7 @@ export default function BulletinBoard({ posts, onPostClick }: Props) {
   return (
     <div ref={ref} style={{ marginTop: 48, marginBottom: 8, opacity: 0 }}>
       <div style={{ marginBottom: 36 }}>
-        <div style={{ width: '100vw', marginLeft: 'calc(50% - 50vw)', height: 1, background: '#243028', marginBottom: 30 }} />
+        <div style={{ width: '100vw', marginLeft: 'calc(50% - 50vw)', height: 1, background: '#243028', marginTop: 56, marginBottom: 56 }} />
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, flexWrap: 'wrap', padding: '20px 0' }}>
           <span style={{ fontFamily: 'var(--hf-mono)', color: '#d300c5', letterSpacing: '0.08em', fontSize: 23 }}>// 0x03.</span>
           <h2 style={{ fontFamily: 'var(--hf-display)', color: '#e4ecd8', lineHeight: 1, margin: 0, fontSize: 50 }}>bulletin</h2>

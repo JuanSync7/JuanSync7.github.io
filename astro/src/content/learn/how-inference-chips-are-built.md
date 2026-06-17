@@ -3,6 +3,7 @@ title: "How Inference Chips Are Built"
 summary: "Why GPUs are inefficient for LLM inference, how ASICs go from RTL to silicon, and what Cerebras, Fractile, Groq, Etched, and Tenstorrent are doing differently to overcome the memory wall."
 eyebrow: "Chip design deep-dive"
 tracker: "inference-silicon"
+art: "lattice"
 date: 2026-06-16
 ---
 
@@ -29,7 +30,28 @@ LLM decode sits far LEFT of this ridge → memory bound
 - **B200 ridge point:** 2,250 TFLOPS (BF16) ÷ 8.0 TB/s = ~281 FLOPs/byte. Same problem, different numbers.
 - **The fix:** raise arithmetic intensity (batching), reduce bytes-accessed (quantisation), or eliminate off-chip hops entirely (ASIC on-chip SRAM).
 
-> Diagram: Every decode token requires a full sweep of all model weights through HBM. The GPU compute sits idle waiting for data — adding FLOPs doesn't help.
+<figure class="ig-fig">
+<pre class="mermaid">
+graph TD
+  req["Generate 1 token — autoregressive decode"]
+  fetch["Load ALL weight matrices from HBM — 140 GB for 70B FP16"]
+  bw["H100 HBM bandwidth ceiling: 3.35 TB/s"]
+  math["Matrix-vector multiply — tiny FLOPs, enormous bytes"]
+  idle["GPU tensor cores: &gt;98% idle, waiting for data"]
+  token["1 token emitted"]
+  prob["Core insight: adding more CUDA cores does NOT help"]
+  fix1["Fix A — Batching: 1 weight read serves B tokens → intensity × B"]
+  fix2["Fix B — Quantisation: FP4 halves bytes → 2× effective BW"]
+  fix3["Fix C — On-chip SRAM (ASIC): weights never leave the chip"]
+  req-->fetch-->bw-->math-->idle-->token
+  token-->prob
+  prob-->fix1
+  prob-->fix2
+  prob-->fix3
+  class idle accent
+</pre>
+<figcaption>Every decode token requires a full sweep of all model weights through HBM. The GPU compute sits idle waiting for data — adding FLOPs doesn't help.</figcaption>
+</figure>
 
 The decode path runs: generate 1 token (autoregressive decode) → load ALL weight matrices from HBM (140 GB for 70B FP16) → hit the H100 HBM bandwidth ceiling of 3.35 TB/s → matrix-vector multiply (tiny FLOPs, enormous bytes) → GPU tensor cores >98% idle, waiting for data → 1 token emitted. Core insight: adding more CUDA cores does NOT help. The three fixes branch from here — Fix A (Batching): 1 weight read serves B tokens → intensity × B; Fix B (Quantisation): FP4 halves bytes → 2× effective BW; Fix C (On-chip SRAM, ASIC): weights never leave the chip.
 
@@ -47,7 +69,28 @@ GPUs were designed for highly parallel, compute-intensive workloads — graphics
 
 An H100 has 528 Streaming Multiprocessors (SMs), each with 128 CUDA cores — 67,584 cores total. They execute via **SIMT** (Single Instruction, Multiple Threads): one instruction fans out to many threads in parallel. For training matrix multiplications across a batch of thousands of examples, this is excellent. For generating one token per decode step, you are running a handful of threads on silicon built for tens of thousands.
 
-> Diagram: SIMT (GPU) vs dataflow (LPU): the GPU decides at runtime; the LPU compiler decides everything statically. The result is deterministic latency and zero stalls on the LPU.
+<figure class="ig-fig">
+<pre class="mermaid">
+graph TD
+  subgraph GPU["GPU — SIMT Model"]
+    direction TB
+    g1["Runtime scheduler — decides each cycle what runs"]
+    g2["67,584 CUDA cores — most idle during decode"]
+    g3["Cache hierarchy — frequent HBM misses"]
+    g4["Non-deterministic latency — variable per request"]
+  end
+  subgraph LPU["Groq LPU — Dataflow Model"]
+    direction TB
+    l1["Compiler schedules everything at compile time"]
+    l2["All compute units always busy — no idle cores"]
+    l3["~230 MB on-chip SRAM — data always present"]
+    l4["Deterministic latency — same every invocation"]
+  end
+  GPU-->|"vs"|LPU
+  class l4 accent
+</pre>
+<figcaption>SIMT (GPU) vs dataflow (LPU): the GPU decides at runtime; the LPU compiler decides everything statically. The result is deterministic latency and zero stalls on the LPU.</figcaption>
+</figure>
 
 The contrast, side by side:
 
@@ -71,7 +114,23 @@ Building a custom chip is a multi-year, $50M–$200M endeavour. Here is the pipe
 7. **Tape-out** — Final GDSII file sent to the foundry (TSMC, Samsung). Mask set costs $5M–$20M at 3–5 nm. Point of no return — any bug found after this costs a full re-spin.
 8. **Fab, Package & Test** — 12–18 months lead time at TSMC. Wafer-level test, singulation, packaging (OSAT), final system test. First silicon characterisation and bring-up begins.
 
-> Diagram: The full ASIC pipeline: architecture → RTL → verification → synthesis → place & route → sign-off → tape-out → fab → test. Every stage compounds risk; tape-out is the $20M point of no return.
+<figure class="ig-fig">
+<pre class="mermaid">
+graph TD
+  arch["Architecture &amp; Micro-arch — months of simulation"]
+  rtl["RTL (Verilog/Chisel) — cycle-accurate description"]
+  dv["Design Verification — 50% of engineering effort"]
+  synth["Synthesis — RTL → gate netlist at target node"]
+  pnr["Place &amp; Route — physical layout, timing closure"]
+  signoff["DRC / LVS / Sign-off — fab rule compliance"]
+  tapeout["GDSII Tape-out — $5–20M mask set, no return"]
+  fab["TSMC Wafer Fab — 12–18 months lead time"]
+  test["Package &amp; Test — bring-up, characterisation"]
+  arch-->rtl-->dv-->synth-->pnr-->signoff-->tapeout-->fab-->test
+  class tapeout accent
+</pre>
+<figcaption>The full ASIC pipeline: architecture → RTL → verification → synthesis → place &amp; route → sign-off → tape-out → fab → test. Every stage compounds risk; tape-out is the $20M point of no return.</figcaption>
+</figure>
 
 ### NRE cost reality
 
@@ -85,7 +144,20 @@ TSMC (Taiwan) produces virtually all leading-edge inference chips: Cerebras WSE-
 
 Every inference ASIC company is attacking the memory wall from a different angle. Here is the taxonomy.
 
-> Diagram: Six different architectural responses to the same root problem. Each sacrifices something different — flexibility, manufacturability, model capacity, or software maturity — to close the gap.
+<figure class="ig-fig">
+<pre class="mermaid">
+graph LR
+  prob["The Memory Wall: weights too far from compute — every decode token pays the HBM tax"]
+  prob --> w1["Wafer-Scale — eliminate chip boundaries entirely (Cerebras)"]
+  prob --> w2["Dataflow — compile away the runtime scheduler (Groq, SambaNova)"]
+  prob --> w3["SRAM Memory-Compute Fusion — fuse storage and ALUs on the same die (Fractile)"]
+  prob --> w4["Digital In-Memory Compute — compute inside the DRAM cell array (d-Matrix)"]
+  prob --> w5["Fixed-Function Silicon — hardwire the transformer math permanently (Etched)"]
+  prob --> w6["RISC-V Mesh — open programmable tiles with local SRAM (Tenstorrent)"]
+  class prob accent
+</pre>
+<figcaption>Six different architectural responses to the same root problem. Each sacrifices something different — flexibility, manufacturability, model capacity, or software maturity — to close the gap.</figcaption>
+</figure>
 
 The memory wall (weights too far from compute — every decode token pays the HBM tax) spawns six responses: Wafer-Scale (eliminate chip boundaries entirely — Cerebras); Dataflow (compile away the runtime scheduler — Groq, SambaNova); SRAM Memory-Compute Fusion (fuse storage and ALUs on the same die — Fractile); Digital In-Memory Compute (compute inside the DRAM cell array — d-Matrix); Fixed-Function Silicon (hardwire the transformer math permanently — Etched); RISC-V Mesh (open programmable tiles with local SRAM — Tenstorrent).
 

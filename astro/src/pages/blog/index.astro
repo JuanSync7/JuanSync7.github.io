@@ -1,24 +1,35 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/layout/Nav.tsx';
 import BlogApp from '../../components/blog/BlogApp.tsx';
+import { resolveBlogArt } from '../../lib/content';
 import '../../components/blog/blog.css';
 
 const entries = await getCollection('blog');
+// Canonical art lives on the learn article; a blog post that shares its slug inherits
+// it automatically (resolveBlogArt). A post may also override via its own `art`/`bg`.
+const learnBySlug = new Map<string, CollectionEntry<'learn'>['data']>(
+  (await getCollection('learn')).map((e) => [e.slug, e.data]),
+);
 const posts = entries
-  .map((e) => ({
-    slug: e.slug,
-    title: e.data.title,
-    excerpt: e.data.excerpt,
-    category: e.data.category,
-    date: e.data.date.toISOString(),
-    readTime: e.data.readTime,
-    tags: e.data.tags,
-    featured: e.data.featured,
-    size: e.data.size,
-    ...(e.data.externalUrl ? { externalUrl: e.data.externalUrl } : {}),
-  }))
+  .map((e) => {
+    const { motif: artMotif, space: artSpace } = resolveBlogArt(e.data, learnBySlug.get(e.slug));
+    return {
+      slug: e.slug,
+      title: e.data.title,
+      excerpt: e.data.excerpt,
+      category: e.data.category,
+      date: e.data.date.toISOString(),
+      readTime: e.data.readTime,
+      tags: e.data.tags,
+      featured: e.data.featured,
+      size: e.data.size,
+      ...(e.data.externalUrl ? { externalUrl: e.data.externalUrl } : {}),
+      ...(artMotif ? { artMotif } : {}),
+      ...(artSpace ? { artSpace } : {}),
+    };
+  })
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 ---
 

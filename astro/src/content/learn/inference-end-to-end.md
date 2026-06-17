@@ -3,6 +3,8 @@ title: "Inference, End to End"
 summary: "Prefill and decode, why one decode is memory-bound, precision and the KV cache, speculative decoding, the memory hierarchy, and where the CPU re-enters the picture."
 eyebrow: "Field guide · how inference actually runs"
 tracker: "inference-engines"
+art: "flow"
+bg: "cube"
 date: 2026-06-16
 ---
 
@@ -17,7 +19,26 @@ Prefill and decode, why one decode is memory-bound, precision and the KV cache, 
 
 Every LLM request runs in two very different phases. **Prefill** ingests your entire prompt in a single parallel pass, building the KV cache and emitting the first token. **Decode** then generates the rest one token at a time, each new token feeding back in as input. The first phase sets your *time-to-first-token*; the second sets your *time-per-output-token*.
 
-> Diagram: The full request path: tokenize → prefill (one parallel pass that fills the KV cache) → first token (TTFT) → the autoregressive decode loop → detokenize. [Whimsical source](https://whimsical.com/F137moPA8KVnqXqKBSPWVU)
+<figure class="ig-fig">
+<pre class="mermaid">
+graph TD
+  req["Request &mdash; system prompt, chat history, new turn"]
+  tok["Tokenize to token IDs"]
+  pre["PREFILL &middot; compute-bound &mdash; all prompt tokens in one parallel pass"]
+  kv["Write K/V for every prompt token"]
+  ttft(["First token &middot; TTFT"])
+  dec["DECODE &middot; memory-bound &mdash; one token per pass"]
+  app["Append new K/V to the cache"]
+  loop{"EOS or max tokens?"}
+  det["Detokenize to text"]
+  resp(["Streamed response"])
+  req-->tok-->pre-->|"fills"|kv-->ttft-->dec-->|"reads whole cache"|app-->loop
+  loop-->|"no, next token"|dec
+  loop-->|"yes"|det-->resp
+  class ttft accent
+</pre>
+<figcaption>The full request path: tokenize → prefill (one parallel pass that fills the KV cache) → first token (TTFT) → the autoregressive decode loop → detokenize.</figcaption>
+</figure>
 
 1. Request — system prompt, chat history, new turn
 2. Tokenize to token IDs
@@ -38,7 +59,23 @@ One forward pass per token: embed the last token, attend over the *whole* KV cac
 
 To produce a *single* decode token the GPU must stream every model weight — and the entire KV cache — out of HBM and through the compute units exactly once. That is a tiny number of FLOPs per byte moved, so the **arithmetic intensity** sits far below the GPU's FLOP-to-byte ratio. You are pinned to the memory-bandwidth side of the roofline, and the Tensor Cores idle while waiting on HBM. Prefill is the opposite: each weight read is reused across hundreds of prompt tokens, so it is compute-bound.
 
-> Diagram: Same weights, same math — but prefill reuses each weight across many tokens (compute-bound) while decode re-reads everything to make one token (memory-bound). [Whimsical source](https://whimsical.com/EmHFheRQ2haQYzpBicq9s8)
+<figure class="ig-fig">
+<pre class="mermaid">
+graph TD
+  start["Same model and math &mdash; why a different bottleneck?"]
+  pf["PREFILL &mdash; one pass over N prompt tokens"]
+  dc["DECODE &mdash; one pass per single token"]
+  pf2["Each weight reused across N tokens &middot; FLOPs much greater than bytes"]
+  dc2["Re-reads all weights and KV per token &middot; bytes much greater than FLOPs"]
+  pfb(["COMPUTE-BOUND &middot; limited by FLOPs"])
+  dcb(["MEMORY-BOUND &middot; limited by HBM bandwidth"])
+  fix["Fix: batch requests so one weight-read serves many tokens"]
+  start-->pf-->pf2-->pfb-->fix
+  start-->dc-->dc2-->dcb-->fix
+  class dcb accent
+</pre>
+<figcaption>Same weights, same math — but prefill reuses each weight across many tokens (compute-bound) while decode re-reads everything to make one token (memory-bound).</figcaption>
+</figure>
 
 - PREFILL — one pass over N prompt tokens; each weight reused across N tokens (FLOPs ≫ bytes) → **compute-bound**, limited by FLOPs.
 - DECODE — one pass per single token; re-reads all weights and KV per token (bytes ≫ FLOPs) → **memory-bound**, limited by HBM bandwidth.
@@ -77,7 +114,32 @@ On Blackwell, DeepSeek-R1's MMLU moved just 90.8% → 90.7% going FP8 → NVFP4,
 
 Attention needs the key and value vectors of *every* previous token. Recomputing them each step would be quadratic, so we cache them. Prefill fills the cache for the whole prompt; each decode step appends one new row and reads the whole thing back. The cache holds three things: the **system prompt** (static, so its KV can be reused across requests), the **chat history** (grows every turn), and the **generated tokens**.
 
-> Diagram: Prefill writes K/V for the whole prompt; the cache holds the system prompt, the chat history and generated tokens — and grows linearly with every token. [Whimsical source](https://whimsical.com/4sCfkcQ5ssPYxCGiDj1sAM)
+<figure class="ig-fig">
+<pre class="mermaid">
+graph TD
+  pre["Prefill computes K/V for the whole prompt"]
+  cache[("KV CACHE &middot; in VRAM &mdash; grows with every token")]
+  sys["System prompt &mdash; reusable prefix"]
+  hist["Chat history &mdash; grows each turn"]
+  gen["Generated tokens &mdash; appended in decode"]
+  q{"How much history to keep?"}
+  full["Full history: best recall, but huge, slow, OOM"]
+  min["Prompt only: tiny and fast, but forgets"]
+  mid["Balance: prompt + recent turns + summary"]
+  pre-->cache
+  cache-->sys
+  cache-->hist
+  cache-->gen
+  sys-->q
+  hist-->q
+  gen-->q
+  q-->|"max quality"|full
+  q-->|"min cost"|min
+  q-->|"recommended"|mid
+  class cache accent
+</pre>
+<figcaption>Prefill writes K/V for the whole prompt; the cache holds the system prompt, the chat history and generated tokens — and grows linearly with every token.</figcaption>
+</figure>
 
 The cache grows linearly with context, so it competes with model weights for VRAM. That forces a real product trade-off in how much history you keep:
 
@@ -139,7 +201,29 @@ The toolbox that turns a model into a fast, dense, multi-tenant service.
 
 Because decode is memory-bound, the GPU can verify several tokens for almost the same cost as generating one. **Speculative decoding** exploits that: a cheap **draft** model proposes k tokens, the big **target** model checks them all in a single parallel pass, accepts the longest correct prefix, and corrects the first mismatch. The output distribution is provably identical to the target alone — you just get there in fewer expensive passes.
 
-> Diagram: A small draft model proposes tokens; the big target verifies them in one pass. SSD goes further — drafting the next guesses while verification is still running. [Whimsical source](https://whimsical.com/Du7J9wEP9KrnFLwhVmgZZL)
+<figure class="ig-fig">
+<pre class="mermaid">
+graph TD
+  draft["DRAFT model &middot; small &mdash; proposes k tokens"]
+  target["TARGET model &middot; big &mdash; verifies all k in one pass"]
+  check{"Match target distribution?"}
+  accept["Accept matched prefix &mdash; many tokens, one pass"]
+  reject["Reject from first mismatch &mdash; target corrects"]
+  gain(["Many tokens per costly pass &middot; output identical to target"])
+  ssd1["SSD: while target verifies, draft pre-computes likely guesses"]
+  ssd2["Outcome in predicted set, return next speculation instantly"]
+  ssd3["Saguaro &middot; arXiv 2603.03251 &mdash; up to 2x spec-decode, 5x autoregressive"]
+  draft-->|"k tokens"|target-->check
+  check-->|"yes"|accept
+  check-->|"no"|reject
+  accept-->gain
+  reject-->gain
+  gain-->|"loop"|draft
+  gain-->ssd1-->ssd2-->ssd3
+  class gain accent
+</pre>
+<figcaption>A small draft model proposes tokens; the big target verifies them in one pass. SSD goes further — drafting the next guesses while verification is still running.</figcaption>
+</figure>
 
 ### Speculative speculative decoding (SSD)
 
@@ -151,7 +235,22 @@ Ordinary spec-decoding still serializes *draft → verify → draft*. SSD parall
 
 Inference is a story about moving bytes. Registers and on-chip SRAM are blistering but tiny — FlashAttention lives here, tiling attention so the full score matrix never touches HBM. Model weights and the KV cache sit in **HBM/VRAM**. When VRAM runs out, modern servers spill the KV cache *down* the hierarchy across the PCIe/NVLink bridge into CPU DRAM, then NVMe, then the network.
 
-> Diagram: Registers → SRAM → L2 → HBM on the GPU, then across the PCIe/NVLink bridge to CPU DRAM, NVMe and the network. Each step down: slower, bigger, cheaper. [Whimsical source](https://whimsical.com/Kmxbqfc78xQk9Xtenja2Je)
+<figure class="ig-fig">
+<pre class="mermaid">
+graph TD
+  reg["GPU Registers &mdash; ~100 TB/s &middot; KBs"]
+  sram["GPU SRAM / L1 &mdash; ~20 TB/s &middot; MBs &middot; FlashAttention"]
+  l2["GPU L2 &mdash; multi-TB/s &middot; ~50 MB"]
+  hbm[("GPU HBM / VRAM &mdash; 3.35 to 8 TB/s &middot; weights + KV")]
+  link["PCIe / NVLink bridge &mdash; 64 GB/s and 900 GB/s"]
+  dram[("CPU DRAM &mdash; 200 to 500 GB/s &middot; KV offload")]
+  ssd[("NVMe SSD &mdash; 3 to 14 GB/s &middot; KV spill")]
+  net[("Network / object store &mdash; tens of GB/s &middot; PBs")]
+  reg-->sram-->l2-->hbm-->|"spill when VRAM full"|link-->dram-->ssd-->net
+  class hbm accent
+</pre>
+<figcaption>Registers → SRAM → L2 → HBM on the GPU, then across the PCIe/NVLink bridge to CPU DRAM, NVMe and the network. Each step down: slower, bigger, cheaper.</figcaption>
+</figure>
 
 - GPU Registers — ~100 TB/s · KBs
 - GPU SRAM / L1 — ~20 TB/s · MBs · FlashAttention
@@ -166,7 +265,28 @@ Inference is a story about moving bytes. Registers and on-chip SRAM are blisteri
 
 For a decade the GPU was the whole story. But decode kernels are tiny and memory-bound, and GPUs have gotten dramatically faster — so the *host* work between kernels (scheduling, Python, kernel launches, sampling, tokenization, KV paging) can now take longer than the GPU compute it surrounds. The bottleneck has partly moved back to the CPU.
 
-> Diagram: The CPU schedules the batch, launches kernels, samples, and pages the KV cache; the GPU does the matmuls. On tiny decode steps the host work can outrun the GPU. [Whimsical source](https://whimsical.com/SKWyBxD1UTYJX3t2CiJEkr)
+<figure class="ig-fig">
+<pre class="mermaid">
+graph TD
+  sched["CPU &mdash; scheduler builds the batch"]
+  launch["CPU &mdash; launch kernels / replay CUDA graph"]
+  gpu["GPU &mdash; attention and FFN matmuls"]
+  logits(["GPU to logits"])
+  sample["CPU &mdash; sample, detok, stop checks"]
+  page[("CPU &mdash; KV paging + offload to DRAM/SSD")]
+  loop{"EOS or max tokens?"}
+  done(["Stream token out"])
+  why["Why CPU matters again: tiny memory-bound kernels, host work can exceed GPU compute"]
+  fixes["Mitigations: CUDA graphs, overlap, native runtimes, KV offload, disaggregation"]
+  sched-->launch-->gpu-->logits-->sample-->page-->loop
+  loop-->|"yes"|done
+  loop-->|"no, next token"|sched
+  launch -. "host overhead" .-> why
+  why --> fixes
+  class why accent
+</pre>
+<figcaption>The CPU schedules the batch, launches kernels, samples, and pages the KV cache; the GPU does the matmuls. On tiny decode steps the host work can outrun the GPU.</figcaption>
+</figure>
 
 ### What the CPU now owns
 

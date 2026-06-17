@@ -1,0 +1,46 @@
+---
+/* Shared footer for the token-based pages (TrackerLayout: trackers · learn ·
+   releases · gallery). Same identity as the home/blog footers, rendered in the
+   minimalist token style. Three zones: contact · colophon · signature. */
+import { CONTACT } from '../../data/site';
+interface Props { width?: string }
+const { width } = Astro.props;
+---
+<footer class="site-footer">
+  <div class="sf-grid" style={width ? `max-width:${width}` : undefined}>
+    <div class="sf-col">
+      <div class="sf-h">// contact</div>
+      <a class="sf-link" href={`mailto:${CONTACT.email}`}>email → {CONTACT.email}</a>
+      <a class="sf-link" href={`https://github.com/${CONTACT.github}`} target="_blank" rel="noreferrer">github → @{CONTACT.github}</a>
+      <a class="sf-link" href={CONTACT.linkedinUrl} target="_blank" rel="noreferrer">linkedin → {CONTACT.linkedin}</a>
+    </div>
+    <div class="sf-col">
+      <div class="sf-h">// colophon</div>
+      <div class="sf-text">no EDA tools were used in the making of this site.</div>
+      <div class="sf-text">just vim, coffee, and spite.</div>
+      <a class="sf-link sf-ds" href="/design-system">design system →</a>
+    </div>
+    <div class="sf-col sf-right">
+      <div class="sf-sig">JUAN-SOC-1999-X1</div>
+      <div class="sf-rev">rev. 2026 · ed. 02</div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer { border-top: 1px solid var(--line); margin-top: 80px; padding: 34px 0 8px; font-family: var(--mono); }
+  .sf-grid { display: grid; grid-template-columns: 1fr 1fr auto; gap: 40px; align-items: start; margin: 0 auto; }
+  .sf-col { display: flex; flex-direction: column; gap: 7px; }
+  .sf-h { font-size: 11px; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 12px; }
+  .sf-link { font-size: 12.5px; color: var(--muted); text-decoration: none; width: fit-content; transition: color 0.18s; }
+  .sf-link:hover { color: var(--teal); }
+  .sf-text { font-size: 12.5px; color: var(--muted); line-height: 1.7; }
+  .sf-ds { margin-top: 9px; color: var(--txt); }
+  .sf-right { text-align: right; }
+  .sf-sig { font-size: 12px; color: var(--txt); letter-spacing: 0.06em; }
+  .sf-rev { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  @media (max-width: 720px) {
+    .sf-grid { grid-template-columns: 1fr; gap: 26px; }
+    .sf-right { text-align: left; }
+  }
+</style>

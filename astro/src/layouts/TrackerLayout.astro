@@ -1,7 +1,8 @@
 ---
 import './../components/trackers/_chrome.css';
-interface Props { title?: string; active?: string; }
-const { title = 'Trackers · juan.kok', active = '' } = Astro.props;
+import Footer from '../components/layout/Footer.astro';
+interface Props { title?: string; active?: string; mainWidth?: string; }
+const { title = 'Trackers · juan.kok', active = '', mainWidth } = Astro.props;
 const links = [
   { id: 'engines', href: '/trackers/inference-engines', label: 'Engines' },
   { id: 'models', href: '/trackers/frontier-models', label: 'Models' },
@@ -26,7 +27,7 @@ const links = [
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -43,6 +44,7 @@ const links = [
     </header>
     <main class="wrap">
       <slot />
+      <Footer width={mainWidth} />
     </main>
     <script is:inline>
       (function () {
