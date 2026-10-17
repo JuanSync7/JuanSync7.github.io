@@ -31,7 +31,7 @@ The site is an Astro + React + TypeScript single-page experience styled around a
 ├── .github/workflows/astro.yml  # GitHub Pages deploy on push to main
 ├── KokShewJuan_CV_Data.yaml     # Structured CV source
 ├── generate_cv_from_yaml.py     # Renders Markdown CV from the YAML (filters by `selected: true`)
-├── Kok_Shew_Juan_CV_2025.pdf    # Current CV artifact
+├── Kok_Shew_Juan_CV_2026.pdf    # Current CV artifact
 ├── CLAUDE.md                    # Project rules enforced on contributions
 └── README.md
 ```
