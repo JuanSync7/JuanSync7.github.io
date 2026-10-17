@@ -1,0 +1,39 @@
+name: Checks
+
+on:
+  pull_request:
+  push:
+    branches-ignore: ["main"]
+
+defaults:
+  run:
+    working-directory: astro
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: astro/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Types, lint and figure source check
+        run: npm run check
+      - name: Build
+        run: npm run build
+      - name: Install Chromium for the figure look
+        run: npx playwright install --with-deps chromium
+      - name: Figure audit selftest (every check still catches its fixture)
+        run: npm run figures:selftest
+      - name: Figure look
+        run: npm run figures:look -- --no-sheet
+      - name: Keep the sheets when the look fails
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: figure-sheets
+          path: astro/figures-out

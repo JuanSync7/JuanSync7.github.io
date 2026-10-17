@@ -20,6 +20,8 @@
  *   variety  within a group, no style covers more than a third (or two figures)
  *   covers   every post names a cover figure; no two posts share one; date neighbours differ in style
  *
+ * --list prints every figure's id, group, style and motion, grouped, and exits: read it
+ * before choosing a style, so a new figure differs from its neighbours.
  * --fixtures checks src/figures/fixtures instead. --selftest checks the fixtures and fails
  * unless each one reports exactly the codes its `// expect-check:` header lists.
  */
@@ -150,6 +152,12 @@ const only = args.filter((a) => !a.startsWith('--'));
 const files = figureFiles(fixtures ? FIX_DIR : FIG_DIR).filter((f) => only.length === 0 || only.includes(basename(f, '.ts')));
 const results = files.map((f) => checkFile(f, fixtures));
 const problems = [...results.flatMap((r) => r.problems), ...(fixtures || only.length ? [] : crossChecks(results))];
+
+if (args.includes('--list')) {
+  const rows = [...results].sort((a, b) => a.group.localeCompare(b.group) || a.style.localeCompare(b.style));
+  for (const r of rows) console.log(`${r.group.padEnd(8)} ${r.style.padEnd(12)} ${r.id}`);
+  process.exit(0);
+}
 
 if (selftest) {
   let bad = 0;

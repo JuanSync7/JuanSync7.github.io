@@ -34,6 +34,14 @@ These rules apply to all code in this repo. They are enforced where possible by 
 4. **No Tailwind.** Plain CSS + variables is the chosen idiom. Don't introduce utility-class systems.
 5. **Tracker layout = flush-left version rail + centered main panel.** On tracker pages (`/trackers/**`) the version-history timeline is a navigation rail, not part of the main panel: `.wrap` and `.sitenav .inner` are full-bleed (`max-width: none; margin: 0`) with a `40px` gutter, so the rail and the back/nav button pin to the viewport's left edge. `.tracker-grid` is `188px` rail + `minmax(0,1fr)`; `.tracker-main` centers itself in the remaining space (`max-width: 980px; margin: 0 auto`). Keep this consistent across all three trackers (engines/models/silicon) and their release/hub pages.
 
+## Figures (drawings, covers, animation)
+
+1. **Every drawing is a figure.** Post covers, heroes, slide figures, illustrations in posts, animated canvases and three.js scenes are each one file in `astro/src/figures/`, made with the `figure` skill (`.claude/skills/figure/SKILL.md`). No canvas drawing, inline SVG illustration or three.js scene lives inside a component; components mount figures with `<FigureCanvas id="…" />`.
+2. **Diagrams made of words are not figures.** When the content is labels and connections (the system map), build it as DOM with real text and the night tokens.
+3. **Done means the audit passed and someone looked.** `npm run figures:audit` exits 0 and the figure's sheet in `astro/figures-out/<id>.png` was read. The tight loop for one figure is `npm run figure -- <id>`.
+4. **Never loosen the audit to pass.** `scripts/figures/thresholds.json` changes only with a reason in the commit message, and after any change to the audit `npm run figures:selftest` must pass (each fixture in `src/figures/fixtures/` must still be caught).
+5. **Night system.** The 2026 pages (home, writing, figures) use `NightLayout.astro`, `styles/night.css` and the `--nt-*` tokens. Figures take colour only through `figures/kit/ink.ts`, which reads the `night` mirror in `palette.ts`.
+
 ## React rules
 
 1. **No globals.** No `window.Foo = Foo`, no implicit reliance on script-tag load order. Use ESM imports.
