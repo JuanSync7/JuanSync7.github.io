@@ -48,6 +48,7 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
     const pointer = { x: px ?? 0.5, y: py ?? 0.5, active: px !== undefined };
     const pulses: { x: number; y: number; born: number }[] = [];
     const cleanups: (() => void)[] = [];
+    let size: [number, number, number] | null = null;
 
     const fail = (err: unknown): void => {
       canvas.dataset.error = err instanceof Error ? err.message : String(err);
@@ -85,6 +86,10 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
       }
     };
     const settle = (): void => {
+      // Start from fresh state every time: settle runs on each resize and each time the
+      // canvas comes into view, and a figure that accumulates (a scroll, a drift) would
+      // otherwise carry the last simulation into this one and the still would not repeat.
+      if (size) inst?.resize(size[0], size[1], size[2]);
       t = 0;
       frames = 0;
       sum = 0;
@@ -128,7 +133,8 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
         setFigure(fig);
         const ro = new ResizeObserver(() => {
           const r = canvas.getBoundingClientRect();
-          inst?.resize(r.width, r.height, Math.min(window.devicePixelRatio || 1, DPR_CAP));
+          size = [r.width, r.height, Math.min(window.devicePixelRatio || 1, DPR_CAP)];
+          inst?.resize(size[0], size[1], size[2]);
           if (still) settle();
         });
         ro.observe(canvas);

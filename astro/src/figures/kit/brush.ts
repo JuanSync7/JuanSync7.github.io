@@ -51,12 +51,15 @@ export function brush(ctx: CanvasRenderingContext2D, pts: readonly Pt[], o: Brus
   ctx.fill();
 }
 
-/** A ridge line sampled from noise across [x0, x1]: the outline of a mountain range. */
-export function ridge(noise: Noise2, x0: number, x1: number, base: number, height: number, seed: number, step = 6): Pt[] {
+/** A ridge line sampled from noise across [x0, x1]: the outline of a mountain range.
+ *  `peak` sharpens the envelope from a rounded hill (0) to a pointed summit (1). */
+export function ridge(noise: Noise2, x0: number, x1: number, base: number, height: number, seed: number, step = 6, peak = 0): Pt[] {
   const out: Pt[] = [];
   for (let x = x0; x <= x1 + 0.1; x += step) {
     const u = (x - x0) / Math.max(1, x1 - x0);
-    const env = Math.sin(u * Math.PI);
+    const round = Math.sin(u * Math.PI);
+    const point = Math.pow(1 - Math.abs(2 * u - 1), 1.4);
+    const env = round + (point - round) * peak;
     const n = noise(x * 0.006, seed) * 0.7 + noise(x * 0.02, seed + 3) * 0.3;
     out.push([x, base - height * env * (0.55 + 0.45 * n)]);
   }
