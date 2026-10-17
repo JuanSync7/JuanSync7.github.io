@@ -9,9 +9,10 @@ import Cases from '../components/home/Cases.astro';
 import Experience from '../components/home/Experience.astro';
 import Repos from '../components/home/Repos.astro';
 import Contact from '../components/home/Contact.astro';
+import { IDENTITY } from '../data/site';
 ---
 
-<NightLayout title="Juan Kok · Senior AI Engineer">
+<NightLayout title={`Juan Kok · ${IDENTITY.title}`}>
   <NightNav />
   <main>
     <HomeHero />

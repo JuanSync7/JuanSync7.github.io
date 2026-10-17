@@ -1,7 +1,10 @@
 /**
  * Every word on the home page, as data. Components only lay it out, so copy edits never
- * touch markup. The system map's geometry lives in system-map.ts, the repos in repos.ts.
+ * touch markup. The system map's geometry lives in system-map.ts, the repos in repos.ts. The role line
+ * and Experience come from profile.ts, generated from the CV, so edit those in the career repo.
  */
+
+import { PROFILE } from './profile';
 
 export interface Principle {
   title: string;
@@ -25,7 +28,7 @@ export interface Role {
 
 export const HERO = {
   place: 'Reading, UK',
-  role: 'Senior AI Engineer · LLM platforms, agents & governance',
+  role: PROFILE.role_line,
   lead: 'From individual productivity',
   accent: 'to company-wide.',
   body: "I build the system that puts AI to work across a chip-design company: governed agents on every engineer's machine, knowledge siloed by project, one gateway for every model, and a ledger that ties each customer requirement to the work and evidence behind it.",
@@ -78,7 +81,7 @@ export const THINKING = {
       ['A derivative chip starts from the last flow', 'Every project starts from a template, and its lessons go back in'],
     ] as const,
   },
-  stack: ['Claude Code', 'MCP', 'LangGraph', 'AgentCore', 'AWS Bedrock', 'Knowledge Bases', 'LiteLLM', 'Open WebUI', 'vLLM', 'OpenTelemetry'],
+  stack: ['Claude Code', 'MCP', 'LangGraph', 'AWS Bedrock', 'Knowledge Bases', 'LiteLLM', 'Open WebUI', 'vLLM', 'OpenTelemetry'],
   domain: ['SystemVerilog', 'RISC-V RVV', 'DFT', 'VC SpyGlass', 'Verdi / VCS', 'Slurm'],
 } as const;
 
@@ -108,23 +111,13 @@ export const CASES = {
 export const EXPERIENCE = {
   label: '// 0x03 · experience',
   title: 'Forward-deployed, in-house.',
-  roles: [
-    {
-      title: 'Senior Design & AI Engineer',
-      org: 'Aion Silicon',
-      place: 'London, UK',
-      summary: 'Scoping, building and deploying AI systems for chip-design, CAD, IT and management.',
-      points: [
-        { tag: 'adoption & governance', text: 'Wrote the security case that brought Claude into production, then rolled Claude Code out across the Linux fleet under an IT-managed policy: secrets blocked, every action logged, updates approved by a person.' },
-        { tag: 'knowledge', text: 'Delivered company RAG on Open WebUI and Bedrock Knowledge Bases for about 100 engineers: one knowledge base per project plus a company-wide one, with access set by IAM Identity Center.' },
-        { tag: 'agents', text: 'Architecting Jarvis, the agentic ledger that grounds each project in real tasks and evidence. 2,200+ headless Claude review sessions so far; humans keep intent and sign-off.' },
-        { tag: 'platform & visibility', text: 'Built the Bedrock platform underneath: one gateway, guardrail and budget for every model and agent. Plus dashboards that give management a clear view of compute, licences and AI use.' },
-      ],
-    },
-    { title: 'Senior Design Engineer', org: 'Aion Silicon', summary: 'Re-engineered a RISC-V vector core to drive an external VPU accelerator, plus flow automation in Python, Tcl and Bash.' },
-    { title: 'ASIC Design Engineer', org: 'Aion Silicon', summary: 'Front-end RTL across IP and SoC projects; set up the company-wide lint methodology; owned DFT on an automotive SoC.' },
-    { title: 'MEng Electrical & Electronic Engineering', org: 'University of Southampton', summary: 'First-Class Honours. Malaysia campus, then UK.' },
-  ] satisfies readonly Role[],
+  roles: PROFILE.experience.map(({ title, org, place, summary, points }): Role => ({
+    title,
+    org,
+    ...(place ? { place } : {}),
+    summary,
+    ...(points ? { points } : {}),
+  })),
 } as const;
 
 export const OFF_HOURS = {
