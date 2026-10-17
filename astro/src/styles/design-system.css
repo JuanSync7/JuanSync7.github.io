@@ -611,3 +611,9 @@
   border-radius: var(--hf-radius-lg);
   background: var(--nt-ground);
 }
+
+/* The monogram takes its height from its box. */
+.ds-monogram {
+  display: block;
+  height: var(--hf-space-16);
+}

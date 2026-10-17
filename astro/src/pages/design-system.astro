@@ -15,12 +15,14 @@ import ZoomSwapDemo from '../components/ui/ZoomSwapDemo.tsx';
 import CubeSwapDemo from '../components/ui/CubeSwapDemo.tsx';
 import FigureCanvas from '../components/ui/FigureCanvas.tsx';
 import SectionHead from '../components/ui/SectionHead.astro';
+import Monogram from '../components/ui/Monogram.astro';
 import { IDENTITY, CAREER_STATS } from '../data/site';
 
 /* Raw component source — Vite `?raw` returns the file as a string at
    build time so the snippet modal can show the full component code,
    not just an import-and-use stub. */
 import NeonTextSrc from '../components/ui/NeonText.tsx?raw';
+import MonogramSrc from '../components/ui/Monogram.astro?raw';
 import KineticWordSrc from '../components/ui/KineticWord.tsx?raw';
 import StrikeThroughSrc from '../components/ui/StrikeThrough.tsx?raw';
 import NotGateDividerSrc from '../components/ui/NotGateDivider.tsx?raw';
@@ -471,6 +473,12 @@ ${NebulaStarsSrc}
           <div class="ds-comp-label">&lt;FigureCanvas&gt;</div>
           <div class="ds-comp-stage night-sample"><div style="width: 100%; aspect-ratio: 16 / 9;"><FigureCanvas client:visible id="ridge-lines" readout /></div></div>
           <div class="ds-comp-note">mounts one figure from src/figures by id; the wrapper sets the size. Every drawing on the site goes through it (see /figures and the figure skill).</div>
+        </div>
+
+        <div class="ds-comp-card ds-copyable" data-ds-snippet={`// src/components/ui/Monogram.astro\n${MonogramSrc}`} title="click for code">
+          <div class="ds-comp-label">&lt;Monogram&gt;</div>
+          <div class="ds-comp-stage night-sample"><span class="ds-monogram"><Monogram intro="always" label="SJ monogram" /></span></div>
+          <div class="ds-comp-note">the SJ mark: two nets between one pair of pins. Draws in once per visit (intro="session", the nav), every mount ("always") or never ("none"); pointing sends a packet down each net. Height comes from its box.</div>
         </div>
 
         <div class="ds-comp-card ds-comp-card-wide ds-copyable" data-ds-snippet={`// src/components/ui/SectionHead.astro\n${SectionHeadSrc}`} title="click for code">

@@ -1,0 +1,216 @@
+---
+/* The SJ monogram: a white S and a teal J leave the same top pin and meet again at the same
+   bottom pin, stitched by two ties. Read as hardware it is two nets routed between one pair
+   of pins, so the motion is a routing story: the pins land, both nets are drawn at once and
+   arrive together, the ties drop in, and the far pin takes the signal. Pointing at it sends
+   a packet down each net. Geometry is the "two ties" study from the monogram sheet. */
+
+interface Props {
+  /** Accessible name; the mark is decorative when the wordmark sits beside it. */
+  label?: string;
+  /** 'session' draws in on the first page of a visit only; 'always' on every mount. */
+  intro?: 'session' | 'always' | 'none';
+  class?: string;
+}
+
+const { label, intro = 'session', class: cls } = Astro.props;
+// Runs as the page parses, before the mark paints, so a later page of the same visit never
+// flashes the draw-in. Storage can be missing or blocked; then the mark simply draws in again.
+const SESSION = `try{if(sessionStorage.getItem('sj-drawn'))document.documentElement.dataset.sjDrawn='1';else sessionStorage.setItem('sj-drawn','1')}catch(e){}`;
+---
+
+{intro === 'session' && <script is:inline set:html={SESSION} />}
+<svg
+  class:list={['sj', cls]}
+  data-intro={intro}
+  viewBox="62 22 72 138"
+  fill="none"
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+>
+  <line class="tie t1" x1="108" y1="82" x2="122" y2="82" pathLength="1" />
+  <line class="tie t2" x1="108" y1="104" x2="122" y2="104" pathLength="1" />
+  <path class="net s" d="M122 34 H74 V62 H108 V126 H74" pathLength="1" />
+  <path class="net j" d="M122 34 V126 Q122 150 98 150 Q74 150 74 128" pathLength="1" />
+  <path class="packet ps" d="M122 34 H74 V62 H108 V126 H74" pathLength="1" />
+  <path class="packet pj" d="M122 34 V126 Q122 150 98 150 Q74 150 74 128" pathLength="1" />
+  <circle class="pin top" cx="122" cy="34" r="8" />
+  <circle class="pin end" cx="74" cy="127" r="8" />
+  <circle class="halo" cx="74" cy="127" r="8" />
+</svg>
+
+<style>
+  .sj {
+    display: block;
+    height: 100%;
+    width: auto;
+    overflow: visible;
+  }
+
+  .net,
+  .packet,
+  .tie {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .net {
+    stroke-width: 9;
+    stroke-dasharray: 1;
+  }
+
+  .s {
+    stroke: var(--nt-ink-strong);
+  }
+
+  .j {
+    stroke: var(--nt-signal);
+  }
+
+  .tie {
+    stroke: var(--nt-line-4);
+    stroke-width: 4;
+    stroke-dasharray: 1;
+  }
+
+  .pin {
+    fill: var(--nt-ground);
+    stroke: var(--nt-ink-muted);
+    stroke-width: 4;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  /* A packet is a short dash parked past the end of its net until something sends it. */
+  .packet {
+    stroke-width: 9;
+    stroke-dasharray: 0.12 1;
+    stroke-dashoffset: -1;
+  }
+
+  .ps {
+    stroke: var(--nt-signal);
+  }
+
+  .pj {
+    stroke: var(--nt-ink-strong);
+  }
+
+  /* The draw-in. Both nets take the same time, so they leave the top pin together and
+     arrive at the bottom pin together, whatever their lengths: timing-matched routes. */
+  .sj:not([data-intro='none']) .pin.top {
+    animation: pin-land 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+
+  .sj:not([data-intro='none']) .net {
+    animation: net-route 0.72s cubic-bezier(0.65, 0, 0.35, 1) 0.18s both;
+  }
+
+  .sj:not([data-intro='none']) .pin.end {
+    animation:
+      pin-land 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) 0.06s both,
+      pin-take 0.6s ease-out 0.9s;
+  }
+
+  .sj:not([data-intro='none']) .t1 {
+    animation: tie-drop 0.22s ease-out 0.86s both;
+  }
+
+  .sj:not([data-intro='none']) .t2 {
+    animation: tie-drop 0.22s ease-out 0.96s both;
+  }
+
+  /* Later pages of the same visit show the finished mark. Only the draw-in parts are
+     stilled; the packets and the halo belong to the pointer and keep working. */
+  :global(:root[data-sj-drawn]) .sj[data-intro='session'] :is(.net, .tie, .pin) {
+    animation: none;
+  }
+
+  /* Pointing at the link that holds the mark (or the mark itself) sends one packet down
+     each net; the bottom pin takes it as they land. */
+  :global(a:hover) .sj .packet,
+  :global(a:focus-visible) .sj .packet,
+  .sj:hover .packet {
+    animation: packet-run 0.7s cubic-bezier(0.45, 0, 0.25, 1) both;
+  }
+
+  :global(a:hover) .sj .halo,
+  :global(a:focus-visible) .sj .halo,
+  .sj:hover .halo {
+    animation: halo-ping 0.7s ease-out 0.5s both;
+  }
+
+  :global(a:hover) .sj .tie,
+  :global(a:focus-visible) .sj .tie,
+  .sj:hover .tie {
+    stroke: var(--nt-signal-line);
+    transition: stroke 0.3s ease-out 0.2s;
+  }
+
+  .halo {
+    stroke: var(--nt-signal);
+    stroke-width: 3;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  @keyframes halo-ping {
+    from {
+      opacity: 0.9;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(2.4);
+    }
+  }
+
+  @keyframes pin-land {
+    from {
+      transform: scale(0);
+    }
+  }
+
+  @keyframes net-route {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes tie-drop {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes pin-take {
+    from {
+      stroke: var(--nt-signal);
+      transform: scale(1.25);
+    }
+  }
+
+  @keyframes packet-run {
+    from {
+      stroke-dashoffset: 0.12;
+    }
+    to {
+      stroke-dashoffset: -1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sj * {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
