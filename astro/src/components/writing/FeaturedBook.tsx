@@ -102,7 +102,7 @@ export default function FeaturedBook({ pages }: Props) {
                 </a>
               </div>
               <div className="page-art">
-                <div className="page-figure">{shown ? <FigureCanvas id={p.figure} readout /> : null}</div>
+                <div className="page-figure">{shown ? <FigureCanvas id={p.figure} /> : null}</div>
                 <p className="page-notes">
                   <span>{p.notes[0]}</span>
                   <span>{p.notes[1]}</span>

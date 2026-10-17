@@ -1,6 +1,6 @@
 ---
 name: figure
-description: Use whenever a drawing is needed on juansync.dev — a post cover, a hero, a slide's figure, an illustration inside a post, any animated canvas or 3D piece — or when one is changed. Draws one figure in the site's minimal style, with one teal signal, in one of nine techniques (wireframe, low-poly, pixel, perspective, hairline, ink, field, trace or three.js) as one file in astro/src/figures, and loops on the audit until it passes and its sheet has been looked at.
+description: Use whenever a drawing is needed on juansync.dev — a post cover, a hero, a slide's figure, an illustration inside a post, any animated canvas or 3D piece, or a new seeded template for the /lab catalogue — or when one is changed. Draws one figure (or one template: a grammar that draws a different figure from every seed) in the site's minimal style, with one teal signal, in one of nine techniques (wireframe, low-poly, pixel, perspective, hairline, ink, field, trace or three.js) as one file in astro/src/figures, and loops on the audit until it passes and its sheet has been looked at.
 argument-hint: "[what the figure is for]"
 ---
 
@@ -60,6 +60,30 @@ Work in this order. Stop where it says stop.
    this subject; what the pointer does and what the read-out says; the look answers you were
    unsure of. Attach the sheet.
 
+## Templates: one grammar, many figures
+
+A **template** (`astro/src/figures/templates/<id>.ts`, `defineTemplate`) draws a different
+figure from every seed. Write one when the idea is a *kind* of picture (a wireframe object,
+an exploded machine, a workflow) rather than one subject. Three things make an instance:
+
+- the **seed**, which `grammar(rng)` turns into discrete choices (which object, which view,
+  how many parts) — every choice is made there, once;
+- seeded **noise**, for smooth variation in space and over time, made in `setup`;
+- the **grammar** itself: which choices go together, so every seed is a deliberate picture.
+
+`name(params)` gives the variant in one to three words and `alt(params)` the instance's alt
+text; there is no `group` or `seed` (the instance id carries the seed). An instance is
+`<template>~<seed>` and works anywhere a figure id does: a cover (`cover: workflow~11`),
+`<FigureCanvas id="anatomy~4" />`. Every template is listed at `/lab/` and walkable by seed
+at `/lab/<id>/?seed=N`, read from the registry: no list to edit.
+
+The loop for a template: `npm run figure:seeds -- <id> 12 --url=…` writes
+`figures-out/<id>.seeds.png`, twelve seeds at rest with their alt text — read it to judge
+the grammar's range, then `node scripts/figures/look.mjs --url=… <id>`, which looks at
+seeds 7, 42 and 2026 (`templateSeeds`) as full figures and fails if two of them differ by
+less than `seedMin` of their ink. Helpers more than one template needs go in the kit
+(`kit/shapes.ts` for wire shapes and polylines, `kit/assemblies.ts` for machines as parts).
+
 Done means: `npm run figures:audit` exits 0 for the whole site, and you looked. "The check
 passed" without reading the sheet is not done. Never describe a figure you did not look at.
 
@@ -90,5 +114,6 @@ passed" without reading the sheet is not done. Never describe a figure you did n
   numbers), `figure.mjs` (the loop), `thresholds.json`. `npm run figures:selftest` proves each
   check that has a fixture still catches it (every drawing check: colour, randomness, clock,
   DOM, words, glow, width, parse; and every look check except `reduced`, which guards the
-  clock, not the figure). The structural checks (define, id, meta, imports, length, variety,
-  covers) have no fixture yet. Run it after any change to the audit.
+  clock, not the figure). `fixtures/structural-sins.ts` proves imports, length and meta;
+  `fixtures/templates/same-every-seed.ts` proves the look's `seed` check; parse, variety,
+  covers and template instances are proven inline. Run it after any change to the audit.

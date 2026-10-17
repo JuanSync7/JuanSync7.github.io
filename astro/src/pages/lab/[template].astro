@@ -1,0 +1,55 @@
+---
+import NightLayout from '../../layouts/NightLayout.astro';
+import NightNav from '../../components/layout/NightNav.astro';
+import NightFooter from '../../components/layout/NightFooter.astro';
+import TemplateLab from '../../components/lab/TemplateLab.tsx';
+import { loadTemplate, templateIds } from '../../figures/registry';
+
+export function getStaticPaths() {
+  return templateIds().map((template) => ({ params: { template } }));
+}
+
+const { template } = Astro.params as { template: string };
+const t = await loadTemplate(template);
+---
+
+<NightLayout title={`${t.title} · Lab · Juan Kok`} description={t.idea}>
+  <NightNav />
+  <main class="nt-wrap nt-section">
+    <header class="tpl-head">
+      <a class="tpl-back" href="/lab/">← all templates</a>
+      <h1>{t.title}</h1>
+      <p>{t.idea}</p>
+      <p class="tpl-meta">{t.style} · {t.motion} · src/figures/templates/{template}.ts</p>
+    </header>
+    <TemplateLab client:only="react" template={template} />
+  </main>
+  <NightFooter />
+</NightLayout>
+
+<style>
+  .tpl-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-3);
+    max-width: var(--nt-measure);
+    margin-bottom: var(--hf-space-10);
+  }
+  .tpl-back,
+  .tpl-meta {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-ink-muted);
+  }
+  .tpl-back:hover {
+    color: var(--nt-signal);
+  }
+  .tpl-head h1 {
+    font-size: var(--nt-fs-h1);
+    letter-spacing: var(--nt-tracking-display);
+    line-height: var(--nt-lh-heading);
+  }
+  .tpl-head p {
+    color: var(--nt-ink-soft);
+  }
+</style>

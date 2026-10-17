@@ -26,6 +26,17 @@ HMR client, React's devtools hint, and headless Chromium's software-WebGL notice
 error or warning fails the `console` check. A file that does not parse never reaches the look:
 the check's `parse` code stops it first.
 
+## A template's sheets
+
+A template is looked at as three instances, seeds 7, 42 and 2026: each gets the six pictures
+above in `figures-out/<template>~<seed>.png`, and `figures-out/<template>.png` lays their rest
+frames side by side. The `seed` check fails when two rest frames differ by less than `seedMin`
+of their ink (the mean change per pixel over the larger ink coverage): the grammar is not
+making different pictures. `npm run figure:seeds -- <template> 12` is the wider view: twelve
+seeds at rest with their alt text, for judging the grammar's range. Ask of it: does every
+seed make a composed picture, and does the variety come from the grammar (different objects,
+views, layouts) rather than from noise alone?
+
 ## What to see
 
 Answer each with yes or no, from the sheet. A no is fixed before hand-over. Zoom with the Read

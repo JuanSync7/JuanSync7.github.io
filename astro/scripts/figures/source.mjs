@@ -6,7 +6,9 @@ import { fileURLToPath } from 'node:url';
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 export const FIG_DIR = join(ROOT, 'src', 'figures');
 export const FIX_DIR = join(FIG_DIR, 'fixtures');
-const SUPPORT = new Set(['types', 'define', 'defineThree', 'registry']);
+export const TPL_DIR = join(FIG_DIR, 'templates');
+export const FIX_TPL_DIR = join(FIX_DIR, 'templates');
+const SUPPORT = new Set(['types', 'define', 'defineThree', 'defineTemplate', 'registry']);
 
 export function figureFiles(dir) {
   if (!existsSync(dir)) return [];
@@ -32,6 +34,7 @@ export function readMeta(path) {
     answers: bool('answers'),
     bleed: bool('bleed'),
     three: /defineThreeFigure/.test(raw),
+    template: /export default defineTemplate/.test(raw),
     style: /defineThreeFigure/.test(raw) ? 'three' : str('style') ?? '',
     expectLook: raw.match(/^\/\/ expect-look:\s*(.*)$/m)?.[1],
   };

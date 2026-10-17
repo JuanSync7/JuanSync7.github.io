@@ -35,8 +35,10 @@ import { transformSync } from 'esbuild';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const FIG_DIR = join(ROOT, 'src', 'figures');
 const FIX_DIR = join(FIG_DIR, 'fixtures');
+const TPL_DIR = join(FIG_DIR, 'templates');
+const FIX_TPL_DIR = join(FIX_DIR, 'templates');
 const POSTS = join(ROOT, 'src', 'content', 'blog');
-const SUPPORT = new Set(['types', 'define', 'defineThree', 'registry']);
+const SUPPORT = new Set(['types', 'define', 'defineThree', 'defineTemplate', 'registry']);
 
 const typesSrc = readFileSync(join(FIG_DIR, 'types.ts'), 'utf8');
 const listOf = (name) => {
@@ -92,11 +94,12 @@ const RULES = [
   ['words', (s) => /\.(fillText|strokeText|measureText)\b/.test(s.code), 'text on the canvas: return the name as the read-out instead'],
   ['glow', (s) => /\b(shadowBlur|shadowColor|globalCompositeOperation|createLinearGradient|createRadialGradient)\b|\.filter\s*=/.test(s.code), 'glow or gradient: the signal stroke is the only highlight'],
   ['width', (s) => [...s.code.matchAll(/lineWidth\s*=\s*([\d.]+)/g)].some((m) => Number(m[1]) > 1.5), 'stroke wider than 1.5px: say weight with opacity'],
-  ['imports', (s) => [...s.code.matchAll(/from\s+['"]([^'"]+)['"]/g)].some((m) => !/^(\.\.?\/)+(define|defineThree|types|kit\/[a-z]+)$|^three$/.test(m[1])), 'imports outside the kit'],
+  // Import paths are strings, so this reads the code with strings kept (s.code blanks them).
+  ['imports', (s) => [...s.withStrings.matchAll(/from\s+['"]([^'"]+)['"]/g)].some((m) => !/^(\.\.?\/)+(define|defineThree|defineTemplate|types|kit\/[a-z]+)$|^three$/.test(m[1])), 'imports outside the kit'],
   ['length', (s) => s.raw.split('\n').filter((l) => l.trim()).length > 200, 'over 200 lines: a figure that long is usually two ideas'],
 ];
 
-function checkFile(path, fixture) {
+function checkFile(path, fixture, template = false) {
   const raw = readFileSync(path, 'utf8');
   const id = basename(path, '.ts');
   const s = { raw, code: bare(raw, false), withStrings: bare(raw, true) };
@@ -104,8 +107,9 @@ function checkFile(path, fixture) {
   const fail = (code, msg) => out.push({ id, code, msg });
   const broken = parseError(raw);
   if (broken) fail('parse', broken);
-  const isThree = /export default defineThreeFigure\s*(<[^>]*>)?\s*\(/.test(s.code);
-  if (!isThree && !/export default defineCanvasFigure\s*(<[^>]*>)?\s*\(/.test(s.code)) fail('define', 'default export is not defineCanvasFigure(...) or defineThreeFigure(...)');
+  const isThree = !template && /export default defineThreeFigure\s*(<[^>]*>)?\s*\(/.test(s.code);
+  if (template && !/export default defineTemplate\s*(<[^>]*>)?\s*\(/.test(s.code)) fail('define', 'default export is not defineTemplate(...)');
+  if (!template && !isThree && !/export default defineCanvasFigure\s*(<[^>]*>)?\s*\(/.test(s.code)) fail('define', 'default export is not defineCanvasFigure(...) or defineThreeFigure(...)');
   // Meta lives in the default export's object, so read fields only after it: an interface
   // above it can have a field of the same name (`group: Group`).
   const spec = s.withStrings.slice(Math.max(0, s.withStrings.search(/export default define/)));
@@ -114,18 +118,22 @@ function checkFile(path, fixture) {
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(id) || str('id') !== id) fail('id', `id must be '${id}', the file name, in kebab-case`);
   const missing = [];
   if (!str('title')) missing.push('title');
-  if ((str('alt') ?? '').length < 30) missing.push('alt (30+ characters)');
+  // A template's alt depends on the variant, so it is a function: `alt: (p) => ...` or `alt(p) {`.
+  if (template ? !/\n\s*alt(:\s*\(|\s*\()/.test(spec) : (str('alt') ?? '').length < 30) missing.push(template ? 'alt (a function of the params)' : 'alt (30+ characters)');
+  if (template && !/\n\s*grammar(:\s*\(|\s*\()/.test(spec)) missing.push('grammar (seed → params)');
+  if (template && !/\n\s*name(:\s*\(|\s*\()/.test(spec)) missing.push('name (params → variant name)');
   if ((str('idea') ?? '').length < 30) missing.push('idea (30+ characters)');
   if (!isThree && !STYLES.includes(str('style') ?? '')) missing.push(`style (one of ${STYLES.join(', ')})`);
   if (!MOTIONS.includes(str('motion') ?? '')) missing.push(`motion (one of ${MOTIONS.join(', ')})`);
   if (!/^(true|false)$/.test(field('answers')?.[1]?.trim() ?? '')) missing.push('answers (true or false)');
-  const group = str('group') ?? '';
-  if (!GROUPS.includes(group) || (group === 'fixture') !== fixture) missing.push(fixture ? "group 'fixture'" : `group (one of ${GROUPS.filter((g) => g !== 'fixture').join(', ')})`);
-  if (!/^\d+$/.test(field('seed')?.[1]?.trim() ?? '')) missing.push('seed (an integer)');
+  // A template has no group or seed of its own: each instance is seeded where it is used.
+  const group = template ? 'template' : str('group') ?? '';
+  if (!template && (!GROUPS.includes(group) || group === 'template' || (group === 'fixture') !== fixture)) missing.push(fixture ? "group 'fixture'" : `group (one of ${GROUPS.filter((g) => g !== 'fixture' && g !== 'template').join(', ')})`);
+  if (!template && !/^\d+$/.test(field('seed')?.[1]?.trim() ?? '')) missing.push('seed (an integer)');
   if (!field('aspect')) missing.push('aspect');
   if (missing.length) fail('meta', `missing or invalid: ${missing.join('; ')}`);
   for (const [code, test, msg] of RULES) if (test(s)) fail(code, msg);
-  return { id, style: isThree ? 'three' : str('style') ?? '', group, problems: out, expect: raw.match(/^\/\/ expect-check:\s*(.*)$/m)?.[1] };
+  return { id, template, style: isThree ? 'three' : str('style') ?? '', group, problems: out, expect: raw.match(/^\/\/ expect-check:\s*(.*)$/m)?.[1] };
 }
 
 const figureFiles = (dir) => (existsSync(dir) ? readdirSync(dir).filter((f) => f.endsWith('.ts') && !SUPPORT.has(basename(f, '.ts'))).map((f) => join(dir, f)) : []);
@@ -136,28 +144,43 @@ function frontmatter(path) {
   return { slug: basename(path).replace(/\.mdx?$/, ''), cover: get('cover'), date: get('date') ?? '' };
 }
 
-function crossChecks(results) {
+function readPosts() {
+  return existsSync(POSTS) ? readdirSync(POSTS).filter((f) => /\.mdx?$/.test(f)).map((f) => frontmatter(join(POSTS, f))) : [];
+}
+
+/** Style variety inside each group, and the post covers: every post names a cover, either
+ *  a figure in group 'cover' or an instance `<template>~<seed>` of a template; no two posts
+ *  share one; posts next to each other by date differ in style. */
+function crossChecks(results, posts) {
   const out = [];
   const byGroup = new Map();
-  for (const r of results) byGroup.set(r.group, [...(byGroup.get(r.group) ?? []), r]);
+  for (const r of results.filter((x) => !x.template)) byGroup.set(r.group, [...(byGroup.get(r.group) ?? []), r]);
   for (const [group, rs] of byGroup) {
     const cap = Math.max(2, Math.ceil(rs.length / 3));
     const counts = new Map();
     rs.forEach((r) => counts.set(r.style, (counts.get(r.style) ?? 0) + 1));
     for (const [style, n] of counts) if (n > cap) out.push({ id: group, code: 'variety', msg: `${n} of ${rs.length} ${group} figures are ${style}; at most ${cap}` });
   }
-  if (!existsSync(POSTS)) return out;
-  const style = new Map(results.map((r) => [r.id, r]));
-  const posts = readdirSync(POSTS).filter((f) => /\.mdx?$/.test(f)).map((f) => frontmatter(join(POSTS, f))).sort((a, b) => b.date.localeCompare(a.date));
+  const byId = new Map(results.map((r) => [r.id, r]));
+  const resolve = (cover) => {
+    const m = /^([a-z0-9]+(?:-[a-z0-9]+)*)~(0|[1-9]\d{0,8})$/.exec(cover ?? '');
+    if (m) {
+      const t = byId.get(m[1]);
+      return t?.template ? { style: t.style, ok: true } : null;
+    }
+    const f = byId.get(cover);
+    return f && !f.template ? { style: f.style, ok: f.group === 'cover' } : null;
+  };
+  const sorted = [...posts].sort((a, b) => b.date.localeCompare(a.date));
   const used = new Map();
-  posts.forEach((p, i) => {
-    const fig = p.cover ? style.get(p.cover) : undefined;
+  sorted.forEach((p, i) => {
+    const fig = p.cover ? resolve(p.cover) : null;
     if (!p.cover) out.push({ id: p.slug, code: 'covers', msg: 'post has no `cover:` figure id in its frontmatter' });
-    else if (!fig || fig.group !== 'cover') out.push({ id: p.slug, code: 'covers', msg: `cover '${p.cover}' is not a figure in group 'cover'` });
+    else if (!fig || !fig.ok) out.push({ id: p.slug, code: 'covers', msg: `cover '${p.cover}' is neither a figure in group 'cover' nor <template>~<seed>` });
     if (p.cover && used.has(p.cover)) out.push({ id: p.slug, code: 'covers', msg: `cover '${p.cover}' is already used by ${used.get(p.cover)}` });
     if (p.cover) used.set(p.cover, p.slug);
-    const prev = posts[i - 1];
-    const prevFig = prev?.cover ? style.get(prev.cover) : undefined;
+    const prev = sorted[i - 1];
+    const prevFig = prev?.cover ? resolve(prev.cover) : null;
     if (fig && prevFig && fig.style === prevFig.style) out.push({ id: p.slug, code: 'covers', msg: `same style (${fig.style}) as the post before it, ${prev.slug}` });
   });
   return out;
@@ -167,13 +190,16 @@ const args = process.argv.slice(2);
 const selftest = args.includes('--selftest');
 const fixtures = selftest || args.includes('--fixtures');
 const only = args.filter((a) => !a.startsWith('--'));
-const files = figureFiles(fixtures ? FIX_DIR : FIG_DIR).filter((f) => only.length === 0 || only.includes(basename(f, '.ts')));
-const results = files.map((f) => checkFile(f, fixtures));
-const problems = [...results.flatMap((r) => r.problems), ...(fixtures || only.length ? [] : crossChecks(results))];
+const pick = (f) => only.length === 0 || only.includes(basename(f, '.ts'));
+const results = [
+  ...figureFiles(fixtures ? FIX_DIR : FIG_DIR).filter(pick).map((f) => checkFile(f, fixtures)),
+  ...figureFiles(fixtures ? FIX_TPL_DIR : TPL_DIR).filter(pick).map((f) => checkFile(f, fixtures, true)),
+];
+const problems = [...results.flatMap((r) => r.problems), ...(fixtures || only.length ? [] : crossChecks(results, readPosts()))];
 
 if (args.includes('--list')) {
   const rows = [...results].sort((a, b) => a.group.localeCompare(b.group) || a.style.localeCompare(b.style));
-  for (const r of rows) console.log(`${r.group.padEnd(8)} ${r.style.padEnd(12)} ${r.id}`);
+  for (const r of rows) console.log(`${r.group.padEnd(8)} ${r.style.padEnd(12)} ${r.id}${r.template ? '~<seed>' : ''}`);
   process.exit(0);
 }
 
@@ -184,6 +210,23 @@ if (selftest) {
   const parseCaught = parseError("const idea = 'the pointer's height';") !== null && parseError("const idea = 'ok';") === null;
   if (!parseCaught) bad++;
   console.log(`${parseCaught ? 'ok  ' : 'FAIL'}  ${'(inline parse)'.padEnd(16)} expected [parse]  got [${parseCaught ? 'parse' : ''}]`);
+  // The cross-checks judge the whole set, not one file, so they are proved on made-up sets:
+  // three of four covers in one style, and posts whose covers repeat, clash or don't exist.
+  const fig = (id, style, group = 'cover') => ({ id, style, group, template: false, problems: [] });
+  const tpl = (id, style) => ({ id, style, group: 'template', template: true, problems: [] });
+  const set = [fig('a', 'pixel'), fig('b', 'pixel'), fig('c', 'pixel'), fig('d', 'ink'), tpl('t', 'trace')];
+  const post = (slug, date, cover) => ({ slug, date, cover });
+  const codes = (r) => [...new Set(r.map((p) => p.code))].join();
+  const proofs = [
+    ['(inline variety)', crossChecks(set, []), 'variety'],
+    ['(inline covers)', crossChecks([fig('a', 'pixel'), fig('d', 'ink'), tpl('t', 'trace')], [post('p1', '2026-01-03', 'a'), post('p2', '2026-01-02', 'a'), post('p3', '2026-01-01', 'nope')]), 'covers'],
+    ['(inline instance)', crossChecks([fig('a', 'pixel'), tpl('t', 'trace')], [post('p1', '2026-01-02', 't~7'), post('p2', '2026-01-01', 'a')]), ''],
+  ];
+  for (const [name, got, want] of proofs) {
+    const ok = codes(got) === want;
+    if (!ok) bad++;
+    console.log(`${ok ? 'ok  ' : 'FAIL'}  ${name.padEnd(16)} expected [${want}]  got [${codes(got)}]`);
+  }
   for (const r of results) {
     const want = (r.expect ?? '').split(',').map((x) => x.trim()).filter((x) => x && x !== 'none').sort();
     const got = [...new Set(r.problems.map((p) => p.code))].sort();

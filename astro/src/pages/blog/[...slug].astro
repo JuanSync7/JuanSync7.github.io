@@ -44,7 +44,7 @@ const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', y
     </header>
     {data.cover ? (
       <div class="cover">
-        <FigureCanvas client:load id={data.cover} readout />
+        <FigureCanvas client:load id={data.cover} />
       </div>
     ) : null}
     <article class="prose">

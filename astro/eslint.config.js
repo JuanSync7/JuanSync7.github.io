@@ -51,4 +51,11 @@ export default tseslint.config(
       'react-hooks/exhaustive-deps': 'warn',
     },
   },
+
+  // The structural fixture breaks the length rule on purpose, so the figure audit's own
+  // `length` check has something to catch; it is never imported by the site.
+  {
+    files: ['src/figures/fixtures/structural-sins.ts'],
+    rules: { 'max-lines': 'off' },
+  },
 );

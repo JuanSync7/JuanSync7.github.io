@@ -11,7 +11,7 @@
 
 .bench-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--nt-card-min)), 1fr));
   gap: 1px;
   background: var(--nt-line);
   border: 1px solid var(--nt-line);

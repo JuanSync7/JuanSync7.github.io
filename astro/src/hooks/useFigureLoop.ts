@@ -1,4 +1,4 @@
-import { useEffect, useState, type RefObject } from 'react';
+import { useEffect, useRef, useState, type RefObject } from 'react';
 import { loadFigure } from '../figures/registry';
 import { follow } from '../figures/kit/motion';
 import type { Figure, FigureInstance, FrameInput } from '../figures/types';
@@ -20,11 +20,21 @@ export interface LoopOptions {
   pointerAt?: readonly [number, number];
   fixtures?: boolean;
   onReadout?: (text: string) => void;
+  /** Handed to the figure every frame as `data`. Changing it redraws, never remounts. */
+  data?: unknown;
 }
 
 export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions): Figure | null {
   const [figure, setFigure] = useState<Figure | null>(null);
-  const { id, freezeAt, fixtures, onReadout } = o;
+  // Read by the running loop on every frame, so new data reaches the figure without
+  // tearing the loop down.
+  const dataRef = useRef<unknown>(o.data);
+  dataRef.current = o.data;
+  const readRef = useRef(o.onReadout);
+  readRef.current = o.onReadout;
+  // In still mode there is no frame loop, so new data has to ask for a frame itself.
+  const redrawRef = useRef<(() => void) | null>(null);
+  const { id, freezeAt, fixtures } = o;
   const px = o.pointerAt?.[0];
   const py = o.pointerAt?.[1];
 
@@ -62,7 +72,7 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
       hover = still ? (pointer.active ? 1 : 0) : follow(hover, pointer.active ? 1 : 0, dt, 6);
       while (pulses.length > 0 && t - (pulses[0]?.born ?? t) > 2) pulses.shift();
       const ps = pulses.map((p) => ({ x: p.x, y: p.y, age: t - p.born }));
-      return { t, dt, hover, pointer: { ...pointer }, pulses: ps, still };
+      return { t, dt, hover, pointer: { ...pointer }, pulses: ps, still, data: dataRef.current };
     };
     const draw = (dt: number): void => {
       if (!inst || broken) return;
@@ -86,7 +96,7 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
       if (typeof r === 'string' && r !== readout) {
         readout = r;
         canvas.dataset.readout = r;
-        onReadout?.(r);
+        readRef.current?.(r);
       }
     };
     const settle = (): void => {
@@ -129,6 +139,10 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
       cleanups.push(() => canvas.removeEventListener(type, fn));
     };
 
+    redrawRef.current = () => {
+      if (still) draw(0);
+    };
+
     loadFigure(id, fixtures)
       .then((fig) => {
         if (disposed) return;
@@ -166,6 +180,10 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
         });
         listen('pointerdown', (e) => {
           at(e);
+          // A tap fires no move first: mark the pointer as present and draw, so the read-out
+          // names what was tapped before the page's click handler reads it.
+          pointer.active = true;
+          draw(0);
           // Under reduced motion time stands still, so a pulse would never age out; there is
           // no animation to show it anyway.
           if (reduced) return;
@@ -176,11 +194,16 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
 
     return () => {
       disposed = true;
+      redrawRef.current = null;
       cancelAnimationFrame(raf);
       cleanups.forEach((fn) => fn());
       inst?.dispose();
     };
-  }, [ref, id, freezeAt, fixtures, onReadout, px, py]);
+  }, [ref, id, freezeAt, fixtures, px, py]);
+
+  useEffect(() => {
+    redrawRef.current?.();
+  }, [o.data]);
 
   return figure;
 }

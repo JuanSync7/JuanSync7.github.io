@@ -163,6 +163,8 @@ const NIGHT_LAYOUT = [
   { token: '--nt-measure', note: 'text measure, 640px' },
   { token: '--nt-hit', note: 'smallest touch target, 44px' },
   { token: '--nt-col', note: 'narrowest side-by-side panel, 420px' },
+  { token: '--nt-card-min', note: 'narrowest card in an auto-filling grid, 340px' },
+  { token: '--nt-thumb-min', note: 'narrowest thumbnail in a strip, 200px' },
   { token: '--nt-perspective-page', note: '3D distance for the featured page turn, 2400px' },
   { token: '--nt-perspective-card', note: '3D distance for the lesson card flip, 1600px' },
   { token: '--nt-spot-size', note: 'post-card spotlight diameter, 920px' },
@@ -469,7 +471,7 @@ ${NebulaStarsSrc}
       <div class="ds-comp-grid">
         <div class="ds-comp-card ds-comp-card-wide ds-copyable" data-ds-snippet={`// src/components/ui/FigureCanvas.tsx\n${FigureCanvasSrc}`} title="click for code">
           <div class="ds-comp-label">&lt;FigureCanvas&gt;</div>
-          <div class="ds-comp-stage night-sample"><div style="width: 100%; aspect-ratio: 16 / 9;"><FigureCanvas client:visible id="ridge-lines" readout /></div></div>
+          <div class="ds-comp-stage night-sample"><div style="width: 100%; aspect-ratio: 16 / 9;"><FigureCanvas client:visible id="ridge-lines" /></div></div>
           <div class="ds-comp-note">mounts one figure from src/figures by id; the wrapper sets the size. Every drawing on the site goes through it (see /figures and the figure skill).</div>
         </div>
 
