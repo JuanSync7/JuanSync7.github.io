@@ -142,6 +142,19 @@ export function outlines(parts: readonly Part[]): number[] {
       for (let i = 0; i < 4; i++) p.push(x + Math.cos(i * 1.57) * w / 2, 0, z + Math.sin(i * 1.57) * d / 2, x + Math.cos(i * 1.57) * w / 2, h, z + Math.sin(i * 1.57) * d / 2);
     } else if (kind === 'park') {
       rect(x0, x1, 0.002, z0, z1);
+    } else {
+      // Trees in wireframe: a pine is a five-sided cone, a broadleaf a diamond on a short trunk.
+      const n = kind === 'pine' ? 5 : 4;
+      const base = kind === 'pine' ? 0 : h * 0.35;
+      const top = kind === 'pine' ? h : h * 0.9;
+      const mid = kind === 'pine' ? 0 : h * 0.6;
+      ring(x, kind === 'pine' ? 0 : mid, z, w / 2, d / 2, n);
+      for (let i = 0; i < n; i++) {
+        const [cx, cz] = [x + (Math.cos((i / n) * Math.PI * 2) * w) / 2, z + (Math.sin((i / n) * Math.PI * 2) * d) / 2];
+        p.push(cx, kind === 'pine' ? 0 : mid, cz, x, top, z);
+        if (kind === 'tree') p.push(cx, mid, cz, x, base, z);
+      }
+      if (kind === 'tree') p.push(x, 0, z, x, base, z);
     }
   }
   return p;
