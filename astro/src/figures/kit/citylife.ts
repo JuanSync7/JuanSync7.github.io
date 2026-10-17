@@ -79,3 +79,24 @@ export function roof(parts: readonly Part[], rng: Rng): Part | undefined {
   const tall = parts.filter(standing);
   return tall[Math.floor(rng() * tall.length)];
 }
+
+/** The rotors of a district's wind turbines at time t, as segment endpoints: three slim
+ *  blades each, turning in the plane in front of the mast, a little out of step. */
+export function rotors(parts: readonly Part[], t: number): number[] {
+  const out: number[] = [];
+  parts
+    .filter((p) => p.kind === 'turbine')
+    .forEach((p, n) => {
+      const [hx, hy, hz] = [p.x, p.h, p.z + 0.035];
+      for (let k = 0; k < 3; k++) {
+        const a = t * 1.6 + n * 0.7 + (k * Math.PI * 2) / 3;
+        const [c, s] = [Math.cos(a), Math.sin(a)];
+        const tip = p.h * 0.42;
+        // A blade is a thin triangle: root, a widened shoulder, and the tip.
+        const sh: [number, number] = [hx + c * tip * 0.25 - s * 0.012, hy + s * tip * 0.25 + c * 0.012];
+        out.push(hx, hy, hz, sh[0], sh[1], hz, sh[0], sh[1], hz, hx + c * tip, hy + s * tip, hz);
+        out.push(hx + c * tip, hy + s * tip, hz, hx, hy, hz);
+      }
+    });
+  return out;
+}
