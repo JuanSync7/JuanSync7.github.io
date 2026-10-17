@@ -1,0 +1,253 @@
+---
+import { EDGES, LABELS, MAP_H, MAP_SUMMARY, MAP_W, NODES, STEPS } from '../../data/system-map';
+
+// The map is words and connections, so it is DOM, not a figure (CLAUDE.md, Figures 2):
+// boxes are real text, and one SVG layer underneath carries the connectors.
+const pct = (v: number, of: number): string => `${((v / of) * 100).toFixed(3)}%`;
+const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([x, y], i) => `${i === 0 ? 'M' : 'L'} ${x} ${y}`).join(' ');
+---
+
+<section id="system" class="nt-wrap system">
+  <div class="cap">
+    <span class="label">// 0x00 · the system I'm building</span>
+    <span class="key">arrows flow the way data moves · dashed = next</span>
+  </div>
+
+  <div class="map" role="img" aria-label={MAP_SUMMARY}>
+    <svg class="wires" viewBox={`0 0 ${MAP_W} ${MAP_H}`} aria-hidden="true">
+      <defs>
+        <marker id="map-head" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0 0 L6 3 L0 6 Z" class="head"></path>
+        </marker>
+        <marker id="map-head-next" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0 0 L6 3 L0 6 Z" class="head-next"></path>
+        </marker>
+      </defs>
+      {EDGES.map((e) => (
+        <path class={e.next ? 'wire next' : 'wire'} d={path(e.pts)} marker-end={e.arrow ? (e.next ? 'url(#map-head-next)' : 'url(#map-head)') : undefined}></path>
+      ))}
+    </svg>
+    {LABELS.map((l) => (
+      <span class:list={['edge-label', l.align, { next: l.next }]} style={`left:${pct(l.x, MAP_W)};top:${pct(l.y, MAP_H)};width:${pct(l.w, MAP_W)}`}>
+        {l.text}
+      </span>
+    ))}
+    {NODES.map((n) => (
+      <div class={`node ${n.kind}`} style={`left:${pct(n.x, MAP_W)};top:${pct(n.y, MAP_H)};width:${pct(n.w, MAP_W)};height:${pct(n.h, MAP_H)}`}>
+        <span class="name">
+          {n.title}
+          {n.tag ? <span class="tag">{n.tag}</span> : null}
+        </span>
+        {n.sub ? <span class="sub">{n.sub}</span> : null}
+      </div>
+    ))}
+  </div>
+
+  <ol class="steps" aria-label="The system, step by step">
+    {STEPS.map((s) => (
+      <li class:list={['step', { core: 'core' in s, next: 'next' in s }]}>
+        <span class="step-label">{s.label}</span>
+        <span>{s.text}</span>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .system {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-6);
+    padding-top: var(--nt-section-y-tight);
+    padding-bottom: var(--nt-section-y);
+  }
+
+  .cap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--hf-space-2) var(--hf-space-6);
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-caption);
+  }
+
+  .label {
+    color: var(--nt-signal);
+    font-size: var(--nt-fs-meta);
+  }
+
+  .key {
+    color: var(--nt-ink-muted);
+  }
+
+  .map {
+    position: relative;
+    aspect-ratio: 1104 / 584;
+  }
+
+  .wires {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .wire {
+    fill: none;
+    stroke: var(--nt-signal);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 4 4;
+    animation: flow 1s linear infinite;
+  }
+
+  .wire.next {
+    stroke: var(--nt-line-4);
+    stroke-dasharray: 6 6;
+    animation: none;
+  }
+
+  .head {
+    fill: var(--nt-signal);
+  }
+
+  .head-next {
+    fill: var(--nt-line-4);
+  }
+
+  @keyframes flow {
+    to {
+      stroke-dashoffset: -16;
+    }
+  }
+
+  .node {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--hf-space-1);
+    padding: 0 var(--hf-space-4);
+    background: var(--nt-panel);
+    border: 1px solid var(--nt-line-2);
+    border-radius: var(--hf-radius-lg);
+    font-size: var(--nt-fs-small);
+    line-height: var(--nt-lh-heading);
+    color: var(--nt-ink-strong);
+    transition: border-color 0.2s ease;
+  }
+
+  .node:hover {
+    border-color: var(--nt-line-4);
+  }
+
+  .node.person {
+    align-items: center;
+    border-radius: var(--hf-radius-pill);
+    color: var(--nt-ink-2);
+  }
+
+  .node.core,
+  .node.gateway {
+    background: var(--nt-panel-signal);
+    border-color: var(--nt-signal-line-2);
+  }
+
+  .node.next {
+    background: transparent;
+    border-style: dashed;
+    border-color: var(--nt-line-4);
+  }
+
+  .name {
+    font-weight: 500;
+  }
+
+  .tag,
+  .sub,
+  .edge-label {
+    font-family: var(--nt-mono);
+    font-size: var(--hf-fs-sm);
+    color: var(--nt-ink-muted);
+    font-weight: 400;
+  }
+
+  .tag {
+    margin-left: var(--hf-space-2);
+  }
+
+  .edge-label {
+    position: absolute;
+  }
+
+  .edge-label.center {
+    text-align: center;
+  }
+
+  .edge-label.right {
+    text-align: right;
+  }
+
+  .edge-label.next {
+    color: var(--nt-ink-faint);
+  }
+
+  .steps {
+    display: none;
+    flex-direction: column;
+    gap: var(--hf-space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-1);
+    padding: var(--hf-space-3) var(--hf-space-4);
+    border: 1px solid var(--nt-line);
+    border-radius: var(--hf-radius-lg);
+    color: var(--nt-ink-2);
+  }
+
+  .step.core {
+    border-color: var(--nt-signal);
+    background: var(--nt-panel-signal);
+    color: var(--nt-ink-strong);
+  }
+
+  .step.next {
+    border-style: dashed;
+    border-color: var(--nt-line-4);
+  }
+
+  .step-label {
+    font-family: var(--nt-mono);
+    font-size: var(--hf-fs-sm);
+    color: var(--nt-ink-faint);
+  }
+
+  .step.core .step-label {
+    color: var(--nt-signal);
+  }
+
+  /* Below this width the boxes can't hold their words, so the map gives way to the steps. */
+  @media (max-width: 1000px) {
+    .map {
+      display: none;
+    }
+
+    .steps {
+      display: flex;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wire {
+      animation: none;
+    }
+  }
+</style>

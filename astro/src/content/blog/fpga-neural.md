@@ -3,6 +3,7 @@ title: "Neural Networks on FPGAs: A Practical Guide"
 excerpt: "Deploying quantized models on Xilinx Zynq. Covers HLS, resource budgeting, and why your first attempt will always be too slow."
 category: silicon
 date: 2026-03-30
+cover: fpga-fabric
 readTime: "15 min"
 tags: ["FPGA", "AI", "HLS"]
 featured: false

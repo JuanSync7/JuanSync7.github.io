@@ -106,7 +106,10 @@ function checkFile(path, fixture) {
   if (broken) fail('parse', broken);
   const isThree = /export default defineThreeFigure\s*(<[^>]*>)?\s*\(/.test(s.code);
   if (!isThree && !/export default defineCanvasFigure\s*(<[^>]*>)?\s*\(/.test(s.code)) fail('define', 'default export is not defineCanvasFigure(...) or defineThreeFigure(...)');
-  const field = (k) => s.withStrings.match(new RegExp(`\\n\\s*${k}:\\s*('([^']*)'|[^,\\n]+)`));
+  // Meta lives in the default export's object, so read fields only after it: an interface
+  // above it can have a field of the same name (`group: Group`).
+  const spec = s.withStrings.slice(Math.max(0, s.withStrings.search(/export default define/)));
+  const field = (k) => spec.match(new RegExp(`\\n\\s*${k}:\\s*('([^']*)'|[^,\\n]+)`));
   const str = (k) => field(k)?.[2];
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(id) || str('id') !== id) fail('id', `id must be '${id}', the file name, in kebab-case`);
   const missing = [];

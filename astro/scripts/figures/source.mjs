@@ -19,7 +19,10 @@ export function figureFiles(dir) {
 /** The declared facts the look needs, read from the source text. */
 export function readMeta(path) {
   const raw = readFileSync(path, 'utf8');
-  const get = (k) => raw.match(new RegExp(`\\n\\s*${k}:\\s*('([^']*)'|[^,\\n]+)`));
+  // Read meta only from the default export's object; an interface above it may share a
+  // field name (`group: Group`).
+  const spec = raw.slice(Math.max(0, raw.search(/export default define/)));
+  const get = (k) => spec.match(new RegExp(`\\n\\s*${k}:\\s*('([^']*)'|[^,\\n]+)`));
   const str = (k) => get(k)?.[2];
   const bool = (k) => get(k)?.[1]?.trim() === 'true';
   return {

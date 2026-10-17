@@ -53,6 +53,11 @@ body.night {
   font: inherit;
 }
 
+/* Anchor jumps land below the sticky nav, not under it. */
+.night [id] {
+  scroll-margin-top: var(--hf-space-20);
+}
+
 .nt-wrap {
   max-width: var(--nt-max);
   margin: 0 auto;

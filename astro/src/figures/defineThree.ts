@@ -1,4 +1,4 @@
-import { Color, Mesh, PerspectiveCamera, Scene, WebGLRenderer, type Material, type Object3D } from 'three';
+import { Color, Line, Mesh, PerspectiveCamera, Scene, WebGLRenderer, type Material, type Object3D } from 'three';
 import { defineCanvasFigure } from './define';
 import { mulberry32, type Rng } from './kit/rng';
 import type { CanvasFrame, Figure, FigureInstance, FigureMeta, FrameInput } from './types';
@@ -37,7 +37,8 @@ export function webglAvailable(): boolean {
 
 function disposeTree(root: Object3D): void {
   root.traverse((o) => {
-    if (o instanceof Mesh) {
+    // Lines hold GPU buffers too: edge outlines are LineSegments, which extend Line.
+    if (o instanceof Mesh || o instanceof Line) {
       o.geometry.dispose();
       const mats: Material[] = Array.isArray(o.material) ? o.material : [o.material];
       mats.forEach((m) => m.dispose());
@@ -53,7 +54,12 @@ export function defineThreeFigure<S>(spec: ThreeFigureSpec<S>): Figure {
     ...meta,
     kind: 'three',
     mount(canvas: HTMLCanvasElement): FigureInstance {
-      if (!webglAvailable()) return flat.mount(canvas);
+      // Say which renderer ran, so the audit can tell a WebGL capture from the fallback.
+      if (!webglAvailable()) {
+        canvas.dataset.renderer = '2d-fallback';
+        return flat.mount(canvas);
+      }
+      canvas.dataset.renderer = 'webgl';
       const renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true });
       renderer.setClearColor(new Color(0x000000), 0);
       const scene = new Scene();

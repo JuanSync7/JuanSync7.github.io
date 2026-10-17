@@ -3,6 +3,7 @@ title: "My Vim Setup for ASIC Design"
 excerpt: "Custom keybinds, SystemVerilog LSP, waveform previews, and why I refuse to use an IDE."
 category: tutorials
 date: 2026-03-18
+cover: editor-plane
 readTime: "6 min"
 tags: ["Vim", "Workflow"]
 featured: false

@@ -3,6 +3,7 @@ title: "// devlog: ranking every coffee near the office"
 excerpt: "An empirical study. N=23. Methodology: caffeine addiction. Results: inconclusive but delicious."
 category: thoughts
 date: 2025-11-18
+cover: pixel-cup
 readTime: "4 min"
 tags: ["Life", "Coffee"]
 featured: false

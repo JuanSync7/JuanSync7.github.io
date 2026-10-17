@@ -19,6 +19,9 @@ const blog = defineCollection({
     externalUrl: z.string().optional(),
     art: artMotif.optional(),
     bg: artBg.optional(),
+    /** The post's cover: a figure id in src/figures, group 'cover'. figures:check enforces
+     *  that it exists, is unique, and differs in style from its date neighbours. */
+    cover: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/).optional(),
   }),
 });
 

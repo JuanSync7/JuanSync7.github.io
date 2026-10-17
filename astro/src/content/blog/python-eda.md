@@ -3,6 +3,7 @@ title: "Automating EDA Flows with Python"
 excerpt: "TCL is pain. Here's how I replaced 2000 lines of TCL with 200 lines of Python and a lot of subprocess calls."
 category: tutorials
 date: 2025-12-05
+cover: eda-lattice
 readTime: "8 min"
 tags: ["Python", "EDA", "Automation"]
 featured: false

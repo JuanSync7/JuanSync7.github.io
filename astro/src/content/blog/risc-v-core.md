@@ -3,6 +3,7 @@ title: "Designing a Toy RISC-V Core"
 excerpt: "A weekend project that took three months. 5-stage pipeline, hazard detection, and the satisfaction of running your own ISA."
 category: projects
 date: 2025-12-20
+cover: pipeline-steps
 readTime: "14 min"
 tags: ["RISC-V", "RTL", "Project"]
 featured: false

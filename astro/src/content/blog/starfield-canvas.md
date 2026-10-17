@@ -3,6 +3,7 @@ title: "Procedural Starfield with Canvas API"
 excerpt: "Twinkling stars, shooting stars, parallax layers — building an ambient background that doesn't murder your GPU."
 category: tutorials
 date: 2026-01-25
+cover: warp-field
 readTime: "11 min"
 tags: ["Canvas", "Animation"]
 featured: false

@@ -56,6 +56,11 @@ async function serve() {
   throw new Error('astro dev did not start within 90 s');
 }
 
+/** Console lines that come from the harness, not the figure: the dev server's HMR client,
+ *  React's devtools hint, and headless Chromium's software WebGL, which warns that its
+ *  fallback is deprecated and that screenshots stall the GPU on every read-back. */
+const NOISE = /\[vite\]|Download the React DevTools|GroupMarkerNotSet|GL Driver Message|enable-unsafe-swiftshader/;
+
 async function shoot(browser, url, id, { query = '', width = TH.width, viewport = 1280, reduced = false, live = false } = {}) {
   const ctx = await browser.newContext({ viewport: { width: viewport, height: 900 }, reducedMotion: reduced ? 'reduce' : 'no-preference' });
   const page = await ctx.newPage();
@@ -63,12 +68,12 @@ async function shoot(browser, url, id, { query = '', width = TH.width, viewport 
   // them empty so a missing font neither stalls a shot nor logs an error.
   await page.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.fulfill({ status: 200, contentType: 'text/css', body: '' }));
   const logs = [];
-  page.on('console', (m) => (m.type() === 'error' || m.type() === 'warning') && !/\[vite\]|Download the React DevTools/.test(m.text()) && logs.push(`${m.type()}: ${m.text()}`));
+  page.on('console', (m) => (m.type() === 'error' || m.type() === 'warning') && !NOISE.test(m.text()) && logs.push(`${m.type()}: ${m.text()}`));
   page.on('pageerror', (e) => logs.push(`pageerror: ${e.message}`));
   const q = `only=${id}&w=${width}${fixtures ? '&fixtures=1' : ''}${query}`;
   await page.goto(`${url}/figures?${q}`, { waitUntil: 'load' });
   const sel = `[data-bench-figure="${id}"]`;
-  const state = { ready: false, error: null, msAvg: 0, msMax: 0, readout: '' };
+  const state = { ready: false, error: null, msAvg: 0, msMax: 0, readout: '', renderer: '' };
   try {
     await page.waitForSelector(`${sel} canvas[data-ready="1"], [data-bench-error]`, { timeout: 25000 });
     const failed = await page.$eval('[data-bench-error]', (p) => p.getAttribute('data-bench-error')).catch(() => null);
@@ -95,7 +100,8 @@ async function shoot(browser, url, id, { query = '', width = TH.width, viewport 
       await page.waitForTimeout(1000);
       shots.push(await snap());
     }
-    const d = await page.$eval(`${sel} canvas`, (c) => ({ avg: Number(c.dataset.msAvg ?? 0), max: Number(c.dataset.msMax ?? 0), err: c.dataset.error ?? null, read: c.dataset.readout ?? '' }));
+    const d = await page.$eval(`${sel} canvas`, (c) => ({ avg: Number(c.dataset.msAvg ?? 0), max: Number(c.dataset.msMax ?? 0), err: c.dataset.error ?? null, read: c.dataset.readout ?? '', gl: c.dataset.renderer ?? '' }));
+    state.renderer = d.gl;
     state.msAvg = d.avg;
     state.msMax = d.max;
     state.error = d.err;
@@ -144,6 +150,7 @@ async function lookOne(browser, url, fig) {
   if (live.msAvg > budget) note.fail('perf', `frames average ${live.msAvg.toFixed(1)} ms; at most ${budget}`);
   else if (!fig.three && live.msAvg > TH.msAvgWarn) note.warn(`frames average ${live.msAvg.toFixed(1)} ms, near the ${budget} ms budget`);
   if (live.msMax > TH.msPeakWarn) note.warn(`slowest frame ${live.msMax.toFixed(0)} ms`);
+  if (fig.three && rest.renderer !== 'webgl') note.warn(`rendered the 2D fallback (${rest.renderer || 'unknown'}), not WebGL: the scene itself was not looked at`);
   if (!fig.bleed && m.borderInk > TH.borderWarn) note.warn(`ink on ${(m.borderInk * 100).toFixed(0)}% of the border: does it leave the frame?`);
   const metrics = { coverage: m.coverage, phoneCoverage: mp.coverage, signalShare: m.signalShare, offPalette: m.offPalette, motion, answer: answerD, reduced: reducedD, msAvg: live.msAvg, msMax: live.msMax };
   const shots = [
@@ -154,7 +161,7 @@ async function lookOne(browser, url, fig) {
     { label: `phone ${TH.phoneWidth}px`, png: phone.shots[0] },
     { label: 'reduced motion', png: reduced.shots[0] },
   ];
-  return { fig, fails, warns, shots, metrics };
+  return { fig: fig.three ? { ...fig, style: `three · ${rest.renderer || 'unknown renderer'}` } : fig, fails, warns, shots, metrics };
 }
 
 const files = figureFiles(fixtures ? FIX_DIR : FIG_DIR).filter((f) => only.length === 0 || only.some((id) => f.endsWith(`/${id}.ts`)));
@@ -175,7 +182,7 @@ try {
     if (lines.length === 0) lines.push({ level: 'ok', text: 'look passed' });
     console.log(`${r.fails.length ? 'FAIL' : 'ok  '}  ${fig.id}`);
     for (const l of lines) if (l.level !== 'ok') console.log(`      ${l.text}`);
-    if (sheets && r.shots.length) await writeSheet(browser, join(OUT, `${fig.id}.png`), fig, r.shots, lines);
+    if (sheets && r.shots.length) await writeSheet(browser, join(OUT, `${fig.id}.png`), r.fig, r.shots, lines);
   }
 } finally {
   await browser.close();

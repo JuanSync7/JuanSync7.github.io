@@ -1,0 +1,140 @@
+---
+import FigureCanvas from '../ui/FigureCanvas.tsx';
+import { HERO } from '../../data/home';
+---
+
+<section id="top" class="hero nt-wrap">
+  <div class="copy">
+    <p class="meta">
+      <span class="pulse" aria-hidden="true"></span>
+      <span>{HERO.place}</span>
+      <span class="sep" aria-hidden="true">/</span>
+      <span>{HERO.role}</span>
+    </p>
+    <h1>
+      {HERO.lead}
+      <span class="accent">{HERO.accent}</span>
+    </h1>
+    <p class="body">
+      {HERO.body} At <strong>{HERO.at}</strong>{HERO.after}
+    </p>
+    <div class="actions">
+      <a class="primary" href={HERO.primary.href}>{HERO.primary.label}</a>
+      <a class="ghost" href={HERO.secondary.href}>{HERO.secondary.label}</a>
+    </div>
+  </div>
+  <div class="stage">
+    <FigureCanvas client:visible id="system-stack" readout />
+  </div>
+</section>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    align-items: center;
+    gap: var(--hf-space-12);
+    padding-top: var(--nt-section-y-tight);
+    padding-bottom: var(--nt-section-y-tight);
+  }
+
+  .copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-6);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--hf-space-2) var(--hf-space-3);
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-ink-muted);
+  }
+
+  .pulse {
+    width: var(--hf-space-2);
+    height: var(--hf-space-2);
+    border-radius: var(--hf-radius-pill);
+    background: var(--nt-signal);
+  }
+
+  .sep {
+    color: var(--nt-line-4);
+  }
+
+  h1 {
+    font-size: var(--nt-fs-h1);
+    line-height: var(--nt-lh-tight);
+    letter-spacing: var(--nt-tracking-display);
+  }
+
+  .accent {
+    display: block;
+    color: var(--nt-signal);
+  }
+
+  .body {
+    max-width: var(--nt-measure);
+    font-size: var(--nt-fs-intro);
+    color: var(--nt-ink-soft);
+  }
+
+  strong {
+    font-weight: 500;
+    color: var(--nt-ink-strong);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--hf-space-3);
+  }
+
+  .actions a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--nt-hit);
+    padding: 0 var(--hf-space-5);
+    border-radius: var(--hf-radius-pill);
+    font-size: var(--nt-fs-ui);
+  }
+
+  .primary {
+    background: var(--nt-signal);
+    color: var(--nt-signal-ink);
+  }
+
+  .night .primary:hover {
+    color: var(--nt-signal-ink);
+    background: var(--nt-ink-strong);
+  }
+
+  .ghost {
+    border: 1px solid var(--nt-line-2);
+    color: var(--nt-ink-2);
+  }
+
+  .stage {
+    aspect-ratio: 1.25;
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .sep {
+      display: none;
+    }
+
+    .stage {
+      order: -1;
+      max-height: 46vh;
+      margin: 0 auto;
+      width: 100%;
+    }
+  }
+</style>

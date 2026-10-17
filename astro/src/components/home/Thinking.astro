@@ -1,0 +1,233 @@
+---
+import SectionHead from '../ui/SectionHead.astro';
+import { THINKING } from '../../data/home';
+
+const num = (i: number): string => String(i + 1).padStart(2, '0');
+---
+
+<section id="thinking" class="nt-wrap nt-section thinking">
+  <SectionHead label={THINKING.label} title={THINKING.title} accent={THINKING.accent} lead={THINKING.body} />
+
+  <ol class="principles">
+    {THINKING.principles.map((p, i) => (
+      <li>
+        <span class="num">{num(i)}</span>
+        <h3>{p.title}</h3>
+        <p>{p.body}</p>
+      </li>
+    ))}
+  </ol>
+
+  <div class="pair">
+    <div class="panel">
+      <div class="panel-head">
+        <h3>{THINKING.ready.title}</h3>
+        <span class="note">{THINKING.ready.note}</span>
+      </div>
+      <ol class="ready">
+        {THINKING.ready.points.map((p, i) => (
+          <li>
+            <span class="tick">{i + 1}</span>
+            <span>{p}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h3>{THINKING.lessons.title}</h3>
+        <span class="note">{THINKING.lessons.note}</span>
+      </div>
+      <table>
+        <caption class="nt-sr">In silicon, and the same idea in AI systems</caption>
+        <tbody>
+          {THINKING.lessons.rows.map(([chip, ai]) => (
+            <tr>
+              <td class="chip">{chip}</td>
+              <td class="arrow" aria-hidden="true">→</td>
+              <td>{ai}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="chip-rows">
+    <div class="chips">
+      <span class="chips-label">// stack</span>
+      {THINKING.stack.map((s) => <span class="chip-tag">{s}</span>)}
+    </div>
+    <div class="chips">
+      <span class="chips-label">// domain</span>
+      {THINKING.domain.map((s) => <span class="chip-tag quiet">{s}</span>)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .thinking {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-14);
+  }
+
+  .principles {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--nt-rule);
+    border-left: 1px solid var(--nt-rule);
+  }
+
+  .principles li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-3);
+    padding: var(--hf-space-6);
+    border-right: 1px solid var(--nt-rule);
+    border-bottom: 1px solid var(--nt-rule);
+  }
+
+  .num,
+  .note,
+  .chips-label {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-caption);
+    color: var(--nt-ink-faint);
+  }
+
+  h3 {
+    font-size: var(--nt-fs-h5);
+    line-height: var(--nt-lh-heading);
+    letter-spacing: var(--nt-tracking-heading);
+  }
+
+  .principles p {
+    color: var(--nt-ink-soft);
+    font-size: var(--nt-fs-ui);
+  }
+
+  .pair {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: var(--hf-space-6);
+  }
+
+  .panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-5);
+    padding: var(--hf-space-6);
+    border: 1px solid var(--nt-line);
+    border-radius: var(--hf-radius-xl);
+    background: var(--nt-panel);
+  }
+
+  .panel-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-1);
+  }
+
+  .ready {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--nt-ink-2);
+  }
+
+  .ready li {
+    display: flex;
+    gap: var(--hf-space-3);
+  }
+
+  .tick {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: var(--hf-space-6);
+    height: var(--hf-space-6);
+    border: 1px solid var(--nt-signal-line-2);
+    border-radius: var(--hf-radius-pill);
+    font-family: var(--nt-mono);
+    font-size: var(--hf-fs-sm);
+    color: var(--nt-signal);
+  }
+
+  table {
+    border-collapse: collapse;
+    font-size: var(--nt-fs-small);
+  }
+
+  td {
+    padding: var(--hf-space-2) 0;
+    border-top: 1px solid var(--nt-rule);
+    vertical-align: top;
+    color: var(--nt-ink-2);
+  }
+
+  td.chip {
+    width: 42%;
+    color: var(--nt-ink-muted);
+  }
+
+  td.arrow {
+    width: var(--hf-space-8);
+    text-align: center;
+    color: var(--nt-signal);
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--hf-space-2);
+  }
+
+  .chip-rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-3);
+  }
+
+  .chips-label {
+    min-width: var(--hf-space-16);
+  }
+
+  .chip-tag {
+    padding: var(--hf-space-1) var(--hf-space-3);
+    border: 1px solid var(--nt-line-2);
+    border-radius: var(--hf-radius-pill);
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-caption);
+    color: var(--nt-ink-2);
+  }
+
+  .chip-tag.quiet {
+    color: var(--nt-ink-muted);
+    border-color: var(--nt-line);
+  }
+
+  @media (max-width: 900px) {
+    .principles {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .pair {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (min-width: 901px) and (max-width: 1100px) {
+    .principles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>
