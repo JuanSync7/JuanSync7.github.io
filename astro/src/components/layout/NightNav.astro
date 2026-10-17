@@ -1,6 +1,7 @@
 ---
 import { NAV } from '../../data/home';
 import { IDENTITY } from '../../data/site';
+import Monogram from '../ui/Monogram.astro';
 
 interface Props {
   /** The nav link to mark as the current page. */
@@ -12,7 +13,10 @@ const { current } = Astro.props;
 
 <header class="nav">
   <div class="nt-wrap nav-inner">
-    <a class="brand" href="/">{IDENTITY.shortName}</a>
+    <a class="brand" href="/" aria-label={`${IDENTITY.shortName}, home`}>
+      <span class="mark"><Monogram /></span>
+      <span class="word">{IDENTITY.shortName}</span>
+    </a>
     <nav aria-label="Primary">
       <ul>
         {NAV.map((l) => (
@@ -44,9 +48,18 @@ const { current } = Astro.props;
   }
 
   .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--hf-space-3);
+    min-height: var(--nt-hit);
     font-family: var(--nt-mono);
     font-size: var(--nt-fs-small);
     color: var(--nt-ink-strong);
+  }
+
+  .mark {
+    display: block;
+    height: var(--hf-space-8);
   }
 
   nav {
