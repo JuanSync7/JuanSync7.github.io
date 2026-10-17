@@ -26,6 +26,9 @@
   --nt-hit: 44px;
   /* The narrowest a side-by-side panel gets before the pair wraps onto two rows. */
   --nt-col: 420px;
+  /* The narrowest a card in an auto-filling grid gets: figure cards, template thumbnails. */
+  --nt-card-min: 340px;
+  --nt-thumb-min: 200px;
   /* Viewer distance for 3D turns: a page turning on its hinge, a card flipping down. */
   --nt-perspective-page: 2400px;
   --nt-perspective-card: 1600px;

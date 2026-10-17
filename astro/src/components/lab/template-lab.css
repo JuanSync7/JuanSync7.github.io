@@ -96,9 +96,9 @@
   color: var(--nt-ink-strong);
 }
 
-.lab-seed input:focus {
-  outline: none;
-  border-bottom-color: var(--nt-signal);
+.lab-seed input:focus-visible {
+  outline: 1px solid var(--nt-signal);
+  outline-offset: var(--hf-space-1);
 }
 
 .lab-alt {
@@ -110,7 +110,7 @@
 
 .lab-strip {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--nt-thumb-min)), 1fr));
   gap: var(--hf-space-6) var(--hf-space-5);
   margin: var(--hf-space-6) 0 0;
   padding: 0;

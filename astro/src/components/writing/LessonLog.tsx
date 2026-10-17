@@ -71,8 +71,11 @@ export default function LessonLog({ lessons, note }: Props) {
       </div>
 
       <div className="log-body">
+        {/* The live region stays mounted; only the article inside it is re-keyed (for its
+            entrance), so a change of lesson is announced. */}
+        <div className="log-live" aria-live="polite">
         {lesson ? (
-          <article key={index} className="log-entry" aria-live="polite">
+          <article key={index} className="log-entry">
             <p className="log-meta">
               <time dateTime={lesson.iso}>{longDate(lesson.iso)}</time>
               <span className="log-tag">{lesson.tag}</span>
@@ -81,6 +84,7 @@ export default function LessonLog({ lessons, note }: Props) {
             <p className="log-why">{lesson.why}</p>
           </article>
         ) : null}
+        </div>
 
         <div className="log-side">
           <p className="log-count">

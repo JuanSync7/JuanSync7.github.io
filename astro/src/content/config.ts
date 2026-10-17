@@ -22,7 +22,7 @@ const blog = defineCollection({
     /** The post's cover: a figure id in src/figures (group 'cover'), or a template instance
      *  `<template>~<seed>`. figures:check enforces that it exists, is unique, and differs in
      *  style from its date neighbours. */
-    cover: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*(~\d{1,9})?$/).optional(),
+    cover: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*(~(0|[1-9]\d{0,8}))?$/).optional(),
   }),
 });
 

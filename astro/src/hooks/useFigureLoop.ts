@@ -32,6 +32,8 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
   dataRef.current = o.data;
   const readRef = useRef(o.onReadout);
   readRef.current = o.onReadout;
+  // In still mode there is no frame loop, so new data has to ask for a frame itself.
+  const redrawRef = useRef<(() => void) | null>(null);
   const { id, freezeAt, fixtures } = o;
   const px = o.pointerAt?.[0];
   const py = o.pointerAt?.[1];
@@ -137,6 +139,10 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
       cleanups.push(() => canvas.removeEventListener(type, fn));
     };
 
+    redrawRef.current = () => {
+      if (still) draw(0);
+    };
+
     loadFigure(id, fixtures)
       .then((fig) => {
         if (disposed) return;
@@ -174,6 +180,10 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
         });
         listen('pointerdown', (e) => {
           at(e);
+          // A tap fires no move first: mark the pointer as present and draw, so the read-out
+          // names what was tapped before the page's click handler reads it.
+          pointer.active = true;
+          draw(0);
           // Under reduced motion time stands still, so a pulse would never age out; there is
           // no animation to show it anyway.
           if (reduced) return;
@@ -184,11 +194,16 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
 
     return () => {
       disposed = true;
+      redrawRef.current = null;
       cancelAnimationFrame(raf);
       cleanups.forEach((fn) => fn());
       inst?.dispose();
     };
   }, [ref, id, freezeAt, fixtures, px, py]);
+
+  useEffect(() => {
+    redrawRef.current?.();
+  }, [o.data]);
 
   return figure;
 }

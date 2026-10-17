@@ -55,7 +55,14 @@ export default function TemplateLab({ template }: Props) {
   }, [seed]);
 
   if (!tpl || seed === null) return <p className="lab-loading">Loading {template}…</p>;
-  const go = (s: number): void => setSeed(clampSeed(s));
+  const go = (s: number): void => {
+    const next = clampSeed(s);
+    setSeed(next);
+    // The draft resyncs even when the seed does not change (a cleared box, a leading zero).
+    setDraft(String(next));
+  };
+  // The next seeds, stopping at the last one rather than repeating it.
+  const ahead = Array.from({ length: NEIGHBOURS }, (_, k) => seed + 1 + k).filter((s) => s <= MAX_SEED);
   const id = `${template}~${seed}`;
   const inst = tpl.instance(seed);
   const copy = (): void => {
@@ -71,9 +78,9 @@ export default function TemplateLab({ template }: Props) {
         <FigureCanvas key={id} id={id} />
       </div>
       <div className="lab-bar">
-        <div className="lab-id">
+        <div className="lab-id" aria-live="polite">
           <span className="lab-variant">{inst.variant}</span>
-          <button type="button" className="lab-copy" onClick={copy} title="Copy the instance id">
+          <button type="button" className="lab-copy" onClick={copy} aria-label={copied ? `Copied ${id}` : `Copy ${id}`}>
             {copied ? 'copied' : id}
           </button>
         </div>
@@ -91,7 +98,7 @@ export default function TemplateLab({ template }: Props) {
             <span>seed</span>
             <input inputMode="numeric" value={draft} onChange={(e) => setDraft(e.target.value.replace(/\D/g, ''))} onBlur={() => go(Number(draft))} />
           </label>
-          <button type="button" className="lab-btn" onClick={() => go(seed + 1)} aria-label="Next seed">
+          <button type="button" className="lab-btn" onClick={() => go(seed + 1)} disabled={seed === MAX_SEED} aria-label="Next seed">
             →
           </button>
           <button type="button" className="lab-btn lab-roll" onClick={() => go(roll())}>
@@ -99,10 +106,13 @@ export default function TemplateLab({ template }: Props) {
           </button>
         </form>
       </div>
-      <p className="lab-alt">{inst.alt}</p>
+      <p className="lab-alt" aria-live="polite">
+        {inst.alt}
+      </p>
       <ol className="lab-strip" aria-label="Next seeds">
-        {Array.from({ length: NEIGHBOURS }, (_, k) => clampSeed(seed + 1 + k)).map((s) => (
-          <li key={s}>
+        {/* Keyed by position, so the button just pressed stays mounted and keeps focus. */}
+        {ahead.map((s, k) => (
+          <li key={k}>
             <button type="button" className="lab-thumb" onClick={() => go(s)} aria-label={`Seed ${s}: ${tpl.instance(s).variant}`}>
               <span className="lab-thumb-stage">
                 <FigureCanvas id={`${template}~${s}`} />

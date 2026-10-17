@@ -163,7 +163,7 @@ function crossChecks(results, posts) {
   }
   const byId = new Map(results.map((r) => [r.id, r]));
   const resolve = (cover) => {
-    const m = /^([a-z0-9]+(?:-[a-z0-9]+)*)~(\d{1,9})$/.exec(cover ?? '');
+    const m = /^([a-z0-9]+(?:-[a-z0-9]+)*)~(0|[1-9]\d{0,8})$/.exec(cover ?? '');
     if (m) {
       const t = byId.get(m[1]);
       return t?.template ? { style: t.style, ok: true } : null;

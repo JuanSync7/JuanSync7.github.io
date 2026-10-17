@@ -71,6 +71,6 @@ export function defineTemplate<P, S>(spec: TemplateSpec<P, S>): Template {
 
 /** Splits `<template>~<seed>`; null for a plain figure id. */
 export function parseInstanceId(id: string): { template: string; seed: number } | null {
-  const m = /^([a-z0-9]+(?:-[a-z0-9]+)*)~(\d{1,9})$/.exec(id);
+  const m = /^([a-z0-9]+(?:-[a-z0-9]+)*)~(0|[1-9]\d{0,8})$/.exec(id);
   return m && m[1] && m[2] ? { template: m[1], seed: Number(m[2]) } : null;
 }

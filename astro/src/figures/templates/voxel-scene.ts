@@ -122,7 +122,7 @@ export default defineTemplate<P, S>({
   draw: ({ ctx, w, h, t, pointer, hover, params, state }) => {
     // The pointer always turns the piece by at least a quarter, so a symmetric one still answers.
     const quarter = (params.turn + (pointer.active && hover > 0.3 ? 1 + Math.floor(pointer.x * 3) : 0)) % 4;
-    const c = Math.max(3, Math.floor(Math.min(w / (state.size * 1.8), h / (state.size * 1.35))));
+    const c = Math.max(3, Math.floor(Math.min(w / (state.size * 2.1), h / (state.size * 1.6))));
     const rot = (x: number, z: number): [number, number] => {
       let a = x;
       let b = z;
@@ -132,7 +132,7 @@ export default defineTemplate<P, S>({
     // The piece floats: a slow bob, and it rises a little under the pointer.
     const bob = Math.round(Math.sin(t * 1.4) * c * 0.35 - hover * c * 0.6);
     const ox = Math.round(w / 2);
-    const oy = Math.round(h * 0.6) + bob;
+    const oy = Math.round(h * 0.66) + bob;
     const iso = (x: number, y: number, z: number): [number, number] => [ox + (x - z) * c, oy + (x + z) * (c / 2) - y * c];
     const cells = [...state.vox.entries()].map(([k, tone]) => {
       const [x0, y, z0] = k.split(',').map(Number) as [number, number, number];

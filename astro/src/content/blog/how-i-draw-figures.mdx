@@ -18,7 +18,7 @@ So I stopped asking for drawings and built a way to make them. Every drawing her
 
 A figure draws its subject as the thing itself. Timing closure is a logic analyser capture with the critical edge lit. A chip is a package whose layers lift apart. If an idea only makes sense with labels on boxes, it's a diagram, and diagrams here are real text in the page (the system map on the home page is one), not pictures.
 
-Each file declares what it is before it draws anything: an id, a title, alt text, the idea in a sentence, a style, how it moves, whether it answers the pointer, and a seed. The audit reads those declarations and holds the drawing to them.
+Each file declares what it is before it draws anything: an id, a title, alt text, the idea in a sentence, a style, how it moves, whether it answers the pointer, and a seed. A template declares the same, except that it writes its alt text per seed and takes its seed from the instance's name. The audit reads those declarations and holds the drawing to them.
 
 <PostFigure id="anatomy~4" caption="hairline · anatomy~4, a rocket taken apart along its axis. Each part leaves in turn, outermost first, and a leader line marks one at a time. Point at a part to pull it further out." />
 
@@ -77,7 +77,7 @@ Some things can only be checked by looking. So the second half of the audit open
 
 A template is audited as three instances, seeds 7, 42 and 2026, and each one must pass every check as a figure in its own right. Then their rest frames are compared with each other. The audit also lays the pictures out on one sheet per figure, and the last rule is that someone reads the sheet before calling the figure done. The numbers catch what is wrong; they don't catch what is ugly. Half my fixes came from reading the sheet, not from the numbers.
 
-The checks are proved too. Each has a fixture (a deliberately broken figure) or a broken case written into the self-test, and the check must catch it. One fixture breaks the rules on imports, length and metadata at once. Another is a template that draws the same thing for every seed. If a change to the audit stops catching one of them, the audit is what's broken. The one exception is the reduced-motion check, which guards the clock rather than any figure.
+The checks are proved too. Most have a fixture (a deliberately broken figure) or a broken case written into the self-test, which the check must catch. One fixture breaks the rules on imports, length and metadata at once. Another is a template that draws the same thing for every seed. If a change to the audit stops catching one of them, the audit is what's broken. Three checks have no proof yet: the reduced-motion check, which guards the clock rather than any figure, and the two that check a file's default export and its id.
 
 <PostFigure id="eda-lattice" caption="wireframe · a design as a lattice of nodes, with one net traced through it hop by hop. Drag across it to turn the lattice." />
 

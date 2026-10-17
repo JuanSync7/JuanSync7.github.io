@@ -57,14 +57,14 @@ export default defineCanvasFigure<State>({
     const lit = days.find((d) => d.count > 0);
     return { sample: { days, weeks: 16, selected: lit?.iso ?? null }, lift: new Map() };
   },
-  draw: ({ ctx, w, h, t, dt, pointer, hover, still, data, state }) => {
+  draw: ({ ctx, w, h, t, dt, pointer, still, data, state }) => {
     const field = isData(data) ? data : state.sample;
     const cols = field.weeks;
     // Fit the rotated grid's footprint, weeks across and seven days back, to the frame.
     const across = cols * Math.cos(YAW) + 7 * Math.sin(YAW);
     // Down the frame: the footprint's depth foreshortened by the pitch, plus the tallest column.
     const down = (cols * Math.sin(YAW) + 7 * Math.cos(YAW)) * Math.sin(PITCH) + 1.2;
-    const cam = camera({ cx: w / 2, cy: h * 0.5, scale: Math.min((w * 0.94) / across, (h * 0.9) / down), yaw: YAW, pitch: PITCH, dist: Infinity });
+    const cam = camera({ cx: w / 2, cy: h * 0.5, scale: Math.min((w * 0.84) / across, (h * 0.9) / down), yaw: YAW, pitch: PITCH, dist: Infinity });
     const cells = field.days.map((d, i) => {
       const col = Math.floor(i / 7);
       const row = i % 7;
@@ -72,7 +72,8 @@ export default defineCanvasFigure<State>({
     });
     let hovered: string | null = null;
     let week = -1;
-    if (pointer.active && hover > 0.3) {
+    // Hit-test whenever the pointer is present, a tap included; the lift eases on its own.
+    if (pointer.active) {
       let best = cam.scale * 0.9;
       for (const c of cells) {
         if (c.d.future) continue;

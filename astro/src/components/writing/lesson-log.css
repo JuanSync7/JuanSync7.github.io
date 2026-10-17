@@ -35,9 +35,12 @@
   gap: var(--hf-space-8) var(--hf-space-14);
 }
 
-.log-entry {
+.log-live {
   flex: 2 1 var(--nt-col);
   min-width: 0;
+}
+
+.log-entry {
   animation: entry-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 

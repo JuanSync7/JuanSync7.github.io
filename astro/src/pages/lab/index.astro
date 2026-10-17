@@ -79,7 +79,7 @@ const templates = await Promise.all(
   }
   .lab-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--nt-card-min)), 1fr));
     gap: var(--hf-space-12) var(--hf-space-8);
     margin: 0;
     padding: 0;

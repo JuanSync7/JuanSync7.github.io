@@ -58,7 +58,7 @@ what it chose. *(invariant: `signal` at most 35% of the ink; a figure with no si
 
 ### 07 · clock: the loop owns time
 *(invariant: `clock`, `dom`, `random`, `reduced`)*
-- **Keep it:** read `t`, `dt`, `hover`, `pointer`, `pulses`, `still` from the frame. A
+- **Keep it:** read `t`, `dt`, `hover`, `pointer`, `pulses`, `still` and `data` from the frame. A
   continuous input follows on a spring or `follow`; a discrete change eases out over ~700 ms
   (`kit/motion.ts`). Randomness is drawn from the seeded `rng` in `setup`; anything that
   must vary over time samples `noise(x, t)` so it changes smoothly.
@@ -70,7 +70,8 @@ what it chose. *(invariant: `signal` at most 35% of the ink; a figure with no si
 ### 08 · words: no text in the drawing
 *(invariant: `words`)*
 - **Keep it:** return a few characters from `draw` (`ridge 7`, `die 3·2`, `rest`); the page
-  shows them as the read-out. Number things with dots or position.
+  receives them as the read-out (the bench shows it; a page may act on it through
+  `onReadout`, as the lesson log does). Number things with dots or position.
 - **Rejected when:** `fillText`; letters or digits drawn as paths; a figure that can't be read
   without its read-out.
 

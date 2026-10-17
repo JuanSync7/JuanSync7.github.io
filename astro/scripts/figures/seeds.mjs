@@ -2,7 +2,7 @@
 /**
  * A seed sheet for one template: `node scripts/figures/seeds.mjs <template> [count] [--from=N] [--url=URL]`.
  * Captures instances <template>~N … at rest (t = restT, frozen) on the bench and lays them
- * out on one sheet, figures-out/<template>.seeds.png, labelled with seed and variant. The
+ * out on one sheet, figures-out/<template>.seeds.png, labelled with its seed and its alt text. The
  * look checks three seeds; this is for reading the whole range of a template's grammar.
  * It needs a running dev server (--url, default http://127.0.0.1:4399).
  */
