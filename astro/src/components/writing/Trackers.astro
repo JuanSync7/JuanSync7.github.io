@@ -1,0 +1,86 @@
+---
+import SectionHead from '../ui/SectionHead.astro';
+import { TRACKERS } from '../../data/writing';
+---
+
+<section class="nt-wrap nt-section trackers" aria-label={TRACKERS.title}>
+  <SectionHead label="// trackers" title={TRACKERS.title} lead={TRACKERS.body} />
+  <div class="list">
+    {TRACKERS.items.map((t) => (
+      <a class="row" href={t.href}>
+        <span class="name">
+          <span class="live" aria-hidden="true"></span>
+          {t.name}
+        </span>
+        <span class="desc">{t.body}</span>
+        <span class="go">Open tracker →</span>
+      </a>
+    ))}
+  </div>
+</section>
+
+<style>
+  .trackers {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-8);
+  }
+
+  .list {
+    overflow: hidden;
+    border: 1px solid var(--nt-line);
+    border-radius: var(--hf-radius-2xl);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--hf-space-2) var(--hf-space-8);
+    padding: var(--hf-space-6) var(--hf-space-7);
+    border-bottom: 1px solid var(--nt-line);
+    transition: background 0.3s ease;
+  }
+
+  .row:last-child {
+    border-bottom: none;
+  }
+
+  .row:hover {
+    background: var(--nt-ground-2);
+  }
+
+  .name {
+    flex: 0 0 calc(var(--hf-space-26) * 2);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--hf-space-3);
+    font-family: var(--nt-display);
+    font-size: var(--nt-fs-h5);
+    font-weight: 500;
+    color: var(--nt-ink-strong);
+  }
+
+  .live {
+    width: var(--hf-space-2);
+    height: var(--hf-space-2);
+    border-radius: var(--hf-radius-pill);
+    background: var(--nt-signal);
+  }
+
+  .desc {
+    flex: 1 1 var(--nt-col);
+    color: var(--nt-ink-soft);
+  }
+
+  .go {
+    font-size: var(--nt-fs-small);
+    color: var(--nt-ink-muted);
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+
+  .row:hover .go {
+    color: var(--nt-signal);
+    transform: translateX(var(--hf-space-1));
+  }
+</style>

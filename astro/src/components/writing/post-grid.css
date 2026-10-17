@@ -1,0 +1,160 @@
+.posts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hf-space-6);
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hf-space-2);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hf-space-2);
+  min-height: var(--nt-hit);
+  padding: 0 var(--hf-space-4);
+  border: 1px solid var(--nt-line-2);
+  border-radius: var(--hf-radius-pill);
+  background: transparent;
+  color: var(--nt-ink-2);
+  font-size: var(--nt-fs-meta);
+  cursor: pointer;
+}
+
+.pill[aria-pressed='true'] {
+  border-color: var(--nt-signal);
+  color: var(--nt-ink-strong);
+}
+
+.pill-count {
+  font-family: var(--nt-mono);
+  font-size: var(--hf-fs-sm);
+  color: var(--nt-ink-faint);
+}
+
+/* Hairline grid, Vercel style: each card paints its own right and bottom rule into the
+   1px gap, so a short last row leaves dark, outlined space rather than a block of rule
+   colour. The frame's own border clips the rules on the outer edge. */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid var(--nt-line);
+  border-radius: var(--hf-radius-2xl);
+  background: var(--nt-ground);
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--nt-ground);
+  box-shadow: 1px 0 0 var(--nt-line), 0 1px 0 var(--nt-line);
+  color: var(--nt-ink);
+  animation: deal 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  transition: background 0.35s ease;
+}
+
+.card:hover {
+  background: var(--nt-ground-2);
+}
+
+.card-spot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--nt-spot-size);
+  height: var(--nt-spot-size);
+  background: var(--nt-grad-spot);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(calc(var(--mx, 50%) - 50%), calc(var(--my, 0px) - 50%));
+  transition: opacity 0.35s ease;
+}
+
+.card:hover .card-spot,
+.card:focus-visible .card-spot {
+  opacity: 1;
+}
+
+.card-cover {
+  aspect-ratio: 2;
+  border-bottom: 1px solid var(--nt-rule);
+}
+
+.card-body {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--hf-space-3);
+  padding: var(--hf-space-5) var(--hf-space-6) var(--hf-space-6);
+}
+
+.card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hf-space-1) var(--hf-space-3);
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-caption);
+  color: var(--nt-ink-faint);
+}
+
+.card-cat {
+  color: var(--nt-signal);
+}
+
+.card-title {
+  font-family: var(--nt-display);
+  font-size: var(--nt-fs-h5);
+  font-weight: 500;
+  line-height: var(--nt-lh-heading);
+  color: var(--nt-ink-strong);
+}
+
+.card-excerpt {
+  flex: 1;
+  font-size: var(--nt-fs-small);
+  color: var(--nt-ink-soft);
+}
+
+.card-go {
+  font-size: var(--nt-fs-meta);
+  color: var(--nt-ink-muted);
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.card:hover .card-go {
+  color: var(--nt-signal);
+  transform: translateX(var(--hf-space-1));
+}
+
+@keyframes deal {
+  from {
+    opacity: 0;
+    transform: translateY(var(--hf-space-3));
+  }
+}
+
+@media (max-width: 960px) {
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    animation: none;
+  }
+}

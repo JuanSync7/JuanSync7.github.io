@@ -1,0 +1,81 @@
+---
+import { FOLLOW } from '../../data/writing';
+import { CONTACT } from '../../data/site';
+---
+
+<section class="nt-wrap follow" aria-label="Follow">
+  <div class="panel">
+    <div class="copy">
+      <h2>{FOLLOW.title}</h2>
+      <p>{FOLLOW.body}</p>
+    </div>
+    <div class="actions">
+      <a class="primary" href={FOLLOW.feed.href}>{FOLLOW.feed.label}</a>
+      <a class="ghost" href={`mailto:${CONTACT.email}?subject=New%20posts`}>Email me</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .follow {
+    padding-bottom: var(--nt-section-y);
+  }
+
+  .panel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--hf-space-6) var(--hf-space-12);
+    padding: var(--hf-space-10);
+    border: 1px solid var(--nt-signal-line);
+    border-radius: var(--hf-radius-2xl);
+    background: var(--nt-panel-signal);
+  }
+
+  .copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-2);
+    max-width: var(--nt-measure);
+  }
+
+  h2 {
+    font-size: var(--nt-fs-h3);
+    letter-spacing: var(--nt-tracking-heading);
+  }
+
+  p {
+    color: var(--nt-ink-soft);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--hf-space-3);
+  }
+
+  .actions a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--nt-hit);
+    padding: 0 var(--hf-space-5);
+    border-radius: var(--hf-radius-pill);
+    font-size: var(--nt-fs-ui);
+  }
+
+  .primary {
+    background: var(--nt-signal);
+    color: var(--nt-signal-ink);
+  }
+
+  .night .primary:hover {
+    color: var(--nt-signal-ink);
+    background: var(--nt-ink-strong);
+  }
+
+  .ghost {
+    border: 1px solid var(--nt-line-2);
+    color: var(--nt-ink-2);
+  }
+</style>

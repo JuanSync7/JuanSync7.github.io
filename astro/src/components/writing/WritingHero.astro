@@ -1,0 +1,113 @@
+---
+import FigureCanvas from '../ui/FigureCanvas.tsx';
+import { WRITING_HERO } from '../../data/writing';
+---
+
+<section id="top" class="hero">
+  <div class="field">
+    <FigureCanvas client:load id="lattice-field" />
+  </div>
+  <div class="fade" aria-hidden="true"></div>
+  <div class="nt-wrap copy">
+    <h1>{WRITING_HERO.title}</h1>
+    <p class="body">{WRITING_HERO.body}</p>
+    <div class="actions">
+      <a class="primary" href={WRITING_HERO.primary.href}>{WRITING_HERO.primary.label}</a>
+      <a class="ghost" href={WRITING_HERO.secondary.href}>{WRITING_HERO.secondary.label}</a>
+    </div>
+    <p class="hint">{WRITING_HERO.hint}</p>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: min(78vh, calc(var(--hf-space-26) * 7));
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    border-bottom: 1px solid var(--nt-rule);
+  }
+
+  .field {
+    position: absolute;
+    inset: 0;
+  }
+
+  .fade {
+    position: absolute;
+    inset: 0;
+    background: var(--nt-grad-fade-left);
+    pointer-events: none;
+  }
+
+  /* The words sit over the lattice but let the pointer through, so the field answers
+     everywhere except on the buttons. */
+  .copy {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-6);
+    padding-top: var(--nt-section-y);
+    padding-bottom: var(--nt-section-y);
+    pointer-events: none;
+  }
+
+  h1 {
+    max-width: 11ch;
+    font-size: var(--nt-fs-hero);
+    line-height: var(--nt-lh-tight);
+    letter-spacing: var(--nt-tracking-display);
+  }
+
+  .body {
+    max-width: var(--nt-measure);
+    font-size: var(--nt-fs-intro);
+    color: var(--nt-ink-soft);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--hf-space-3);
+    pointer-events: auto;
+  }
+
+  .actions a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--nt-hit);
+    padding: 0 var(--hf-space-5);
+    border-radius: var(--hf-radius-pill);
+    font-size: var(--nt-fs-ui);
+  }
+
+  .primary {
+    background: var(--nt-signal);
+    color: var(--nt-signal-ink);
+  }
+
+  .night .primary:hover {
+    color: var(--nt-signal-ink);
+    background: var(--nt-ink-strong);
+  }
+
+  .ghost {
+    border: 1px solid var(--nt-line-2);
+    background: var(--nt-scrim);
+    color: var(--nt-ink-2);
+  }
+
+  .hint {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-caption);
+    color: var(--nt-ink-faint);
+  }
+
+  @media (hover: none) {
+    .hint {
+      display: none;
+    }
+  }
+</style>

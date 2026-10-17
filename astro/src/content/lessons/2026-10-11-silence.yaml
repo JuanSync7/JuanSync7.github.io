@@ -1,0 +1,4 @@
+date: 2026-10-11
+tag: reporting
+title: "Silence is the absence of reporting, not of problems."
+why: "A block with no regression results isn't passing. No evidence means unknown, never green."

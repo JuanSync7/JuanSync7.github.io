@@ -20,6 +20,7 @@ const { title, description = 'Juan Kok: Senior AI Engineer. LLM platforms, agent
     <meta name="description" content={description} />
     {noindex ? <meta name="robots" content="noindex" /> : null}
     <title>{title}</title>
+    <slot name="head" />
   </head>
   <body class="night">
     <slot />

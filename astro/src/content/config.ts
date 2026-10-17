@@ -47,4 +47,15 @@ const learn = defineCollection({
   }),
 });
 
-export const collections = { blog, releases, learn };
+// One lesson per file, named <date>-<slug>.yaml: the blog's lesson log reads them all.
+const lessons = defineCollection({
+  type: 'data',
+  schema: z.object({
+    date: z.coerce.date(),
+    tag: z.string(),
+    title: z.string(),
+    why: z.string(),
+  }),
+});
+
+export const collections = { blog, releases, learn, lessons };
