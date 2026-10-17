@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Lesson } from './types';
 import './lesson-log.css';
 
@@ -56,9 +56,13 @@ export default function LessonLog({ lessons, note }: Props) {
   // The build knows only its own date, so the grid is anchored to the newest lesson until
   // the reader's clock is available, then to the reader's today.
   const [today, setToday] = useState(() => utcDay(lessons[0]?.iso ?? '2026-01-01'));
+  const scroller = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const now = new Date();
     setToday(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+    // When the grid scrolls (on a phone), open it on this week, at the right-hand end.
+    const el = scroller.current;
+    if (el) el.scrollLeft = el.scrollWidth;
   }, []);
 
   const counts = new Map<string, number>();
@@ -91,18 +95,21 @@ export default function LessonLog({ lessons, note }: Props) {
             more
           </span>
         </div>
-        <div className="log-months" aria-hidden="true">
-          {months.map((m, i) => (
-            <span key={i}>{m}</span>
-          ))}
-        </div>
-        <div className="log-cells" role="group" aria-label="Days with lessons">
-          {cells.map((c) => {
-            const pick = first.get(c.iso);
-            const sel = lesson?.iso === c.iso;
-            const cls = ['cell', `l${Math.min(3, c.count)}`, c.future ? 'is-future' : '', c.today ? 'is-today' : '', sel ? 'is-sel' : ''].filter(Boolean).join(' ');
-            return <button key={c.iso} type="button" className={cls} disabled={pick === undefined} aria-label={c.label} aria-pressed={sel} onClick={() => pick !== undefined && show(pick)} />;
-          })}
+        {/* On a phone the cells keep a usable size and the grid scrolls sideways. */}
+        <div className="log-scroll" ref={scroller}>
+          <div className="log-months" aria-hidden="true">
+            {months.map((m, i) => (
+              <span key={i}>{m}</span>
+            ))}
+          </div>
+          <div className="log-cells" role="group" aria-label="Days with lessons">
+            {cells.map((c) => {
+              const pick = first.get(c.iso);
+              const sel = lesson?.iso === c.iso;
+              const cls = ['cell', `l${Math.min(3, c.count)}`, c.future ? 'is-future' : '', c.today ? 'is-today' : '', sel ? 'is-sel' : ''].filter(Boolean).join(' ');
+              return <button key={c.iso} type="button" className={cls} disabled={pick === undefined} aria-label={c.label} aria-pressed={sel} onClick={() => pick !== undefined && show(pick)} />;
+            })}
+          </div>
         </div>
         <span className="log-note">{note}</span>
       </div>

@@ -24,9 +24,12 @@ export default function FigureCanvas({ id, className, readout = false, freezeAt,
   const figure = useFigureLoop(ref, { id, freezeAt, pointerAt, fixtures, onReadout: readout ? setText : undefined });
   return (
     <div className={`figure-canvas${className ? ` ${className}` : ''}`} data-figure={id} data-style={figure?.style}>
-      <canvas ref={ref} role="img" aria-label={figure?.alt ?? ''} />
+      {/* The canvas is an image only once its figure, and so its alt text, has loaded; until
+          then it is hidden from assistive tech rather than an image with no name. */}
+      <canvas ref={ref} role={figure ? 'img' : undefined} aria-label={figure?.alt} aria-hidden={figure ? undefined : true} />
+      {/* The read-out follows the pointer: a visual aid, not news to announce. */}
       {readout ? (
-        <span className="figure-readout" aria-live="polite">
+        <span className="figure-readout" aria-hidden="true">
           {text}
         </span>
       ) : null}

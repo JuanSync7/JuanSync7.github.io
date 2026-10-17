@@ -1,6 +1,6 @@
 # The styles
 
-Ten techniques. Each figure declares one as `style`. A page varies them (rule 03). For
+Nine techniques. Each figure declares one as `style`. A page varies them (rule 03). For
 each: when it suits a subject, the recipe in kit calls, the parameters that give it its
 character, what gets it rejected, and the figures that already use it (read one before
 writing another).

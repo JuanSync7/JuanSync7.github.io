@@ -95,6 +95,3 @@ export const STEPS = [
   { label: 'to reach', text: 'models · MCP tools · usage for the dashboards' },
   { label: 'next', text: 'Company brain: a knowledge graph of company activity', next: true },
 ] as const;
-
-export const MAP_SUMMARY =
-  'System map. Engineers use Claude Code, project leads the Jarvis dashboard, all staff Open WebUI, management the dashboards. Claude Code and the Jarvis dashboard feed the Jarvis agentic ledger, which also takes rules from experience-vault and its template from project-keel. Open WebUI queries the knowledge bases, which doc2md fills. Jarvis agents and the knowledge bases call models through the bedrock-platform gateway, which Identity guards. The gateway reaches MCP tools and models, reports usage to the dashboards, and will feed the company brain.';

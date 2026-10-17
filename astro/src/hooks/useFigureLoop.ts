@@ -49,8 +49,12 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
     const pulses: { x: number; y: number; born: number }[] = [];
     const cleanups: (() => void)[] = [];
     let size: [number, number, number] | null = null;
+    // A figure that throws is stopped, not retried sixty times a second: the error is on the
+    // canvas for the audit, and the loop does no more work.
+    let broken = false;
 
     const fail = (err: unknown): void => {
+      broken = true;
       canvas.dataset.error = err instanceof Error ? err.message : String(err);
       console.error(`figure ${id}:`, err);
     };
@@ -61,7 +65,7 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
       return { t, dt, hover, pointer: { ...pointer }, pulses: ps, still };
     };
     const draw = (dt: number): void => {
-      if (!inst) return;
+      if (!inst || broken) return;
       const s = performance.now();
       let r: string | void;
       try {
@@ -95,7 +99,7 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
       sum = 0;
       max = 0;
       const steps = Math.round((freezeAt ?? REST_T) / STEP);
-      for (let i = 0; i < steps; i++) {
+      for (let i = 0; i < steps && !broken; i++) {
         t += STEP;
         draw(STEP);
       }
@@ -111,7 +115,7 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
       t += dt;
       draw(dt);
       canvas.dataset.ready = '1';
-      raf = requestAnimationFrame(tick);
+      raf = broken ? 0 : requestAnimationFrame(tick);
     };
     const start = (): void => {
       if (still) settle();
@@ -162,6 +166,9 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
         });
         listen('pointerdown', (e) => {
           at(e);
+          // Under reduced motion time stands still, so a pulse would never age out; there is
+          // no animation to show it anyway.
+          if (reduced) return;
           pulses.push({ x: pointer.x, y: pointer.y, born: t });
         });
       })

@@ -23,6 +23,15 @@
   cursor: pointer;
 }
 
+.book-pause {
+  width: auto;
+  margin-right: auto;
+  padding: 0 var(--hf-space-4);
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-caption);
+  color: var(--nt-ink-muted);
+}
+
 .book-ctl:hover {
   border-color: var(--nt-line-4);
 }

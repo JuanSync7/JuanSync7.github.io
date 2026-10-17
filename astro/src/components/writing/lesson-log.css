@@ -43,10 +43,19 @@
   border-radius: var(--hf-radius-sm);
 }
 
+.log-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hf-space-1);
+  overflow-x: auto;
+}
+
+/* Cells never shrink below 24px, the smallest comfortable target; below that the grid
+   scrolls inside its panel rather than shrinking. */
 .log-months,
 .log-cells {
   display: grid;
-  grid-template-columns: repeat(16, minmax(0, 1fr));
+  grid-template-columns: repeat(16, minmax(var(--hf-space-6), 1fr));
   gap: var(--hf-space-1);
 }
 

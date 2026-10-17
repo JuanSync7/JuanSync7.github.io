@@ -1,5 +1,5 @@
 ---
-import { EDGES, LABELS, MAP_H, MAP_SUMMARY, MAP_W, NODES, STEPS } from '../../data/system-map';
+import { EDGES, LABELS, MAP_H, MAP_W, NODES, STEPS } from '../../data/system-map';
 
 // The map is words and connections, so it is DOM, not a figure (CLAUDE.md, Figures 2):
 // boxes are real text, and one SVG layer underneath carries the connectors.
@@ -13,7 +13,9 @@ const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([
     <span class="key">arrows flow the way data moves · dashed = next</span>
   </div>
 
-  <div class="map" role="img" aria-label={MAP_SUMMARY}>
+  {/* Screen readers get the steps below, in reading order; the map is the same story laid
+      out for the eye, so it is hidden from them rather than read box by box. */}
+  <div class="map" aria-hidden="true">
     <svg class="wires" viewBox={`0 0 ${MAP_W} ${MAP_H}`} aria-hidden="true">
       <defs>
         <marker id="map-head" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto">
@@ -194,8 +196,14 @@ const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([
     color: var(--nt-ink-faint);
   }
 
+  /* Above the breakpoint the steps stay in the page for assistive tech, visually hidden. */
   .steps {
-    display: none;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
     flex-direction: column;
     gap: var(--hf-space-3);
     margin: 0;
@@ -241,6 +249,12 @@ const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([
     }
 
     .steps {
+      position: static;
+      width: auto;
+      height: auto;
+      overflow: visible;
+      clip: auto;
+      white-space: normal;
       display: flex;
     }
   }

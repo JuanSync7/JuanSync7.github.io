@@ -62,6 +62,8 @@ what it chose. *(invariant: `signal` at most 35% of the ink; a figure with no si
   continuous input follows on a spring or `follow`; a discrete change eases out over ~700 ms
   (`kit/motion.ts`). Randomness is drawn from the seeded `rng` in `setup`; anything that
   must vary over time samples `noise(x, t)` so it changes smoothly.
+- **Under `still`, snap:** with reduced motion a pointer move redraws once with `dt = 0`, so
+  anything eased with `follow` never moves. Write `x = still ? target : follow(x, target, dt)`.
 - **Rejected when:** timers, listeners, `Math.random`, wall-clock reads; anything that
   re-randomises per frame (shimmer); anything still moving under reduced motion.
 
@@ -85,8 +87,10 @@ what it chose. *(invariant: `signal` at most 35% of the ink; a figure with no si
 ### 10 · rest: the still frame is the thumbnail
 Under reduced motion, and in every capture, the figure is its rest frame. It must hold up
 alone. *(look questions 1 and 2)*
-- **Keep it:** compose rest on purpose: an asymmetry, a lean, one thing lit. The clock shows
-  rest at 1.2 s, so design what the figure looks like then.
+- **Keep it:** compose rest on purpose: an asymmetry, a lean, one thing lit. Readers with
+  reduced motion see the figure at 1.2 s (`REST_T` in the clock): that is the sheet's
+  "reduced motion" picture, so judge rest there too. The audit's rest and phone shots are
+  taken earlier, at 0.8 s, and must hold up as well.
 - **Rejected when:** rest is a flat grid, an empty field, or a frame that looks unfinished.
 
 ### 11 · motion: it moves because it means something

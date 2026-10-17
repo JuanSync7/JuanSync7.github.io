@@ -1,6 +1,6 @@
 ---
 name: figure
-description: Use whenever a drawing is needed on juansync.dev — a post cover, a hero, a slide's figure, an illustration inside a post, any animated canvas or 3D piece — or when one is changed. Draws one figure in the site's style (minimal, one teal signal, wireframe, low-poly, pixel, perspective, hairline, ink, field, trace or three.js) as one file in astro/src/figures, and loops on the audit until it passes and its sheet has been looked at.
+description: Use whenever a drawing is needed on juansync.dev — a post cover, a hero, a slide's figure, an illustration inside a post, any animated canvas or 3D piece — or when one is changed. Draws one figure in the site's minimal style, with one teal signal, in one of nine techniques (wireframe, low-poly, pixel, perspective, hairline, ink, field, trace or three.js) as one file in astro/src/figures, and loops on the audit until it passes and its sheet has been looked at.
 argument-hint: "[what the figure is for]"
 ---
 
@@ -83,9 +83,12 @@ passed" without reading the sheet is not done. Never describe a figure you did n
 ## Files
 
 - `references/rules.md`: the thirteen rules, each with how to keep it and what gets a figure rejected.
-- `references/styles.md`: the ten styles, when each suits a subject, and the recipe in kit calls.
+- `references/styles.md`: the nine styles, when each suits a subject, and the recipe in kit calls.
 - `references/look.md`: what the sheet shows and the questions only eyes can answer.
 - `references/kit.md`: every kit call, the frame you are given, and the clock's guarantees.
 - `astro/scripts/figures/`: the audit. `check.mjs` (source), `look.mjs` (pictures and
-  numbers), `figure.mjs` (the loop), `thresholds.json`. `npm run figures:selftest` proves every
-  check still catches its fixture; run it after any change to the audit.
+  numbers), `figure.mjs` (the loop), `thresholds.json`. `npm run figures:selftest` proves each
+  check that has a fixture still catches it (every drawing check: colour, randomness, clock,
+  DOM, words, glow, width, parse; and every look check except `reduced`, which guards the
+  clock, not the figure). The structural checks (define, id, meta, imports, length, variety,
+  covers) have no fixture yet. Run it after any change to the audit.

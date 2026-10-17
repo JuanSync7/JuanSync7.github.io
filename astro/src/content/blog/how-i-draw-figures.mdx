@@ -26,7 +26,7 @@ Each file declares what it is before it draws anything: an id, a title, alt text
 
 There are nine styles: wireframe, low-poly, pixel, perspective, hairline, ink, field, trace, and three.js for the rare piece that needs a real 3D scene. Every figure uses one. Colour comes from the site's tokens and nowhere else, and there is one highlight colour, the teal, used for one thing at a time: the place to look.
 
-The styles exist so the covers can differ on purpose. The audit refuses a cover whose date neighbour uses the same style, and it refuses any style that takes more than a third of a group. That rule is the direct fix for the first blog.
+The styles exist so the covers can differ on purpose. The audit refuses a cover whose date neighbour uses the same style, and it refuses any style that takes more than a third of a group (in a small group, more than two figures). That rule is the direct fix for the first blog.
 
 <PostFigure id="crt-terminal" caption="pixel · a terminal with no letters in it. You read a shell by the shape of its lines. Point at a row for inverse video." />
 
@@ -41,7 +41,7 @@ Thirteen rules sit in the skill that draws figures. Some are taste: the object i
 - no glows, shadows or gradients, and no stroke wider than 1.5 px. Weight is opacity;
 - under 200 lines. A longer figure is usually two ideas.
 
-The static check reads every figure file and fails on any of these, with a code and a one-line reason.
+The static check reads every figure file and fails on these patterns where it can see them in the source (a colour literal, a `lineWidth` above 1.5, a call to `fillText`), with a code and a one-line reason. It reads text, so a colour or a width computed at run time slips past it. That is what the second half is for: a colour that slips past still shows up in the pixels.
 
 <PostFigure id="ink-mountains" caption="ink · after LingDong-'s shan-shui-inf: ranges drawn with a tapered brush and dry strokes under each ridge, scrolling at their own depths. Move across it to pan." />
 
@@ -60,7 +60,7 @@ Some things can only be checked by looking. So the second half of the audit open
 
 It also lays the six pictures out on one sheet, and the last rule is that someone reads the sheet before calling the figure done. The numbers catch what is wrong; they don't catch what is ugly. Half the fixes I made came from the sheet, not the numbers.
 
-Every check is proved by a fixture: a deliberately broken figure that the check must catch. If a change to the audit stops catching one of them, the audit is what's broken.
+The checks that judge a drawing are each proved by a fixture: a deliberately broken figure that the check must catch. If a change to the audit stops catching one of them, the audit is what's broken. The structural checks (naming, metadata, imports, length, the variety rule) don't have fixtures yet; that's the next gap to close.
 
 <PostFigure id="eda-lattice" caption="wireframe · a design as a lattice of nodes, and one net traced through it hop by hop. Drag across it to turn the lattice." />
 

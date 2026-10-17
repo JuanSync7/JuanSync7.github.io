@@ -20,6 +20,8 @@ export default function FeaturedBook({ pages }: Props) {
   const [dir, setDir] = useState<Dir>('next');
   const [held, setHeld] = useState(false);
   const [still, setStill] = useState(false);
+  // An explicit stop, for readers who can't hover: touch, keyboard, screen reader.
+  const [paused, setPaused] = useState(false);
   const n = pages.length;
 
   const go = (to: number, d: Dir): void => {
@@ -39,14 +41,14 @@ export default function FeaturedBook({ pages }: Props) {
   }, []);
 
   useEffect(() => {
-    if (held || still || n < 2) return undefined;
+    if (held || paused || still || n < 2) return undefined;
     const id = window.setTimeout(() => {
       setPrev(slide);
       setDir('next');
       setSlide((slide + 1) % n);
     }, DWELL_MS);
     return () => window.clearTimeout(id);
-  }, [slide, held, still, n]);
+  }, [slide, held, paused, still, n]);
 
   const state = (i: number): string => {
     if (i === slide) return `page is-active dir-${dir}`;
@@ -56,13 +58,18 @@ export default function FeaturedBook({ pages }: Props) {
 
   return (
     <div
-      className={held ? 'book is-held' : 'book'}
+      className={held || paused ? 'book is-held' : 'book'}
       onMouseEnter={() => setHeld(true)}
       onMouseLeave={() => setHeld(false)}
       onFocus={() => setHeld(true)}
       onBlur={() => setHeld(false)}
     >
       <div className="book-controls">
+        {still ? null : (
+          <button type="button" className="book-ctl book-pause" aria-pressed={paused} onClick={() => setPaused((p) => !p)}>
+            {paused ? 'play' : 'pause'}
+          </button>
+        )}
         <button type="button" className="book-ctl" aria-label="Previous explainer" onClick={() => go(slide - 1, 'prev')}>
           ←
         </button>

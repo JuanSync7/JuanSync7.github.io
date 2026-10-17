@@ -24,7 +24,10 @@ update: (frame) => string | void, fallback: (canvasFrame) => string | void })`.
 
 - `t` is the figure's own time and stops while it is offscreen; `dt` is capped at 50 ms.
 - `hover` eases 0 → 1 while the pointer is over the canvas; `pointer` is 0..1 across it.
-- `pulses` lists clicks with their age in seconds, for two seconds.
+  Under `still`, `hover` is 0 or 1 and pointer moves redraw with `dt = 0`: snap to targets
+  (`still ? target : follow(...)`) or the figure will not answer.
+- `pulses` lists clicks with their age in seconds, for two seconds (none under reduced
+  motion).
 - Under reduced motion, or a frozen capture, the figure is simulated from 0 to rest (1.2 s,
   or the frozen time) in 1/60 s steps and shown once, with `still: true`. Each simulation
   starts from fresh state (the figure is resized, so `setup` runs again), so a figure may

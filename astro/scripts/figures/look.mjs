@@ -61,6 +61,23 @@ async function serve() {
  *  fallback is deprecated and that screenshots stall the GPU on every read-back. */
 const NOISE = /\[vite\]|Download the React DevTools|GroupMarkerNotSet|GL Driver Message|enable-unsafe-swiftshader/;
 
+/** Loads every figure once before any shot, so the dev server has compiled each module and
+ *  finished bundling dependencies. A first request can otherwise land mid-re-bundle and fail
+ *  with a 504 that says nothing about the figure. */
+async function warm(browser, url) {
+  const page = await browser.newPage();
+  await page.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.fulfill({ status: 200, contentType: 'text/css', body: '' }));
+  for (let attempt = 0; attempt < 3; attempt++) {
+    await page.goto(`${url}/figures${fixtures ? '?fixtures=1' : ''}`, { waitUntil: 'load' });
+    const settled = await page
+      .waitForFunction(() => document.querySelector('[data-bench-error]') !== null || [...document.querySelectorAll('canvas')].some((c) => c.dataset.ready === '1'), null, { timeout: 30000 })
+      .then(() => page.$('[data-bench-error]'))
+      .catch(() => 'timeout');
+    if (settled === null) break;
+  }
+  await page.close();
+}
+
 async function shoot(browser, url, id, { query = '', width = TH.width, viewport = 1280, reduced = false, live = false } = {}) {
   const ctx = await browser.newContext({ viewport: { width: viewport, height: 900 }, reducedMotion: reduced ? 'reduce' : 'no-preference' });
   const page = await ctx.newPage();
@@ -173,6 +190,7 @@ if (figs.length === 0) {
 mkdirSync(OUT, { recursive: true });
 const server = await serve();
 const browser = await chromium.launch({ args: process.env.LOOK_GPU_FLAGS ? ['--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--use-angle=swiftshader'] : [] });
+await warm(browser, server.url);
 const results = [];
 try {
   for (const fig of figs) {
