@@ -5,6 +5,8 @@
  * per problem, then exits 1 if there was any. It catches what is mechanical; the look
  * (look.mjs) catches what only a picture shows. Each line starts with the check's code:
  *
+ *   parse    the file parses as TypeScript (a syntax error otherwise surfaces only as a 500
+ *            from the dev server, after the look has waited out its timeout)
  *   define   the file's default export is defineCanvasFigure(...) or defineThreeFigure(...)
  *   id       the id is the file name, in kebab-case
  *   meta     title, alt, idea, style, motion, answers, group, seed and aspect are all declared
@@ -28,6 +30,7 @@
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, basename, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { transformSync } from 'esbuild';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const FIG_DIR = join(ROOT, 'src', 'figures');
@@ -71,6 +74,16 @@ function bare(src, strings = true) {
   return out;
 }
 
+function parseError(raw) {
+  try {
+    transformSync(raw, { loader: 'ts' });
+    return null;
+  } catch (err) {
+    const e = err.errors?.[0];
+    return e ? `line ${e.location?.line}:${e.location?.column}: ${e.text}` : String(err.message).split('\n')[0];
+  }
+}
+
 const RULES = [
   ['colour', (s) => /['"`][^'"`]*(#[0-9a-fA-F]{3,8}\b|\brgba?\(|\bhsla?\()/.test(s.withStrings) || /\b0x[0-9a-fA-F]{6}\b/.test(s.code), 'colour literal: take every colour from kit/ink (tone, ink, mix, hexOf)'],
   ['random', (s) => /Math\.random\b/.test(s.code), 'Math.random: use the seeded rng from setup or the frame'],
@@ -89,6 +102,8 @@ function checkFile(path, fixture) {
   const s = { raw, code: bare(raw, false), withStrings: bare(raw, true) };
   const out = [];
   const fail = (code, msg) => out.push({ id, code, msg });
+  const broken = parseError(raw);
+  if (broken) fail('parse', broken);
   const isThree = /export default defineThreeFigure\s*(<[^>]*>)?\s*\(/.test(s.code);
   if (!isThree && !/export default defineCanvasFigure\s*(<[^>]*>)?\s*\(/.test(s.code)) fail('define', 'default export is not defineCanvasFigure(...) or defineThreeFigure(...)');
   const field = (k) => s.withStrings.match(new RegExp(`\\n\\s*${k}:\\s*('([^']*)'|[^,\\n]+)`));
@@ -161,6 +176,11 @@ if (args.includes('--list')) {
 
 if (selftest) {
   let bad = 0;
+  // A fixture that does not parse would also break the bench and astro check, so the parse
+  // check is proved here on a literal instead: the apostrophe that once cost a 25 s timeout.
+  const parseCaught = parseError("const idea = 'the pointer's height';") !== null && parseError("const idea = 'ok';") === null;
+  if (!parseCaught) bad++;
+  console.log(`${parseCaught ? 'ok  ' : 'FAIL'}  ${'(inline parse)'.padEnd(16)} expected [parse]  got [${parseCaught ? 'parse' : ''}]`);
   for (const r of results) {
     const want = (r.expect ?? '').split(',').map((x) => x.trim()).filter((x) => x && x !== 'none').sort();
     const got = [...new Set(r.problems.map((p) => p.code))].sort();

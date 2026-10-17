@@ -1,7 +1,35 @@
 /** Measures a screenshot of a figure against the night palette. */
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { PNG } from 'pngjs';
 
 const GROUND = [7, 8, 12];
+
+/** The night neutrals are blue-grey, not grey: line4 (#3a4054) has saturation 0.31 and line
+ *  0.42. A fixed saturation cut-off would call the palette's own tokens off-palette, so the
+ *  neutral band (hue range and top saturation) is read from palette.ts itself, every token
+ *  except the signal family, and widened by a small margin for antialiasing. */
+function neutralBand() {
+  const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'src', 'styles', 'tokens', 'palette.ts'), 'utf8');
+  const block = src.match(/export const night = \{([\s\S]*?)\} as const/)?.[1] ?? '';
+  let lo = 360;
+  let hi = 0;
+  let sMax = 0;
+  for (const [, key, hex] of block.matchAll(/(\w+):\s*'#([0-9a-fA-F]{6})'/g)) {
+    if (/signal/i.test(key)) continue;
+    const [r, g, b] = [0, 2, 4].map((k) => parseInt(hex.slice(k, k + 2), 16));
+    const mx = Math.max(r, g, b);
+    if (mx - Math.min(r, g, b) === 0) continue;
+    const h = hueOf(r, g, b);
+    lo = Math.min(lo, h);
+    hi = Math.max(hi, h);
+    sMax = Math.max(sMax, (mx - Math.min(r, g, b)) / mx);
+  }
+  return { lo: lo - 8, hi: hi + 8, sMax: sMax + 0.04 };
+}
+
+export const NEUTRAL = neutralBand();
 
 export function decode(buf) {
   return PNG.sync.read(buf);
@@ -43,8 +71,9 @@ export function measure(png, th) {
       const s = mx === 0 ? 0 : (mx - Math.min(r, g, b)) / mx;
       if (s > th.chromaS && mx / 255 > th.chromaV) {
         const dh = Math.abs(((hueOf(r, g, b) - th.signalHue + 540) % 360) - 180);
+        const h = hueOf(r, g, b);
         if (dh <= th.signalHueTol) signal++;
-        else off++;
+        else if (!(h >= NEUTRAL.lo && h <= NEUTRAL.hi && s <= NEUTRAL.sMax)) off++;
       }
     }
   }

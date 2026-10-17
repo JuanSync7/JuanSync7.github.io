@@ -85,3 +85,39 @@ export function shadeMesh(ctx: CanvasRenderingContext2D, m: Mesh, cam: Camera, l
     ctx.stroke();
   }
 }
+
+export interface BoxTones {
+  /** Fill of the top face. */
+  top: string;
+  /** Fills of the two faces toward the viewer. */
+  left: string;
+  right: string;
+  /** Silhouette stroke. */
+  edge: string;
+  /** The one inner crease along the top's near edges; dimmer than the edge. */
+  crease: string;
+}
+
+/** A box seen from above-front (any camera with yaw in 0..90° and pitch > 0): filled faces,
+ *  one silhouette, one crease, and no vertical corner line (hairline rule). x and z span the
+ *  footprint, y0..y1 the height. */
+export function box(ctx: CanvasRenderingContext2D, cam: Camera, x0: number, z0: number, x1: number, z1: number, y0: number, y1: number, t: BoxTones): void {
+  const p = (x: number, y: number, z: number): ScreenPoint => project(cam, x, y, z);
+  const tb = p(x0, y1, z0), tr = p(x1, y1, z0), tf = p(x1, y1, z1), tl = p(x0, y1, z1);
+  const br = p(x1, y0, z0), bf = p(x1, y0, z1), bl = p(x0, y0, z1);
+  poly(ctx, [tr, tf, bf, br]);
+  ctx.fillStyle = t.right;
+  ctx.fill();
+  poly(ctx, [tl, tf, bf, bl]);
+  ctx.fillStyle = t.left;
+  ctx.fill();
+  poly(ctx, [tb, tr, tf, tl]);
+  ctx.fillStyle = t.top;
+  ctx.fill();
+  poly(ctx, [tb, tr, br, bf, bl, tl]);
+  ctx.strokeStyle = t.edge;
+  ctx.stroke();
+  poly(ctx, [tr, tf, tl], false);
+  ctx.strokeStyle = t.crease;
+  ctx.stroke();
+}

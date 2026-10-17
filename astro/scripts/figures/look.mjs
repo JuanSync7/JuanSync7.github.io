@@ -70,8 +70,10 @@ async function shoot(browser, url, id, { query = '', width = TH.width, viewport 
   const sel = `[data-bench-figure="${id}"]`;
   const state = { ready: false, error: null, msAvg: 0, msMax: 0, readout: '' };
   try {
-    await page.waitForSelector(`${sel} canvas[data-ready="1"]`, { timeout: 25000 });
-    state.ready = true;
+    await page.waitForSelector(`${sel} canvas[data-ready="1"], [data-bench-error]`, { timeout: 25000 });
+    const failed = await page.$eval('[data-bench-error]', (p) => p.getAttribute('data-bench-error')).catch(() => null);
+    if (failed) state.error = `module failed to load: ${failed}`;
+    else state.ready = true;
   } catch {
     state.error = await page.$eval(`${sel} canvas`, (c) => c.dataset.error ?? null).catch(() => 'never rendered');
   }

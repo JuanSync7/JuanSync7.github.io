@@ -34,6 +34,7 @@ function readQuery(): Query {
 export default function FigureBench() {
   const [query, setQuery] = useState<Query | null>(null);
   const [metas, setMetas] = useState<FigureMeta[]>([]);
+  const [failure, setFailure] = useState<string | null>(null);
 
   useEffect(() => {
     const q = readQuery();
@@ -44,13 +45,19 @@ export default function FigureBench() {
       .then((figs) => {
         if (live) setMetas(figs.map(({ mount: _m, kind: _k, ...meta }) => meta));
       })
-      .catch((err: unknown) => console.error('bench:', err));
+      .catch((err: unknown) => {
+        console.error('bench:', err);
+        if (live) setFailure(err instanceof Error ? err.message : String(err));
+      });
     return () => {
       live = false;
     };
   }, []);
 
   if (!query) return null;
+  // The audit waits on this as well as on data-ready, so a module that fails to load is
+  // reported at once instead of after the ready timeout.
+  if (failure) return <p className="bench-failure" data-bench-error={failure}>{failure}</p>;
   if (query.only.length > 0) {
     return (
       <div className="bench-solo">
