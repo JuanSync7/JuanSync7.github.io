@@ -1,0 +1,80 @@
+---
+title: "How I draw the figures on this site"
+excerpt: "Every drawing here is one small file, checked by an audit that takes pictures of it and measures them. Why I built it that way, and what the audit caught on its first day."
+category: projects
+date: 2026-10-17
+cover: contact-sheet
+readTime: "7 min"
+tags: ["Design", "Canvas", "three.js", "Agents"]
+---
+
+import PostFigure from '../../components/writing/PostFigure.astro';
+
+The first version of this blog had a cover for every post, and they all looked the same. Different shapes, same hand: low-poly blobs in the same light, one after another down the page. Nobody chose that. It is what you get when every drawing is improvised by whoever happens to be drawing it, and on this site that is mostly an agent.
+
+So I stopped asking for drawings and built a way to make them. Every drawing on the site is now a **figure**: one TypeScript file, drawn on a canvas, run by a shared clock, and checked by an audit before it counts as done. The cover above is that audit, drawn as a carousel of the stills it takes. Point at it and it turns to the one you pick.
+
+## One file, one idea
+
+A figure draws its subject as the thing itself. A pipeline is the five-stage chart, moving. Timing closure is a logic analyser capture with the critical edge lit. If an idea only makes sense with labels on boxes, it is a diagram, and diagrams on this site are real text in the page (the system map on the home page is one), not pictures.
+
+Each file declares what it is before it draws anything: an id, a title, alt text, the idea in a sentence, a style, how it moves, whether it answers the pointer, and a seed. The audit reads those and holds the drawing to them.
+
+<PostFigure id="pipeline-steps" caption="trace · rows are instructions, columns are cycles. A dependent instruction stalls, and forwarding (the teal hook) hands it the value. Point at a column." />
+
+## A small vocabulary
+
+There are nine styles: wireframe, low-poly, pixel, perspective, hairline, ink, field, trace, and three.js for the rare piece that needs a real 3D scene. Every figure uses one. Colour comes from the site's tokens and nowhere else, and there is one highlight colour, the teal, used for one thing at a time: the place to look.
+
+The styles exist so the covers can differ on purpose. The audit refuses a cover whose date neighbour uses the same style, and it refuses any style that takes more than a third of a group. That rule is the direct fix for the first blog.
+
+<PostFigure id="crt-terminal" caption="pixel · a terminal with no letters in it. You read a shell by the shape of its lines. Point at a row for inverse video." />
+
+The kit underneath is small on purpose: a camera that projects 3D points, a few meshes, a brush that tapers like ink, a dither for pixel tone, seeded noise, and easing. Everything else is the figure's own drawing.
+
+## Rules that are not advice
+
+Thirteen rules sit in the skill that draws figures. Some are taste: the object is the explanation; one idea per figure; the rest frame must already say it. Most are mechanical, and a mechanical rule should be a check, not a sentence someone has to remember:
+
+- no colour literals, no `Math.random` in a frame, no timers or listeners of its own (one clock owns time and input);
+- no text on the canvas: a figure names what is under the pointer in a small read-out instead;
+- no glows, shadows or gradients, and no stroke wider than 1.5 px. Weight is opacity;
+- under 200 lines. A longer figure is usually two ideas.
+
+The static check reads every figure file and fails on any of these, with a code and a one-line reason.
+
+<PostFigure id="ink-mountains" caption="ink · after LingDong-'s shan-shui-inf: ranges drawn with a tapered brush and dry strokes under each ridge, scrolling at their own depths. Move across it to pan." />
+
+## The audit takes pictures
+
+Some things can only be checked by looking. So the second half of the audit opens every figure in a headless browser and photographs it six ways: at rest, a little later, with the pointer on it, live, at phone width, and with reduced motion on. Then it measures the pictures:
+
+| check | fails when |
+| --- | --- |
+| blank, wash | almost nothing is drawn, or ink covers more than half the frame |
+| palette, signal | a colour outside the tokens appears, or the teal is more than a third of the ink |
+| motion | a figure that claims to move doesn't, or a still one does |
+| answer | a figure that claims to answer the pointer barely changes under it |
+| reduced | it keeps moving when the reader asked for less motion |
+| perf | a frame takes too long on average |
+
+It also lays the six pictures out on one sheet, and the last rule is that someone reads the sheet before calling the figure done. The numbers catch what is wrong; they don't catch what is ugly. Half the fixes I made came from the sheet, not the numbers.
+
+Every check is proved by a fixture: a deliberately broken figure that the check must catch. If a change to the audit stops catching one of them, the audit is what's broken.
+
+<PostFigure id="eda-lattice" caption="wireframe · a design as a lattice of nodes, and one net traced through it hop by hop. Drag across it to turn the lattice." />
+
+## What it caught on its first day
+
+The audit started earning its keep while the first twenty figures were being drawn:
+
+- **A syntax error showed up as a timeout.** A stray apostrophe in a description meant the dev server returned an error page, and the audit waited 25 seconds for a canvas that never came. Now the static check parses each file first, and a page that fails to load reports it at once.
+- **The palette check failed the palette.** The site's neutrals are blue-greys, and one of them was saturated enough to count as an off-palette colour. Rather than loosen a threshold, the check now reads the neutral band from the token file itself.
+- **Stills weren't stills.** Frozen captures simulate a figure up to a fixed time, but the clock didn't reset a figure's state before simulating again, so anything that accumulates (a scroll, a drift) gave a different picture each time. That was a real bug in the clock, and the audit found it.
+- **Figures that claimed to answer didn't.** A logic analyser that only moved its cursor, a cup that only steamed a little higher. Both now do something worth pointing at: the capture stops and measures its slack, and the cup lifts off its step.
+
+None of these was a problem with the drawings that a person would have seen in one look. That is the point of a gate: it catches what nobody was going to look for.
+
+## Why bother
+
+Because the drawings are made by an agent and reviewed by me, and the expensive part is the review. A gate that rejects the mechanical mistakes means that by the time I look at a sheet, the only questions left are the ones that need taste. That is the same reason I put gates in front of agents at work: done is a green check plus someone who looked, never a report that it's fine.

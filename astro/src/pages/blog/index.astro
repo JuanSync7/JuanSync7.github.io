@@ -32,7 +32,7 @@ const posts: PostSummary[] = entries.map((e) => ({
 const featured: FeaturedPage[] = FEATURED.items.flatMap((f) => {
   const post = entries.find((e) => e.slug === f.slug);
   if (!post) throw new Error(`featured post "${f.slug}" is not in the blog collection`);
-  return [{ ...f, title: post.data.title, date: show(post.data.date), read: post.data.readTime }];
+  return [{ ...f, href: post.data.externalUrl ?? `/blog/${post.slug}`, title: post.data.title, date: show(post.data.date), read: post.data.readTime }];
 });
 
 const lessons: Lesson[] = (await getCollection('lessons'))

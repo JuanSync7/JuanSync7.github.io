@@ -26,9 +26,12 @@ update: (frame) => string | void, fallback: (canvasFrame) => string | void })`.
 - `hover` eases 0 → 1 while the pointer is over the canvas; `pointer` is 0..1 across it.
 - `pulses` lists clicks with their age in seconds, for two seconds.
 - Under reduced motion, or a frozen capture, the figure is simulated from 0 to rest (1.2 s,
-  or the frozen time) in 1/60 s steps and shown once, with `still: true`.
+  or the frozen time) in 1/60 s steps and shown once, with `still: true`. Each simulation
+  starts from fresh state (the figure is resized, so `setup` runs again), so a figure may
+  accumulate in `state` (a scroll, a drift) and its still still repeats exactly.
 - Device pixel ratio is capped at 2. The canvas carries `data-ready`, `data-frames`,
-  `data-ms-avg`, `data-ms-max`, `data-readout`, `data-error` for the audit.
+  `data-ms-avg`, `data-ms-max`, `data-readout`, `data-error` for the audit; a three.js
+  figure also carries `data-renderer` (`webgl` or `2d-fallback`).
 
 ## `kit/ink.ts`: colour
 `ink.ground(a)`, `ink.panel(a)`, `ink.line(a)`, `ink.signal(a)`, `ink.soft(a)`, `ink.faint(a)`,
@@ -51,11 +54,14 @@ is nearer); `nearness(depth, radius)` → 0 far .. 1 near.
 ## `kit/draw.ts`: strokes and faces
 `line(ctx, a, b, style)`, `poly(ctx, pts, close)`, `dot(ctx, x, y, r, style)`,
 `strokeMesh(ctx, mesh, cam, { alpha, hot, radius?, lift? })`,
-`shadeMesh(ctx, mesh, cam, light, hotTri?)`.
+`shadeMesh(ctx, mesh, cam, light, hotTri?)`,
+`box(ctx, cam, x0, z0, x1, z1, y0, y1, { top, left, right, edge, crease })` for a hairline
+slab: three filled faces, the silhouette in `edge`, the front crease in `crease`.
 
 ## `kit/brush.ts`: ink
 `brush(ctx, pts, { width, noise, wobble?, profile?, seed? })` fills a tapered stroke with the
-current `fillStyle`; `ridge(noise, x0, x1, base, height, seed, step?)` → outline points;
+current `fillStyle`; `ridge(noise, x0, x1, base, height, seed, step?, peak?)` → outline points (`peak` 0 is a
+rounded hill, 1 a pointed summit);
 `texture(ctx, top, depth, noise, every?)` strokes dry-brush marks under a ridge.
 
 ## `kit/pixel.ts`: cells

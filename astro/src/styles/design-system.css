@@ -604,3 +604,10 @@
   .ds-swatch-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
   .ds-modal-pre { font-size: var(--hf-fs-sm); }
 }
+
+/* A night-system component previewed on its own ground. */
+.night-sample {
+  padding: var(--hf-space-8);
+  border-radius: var(--hf-radius-lg);
+  background: var(--nt-ground);
+}

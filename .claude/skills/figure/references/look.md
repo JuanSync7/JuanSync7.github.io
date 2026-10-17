@@ -17,7 +17,14 @@ good. Only eyes can, so the sheet exists for you to look at.
 | reduced motion | live under `prefers-reduced-motion`: must be still |
 
 Lines in red failed and must be fixed; amber are warnings to weigh. The numbers behind them
-are in `figures-out/report.json`.
+are in `figures-out/report.json`. A three.js figure's subtitle names the renderer that ran:
+`three · webgl` means the scene itself was captured; `three · 2d-fallback` (also a warning)
+means only its fallback was, so the scene was not looked at.
+
+The look ignores console lines that come from the harness, not the figure: the dev server's
+HMR client, React's devtools hint, and headless Chromium's software-WebGL notices. Any other
+error or warning fails the `console` check. A file that does not parse never reaches the look:
+the check's `parse` code stops it first.
 
 ## What to see
 

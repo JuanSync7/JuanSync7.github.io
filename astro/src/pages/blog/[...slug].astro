@@ -1,53 +1,143 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-import Nav from '../../components/layout/Nav.tsx';
-import PostImage from '../../components/blog/PostImage.tsx';
-import ReadingProgress from '../../components/blog/ReadingProgress.tsx';
-import ShareButtons from '../../components/blog/ShareButtons.tsx';
-import BackToTop from '../../components/blog/BackToTop.tsx';
-import { catColor } from '../../components/blog/theme';
-import '../../components/blog/blog.css';
-import '../../components/blog/blog-post.css';
+import NightLayout from '../../layouts/NightLayout.astro';
+import NightNav from '../../components/layout/NightNav.astro';
+import NightFooter from '../../components/layout/NightFooter.astro';
+import FigureCanvas from '../../components/ui/FigureCanvas.tsx';
+import { CATEGORY_LABEL } from '../../data/writing';
+import '../../styles/night-prose.css';
 
 export async function getStaticPaths() {
-  const entries = await getCollection('blog');
-  return entries
-    .filter((entry) => !entry.data.externalUrl)
-    .map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
+  const entries = (await getCollection('blog'))
+    .filter((e) => !e.data.externalUrl)
+    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  return entries.map((entry, i) => ({
+    params: { slug: entry.slug },
+    props: { entry, newer: entries[i - 1] ?? null, older: entries[i + 1] ?? null },
+  }));
 }
 
-type Props = { entry: CollectionEntry<'blog'> };
-const { entry } = Astro.props;
+interface Props {
+  entry: CollectionEntry<'blog'>;
+  newer: CollectionEntry<'blog'> | null;
+  older: CollectionEntry<'blog'> | null;
+}
+
+const { entry, newer, older } = Astro.props;
 const { Content } = await entry.render();
 const { data } = entry;
-const c = catColor(data.category);
-const dateStr = data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(data.date);
 ---
 
-<Layout title={`${data.title} — blog.terminal`}>
-  <Nav client:load />
-  <ReadingProgress client:load color={c} />
-  <article class="bp blog-root" style={`--cat: ${c}`}>
-    <a class="bp-back" href="/blog">← cd ../blog</a>
-    <div class="bp-hero">
-      <PostImage category={data.category} slug={entry.slug} height={220} borderRadius="12px" />
-    </div>
-    <div class="bp-meta">
-      <span class="bp-cat">{data.category}</span>
-      <span class="bp-dim">{dateStr}</span>
-      <span class="bp-dim">·</span>
-      <span class="bp-dim">{data.readTime}</span>
-    </div>
-    <h1 class="bp-title">{data.title}</h1>
-    <p class="bp-excerpt">{data.excerpt}</p>
-    <div class="bp-rule"></div>
-    <div class="bp-body">
+<NightLayout title={`${data.title} · Juan Kok`} description={data.excerpt}>
+  <NightNav current="writing" />
+  <main class="nt-wrap post">
+    <a class="back" href="/blog/#posts">← All writing</a>
+    <header class="head">
+      <p class="meta">
+        <span class="cat">{CATEGORY_LABEL[data.category] ?? data.category}</span>
+        <span>{date}</span>
+        <span>{data.readTime}</span>
+      </p>
+      <h1>{data.title}</h1>
+      <p class="excerpt">{data.excerpt}</p>
+    </header>
+    {data.cover ? (
+      <div class="cover">
+        <FigureCanvas client:load id={data.cover} readout />
+      </div>
+    ) : null}
+    <article class="prose">
       <Content />
-    </div>
-    <div class="bp-share">
-      <ShareButtons client:load slug={entry.slug} title={data.title} color={c} />
-    </div>
-  </article>
-  <BackToTop client:load />
-</Layout>
+    </article>
+    <nav class="pager" aria-label="More posts">
+      {newer ? (
+        <a class="newer" href={`/blog/${newer.slug}`}>
+          <span class="dir">← newer</span>
+          <span>{newer.data.title}</span>
+        </a>
+      ) : <span />}
+      {older ? (
+        <a class="older" href={`/blog/${older.slug}`}>
+          <span class="dir">older →</span>
+          <span>{older.data.title}</span>
+        </a>
+      ) : null}
+    </nav>
+  </main>
+  <NightFooter />
+</NightLayout>
+
+<style>
+  .post {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-10);
+    padding-top: var(--nt-section-y-tight);
+    padding-bottom: var(--nt-section-y);
+  }
+
+  .back,
+  .meta,
+  .dir {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-caption);
+    color: var(--nt-ink-muted);
+  }
+
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-5);
+    max-width: calc(var(--nt-measure) * 1.3);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--hf-space-2) var(--hf-space-4);
+  }
+
+  .cat {
+    color: var(--nt-signal);
+  }
+
+  h1 {
+    font-size: var(--nt-fs-h1);
+    line-height: var(--nt-lh-tight);
+    letter-spacing: var(--nt-tracking-display);
+  }
+
+  .excerpt {
+    font-size: var(--nt-fs-intro);
+    color: var(--nt-ink-soft);
+  }
+
+  .cover {
+    aspect-ratio: 2;
+    overflow: hidden;
+    border: 1px solid var(--nt-line);
+    border-radius: var(--hf-radius-2xl);
+  }
+
+  .pager {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--hf-space-6);
+    padding-top: var(--hf-space-8);
+    border-top: 1px solid var(--nt-rule);
+  }
+
+  .pager a {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-1);
+    max-width: 45%;
+    color: var(--nt-ink-2);
+  }
+
+  .older {
+    margin-left: auto;
+    text-align: right;
+  }
+</style>

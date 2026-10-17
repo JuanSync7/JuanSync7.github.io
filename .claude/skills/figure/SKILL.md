@@ -52,9 +52,10 @@ Work in this order. Stop where it says stop.
    look, and writes `figures-out/<id>.png`. **Read the sheet** (Read tool, every time) and
    answer the questions in `references/look.md`. Fix, run again. Cap: six passes. If it is
    still failing after six, stop and report what is left, with the sheet.
-7. **Wire it.** A cover goes in the post's frontmatter as `cover: <id>`. Anywhere else:
-   `<FigureCanvas id="<id>" />` inside a box that sets the size (`aspect-ratio` or a height),
-   hydrated `client:visible`.
+7. **Wire it.** A cover goes in the post's frontmatter as `cover: <id>`. Inside a post (MDX):
+   `<PostFigure id="<id>" caption="…" aspect={2} />` from `src/components/writing/`.
+   Anywhere else: `<FigureCanvas id="<id>" />` inside a box that sets the size
+   (`aspect-ratio` or a height), hydrated `client:visible`.
 8. **Hand over.** Say in one line each: the object and what moves; the style and why it suits
    this subject; what the pointer does and what the read-out says; the look answers you were
    unsure of. Attach the sheet.

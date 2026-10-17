@@ -38,6 +38,10 @@ const { label, title, accent, lead, as: Tag = 'h2' } = Astro.props;
   }
 
   .title {
+    margin: 0;
+    font-family: var(--nt-display);
+    font-weight: 500;
+    color: var(--nt-ink-strong);
     font-size: var(--nt-fs-h2);
     line-height: var(--nt-lh-heading);
     letter-spacing: var(--nt-tracking-heading);
@@ -55,6 +59,8 @@ const { label, title, accent, lead, as: Tag = 'h2' } = Astro.props;
   }
 
   .lead {
+    margin: 0;
+    font-family: var(--nt-sans);
     font-size: var(--nt-fs-intro);
     color: var(--nt-ink-soft);
   }

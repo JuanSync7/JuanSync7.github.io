@@ -90,7 +90,7 @@ export default function FeaturedBook({ pages }: Props) {
                 <p className="page-blurb st">
                   {p.blurb}
                 </p>
-                <a className="page-cta st" href={`/blog/${p.slug}`} tabIndex={i === slide ? 0 : -1}>
+                <a className="page-cta st" href={p.href} tabIndex={i === slide ? 0 : -1}>
                   {p.cta} →
                 </a>
               </div>

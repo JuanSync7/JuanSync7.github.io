@@ -14,6 +14,8 @@ export interface PostSummary {
 
 export interface FeaturedPage {
   slug: string;
+  /** Where the post is read: its page, or its external home. */
+  href: string;
   title: string;
   kind: string;
   date: string;
