@@ -68,18 +68,18 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
       canvas.dataset.error = err instanceof Error ? err.message : String(err);
       console.error(`figure ${id}:`, err);
     };
-    const input = (dt: number): FrameInput => {
+    const input = (dt: number, unseen = false): FrameInput => {
       hover = still ? (pointer.active ? 1 : 0) : follow(hover, pointer.active ? 1 : 0, dt, 6);
       while (pulses.length > 0 && t - (pulses[0]?.born ?? t) > 2) pulses.shift();
       const ps = pulses.map((p) => ({ x: p.x, y: p.y, age: t - p.born }));
-      return { t, dt, hover, pointer: { ...pointer }, pulses: ps, still, data: dataRef.current };
+      return { t, dt, hover, pointer: { ...pointer }, pulses: ps, still, unseen, data: dataRef.current };
     };
-    const draw = (dt: number): void => {
+    const draw = (dt: number, unseen = false): void => {
       if (!inst || broken) return;
       const s = performance.now();
       let r: string | void;
       try {
-        r = inst.frame(input(dt));
+        r = inst.frame(input(dt, unseen));
       } catch (err) {
         fail(err);
         return;
@@ -111,7 +111,8 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
       const steps = Math.round((freezeAt ?? REST_T) / STEP);
       for (let i = 0; i < steps && !broken; i++) {
         t += STEP;
-        draw(STEP);
+        // Only the last step is shown; the ones before it need not be painted.
+        draw(STEP, i < steps - 1);
       }
       canvas.dataset.ready = '1';
     };
