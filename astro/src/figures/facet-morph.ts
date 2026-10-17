@@ -44,7 +44,14 @@ export default defineCanvasFigure<State>({
       const s = 0.9 * (1 - m) + 0.82 * m;
       return [(c[0] * (1 - m) + p[0] * m) * s, (c[1] * (1 - m) + p[1] * m) * s, (c[2] * (1 - m) + p[2] * m) * s];
     });
-    const cam = camera({ cx: w / 2, cy: h / 2, scale: Math.min(w, h) * 0.42, yaw: t * 0.22 + 0.4, pitch: 0.42, dist: 4 });
+    const cam = camera({
+      cx: w / 2,
+      cy: h / 2,
+      scale: Math.min(w, h) * 0.42,
+      yaw: t * 0.22 + 0.4,
+      pitch: 0.42,
+      dist: 4,
+    });
     // The facet turned most toward the viewer catches the light, like a glint on a cut stone.
     const depth = v.map((p) => project(cam, p[0], p[1], p[2])[2]);
     let glint = 0;

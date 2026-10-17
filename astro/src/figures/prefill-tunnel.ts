@@ -53,7 +53,12 @@ export default defineCanvasFigure<State>({
     ctx.strokeStyle = ink.line(0.08);
     const near = sq(0.6, 1);
     const far = sq(DEPTH + 0.7, 1);
-    const corners = (r: [number, number, number, number]): [number, number][] => [[r[0], r[1]], [r[0] + r[2], r[1]], [r[0], r[1] + r[3]], [r[0] + r[2], r[1] + r[3]]];
+    const corners = (r: [number, number, number, number]): [number, number][] => [
+      [r[0], r[1]],
+      [r[0] + r[2], r[1]],
+      [r[0], r[1] + r[3]],
+      [r[0] + r[2], r[1] + r[3]],
+    ];
     corners(near).forEach(([x, y], k) => {
       const end = corners(far)[k] ?? [cx, cy];
       ctx.beginPath();

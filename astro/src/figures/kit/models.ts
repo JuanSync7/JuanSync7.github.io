@@ -40,14 +40,41 @@ export function icosphere(level: number, radius = 1): Mesh {
   const t = (1 + Math.sqrt(5)) / 2;
   const v: Vec3[] = (
     [
-      [-1, t, 0], [1, t, 0], [-1, -t, 0], [1, -t, 0], [0, -1, t], [0, 1, t],
-      [0, -1, -t], [0, 1, -t], [t, 0, -1], [t, 0, 1], [-t, 0, -1], [-t, 0, 1],
+      [-1, t, 0],
+      [1, t, 0],
+      [-1, -t, 0],
+      [1, -t, 0],
+      [0, -1, t],
+      [0, 1, t],
+      [0, -1, -t],
+      [0, 1, -t],
+      [t, 0, -1],
+      [t, 0, 1],
+      [-t, 0, -1],
+      [-t, 0, 1],
     ] as Vec3[]
   ).map(unit);
   let f: Tri[] = [
-    [0, 11, 5], [0, 5, 1], [0, 1, 7], [0, 7, 10], [0, 10, 11], [1, 5, 9], [5, 11, 4],
-    [11, 10, 2], [10, 7, 6], [7, 1, 8], [3, 9, 4], [3, 4, 2], [3, 2, 6], [3, 6, 8],
-    [3, 8, 9], [4, 9, 5], [2, 4, 11], [6, 2, 10], [8, 6, 7], [9, 8, 1],
+    [0, 11, 5],
+    [0, 5, 1],
+    [0, 1, 7],
+    [0, 7, 10],
+    [0, 10, 11],
+    [1, 5, 9],
+    [5, 11, 4],
+    [11, 10, 2],
+    [10, 7, 6],
+    [7, 1, 8],
+    [3, 9, 4],
+    [3, 4, 2],
+    [3, 2, 6],
+    [3, 6, 8],
+    [3, 8, 9],
+    [4, 9, 5],
+    [2, 4, 11],
+    [6, 2, 10],
+    [8, 6, 7],
+    [9, 8, 1],
   ];
   for (let l = 0; l < level; l++) {
     const mids = new Map<string, number>();
@@ -81,7 +108,11 @@ export function torus(nu: number, nv: number, ring = 0.66, tube = 0.27): Mesh {
     for (let j = 0; j < nv; j++) {
       const u = (i / nu) * Math.PI * 2;
       const w = (j / nv) * Math.PI * 2;
-      v.push([(ring + tube * Math.cos(w)) * Math.cos(u), tube * Math.sin(w), (ring + tube * Math.cos(w)) * Math.sin(u)]);
+      v.push([
+        (ring + tube * Math.cos(w)) * Math.cos(u),
+        tube * Math.sin(w),
+        (ring + tube * Math.cos(w)) * Math.sin(u),
+      ]);
       const id = i * nv + j;
       e.push([id, ((i + 1) % nu) * nv + j], [id, i * nv + ((j + 1) % nv)]);
     }

@@ -20,7 +20,12 @@ interface State {
 
 const cellSize = (2 * R) / DIES;
 const inside = (i: number, j: number): boolean => {
-  const corners = [[i, j], [i + 1, j], [i, j + 1], [i + 1, j + 1]];
+  const corners = [
+    [i, j],
+    [i + 1, j],
+    [i, j + 1],
+    [i + 1, j + 1],
+  ];
   return corners.every(([a, b]) => Math.hypot(-R + (a ?? 0) * cellSize, -R + (b ?? 0) * cellSize) < R * 0.97);
 };
 
@@ -91,7 +96,12 @@ export default defineCanvasFigure<State>({
         if (!inside(i, j)) continue;
         const a = -R + i * cellSize;
         const b = -R + j * cellSize;
-        const q = [project(cam, a, 0, b), project(cam, a + cellSize, 0, b), project(cam, a + cellSize, 0, b + cellSize), project(cam, a, 0, b + cellSize)];
+        const q = [
+          project(cam, a, 0, b),
+          project(cam, a + cellSize, 0, b),
+          project(cam, a + cellSize, 0, b + cellSize),
+          project(cam, a, 0, b + cellSize),
+        ];
         q.forEach((p, k) => (k === 0 ? ctx.moveTo(p[0], p[1]) : ctx.lineTo(p[0], p[1])));
         ctx.closePath();
       }
@@ -99,7 +109,12 @@ export default defineCanvasFigure<State>({
     ctx.stroke();
 
     const lift = state.lift * LIFT;
-    const hole = [project(cam, x0, 0, z0), project(cam, x0 + cellSize, 0, z0), project(cam, x0 + cellSize, 0, z0 + cellSize), project(cam, x0, 0, z0 + cellSize)];
+    const hole = [
+      project(cam, x0, 0, z0),
+      project(cam, x0 + cellSize, 0, z0),
+      project(cam, x0 + cellSize, 0, z0 + cellSize),
+      project(cam, x0, 0, z0 + cellSize),
+    ];
     ctx.fillStyle = ink.ground();
     ctx.beginPath();
     hole.forEach((p, k) => (k === 0 ? ctx.moveTo(p[0], p[1]) : ctx.lineTo(p[0], p[1])));

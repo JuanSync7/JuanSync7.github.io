@@ -47,7 +47,16 @@ export default defineCanvasFigure<State>({
         const broad = 0.5 + 0.5 * state.noise(i * 0.53 + 4.2, li * 1.7);
         const width = span * (0.8 + 1.1 * broad);
         const wx0 = i * span - width * 0.15;
-        const top = ridge(state.noise, wx0, wx0 + width, h * L.base, h * L.height * (0.35 + 0.75 * lift), i * 13 + li * 101, 5, 0.35 + 0.6 * lift);
+        const top = ridge(
+          state.noise,
+          wx0,
+          wx0 + width,
+          h * L.base,
+          h * L.height * (0.35 + 0.75 * lift),
+          i * 13 + li * 101,
+          5,
+          0.35 + 0.6 * lift,
+        );
         const pts: Pt[] = top.map((p) => [p[0] - off, p[1]]);
         const head = pts[0];
         const tail = pts[pts.length - 1];
@@ -63,7 +72,13 @@ export default defineCanvasFigure<State>({
         ctx.fillStyle = ink.line(L.alpha);
         brush(ctx, pts, { width: L.width, noise: state.noise, wobble: 0.5, seed: i + li * 7 });
         ctx.strokeStyle = ink.line(L.alpha * 0.45);
-        texture(ctx, pts.filter((_, k) => state.noise(k * 0.9 + i, li + 0.5) > 0.12), h * L.height * 0.3, state.noise, 3);
+        texture(
+          ctx,
+          pts.filter((_, k) => state.noise(k * 0.9 + i, li + 0.5) > 0.12),
+          h * L.height * 0.3,
+          state.noise,
+          3,
+        );
       }
     });
     return pointer.active && hover > 0.3 ? 'pan' : 'rest';

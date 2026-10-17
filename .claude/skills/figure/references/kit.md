@@ -78,6 +78,21 @@ begins a projected path for you to stroke.
 `{ name, segs, dir, gap }`: built in place along y, with the direction and distance it moves
 when exploded. Add a machine here, not in a template.
 
+## Parts that templates and scenes share
+Moved out of a figure when it outgrew its length budget; add to these, not to the figure.
+- `kit/city.ts`: `district(k, rng)` → `{ parts, traces }` for each stack level (silicon cells
+  to overcity apartments and parks); `Part { kind, x, z, w, d, h }`, `STREETS`, `isBox`, `isRound`.
+- `kit/citylife.ts`: `windows(parts, rng, max?)` → `Lights`, `bridges(parts, rng, max?)`,
+  `power(parts, n?)`, `roof(parts, rng)`: what makes a district look lived in.
+- `kit/outlines.ts`: `outlines(parts)` → the wire edges of a district's parts (boxes, round
+  parts, wire trees and pines).
+- `kit/patterns.ts`: `MOTIFS`, `motif(m, pen, seed, noise)` (the pattern-cards drawings).
+- `kit/voxels.ts`: `KINDS`, `buildVoxels(spec, rng)` → `VoxelModel` (the voxel-scene objects).
+- `kit/wireobjects.ts` + `kit/machines.ts`: `KINDS`, `FRAME`, `build(spec, t)` → `{ body, hot }`
+  (the wire-object kinds; `machines.ts` holds the rocket, turbine and satellite).
+- `kit/plans.ts`: `FORMS`, `layout(spec, rng)` → towers (the city-form plans).
+- `kit/flows.ts`: `SHAPES`, `GLYPHS`, `layout`, `route`, `trace` (the workflow stations and paths).
+
 ## `kit/draw.ts`: strokes and faces
 `line(ctx, a, b, style)`, `poly(ctx, pts, close)`, `dot(ctx, x, y, r, style)`,
 `strokeMesh(ctx, mesh, cam, { alpha, hot, radius?, lift? })`,

@@ -48,10 +48,17 @@ export default defineCanvasFigure<State>({
     const rate = pointer.active ? 6 * hover + 0.5 : 50;
     state.yaw = still ? ty : follow(state.yaw, ty, dt, rate);
     state.pitch = still ? tp : follow(state.pitch, tp, dt, 4);
-    const cam = camera({ cx: w / 2, cy: h / 2, scale: Math.min(w, h) * 0.5, yaw: state.yaw, pitch: state.pitch, dist: 3.6 });
+    const cam = camera({
+      cx: w / 2,
+      cy: h / 2,
+      scale: Math.min(w, h) * 0.5,
+      yaw: state.yaw,
+      pitch: state.pitch,
+      dist: 3.6,
+    });
     strokeMesh(ctx, state.mesh, cam, { alpha: 0.85, hot: 0, radius: 1.1 });
     const hops = state.path.length - 1;
-    const shown = Math.min(hops, ((t * 4) % (hops + 6)));
+    const shown = Math.min(hops, (t * 4) % (hops + 6));
     ctx.strokeStyle = ink.signal(0.95);
     ctx.beginPath();
     for (let i = 0; i <= Math.floor(shown); i++) {

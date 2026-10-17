@@ -42,12 +42,20 @@ export default defineTemplate<P, S>({
   motion: 'ambient',
   answers: true,
   aspect: 2,
-  grammar: (rng) => ({ form: pick(rng, FORMS), arms: 2 + Math.floor(rng() * 3), wind: between(rng, 2.2, 4.5), tilt: between(rng, 0.35, 0.95), spin: (rng() < 0.5 ? -1 : 1) * between(rng, 0.06, 0.14) }),
+  grammar: (rng) => ({
+    form: pick(rng, FORMS),
+    arms: 2 + Math.floor(rng() * 3),
+    wind: between(rng, 2.2, 4.5),
+    tilt: between(rng, 0.35, 0.95),
+    spin: (rng() < 0.5 ? -1 : 1) * between(rng, 0.06, 0.14),
+  }),
   name: (p) => (p.form === 'spiral' ? `${p.arms}-arm spiral` : p.form),
-  alt: (p) => `A ${p.form === 'spiral' ? 'spiral galaxy' : p.form} drawn in faint grey points and lines on the dark, slowly moving, one mark teal.`,
+  alt: (p) =>
+    `A ${p.form === 'spiral' ? 'spiral galaxy' : p.form} drawn in faint grey points and lines on the dark, slowly moving, one mark teal.`,
   setup: ({ rng, params }) => {
     const stars: Star[] = [];
-    const count = params.form === 'constellation' ? 70 : params.form === 'orbits' ? 7 : params.form === 'spiral' ? 1100 : 520;
+    const count =
+      params.form === 'constellation' ? 70 : params.form === 'orbits' ? 7 : params.form === 'spiral' ? 1100 : 520;
     for (let i = 0; i < count; i++) {
       if (params.form === 'spiral') {
         const arm = i % params.arms;
@@ -55,7 +63,9 @@ export default defineTemplate<P, S>({
         // near the core than at the rim.
         const bulge = rng() < 0.3;
         const r = bulge ? Math.pow(rng(), 2) * 0.35 : Math.pow(rng(), 0.7);
-        const a = bulge ? rng() * Math.PI * 2 : (arm / params.arms) * Math.PI * 2 + r * params.wind + (rng() - 0.5) * (0.6 - r * 0.3);
+        const a = bulge
+          ? rng() * Math.PI * 2
+          : (arm / params.arms) * Math.PI * 2 + r * params.wind + (rng() - 0.5) * (0.6 - r * 0.3);
         stars.push({ r, a, y: (rng() - 0.5) * 0.06 * (1 - r), b: rng() });
       } else if (params.form === 'orbits') {
         stars.push({ r: 0.22 + i * 0.13 + rng() * 0.04, a: rng() * Math.PI * 2, y: 0, b: 0.3 + rng() * 0.7 });
@@ -68,7 +78,14 @@ export default defineTemplate<P, S>({
   draw: ({ ctx, w, h, t, dt, pointer, hover, still, params, state }) => {
     const target = pointer.active ? params.tilt + (0.5 - pointer.y) * 0.8 * hover : params.tilt;
     state.tilt = still ? target : follow(state.tilt, target, dt, 3);
-    const cam = camera({ cx: w / 2, cy: h / 2, scale: Math.min(w * 0.42, h * 0.95), yaw: t * params.spin, pitch: state.tilt, dist: 4 });
+    const cam = camera({
+      cx: w / 2,
+      cy: h / 2,
+      scale: Math.min(w * 0.42, h * 0.95),
+      yaw: t * params.spin,
+      pitch: state.tilt,
+      dist: 4,
+    });
     const dotAt = (x: number, y: number, z: number, b: number, hot = false): void => {
       const p = project(cam, x, y, z);
       const near = nearness(p[2], 1.2);
@@ -131,7 +148,14 @@ export default defineTemplate<P, S>({
       ctx.strokeStyle = ink.line(0.24);
       ctx.beginPath();
       for (const s of bright) {
-        const near = bright.filter((o) => o.i !== s.i).sort((m, n) => Math.hypot(m.p[0] - s.p[0], m.p[1] - s.p[1], m.p[2] - s.p[2]) - Math.hypot(n.p[0] - s.p[0], n.p[1] - s.p[1], n.p[2] - s.p[2])).slice(0, 2);
+        const near = bright
+          .filter((o) => o.i !== s.i)
+          .sort(
+            (m, n) =>
+              Math.hypot(m.p[0] - s.p[0], m.p[1] - s.p[1], m.p[2] - s.p[2]) -
+              Math.hypot(n.p[0] - s.p[0], n.p[1] - s.p[1], n.p[2] - s.p[2]),
+          )
+          .slice(0, 2);
         const a = project(cam, s.p[0], s.p[1], s.p[2]);
         for (const o of near) {
           const b = project(cam, o.p[0], o.p[1], o.p[2]);

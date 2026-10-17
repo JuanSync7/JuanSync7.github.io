@@ -15,20 +15,43 @@ type Motif = (pen: Pen) => void;
 
 const SHOTS = ['rest', 'later', 'answer', 'phone', 'reduced'] as const;
 
-const range = (n: number, f: (i: number) => [number, number]): [number, number][] => Array.from({ length: n }, (_, i) => f(i));
+const range = (n: number, f: (i: number) => [number, number]): [number, number][] =>
+  Array.from({ length: n }, (_, i) => f(i));
 
 const MOTIFS: Motif[] = [
   (pen) => {
-    for (let r = 0; r < 4; r++) pen(range(35, (i) => { const u = -0.85 + i * 0.05; return [u, -0.3 + r * 0.17 + Math.sin(u * 5 + r) * 0.05 * (1 - Math.abs(u))]; }));
+    for (let r = 0; r < 4; r++)
+      pen(
+        range(35, (i) => {
+          const u = -0.85 + i * 0.05;
+          return [u, -0.3 + r * 0.17 + Math.sin(u * 5 + r) * 0.05 * (1 - Math.abs(u))];
+        }),
+      );
   },
   (pen) => {
-    for (let i = -6; i <= 6; i++) for (let j = -2; j <= 2; j++) pen([[i * 0.13, j * 0.15], [i * 0.13 + 0.012, j * 0.15]]);
+    for (let i = -6; i <= 6; i++)
+      for (let j = -2; j <= 2; j++)
+        pen([
+          [i * 0.13, j * 0.15],
+          [i * 0.13 + 0.012, j * 0.15],
+        ]);
   },
   (pen) => {
     pen(range(9, (i) => [-0.8 + i * 0.2, i % 2 === 0 ? -0.3 : 0.25]));
-    pen([[-0.8, -0.3], [0.8, -0.3]]);
+    pen([
+      [-0.8, -0.3],
+      [0.8, -0.3],
+    ]);
   },
-  (pen) => pen([[-0.85, -0.35], [-0.45, 0.1], [-0.2, -0.1], [0.15, 0.32], [0.5, -0.05], [0.85, -0.35]]),
+  (pen) =>
+    pen([
+      [-0.85, -0.35],
+      [-0.45, 0.1],
+      [-0.2, -0.1],
+      [0.15, 0.32],
+      [0.5, -0.05],
+      [0.85, -0.35],
+    ]),
   (pen) => pen(range(12, (i) => [-0.8 + Math.floor((i + 1) / 2) * 0.3, 0.3 - Math.floor(i / 2) * 0.12])),
 ];
 
@@ -89,6 +112,6 @@ export default defineCanvasFigure<State>({
     const order = SHOTS.map((_, k) => ({ k, a: state.turn + k * STEP })).sort((p, q) => Math.cos(p.a) - Math.cos(q.a));
     const frontK = order[order.length - 1]?.k ?? 0;
     for (const { k, a } of order) frame(ctx, cam, a, k, k === frontK);
-    return pick >= 0 ? SHOTS[frontK] ?? 'rest' : 'rest';
+    return pick >= 0 ? (SHOTS[frontK] ?? 'rest') : 'rest';
   },
 });

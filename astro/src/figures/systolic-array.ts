@@ -17,12 +17,31 @@ const pos = (i: number): number => (i - (N - 1) / 2) * PITCH;
 
 function cube(ctx: CanvasRenderingContext2D, cam: Camera, x: number, z: number, h: number, style: string): void {
   const c = [
-    [x - HALF, 0, z - HALF], [x + HALF, 0, z - HALF], [x + HALF, 0, z + HALF], [x - HALF, 0, z + HALF],
-    [x - HALF, h, z - HALF], [x + HALF, h, z - HALF], [x + HALF, h, z + HALF], [x - HALF, h, z + HALF],
+    [x - HALF, 0, z - HALF],
+    [x + HALF, 0, z - HALF],
+    [x + HALF, 0, z + HALF],
+    [x - HALF, 0, z + HALF],
+    [x - HALF, h, z - HALF],
+    [x + HALF, h, z - HALF],
+    [x + HALF, h, z + HALF],
+    [x - HALF, h, z + HALF],
   ].map((p) => project(cam, p[0] ?? 0, p[1] ?? 0, p[2] ?? 0));
   ctx.strokeStyle = style;
   ctx.beginPath();
-  for (const [a, b] of [[0, 1], [1, 2], [2, 3], [3, 0], [4, 5], [5, 6], [6, 7], [7, 4], [0, 4], [1, 5], [2, 6], [3, 7]] as const) {
+  for (const [a, b] of [
+    [0, 1],
+    [1, 2],
+    [2, 3],
+    [3, 0],
+    [4, 5],
+    [5, 6],
+    [6, 7],
+    [7, 4],
+    [0, 4],
+    [1, 5],
+    [2, 6],
+    [3, 7],
+  ] as const) {
     const pa = c[a];
     const pb = c[b];
     if (!pa || !pb) continue;
@@ -45,7 +64,14 @@ export default defineCanvasFigure<null>({
   aspect: 1.6,
   setup: () => null,
   draw: ({ ctx, w, h, t, pointer, hover }) => {
-    const cam = camera({ cx: w / 2, cy: h * 0.5, scale: Math.min(w * 0.34, h * 0.56), yaw: 0.62, pitch: 0.78, dist: 4.2 });
+    const cam = camera({
+      cx: w / 2,
+      cy: h * 0.5,
+      scale: Math.min(w * 0.34, h * 0.56),
+      yaw: 0.62,
+      pitch: 0.78,
+      dist: 4.2,
+    });
     const beat = t / BEAT;
     const front = beat % (2 * N + 2);
     const pi = pointer.active && hover > 0.3 ? clamp(Math.floor(pointer.y * N), 0, N - 1) : -1;
@@ -86,7 +112,10 @@ export default defineCanvasFigure<null>({
     const step = beat % 1;
     for (let i = 0; i < N; i++) {
       const k = front - i - step;
-      for (const [x, z] of [[pos(0) - PITCH + (k + step) * PITCH, pos(i)], [pos(i), pos(0) - PITCH + (k + step) * PITCH]] as const) {
+      for (const [x, z] of [
+        [pos(0) - PITCH + (k + step) * PITCH, pos(i)],
+        [pos(i), pos(0) - PITCH + (k + step) * PITCH],
+      ] as const) {
         if (x < pos(0) - PITCH || x > pos(N - 1) || z < pos(0) - PITCH || z > pos(N - 1)) continue;
         const p = project(cam, x, 0.02, z);
         ctx.fillStyle = ink.line(0.7);

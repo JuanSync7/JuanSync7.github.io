@@ -1,0 +1,3 @@
+# The fixtures are broken on purpose (one is too long, one does not parse cleanly as a
+# figure); formatting them could change what they prove.
+src/figures/fixtures/

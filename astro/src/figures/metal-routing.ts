@@ -57,12 +57,18 @@ export default defineCanvasFigure<State>({
     const X = (g: number): number => w * 0.07 + (g * (w * 0.86)) / (COLS - 1);
     const Y = (g: number): number => h * 0.14 + (g * (h * 0.72)) / (ROWS - 1);
     ctx.fillStyle = ink.line(0.14);
-    for (let gx = 0; gx < COLS; gx++) for (let gy = 0; gy < ROWS; gy++) ctx.fillRect(X(gx) - 0.75, Y(gy) - 0.75, 1.5, 1.5);
+    for (let gx = 0; gx < COLS; gx++)
+      for (let gy = 0; gy < ROWS; gy++) ctx.fillRect(X(gx) - 0.75, Y(gy) - 0.75, 1.5, 1.5);
     const row = pointer.active ? Math.round(pointer.y * (ROWS + 1) - 1) : -1;
     const chosen = hover > 0.5 ? state.nets.findIndex((n) => n.from === row) : -1;
     const lit = pointer.active ? chosen : Math.floor(t / 2.4) % state.nets.length;
     state.nets.forEach((n, k) => {
-      const pts: [number, number][] = [[X(0), Y(n.from)], [X(n.jog), Y(n.from)], [X(n.jog), Y(n.to)], [X(COLS - 1), Y(n.to)]];
+      const pts: [number, number][] = [
+        [X(0), Y(n.from)],
+        [X(n.jog), Y(n.from)],
+        [X(n.jog), Y(n.to)],
+        [X(COLS - 1), Y(n.to)],
+      ];
       const hot = k === lit;
       const total = Math.abs(pts[3][0] - pts[0][0]) + Math.abs(pts[2][1] - pts[1][1]);
       let left = (hot ? Math.min(1, ((t * 0.5) % 1.6) / 1.2) : 1) * total;
