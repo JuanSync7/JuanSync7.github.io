@@ -36,7 +36,11 @@ function fieldLine(p: P, s: S, k: number, t: number, bump: (x: number, z: number
   for (let i = 0; i <= steps; i++) {
     const u = i / steps;
     const env = Math.sin(u * Math.PI) ** 1.5;
-    const height = (x: number, z: number): number => (s.noise(x * p.freq + t * p.speed, z * p.freq) * 0.7 + s.noise(x * p.freq * 3, z * p.freq * 3 - t * p.speed) * 0.3) * p.amp * (1 + bump(x, z));
+    const height = (x: number, z: number): number =>
+      (s.noise(x * p.freq + t * p.speed, z * p.freq) * 0.7 +
+        s.noise(x * p.freq * 3, z * p.freq * 3 - t * p.speed) * 0.3) *
+      p.amp *
+      (1 + bump(x, z));
     if (p.view === 'polar') {
       const a = u * Math.PI * 2;
       const r = 0.15 + v * 0.95;
@@ -69,10 +73,17 @@ export default defineTemplate<P, S>({
   aspect: 2,
   grammar: (rng) => {
     const view = pick(rng, VIEWS);
-    return { view, lines: view === 'polar' ? 14 + Math.floor(rng() * 8) : 16 + Math.floor(rng() * 14), amp: between(rng, 0.18, 0.34), freq: between(rng, 0.9, 2.2), speed: between(rng, 0.12, 0.3) };
+    return {
+      view,
+      lines: view === 'polar' ? 14 + Math.floor(rng() * 8) : 16 + Math.floor(rng() * 14),
+      amp: between(rng, 0.18, 0.34),
+      freq: between(rng, 0.9, 2.2),
+      speed: between(rng, 0.12, 0.3),
+    };
   },
   name: (p) => `${p.view} ridges`,
-  alt: (p) => `Grey lines displaced by a rolling noise field, seen ${p.view === 'polar' ? 'as rings round a centre' : p.view === 'cylinder' ? 'wrapped round a turning cylinder' : p.view === 'above' ? 'from above' : `from the ${p.view}`}, one line teal.`,
+  alt: (p) =>
+    `Grey lines displaced by a rolling noise field, seen ${p.view === 'polar' ? 'as rings round a centre' : p.view === 'cylinder' ? 'wrapped round a turning cylinder' : p.view === 'above' ? 'from above' : `from the ${p.view}`}, one line teal.`,
   setup: ({ rng }) => ({ noise: noise2(rng), lift: 0 }),
   draw: ({ ctx, w, h, t, dt, pointer, hover, still, params, state }) => {
     const target = pointer.active ? hover : 0;

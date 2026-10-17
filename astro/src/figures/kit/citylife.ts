@@ -48,7 +48,10 @@ export function bridges(parts: readonly Part[], rng: Rng, max = 3): Vec3[][] {
       const d = Math.hypot(a.x - b.x, a.z - b.z);
       if (out.length < max && d > 0.18 && d < 0.5 && rng() > 0.35) {
         const y = Math.min(a.h, b.h) * 0.66;
-        out.push([[a.x, y, a.z], [b.x, y, b.z]]);
+        out.push([
+          [a.x, y, a.z],
+          [b.x, y, b.z],
+        ]);
       }
     });
   });
@@ -64,7 +67,11 @@ export function power(parts: readonly Part[], n = 4): Vec3[][] {
     .filter((p) => (isBox(p.kind) || p.kind === 'apartment') && p.h >= 0.05)
     .sort((a, b) => Math.hypot(a.x - gen.x, a.z - gen.z) - Math.hypot(b.x - gen.x, b.z - gen.z))
     .slice(0, n);
-  return near.map((t): Vec3[] => [[gen.x, 0.004, gen.z], [t.x, 0.004, gen.z], [t.x, 0.004, t.z]]);
+  return near.map((t): Vec3[] => [
+    [gen.x, 0.004, gen.z],
+    [t.x, 0.004, gen.z],
+    [t.x, 0.004, t.z],
+  ]);
 }
 
 /** The roof of a standing part chosen at random, for a pipe to land on. */

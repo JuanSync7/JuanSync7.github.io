@@ -58,7 +58,8 @@ export default defineCanvasFigure<State>({
     while (startOf(g0 + 1) <= left) g0++;
     const row0 = g0 + (left - startOf(g0)) / Math.max(1, startOf(g0 + 1) - startOf(g0));
     const Y = (g: number): number => h * 0.12 + (g - row0) * ch;
-    const pick = pointer.active && hover > 0.3 ? Math.floor(left + ((pointer.x - 0.06) / 0.88) * COLS) : Math.floor(now);
+    const pick =
+      pointer.active && hover > 0.3 ? Math.floor(left + ((pointer.x - 0.06) / 0.88) * COLS) : Math.floor(now);
 
     ctx.save();
     ctx.beginPath();

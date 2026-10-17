@@ -31,7 +31,10 @@ const LIGHT: Vec3 = [0.4, 0.8, 0.45];
 
 /** A double pyramid of n sides: the shape of a cut gem or, stretched, a crystal. */
 function bipyramid(n: number, r: number, top: number, bottom: number): Mesh {
-  const v: Vec3[] = [[0, top, 0], [0, -bottom, 0]];
+  const v: Vec3[] = [
+    [0, top, 0],
+    [0, -bottom, 0],
+  ];
   for (let i = 0; i < n; i++) v.push([Math.cos((i / n) * Math.PI * 2) * r, 0, Math.sin((i / n) * Math.PI * 2) * r]);
   const f: [number, number, number][] = [];
   for (let i = 0; i < n; i++) {
@@ -67,9 +70,17 @@ export default defineTemplate<P, S>({
   motion: 'ambient',
   answers: true,
   aspect: 2,
-  grammar: (rng) => ({ kind: pick(rng, KINDS), bend: between(rng, 0.04, 0.16), stretch: between(rng, 0.8, 1.5), count: 3 + Math.floor(rng() * 3), pitch: between(rng, 0.2, 0.6), turn: (rng() < 0.5 ? -1 : 1) * between(rng, 0.15, 0.3) }),
+  grammar: (rng) => ({
+    kind: pick(rng, KINDS),
+    bend: between(rng, 0.04, 0.16),
+    stretch: between(rng, 0.8, 1.5),
+    count: 3 + Math.floor(rng() * 3),
+    pitch: between(rng, 0.2, 0.6),
+    turn: (rng() < 0.5 ? -1 : 1) * between(rng, 0.15, 0.3),
+  }),
   name: (p) => p.kind,
-  alt: (p) => `A flat-shaded grey low-poly ${p.kind === 'cluster' ? 'cluster of crystals' : p.kind} turning slowly, one facet teal.`,
+  alt: (p) =>
+    `A flat-shaded grey low-poly ${p.kind === 'cluster' ? 'cluster of crystals' : p.kind} turning slowly, one facet teal.`,
   setup: ({ rng, params }) => {
     const n = noise2(rng);
     let mesh: Mesh;
@@ -77,18 +88,37 @@ export default defineTemplate<P, S>({
     else if (params.kind === 'rock') mesh = icosphere(1, 0.75);
     else if (params.kind === 'gem') mesh = bipyramid(8, 0.8, 0.35, 0.75);
     else if (params.kind === 'crystal') mesh = bipyramid(6, 0.38, 0.9 * params.stretch, 0.5);
-    else mesh = merge(Array.from({ length: params.count }, (_, i) => shift(bipyramid(6, 0.2 + rng() * 0.12, 0.5 + rng() * 0.5, 0.25), [(i - (params.count - 1) / 2) * 0.28, -0.2, (rng() - 0.5) * 0.3], (i - (params.count - 1) / 2) * 0.35)));
+    else
+      mesh = merge(
+        Array.from({ length: params.count }, (_, i) =>
+          shift(
+            bipyramid(6, 0.2 + rng() * 0.12, 0.5 + rng() * 0.5, 0.25),
+            [(i - (params.count - 1) / 2) * 0.28, -0.2, (rng() - 0.5) * 0.3],
+            (i - (params.count - 1) / 2) * 0.35,
+          ),
+        ),
+      );
     const amount = params.kind === 'rock' ? params.bend * 2.5 : params.bend;
-    mesh = { ...mesh, v: mesh.v.map(([x, y, z]): Vec3 => {
-      const k = 1 + n(x * 2.1 + 3, y * 2.1 + z) * amount;
-      return [x * k, y * k, z * k];
-    }) };
+    mesh = {
+      ...mesh,
+      v: mesh.v.map(([x, y, z]): Vec3 => {
+        const k = 1 + n(x * 2.1 + 3, y * 2.1 + z) * amount;
+        return [x * k, y * k, z * k];
+      }),
+    };
     return { mesh, yaw: 0.5 };
   },
   draw: ({ ctx, w, h, t, dt, pointer, hover, still, params, state }) => {
     const target = 0.5 + t * params.turn + (pointer.active ? (pointer.x - 0.5) * 3 * hover : 0);
     state.yaw = still ? target : follow(state.yaw, target, dt, 4);
-    const cam = camera({ cx: w / 2, cy: h * 0.5, scale: Math.min(w, h) * 0.4, yaw: state.yaw, pitch: params.pitch, dist: 4 });
+    const cam = camera({
+      cx: w / 2,
+      cy: h * 0.5,
+      scale: Math.min(w, h) * 0.4,
+      yaw: state.yaw,
+      pitch: params.pitch,
+      dist: 4,
+    });
     // The facet turned most toward the viewer catches the light, like a glint on a cut stone.
     const depth = state.mesh.v.map((p) => project(cam, p[0], p[1], p[2])[2]);
     let glint = 0;

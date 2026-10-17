@@ -54,9 +54,16 @@ export default defineTemplate<P, S>({
   motion: 'ambient',
   answers: true,
   aspect: 2,
-  grammar: (rng) => ({ kind: pick(rng, KINDS), build: Math.floor(rng() * 1e6), yaw: between(rng, 0.35, 0.9), pitch: between(rng, 0.25, 0.5), spread: between(rng, 0.85, 1.15) }),
+  grammar: (rng) => ({
+    kind: pick(rng, KINDS),
+    build: Math.floor(rng() * 1e6),
+    yaw: between(rng, 0.35, 0.9),
+    pitch: between(rng, 0.25, 0.5),
+    spread: between(rng, 0.85, 1.15),
+  }),
   name: (p) => ({ rocket: 'rocket', keySwitch: 'key switch', lens: 'camera lens', chip: 'chip package' })[p.kind],
-  alt: (p) => `A ${({ rocket: 'rocket', keySwitch: 'keyboard switch', lens: 'camera lens', chip: 'chip package' })[p.kind]} drawn in thin grey lines, taken apart along its axis with its parts spaced out, one part and its leader line in teal.`,
+  alt: (p) =>
+    `A ${{ rocket: 'rocket', keySwitch: 'keyboard switch', lens: 'camera lens', chip: 'chip package' }[p.kind]} drawn in thin grey lines, taken apart along its axis with its parts spaced out, one part and its leader line in teal.`,
   setup: ({ rng, params }) => {
     const lying = LYING.includes(params.kind);
     // Long machines are turned onto their side so the explosion runs across the wide frame.
@@ -67,13 +74,15 @@ export default defineTemplate<P, S>({
     });
     const lo: [number, number, number] = [Infinity, Infinity, Infinity];
     const hi: [number, number, number] = [-Infinity, -Infinity, -Infinity];
-    for (const p of parts) for (const seg of p.segs) for (const q of seg) {
-      const e = add(q, p.dir, p.gap * params.spread);
-      for (let i = 0; i < 3; i++) {
-        lo[i] = Math.min(lo[i] ?? 0, e[i] ?? 0);
-        hi[i] = Math.max(hi[i] ?? 0, e[i] ?? 0);
-      }
-    }
+    for (const p of parts)
+      for (const seg of p.segs)
+        for (const q of seg) {
+          const e = add(q, p.dir, p.gap * params.spread);
+          for (let i = 0; i < 3; i++) {
+            lo[i] = Math.min(lo[i] ?? 0, e[i] ?? 0);
+            hi[i] = Math.max(hi[i] ?? 0, e[i] ?? 0);
+          }
+        }
     const mid: Vec3 = [(lo[0] + hi[0]) / 2, (lo[1] + hi[1]) / 2, (lo[2] + hi[2]) / 2];
     return { parts, open: 0, mid, span: Math.max(hi[0] - lo[0], hi[1] - lo[1], hi[2] - lo[2]) };
   },
@@ -98,7 +107,12 @@ export default defineTemplate<P, S>({
       const order = Math.abs(i - (n - 1) / 2) / ((n - 1) / 2);
       const e = clamp(state.open * 1.6 - (1 - order) * 0.6, 0, 1);
       const k = smoothstep(0, 1, e) * p.gap * params.spread;
-      return { p, segs: p.segs.map(([a, b]): Seg => [add(a, p.dir, k), add(b, p.dir, k)]).map(([a, b]): Seg => [add(a, state.mid, -1), add(b, state.mid, -1)]) };
+      return {
+        p,
+        segs: p.segs
+          .map(([a, b]): Seg => [add(a, p.dir, k), add(b, p.dir, k)])
+          .map(([a, b]): Seg => [add(a, state.mid, -1), add(b, state.mid, -1)]),
+      };
     });
     let picked = -1;
     if (pointer.active && hover > 0.3) {
@@ -115,9 +129,14 @@ export default defineTemplate<P, S>({
     }
     // The picked part slides further out than the rest, like a drawer pulled to read it.
     const pulled = placed[picked];
-    if (pulled) pulled.segs = pulled.segs.map(([a, b]): Seg => [add(a, pulled.p.dir, 0.3 * hover), add(b, pulled.p.dir, 0.3 * hover)]);
+    if (pulled)
+      pulled.segs = pulled.segs.map(
+        ([a, b]): Seg => [add(a, pulled.p.dir, 0.3 * hover), add(b, pulled.p.dir, 0.3 * hover)],
+      );
     const named = picked >= 0 ? picked : state.open > 0.9 ? Math.floor(t * 0.9) % n : -1;
-    placed.forEach(({ segs }, i) => strokeWire(ctx, segs, cam, { alpha: i === named ? 1 : 0.85, radius: 1.6, signal: i === named }));
+    placed.forEach(({ segs }, i) =>
+      strokeWire(ctx, segs, cam, { alpha: i === named ? 1 : 0.85, radius: 1.6, signal: i === named }),
+    );
     // Leader lines: from each part out to a column beside the machine, ending in a short tick.
     if (state.open > 0.5) {
       const col = lying ? 0 : w * 0.8;

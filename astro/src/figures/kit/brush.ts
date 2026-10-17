@@ -53,7 +53,16 @@ export function brush(ctx: CanvasRenderingContext2D, pts: readonly Pt[], o: Brus
 
 /** A ridge line sampled from noise across [x0, x1]: the outline of a mountain range.
  *  `peak` sharpens the envelope from a rounded hill (0) to a pointed summit (1). */
-export function ridge(noise: Noise2, x0: number, x1: number, base: number, height: number, seed: number, step = 6, peak = 0): Pt[] {
+export function ridge(
+  noise: Noise2,
+  x0: number,
+  x1: number,
+  base: number,
+  height: number,
+  seed: number,
+  step = 6,
+  peak = 0,
+): Pt[] {
   const out: Pt[] = [];
   for (let x = x0; x <= x1 + 0.1; x += step) {
     const u = (x - x0) / Math.max(1, x1 - x0);
@@ -67,7 +76,13 @@ export function ridge(noise: Noise2, x0: number, x1: number, base: number, heigh
 }
 
 /** Short dry-brush texture marks under a ridge, like the cun strokes of a landscape. */
-export function texture(ctx: CanvasRenderingContext2D, top: readonly Pt[], depth: number, noise: Noise2, every = 3): void {
+export function texture(
+  ctx: CanvasRenderingContext2D,
+  top: readonly Pt[],
+  depth: number,
+  noise: Noise2,
+  every = 3,
+): void {
   for (let i = 0; i < top.length; i += every) {
     const p = top[i];
     if (!p) continue;

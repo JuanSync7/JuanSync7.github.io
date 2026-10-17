@@ -33,6 +33,14 @@ export function cell(ctx: CanvasRenderingContext2D, g: PixelGrid, x: number, y: 
 }
 
 /** Paints a cell only where a tone in 0..1 beats the dither threshold. */
-export function dither(ctx: CanvasRenderingContext2D, g: PixelGrid, x: number, y: number, value: number, style: string, gap = 0): void {
+export function dither(
+  ctx: CanvasRenderingContext2D,
+  g: PixelGrid,
+  x: number,
+  y: number,
+  value: number,
+  style: string,
+  gap = 0,
+): void {
   if (value > bayer(x, y)) cell(ctx, g, x, y, style, gap);
 }

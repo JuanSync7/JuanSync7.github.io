@@ -77,7 +77,7 @@ what it chose. *(invariant: `signal` at most 35% of the ink; a figure with no si
 
 ### 09 · budget: small, fast, seeded
 *(invariant: `length`, `perf`, `blank`, `wash`)*
-- **Keep it:** under 200 lines; under 6 ms a frame on average (14 ms for three.js); ink
+- **Keep it:** under 200 non-blank lines (350 for a three.js scene), counted after Prettier; under 6 ms a frame on average (14 ms for three.js); ink
   between 0.4% and 50% of the frame, ideally under 40%. Precompute geometry in `setup`;
   `draw` only moves and paints.
 - **Rejected when:** thousands of marks for a texture you can't see at 358 px; a frame that

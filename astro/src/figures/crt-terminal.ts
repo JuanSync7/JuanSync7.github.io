@@ -45,7 +45,8 @@ export default defineCanvasFigure<State>({
       }
       lines.push(runs);
     }
-    const prefill = lines.slice(0, ROWS - 1).reduce((sum, runs) => sum + runs.reduce((a, b) => a + b, 0) + PAUSE, 0) + 6;
+    const prefill =
+      lines.slice(0, ROWS - 1).reduce((sum, runs) => sum + runs.reduce((a, b) => a + b, 0) + PAUSE, 0) + 6;
     return { lines, prefill };
   },
   draw: ({ ctx, w, h, t, pointer, hover, state }) => {
@@ -94,7 +95,8 @@ export default defineCanvasFigure<State>({
       if (inverse) for (; x < COLS; x++) cell(ctx, g, x + 2, row + 2, ink.line(0.62), 1);
       // Solid while typing, blinking only in the pause after the line.
       const since = (partial - lineLen(lineIx)) / TYPE;
-      if (live && (since < 0 || Math.floor(since * 2.2) % 2 === 0)) cell(ctx, g, Math.min(COLS - 1, Math.floor(partial)) + 2, row + 2, ink.signal(0.95));
+      if (live && (since < 0 || Math.floor(since * 2.2) % 2 === 0))
+        cell(ctx, g, Math.min(COLS - 1, Math.floor(partial)) + 2, row + 2, ink.signal(0.95));
     }
     return read;
   },

@@ -37,10 +37,23 @@ export default defineTemplate<P, S>({
   grammar: (rng) => {
     const form = pick(rng, FORMS);
     const sides = form === 'square' || form === 'grid' ? 4 : form === 'hexagon' ? 6 : form === 'arches' ? 12 : 48;
-    return { form, sides, twist: form === 'vortex' ? between(rng, 0.25, 0.6) * (rng() < 0.5 ? -1 : 1) : form === 'hexagon' ? between(rng, 0, 0.08) : 0, speed: between(rng, 0.8, 1.6), frames: 14 + Math.floor(rng() * 12), wide: between(rng, 1.3, 1.9) };
+    return {
+      form,
+      sides,
+      twist:
+        form === 'vortex'
+          ? between(rng, 0.25, 0.6) * (rng() < 0.5 ? -1 : 1)
+          : form === 'hexagon'
+            ? between(rng, 0, 0.08)
+            : 0,
+      speed: between(rng, 0.8, 1.6),
+      frames: 14 + Math.floor(rng() * 12),
+      wide: between(rng, 1.3, 1.9),
+    };
   },
   name: (p) => (p.form === 'vortex' ? 'vortex' : `${p.form} tunnel`),
-  alt: (p) => `A ${p.form} tunnel drawn in grey lines receding to a vanishing point, its frames flowing toward the viewer, one of them teal.`,
+  alt: (p) =>
+    `A ${p.form} tunnel drawn in grey lines receding to a vanishing point, its frames flowing toward the viewer, one of them teal.`,
   setup: () => ({ vx: 0.5, vy: 0.5 }),
   draw: ({ ctx, w, h, t, dt, pointer, hover, still, params, state }) => {
     const tx = pointer.active ? 0.5 + (pointer.x - 0.5) * 0.7 * hover : 0.5 + Math.sin(t * 0.25) * 0.04;
@@ -88,7 +101,12 @@ export default defineTemplate<P, S>({
       // Lines along the walls join each frame to the next: every vertex for a grid or a
       // vortex, every few for the rest.
       if (prev) {
-        const every = params.form === 'grid' || params.form === 'vortex' ? (params.form === 'vortex' ? 6 : 1) : Math.max(1, Math.floor(n / 4));
+        const every =
+          params.form === 'grid' || params.form === 'vortex'
+            ? params.form === 'vortex'
+              ? 6
+              : 1
+            : Math.max(1, Math.floor(n / 4));
         ctx.strokeStyle = ink.line(0.04 + fade * 0.2);
         ctx.beginPath();
         for (let i = 0; i < pts.length; i += every) {

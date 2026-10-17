@@ -45,7 +45,11 @@ function arrow(ctx: CanvasRenderingContext2D, cam: Camera, a: Vec3, b: Vec3, sty
   ctx.stroke();
 }
 
-const cross = (a: Vec3, b: Vec3): Vec3 => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+const cross = (a: Vec3, b: Vec3): Vec3 => [
+  a[1] * b[2] - a[2] * b[1],
+  a[2] * b[0] - a[0] * b[2],
+  a[0] * b[1] - a[1] * b[0],
+];
 
 export default defineTemplate<P, S>({
   id: 'vector-space',
@@ -55,15 +59,34 @@ export default defineTemplate<P, S>({
   motion: 'ambient',
   answers: true,
   aspect: 2,
-  grammar: (rng) => ({ scene: pick(rng, SCENES), b: [between(rng, -0.6, 0.6), between(rng, 0.05, 0.5), between(rng, 0.6, 1.0)], pitch: between(rng, 0.25, 0.55), yaw0: between(rng, 0.4, 1.2), turn: (rng() < 0.5 ? -1 : 1) * between(rng, 0.08, 0.16) }),
-  name: (p) => ({ embed: 'embeddings', field: 'vector field', cross: 'cross product', project: 'projection', descent: 'gradient descent' })[p.scene],
-  alt: (p) => `A 3D diagram on grey axes showing ${({ embed: 'clusters of embedding points with a teal query vector', field: 'a field of small grey arrows with one teal', cross: 'two grey vectors and their teal cross product', project: 'a vector and its teal projection onto a plane', descent: 'a wireframe surface with a teal path stepping downhill' })[p.scene]}.`,
+  grammar: (rng) => ({
+    scene: pick(rng, SCENES),
+    b: [between(rng, -0.6, 0.6), between(rng, 0.05, 0.5), between(rng, 0.6, 1.0)],
+    pitch: between(rng, 0.25, 0.55),
+    yaw0: between(rng, 0.4, 1.2),
+    turn: (rng() < 0.5 ? -1 : 1) * between(rng, 0.08, 0.16),
+  }),
+  name: (p) =>
+    ({
+      embed: 'embeddings',
+      field: 'vector field',
+      cross: 'cross product',
+      project: 'projection',
+      descent: 'gradient descent',
+    })[p.scene],
+  alt: (p) =>
+    `A 3D diagram on grey axes showing ${{ embed: 'clusters of embedding points with a teal query vector', field: 'a field of small grey arrows with one teal', cross: 'two grey vectors and their teal cross product', project: 'a vector and its teal projection onto a plane', descent: 'a wireframe surface with a teal path stepping downhill' }[p.scene]}.`,
   setup: ({ rng, params }) => {
     const points: Vec3[] = [];
     if (params.scene === 'embed') {
       for (let c = 0; c < 3; c++) {
         const centre: Vec3 = [between(rng, -0.7, 0.7), between(rng, 0.1, 0.8), between(rng, -0.7, 0.7)];
-        for (let i = 0; i < 14; i++) points.push([centre[0] + (rng() - 0.5) * 0.3, centre[1] + (rng() - 0.5) * 0.3, centre[2] + (rng() - 0.5) * 0.3]);
+        for (let i = 0; i < 14; i++)
+          points.push([
+            centre[0] + (rng() - 0.5) * 0.3,
+            centre[1] + (rng() - 0.5) * 0.3,
+            centre[2] + (rng() - 0.5) * 0.3,
+          ]);
       }
     }
     return { noise: noise2(rng), points, yaw: params.yaw0 };
@@ -71,13 +94,30 @@ export default defineTemplate<P, S>({
   draw: ({ ctx, w, h, t, dt, pointer, hover, still, params, state }) => {
     const target = params.yaw0 + t * params.turn + (pointer.active ? (pointer.x - 0.5) * 2.4 * hover : 0);
     state.yaw = still ? target : follow(state.yaw, target, dt, 4);
-    const cam = camera({ cx: w / 2, cy: h * 0.6, scale: Math.min(w * 0.3, h * 0.6), yaw: state.yaw, pitch: params.pitch, dist: 4 });
+    const cam = camera({
+      cx: w / 2,
+      cy: h * 0.6,
+      scale: Math.min(w * 0.3, h * 0.6),
+      yaw: state.yaw,
+      pitch: params.pitch,
+      dist: 4,
+    });
     const axis = ink.line(0.35);
     arrow(ctx, cam, [0, 0, 0], [1.1, 0, 0], axis);
     arrow(ctx, cam, [0, 0, 0], [0, 1.1, 0], axis);
     arrow(ctx, cam, [0, 0, 0], [0, 0, 1.1], axis);
     const floor: Seg[] = [];
-    for (let k = -4; k <= 4; k++) floor.push([[k * 0.25, 0, -1], [k * 0.25, 0, 1]], [[-1, 0, k * 0.25], [1, 0, k * 0.25]]);
+    for (let k = -4; k <= 4; k++)
+      floor.push(
+        [
+          [k * 0.25, 0, -1],
+          [k * 0.25, 0, 1],
+        ],
+        [
+          [-1, 0, k * 0.25],
+          [1, 0, k * 0.25],
+        ],
+      );
     strokeWire(ctx, floor, cam, { alpha: 0.25 });
     if (params.scene === 'embed') {
       const q: Vec3 = [Math.cos(t * 0.3) * 0.85, 0.7, Math.sin(t * 0.3) * 0.85];
@@ -100,12 +140,20 @@ export default defineTemplate<P, S>({
       strokeWire(ctx, [[[0, 0, 0], best]], cam, { alpha: 0.5 });
       arrow(ctx, cam, [0, 0, 0], q, ink.signal(0.95));
     } else if (params.scene === 'field') {
-      for (let i = -2; i <= 2; i++) for (let j = 0; j <= 2; j++) for (let k = -2; k <= 2; k++) {
-        const p: Vec3 = [i * 0.4, 0.2 + j * 0.4, k * 0.4];
-        const a = state.noise(p[0] * 1.5 + t * 0.2, p[2] * 1.5 + p[1]) * Math.PI * 2;
-        const v: Vec3 = [Math.cos(a) * 0.18, Math.sin(a * 0.7) * 0.08, Math.sin(a) * 0.18];
-        arrow(ctx, cam, p, [p[0] + v[0], p[1] + v[1], p[2] + v[2]], i === 0 && j === 1 && k === 0 ? ink.signal(0.95) : ink.line(0.45));
-      }
+      for (let i = -2; i <= 2; i++)
+        for (let j = 0; j <= 2; j++)
+          for (let k = -2; k <= 2; k++) {
+            const p: Vec3 = [i * 0.4, 0.2 + j * 0.4, k * 0.4];
+            const a = state.noise(p[0] * 1.5 + t * 0.2, p[2] * 1.5 + p[1]) * Math.PI * 2;
+            const v: Vec3 = [Math.cos(a) * 0.18, Math.sin(a * 0.7) * 0.08, Math.sin(a) * 0.18];
+            arrow(
+              ctx,
+              cam,
+              p,
+              [p[0] + v[0], p[1] + v[1], p[2] + v[2]],
+              i === 0 && j === 1 && k === 0 ? ink.signal(0.95) : ink.line(0.45),
+            );
+          }
     } else if (params.scene === 'cross') {
       const a: Vec3 = [Math.cos(t * 0.5) * 1.0, 0.15, Math.sin(t * 0.5) * 1.0];
       const b = params.b;
@@ -117,7 +165,11 @@ export default defineTemplate<P, S>({
       arrow(ctx, cam, [0, 0, 0], b, ink.line(0.8));
       arrow(ctx, cam, [0, 0, 0], c, ink.signal(0.95));
     } else if (params.scene === 'project') {
-      const v: Vec3 = [params.b[0] + Math.sin(t * 0.4) * 0.2, 0.6 + params.b[1], params.b[2] * 0.6 + Math.cos(t * 0.4) * 0.3];
+      const v: Vec3 = [
+        params.b[0] + Math.sin(t * 0.4) * 0.2,
+        0.6 + params.b[1],
+        params.b[2] * 0.6 + Math.cos(t * 0.4) * 0.3,
+      ];
       const onPlane: Vec3 = [v[0], 0, v[2]];
       strokeWire(ctx, path([v, onPlane]), cam, { alpha: 0.5 });
       arrow(ctx, cam, [0, 0, 0], v, ink.line(0.8));

@@ -73,13 +73,20 @@ export function shadeMesh(ctx: CanvasRenderingContext2D, m: Mesh, cam: Camera, l
     const pb = P[t[1]];
     const pc = P[t[2]];
     if (!a || !b || !c || !pa || !pb || !pc) continue;
-    const ux = b[0] - a[0], uy = b[1] - a[1], uz = b[2] - a[2];
-    const vx = c[0] - a[0], vy = c[1] - a[1], vz = c[2] - a[2];
-    const nx = uy * vz - uz * vy, ny = uz * vx - ux * vz, nz = ux * vy - uy * vx;
+    const ux = b[0] - a[0],
+      uy = b[1] - a[1],
+      uz = b[2] - a[2];
+    const vx = c[0] - a[0],
+      vy = c[1] - a[1],
+      vz = c[2] - a[2];
+    const nx = uy * vz - uz * vy,
+      ny = uz * vx - ux * vz,
+      nz = ux * vy - uy * vx;
     const nl = Math.hypot(nx, ny, nz) || 1;
     const lit = Math.abs((nx * light[0] + ny * light[1] + nz * light[2]) / nl);
     poly(ctx, [pa, pb, pc]);
-    ctx.fillStyle = i === hotTri ? mix('panelSignal', 'signal', 0.35 + lit * 0.4) : mix('ground', 'line4', 0.15 + lit * 0.85);
+    ctx.fillStyle =
+      i === hotTri ? mix('panelSignal', 'signal', 0.35 + lit * 0.4) : mix('ground', 'line4', 0.15 + lit * 0.85);
     ctx.fill();
     ctx.strokeStyle = i === hotTri ? ink.signal(0.9) : ink.line(0.08 + lit * 0.1);
     ctx.stroke();
@@ -101,10 +108,25 @@ export interface BoxTones {
 /** A box seen from above-front (any camera with yaw in 0..90° and pitch > 0): filled faces,
  *  one silhouette, one crease, and no vertical corner line (hairline rule). x and z span the
  *  footprint, y0..y1 the height. */
-export function box(ctx: CanvasRenderingContext2D, cam: Camera, x0: number, z0: number, x1: number, z1: number, y0: number, y1: number, t: BoxTones): void {
+export function box(
+  ctx: CanvasRenderingContext2D,
+  cam: Camera,
+  x0: number,
+  z0: number,
+  x1: number,
+  z1: number,
+  y0: number,
+  y1: number,
+  t: BoxTones,
+): void {
   const p = (x: number, y: number, z: number): ScreenPoint => project(cam, x, y, z);
-  const tb = p(x0, y1, z0), tr = p(x1, y1, z0), tf = p(x1, y1, z1), tl = p(x0, y1, z1);
-  const br = p(x1, y0, z0), bf = p(x1, y0, z1), bl = p(x0, y0, z1);
+  const tb = p(x0, y1, z0),
+    tr = p(x1, y1, z0),
+    tf = p(x1, y1, z1),
+    tl = p(x0, y1, z1);
+  const br = p(x1, y0, z0),
+    bf = p(x1, y0, z1),
+    bl = p(x0, y0, z1);
   poly(ctx, [tr, tf, bf, br]);
   ctx.fillStyle = t.right;
   ctx.fill();

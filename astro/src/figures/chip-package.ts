@@ -85,4 +85,3 @@ export default defineCanvasFigure<State>({
     return read;
   },
 });
-

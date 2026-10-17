@@ -31,7 +31,10 @@ interface State {
 }
 
 const isData = (x: unknown): x is LessonFieldData =>
-  typeof x === 'object' && x !== null && Array.isArray((x as { days?: unknown }).days) && typeof (x as { weeks?: unknown }).weeks === 'number';
+  typeof x === 'object' &&
+  x !== null &&
+  Array.isArray((x as { days?: unknown }).days) &&
+  typeof (x as { weeks?: unknown }).weeks === 'number';
 
 const HALF = 0.4;
 const YAW = 0.32;
@@ -64,7 +67,14 @@ export default defineCanvasFigure<State>({
     const across = cols * Math.cos(YAW) + 7 * Math.sin(YAW);
     // Down the frame: the footprint's depth foreshortened by the pitch, plus the tallest column.
     const down = (cols * Math.sin(YAW) + 7 * Math.cos(YAW)) * Math.sin(PITCH) + 1.2;
-    const cam = camera({ cx: w / 2, cy: h * 0.5, scale: Math.min((w * 0.84) / across, (h * 0.9) / down), yaw: YAW, pitch: PITCH, dist: Infinity });
+    const cam = camera({
+      cx: w / 2,
+      cy: h * 0.5,
+      scale: Math.min((w * 0.84) / across, (h * 0.9) / down),
+      yaw: YAW,
+      pitch: PITCH,
+      dist: Infinity,
+    });
     const cells = field.days.map((d, i) => {
       const col = Math.floor(i / 7);
       const row = i % 7;
@@ -89,7 +99,13 @@ export default defineCanvasFigure<State>({
     cells.sort((a, b) => project(cam, a.x, 0, a.z)[2] - project(cam, b.x, 0, b.z)[2]);
     for (const { d, x, z, col } of cells) {
       if (d.future) {
-        const pts = [[-1, -1], [1, -1], [1, 1], [-1, 1], [-1, -1]].map(([u, v]) => project(cam, x + (u ?? 0) * HALF, 0, z + (v ?? 0) * HALF));
+        const pts = [
+          [-1, -1],
+          [1, -1],
+          [1, 1],
+          [-1, 1],
+          [-1, -1],
+        ].map(([u, v]) => project(cam, x + (u ?? 0) * HALF, 0, z + (v ?? 0) * HALF));
         ctx.strokeStyle = ink.line(0.12);
         ctx.beginPath();
         pts.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])));
@@ -105,13 +121,29 @@ export default defineCanvasFigure<State>({
       const chosen = d.iso === field.selected;
       const warm = Math.min(1, d.count / 3);
       const tones: BoxTones = chosen
-        ? { top: mix('panelSignal', 'signalLine', 0.6), left: mix('ground', 'panel', 0.9), right: mix('ground', 'panel', 0.5), edge: ink.signal(0.95), crease: ink.signal(0.4) }
+        ? {
+            top: mix('panelSignal', 'signalLine', 0.6),
+            left: mix('ground', 'panel', 0.9),
+            right: mix('ground', 'panel', 0.5),
+            edge: ink.signal(0.95),
+            crease: ink.signal(0.4),
+          }
         : {
-            top: d.iso === hovered ? mix('panel2', 'line4', 0.5) : d.count ? mix('panel', 'panel2', 0.5 + warm * 0.5) : mix('ground', 'panel', 0.55 + swell * 6),
+            top:
+              d.iso === hovered
+                ? mix('panel2', 'line4', 0.5)
+                : d.count
+                  ? mix('panel', 'panel2', 0.5 + warm * 0.5)
+                  : mix('ground', 'panel', 0.55 + swell * 6),
             left: mix('ground', 'panel', d.count ? 0.8 : 0.4),
             right: mix('ground', 'panel', d.count ? 0.45 : 0.2),
             // The hovered day's whole week brightens, so the pointer reads as a date, not a tile.
-            edge: d.iso === hovered ? ink.signal(0.6) : d.today ? ink.line(0.85) : ink.line((d.count ? 0.5 : 0.16) + (col === week ? 0.3 : 0)),
+            edge:
+              d.iso === hovered
+                ? ink.signal(0.6)
+                : d.today
+                  ? ink.line(0.85)
+                  : ink.line((d.count ? 0.5 : 0.16) + (col === week ? 0.3 : 0)),
             crease: ink.line(d.count ? 0.18 : 0.06),
           };
       box(ctx, cam, x - HALF, z - HALF, x + HALF, z + HALF, lift, top, tones);

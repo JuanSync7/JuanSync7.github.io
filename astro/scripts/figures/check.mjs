@@ -18,7 +18,8 @@
  *   glow     no shadows, filters, gradients or blend modes: the signal is the only highlight
  *   width    no stroke wider than 1.5px: weight is opacity, not width
  *   imports  only the kit, the define helpers, the types and three
- *   length   at most 200 lines that aren't blank
+ *   length   at most 200 lines that aren't blank; a three.js scene (one per page) at most 350.
+ *            Lines are counted after Prettier (120 columns), so they cannot be packed to fit
  *   variety  within a group, no style covers more than a third (or two figures)
  *   covers   every post names a cover figure; no two posts share one; date neighbours differ in style
  *
@@ -96,8 +97,15 @@ const RULES = [
   ['width', (s) => [...s.code.matchAll(/lineWidth\s*=\s*([\d.]+)/g)].some((m) => Number(m[1]) > 1.5), 'stroke wider than 1.5px: say weight with opacity'],
   // Import paths are strings, so this reads the code with strings kept (s.code blanks them).
   ['imports', (s) => [...s.withStrings.matchAll(/from\s+['"]([^'"]+)['"]/g)].some((m) => !/^(\.\.?\/)+(define|defineThree|defineTemplate|types|kit\/[a-z]+)$|^three$/.test(m[1])), 'imports outside the kit'],
-  ['length', (s) => s.raw.split('\n').filter((l) => l.trim()).length > 200, 'over 200 lines: a figure that long is usually two ideas'],
+  ['length', (s) => overLength(s.raw, s.isThree), 'over its length (200 lines; 350 for a three.js scene): a figure that long is usually two ideas'],
 ];
+
+/** A scene builds geometry, materials and a 2D fallback as well as drawing, so it gets more
+ *  room than a canvas figure; anything past that is still two ideas. */
+const LENGTH = { figure: 200, scene: 350 };
+function overLength(raw, isThree) {
+  return raw.split('\n').filter((l) => l.trim()).length > (isThree ? LENGTH.scene : LENGTH.figure);
+}
 
 function checkFile(path, fixture, template = false) {
   const raw = readFileSync(path, 'utf8');
@@ -132,6 +140,7 @@ function checkFile(path, fixture, template = false) {
   if (!template && !/^\d+$/.test(field('seed')?.[1]?.trim() ?? '')) missing.push('seed (an integer)');
   if (!field('aspect')) missing.push('aspect');
   if (missing.length) fail('meta', `missing or invalid: ${missing.join('; ')}`);
+  s.isThree = isThree;
   for (const [code, test, msg] of RULES) if (test(s)) fail(code, msg);
   return { id, template, style: isThree ? 'three' : str('style') ?? '', group, problems: out, expect: raw.match(/^\/\/ expect-check:\s*(.*)$/m)?.[1] };
 }
@@ -221,6 +230,8 @@ if (selftest) {
     ['(inline variety)', crossChecks(set, []), 'variety'],
     ['(inline covers)', crossChecks([fig('a', 'pixel'), fig('d', 'ink'), tpl('t', 'trace')], [post('p1', '2026-01-03', 'a'), post('p2', '2026-01-02', 'a'), post('p3', '2026-01-01', 'nope')]), 'covers'],
     ['(inline instance)', crossChecks([fig('a', 'pixel'), tpl('t', 'trace')], [post('p1', '2026-01-02', 't~7'), post('p2', '2026-01-01', 'a')]), ''],
+    // The two length limits: 260 lines is too long for a figure but fits a scene; 360 fits neither.
+    ...[[260, false, 'length'], [260, true, ''], [360, true, 'length']].map(([n, three, want]) => [`(inline len ${n}${three ? 's' : ''})`, overLength('x\n'.repeat(n), three) ? [{ code: 'length' }] : [], want]),
   ];
   for (const [name, got, want] of proofs) {
     const ok = codes(got) === want;
