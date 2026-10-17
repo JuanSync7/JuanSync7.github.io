@@ -24,5 +24,7 @@
   "answerAt": [0.62, 0.45],
   "liveWaitMs": 2600,
   "width": 640,
-  "phoneWidth": 358
+  "phoneWidth": 358,
+  "templateSeeds": [7, 42, 2026],
+  "seedMin": 0.05
 }

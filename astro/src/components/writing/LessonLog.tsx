@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
+import FigureCanvas from '../ui/FigureCanvas';
+import type { LessonFieldData } from '../../figures/lesson-field';
 import type { Lesson } from './types';
 import './lesson-log.css';
 
@@ -13,56 +15,35 @@ const WEEKS = 16;
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 const utcDay = (iso: string): number => Date.parse(`${iso}T00:00:00Z`);
-const longDate = (iso: string): string => {
+const shortDate = (iso: string): string => {
   const d = new Date(utcDay(iso));
-  return `${MONTHS[d.getUTCMonth()] ?? ''} ${d.getUTCDate()}, ${d.getUTCFullYear()}`;
+  return `${MONTHS[d.getUTCMonth()] ?? ''} ${d.getUTCDate()}`;
 };
+const longDate = (iso: string): string => `${shortDate(iso)}, ${new Date(utcDay(iso)).getUTCFullYear()}`;
 
-interface Cell {
-  iso: string;
-  count: number;
-  future: boolean;
-  today: boolean;
-  label: string;
-}
-
-/** Sixteen weeks of days ending this week, Sunday at the top of each column. */
-function grid(today: number, counts: Map<string, number>): { cells: Cell[]; months: string[] } {
+/** Sixteen weeks of days ending this week, a week to a column, Sunday first. */
+function field(today: number, counts: Map<string, number>, selected: string | null): LessonFieldData {
   const start = today - (new Date(today).getUTCDay() + 7 * (WEEKS - 1)) * DAY;
-  const cells: Cell[] = [];
-  const months: string[] = [];
-  for (let col = 0; col < WEEKS; col++) {
-    // Label the first column of each month; column 0 only if its month carries on into
-    // column 1, so two labels never crowd the first two columns.
-    const month = (c: number): number => new Date(start + c * 7 * DAY).getUTCMonth();
-    const first = col === 0 ? month(1) === month(0) : month(col) !== month(col - 1);
-    months.push(first ? MONTHS[month(col)] ?? '' : '');
-    for (let row = 0; row < 7; row++) {
-      const ts = start + (col * 7 + row) * DAY;
-      const iso = new Date(ts).toISOString().slice(0, 10);
-      const count = counts.get(iso) ?? 0;
-      const d = new Date(ts);
-      cells.push({ iso, count, future: ts > today, today: ts === today, label: `${MONTHS[d.getUTCMonth()] ?? ''} ${d.getUTCDate()}: ${count ? `${count} ${count === 1 ? 'lesson' : 'lessons'}` : 'no lesson'}` });
-    }
-  }
-  return { cells, months };
+  const days = Array.from({ length: WEEKS * 7 }, (_, i) => {
+    const ts = start + i * DAY;
+    const iso = new Date(ts).toISOString().slice(0, 10);
+    return { iso, count: counts.get(iso) ?? 0, future: ts > today, today: ts === today };
+  });
+  return { days, weeks: WEEKS, selected };
 }
 
-/** The lesson log: a contribution grid of the last sixteen weeks beside a deck of lesson
- *  cards. Picking a lit day, or stepping newer and older, flips the top card over. */
+/** The lesson log: the last sixteen weeks as a field of voxel days, lessons standing up as
+ *  columns, beside the chosen lesson set as plain type. Pointing at a day names it; clicking
+ *  a day with a lesson, a date in the list, or newer and older, changes the lesson. */
 export default function LessonLog({ lessons, note }: Props) {
   const [index, setIndex] = useState(0);
-  const [flips, setFlips] = useState(0);
-  // The build knows only its own date, so the grid is anchored to the newest lesson until
+  const [hover, setHover] = useState('rest');
+  // The build knows only its own date, so the field is anchored to the newest lesson until
   // the reader's clock is available, then to the reader's today.
   const [today, setToday] = useState(() => utcDay(lessons[0]?.iso ?? '2026-01-01'));
-  const scroller = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const now = new Date();
     setToday(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
-    // When the grid scrolls (on a phone), open it on this week, at the right-hand end.
-    const el = scroller.current;
-    if (el) el.scrollLeft = el.scrollWidth;
   }, []);
 
   const counts = new Map<string, number>();
@@ -71,76 +52,63 @@ export default function LessonLog({ lessons, note }: Props) {
     counts.set(l.iso, (counts.get(l.iso) ?? 0) + 1);
     if (!first.has(l.iso)) first.set(l.iso, i);
   });
-  const { cells, months } = grid(today, counts);
   const lesson = lessons[index];
+  const data = field(today, counts, lesson?.iso ?? null);
   const show = (i: number): void => {
-    if (i === index || i < 0 || i >= lessons.length) return;
-    setIndex(i);
-    setFlips((f) => f + 1);
+    if (i >= 0 && i < lessons.length) setIndex(i);
   };
+  const target = first.get(hover);
+  const hint = hover === 'rest' ? '' : target === undefined ? `${shortDate(hover)} · no lesson` : `${shortDate(hover)} · click to read`;
 
   return (
     <div className="log">
-      <div className="log-grid-panel">
-        <div className="log-head">
-          <span className="log-count">
-            {lessons.length} lessons in {WEEKS} weeks
-          </span>
-          <span className="log-key" aria-hidden="true">
-            less
-            <span className="swatch l0" />
-            <span className="swatch l1" />
-            <span className="swatch l2" />
-            <span className="swatch l3" />
-            more
-          </span>
-        </div>
-        {/* On a phone the cells keep a usable size and the grid scrolls sideways. */}
-        <div className="log-scroll" ref={scroller}>
-          <div className="log-months" aria-hidden="true">
-            {months.map((m, i) => (
-              <span key={i}>{m}</span>
-            ))}
-          </div>
-          <div className="log-cells" role="group" aria-label="Days with lessons">
-            {cells.map((c) => {
-              const pick = first.get(c.iso);
-              const sel = lesson?.iso === c.iso;
-              const cls = ['cell', `l${Math.min(3, c.count)}`, c.future ? 'is-future' : '', c.today ? 'is-today' : '', sel ? 'is-sel' : ''].filter(Boolean).join(' ');
-              return <button key={c.iso} type="button" className={cls} disabled={pick === undefined} aria-label={c.label} aria-pressed={sel} onClick={() => pick !== undefined && show(pick)} />;
-            })}
-          </div>
-        </div>
-        <span className="log-note">{note}</span>
+      {/* Clicking reads the day under the pointer; the date list below is the keyboard way in. */}
+      <div className={`log-field${target === undefined ? '' : ' is-live'}`} onClick={() => target !== undefined && show(target)}>
+        <FigureCanvas id="lesson-field" data={data} onReadout={setHover} />
+        <span className="log-hint" aria-hidden="true">
+          {hint}
+        </span>
       </div>
 
-      <div className="deck">
-        <span className="deck-back far" aria-hidden="true" />
-        <span className="deck-back near" aria-hidden="true" />
+      <div className="log-body">
         {lesson ? (
-          <article key={flips} className={`leaf ${flips % 2 ? 'a' : 'b'}`} aria-live="polite">
-            <span className="leaf-edge" aria-hidden="true" />
-            <span className="leaf-meta">
-              <span>{longDate(lesson.iso)}</span>
-              <span className="leaf-tag">{lesson.tag}</span>
-            </span>
-            <h3>{lesson.title}</h3>
-            <p>{lesson.why}</p>
-            <div className="leaf-foot">
-              <span className="leaf-no">
-                {index + 1} of {lessons.length}
-              </span>
-              <span className="leaf-nav">
-                <button type="button" className="leaf-btn" onClick={() => show(index - 1)} disabled={index === 0}>
-                  Newer
-                </button>
-                <button type="button" className="leaf-btn" onClick={() => show(index + 1)} disabled={index === lessons.length - 1}>
-                  Older
-                </button>
-              </span>
-            </div>
+          <article key={index} className="log-entry" aria-live="polite">
+            <p className="log-meta">
+              <time dateTime={lesson.iso}>{longDate(lesson.iso)}</time>
+              <span className="log-tag">{lesson.tag}</span>
+            </p>
+            <h3 className="log-title">{lesson.title}</h3>
+            <p className="log-why">{lesson.why}</p>
           </article>
         ) : null}
+
+        <div className="log-side">
+          <p className="log-count">
+            {lessons.length} lessons in {WEEKS} weeks
+          </p>
+          <div className="log-nav">
+            <button type="button" className="log-step" onClick={() => show(index - 1)} disabled={index === 0}>
+              ← Newer
+            </button>
+            <span className="log-no">
+              {index + 1} / {lessons.length}
+            </span>
+            <button type="button" className="log-step" onClick={() => show(index + 1)} disabled={index === lessons.length - 1}>
+              Older →
+            </button>
+          </div>
+          <ol className="log-days" aria-label="Lessons by date">
+            {lessons.map((l, i) => (
+              <li key={`${l.iso}-${i}`}>
+                <button type="button" className="log-day" aria-pressed={i === index} onClick={() => show(i)}>
+                  <span className="log-day-date">{shortDate(l.iso)}</span>
+                  <span className="log-day-title">{l.title}</span>
+                </button>
+              </li>
+            ))}
+          </ol>
+          <p className="log-note">{note}</p>
+        </div>
       </div>
     </div>
   );

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import FigureCanvas from '../ui/FigureCanvas';
-import { figureIds, fixtureIds, loadFigure } from '../../figures/registry';
+import { figureIds, fixtureIds, loadFigure, templateIds } from '../../figures/registry';
 import type { FigureMeta } from '../../figures/types';
 import './figure-bench.css';
 
-/** The figure bench. With no query it is a gallery of every figure. The audit drives it
+/** The figure bench. With no query it is a gallery of every figure and template. The audit drives it
  *  with a query: `only=<id>` shows one figure alone at a fixed size, `t=<s>` freezes it,
  *  `at=x,y` holds the pointer, `w=<px>` sets its width, `fixtures=1` adds the broken
  *  fixtures. */
@@ -39,7 +39,8 @@ export default function FigureBench() {
   useEffect(() => {
     const q = readQuery();
     setQuery(q);
-    const ids = q.only.length > 0 ? q.only : [...figureIds(), ...(q.fixtures ? fixtureIds() : [])];
+    // The gallery shows each template at seed 1 too, which also warms every module for the audit.
+    const ids = q.only.length > 0 ? q.only : [...figureIds(), ...templateIds().map((t) => `${t}~1`), ...(q.fixtures ? fixtureIds() : [])];
     let live = true;
     Promise.all(ids.map((id) => loadFigure(id, q.fixtures)))
       .then((figs) => {

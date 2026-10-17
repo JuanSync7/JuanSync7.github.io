@@ -1,0 +1,111 @@
+---
+import NightLayout from '../../layouts/NightLayout.astro';
+import NightNav from '../../components/layout/NightNav.astro';
+import NightFooter from '../../components/layout/NightFooter.astro';
+import FigureCanvas from '../../components/ui/FigureCanvas.tsx';
+import { loadTemplate, templateIds } from '../../figures/registry';
+
+// Every template, read from the registry, so a new file in src/figures/templates shows up
+// here with nothing else to edit. Each card shows one instance; seed 1 everywhere would
+// make the page read as one style, so the seed is the card's position, offset.
+const templates = await Promise.all(
+  templateIds().map(async (id, i) => {
+    const t = await loadTemplate(id);
+    const seed = 7 + i * 31;
+    return { id, title: t.title, idea: t.idea, style: t.style, instance: `${id}~${seed}`, variant: t.instance(seed).variant };
+  }),
+);
+---
+
+<NightLayout title="Lab · Juan Kok" description="The figure templates behind the drawings on this site: every one draws a different picture from each seed.">
+  <NightNav />
+  <main class="nt-wrap nt-section">
+    <header class="lab-head">
+      <span class="lab-label">// lab</span>
+      <h1>Figure templates</h1>
+      <p>
+        Each template is a set of rules for drawing one kind of picture. A seed picks the choices (which object, which angle, how many
+        parts), seeded noise shapes the detail, and the template's grammar keeps every combination deliberate. Open one to walk its seeds.
+      </p>
+      <p class="lab-count">{templates.length} templates · 1,000,000,000 seeds each</p>
+    </header>
+    <ul class="lab-grid">
+      {
+        templates.map((t) => (
+          <li class="lab-card">
+            <a href={`/lab/${t.id}/`}>
+              <div class="lab-stage">
+                <FigureCanvas client:visible id={t.instance} />
+              </div>
+              <span class="lab-meta">
+                {t.style} · {t.instance} · {t.variant}
+              </span>
+              <span class="lab-title">{t.title}</span>
+              <span class="lab-idea">{t.idea}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+  <NightFooter />
+</NightLayout>
+
+<style>
+  .lab-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-3);
+    max-width: var(--nt-measure);
+    margin-bottom: var(--hf-space-12);
+  }
+  .lab-label,
+  .lab-count,
+  .lab-meta {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-ink-muted);
+  }
+  .lab-label {
+    color: var(--nt-signal);
+  }
+  .lab-head h1 {
+    font-size: var(--nt-fs-h1);
+    letter-spacing: var(--nt-tracking-display);
+    line-height: var(--nt-lh-heading);
+  }
+  .lab-head p {
+    color: var(--nt-ink-soft);
+  }
+  .lab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+    gap: var(--hf-space-12) var(--hf-space-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .lab-card a {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-2);
+    color: inherit;
+    text-decoration: none;
+  }
+  .lab-stage {
+    aspect-ratio: 2 / 1;
+    margin-bottom: var(--hf-space-2);
+  }
+  .lab-title {
+    font-family: var(--nt-display);
+    font-size: var(--nt-fs-h4);
+    color: var(--nt-ink-strong);
+  }
+  .lab-card a:hover .lab-title {
+    color: var(--nt-signal);
+  }
+  .lab-idea {
+    font-size: var(--nt-fs-small);
+    color: var(--nt-ink-soft);
+  }
+</style>

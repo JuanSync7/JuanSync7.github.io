@@ -17,7 +17,14 @@
  *   motion   ambient but frozen, or still/responsive but drifting
  *   answer   declares answers but the pointer changes nothing, or the reverse
  *   reduced  still moving under reduced motion                perf     frame time over budget
+ *   seed     a template draws (nearly) the same picture for different seeds
  * and `warn` lines (not failing): no signal at all, frame time near the budget, ink on the border.
+ *
+ * A template (src/figures/templates) is looked at once per seed in thresholds.json
+ * `templateSeeds`, as the instances `<template>~<seed>`: every instance must pass every check
+ * above, and the instances' rest frames must differ from each other by at least `seedMin`
+ * of their ink (the mean change per pixel over the larger of the two ink coverages).
+ * Each instance gets its own sheet; `<template>.png` lays the seeds side by side.
  *
  * --selftest runs the fixtures and fails unless each reports exactly its `// expect-look:` codes.
  */
@@ -25,7 +32,7 @@ import { spawn } from 'node:child_process';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { chromium } from 'playwright';
-import { FIG_DIR, FIX_DIR, ROOT, figureFiles, readMeta } from './source.mjs';
+import { FIG_DIR, FIX_DIR, FIX_TPL_DIR, ROOT, TPL_DIR, figureFiles, readMeta } from './source.mjs';
 import { decode, diff, measure } from './pixels.mjs';
 import { writeSheet } from './sheet.mjs';
 
@@ -181,7 +188,8 @@ async function lookOne(browser, url, fig) {
   return { fig: fig.three ? { ...fig, style: `three · ${rest.renderer || 'unknown renderer'}` } : fig, fails, warns, shots, metrics };
 }
 
-const files = figureFiles(fixtures ? FIX_DIR : FIG_DIR).filter((f) => only.length === 0 || only.some((id) => f.endsWith(`/${id}.ts`)));
+const pick = (f) => only.length === 0 || only.some((id) => f.endsWith(`/${id}.ts`));
+const files = [...figureFiles(fixtures ? FIX_DIR : FIG_DIR), ...figureFiles(fixtures ? FIX_TPL_DIR : TPL_DIR)].filter(pick);
 const figs = files.map(readMeta);
 if (figs.length === 0) {
   console.log('look: no figures matched');
@@ -192,15 +200,48 @@ const server = await serve();
 const browser = await chromium.launch({ args: process.env.LOOK_GPU_FLAGS ? ['--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--use-angle=swiftshader'] : [] });
 await warm(browser, server.url);
 const results = [];
+const lineList = (r) => {
+  const lines = [...r.fails.map((f) => ({ level: 'fail', text: `${f.code}  ${f.text}` })), ...r.warns.map((w) => ({ level: 'warn', text: `warn  ${w}` }))];
+  return lines.length ? lines : [{ level: 'ok', text: 'look passed' }];
+};
+const report = (r) => {
+  console.log(`${r.fails.length ? 'FAIL' : 'ok  '}  ${r.fig.id}${r.metrics?.closestSeeds !== undefined ? ` (closest seeds ${r.metrics.closestSeeds.toFixed(3)})` : ''}`);
+  for (const l of lineList(r)) if (l.level !== 'ok') console.log(`      ${l.text}`);
+};
+
+/** One template: every seed as its own instance, then the seeds against each other. */
+async function lookTemplate(browser, url, tpl) {
+  const runs = [];
+  for (const seed of TH.templateSeeds) {
+    const r = await lookOne(browser, url, { ...tpl, id: `${tpl.id}~${seed}`, template: false });
+    runs.push({ seed, r });
+    if (sheets && r.shots.length) await writeSheet(browser, join(OUT, `${tpl.id}~${seed}.png`), r.fig, r.shots, lineList(r));
+  }
+  const fails = runs.flatMap(({ seed, r }) => r.fails.map((f) => ({ code: f.code, text: `seed ${seed}: ${f.text}` })));
+  const warns = runs.flatMap(({ seed, r }) => r.warns.map((w) => `seed ${seed}: ${w}`));
+  const rests = runs.filter(({ r }) => r.shots.length).map(({ seed, r }) => ({ seed, png: r.shots[0].png }));
+  let closest = Infinity;
+  for (let i = 0; i < rests.length; i++) {
+    for (let j = i + 1; j < rests.length; j++) {
+      // The change is measured against the ink, not the frame: two sparse drawings that share
+      // no line differ by little per pixel, yet are wholly different figures.
+      const pa = decode(rests[i].png);
+      const pb = decode(rests[j].png);
+      const d = diff(pa, pb) / Math.max(1e-6, measure(pa, TH).coverage, measure(pb, TH).coverage);
+      if (d < closest) closest = d;
+      if (d < TH.seedMin) fails.push({ code: 'seed', text: `seeds ${rests[i].seed} and ${rests[j].seed} differ by only ${d.toFixed(3)} of their ink; at least ${TH.seedMin}` });
+    }
+  }
+  const shots = rests.map(({ seed, png }) => ({ label: `seed ${seed} · rest`, png }));
+  return { fig: { ...tpl, style: `${tpl.style} · template` }, fails, warns, shots, metrics: { closestSeeds: closest } };
+}
+
 try {
   for (const fig of figs) {
-    const r = await lookOne(browser, server.url, fig);
+    const r = fig.template ? await lookTemplate(browser, server.url, fig) : await lookOne(browser, server.url, fig);
     results.push(r);
-    const lines = [...r.fails.map((f) => ({ level: 'fail', text: `${f.code}  ${f.text}` })), ...r.warns.map((w) => ({ level: 'warn', text: `warn  ${w}` }))];
-    if (lines.length === 0) lines.push({ level: 'ok', text: 'look passed' });
-    console.log(`${r.fails.length ? 'FAIL' : 'ok  '}  ${fig.id}`);
-    for (const l of lines) if (l.level !== 'ok') console.log(`      ${l.text}`);
-    if (sheets && r.shots.length) await writeSheet(browser, join(OUT, `${fig.id}.png`), r.fig, r.shots, lines);
+    report(r);
+    if (sheets && r.shots.length) await writeSheet(browser, join(OUT, `${fig.id}.png`), r.fig, r.shots, lineList(r));
   }
 } finally {
   await browser.close();

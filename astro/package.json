@@ -11,6 +11,7 @@
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "check": "astro check && npm run lint && npm run figures:check",
     "figure": "node scripts/figures/figure.mjs",
+    "figure:seeds": "node scripts/figures/seeds.mjs",
     "figures:check": "node scripts/figures/check.mjs",
     "figures:look": "node scripts/figures/look.mjs",
     "figures:audit": "node scripts/figures/check.mjs && node scripts/figures/look.mjs",

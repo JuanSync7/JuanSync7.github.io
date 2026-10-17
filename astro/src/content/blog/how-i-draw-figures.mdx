@@ -1,80 +1,99 @@
 ---
 title: "How I draw the figures on this site"
-excerpt: "Every drawing here is one small file, checked by an audit that takes pictures of it and measures them. Why I built it that way, and what the audit caught on its first day."
+excerpt: "Every drawing here is a small file run by one clock and checked by an audit that photographs it. Some of those files are templates: a seed, seeded noise and a grammar, and a different picture for every number."
 category: projects
 date: 2026-10-17
 cover: contact-sheet
-readTime: "7 min"
-tags: ["Design", "Canvas", "three.js", "Agents"]
+readTime: "9 min"
+tags: ["Design", "Canvas", "three.js", "Generative", "Agents"]
 ---
 
 import PostFigure from '../../components/writing/PostFigure.astro';
 
-The first version of this blog had a cover for every post, and they all looked the same. Different shapes, same hand: low-poly blobs in the same light, one after another down the page. Nobody chose that. It is what you get when every drawing is improvised by whoever happens to be drawing it, and on this site that is mostly an agent.
+The first version of this blog had a cover for every post, and they all looked alike. The shapes changed but the hand didn't: the same low-poly blobs under the same light, one after another down the page. Nobody chose that. It's what you get when every drawing is improvised by whoever is drawing it, and on this site that is mostly an agent.
 
-So I stopped asking for drawings and built a way to make them. Every drawing on the site is now a **figure**: one TypeScript file, drawn on a canvas, run by a shared clock, and checked by an audit before it counts as done. The cover above is that audit, drawn as a carousel of the stills it takes. Point at it and it turns to the one you pick.
+So I stopped asking for drawings and built a way to make them. Every drawing here is now a **figure**: one TypeScript file, drawn on a canvas, run by a shared clock, and checked by an audit before it counts as done. Some of those files are **templates**. A template doesn't draw one picture; it draws a different one for every seed you give it. The cover is the audit itself, drawn as a carousel of the stills it takes.
 
 ## One file, one idea
 
-A figure draws its subject as the thing itself. A pipeline is the five-stage chart, moving. Timing closure is a logic analyser capture with the critical edge lit. If an idea only makes sense with labels on boxes, it is a diagram, and diagrams on this site are real text in the page (the system map on the home page is one), not pictures.
+A figure draws its subject as the thing itself. Timing closure is a logic analyser capture with the critical edge lit. A chip is a package whose layers lift apart. If an idea only makes sense with labels on boxes, it's a diagram, and diagrams here are real text in the page (the system map on the home page is one), not pictures.
 
-Each file declares what it is before it draws anything: an id, a title, alt text, the idea in a sentence, a style, how it moves, whether it answers the pointer, and a seed. The audit reads those and holds the drawing to them.
+Each file declares what it is before it draws anything: an id, a title, alt text, the idea in a sentence, a style, how it moves, whether it answers the pointer, and a seed. The audit reads those declarations and holds the drawing to them.
 
-<PostFigure id="pipeline-steps" caption="trace · rows are instructions, columns are cycles. A dependent instruction stalls, and forwarding (the teal hook) hands it the value. Point at a column." />
+<PostFigure id="anatomy~4" caption="hairline · anatomy~4, a rocket taken apart along its axis. Each part leaves in turn, outermost first, and a leader line marks one at a time. Point at a part to pull it further out." />
+
+## Seed, noise, grammar
+
+A template is three things working together.
+
+1. **The seed** is a number. The template's grammar turns it into every discrete choice the picture needs: which machine, which camera angle, how many layers, which way it turns. All of those choices are made once, up front, from a random stream that only the seed controls.
+2. **Noise** is seeded the same way, but it's smooth. It bends a crystal's facets, rolls a ridge field, and sets how a flow line drifts. Choices make the picture different; noise makes it alive.
+3. **The grammar** is the template's rules about which choices go together. Long machines lie on their side so the explosion runs across the wide frame. A workflow with a fan-out takes a different arm on every pass. A field seen from above is lifted harder, because height reads poorly from overhead. Without a grammar, a seed gives you a random picture. With one, every seed gives you a deliberate one.
+
+The result is named `template~seed` and works anywhere a figure's id does. The cover of my RTL-to-GDS post is `workflow~5`: six stations in a line, with one job travelling them. The RISC-V post is `workflow~11`: five stations in a loop, with a way back to the start. Same file, two seeds, two drawings that suit their posts.
+
+<PostFigure id="workflow~11" caption="trace · workflow~11, a loop of five stations. One job moves through them in teal, resting where it's being worked on, while lighter work moves along every trace. Point at a station to light its traces." />
+
+There are twelve templates so far: wireframe objects, voxel scenes, cities, layer stacks, tunnels, ridge fields, low-poly solids, galaxies, pattern cards, 3D vector diagrams, workflows and exploded machines. Seeds run from 0 to 999,999,999, so each template has a billion of them. The [lab](/lab/) lists every template and lets you walk through any one seed by seed, roll a random seed, and copy the id of a drawing you like. It reads the template folder directly, so a new template shows up there without anyone editing a list.
+
+<PostFigure id="vector-space~3" caption="wireframe · vector-space~3, gradient descent on a wireframe surface. Each teal step follows the slope downhill. Move across it to turn the axes." />
 
 ## A small vocabulary
 
-There are nine styles: wireframe, low-poly, pixel, perspective, hairline, ink, field, trace, and three.js for the rare piece that needs a real 3D scene. Every figure uses one. Colour comes from the site's tokens and nowhere else, and there is one highlight colour, the teal, used for one thing at a time: the place to look.
+There are nine styles: wireframe, low-poly, pixel, perspective, hairline, ink, field, trace, and three.js for the rare piece that needs a real 3D scene. Every figure and every template uses exactly one. Colour comes from the site's tokens and nowhere else. There's one highlight colour, teal, and it marks one thing at a time: the place to look.
 
-The styles exist so the covers can differ on purpose. The audit refuses a cover whose date neighbour uses the same style, and it refuses any style that takes more than a third of a group (in a small group, more than two figures). That rule is the direct fix for the first blog.
+The styles exist so the covers can differ on purpose. The audit refuses a cover whose date neighbour uses the same style, and it refuses any style that takes more than a third of a group. That rule is the direct fix for the first blog.
 
-<PostFigure id="crt-terminal" caption="pixel · a terminal with no letters in it. You read a shell by the shape of its lines. Point at a row for inverse video." />
+<PostFigure id="crt-terminal" caption="pixel · a terminal with no letters in it. You read a shell by the shape of its lines. Point at a row to invert it." />
 
-The kit underneath is small on purpose: a camera that projects 3D points, a few meshes, a brush that tapers like ink, a dither for pixel tone, seeded noise, and easing. Everything else is the figure's own drawing.
+The kit underneath is small on purpose. It has a camera that projects 3D points onto the canvas, a few meshes and wire shapes, machines described as parts for exploded views, a brush that tapers like ink, a dither for pixel tone, seeded noise, and easing. Everything else is the figure's own drawing.
 
 ## Rules that are not advice
 
-Thirteen rules sit in the skill that draws figures. Some are taste: the object is the explanation; one idea per figure; the rest frame must already say it. Most are mechanical, and a mechanical rule should be a check, not a sentence someone has to remember:
+The skill that draws figures has thirteen rules. Some are about taste: the object is the explanation, one idea per figure, and the frame at rest must already say it. Most are mechanical, and a mechanical rule should be a check, not a sentence someone has to remember.
 
-- no colour literals, no `Math.random` in a frame, no timers or listeners of its own (one clock owns time and input);
-- no text on the canvas: a figure names what is under the pointer in a small read-out instead;
-- no glows, shadows or gradients, and no stroke wider than 1.5 px. Weight is opacity;
-- under 200 lines. A longer figure is usually two ideas.
+- No colour literals. No `Math.random` in a frame. No timers or listeners of a figure's own, because one clock owns time and input.
+- No text on the canvas. A figure names what's under the pointer, and the page decides whether to show that name. The lesson log on the writing page uses it to know which day you're pointing at.
+- No glows, shadows or gradients, and no stroke wider than 1.5 px. Weight comes from opacity.
+- Under 200 lines. A longer figure is usually two ideas.
 
-The static check reads every figure file and fails on these patterns where it can see them in the source (a colour literal, a `lineWidth` above 1.5, a call to `fillText`), with a code and a one-line reason. It reads text, so a colour or a width computed at run time slips past it. That is what the second half is for: a colour that slips past still shows up in the pixels.
+The static check reads every file and fails on these patterns where it can see them in the source, with a code and a one-line reason. It reads text, so a colour or a width computed at run time slips past it. That's what the second half of the audit is for: a colour that slips past the text still shows up in the pixels.
 
-<PostFigure id="ink-mountains" caption="ink · after LingDong-'s shan-shui-inf: ranges drawn with a tapered brush and dry strokes under each ridge, scrolling at their own depths. Move across it to pan." />
+<PostFigure id="ink-mountains" caption="ink · after LingDong-'s shan-shui-inf: ranges drawn with a tapered brush, with dry strokes under each ridge, scrolling at their own depths. Move across it to pan." />
 
 ## The audit takes pictures
 
-Some things can only be checked by looking. So the second half of the audit opens every figure in a headless browser and photographs it six ways: at rest, a little later, with the pointer on it, live, at phone width, and with reduced motion on. Then it measures the pictures:
+Some things can only be checked by looking. So the second half of the audit opens every figure in a headless browser and photographs it six ways: at rest, a little later, with the pointer on it, live, at phone width, and with reduced motion on. Then it measures the pictures.
 
 | check | fails when |
 | --- | --- |
 | blank, wash | almost nothing is drawn, or ink covers more than half the frame |
-| palette, signal | a colour outside the tokens appears, or the teal is more than a third of the ink |
+| palette, signal | a colour outside the tokens appears, or teal is more than a third of the ink |
 | motion | a figure that claims to move doesn't, or a still one does |
 | answer | a figure that claims to answer the pointer barely changes under it |
 | reduced | it keeps moving when the reader asked for less motion |
 | perf | a frame takes too long on average |
+| seed | a template draws nearly the same picture for different seeds |
 
-It also lays the six pictures out on one sheet, and the last rule is that someone reads the sheet before calling the figure done. The numbers catch what is wrong; they don't catch what is ugly. Half the fixes I made came from the sheet, not the numbers.
+A template is audited as three instances, seeds 7, 42 and 2026, and each one must pass every check as a figure in its own right. Then their rest frames are compared with each other. The audit also lays the pictures out on one sheet per figure, and the last rule is that someone reads the sheet before calling the figure done. The numbers catch what is wrong; they don't catch what is ugly. Half my fixes came from reading the sheet, not from the numbers.
 
-The checks that judge a drawing are each proved by a fixture: a deliberately broken figure that the check must catch. If a change to the audit stops catching one of them, the audit is what's broken. The structural checks (naming, metadata, imports, length, the variety rule) don't have fixtures yet; that's the next gap to close.
+The checks are proved too. Each has a fixture (a deliberately broken figure) or a broken case written into the self-test, and the check must catch it. One fixture breaks the rules on imports, length and metadata at once. Another is a template that draws the same thing for every seed. If a change to the audit stops catching one of them, the audit is what's broken. The one exception is the reduced-motion check, which guards the clock rather than any figure.
 
-<PostFigure id="eda-lattice" caption="wireframe · a design as a lattice of nodes, and one net traced through it hop by hop. Drag across it to turn the lattice." />
+<PostFigure id="eda-lattice" caption="wireframe · a design as a lattice of nodes, with one net traced through it hop by hop. Drag across it to turn the lattice." />
 
-## What it caught on its first day
+## What it caught
 
-The audit started earning its keep while the first twenty figures were being drawn:
+The audit started earning its keep while the first figures were being drawn, and it kept going when the templates arrived.
 
-- **A syntax error showed up as a timeout.** A stray apostrophe in a description meant the dev server returned an error page, and the audit waited 25 seconds for a canvas that never came. Now the static check parses each file first, and a page that fails to load reports it at once.
-- **The palette check failed the palette.** The site's neutrals are blue-greys, and one of them was saturated enough to count as an off-palette colour. Rather than loosen a threshold, the check now reads the neutral band from the token file itself.
-- **Stills weren't stills.** Frozen captures simulate a figure up to a fixed time, but the clock didn't reset a figure's state before simulating again, so anything that accumulates (a scroll, a drift) gave a different picture each time. That was a real bug in the clock, and the audit found it.
-- **Figures that claimed to answer didn't.** A logic analyser that only moved its cursor, a cup that only steamed a little higher. Both now do something worth pointing at: the capture stops and measures its slack, and the cup lifts off its step.
+- **A syntax error showed up as a timeout.** A stray apostrophe meant the dev server returned an error page, and the audit waited 25 seconds for a canvas that never came. Now the static check parses each file first.
+- **The palette check failed the palette.** The site's neutrals are blue-greys, and one was saturated enough to count as off-palette. Rather than loosen a threshold, the check now reads the neutral band from the token file.
+- **Stills weren't stills.** The clock didn't reset a figure's state before simulating it again, so anything that accumulates gave a different picture each time. That was a real bug in the clock.
+- **The imports check had never worked.** It searched the source after string literals were blanked out, so it could never see an import path. The fixture written to prove it is what found that out.
+- **The seed check punished sparse drawings.** A first version compared seeds pixel by pixel across the whole frame. A constellation and a set of orbits share almost no lines, yet differed by under 1% of the frame, simply because most of the frame is empty in both. Now the change is measured against the ink, not the frame.
+- **Templates that claimed to move barely did.** A workflow whose job was hidden inside a station, a voxel house that only bobbed by a pixel. The fix wasn't a lower threshold. The job now lights the trace it's travelling, and the house floats.
 
-None of these was a problem with the drawings that a person would have seen in one look. That is the point of a gate: it catches what nobody was going to look for.
+None of these is something a person would have caught in one look. That's the point of a gate: it catches what nobody was going to look for.
 
 ## Why bother
 
-Because the drawings are made by an agent and reviewed by me, and the expensive part is the review. A gate that rejects the mechanical mistakes means that by the time I look at a sheet, the only questions left are the ones that need taste. That is the same reason I put gates in front of agents at work: done is a green check plus someone who looked, never a report that it's fine.
+The drawings are made by an agent and reviewed by me, and the review is the expensive part. A gate that rejects the mechanical mistakes means that by the time I look at a sheet, the only questions left are the ones that need taste. Templates move that review up a level: I judge the grammar once, from a sheet of twelve seeds, instead of judging every drawing. That's the same reason I put gates in front of agents at work. Done means a green check plus someone who looked, never a report that it's fine.

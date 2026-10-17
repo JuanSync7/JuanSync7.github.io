@@ -20,7 +20,7 @@ export const FIGURE_MOTIONS = ['ambient', 'responsive', 'still'] as const;
 export type FigureMotion = (typeof FIGURE_MOTIONS)[number];
 
 /** Where a figure is used. The audit checks variety inside a group. */
-export const FIGURE_GROUPS = ['hero', 'feature', 'cover', 'post', 'fixture'] as const;
+export const FIGURE_GROUPS = ['hero', 'feature', 'cover', 'post', 'fixture', 'template'] as const;
 export type FigureGroup = (typeof FIGURE_GROUPS)[number];
 
 export interface Pointer {
@@ -48,6 +48,9 @@ export interface FrameInput {
   pulses: readonly Pulse[];
   /** True under reduced motion or a frozen capture: draw the composed rest frame. */
   still: boolean;
+  /** Whatever the page handed the figure (the lesson calendar's days, say). Unknown on
+   *  purpose: a figure narrows it, and draws a sample of its own when it is absent. */
+  data?: unknown;
 }
 
 /** Facts every figure declares, read by the page, the bench and the audit. */

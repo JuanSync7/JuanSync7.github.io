@@ -14,7 +14,7 @@ const { id, caption, aspect = 2 } = Astro.props;
 
 <figure class="post-figure">
   <div class="post-figure-stage" style={`--fig-aspect: ${aspect}`}>
-    <FigureCanvas client:visible id={id} readout />
+    <FigureCanvas client:visible id={id} />
   </div>
   <figcaption>{caption}</figcaption>
 </figure>

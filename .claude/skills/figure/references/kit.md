@@ -20,6 +20,16 @@ age}], still`. The canvas is cleared and the transform set before `draw`; `lineW
 `defineThreeFigure({ ...meta without style, build: ({ scene, camera, rng }) => State,
 update: (frame) => string | void, fallback: (canvasFrame) => string | void })`.
 
+`defineTemplate<P, S>({ id, title, idea, style, motion, answers, aspect, bleed?,
+grammar: (rng) => P, name: (p) => string, alt: (p) => string, setup: ({ w, h, rng, params })
+=> S, draw: (frame & { params }) => string | void })` in `src/figures/templates/`; the
+grammar's rng is salted so its choices never mirror the drawing's.
+
+A page can hand a figure data: `<FigureCanvas id data={…} onReadout={…} />` puts it on
+`frame.data` (typed `unknown`: narrow it with a guard, and draw a sample of your own when
+it is absent, as `lesson-field.ts` does). `onReadout` gets the read-out, so a page can act
+on what is under the pointer.
+
 ## The clock (`src/hooks/useFigureLoop.ts`) guarantees
 
 - `t` is the figure's own time and stops while it is offscreen; `dt` is capped at 50 ms.
@@ -53,6 +63,20 @@ is nearer); `nearness(depth, radius)` → 0 far .. 1 near.
 ## `kit/models.ts`: meshes
 `icosphere(level, r)` (20·4^level triangles), `torus(nu, nv, ring, tube)`, `lattice(n, half)`,
 `grid(n, half)`; each `{ v, e, f }`.
+
+## `kit/shapes.ts`: wire shapes
+Solids as lists of 3D segments (`Seg = [Vec3, Vec3]`): `path(pts, closed?)`,
+`circle(c, r, axis?, n?, a0?, a1?)`, `box(x0, y0, z0, x1, y1, z1)`,
+`cylinder(c, r, h, n?, rungs?, r2?)` (r2 makes a cone or frustum), `extrude(outline, z0, z1)`,
+`globe(c, r, lat?, lon?)`; `place(segs, { yaw, pitch, roll, scale, at })` turns and moves them;
+`strokeWire(ctx, segs, cam, { alpha, radius?, signal? })` strokes with depth fade.
+`along(pts, u)` is the point a fraction `u` along a polyline; `tracePath(ctx, cam, pts)`
+begins a projected path for you to stroke.
+
+## `kit/assemblies.ts`: machines as parts
+`ASSEMBLIES.rocket | keySwitch | lens | chip` → `(rng) => Part[]`, each part
+`{ name, segs, dir, gap }`: built in place along y, with the direction and distance it moves
+when exploded. Add a machine here, not in a template.
 
 ## `kit/draw.ts`: strokes and faces
 `line(ctx, a, b, style)`, `poly(ctx, pts, close)`, `dot(ctx, x, y, r, style)`,

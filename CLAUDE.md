@@ -40,7 +40,8 @@ These rules apply to all code in this repo. They are enforced where possible by 
 2. **Diagrams made of words are not figures.** When the content is labels and connections (the system map), build it as DOM with real text and the night tokens.
 3. **Done means the audit passed and someone looked.** `npm run figures:audit` exits 0 and the figure's sheet in `astro/figures-out/<id>.png` was read. The tight loop for one figure is `npm run figure -- <id>`.
 4. **Never loosen the audit to pass.** `scripts/figures/thresholds.json` changes only with a reason in the commit message, and after any change to the audit `npm run figures:selftest` must pass (each fixture in `src/figures/fixtures/` must still be caught).
-5. **Night system.** The 2026 pages (home, writing, figures) use `NightLayout.astro`, `styles/night.css` and the `--nt-*` tokens. Figures take colour only through `figures/kit/ink.ts`, which reads the `night` mirror in `palette.ts`.
+5. **Templates are figures drawn from a seed.** A template in `astro/src/figures/templates/` (`defineTemplate`) turns a seed into choices with its grammar; an instance `<template>~<seed>` works anywhere a figure id does, including `cover:`. Every template appears at `/lab/` automatically. A template is done when its seed sheet (`npm run figure:seeds -- <id>`) was read and the look passes for its three audit seeds.
+6. **Night system.** The 2026 pages (home, writing, figures) use `NightLayout.astro`, `styles/night.css` and the `--nt-*` tokens. Figures take colour only through `figures/kit/ink.ts`, which reads the `night` mirror in `palette.ts`.
 
 ## React rules
 
