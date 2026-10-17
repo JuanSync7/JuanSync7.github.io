@@ -1,0 +1,4 @@
+date: 2026-10-05
+tag: evals
+title: "Random inputs need a golden model."
+why: "Constrained random works in verification because a reference model knows the right answer. For LLM output, that means an eval set with known answers, or a judge."

@@ -3,6 +3,7 @@ title: "Building a Cyberpunk Portfolio with Astro"
 excerpt: "How I turned terminal aesthetics and chip schematics into a personal site. Starfields, FSM diagrams, and unhealthy amounts of CSS."
 category: software
 date: 2026-04-15
+cover: skyline
 readTime: "8 min"
 tags: ["Astro", "CSS", "Design"]
 featured: true

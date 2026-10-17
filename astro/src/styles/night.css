@@ -1,0 +1,106 @@
+/* Night system base: the reset and page primitives for the 2026 pages (home, writing,
+   figures). Loaded only by NightLayout, so the older pages keep their own styles. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body.night {
+  margin: 0;
+  background: var(--nt-ground);
+  color: var(--nt-ink);
+  font-family: var(--nt-sans);
+  font-size: var(--nt-fs-body);
+  line-height: var(--nt-lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.night a {
+  color: var(--nt-ink);
+  text-decoration: none;
+}
+
+.night a:hover {
+  color: var(--nt-ink-strong);
+}
+
+.night :focus-visible {
+  outline: 2px solid var(--nt-signal);
+  outline-offset: 3px;
+}
+
+.night h1,
+.night h2,
+.night h3,
+.night h4 {
+  margin: 0;
+  font-family: var(--nt-display);
+  font-weight: 500;
+  color: var(--nt-ink-strong);
+}
+
+.night p {
+  margin: 0;
+}
+
+.night button {
+  font: inherit;
+}
+
+/* Anchor jumps land below the sticky nav, not under it. */
+.night [id] {
+  scroll-margin-top: var(--hf-space-20);
+}
+
+.nt-wrap {
+  max-width: var(--nt-max);
+  margin: 0 auto;
+  padding-left: var(--nt-gutter);
+  padding-right: var(--nt-gutter);
+}
+
+.nt-section {
+  padding-top: var(--nt-section-y);
+  padding-bottom: var(--nt-section-y);
+}
+
+.nt-mono {
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-meta);
+}
+
+.nt-label {
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-meta);
+  color: var(--nt-signal);
+}
+
+.nt-dots {
+  background-image: var(--nt-grad-dots);
+  background-size: var(--hf-space-7) var(--hf-space-7);
+}
+
+.nt-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .night *,
+  .night *::before,
+  .night *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

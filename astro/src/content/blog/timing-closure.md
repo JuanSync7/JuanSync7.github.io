@@ -3,6 +3,7 @@ title: "The Art of Timing Closure"
 excerpt: "When your critical path laughs at your clock constraint. Strategies, hacks, and copium for meeting timing."
 category: silicon
 date: 2026-03-05
+cover: logic-analyzer
 readTime: "10 min"
 tags: ["STA", "Timing", "ASIC"]
 featured: false

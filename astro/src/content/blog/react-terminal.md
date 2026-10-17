@@ -3,6 +3,7 @@ title: "Building an Interactive Terminal in React"
 excerpt: "State machines, command parsing, and typing animations. How the work experience section actually works under the hood."
 category: tutorials
 date: 2026-02-20
+cover: crt-terminal
 readTime: "9 min"
 tags: ["React", "Tutorial"]
 featured: false

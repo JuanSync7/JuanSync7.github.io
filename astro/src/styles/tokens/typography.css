@@ -1,6 +1,6 @@
 /* Typography tokens — font families, sizes, weights. */
 
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Special+Elite&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Geist:wght@400;500;600&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@500;600&family=Special+Elite&display=swap');
 
 :root {
   /* Font stacks */
@@ -16,6 +16,29 @@
   --hf-fs-lg: 14px;
   --hf-fs-xl: 16px;
   --hf-fs-2xl: 20px;
+
+  /* Night system (2026 redesign): one sans for reading, one grotesk for display. */
+  --nt-sans: 'Geist', system-ui, sans-serif;
+  --nt-display: 'Space Grotesk', 'Geist', sans-serif;
+  --nt-mono: var(--hf-mono);
+  --nt-fs-caption: 12px;
+  --nt-fs-meta: 13px;
+  --nt-fs-small: 14px;
+  --nt-fs-ui: 15px;
+  --nt-fs-body: 16px;
+  --nt-fs-lead: 17px;
+  --nt-fs-intro: 18px;
+  --nt-fs-h5: 19px;
+  --nt-fs-h4: 21px;
+  --nt-fs-h3: 24px;
+  --nt-fs-h2: clamp(30px, 3.6vw, 44px);
+  --nt-fs-h1: clamp(42px, 6vw, 80px);
+  --nt-fs-hero: clamp(48px, 7.4vw, 104px);
+  --nt-lh-tight: 1.04;
+  --nt-lh-heading: 1.12;
+  --nt-lh-body: 1.6;
+  --nt-tracking-display: -0.035em;
+  --nt-tracking-heading: -0.02em;
 
   /* Letter spacing presets */
   --hf-tracking-wide: 0.03em;

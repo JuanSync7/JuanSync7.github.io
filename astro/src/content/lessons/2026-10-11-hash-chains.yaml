@@ -1,0 +1,4 @@
+date: 2026-10-11
+tag: ledgers
+title: "A hash chain proves a record wasn't changed. Not that it was true."
+why: "One writer checking itself is the opposite of what makes a blockchain trustworthy. The writer needs independent checkers, and a mirror it can't rewrite."

@@ -13,6 +13,8 @@ import Placeholder from '../components/ui/Placeholder.tsx';
 import NebulaStars from '../components/ui/NebulaStars.tsx';
 import ZoomSwapDemo from '../components/ui/ZoomSwapDemo.tsx';
 import CubeSwapDemo from '../components/ui/CubeSwapDemo.tsx';
+import FigureCanvas from '../components/ui/FigureCanvas.tsx';
+import SectionHead from '../components/ui/SectionHead.astro';
 import { IDENTITY, CAREER_STATS } from '../data/site';
 
 /* Raw component source — Vite `?raw` returns the file as a string at
@@ -33,6 +35,8 @@ import ZoomSwapDemoSrc from '../components/ui/ZoomSwapDemo.tsx?raw';
 import ZoomSwapCss from '../components/ui/zoom-swap.css?raw';
 import CubeSwapDemoSrc from '../components/ui/CubeSwapDemo.tsx?raw';
 import CubeSwapCss from '../components/ui/cube-swap.css?raw';
+import FigureCanvasSrc from '../components/ui/FigureCanvas.tsx?raw';
+import SectionHeadSrc from '../components/ui/SectionHead.astro?raw';
 
 /* All tokens read from src/styles/tokens/*.css. Hex values are resolved
    at runtime by the inline script at the bottom of this page so this list
@@ -85,6 +89,9 @@ const COLOR_TOKENS = [
     { name: 'lofi-accent-2', token: '--lofi-accent-2' },
     { name: 'lofi-bg', token: '--lofi-bg' },
   ]},
+  { group: 'night (home, writing, figures)', tokens: [
+    { name: 'ground', token: '--nt-ground' }, { name: 'ground-2', token: '--nt-ground-2' }, { name: 'panel', token: '--nt-panel' }, { name: 'panel-2', token: '--nt-panel-2' }, { name: 'panel-signal', token: '--nt-panel-signal' }, { name: 'rule', token: '--nt-rule' }, { name: 'line', token: '--nt-line' }, { name: 'line-2', token: '--nt-line-2' }, { name: 'line-3', token: '--nt-line-3' }, { name: 'line-4', token: '--nt-line-4' }, { name: 'ink-strong', token: '--nt-ink-strong' }, { name: 'ink', token: '--nt-ink' }, { name: 'ink-2', token: '--nt-ink-2' }, { name: 'ink-soft', token: '--nt-ink-soft' }, { name: 'ink-muted', token: '--nt-ink-muted' }, { name: 'ink-faint', token: '--nt-ink-faint' }, { name: 'signal', token: '--nt-signal' }, { name: 'signal-ink', token: '--nt-signal-ink' }, { name: 'signal-line', token: '--nt-signal-line' }, { name: 'signal-line-2', token: '--nt-signal-line-2' }, { name: 'signal-soft', token: '--nt-signal-soft' }, { name: 'signal-faint', token: '--nt-signal-faint' }, { name: 'signal-glow', token: '--nt-signal-glow' }, { name: 'dot', token: '--nt-dot' }, { name: 'scrim', token: '--nt-scrim' }, { name: 'scrim-strong', token: '--nt-scrim-strong' },
+  ]},
 ];
 
 const GRADIENT_TOKENS = [
@@ -99,6 +106,12 @@ const GRADIENT_TOKENS = [
   { name: 'chart emerald → orange',  token: '--hf-grad-chart-emerald-orange',  note: 'cockpit donut/speedo accent (GRAD.emeraldOrange)' },
   { name: 'chart yellow → red',      token: '--hf-grad-chart-yellow-red',      note: 'cockpit donut/speedo accent (GRAD.yellowRed)' },
   { name: 'rainbow red → indigo',    token: '--hf-grad-rainbow-red-indigo',    note: 'ROYGBI spectrum sweep (red, orange, yellow, green, blue, indigo)' },
+  { name: 'night dots',              token: '--nt-grad-dots',                  note: 'dot grid behind night sections (.nt-dots)' },
+  { name: 'night fade left',         token: '--nt-grad-fade-left',             note: 'writing hero: words readable over the lattice' },
+  { name: 'night fade up',           token: '--nt-grad-fade-up',               note: 'fade a panel into the ground' },
+  { name: 'page shade',              token: '--nt-grad-page-shade',            note: 'shadow across a featured page as it turns' },
+  { name: 'page gloss',              token: '--nt-grad-page-gloss',            note: 'brief sheen on a page as it lifts' },
+  { name: 'card spotlight',          token: '--nt-grad-spot',                  note: 'post-card pointer spotlight, sized by --nt-spot-size' },
 ];
 
 const TYPE_RAMP = [
@@ -109,6 +122,19 @@ const TYPE_RAMP = [
   { token: '--hf-fs-lg',   px: '14px' },
   { token: '--hf-fs-xl',   px: '16px' },
   { token: '--hf-fs-2xl',  px: '20px' },
+  { token: '--nt-fs-caption', px: '12px' },
+  { token: '--nt-fs-meta',    px: '13px' },
+  { token: '--nt-fs-small',   px: '14px' },
+  { token: '--nt-fs-ui',      px: '15px' },
+  { token: '--nt-fs-body',    px: '16px' },
+  { token: '--nt-fs-lead',    px: '17px' },
+  { token: '--nt-fs-intro',   px: '18px' },
+  { token: '--nt-fs-h5',      px: '19px' },
+  { token: '--nt-fs-h4',      px: '21px' },
+  { token: '--nt-fs-h3',      px: '24px' },
+  { token: '--nt-fs-h2',      px: '30–44px' },
+  { token: '--nt-fs-h1',      px: '42–80px' },
+  { token: '--nt-fs-hero',    px: '48–104px' },
 ];
 
 const SPACING_TOKENS = [
@@ -121,6 +147,28 @@ const SPACING_TOKENS = [
   { token: '--hf-space-8',  px: '32px' },
   { token: '--hf-space-10', px: '40px' },
   { token: '--hf-space-12', px: '48px' },
+  { token: '--hf-space-7',  px: '28px' },
+  { token: '--hf-space-14', px: '56px' },
+  { token: '--hf-space-16', px: '64px' },
+  { token: '--hf-space-20', px: '80px' },
+  { token: '--hf-space-26', px: '104px' },
+];
+
+/* Night layout and effect tokens: sizes that are not on the spacing scale. */
+const NIGHT_LAYOUT = [
+  { token: '--nt-gutter', note: 'page side gutter, 16–48px' },
+  { token: '--nt-section-y', note: 'section padding, 72–120px' },
+  { token: '--nt-section-y-tight', note: 'tighter section padding, 48–72px' },
+  { token: '--nt-max', note: 'content width, 1200px' },
+  { token: '--nt-measure', note: 'text measure, 640px' },
+  { token: '--nt-hit', note: 'smallest touch target, 44px' },
+  { token: '--nt-col', note: 'narrowest side-by-side panel, 420px' },
+  { token: '--nt-perspective-page', note: '3D distance for the featured page turn, 2400px' },
+  { token: '--nt-perspective-card', note: '3D distance for the lesson card flip, 1600px' },
+  { token: '--nt-spot-size', note: 'post-card spotlight diameter, 920px' },
+  { token: '--nt-glass-blur', note: 'backdrop blur behind the sticky nav' },
+  { token: '--nt-lh-tight · --nt-lh-heading · --nt-lh-body', note: 'line heights 1.04 · 1.12 · 1.6' },
+  { token: '--nt-tracking-display · --nt-tracking-heading', note: 'letter spacing −0.035em · −0.02em' },
 ];
 
 const RADIUS_TOKENS = [
@@ -129,6 +177,8 @@ const RADIUS_TOKENS = [
   { token: '--hf-radius-md',   label: '8px'  },
   { token: '--hf-radius-lg',   label: '12px' },
   { token: '--hf-radius-pill', label: 'pill' },
+  { token: '--hf-radius-xl',   label: '16px' },
+  { token: '--hf-radius-2xl',  label: '20px' },
 ];
 
 /* Snippet builders — every artifact below carries a `data-ds-snippet`
@@ -417,6 +467,18 @@ ${NebulaStarsSrc}
       </div>
 
       <div class="ds-comp-grid">
+        <div class="ds-comp-card ds-comp-card-wide ds-copyable" data-ds-snippet={`// src/components/ui/FigureCanvas.tsx\n${FigureCanvasSrc}`} title="click for code">
+          <div class="ds-comp-label">&lt;FigureCanvas&gt;</div>
+          <div class="ds-comp-stage night-sample"><div style="width: 100%; aspect-ratio: 16 / 9;"><FigureCanvas client:visible id="ridge-lines" readout /></div></div>
+          <div class="ds-comp-note">mounts one figure from src/figures by id; the wrapper sets the size. Every drawing on the site goes through it (see /figures and the figure skill).</div>
+        </div>
+
+        <div class="ds-comp-card ds-comp-card-wide ds-copyable" data-ds-snippet={`// src/components/ui/SectionHead.astro\n${SectionHeadSrc}`} title="click for code">
+          <div class="ds-comp-label">&lt;SectionHead&gt;</div>
+          <div class="ds-comp-stage night-sample"><SectionHead label="// 0x01 · how I think" title="Decide slowly," accent="then move fast." lead="The opening of a night-system section: mono label, two-tone heading, lead." /></div>
+          <div class="ds-comp-note">night pages · label / title / accent / lead / as</div>
+        </div>
+
         <div class="ds-comp-card ds-copyable" data-ds-snippet={`// src/components/ui/NeonText.tsx\n${NeonTextSrc}`} title="click for code">
           <div class="ds-comp-label">&lt;NeonText&gt;</div>
           <div class="ds-comp-stage ds-comp-stage-display"><NeonText client:load>NEON_TEXT</NeonText></div>
@@ -671,6 +733,13 @@ ${NebulaStarsSrc}
             <div class="ds-radius-lbl">{r.label}</div>
             <div class="ds-radius-tok">{r.token}</div>
           </div>
+        ))}
+      </div>
+
+      <div class="ds-group-label" style="margin-top: 24px;">night layout & effects</div>
+      <div class="ds-naming-card">
+        {NIGHT_LAYOUT.map((n) => (
+          <div><span class="ds-naming-tag2">{n.token}</span> — {n.note}</div>
         ))}
       </div>
     </section>

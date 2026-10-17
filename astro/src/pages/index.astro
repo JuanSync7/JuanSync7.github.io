@@ -1,28 +1,26 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Nav from '../components/layout/Nav.tsx';
-import PurpleSkyTransition from '../components/ui/PurpleSkyTransition.tsx';
-import LofiFooterFade from '../components/ui/LofiFooterFade.tsx';
-import Hero from '../components/hero/Hero.tsx';
-import Terminal from '../components/terminal/Terminal.tsx';
-import FSM from '../components/fsm/FSM.tsx';
-import Projects from '../components/projects/Projects.tsx';
-import LofiRoom from '../components/lofi/LofiRoom.tsx';
-import Footer from '../components/layout/Footer.tsx';
-import Cockpit from '../components/cockpit/Cockpit.tsx';
+import NightLayout from '../layouts/NightLayout.astro';
+import NightNav from '../components/layout/NightNav.astro';
+import NightFooter from '../components/layout/NightFooter.astro';
+import HomeHero from '../components/home/HomeHero.astro';
+import SystemMap from '../components/home/SystemMap.astro';
+import Thinking from '../components/home/Thinking.astro';
+import Cases from '../components/home/Cases.astro';
+import Experience from '../components/home/Experience.astro';
+import Repos from '../components/home/Repos.astro';
+import Contact from '../components/home/Contact.astro';
 ---
 
-<Layout title="juan_kok — CV v2.0">
-  <main id="root">
-    <Nav client:load />
-    <Hero client:load />
-    <Terminal client:load />
-    <FSM client:load />
-    <Cockpit client:load />
-    <Projects client:load />
-    <PurpleSkyTransition client:load />
-    <LofiRoom client:load />
-    <LofiFooterFade client:load />
-    <Footer />
+<NightLayout title="Juan Kok · Senior AI Engineer">
+  <NightNav />
+  <main>
+    <HomeHero />
+    <SystemMap />
+    <Thinking />
+    <Cases />
+    <Experience />
+    <Repos />
+    <Contact />
   </main>
-</Layout>
+  <NightFooter />
+</NightLayout>

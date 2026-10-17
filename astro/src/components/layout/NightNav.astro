@@ -1,0 +1,94 @@
+---
+import { NAV } from '../../data/home';
+import { IDENTITY } from '../../data/site';
+
+interface Props {
+  /** The nav link to mark as the current page. */
+  current?: string;
+}
+
+const { current } = Astro.props;
+---
+
+<header class="nav">
+  <div class="nt-wrap nav-inner">
+    <a class="brand" href="/">{IDENTITY.shortName}</a>
+    <nav aria-label="Primary">
+      <ul>
+        {NAV.map((l) => (
+          <li>
+            <a href={l.href} aria-current={l.label === current ? 'page' : undefined}>{l.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <a class="cv" href={IDENTITY.cvFile}>cv.pdf</a>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: var(--hf-z-nav);
+    background: var(--nt-scrim);
+    backdrop-filter: var(--nt-glass-blur);
+    border-bottom: 1px solid var(--nt-rule);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--hf-space-6);
+    min-height: var(--hf-space-16);
+  }
+
+  .brand {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-small);
+    color: var(--nt-ink-strong);
+  }
+
+  nav {
+    margin-left: auto;
+  }
+
+  ul {
+    display: flex;
+    gap: var(--hf-space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  nav a,
+  .cv {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--nt-hit);
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-ink-muted);
+  }
+
+  nav a[aria-current='page'] {
+    color: var(--nt-signal);
+  }
+
+  .cv {
+    padding: 0 var(--hf-space-4);
+    border: 1px solid var(--nt-line-2);
+    border-radius: var(--hf-radius-pill);
+    color: var(--nt-ink-2);
+  }
+
+  .cv:hover {
+    border-color: var(--nt-line-4);
+  }
+
+  @media (max-width: 720px) {
+    nav li:not(:last-child) {
+      display: none;
+    }
+  }
+</style>

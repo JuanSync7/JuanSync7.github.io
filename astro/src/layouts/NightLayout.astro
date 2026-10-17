@@ -1,0 +1,28 @@
+---
+import '../styles/tokens/index.css';
+import '../styles/night.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Keep the page out of search results (the figure bench). */
+  noindex?: boolean;
+}
+
+const { title, description = 'Juan Kok: Senior AI Engineer. LLM platforms, agents and governance.', noindex = false } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    {noindex ? <meta name="robots" content="noindex" /> : null}
+    <title>{title}</title>
+    <slot name="head" />
+  </head>
+  <body class="night">
+    <slot />
+  </body>
+</html>

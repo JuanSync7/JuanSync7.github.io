@@ -1,39 +1,76 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-import Nav from '../../components/layout/Nav.tsx';
-import BlogApp from '../../components/blog/BlogApp.tsx';
-import { resolveBlogArt } from '../../lib/content';
-import '../../components/blog/blog.css';
+import { getCollection } from 'astro:content';
+import NightLayout from '../../layouts/NightLayout.astro';
+import NightNav from '../../components/layout/NightNav.astro';
+import NightFooter from '../../components/layout/NightFooter.astro';
+import SectionHead from '../../components/ui/SectionHead.astro';
+import WritingHero from '../../components/writing/WritingHero.astro';
+import FeaturedBook from '../../components/writing/FeaturedBook.tsx';
+import LessonLog from '../../components/writing/LessonLog.tsx';
+import PostGrid from '../../components/writing/PostGrid.tsx';
+import Trackers from '../../components/writing/Trackers.astro';
+import Follow from '../../components/writing/Follow.astro';
+import type { FeaturedPage, Lesson, PostSummary } from '../../components/writing/types';
+import { CATEGORY_LABEL, FEATURED, LESSONS_COPY, POSTS_COPY } from '../../data/writing';
 
-const entries = await getCollection('blog');
-// Canonical art lives on the learn article; a blog post that shares its slug inherits
-// it automatically (resolveBlogArt). A post may also override via its own `art`/`bg`.
-const learnBySlug = new Map<string, CollectionEntry<'learn'>['data']>(
-  (await getCollection('learn')).map((e) => [e.slug, e.data]),
-);
-const posts = entries
-  .map((e) => {
-    const { motif: artMotif, space: artSpace } = resolveBlogArt(e.data, learnBySlug.get(e.slug));
-    return {
-      slug: e.slug,
-      title: e.data.title,
-      excerpt: e.data.excerpt,
-      category: e.data.category,
-      date: e.data.date.toISOString(),
-      readTime: e.data.readTime,
-      tags: e.data.tags,
-      featured: e.data.featured,
-      size: e.data.size,
-      ...(e.data.externalUrl ? { externalUrl: e.data.externalUrl } : {}),
-      ...(artMotif ? { artMotif } : {}),
-      ...(artSpace ? { artSpace } : {}),
-    };
-  })
-  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+const show = (d: Date): string => fmt.format(d);
+
+const entries = (await getCollection('blog')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const posts: PostSummary[] = entries.map((e) => ({
+  slug: e.slug,
+  title: e.data.title,
+  excerpt: e.data.excerpt,
+  category: e.data.category,
+  date: show(e.data.date),
+  read: e.data.readTime,
+  cover: e.data.cover ?? null,
+  href: e.data.externalUrl ?? `/blog/${e.slug}`,
+}));
+
+// Featured pages take title, date and read time from the post itself, so they can't drift.
+const featured: FeaturedPage[] = FEATURED.items.flatMap((f) => {
+  const post = entries.find((e) => e.slug === f.slug);
+  if (!post) throw new Error(`featured post "${f.slug}" is not in the blog collection`);
+  return [{ ...f, href: post.data.externalUrl ?? `/blog/${post.slug}`, title: post.data.title, date: show(post.data.date), read: post.data.readTime }];
+});
+
+const lessons: Lesson[] = (await getCollection('lessons'))
+  .map((l) => ({ iso: l.data.date.toISOString().slice(0, 10), tag: l.data.tag, title: l.data.title, why: l.data.why }))
+  .sort((a, b) => b.iso.localeCompare(a.iso));
 ---
 
-<Layout title="blog.terminal — where silicon meets syntax">
-  <Nav client:load />
-  <BlogApp client:load posts={posts} />
-</Layout>
+<NightLayout title="Writing · Juan Kok" description="How AI inference works, from the transistor to the token, plus chip design and building with agents.">
+  <link rel="alternate" type="application/rss+xml" title="Juan Kok · writing" href="/rss.xml" slot="head" />
+  <NightNav current="writing" />
+  <main>
+    <WritingHero />
+
+    <section id="featured" class="nt-wrap nt-section block">
+      <SectionHead label="// featured" title={FEATURED.title} lead={FEATURED.body} />
+      <FeaturedBook client:visible pages={featured} />
+    </section>
+
+    <section id="lessons" class="nt-wrap block">
+      <SectionHead label="// lessons" title={LESSONS_COPY.title} lead={LESSONS_COPY.body} />
+      <LessonLog client:visible lessons={lessons} note={LESSONS_COPY.key} />
+    </section>
+
+    <section id="posts" class="nt-wrap nt-section block">
+      <SectionHead label="// posts" title={POSTS_COPY.title} lead={POSTS_COPY.body} />
+      <PostGrid client:visible posts={posts} labels={CATEGORY_LABEL} />
+    </section>
+
+    <Trackers />
+    <Follow />
+  </main>
+  <NightFooter />
+</NightLayout>
+
+<style>
+  .block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-8);
+  }
+</style>

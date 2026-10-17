@@ -1,0 +1,67 @@
+---
+// The opening of a night-system section: a mono label, a two-tone heading and a lead.
+export interface Props {
+  label: string;
+  title: string;
+  /** The heading's second half, set in the quieter tone. */
+  accent?: string;
+  lead?: string;
+  /** Heading level: h1 only for a page's first section. */
+  as?: 'h1' | 'h2';
+}
+
+const { label, title, accent, lead, as: Tag = 'h2' } = Astro.props;
+---
+
+<div class="head">
+  <span class="label">{label}</span>
+  <Tag class="title">
+    {title}
+    {accent ? <span class="accent">{accent}</span> : null}
+  </Tag>
+  {lead ? <p class="lead">{lead}</p> : null}
+  <slot />
+</div>
+
+<style>
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-4);
+    max-width: var(--nt-measure);
+  }
+
+  .label {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-signal);
+  }
+
+  .title {
+    margin: 0;
+    font-family: var(--nt-display);
+    font-weight: 500;
+    color: var(--nt-ink-strong);
+    font-size: var(--nt-fs-h2);
+    line-height: var(--nt-lh-heading);
+    letter-spacing: var(--nt-tracking-heading);
+  }
+
+  h1.title {
+    font-size: var(--nt-fs-h1);
+    line-height: var(--nt-lh-tight);
+    letter-spacing: var(--nt-tracking-display);
+  }
+
+  .accent {
+    display: block;
+    color: var(--nt-ink-muted);
+  }
+
+  .lead {
+    margin: 0;
+    font-family: var(--nt-sans);
+    font-size: var(--nt-fs-intro);
+    color: var(--nt-ink-soft);
+  }
+</style>

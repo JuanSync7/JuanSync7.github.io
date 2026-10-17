@@ -1,0 +1,263 @@
+.log {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: var(--hf-space-10) var(--hf-space-14);
+}
+
+.log-grid-panel {
+  flex: 1 1 var(--nt-col);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--hf-space-3);
+  padding: var(--hf-space-7);
+  border: 1px solid var(--nt-line);
+  border-radius: var(--hf-radius-2xl);
+}
+
+.log-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--hf-space-3);
+}
+
+.log-count {
+  font-family: var(--nt-display);
+  font-size: var(--nt-fs-intro);
+  color: var(--nt-ink-strong);
+}
+
+.log-key {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hf-space-1);
+  font-size: var(--nt-fs-caption);
+  color: var(--nt-ink-muted);
+}
+
+.swatch {
+  width: var(--hf-space-3);
+  height: var(--hf-space-3);
+  border-radius: var(--hf-radius-sm);
+}
+
+.log-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hf-space-1);
+  overflow-x: auto;
+}
+
+/* Cells never shrink below 24px, the smallest comfortable target; below that the grid
+   scrolls inside its panel rather than shrinking. */
+.log-months,
+.log-cells {
+  display: grid;
+  grid-template-columns: repeat(16, minmax(var(--hf-space-6), 1fr));
+  gap: var(--hf-space-1);
+}
+
+.log-months {
+  font-family: var(--nt-mono);
+  font-size: var(--hf-fs-sm);
+  color: var(--nt-ink-faint);
+  white-space: nowrap;
+}
+
+.log-cells {
+  grid-auto-flow: column;
+  grid-template-rows: repeat(7, auto);
+}
+
+.cell {
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--hf-radius-sm);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.cell:disabled {
+  cursor: default;
+}
+
+.cell:not(:disabled):hover {
+  transform: scale(1.35);
+}
+
+.l0 {
+  background: transparent;
+  border: 1px solid var(--nt-line);
+}
+
+.l1 {
+  background: color-mix(in srgb, var(--nt-signal) 35%, transparent);
+}
+
+.l2 {
+  background: color-mix(in srgb, var(--nt-signal) 65%, transparent);
+}
+
+.l3 {
+  background: var(--nt-signal);
+}
+
+.cell.is-today {
+  border-color: var(--nt-signal);
+}
+
+.cell.is-sel {
+  outline: 2px solid var(--nt-signal);
+  outline-offset: 2px;
+}
+
+.cell.is-future {
+  visibility: hidden;
+}
+
+.log-note {
+  font-size: var(--nt-fs-meta);
+  color: var(--nt-ink-muted);
+}
+
+/* The deck: two card backs peek out under the top card, which flips down into place. */
+.deck {
+  position: relative;
+  flex: 1 1 var(--nt-col);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  perspective: var(--nt-perspective-card);
+}
+
+.deck-back {
+  position: absolute;
+  border: 1px solid var(--nt-line);
+  border-radius: var(--hf-radius-2xl);
+}
+
+.deck-back.far {
+  inset: var(--hf-space-6) var(--hf-space-6) calc(-1 * var(--hf-space-4));
+  background: var(--nt-ground-2);
+}
+
+.deck-back.near {
+  inset: var(--hf-space-3) var(--hf-space-3) calc(-1 * var(--hf-space-2));
+  background: var(--nt-panel);
+}
+
+.leaf {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--hf-space-5);
+  padding: var(--hf-space-8);
+  overflow: hidden;
+  transform-origin: top center;
+  border: 1px solid var(--nt-line-2);
+  border-radius: var(--hf-radius-2xl);
+  background: var(--nt-panel-2);
+}
+
+.leaf.a {
+  animation: leaf-a 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.leaf.b {
+  animation: leaf-b 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.leaf-edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--hf-space-1);
+  background: var(--nt-signal);
+}
+
+.leaf-meta,
+.leaf-no {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--hf-space-3);
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-caption);
+  color: var(--nt-ink-muted);
+}
+
+.leaf-tag {
+  color: var(--nt-signal);
+}
+
+.leaf h3 {
+  font-size: var(--nt-fs-h3);
+  line-height: var(--nt-lh-heading);
+  letter-spacing: var(--nt-tracking-heading);
+}
+
+.leaf p {
+  flex-grow: 1;
+  color: var(--nt-ink-2);
+}
+
+.leaf-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--hf-space-3);
+  padding-top: var(--hf-space-5);
+  border-top: 1px solid var(--nt-line-2);
+}
+
+.leaf-nav {
+  display: flex;
+  gap: var(--hf-space-2);
+}
+
+.leaf-btn {
+  min-height: var(--nt-hit);
+  padding: 0 var(--hf-space-4);
+  border: 1px solid var(--nt-line-3);
+  border-radius: var(--hf-radius-pill);
+  background: transparent;
+  color: var(--nt-ink);
+  font-size: var(--nt-fs-meta);
+  cursor: pointer;
+}
+
+.leaf-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* Two identical keyframes, alternated, so React's re-keyed card always restarts its flip. */
+@keyframes leaf-a {
+  from {
+    transform: rotateX(-92deg);
+    opacity: 0.2;
+  }
+}
+
+@keyframes leaf-b {
+  from {
+    transform: rotateX(-92deg);
+    opacity: 0.2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .leaf.a,
+  .leaf.b {
+    animation: none;
+  }
+
+  .cell {
+    transition: none;
+  }
+}

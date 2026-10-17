@@ -1,0 +1,20 @@
+---
+import FigureCanvas from '../ui/FigureCanvas.tsx';
+
+// A figure placed inside a post's MDX: the live drawing, framed, with a caption under it.
+export interface Props {
+  id: string;
+  caption: string;
+  /** Width over height of the frame; match the figure's own aspect. */
+  aspect?: number;
+}
+
+const { id, caption, aspect = 2 } = Astro.props;
+---
+
+<figure class="post-figure">
+  <div class="post-figure-stage" style={`--fig-aspect: ${aspect}`}>
+    <FigureCanvas client:visible id={id} readout />
+  </div>
+  <figcaption>{caption}</figcaption>
+</figure>

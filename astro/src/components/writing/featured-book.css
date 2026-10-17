@@ -1,0 +1,320 @@
+.book {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hf-space-4);
+}
+
+.book-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--hf-space-3);
+}
+
+.book-ctl {
+  display: inline-grid;
+  place-items: center;
+  width: var(--nt-hit);
+  height: var(--nt-hit);
+  border: 1px solid var(--nt-line-3);
+  border-radius: var(--hf-radius-pill);
+  background: transparent;
+  color: var(--nt-ink);
+  cursor: pointer;
+}
+
+.book-pause {
+  width: auto;
+  margin-right: auto;
+  padding: 0 var(--hf-space-4);
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-caption);
+  color: var(--nt-ink-muted);
+}
+
+.book-ctl:hover {
+  border-color: var(--nt-line-4);
+}
+
+.book-count {
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-caption);
+  color: var(--nt-ink-muted);
+}
+
+/* The perspective origin sits on the left edge: every page hinges there, like a book. */
+.book-stage {
+  position: relative;
+  min-height: calc(var(--hf-space-26) * 5);
+  perspective: var(--nt-perspective-page);
+  perspective-origin: 0% 50%;
+}
+
+.page {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: var(--hf-space-8);
+  padding: var(--hf-space-10);
+  visibility: hidden;
+  overflow: hidden;
+  transform-origin: left center;
+  backface-visibility: hidden;
+  border: 1px solid var(--nt-line);
+  border-radius: var(--hf-radius-2xl);
+  background: var(--nt-panel);
+  will-change: transform;
+}
+
+.page.is-active {
+  visibility: visible;
+  z-index: 1;
+}
+
+.page.is-out {
+  visibility: visible;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.page.is-active.dir-next {
+  animation: under-in 1.1s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.page.is-out.dir-next {
+  animation: turn-away 1.1s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.page.is-active.dir-prev {
+  z-index: 3;
+  animation: turn-back 1.1s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.page.is-out.dir-prev {
+  z-index: 1;
+  animation: under-out 1.1s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.page-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--hf-space-5);
+}
+
+.page-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hf-space-2) var(--hf-space-4);
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-caption);
+  color: var(--nt-ink-muted);
+}
+
+.page-kind {
+  color: var(--nt-signal);
+}
+
+.page h3 {
+  font-size: var(--nt-fs-h2);
+  line-height: var(--nt-lh-heading);
+  letter-spacing: var(--nt-tracking-heading);
+}
+
+.page-blurb {
+  color: var(--nt-ink-soft);
+}
+
+.page .page-cta {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--nt-hit);
+  color: var(--nt-signal);
+}
+
+.page.is-active .st {
+  animation: rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+
+.page.is-active.dir-next .st {
+  animation-delay: 0.45s;
+}
+
+.page.is-active .st:nth-child(2) {
+  animation-delay: 0.51s;
+}
+
+.page.is-active .st:nth-child(3) {
+  animation-delay: 0.57s;
+}
+
+.page.is-active .st:nth-child(4) {
+  animation-delay: 0.63s;
+}
+
+.page-art {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hf-space-3);
+  min-height: 0;
+}
+
+.page-figure {
+  flex: 1;
+  min-height: 0;
+  border: 1px solid var(--nt-rule);
+  border-radius: var(--hf-radius-xl);
+  background: var(--nt-ground);
+  overflow: hidden;
+}
+
+.page-notes {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--hf-space-4);
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-caption);
+  color: var(--nt-ink-faint);
+}
+
+.page-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--hf-space-1);
+  background: var(--nt-signal);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.page.is-active .page-bar {
+  animation: bar 8s linear both;
+}
+
+.is-held .page-bar {
+  visibility: hidden;
+}
+
+.page-shade,
+.page-gloss {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 4;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.page-shade {
+  left: 0;
+  right: 0;
+  background: var(--nt-grad-page-shade);
+}
+
+.page-gloss {
+  left: 0;
+  width: 36%;
+  background: var(--nt-grad-page-gloss);
+}
+
+.page.is-out.dir-next .page-shade {
+  animation: fade-on 1.1s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.page.is-out.dir-next .page-gloss {
+  animation: gloss 1.1s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.page.is-active.dir-prev .page-shade {
+  animation: fade-off 1.1s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+@keyframes turn-away {
+  to {
+    transform: rotateY(-108deg);
+  }
+}
+
+@keyframes turn-back {
+  from {
+    transform: rotateY(-108deg);
+  }
+}
+
+@keyframes under-in {
+  from {
+    transform: scale(0.975);
+    filter: brightness(0.55);
+  }
+}
+
+@keyframes under-out {
+  to {
+    transform: scale(0.975);
+    filter: brightness(0.55);
+  }
+}
+
+@keyframes fade-on {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-off {
+  from {
+    opacity: 1;
+  }
+}
+
+@keyframes gloss {
+  35% {
+    opacity: 1;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--hf-space-4));
+  }
+}
+
+@keyframes bar {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (max-width: 860px) {
+  .book-stage {
+    min-height: calc(var(--hf-space-26) * 7);
+  }
+
+  .page {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    padding: var(--hf-space-6);
+  }
+}
+
+/* No turn under reduced motion: the old page simply goes, so it must not linger on top. */
+@media (prefers-reduced-motion: reduce) {
+  .page,
+  .page .st,
+  .page-shade,
+  .page-gloss {
+    animation: none !important;
+  }
+
+  .page.is-out {
+    visibility: hidden;
+  }
+
+  .page-bar {
+    display: none;
+  }
+}

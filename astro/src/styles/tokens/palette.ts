@@ -37,6 +37,32 @@ export const palette = {
 
 export type PaletteKey = keyof typeof palette;
 
+/** Night system (2026 redesign). Mirrors the `--nt-*` tokens in colors.css. Figures
+ *  never name a colour: they take one of these through `figures/kit/ink.ts`. */
+export const night = {
+  ground: '#07080c',
+  ground2: '#090a0f',
+  panel: '#0b0d13',
+  panel2: '#0e1118',
+  panelSignal: '#0c1514',
+  rule: '#161922',
+  line: '#1c2030',
+  line2: '#23283a',
+  line3: '#2a2f3d',
+  line4: '#3a4054',
+  inkStrong: '#f3f4f7',
+  ink: '#e6e8ee',
+  ink2: '#c3c8d4',
+  inkSoft: '#a3a9ba',
+  inkMuted: '#8b92a5',
+  inkFaint: '#7d8496',
+  signal: '#2dd4bf',
+  signalInk: '#061210',
+  signalLine: '#1b3a36',
+} as const;
+
+export type NightKey = keyof typeof night;
+
 /** Compose a translucent variant of a 6-digit hex colour. a ∈ [0,1]; returns an
  *  8-digit hex (#rrggbbaa). Drop-in for the legacy `${color}44` concatenation. */
 export function alpha(hex: string, a: number): string {

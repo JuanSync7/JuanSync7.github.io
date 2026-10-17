@@ -95,4 +95,33 @@
   --lofi-mug-highlight: #f0e4d4;
   --lofi-bean: #8B4513;
   --lofi-bean-line: #5a2a08;
+
+  /* Night system (2026 redesign): near-black ground, cool greys, one teal signal.
+     Mirrored in palette.ts as `night`; figures read colours only through that object. */
+  --nt-ground: #07080c;
+  --nt-ground-2: #090a0f;
+  --nt-panel: #0b0d13;
+  --nt-panel-2: #0e1118;
+  --nt-panel-signal: #0c1514;
+  --nt-rule: #161922;
+  --nt-line: #1c2030;
+  --nt-line-2: #23283a;
+  --nt-line-3: #2a2f3d;
+  --nt-line-4: #3a4054;
+  --nt-ink-strong: #f3f4f7;
+  --nt-ink: #e6e8ee;
+  --nt-ink-2: #c3c8d4;
+  --nt-ink-soft: #a3a9ba;
+  --nt-ink-muted: #8b92a5;
+  --nt-ink-faint: #7d8496;
+  --nt-signal: #2dd4bf;
+  --nt-signal-ink: #061210;
+  --nt-signal-line: #1b3a36;
+  --nt-signal-line-2: #1f4a44;
+  --nt-signal-soft: rgba(45, 212, 191, 0.12);
+  --nt-signal-faint: rgba(45, 212, 191, 0.05);
+  --nt-signal-glow: rgba(45, 212, 191, 0.45);
+  --nt-dot: rgba(255, 255, 255, 0.05);
+  --nt-scrim: rgba(7, 8, 12, 0.6);
+  --nt-scrim-strong: rgba(7, 8, 12, 0.88);
 }

@@ -3,6 +3,7 @@ title: "Silicon vs Software Engineering"
 excerpt: "Two worlds, same debugging despair. A comparison of methodologies, timelines, and the meaning of \"shipping.\""
 category: thoughts
 date: 2026-02-08
+cover: facet-morph
 readTime: "7 min"
 tags: ["Career", "Opinion"]
 featured: false

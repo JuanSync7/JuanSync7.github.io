@@ -11,6 +11,24 @@
   --hf-space-8: 32px;
   --hf-space-10: 40px;
   --hf-space-12: 48px;
+  --hf-space-7: 28px;
+  --hf-space-14: 56px;
+  --hf-space-16: 64px;
+  --hf-space-20: 80px;
+  --hf-space-26: 104px;
+
+  /* Night system layout: page gutter, section rhythm, content width */
+  --nt-gutter: clamp(16px, 4vw, 48px);
+  --nt-section-y: clamp(72px, 9vw, 120px);
+  --nt-section-y-tight: clamp(48px, 6vw, 72px);
+  --nt-max: 1200px;
+  --nt-measure: 640px;
+  --nt-hit: 44px;
+  /* The narrowest a side-by-side panel gets before the pair wraps onto two rows. */
+  --nt-col: 420px;
+  /* Viewer distance for 3D turns: a page turning on its hinge, a card flipping down. */
+  --nt-perspective-page: 2400px;
+  --nt-perspective-card: 1600px;
 
   /* Radii */
   --hf-radius-xs: 2px;
@@ -18,6 +36,8 @@
   --hf-radius-md: 8px;
   --hf-radius-lg: 12px;
   --hf-radius-pill: 999px;
+  --hf-radius-xl: 16px;
+  --hf-radius-2xl: 20px;
 
   /* Z-indices */
   --hf-z-base: 0;

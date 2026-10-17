@@ -1,0 +1,56 @@
+.bench-solo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hf-space-4);
+  padding: var(--hf-space-4);
+}
+
+.bench-stage {
+  background: var(--nt-ground);
+}
+
+.bench-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+  gap: 1px;
+  background: var(--nt-line);
+  border: 1px solid var(--nt-line);
+  border-radius: var(--hf-radius-2xl);
+  overflow: hidden;
+}
+
+.bench-card {
+  margin: 0;
+  background: var(--nt-ground);
+  display: flex;
+  flex-direction: column;
+}
+
+.bench-card-stage {
+  width: 100%;
+  border-bottom: 1px solid var(--nt-line);
+}
+
+.bench-card figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hf-space-1);
+  padding: var(--hf-space-4) var(--hf-space-5) var(--hf-space-5);
+}
+
+.bench-card-title {
+  font-family: var(--nt-display);
+  font-size: var(--nt-fs-h5);
+  color: var(--nt-ink-strong);
+}
+
+.bench-card-meta {
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-caption);
+  color: var(--nt-signal);
+}
+
+.bench-card-idea {
+  font-size: var(--nt-fs-small);
+  color: var(--nt-ink-soft);
+}

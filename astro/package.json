@@ -9,24 +9,35 @@
     "preview": "astro preview",
     "astro": "astro",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
-    "check": "astro check && npm run lint"
+    "check": "astro check && npm run lint && npm run figures:check",
+    "figure": "node scripts/figures/figure.mjs",
+    "figures:check": "node scripts/figures/check.mjs",
+    "figures:look": "node scripts/figures/look.mjs",
+    "figures:audit": "node scripts/figures/check.mjs && node scripts/figures/look.mjs",
+    "figures:selftest": "node scripts/figures/check.mjs --selftest && node scripts/figures/look.mjs --selftest --no-sheet"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",
     "@astrojs/react": "^3.6.0",
+    "@astrojs/rss": "^4.0.12",
     "astro": "^4.16.0",
     "mermaid": "^11.15.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "three": "^0.170.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@types/pngjs": "^6.0.5",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@types/three": "^0.170.0",
     "eslint": "^9.39.4",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "globals": "^17.5.0",
+    "playwright": "^1.56.1",
+    "pngjs": "^7.0.0",
     "typescript": "~5.5.3",
     "typescript-eslint": "^8.59.1"
   }

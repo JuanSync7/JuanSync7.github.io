@@ -1,0 +1,107 @@
+---
+import SectionHead from '../ui/SectionHead.astro';
+import { CONTACT_SECTION, OFF_HOURS } from '../../data/home';
+import { CONTACT, IDENTITY } from '../../data/site';
+
+const links = [
+  { label: 'email', value: CONTACT.email, href: `mailto:${CONTACT.email}` },
+  { label: 'github', value: `github.com/${CONTACT.github}`, href: `https://github.com/${CONTACT.github}` },
+  { label: 'linkedin', value: `in/${CONTACT.linkedin}`, href: CONTACT.linkedinUrl },
+  { label: 'cv', value: 'Kok_Shew_Juan_CV_2026.pdf', href: IDENTITY.cvFile },
+];
+---
+
+<section class="nt-wrap off" aria-label="Off hours">
+  <span class="off-label">{OFF_HOURS.label}</span>
+  {OFF_HOURS.items.map((h) => <span class="off-item">{h}</span>)}
+</section>
+
+<section id="contact" class="nt-wrap nt-section contact">
+  <SectionHead label={CONTACT_SECTION.label} title={CONTACT_SECTION.title} accent={CONTACT_SECTION.accent} lead={CONTACT_SECTION.body} />
+  <ul class="links">
+    {links.map((l) => (
+      <li>
+        <a href={l.href}>
+          <span class="k">{l.label}</span>
+          <span class="v">{l.value}</span>
+          <span class="go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .off {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--hf-space-2) var(--hf-space-5);
+    padding-top: var(--hf-space-8);
+    padding-bottom: var(--hf-space-8);
+    border-top: 1px solid var(--nt-rule);
+    border-bottom: 1px solid var(--nt-rule);
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-ink-muted);
+  }
+
+  .off-label {
+    color: var(--nt-ink-faint);
+  }
+
+  .contact {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: end;
+    gap: var(--hf-space-12);
+  }
+
+  .links {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .links a {
+    display: grid;
+    grid-template-columns: var(--hf-space-20) minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--hf-space-4);
+    min-height: var(--hf-space-14);
+    border-top: 1px solid var(--nt-rule);
+  }
+
+  .links li:last-child a {
+    border-bottom: 1px solid var(--nt-rule);
+  }
+
+  .k {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-caption);
+    color: var(--nt-ink-faint);
+  }
+
+  .v {
+    overflow-wrap: anywhere;
+    color: var(--nt-ink-2);
+  }
+
+  .go {
+    color: var(--nt-ink-faint);
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+
+  .links a:hover .go {
+    color: var(--nt-signal);
+    transform: translateX(var(--hf-space-1));
+  }
+
+  @media (max-width: 860px) {
+    .contact {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

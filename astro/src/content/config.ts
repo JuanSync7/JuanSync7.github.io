@@ -19,6 +19,9 @@ const blog = defineCollection({
     externalUrl: z.string().optional(),
     art: artMotif.optional(),
     bg: artBg.optional(),
+    /** The post's cover: a figure id in src/figures, group 'cover'. figures:check enforces
+     *  that it exists, is unique, and differs in style from its date neighbours. */
+    cover: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/).optional(),
   }),
 });
 
@@ -44,4 +47,15 @@ const learn = defineCollection({
   }),
 });
 
-export const collections = { blog, releases, learn };
+// One lesson per file, named <date>-<slug>.yaml: the blog's lesson log reads them all.
+const lessons = defineCollection({
+  type: 'data',
+  schema: z.object({
+    date: z.coerce.date(),
+    tag: z.string(),
+    title: z.string(),
+    why: z.string(),
+  }),
+});
+
+export const collections = { blog, releases, learn, lessons };

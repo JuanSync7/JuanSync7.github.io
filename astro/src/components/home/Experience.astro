@@ -1,0 +1,148 @@
+---
+import SectionHead from '../ui/SectionHead.astro';
+import { EXPERIENCE } from '../../data/home';
+---
+
+<section id="experience" class="nt-wrap nt-section experience">
+  <SectionHead label={EXPERIENCE.label} title={EXPERIENCE.title} />
+  <ol class="roles">
+    {EXPERIENCE.roles.map((r, i) => (
+      <li class:list={['role', { current: i === 0 }]}>
+        <span class="dot" aria-hidden="true"></span>
+        <div class="role-head">
+          <h3>
+            {r.title}
+            <span class="org">· {r.org}</span>
+          </h3>
+          {r.place ? <span class="place">{r.place}</span> : null}
+        </div>
+        <p class="summary">{r.summary}</p>
+        {r.points ? (
+          <dl class="points">
+            {r.points.map((p) => (
+              <div>
+                <dt>{p.tag}</dt>
+                <dd>{p.text}</dd>
+              </div>
+            ))}
+          </dl>
+        ) : null}
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .experience {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-12);
+  }
+
+  .roles {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0 0 0 var(--hf-space-8);
+    list-style: none;
+    border-left: 1px solid var(--nt-line);
+  }
+
+  .role {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-3);
+    padding-bottom: var(--hf-space-10);
+  }
+
+  .role:last-child {
+    padding-bottom: 0;
+  }
+
+  .dot {
+    position: absolute;
+    top: var(--hf-space-2);
+    left: calc(-1 * var(--hf-space-8) - var(--hf-space-1));
+    width: var(--hf-space-2);
+    height: var(--hf-space-2);
+    border-radius: var(--hf-radius-pill);
+    background: var(--nt-line-4);
+  }
+
+  .current .dot {
+    background: var(--nt-signal);
+  }
+
+  .role-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--hf-space-2) var(--hf-space-6);
+  }
+
+  h3 {
+    font-size: var(--nt-fs-h4);
+    letter-spacing: var(--nt-tracking-heading);
+  }
+
+  .org {
+    color: var(--nt-ink-muted);
+    font-weight: 400;
+  }
+
+  .place {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-caption);
+    color: var(--nt-ink-faint);
+  }
+
+  .summary {
+    max-width: var(--nt-measure);
+    color: var(--nt-ink-soft);
+  }
+
+  .points {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--hf-space-4);
+    margin: var(--hf-space-2) 0 0;
+  }
+
+  .points div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-2);
+    padding: var(--hf-space-5);
+    border: 1px solid var(--nt-line);
+    border-radius: var(--hf-radius-lg);
+    background: var(--nt-panel);
+  }
+
+  dt {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-caption);
+    color: var(--nt-signal);
+  }
+
+  dd {
+    margin: 0;
+    font-size: var(--nt-fs-small);
+    color: var(--nt-ink-2);
+  }
+
+  @media (max-width: 800px) {
+    .points {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .roles {
+      padding-left: var(--hf-space-6);
+    }
+
+    .dot {
+      left: calc(-1 * var(--hf-space-6) - var(--hf-space-1));
+    }
+  }
+</style>

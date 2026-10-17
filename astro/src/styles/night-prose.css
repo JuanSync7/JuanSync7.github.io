@@ -1,0 +1,128 @@
+/* Long-form text on the night pages: a post's rendered Markdown or MDX. Measure-limited,
+   tokens only; code blocks keep Shiki's token colours on the panel ground. */
+
+.night .prose {
+  max-width: var(--nt-measure);
+  font-size: var(--nt-fs-lead);
+  line-height: var(--nt-lh-body);
+  color: var(--nt-ink-2);
+}
+
+.night .prose > * + * {
+  margin-top: var(--hf-space-5);
+}
+
+.night .prose h2 {
+  margin-top: var(--hf-space-14);
+  font-size: var(--nt-fs-h3);
+  line-height: var(--nt-lh-heading);
+  letter-spacing: var(--nt-tracking-heading);
+}
+
+.night .prose h3 {
+  margin-top: var(--hf-space-10);
+  font-size: var(--nt-fs-h5);
+  line-height: var(--nt-lh-heading);
+}
+
+.night .prose a {
+  color: var(--nt-signal);
+  text-decoration: underline;
+  text-decoration-color: var(--nt-signal-line-2);
+  text-underline-offset: 0.2em;
+}
+
+.night .prose strong {
+  font-weight: 600;
+  color: var(--nt-ink-strong);
+}
+
+.night .prose ul,
+.night .prose ol {
+  padding-left: var(--hf-space-6);
+}
+
+.night .prose li + li {
+  margin-top: var(--hf-space-2);
+}
+
+.night .prose li::marker {
+  color: var(--nt-ink-faint);
+}
+
+.night .prose code {
+  font-family: var(--nt-mono);
+  font-size: 0.88em;
+}
+
+.night .prose :not(pre) > code {
+  padding: 0.1em 0.35em;
+  border: 1px solid var(--nt-line);
+  border-radius: var(--hf-radius-sm);
+  background: var(--nt-panel);
+  color: var(--nt-ink-strong);
+}
+
+.night .prose pre {
+  overflow-x: auto;
+  padding: var(--hf-space-5);
+  border: 1px solid var(--nt-line);
+  border-radius: var(--hf-radius-lg);
+  background: var(--nt-panel) !important;
+  font-size: var(--nt-fs-small);
+  line-height: 1.55;
+}
+
+.night .prose blockquote {
+  margin: var(--hf-space-8) 0 0;
+  padding-left: var(--hf-space-5);
+  border-left: 2px solid var(--nt-signal);
+  color: var(--nt-ink);
+}
+
+.night .prose hr {
+  border: none;
+  border-top: 1px solid var(--nt-rule);
+  margin: var(--hf-space-12) 0;
+}
+
+.night .prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--nt-fs-small);
+}
+
+.night .prose th,
+.night .prose td {
+  padding: var(--hf-space-2) var(--hf-space-3) var(--hf-space-2) 0;
+  border-top: 1px solid var(--nt-rule);
+  text-align: left;
+  vertical-align: top;
+}
+
+.night .prose th {
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-caption);
+  font-weight: 400;
+  color: var(--nt-ink-muted);
+}
+
+/* A figure inside a post: framed at the text width, captioned below. */
+.night .prose .post-figure {
+  margin: var(--hf-space-10) 0;
+}
+
+.night .prose .post-figure-stage {
+  aspect-ratio: var(--fig-aspect, 2);
+  overflow: hidden;
+  border: 1px solid var(--nt-line);
+  border-radius: var(--hf-radius-xl);
+  background: var(--nt-ground);
+}
+
+.night .prose figcaption {
+  margin-top: var(--hf-space-3);
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-caption);
+  color: var(--nt-ink-faint);
+}

@@ -3,6 +3,7 @@ title: "RTL to GDS: A Complete Walkthrough"
 excerpt: "From Verilog to tapeout — the full ASIC design flow broken down into digestible steps. Covering synthesis, P&R, timing closure, and the dark arts of DRC."
 category: silicon
 date: 2026-04-28
+cover: metal-routing
 readTime: "12 min"
 tags: ["ASIC", "RTL", "GDS"]
 featured: true

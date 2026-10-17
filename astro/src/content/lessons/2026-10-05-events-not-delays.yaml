@@ -1,0 +1,4 @@
+date: 2026-10-05
+tag: testing
+title: "Chain tests on events, not delays."
+why: "In a simulator, time is exact. On a busy machine, a sleep before the next step is a flaky test that only passes on a quiet day."

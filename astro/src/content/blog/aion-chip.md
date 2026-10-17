@@ -3,6 +3,7 @@ title: "What I Actually Do at Aion Silicon"
 excerpt: "A non-NDA-violating look at life as a Senior ASIC Design Engineer. Spoiler: lots of waveform staring."
 category: thoughts
 date: 2026-01-10
+cover: ink-mountains
 readTime: "5 min"
 tags: ["Career", "ASIC"]
 featured: false

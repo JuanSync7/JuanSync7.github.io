@@ -1,0 +1,4 @@
+date: 2026-10-05
+tag: interfaces
+title: "Ports freeze at tape-out. Software interfaces don't."
+why: "So version them, and let both sides cope with the old shape for a while."
