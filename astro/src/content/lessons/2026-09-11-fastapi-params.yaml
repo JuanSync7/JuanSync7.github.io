@@ -1,0 +1,4 @@
+date: 2026-09-11
+tag: python
+title: "FastAPI ignores parameters you didn't declare."
+why: "An unknown query parameter is dropped and the call still returns 200, so one table quietly ignored a filter its sibling honoured."

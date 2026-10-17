@@ -1,0 +1,4 @@
+date: 2026-07-27
+tag: agents
+title: "If the handoff isn't enough, the handoff is the bug."
+why: "An agent should finish a task from the handoff alone. Missing context isn't the agent's failure, and it multiplies token cost."

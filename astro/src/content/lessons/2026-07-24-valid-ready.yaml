@@ -1,0 +1,4 @@
+date: 2026-07-24
+tag: protocols
+title: "Handshake on valid and ready, never on timing."
+why: "On AXI, data moves only when both are high. Assuming the other side is ready 'by now' is a bug waiting for a slower clock."

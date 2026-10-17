@@ -1,0 +1,4 @@
+date: 2026-07-23
+tag: systemverilog
+title: "Simulates fine does not mean synthesises."
+why: "SystemVerilog is two languages: a small synthesisable subset and a big verification one. A construct can pass simulation and fail synthesis."

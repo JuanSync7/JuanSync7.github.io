@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import FigureCanvas from '../ui/FigureCanvas';
 import type { LessonFieldData } from '../../figures/lesson-field';
 import type { Lesson } from './types';
@@ -38,6 +38,16 @@ function field(today: number, counts: Map<string, number>, selected: string | nu
 export default function LessonLog({ lessons, note }: Props) {
   const [index, setIndex] = useState(0);
   const [hover, setHover] = useState('rest');
+  // The date list scrolls on its own; keep the chosen lesson in view without moving the page.
+  const listRef = useRef<HTMLOListElement>(null);
+  useEffect(() => {
+    const list = listRef.current;
+    const item = list?.querySelector<HTMLElement>('[aria-pressed="true"]');
+    if (!list || !item) return;
+    if (item.offsetTop < list.scrollTop) list.scrollTop = item.offsetTop;
+    else if (item.offsetTop + item.offsetHeight > list.scrollTop + list.clientHeight)
+      list.scrollTop = item.offsetTop + item.offsetHeight - list.clientHeight;
+  }, [index]);
   // The build knows only its own date, so the field is anchored to the newest lesson until
   // the reader's clock is available, then to the reader's today.
   const [today, setToday] = useState(() => utcDay(lessons[0]?.iso ?? '2026-01-01'));
@@ -101,7 +111,7 @@ export default function LessonLog({ lessons, note }: Props) {
               Older →
             </button>
           </div>
-          <ol className="log-days" aria-label="Lessons by date">
+          <ol ref={listRef} className="log-days" aria-label="Lessons by date">
             {lessons.map((l, i) => (
               <li key={`${l.iso}-${i}`}>
                 <button type="button" className="log-day" aria-pressed={i === index} onClick={() => show(i)}>

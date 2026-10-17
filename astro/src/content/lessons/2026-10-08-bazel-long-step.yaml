@@ -1,0 +1,4 @@
+date: 2026-10-08
+tag: build
+title: "A build cache skips work. It doesn't speed up one long step."
+why: "EDA regressions spend their time in single long tool runs, and caching only helps once every input is declared."

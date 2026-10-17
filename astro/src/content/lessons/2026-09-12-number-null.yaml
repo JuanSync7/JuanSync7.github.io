@@ -1,0 +1,4 @@
+date: 2026-09-12
+tag: frontend
+title: "Number(null) is 0."
+why: "A missing value rendered as 0.0%. Keep null and zero apart all the way to the pixel."

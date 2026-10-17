@@ -1,0 +1,4 @@
+date: 2026-07-16
+tag: evals
+title: "The grader must not share code with the thing it grades."
+why: "If the checker and the converter use the same extraction, their mistakes cancel and the score reads perfect."

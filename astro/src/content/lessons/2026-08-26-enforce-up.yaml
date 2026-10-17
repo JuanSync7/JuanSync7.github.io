@@ -1,0 +1,4 @@
+date: 2026-08-26
+tag: process
+title: "Enforce the standard one level up."
+why: "If the job wrapper adds the metadata every job needs, nobody below has to remember it, and the data comes out clean."

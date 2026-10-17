@@ -1,0 +1,4 @@
+date: 2026-07-01
+tag: rtl
+title: "Stateless logic is the easiest logic to verify."
+why: "In RTL, logic with no state is checked by its truth table. Software that keeps state at the edges and pure functions in the middle gets the same gift."

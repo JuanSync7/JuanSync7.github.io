@@ -1,0 +1,4 @@
+date: 2026-08-11
+tag: build
+title: "Everything the tool reads belongs in the cache key."
+why: "Headers pulled in through an include directory were left out of the key, so a stale result was served as current."

@@ -1,0 +1,4 @@
+date: 2026-07-21
+tag: verification
+title: "Assertions are cheap spies."
+why: "An SVA fires on the cycle a rule breaks, not three blocks later where the bad data finally shows up."

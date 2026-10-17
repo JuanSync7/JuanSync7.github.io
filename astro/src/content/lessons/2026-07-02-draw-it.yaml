@@ -1,0 +1,4 @@
+date: 2026-07-02
+tag: design
+title: "If you can't draw it, you don't understand it."
+why: "A system should fit on a block diagram, and the code should be laid out like the diagram, so a reader knows where to look without grep."

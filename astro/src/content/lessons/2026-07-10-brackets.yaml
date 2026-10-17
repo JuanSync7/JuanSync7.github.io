@@ -1,0 +1,4 @@
+date: 2026-07-10
+tag: docs
+title: "Silicon docs are full of brackets that aren't links."
+why: "Bit ranges like [31:0] look like Markdown link text. A converter that treats every bracket as a link mangles every register table."

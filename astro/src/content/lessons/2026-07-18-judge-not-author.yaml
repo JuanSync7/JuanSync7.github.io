@@ -1,0 +1,4 @@
+date: 2026-07-18
+tag: reviews
+title: "The judge should not be the author."
+why: "For a merge, use reviewers who didn't write the code and ask for zero blockers. Self-review only finds what you already looked for."

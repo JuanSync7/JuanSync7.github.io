@@ -1,0 +1,4 @@
+date: 2026-07-29
+tag: eda
+title: "Wrap every tool run in a script."
+why: "An interactive synthesis or lint session can't be repeated. A script can, and a script is something an agent can run too."

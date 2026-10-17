@@ -1,0 +1,4 @@
+date: 2026-09-28
+tag: linux
+title: "A shared home carries more than files."
+why: "With linger on and an NFS home, every batch job started my user services on the compute node too."

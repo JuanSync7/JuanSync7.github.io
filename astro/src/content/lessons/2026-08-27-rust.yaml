@@ -1,0 +1,4 @@
+date: 2026-08-27
+tag: thoughts
+title: "Python for now. Rust is underrated."
+why: "The AI ecosystem pulls everything to Python today. For systems-level infrastructure, where speed starts to matter, Rust is worth a serious look."

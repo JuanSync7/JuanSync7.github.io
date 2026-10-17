@@ -1,0 +1,4 @@
+date: 2026-07-15
+tag: config
+title: "A hardcoded value is a question nobody asked."
+why: "It means no one thought about what might change. Put it in config, and let the code and the docs both read it from there."

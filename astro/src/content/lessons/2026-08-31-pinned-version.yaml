@@ -1,0 +1,4 @@
+date: 2026-08-31
+tag: config
+title: "Check behaviour on the version you actually run."
+why: "An older pinned binary silently ignored the newer form of a setting. The docs describe the latest; your fleet runs something else."

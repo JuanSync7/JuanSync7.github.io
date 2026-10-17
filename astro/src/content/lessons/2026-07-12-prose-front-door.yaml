@@ -1,0 +1,4 @@
+date: 2026-07-12
+tag: agents
+title: "Natural language is the front door, not the plumbing."
+why: "Humans talk to agents in prose. Agents should talk to each other in schemas, because prose degrades with every hop."

@@ -1,0 +1,4 @@
+date: 2026-08-17
+tag: data
+title: "A mapping should be a join, never a hand-kept list."
+why: "Two lists kept by hand drift apart. Derive one from the other and the question goes away."

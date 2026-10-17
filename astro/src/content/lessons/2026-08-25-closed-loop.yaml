@@ -1,0 +1,4 @@
+date: 2026-08-25
+tag: agents
+title: "Close the loop like a control system."
+why: "Agents should check their own output and correct against the error, the way a controller corrects against a sensor. Open-loop agents drift."

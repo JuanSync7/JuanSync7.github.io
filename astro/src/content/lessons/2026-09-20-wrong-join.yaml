@@ -1,0 +1,4 @@
+date: 2026-09-20
+tag: data
+title: "A join that returns the wrong match is worse than none."
+why: "An empty result makes you look. A plausible wrong match looks like it works and quietly poisons everything downstream."

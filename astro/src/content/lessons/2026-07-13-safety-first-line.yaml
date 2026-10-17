@@ -1,0 +1,4 @@
+date: 2026-07-13
+tag: rtl
+title: "Design for the safety standard from the first line."
+why: "Parity and duplicated logic for functional safety shape the whole block. They are hard to bolt on later, so they belong in the first draft."
