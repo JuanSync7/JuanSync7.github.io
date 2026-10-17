@@ -1,0 +1,32 @@
+---
+import NightLayout from '../../layouts/NightLayout.astro';
+import FigureBench from '../../components/figures/FigureBench.tsx';
+---
+
+<NightLayout title="Figures — juan_kok" description="Every figure on the site, live, with what each one shows." noindex>
+  <main class="nt-wrap nt-section">
+    <header class="figures-head">
+      <h1>Figures</h1>
+      <p>Every drawing on the site, live. Each one is a single file, checked by the same audit before it ships.</p>
+    </header>
+    <FigureBench client:only="react" />
+  </main>
+</NightLayout>
+
+<style>
+  .figures-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-3);
+    margin-bottom: var(--hf-space-10);
+    max-width: var(--nt-measure);
+  }
+  .figures-head h1 {
+    font-size: var(--nt-fs-h2);
+    letter-spacing: var(--nt-tracking-display);
+    line-height: var(--nt-lh-heading);
+  }
+  .figures-head p {
+    color: var(--nt-ink-soft);
+  }
+</style>

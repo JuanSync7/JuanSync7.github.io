@@ -1,0 +1,22 @@
+.figure-canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.figure-canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y;
+}
+
+.figure-readout {
+  position: absolute;
+  right: var(--hf-space-3);
+  bottom: var(--hf-space-2);
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-caption);
+  color: var(--nt-ink-muted);
+  pointer-events: none;
+}

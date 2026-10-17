@@ -76,4 +76,9 @@
     #0000ff 80%,
     #4b0082 100%
   );
+
+  /* Night system */
+  --nt-grad-dots: radial-gradient(circle at 1px 1px, var(--nt-dot) 1px, transparent 0);
+  --nt-grad-fade-left: linear-gradient(90deg, var(--nt-ground) 0%, var(--nt-scrim-strong) 30%, rgba(7, 8, 12, 0.2) 62%, rgba(7, 8, 12, 0) 80%);
+  --nt-grad-fade-up: linear-gradient(to top, var(--nt-ground), rgba(7, 8, 12, 0));
 }
