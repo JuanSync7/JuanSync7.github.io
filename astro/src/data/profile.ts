@@ -2,7 +2,7 @@
  * The CV-backed part of the site: the role line, title, CV file and Experience section.
  * profile.json is generated in the private career repo and pushed here by its publish workflow,
  * so it changes whenever the CV does. Never edit it by hand: the next publish overwrites it.
- * The shape is checked at build time, so a malformed file fails the deploy instead of the page.
+ * The shape is checked at build time, so a malformed or draft file fails the deploy instead of the page.
  */
 import raw from './profile.json';
 
@@ -22,6 +22,7 @@ export interface ProfileRole {
 
 export interface Profile {
   source: string;
+  draft: false;
   title: string;
   role_line: string;
   cv_file: string;
@@ -44,10 +45,10 @@ function isRole(x: unknown): x is ProfileRole {
 
 function parseProfile(x: unknown): Profile {
   if (
-    isRecord(x) && isString(x.source) && isString(x.title) && isString(x.role_line) && isString(x.cv_file) &&
+    isRecord(x) && isString(x.source) && x.draft === false && isString(x.title) && isString(x.role_line) && isString(x.cv_file) &&
     x.cv_file.startsWith('/') && Array.isArray(x.experience) && x.experience.length > 0 && x.experience.every(isRole)
   ) {
-    return { source: x.source, title: x.title, role_line: x.role_line, cv_file: x.cv_file, experience: x.experience };
+    return { source: x.source, draft: false, title: x.title, role_line: x.role_line, cv_file: x.cv_file, experience: x.experience };
   }
   throw new Error('astro/src/data/profile.json does not match the Profile shape; rebuild it in the career repo');
 }
