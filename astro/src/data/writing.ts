@@ -54,7 +54,7 @@ export const FEATURED = {
 
 export const LESSONS_COPY = {
   title: 'Lessons, logged daily',
-  body: 'One thing I learned, most days. Point at a day in the field, or step through them by date.',
+  body: 'One thing I learned, most days. Point at a day in the field, or slide through them, newest first.',
   key: 'Each tile is a day. A lesson stands it up as a column, taller for more; today is outlined and the lesson you are reading is lit.',
 } as const;
 

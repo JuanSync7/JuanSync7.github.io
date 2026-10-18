@@ -81,6 +81,8 @@
   --nt-grad-dots: radial-gradient(circle at 1px 1px, var(--nt-dot) 1px, transparent 0);
   --nt-grad-fade-left: linear-gradient(90deg, var(--nt-ground) 0%, var(--nt-scrim-strong) 30%, rgba(7, 8, 12, 0.2) 62%, rgba(7, 8, 12, 0) 80%);
   --nt-grad-fade-up: linear-gradient(to top, var(--nt-ground), rgba(7, 8, 12, 0));
+  /* A mask: solid, then fading out at the right edge (a row that slides on past the edge). */
+  --nt-grad-fade-right: linear-gradient(to right, #000 85%, transparent);
   /* Glass: the blur behind a translucent bar (the sticky nav). */
   --nt-glass-blur: blur(12px);
   /* The featured page turn: the shade that falls across a turning page, and the brief
