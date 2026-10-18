@@ -40,6 +40,19 @@ const SESSION = `try{if(sessionStorage.getItem('sj-drawn'))document.documentElem
   <circle class="halo" cx="74" cy="127" r="8" />
 </svg>
 
+<script>
+  // A page swap (Astro's router) gives <html> the next page's attributes, which drops the
+  // "already drawn" mark; put it back before the new page paints, so the mark is not
+  // drawn in again on every page of the visit.
+  document.addEventListener('astro:after-swap', () => {
+    try {
+      if (sessionStorage.getItem('sj-drawn')) document.documentElement.dataset.sjDrawn = '1';
+    } catch {
+      // Storage blocked: the mark draws in again, as on a first visit.
+    }
+  });
+</script>
+
 <style>
   .sj {
     display: block;

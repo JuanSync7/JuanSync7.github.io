@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import NightLayout from '../../layouts/NightLayout.astro';
+import NightPage from '../../layouts/NightPage.astro';
 import NightNav from '../../components/layout/NightNav.astro';
 import NightFooter from '../../components/layout/NightFooter.astro';
 import SectionHead from '../../components/ui/SectionHead.astro';
@@ -40,7 +40,7 @@ const lessons: Lesson[] = (await getCollection('lessons'))
   .sort((a, b) => b.iso.localeCompare(a.iso));
 ---
 
-<NightLayout title="Writing · Juan Kok" description="How AI inference works, from the transistor to the token, plus chip design and building with agents.">
+<NightPage title="Writing · Juan Kok" description="How AI inference works, from the transistor to the token, plus chip design and building with agents.">
   <link rel="alternate" type="application/rss+xml" title="Juan Kok · writing" href="/rss.xml" slot="head" />
   <NightNav current="writing" />
   <main>
@@ -65,7 +65,7 @@ const lessons: Lesson[] = (await getCollection('lessons'))
     <Follow />
   </main>
   <NightFooter />
-</NightLayout>
+</NightPage>
 
 <style>
   .block {

@@ -1,0 +1,10 @@
+/* Night system motion: how long page-level movement takes and how it eases. Figures keep
+   their own clock (src/figures/kit/motion.ts); these are for the DOM around them. Under
+   prefers-reduced-motion night.css collapses every duration, so nothing here runs. */
+
+:root {
+  /* A shared element (a post card's cover) travelling to its place on the next page. */
+  --nt-dur-morph: 460ms;
+  /* Decelerating: fast start, soft landing, no overshoot. */
+  --nt-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}

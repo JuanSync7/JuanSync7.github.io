@@ -1,5 +1,5 @@
 ---
-import NightLayout from '../../layouts/NightLayout.astro';
+import NightPage from '../../layouts/NightPage.astro';
 import NightNav from '../../components/layout/NightNav.astro';
 import NightFooter from '../../components/layout/NightFooter.astro';
 import FigureCanvas from '../../components/ui/FigureCanvas.tsx';
@@ -17,7 +17,7 @@ const templates = await Promise.all(
 );
 ---
 
-<NightLayout title="Lab · Juan Kok" description="The figure templates behind the drawings on this site: every one draws a different picture from each seed.">
+<NightPage title="Lab · Juan Kok" description="The figure templates behind the drawings on this site: every one draws a different picture from each seed.">
   <NightNav />
   <main class="nt-wrap nt-section">
     <header class="lab-head">
@@ -49,7 +49,7 @@ const templates = await Promise.all(
     </ul>
   </main>
   <NightFooter />
-</NightLayout>
+</NightPage>
 
 <style>
   .lab-head {

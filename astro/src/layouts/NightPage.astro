@@ -1,0 +1,20 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+import NightLayout from './NightLayout.astro';
+
+/** A page of the site on the night system: NightLayout plus Astro's router, so moving
+ *  between pages crossfades and shared elements (a post card's cover) travel. The figure
+ *  bench uses NightLayout alone: its captures are full loads, and the router's script would
+ *  add its own console notices to what the audit reads. */
+interface Props {
+  title: string;
+  description?: string;
+  noindex?: boolean;
+}
+---
+
+<NightLayout {...Astro.props}>
+  <ViewTransitions slot="head" />
+  <slot name="head" slot="head" />
+  <slot />
+</NightLayout>
