@@ -14,9 +14,7 @@ I'd asked for it. Every time I asked for the file to be made "complete" or "robu
 
 But not one of those 1,016 lines had been turned into something that could fail on its own. Each rule held only if an agent read it, at the right moment, and chose to follow it. The only way to find out whether it had was to catch it breaking.
 
-So why does writing a rule down feel like solving the problem, when so often it doesn't?
-
-Roads answered this a long time ago. A speed limit sign only works if a driver sees it, reads it and chooses to obey it. That's three chances to fail, and a sign behind a tree fails all three. A speed bump needs none of them. Nobody has to read it, remember it or agree with it. The road itself holds the rule.
+A speed limit sign only works if a driver sees it, reads it and chooses to obey it. That's three chances to fail, and a sign behind a tree fails all three. A speed bump needs none of them. Nobody has to read it, remember it or agree with it. The road itself holds the rule.
 
 A rule in a file is a sign. A check that runs is a bump. Don't write the sign. Build the bump.
 
@@ -24,25 +22,28 @@ A rule in a file is a sign. A check that runs is a bump. Don't write the sign. B
 
 Once I started looking, I found that my rules died in one of two ways.
 
-The first is that they never arrive. A rule only works if it's in front of the agent at the moment it matters, and a lot of mine weren't. I had a whole deck of rules for writing rule files, carefully sourced, each one tied to a real mistake, and nothing loaded it. It sat in my notes, correct and useless. A long file has the same problem in a quieter form: the agent reads it, but the rule on line 800 has to compete with 799 others for attention, and it loses.
+The first is that they never arrive. A rule only works if it's in front of the agent at the moment it matters, and a lot of mine weren't. I had a whole deck of rules for writing rule files, carefully sourced, each one tied to a real mistake, and nothing loaded it. It sat in my notes, correct and useless. A long file has the same problem in a quieter form: the agent reads it, but the rule on line 800 has to compete with 799 others for attention, and it can easily lose.
 
-The second is that they drift. A rule that nobody checks stays true only as long as everyone remembers it, and nobody remembers it. The code moves, the rule doesn't, and a few weeks later the file describes a system that no longer exists. That's worse than no rule at all, because an agent will follow it faithfully.
+The second is that they drift. A rule that nobody checks stays true only as long as everyone remembers it, and nobody remembers it. The code moves, the rule doesn't, and a few weeks later the file describes a system that no longer exists. That's more dangerous than a missing rule, because an agent will follow it faithfully.
 
 Both deaths have the same cause. The rule depends on someone reading it, at the right time, and caring.
 
-## The gate that would reject everything
+## An audit of rules I trusted
 
-I didn't really believe how bad drift could get until I had a framework for agent skills audited, one I'd built a lot of my own rules on.
+I didn't really believe how bad drift could get until I had Claude audit a framework for agent skills, one I'd built a lot of my own rules on.
 
 Its rules were good. Several of mine came straight from it: say only when to use a skill, trace every instruction to a failure, give every skill a clear flow. It had a validator, a pre-commit hook, and a gatekeeper skill whose job was to decide whether a new skill was good enough to land.
 
-Run over the whole tree, its validator exited with 114 errors.
+Here's what came back:
 
-Then it got stranger. The framework had two different rules for what a skill's header should look like, written in two different places. The hook checked one. The gatekeeper checked the other. Every one of the 33 skills followed the first, so the framework's own quality gate would have rejected every skill in the repo. Most skills were missing the flow section that the rules said every skill must have, always. The gatekeeper itself was still marked as a draft.
+- Run over the whole tree, the validator exited with 114 errors.
+- There were two different rules for what a skill's header should look like, written in two places. The hook checked one and the gatekeeper checked the other. All 33 skills followed the first, so the framework's own quality gate would have rejected every skill in the repo.
+- Most skills were missing the flow section that the rules said every skill must have, always.
+- The gatekeeper itself was still marked as a draft.
 
 How had nobody noticed? Because the hook only checked the files you'd just changed. Anything you didn't touch was never looked at again, and nothing ran the validator over the whole tree in CI. The rules were all still written down, all still correct. The checks had simply stopped covering the ground they were written for.
 
-That's when it clicked for me. The good rules weren't the valuable part. The checks were, and the checks had a hole in them the shape of everything nobody was editing.
+So the good rules weren't the valuable part. The checks were, and the checks had a hole in them the shape of everything nobody was editing.
 
 ## Now every rule starts with one question
 
@@ -57,7 +58,14 @@ What's left over still gets written down, but in a fixed shape:
 
 And a check only counts if it runs over the whole tree, every time, in CI. A check that only looks at what changed is a check that slowly stops looking.
 
-The most recent example is the post you're reading. The rules for how I want a blog post to read started as prose in my notes: one hook sentence under the title, three to five headings at the turns of the story, no links to other posts until the end, a length you can read in one sitting. Most of that is now a script that runs on every build and fails it. That script has its own test, too: a broken post for every rule, and if the script ever stops catching one, the build fails. What a script can't judge, like whether the story actually has an arc, goes to a fresh reader who has never seen the draft.
+The most recent example is the post you're reading. The rules for how I want a blog post to read started as prose in my notes:
+
+- one hook sentence under the title;
+- three to five headings at the turns of the story;
+- no links to other posts until the end;
+- a length you can read in one sitting.
+
+All of that is now a script that runs on every build and fails it. That script has its own test, too: a broken post for every rule, and if the script ever stops catching one, the build fails. What a script can't judge, like whether the story actually has an arc, goes to a fresh reader who has never seen the draft.
 
 ## A road with fewer signs
 

@@ -18,11 +18,11 @@ And they didn't read like me at all. They read like a well-made reference page.
 
 So if every rule was followed, what was missing?
 
-Music has the answer. You can't learn to play like a pianist from a list of words about their playing: light touch, sparse left hand, swung in the slow bits. Every one of those words can be true, and you can obey all of them, and you still won't sound like them. You learn it from the recordings, and from playing it through, start to end, until you can hear where it's going.
+Any musician could have told me. You can't learn to play like a pianist from a list of words about their playing: light touch, sparse left hand, swung in the slow bits. Every one of those words can be true, and you can obey all of them, and you still won't sound like them. You learn it from the recordings, and from playing it through, start to end, until you can hear where it's going.
 
 You don't learn a voice from its rules. You learn it by hearing it.
 
-## Every rule followed, and it read like a manual
+## What the first drafts looked like
 
 Each of the first drafts opened with a little table: what, why, who, when, where. Then a heading every few paragraphs, one per idea. Numbered lists. Links from each post to the others, right in the middle of the text. Everything was findable. Nothing pulled you forward.
 
@@ -30,13 +30,13 @@ Rather than list what was wrong, I described how I wanted it to feel. Read it li
 
 The rewrites did exactly that. No tables, no headings, no links. Just the story, one paragraph leading into the next. They read much better.
 
-## The rule that broke it was mine
+## Where the table came from
 
 Then I saw where that table had come from. It was my own rule.
 
 The five-W table was in my notes on technical writing, and I'd put it there on purpose. For a README or a design doc, a reader wants to know straight away what this is, why it exists, who owns it, and where to look. The table is perfect for that. I just hadn't said that it was only for code docs, so the agent did the reasonable thing and applied it to everything I write. In a blog post it sat right where the hook should be, a form to fill in before the story could start.
 
-The drafts had a second problem I only caught on a careful read. One of them had me writing software tests by hand. I don't. Agents write nearly all of my code, and I direct and review it. The line sounded right, it fit the paragraph, and it wasn't true. A voice that makes things up about me is worse than no voice at all.
+The drafts had a second problem, caught only on a careful read. One of them had me writing software tests by hand. I don't. Agents write nearly all of my code, and I direct and review it. The line sounded right, it fit the paragraph, and it wasn't true. A voice that makes things up about me isn't my voice.
 
 Both of those came from the same place. Rules can say how a sentence should sound. They can't say which kind of writing you're in, or what actually happened.
 
@@ -52,7 +52,12 @@ That's the shape of the post you're reading now.
 
 ## Rules last, and the recordings still missing
 
-Only after all that did I go back to the rules. Blog posts got their own note, separate from code docs. The parts a script can check, like the single hook sentence, the number of headings, no links until the end and a length you can read in one sitting, became a check that runs on every build. The parts it can't check, like whether there's really an arc, go to a blind reader before anything is merged. Every draft and the reader's verdict went into my notes as worked examples, because an agent copies an example far better than it follows a rule.
+Only after all that did I go back to the rules:
+
+- **Blog posts got their own note**, separate from code docs, so the five-W table stays where it belongs.
+- **What a script can check became a check** that runs on every build: the single hook sentence, the number of headings, no links until the end, a length you can read in one sitting.
+- **What it can't check goes to a blind reader** before anything is merged, like whether there's really an arc.
+- **Every draft and the reader's verdict became worked examples** in my notes, because an agent copies an example far better than it follows a rule.
 
 There's one page in those notes that's still empty, and it's the one that matters most. It's meant to hold a few things I wrote myself, with no AI anywhere near them. My rules are a description of my playing. Those samples would be the recordings.
 

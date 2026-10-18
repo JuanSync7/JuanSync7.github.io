@@ -1,6 +1,6 @@
 ---
 title: "Where the GPU memory goes"
-excerpt: "On a shared GPU, every token of context is paid for in memory before anyone sends a request, and most serving surprises come from not knowing where it went."
+excerpt: "On a shared GPU, the memory for every request is set aside before the first one arrives, and most serving surprises come from not knowing where it went."
 category: tutorials
 date: 2026-10-18
 cover: voxel-scene~12

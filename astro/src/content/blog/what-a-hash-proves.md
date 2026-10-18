@@ -16,7 +16,7 @@ That one idea now sits under most of the ledger I'm building to track design wor
 
 So how much does that fact actually prove?
 
-Letters had an answer centuries ago. A wax seal on a letter shows that nobody opened it after it was sealed. Break the seal and anyone can see it. But the seal says nothing about whether the letter is true. It doesn't even say who wrote it, only that someone with that seal pressed it. And a seal that the sender also checks on arrival proves nothing at all.
+Think of the wax seal on an old letter. It shows that nobody opened it after it was sealed. Break the seal and anyone can see it. But the seal says nothing about whether the letter is true. It doesn't even say who wrote it, only that someone with that seal pressed it. And if the person who pressed the seal is also the only one who checks it, it proves nothing at all.
 
 A hash is a seal. It proves the bytes didn't change. Everything else, you have to bring yourself.
 
@@ -31,7 +31,7 @@ Inside those limits, a hash does a lot of work, and I lean on it hard.
 
 I keep one rule here: the hash decides, and the timestamp is only a shortcut. A timestamp can skip a rerun that was needed. A hash can't.
 
-## Only as strong as what you declared
+## What the hash gets shown
 
 The first limit I hit was quieter than I expected.
 
@@ -49,9 +49,16 @@ A hash protects files. It doesn't protect records: the line in the ledger that s
 
 And a blockchain isn't trusted because of the hashes. It's trusted because many people who don't trust each other all check the same chain. What I was building was the opposite: one keeper writing the records and one keeper checking them.
 
-When I asked for a plain report of where the ledger actually stood, it came back plainer than my pitch. The record history was append-only, from one writer, and attributed. But the chain itself was still a design, with no code. The store would accept a hash someone had simply typed in. The same user who wrote the records could switch off the guards that protected them. Anyone could check the ledger, but only by running the ledger's own code, under the same trust as the writer. There was no checker outside the thing being checked.
+When I asked for a plain report of where the ledger actually stood, it came back plainer than my pitch. The record history was append-only, from one writer, and attributed. The rest read like this:
 
-I had built a very good seal, and then I'd handed the sender the job of checking it on arrival.
+- The chain itself was still a design, with no code.
+- The store would accept a hash someone had simply typed in.
+- The same user who wrote the records could switch off the guards that protected them.
+- Anyone could check the ledger, but only by running the ledger's own code, under the same trust as the writer.
+
+There was no checker outside the thing being checked.
+
+I had built a very good seal, and then made the person who pressed it the only one who checks it.
 
 ## A seal someone else can check
 
@@ -61,6 +68,6 @@ What closes the gap isn't more hashing. It's putting part of the check where the
 - **A copy of the chain's head held somewhere the writer can't rewrite**, like a commit made under a different account, to a repo the writer can't push to.
 - **A replay anyone can run** on a copy, which rebuilds the state from the log and has to land on the same answer.
 
-None of that is clever, and that's rather the point. Until it exists, the chain is shown as a prototype, and the honest word for the ledger is tamper-evident, not tamper-proof.
+None of that is clever. Until it exists, the chain is shown as a prototype, and the honest word for the ledger is tamper-evident, not tamper-proof.
 
-A seal is worth something because the person who breaks it didn't make it. The hash proves the bytes didn't change. The rest, who wrote it, whether it's true, whether anyone outside could tell, I have to bring myself.
+A seal is only worth something when someone other than the sender checks it. The hash will keep proving that the bytes didn't change. Who wrote them, whether they were true, and whether anyone outside could tell, that part is still mine to build.
