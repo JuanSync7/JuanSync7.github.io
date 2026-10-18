@@ -59,6 +59,12 @@ function card(
   ctx.strokeStyle = front ? ink.signal(0.95) : ink.line(0.4);
   ctx.stroke();
   ctx.strokeStyle = ink.line(front ? 0.55 : 0.25);
+  // A pattern belongs to its card: whatever runs past the edge is cut off at it.
+  ctx.save();
+  ctx.beginPath();
+  corners.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
+  ctx.closePath();
+  ctx.clip();
   motif(
     m,
     (pts) => {
@@ -73,6 +79,7 @@ function card(
     seed,
     noise,
   );
+  ctx.restore();
 }
 
 export default defineTemplate<P, S>({

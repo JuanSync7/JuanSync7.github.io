@@ -29,11 +29,7 @@ export function pit(P: Plot, x: number, z: number, crusher: [number, number]): v
     [crusher[0] - 0.08, 0.004, crusher[1] - 0.02],
     [x + 0.08, 0.004, z - 0.04],
   ];
-  P.roads.push(road);
-  road.forEach((p, i) => {
-    const q = road[(i + 1) % road.length] ?? p;
-    P.line(p[0], p[2], q[0], q[2]);
-  });
+  P.road(road, 0.045);
 }
 
 /** A row of n silos with a gallery conveyor along their tops. */

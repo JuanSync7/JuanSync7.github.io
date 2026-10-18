@@ -105,6 +105,48 @@ export class Plot {
       this.line(cx + Math.cos(a) * rx, cz + Math.sin(a) * rz, cx + Math.cos(b) * rx, cz + Math.sin(b) * rz);
     }
   }
+  /** A road along pts (closed into a loop unless `open`), w wide: both edges, mitred at the
+   *  corners, and a dashed centre line. A closed road also carries traffic. */
+  road(pts: Vec3[], w: number, open = false): void {
+    const n = pts.length;
+    const at = (i: number): Vec3 => pts[open ? Math.max(0, Math.min(n - 1, i)) : ((i % n) + n) % n] ?? [0, 0, 0];
+    const normal = (a: Vec3, b: Vec3): [number, number] => {
+      const [dx, dz] = [b[0] - a[0], b[2] - a[2]];
+      const l = Math.hypot(dx, dz) || 1;
+      return [-dz / l, dx / l];
+    };
+    const edge = (side: number): [number, number][] =>
+      pts.map((p, i) => {
+        const [n1, n2] = [normal(at(i - 1), p), normal(p, at(i + 1))];
+        const first = open && i === 0;
+        const last = open && i === n - 1;
+        const [mx, mz] = first ? n2 : last ? n1 : [n1[0] + n2[0], n1[1] + n2[1]];
+        const ml = Math.hypot(mx, mz) || 1;
+        const k = first || last ? 1 : 1 / Math.max(0.3, (mx / ml) * n1[0] + (mz / ml) * n1[1]);
+        return [p[0] + (mx / ml) * k * side * (w / 2), p[2] + (mz / ml) * k * side * (w / 2)];
+      });
+    for (const side of [-1, 1]) {
+      const e = edge(side);
+      for (let i = 0; i < e.length - (open ? 1 : 0); i++) {
+        const [a, b] = [e[i], e[(i + 1) % e.length]];
+        if (a && b) this.line(a[0], a[1], b[0], b[1]);
+      }
+    }
+    for (let i = 0; i < n - (open ? 1 : 0); i++) {
+      const [a, b] = [at(i), at(i + 1)];
+      const len = Math.hypot(b[0] - a[0], b[2] - a[2]);
+      for (let u = 0.02; u + 0.025 < len; u += 0.06) {
+        const [s0, s1] = [u / len, (u + 0.025) / len];
+        this.line(
+          a[0] + (b[0] - a[0]) * s0,
+          a[2] + (b[2] - a[2]) * s0,
+          a[0] + (b[0] - a[0]) * s1,
+          a[2] + (b[2] - a[2]) * s1,
+        );
+      }
+    }
+    if (!open) this.roads.push(pts);
+  }
   pipe(...pts: Vec3[]): void {
     this.pipes.push(pts);
   }
