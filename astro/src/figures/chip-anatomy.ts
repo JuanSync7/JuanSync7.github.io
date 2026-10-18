@@ -1,27 +1,15 @@
-import {
-  BoxGeometry,
-  Color,
-  EdgesGeometry,
-  Group,
-  IcosahedronGeometry,
-  InstancedMesh,
-  LineBasicMaterial,
-  LineSegments,
-  Matrix4,
-  Mesh,
-  MeshBasicMaterial,
-  Vector3,
-  type BufferGeometry,
-} from 'three';
+import { Color, Group, IcosahedronGeometry, LineBasicMaterial, LineSegments, MeshBasicMaterial, Vector3 } from 'three';
 import { defineThreeFigure } from './defineThree';
 import { lines, write } from './kit/boards';
 import { isometric } from './kit/camera';
 import { box } from './kit/draw';
 import { hexOf, ink, mix } from './kit/ink';
 import { follow } from './kit/motion';
+import { build, PART_IDS, type PartId } from './kit/package';
 
 /** A 2.5D chip package taken apart, top down: lid, thermal interface, compute die, memory
- *  stacks, microbumps, interposer, C4 bumps, substrate, solder balls. Step 0 is the package
+ *  stacks, underfill, microbumps, interposer, C4 bumps, capacitors, substrate, solder balls
+ *  (built in `kit/package.ts`). Step 0 is the package
  *  assembled; each later step lifts the layers apart and lights one part, its edges in the
  *  signal, with a hairline leader out to where the page puts its label. Parts are drawn as
  *  solids filled with the ground under their edges, so near parts hide far ones, as in a
@@ -36,22 +24,22 @@ export interface AnatomyData {
 const isData = (x: unknown): x is AnatomyData =>
   typeof x === 'object' && x !== null && typeof (x as { step?: unknown }).step === 'number';
 
-const PARTS = ['lid', 'tim', 'die', 'hbm', 'ubumps', 'interposer', 'c4', 'substrate', 'balls'] as const;
-type PartId = (typeof PARTS)[number];
+const PARTS = PART_IDS;
 /** Each part's layer from the bottom: parts on one layer lift together. */
 const LAYER: Record<PartId, number> = {
   balls: 0,
   substrate: 1,
+  caps: 2,
   c4: 2,
   interposer: 3,
   ubumps: 4,
+  underfill: 4,
   die: 5,
   hbm: 5,
   tim: 6,
   lid: 7,
 };
 const GAP = 0.55;
-const m4 = new Matrix4();
 const v3 = new Vector3();
 const TEAL = new Color(hexOf('signal'));
 const GREY = new Color(hexOf('inkFaint'));
@@ -61,6 +49,7 @@ const DIM = new Color(hexOf('line4'));
 interface Part {
   group: Group;
   edge: LineBasicMaterial;
+  fine: LineBasicMaterial;
   dots: MeshBasicMaterial | null;
   /** Where the part stands assembled, and its own height. */
   base: number;
@@ -75,49 +64,10 @@ interface State {
   leader: LineSegments;
 }
 
-/** A solid: a ground-coloured box under its own edges. */
-function slab(
-  g: Group,
-  edge: LineBasicMaterial,
-  fill: MeshBasicMaterial,
-  w: number,
-  h: number,
-  d: number,
-  x = 0,
-  y = 0,
-  z = 0,
-): void {
-  const geo = new BoxGeometry(w, h, d);
-  const m = new Mesh(geo, fill);
-  const e = new LineSegments(new EdgesGeometry(geo), edge);
-  m.position.set(x, y + h / 2, z);
-  e.position.copy(m.position);
-  g.add(m, e);
-}
-
-/** A grid of small round joints (bumps, balls) as one instanced batch. */
-function joints(
-  g: Group,
-  geo: BufferGeometry,
-  mat: MeshBasicMaterial,
-  w: number,
-  d: number,
-  n: number,
-  m: number,
-  y: number,
-): void {
-  const mesh = new InstancedMesh(geo, mat, n * m);
-  let k = 0;
-  for (let i = 0; i < n; i++)
-    for (let j = 0; j < m; j++)
-      mesh.setMatrixAt(k++, m4.makeTranslation(-w / 2 + (w * (i + 0.5)) / n, y, -d / 2 + (d * (j + 0.5)) / m));
-  g.add(mesh);
-}
-
 export default defineThreeFigure<State>({
   id: 'chip-anatomy',
   title: 'Chip package anatomy',
-  alt: 'A 2.5D chip package drawn in thin lines, taken apart layer by layer: a copper lid, a thermal interface layer, a compute die beside stacks of memory, a carpet of microbumps, a silicon interposer with fine wiring, larger C4 bumps, a layered substrate with capacitors, and a grid of solder balls. One part at a time is outlined in teal, with a thin line leading out to its label.',
+  alt: 'A 2.5D chip package drawn in thin lines, taken apart layer by layer: a copper lid, a thermal interface layer, a compute die with its floorplan beside stacks of eight memory dies with vias through them, underfill fillets round a carpet of microbumps, a silicon interposer with wiring and a via field, larger C4 bumps, rows of capacitors, a layered substrate with plated vias, and a grid of solder balls with capacitors in its open centre. One part at a time is outlined in teal, with a thin line leading out to its label.',
   idea: 'Take a 2.5D package apart one layer at a time, top to bottom, and light each part as it is named.',
   motion: 'ambient',
   answers: true,
@@ -141,59 +91,14 @@ export default defineThreeFigure<State>({
       const edge = new LineBasicMaterial({ color: hexOf('inkFaint'), transparent: true, opacity: 0.6 });
       let dots: MeshBasicMaterial | null = null;
       if (LAYER[id] !== layer) [layer, base] = [LAYER[id], top];
-      let h = 0;
-      if (id === 'balls' || id === 'c4' || id === 'ubumps') {
-        dots = new MeshBasicMaterial({ color: hexOf('inkFaint') });
-        const [w, d, n, m, r] =
-          id === 'balls'
-            ? [3.3, 3.3, 12, 12, 0.08]
-            : id === 'c4'
-              ? [2.3, 1.7, 14, 10, 0.045]
-              : [2.1, 1.5, 28, 20, 0.018];
-        joints(g, ball.clone().scale(r, r, r), dots, w, d, n, m, r);
-        h = r * 2;
-      } else if (id === 'substrate') {
-        h = 0.16;
-        slab(g, edge, fill, 3.6, h, 3.6);
-        // Build-up layers along the edges, capacitors along the front.
-        const seams = [0.04, 0.08, 0.12].flatMap((y) => [-1.8, y, 1.801, 1.8, y, 1.801, 1.801, y, 1.8, 1.801, y, -1.8]);
-        g.add(lines(seams, 'inkFaint', 0.5));
-        for (let i = 0; i < 10; i++) slab(g, edge, fill, 0.12, 0.05, 0.07, -1.35 + i * 0.3, h, 1.35);
-        substrate = base + h;
-      } else if (id === 'interposer') {
-        h = 0.07;
-        slab(g, edge, fill, 2.5, h, 1.9);
-        const wiring: number[] = [];
-        for (let i = 0; i < 16; i++) wiring.push(-0.2, h + 0.001, -0.8 + i * 0.1, 0.3, h + 0.001, -0.8 + i * 0.1);
-        g.add(lines(wiring, 'inkFaint', 0.55));
-      } else if (id === 'die') {
-        h = 0.14;
-        slab(g, edge, fill, 1.3, h, 1.3, -0.45);
-      } else if (id === 'hbm') {
-        // Each stack: four DRAM dies on a base die.
-        h = 0.225;
-        for (const z of [-0.45, 0.45])
-          for (let k = 0; k < 5; k++) slab(g, edge, fill, 0.55, 0.04, 0.7, 0.75, 0.045 * k, z);
-      } else if (id === 'tim') {
-        h = 0.03;
-        slab(g, edge, fill, 2.1, h, 1.6, 0.05);
-      } else {
-        // The lid: a plate on a skirt that reaches down to the substrate round the stack.
-        h = 0.1;
-        slab(g, edge, fill, 3.2, h, 3.2);
-        const skirt = base - substrate;
-        for (const [w, d, x, z] of [
-          [3.2, 0.1, 0, 1.55],
-          [3.2, 0.1, 0, -1.55],
-          [0.1, 3.2, 1.55, 0],
-          [0.1, 3.2, -1.55, 0],
-        ] as const)
-          slab(g, edge, fill, w, skirt, d, x, -skirt, z);
-      }
+      if (id === 'balls' || id === 'c4' || id === 'ubumps') dots = new MeshBasicMaterial({ color: hexOf('inkFaint') });
+      const fine = new LineBasicMaterial({ color: hexOf('inkFaint'), transparent: true, opacity: 0.35 });
+      const h = build(id, g, { edge, fine, fill, dots, ball }, base - substrate);
+      if (id === 'substrate') substrate = base + h;
       top = Math.max(top, base + h);
       g.position.y = base;
       scene.add(g);
-      parts.push({ group: g, edge, dots, base, top: h, lift: 0 });
+      parts.push({ group: g, edge, fine, dots, base, top: h, lift: 0 });
     }
     parts.reverse();
     const leader = lines(new Array(12).fill(0), 'signal', 0.8);
@@ -220,6 +125,8 @@ export default defineThreeFigure<State>({
       const on = i === lit;
       p.edge.color.copy(on ? TEAL : GREY);
       p.edge.opacity = on ? 0.95 : step > 0 ? 0.35 : 0.75;
+      p.fine.color.copy(on ? TEAL : GREY);
+      p.fine.opacity = on ? 0.6 : step > 0 ? 0.18 : 0.35;
       p.dots?.color.copy(on ? TEAL : DIM);
     });
     // The leader: from the lit part's front corner out to its label, in screen space.

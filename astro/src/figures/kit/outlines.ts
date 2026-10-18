@@ -1,4 +1,5 @@
 import { bodyOf, place, type Part } from './city';
+import { rig } from './rigs';
 import { cone, prism, rect, ring, shell, type Out } from './shells';
 
 /** Outlines of a city's parts (`kit/city.ts`) as line segments, ready for one batch. Each
@@ -24,7 +25,7 @@ export const COOLER: [number, number][] = Array.from({ length: 9 }, (_, i) => {
 function local(o: Out, { kind, w, d, h }: Part): void {
   const [hw, hd] = [w / 2, d / 2];
   const body = bodyOf(kind);
-  if (shell(o, kind, w, d, h)) return;
+  if (shell(o, kind, w, d, h) || rig(o, kind, w, d, h)) return;
   if (kind === 'cell') {
     // A standard cell is a tile only a few units high: its top is all that reads.
     rect(o, hw, hd, h);

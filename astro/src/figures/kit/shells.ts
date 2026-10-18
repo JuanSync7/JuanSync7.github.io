@@ -36,7 +36,7 @@ export function cone(o: Out, rx: number, rz: number, y0: number, y1: number, n: 
 
 /** A lattice tower: legs from the footprint in to `top` (a fraction of the base) at h, with
  *  a ring every `every` of the height and one cross-brace on the face toward +z. */
-function lattice(o: Out, w: number, d: number, h: number, top: number, every: number): void {
+export function lattice(o: Out, w: number, d: number, h: number, top: number, every: number): void {
   const at = (f: number): [number, number] => [(w / 2) * (1 - f * (1 - top)), (d / 2) * (1 - f * (1 - top))];
   for (const sx of [-1, 1])
     for (const sz of [-1, 1]) {
@@ -107,4 +107,24 @@ export function shell(o: Out, kind: string, w: number, d: number, h: number): bo
     for (const f of [0.3, 0.55]) o.push(-hw * 0.4, 0.003, -hd * f + hd * 0.2, hw * 0.3, 0.003, -hd * f + hd * 0.2);
   } else return false;
   return true;
+}
+
+/** A ring of n sides at height y, its radius r, centred at (x, z) on the part's floor. */
+export function ringAt(o: Out, x: number, y: number, z: number, r: number, n: number): void {
+  for (let i = 0; i < n; i++) {
+    const [a, b] = [(i / n) * TAU, ((i + 1) / n) * TAU];
+    o.push(x + Math.cos(a) * r, y, z + Math.sin(a) * r, x + Math.cos(b) * r, y, z + Math.sin(b) * r);
+  }
+}
+/** A box from (x0, y0, z0) to (x1, y1, z1). */
+export function cuboid(o: Out, x0: number, y0: number, z0: number, x1: number, y1: number, z1: number): void {
+  for (const y of [y0, y1])
+    o.push(x0, y, z0, x1, y, z0, x1, y, z0, x1, y, z1, x1, y, z1, x0, y, z1, x0, y, z1, x0, y, z0);
+  for (const [x, z] of [
+    [x0, z0],
+    [x1, z0],
+    [x1, z1],
+    [x0, z1],
+  ] as const)
+    o.push(x, y0, z, x, y1, z);
 }
