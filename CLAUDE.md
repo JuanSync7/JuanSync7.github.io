@@ -44,6 +44,12 @@ These rules apply to all code in this repo. They are enforced where possible by 
 6. **Templates are figures drawn from a seed.** A template in `astro/src/figures/templates/` (`defineTemplate`) turns a seed into choices with its grammar; an instance `<template>~<seed>` works anywhere a figure id does, including `cover:`. Every template appears at `/lab/` automatically. A template is done when its seed sheet (`npm run figure:seeds -- <id> 12 --url=<dev server>`; it needs a running dev server) was read and the look passes for its three audit seeds.
 7. **Night system.** The 2026 pages (home, writing, figures) use `NightLayout.astro`, `styles/night.css` and the `--nt-*` tokens. Figures take colour only through `figures/kit/ink.ts`, which reads the `night` mirror in `palette.ts`.
 
+## Writing posts
+
+1. **The rules live in the experience vault, not here.** Before writing or editing a post in `astro/src/content/blog/`, read from the `JuanSync7/experience-vault` repo: `Notes/Me/SOUL.md`, `Notes/Me/Knowledge/Writing voice.md`, then `Blog writing.md` (a post) or `Article writing.md` (a `/learn` explainer), and the deck `Notes/Decks/Writing posts and articles.md` (rules R-POST-*, R-ART-*). The worked examples are in `Notes/Examples/Writing/`. If the vault isn't reachable, say so before writing.
+2. **`npm run posts:check` holds the mechanical rules** for posts dated from `rulesFrom` in `scripts/posts/config.json`: a one-sentence hook as the excerpt, no table above the first heading, a real opening before it, 3 to 5 headings, no links to other posts before the ending, length and read time, ending on a paragraph. It runs inside `npm run check`; `npm run posts:selftest` proves each rule still catches a post that breaks it. Change `config.json` only with a reason in the commit message.
+3. **Done means the check passed and a fresh reader compared it.** Before merging a new post, a fresh agent reads it against the previous draft (or a plain alternative) blind, with shuffled labels, and says which reads better and why (R-POST-11).
+
 ## React rules
 
 1. **No globals.** No `window.Foo = Foo`, no implicit reliance on script-tag load order. Use ESM imports.
