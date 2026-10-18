@@ -37,7 +37,11 @@ export function energy(P: Plot, k: number): void {
   if (k === 2) {
     // The reactor and its turbine hall between two cooling towers; wind along the back
     // edge, solar rows to the right; the switchyard's transformers send it all out.
-    P.add('dome', -0.35, -0.15, 0.26, 0.26, 0.16);
+    // The reactor is drawn in wire; a drum as tall as its wall stands in it as the solid, so
+    // the dome above stays in view.
+    P.add('reactor', -0.35, -0.15, 0.26, 0.26, 0.3);
+    P.add('tank', -0.35, -0.15, 0.25, 0.25, 0.13);
+    P.add('louvred', -0.12, 0.18, 0.1, 0.12, 0.08);
     P.add('hall', -0.05, -0.15, 0.24, 0.14, 0.08);
     P.add('factory', -0.35, 0.18, 0.22, 0.12, 0.07);
     P.add('cooler', -0.78, -0.32, 0.3, 0.3, 0.34);

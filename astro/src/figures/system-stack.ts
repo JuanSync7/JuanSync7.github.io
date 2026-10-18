@@ -8,10 +8,9 @@ import {
   PerspectiveCamera,
 } from 'three';
 import { defineThreeFigure } from './defineThree';
-import { animate, board, commit, lines, solids, tube, tubes, write, type Board, type Tubes } from './kit/boards';
+import { animate, board, lines, solids, write, type Board } from './kit/boards';
 import type { Vec3 } from './kit/camera';
-import { STREETS, type District } from './kit/city';
-import { roof } from './kit/citylife';
+import type { District } from './kit/city';
 import { stationOn } from './kit/civic';
 import { hubLevel, HUB_LEVELS } from './kit/hub';
 import { hexOf } from './kit/ink';
@@ -19,6 +18,7 @@ import { DEPTH, island, size, type Island } from './kit/islands';
 import { flight, links, monorail, parked, settle, type Links } from './kit/links';
 import { follow } from './kit/motion';
 import { along } from './kit/shapes';
+import { commit, lay, request, tube, tubes, type Tubes, type Via, type ViaKind } from './kit/vias';
 import { aim, flatStacks, heading, pickAt } from './kit/stackview';
 import { crowd, gather, type Crowd } from './kit/crowd';
 import { fleet, move, plan, type Fleet, type Model, type Ride } from './kit/traffic';
@@ -34,7 +34,7 @@ import { circuit, type Timed } from './kit/transit';
  *  to the hub level that uses it; the grid's teal conduit runs under every track from the
  *  energy island, through each station's substation, out on pylons; lorries, haulers and
  *  cars drive the roads, an open line builds cars, planes fly circuits from the airport and
- *  satellites orbit overhead. Teal is the city's energy: vias are glass tubes with flow inside, windows light
+ *  satellites orbit overhead. Teal is the city's energy: vias are wireframe lift shafts, pipes and bucket elevators carrying teal up and down, windows light
  *  teal and white. The pointer flies the camera to the stack under it: from one person's
  *  work to the whole company's. */
 
@@ -79,6 +79,16 @@ const MODEL: Record<Kind, Model> = {
   energy: 'lorry',
   airport: 'lorry',
 };
+/** What the vias between a stack's levels are: lifts for people and requests, pipes for
+ *  power, bucket elevators for ore, metal and parts. */
+const VIA: Record<Kind, ViaKind> = {
+  hub: 'lift',
+  mine: 'bucket',
+  foundry: 'bucket',
+  exchange: 'lift',
+  energy: 'pipe',
+  airport: 'lift',
+};
 /** The overview's distance, and how far from a stack the camera stops (hub, island). */
 const FAR = 15.5;
 /** The overview aims at the hub's middle, so the airport above and the islands below both fit. */
@@ -97,15 +107,6 @@ interface Stack {
   stop: Vec3;
   hubStop: Vec3;
 }
-interface Via {
-  s: number;
-  x: number;
-  z: number;
-  lo: number;
-  foot: number;
-  r: number;
-  up: boolean;
-}
 interface State {
   stacks: Stack[];
   vias: Via[];
@@ -120,7 +121,7 @@ interface State {
   packet: Mesh;
   over: PerspectiveCamera;
   across: (readonly [Vec3, Vec3])[];
-  view: { x: number; y: number; z: number; dist: number };
+  view: { x: number; y: number; z: number; dist: number; orbit: number };
 }
 
 const m4 = new Matrix4();
@@ -181,28 +182,21 @@ export default defineThreeFigure<State>({
       const ys = boards.map((_, k) => spec.base + (k - (boards.length - 1) / 2) * gap);
       return { spec, boards, cities: cities[i] ?? [], dims, ys, gap, stop, hubStop };
     });
-    // Tubes: on the hub the first per gap carries the request (alternating sides), the rest
-    // land on rooftops; the energy island is plumbed thickest, with wider pipes.
-    const vias: Via[] = [];
-    stacks.forEach((S, s) => {
-      const energy = s === ENERGY;
-      const via = (x: number, z: number, lo: number, foot: number): number =>
-        vias.push({ s, x, z, lo, foot, r: energy && !foot ? R * 1.5 : R, up: vias.length % 2 === 1 });
-      // A level's ports (its gathering points) carry its goods up; otherwise a tube stands
-      // where it falls.
-      for (let k = 0; k + 1 < S.boards.length; k++)
-        for (let j = 0; j < (energy ? 2 : 1); j++) {
-          const port = S.cities[k]?.ports?.[j];
-          const x = ((k + j) % 2 ? -1 : 1) * (S.dims[k]?.[0] ?? 1) * (0.2 + (rng() - 0.5) * 0.12);
-          via(port ? port[0] : x, port ? port[2] : (rng() - 0.5) * 0.6, k, 0);
-        }
-      for (let n = 0; S.boards.length > 1 && n < (s === 0 ? 8 : energy ? 3 : 2); n++) {
-        const lo = Math.floor(rng() * (S.boards.length - 1));
-        const p = roof(S.boards[lo]?.parts ?? [], rng);
-        if (p) via(p.x, p.z, lo, (p.y ?? 0) + p.h);
-      }
-    });
-    const T = tubes(vias.length, 3);
+    // Vias: on the hub the first per gap carries the request; the energy island is plumbed
+    // thickest, with wider pipes.
+    const vias = lay(
+      stacks.map((S, i) => ({
+        cities: S.cities,
+        dims: S.dims,
+        parts: S.boards.map((b) => b.parts),
+        kind: VIA[S.spec.kind],
+        wide: i === ENERGY,
+        roofs: i === 0 ? 8 : i === ENERGY ? 3 : 2,
+      })),
+      R,
+      rng,
+    );
+    const T = tubes(vias.map((v) => v.kind));
     const wires = stacks.reduce((n, S) => n + S.boards.reduce((m, b) => m + b.wires.length, 0), 0);
     const pulses = new InstancedMesh(
       new BoxGeometry(0.014, 0.014, 0.014),
@@ -225,7 +219,7 @@ export default defineThreeFigure<State>({
           0.2,
         ),
       );
-    scene.add(T.glass, T.pads, T.slugs, T.rims, pulses, people.mesh, path, packet, F.ink);
+    scene.add(T.frame, T.movers, pulses, people.mesh, path, packet, F.ink);
     return {
       stacks,
       vias,
@@ -240,7 +234,7 @@ export default defineThreeFigure<State>({
       path,
       packet,
       over: new PerspectiveCamera(30, 1, 0.1, 60),
-      view: { x: 0, y: LOOK, z: 0, dist: FAR },
+      view: { x: 0, y: LOOK, z: 0, dist: FAR, orbit: 0 },
     };
   },
   update: ({ camera, t, dt, pointer, hover, still, state: s, w, h }) => {
@@ -259,7 +253,10 @@ export default defineThreeFigure<State>({
     const goal = c ? [c.x, c.base, c.z, (NEAR[c.kind === 'hub' ? 0 : 1] ?? 5) * wide] : [0, LOOK, 0, FAR * wide];
     const ease = (a: number, b = 0): number => (still ? b : follow(a, b, dt, 1.3));
     [v.x, v.y, v.z, v.dist] = [ease(v.x, goal[0]), ease(v.y, goal[1]), ease(v.z, goal[2]), ease(v.dist, goal[3])];
-    aim(camera, v.x, v.y, v.z, v.dist, heading(t, near));
+    // Circle a stack slowly once close: the turn builds up a frame at a time and unwinds as
+    // the camera pulls back, so the overview matches the one the pointer picks against.
+    v.orbit = still ? 0 : follow(v.orbit + dt * 0.05 * near, 0, dt, 1.2 * (1 - near));
+    aim(camera, v.x, v.y, v.z, v.dist, heading(t, v.orbit));
     // Every stack breathes on its own phase, so the tubes between its boards stretch.
     let pulse = 0;
     s.stacks.forEach((S, i) => {
@@ -304,26 +301,9 @@ export default defineThreeFigure<State>({
     };
     move(s.fleet, s.rides, t, at);
     gather(s.people, t, at, 0, HUB_LEVELS - 1, W, D);
-    const y = (k: number): number => hub.ys[k] ?? 0;
-    // The request: from a person, along the street to the first tube, down it, across the
-    // next board to its tube, and so on to the silicon; then the answer climbs back.
-    const pts: Vec3[] = [[STREETS.x[0] ?? 0, y(5), STREETS.z[2] ?? 0]];
-    for (let k = 5; k >= 1; k--) {
-      const q = s.vias[k - 1];
-      const last = pts[pts.length - 1];
-      if (q && last) pts.push([q.x, y(k), last[2]], [q.x, y(k), q.z], [q.x, y(k - 1), q.z]);
-    }
-    pts.push([0.72, y(0), -0.34]);
-    const cycle = (t / 9) % 1;
-    const u = cycle < 0.5 ? cycle * 2 : 2 - cycle * 2;
-    const head = along(pts, u);
-    s.packet.position.set(head[0], head[1] + 0.03, head[2]);
-    const trail: number[] = [];
-    for (let i = 0; i < 64; i++) {
-      const [a, b] = [along(pts, (u * i) / 64), along(pts, (u * (i + 1)) / 64)];
-      trail.push(a[0], a[1] + 0.005, a[2], b[0], b[1] + 0.005, b[2]);
-    }
-    write(s.path, trail);
+    const req = request((k) => hub.ys[k] ?? 0, s.vias, HUB_LEVELS - 1, t);
+    s.packet.position.set(req.head[0], req.head[1] + 0.03, req.head[2]);
+    write(s.path, req.trail);
     return c ? c.name : 'rest';
   },
   fallback: ({ ctx, w, h, pointer, hover }) => {
