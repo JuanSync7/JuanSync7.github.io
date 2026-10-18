@@ -180,7 +180,9 @@ function crossChecks(results, posts) {
     const f = byId.get(cover);
     return f && !f.template ? { style: f.style, ok: f.group === 'cover' } : null;
   };
-  const sorted = [...posts].sort((a, b) => b.date.localeCompare(a.date));
+  // Same order as the blog list: newest first, and posts on the same day by slug, as the page shows them.
+  // Directory order differs between machines, so it can't break the tie.
+  const sorted = [...posts].sort((a, b) => b.date.localeCompare(a.date) || a.slug.localeCompare(b.slug));
   const used = new Map();
   sorted.forEach((p, i) => {
     const fig = p.cover ? resolve(p.cover) : null;
