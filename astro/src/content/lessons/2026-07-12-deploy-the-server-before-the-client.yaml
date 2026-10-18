@@ -1,0 +1,4 @@
+date: 2026-07-12
+tag: frontend
+title: "Deploy the server before the client."
+why: "A new client sending requests the old server rejects breaks for everyone during the rollout. Server first, then client."

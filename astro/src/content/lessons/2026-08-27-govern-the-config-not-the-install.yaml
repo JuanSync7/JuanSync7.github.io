@@ -1,0 +1,4 @@
+date: 2026-08-27
+tag: ops
+title: "Govern the config, not the install."
+why: "You don't have to win the argument about how people install a tool if a managed policy file applies to every copy on the host."

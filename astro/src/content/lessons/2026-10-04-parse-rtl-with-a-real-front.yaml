@@ -1,0 +1,4 @@
+date: 2026-10-04
+tag: rtl
+title: "Parse RTL with a real front end, not regex."
+why: "Text search loses hierarchy and connectivity. A proper SystemVerilog parser that builds a syntax tree gives you the design's actual structure to reason about."

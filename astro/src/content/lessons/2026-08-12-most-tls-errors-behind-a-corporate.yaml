@@ -1,0 +1,4 @@
+date: 2026-08-12
+tag: tls
+title: "Most TLS errors behind a corporate proxy are one missing root."
+why: "An inspecting proxy re-signs traffic. Install its root once and point each tool's bundle at it, and git, pip and containers all recover."

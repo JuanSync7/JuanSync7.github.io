@@ -1,0 +1,4 @@
+date: 2026-08-20
+tag: data
+title: "Never report a mean for skewed durations."
+why: "Resolution times have long tails, so the mean misleads. Give n, coverage and method alongside any figure you report."

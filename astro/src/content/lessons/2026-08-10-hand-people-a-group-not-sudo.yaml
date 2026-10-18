@@ -1,0 +1,4 @@
+date: 2026-08-10
+tag: security
+title: "Hand people a group, not sudo."
+why: "A service account runs the process. A purpose-made group may start, stop and edit its config, and nothing else. People join and leave the group."

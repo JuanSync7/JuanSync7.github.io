@@ -1,0 +1,4 @@
+date: 2026-06-07
+tag: aws
+title: "One role per budget, or one cap stops everyone."
+why: "A budget deny attaches to a principal. Two tiers sharing a role means the first to overspend blocks the other."

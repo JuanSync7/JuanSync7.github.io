@@ -1,0 +1,4 @@
+date: 2026-06-13
+tag: frontend
+title: "The hard part of a chat UI isn't the screen."
+why: "Drawing a chat window is easy. Owning sign-in and conversation storage is the real work, and the real risk, of a custom front end."

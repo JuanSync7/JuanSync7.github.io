@@ -1,0 +1,4 @@
+date: 2026-07-19
+tag: llm
+title: "Models write broken JSON. Parse loosely, check strictly."
+why: "Raw line breaks and invalid escapes are common in model output. Tolerant parsing followed by strict validation keeps good answers without trusting bad ones."

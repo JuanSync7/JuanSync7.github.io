@@ -1,0 +1,4 @@
+date: 2026-07-29
+tag: frontend
+title: "Hover-only help doesn't exist on a phone."
+why: "Tooltips need a pointer. Put the hint in the placeholder or a help line people can reach on any screen."

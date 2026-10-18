@@ -1,0 +1,4 @@
+date: 2026-06-02
+tag: testing
+title: "Prove the parallel run matches the serial one."
+why: "Run the suite serially, with four and sixteen workers, and shuffled. Hidden order dependence only shows when the order changes."

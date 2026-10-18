@@ -1,0 +1,4 @@
+date: 2026-09-06
+tag: design
+title: "Safe to change depends on who reads it, not who owns it."
+why: "Owning a file doesn't make editing it safe. Count its consumers; a file with many readers needs care whoever owns it."

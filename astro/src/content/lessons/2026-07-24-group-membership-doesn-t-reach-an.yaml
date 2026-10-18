@@ -1,0 +1,4 @@
+date: 2026-07-24
+tag: linux
+title: "Group membership doesn't reach an open shell."
+why: "Add yourself to a group and existing sessions still lack it. Log in again, or use newgrp."

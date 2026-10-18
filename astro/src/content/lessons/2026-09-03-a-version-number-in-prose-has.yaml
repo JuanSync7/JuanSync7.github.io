@@ -1,0 +1,4 @@
+date: 2026-09-03
+tag: docs
+title: "A version number in prose has no owner."
+why: "It goes stale the day the pin moves and nothing fails. Point to the file that owns the version instead."

@@ -1,0 +1,4 @@
+date: 2026-05-16
+tag: git
+title: "Keep a PR under 500 hand-written lines."
+why: "A reviewer can read 500 lines line by line. Past that, review turns into skimming. Generated files don't count toward it."

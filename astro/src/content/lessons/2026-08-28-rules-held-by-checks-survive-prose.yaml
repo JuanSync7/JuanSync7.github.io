@@ -1,0 +1,4 @@
+date: 2026-08-28
+tag: agents
+title: "Rules held by checks survive. Prose rules drift."
+why: "Across audits, requirements backed by a check stayed true and prose-only governance didn't. Move rules into checks."

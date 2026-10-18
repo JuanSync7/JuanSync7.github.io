@@ -1,0 +1,4 @@
+date: 2026-09-24
+tag: data
+title: "Fix attribution at the source."
+why: "Scraping logs to guess which job used what is fragile. Have the flow record the job id and its parent when it runs."

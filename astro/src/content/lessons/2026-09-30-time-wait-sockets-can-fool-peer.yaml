@@ -1,0 +1,4 @@
+date: 2026-09-30
+tag: networking
+title: "TIME_WAIT sockets can fool peer matching."
+why: "Matching a local connection to a user by address alone can pick a stale closed socket. Match the full four-tuple and the ESTABLISHED state."

@@ -1,0 +1,4 @@
+date: 2026-07-23
+tag: security
+title: "Once a doc is in a shared index, assume it was read."
+why: "You can't know who already searched it. Decide what goes in up front, because removing it later doesn't undo the exposure."

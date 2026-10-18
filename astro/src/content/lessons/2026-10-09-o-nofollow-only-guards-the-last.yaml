@@ -1,0 +1,4 @@
+date: 2026-10-09
+tag: linux
+title: "O_NOFOLLOW only guards the last path component."
+why: "A symlink earlier in the path is still followed. Safe walks open each directory relative to its parent's descriptor, then fstat the final file."

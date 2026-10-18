@@ -1,0 +1,4 @@
+date: 2026-10-07
+tag: riscv
+title: "ISA compliance is won in the edge cases."
+why: "The common path rarely breaks. Compliance is judged on corner cases, so enumerate them explicitly during analysis instead of hoping tests stumble on them."

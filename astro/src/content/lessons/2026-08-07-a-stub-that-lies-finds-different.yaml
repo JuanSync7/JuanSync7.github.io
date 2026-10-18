@@ -1,0 +1,4 @@
+date: 2026-08-07
+tag: testing
+title: "A stub that lies finds different bugs than one that fails."
+why: "Exit non-zero catches ignored errors. Exit zero while doing nothing catches code that treats an exit status as proof of state."

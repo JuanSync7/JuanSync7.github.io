@@ -1,0 +1,4 @@
+date: 2026-06-16
+tag: testing
+title: "Some checks need no oracle at all."
+why: "A AND B must sit inside A. count(A) plus count(NOT A) must equal the total. Relations like these catch parser bugs cheaply."

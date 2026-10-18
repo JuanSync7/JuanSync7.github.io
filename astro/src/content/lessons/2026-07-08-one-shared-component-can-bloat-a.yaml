@@ -1,0 +1,4 @@
+date: 2026-07-08
+tag: frontend
+title: "One shared component can bloat a bundle."
+why: "Sharing a filter control pulled a whole page's code into another chunk, which grew six-fold. Check chunk sizes when you share components."

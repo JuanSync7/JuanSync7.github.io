@@ -1,0 +1,4 @@
+date: 2026-04-14
+tag: config
+title: "Passing options straight through is a privilege."
+why: "A config value forwarded as raw options lets whoever edits the config run anything the tool allows. Name the options you accept."

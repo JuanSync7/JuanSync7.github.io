@@ -1,0 +1,4 @@
+date: 2026-09-13
+tag: frontend
+title: "Accept what you print."
+why: "The UI showed durations like 1.5h and the filter rejected decimals. Whatever the app displays, its inputs should take back."

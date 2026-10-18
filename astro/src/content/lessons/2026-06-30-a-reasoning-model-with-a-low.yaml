@@ -1,0 +1,4 @@
+date: 2026-06-30
+tag: llm
+title: "A reasoning model with a low token limit returns nothing."
+why: "It spends the budget thinking and has no answer left. The empty content looks like success; the reasoning sits in a separate field."

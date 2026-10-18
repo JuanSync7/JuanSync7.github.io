@@ -1,0 +1,4 @@
+date: 2026-06-19
+tag: linux
+title: "NFS with sec=sys only carries 16 groups."
+why: "AUTH_SYS sends at most 16 group IDs per request, so permissions granted through any group beyond those fail silently."

@@ -1,0 +1,4 @@
+date: 2026-09-05
+tag: security
+title: "A good policy on one host protects nobody."
+why: "The design was never the weak part. The strong policy simply never reached the machines people actually worked on, so distribution is the control."

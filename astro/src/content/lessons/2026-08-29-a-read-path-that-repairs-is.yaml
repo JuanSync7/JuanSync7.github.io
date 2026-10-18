@@ -1,0 +1,4 @@
+date: 2026-08-29
+tag: data
+title: "A read path that repairs is a write path."
+why: "A reader can't tell a live writer from a dead one, so only the writer should recover a crashed store."

@@ -1,0 +1,4 @@
+date: 2026-05-23
+tag: testing
+title: "Climb the test ladder: mock, fake, real-local, real."
+why: "Each rung catches what the one below can't. A green mock says the logic holds; only the top rung says the world agrees."

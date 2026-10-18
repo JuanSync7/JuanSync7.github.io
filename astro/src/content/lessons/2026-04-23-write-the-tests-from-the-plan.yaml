@@ -1,0 +1,4 @@
+date: 2026-04-23
+tag: testing
+title: "Write the tests from the plan, before the code."
+why: "Tests written after the code tend to describe the code. Written from the plan, they describe the intent and can't be bent to fit."

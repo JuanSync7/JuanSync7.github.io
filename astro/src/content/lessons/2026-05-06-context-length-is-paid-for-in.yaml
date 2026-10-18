@@ -1,0 +1,4 @@
+date: 2026-05-06
+tag: inference
+title: "Context length is paid for in KV cache."
+why: "vLLM must fit one full max-length request (length times per-token KV) or it refuses to start. Longer context means fewer requests fit at once."

@@ -1,0 +1,4 @@
+date: 2026-07-06
+tag: building
+title: "Don't buy a gateway that skips the hard part."
+why: "A gateway that moves requests but not identity leaves the real problem where it was. A thin wrapper you own can do the one thing that matters."

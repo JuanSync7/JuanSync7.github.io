@@ -1,0 +1,4 @@
+date: 2026-09-21
+tag: rtl
+title: "Decoupled units must still retire in order."
+why: "When a vector unit runs apart from the scalar core, dispatch, hazard checks and retirement must keep architectural state in program order, or software sees results out of order."

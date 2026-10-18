@@ -1,0 +1,4 @@
+date: 2026-04-04
+tag: linux
+title: "On NFS, root on the client is nobody on the server."
+why: "root_squash maps root to an anonymous user, so even uid 0 or CAP_DAC_READ_SEARCH can't read other users' private NFS homes. The server decides."

@@ -1,0 +1,4 @@
+date: 2026-06-03
+tag: knowledge
+title: "Many small graphs, joined by stable names."
+why: "One giant graph is hard to navigate and many loose ones drift. Keep one per source and connect them like netlists at their ports."

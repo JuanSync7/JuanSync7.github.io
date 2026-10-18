@@ -1,0 +1,4 @@
+date: 2026-04-12
+tag: frontend
+title: "esbuild strips types without checking them."
+why: "A green bundle says nothing about type errors. Run `tsc --noEmit` as its own gate."

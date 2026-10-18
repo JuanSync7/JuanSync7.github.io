@@ -1,0 +1,4 @@
+date: 2026-07-09
+tag: linux
+title: "A running daemon keeps using its deleted binary."
+why: "Long-running processes execute the unlinked old file until they restart, so an upgrade isn't live just because the file changed."

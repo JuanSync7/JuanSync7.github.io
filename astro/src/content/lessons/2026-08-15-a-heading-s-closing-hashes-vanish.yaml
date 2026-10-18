@@ -1,0 +1,4 @@
+date: 2026-08-15
+tag: docs
+title: "A heading's closing hashes vanish."
+why: "In CommonMark `# Drain procedure #` renders as 'Drain procedure', so a trailing # in a title is silently lost."

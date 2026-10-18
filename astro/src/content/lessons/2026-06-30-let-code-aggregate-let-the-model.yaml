@@ -1,0 +1,4 @@
+date: 2026-06-30
+tag: llm
+title: "Let code aggregate. Let the model judge."
+why: "LLMs summarise well and count badly. Do the heavy aggregation in code and hand the model only the part that needs judgment."

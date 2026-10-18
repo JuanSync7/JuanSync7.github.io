@@ -1,0 +1,4 @@
+date: 2026-07-28
+tag: tooling
+title: "A merge tool can succeed and drop your changes."
+why: "A template update reported success while silently keeping the template's side of conflicted files. Diff the result; don't trust the exit code."

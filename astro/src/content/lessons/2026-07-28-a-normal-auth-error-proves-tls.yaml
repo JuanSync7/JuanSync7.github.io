@@ -1,0 +1,4 @@
+date: 2026-07-28
+tag: tls
+title: "A normal auth error proves TLS works."
+why: "If an unauthenticated request gets a plain 'access denied' back, the handshake succeeded, so the certificate problem is fixed."

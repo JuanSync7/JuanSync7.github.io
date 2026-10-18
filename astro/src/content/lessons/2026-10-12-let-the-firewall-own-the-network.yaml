@@ -1,0 +1,4 @@
+date: 2026-10-12
+tag: security
+title: "Let the firewall own the network boundary."
+why: "An allowed-domains list inside a sandbox drifts and is hard to audit. The proxy already sees every connection."

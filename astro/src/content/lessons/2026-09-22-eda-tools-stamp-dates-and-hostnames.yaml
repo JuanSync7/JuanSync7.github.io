@@ -1,0 +1,4 @@
+date: 2026-09-22
+tag: eda
+title: "EDA tools stamp dates and hostnames."
+why: "Two identical runs give different files because of the header. Hash a copy with the header stripped."

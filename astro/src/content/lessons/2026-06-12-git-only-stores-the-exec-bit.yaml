@@ -1,0 +1,4 @@
+date: 2026-06-12
+tag: git
+title: "Git only stores the exec bit."
+why: "Group, setgid and other mode intent is lost on clone, so it has to live in a package or install script."

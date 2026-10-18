@@ -1,0 +1,4 @@
+date: 2026-07-09
+tag: build
+title: "Incremental rebuilds matter most when reruns cost money."
+why: "Skipping unchanged steps saves minutes for a compiler and real money for an LLM step, where every rerun is billed."

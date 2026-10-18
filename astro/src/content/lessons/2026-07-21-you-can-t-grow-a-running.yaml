@@ -1,0 +1,4 @@
+date: 2026-07-21
+tag: slurm
+title: "You can't grow a running Slurm job's memory."
+why: "The cgroup limit is fixed when the step launches, so even an admin edit after start doesn't change what is enforced. Get the request right before submitting."

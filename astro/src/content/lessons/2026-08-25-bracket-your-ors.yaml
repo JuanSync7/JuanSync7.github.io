@@ -1,0 +1,4 @@
+date: 2026-08-25
+tag: data
+title: "Bracket your ORs."
+why: "A AND B OR C means (A AND B) OR C in most query languages. That silently dropped a date filter. Brackets make the intent explicit."

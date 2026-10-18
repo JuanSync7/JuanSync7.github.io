@@ -1,0 +1,4 @@
+date: 2026-07-02
+tag: build
+title: "Same commit, different report means a hidden input."
+why: "Reruns with no code change still differed, because released IP, flow scripts and tool versions weren't declared. Declare them before trusting a cache."

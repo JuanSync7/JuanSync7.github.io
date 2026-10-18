@@ -1,0 +1,4 @@
+date: 2026-05-21
+tag: rag
+title: "Synthetic test documents lie about real ones."
+why: "Two changes passed synthetic tests and broke on a real datasheet, whose PDF outline was flattened to one level. Keep a real-document soak test."

@@ -1,0 +1,4 @@
+date: 2026-09-09
+tag: frontend
+title: "TypeScript types don't cross the network."
+why: "A client compiled cleanly while calling four endpoints the API never defined. Only a test against the server's real routes catches that."

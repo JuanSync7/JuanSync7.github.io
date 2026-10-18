@@ -1,0 +1,4 @@
+date: 2026-07-25
+tag: data
+title: "pptx slide order isn't in the file names."
+why: "Reordering slides only changes sldIdLst in presentation.xml; slide1.xml keeps its name. Resolve each r:id, and shuffle fixture order so tests can catch it."

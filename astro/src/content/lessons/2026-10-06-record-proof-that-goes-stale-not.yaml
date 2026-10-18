@@ -1,0 +1,4 @@
+date: 2026-10-06
+tag: process
+title: "Record proof that goes stale, not status people type."
+why: "A ticket says 'done' until someone edits it. Evidence tied to a hash goes stale by itself when an input changes."

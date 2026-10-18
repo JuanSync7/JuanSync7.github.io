@@ -1,0 +1,4 @@
+date: 2026-08-08
+tag: agents
+title: "When an agent fails something simple, check its context."
+why: "A plain SQL aggregation shouldn't fail. When it does, the cause is usually missing schema or bad orchestration, not the model."

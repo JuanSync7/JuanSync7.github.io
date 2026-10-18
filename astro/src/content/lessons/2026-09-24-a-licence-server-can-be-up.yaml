@@ -1,0 +1,4 @@
+date: 2026-09-24
+tag: eda
+title: "A licence server can be up while its daemons are down."
+why: "An lmgrd up/down check stays green while the vendor daemons that actually serve the features have failed. Check health at daemon level."

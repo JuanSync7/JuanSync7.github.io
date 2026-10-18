@@ -1,0 +1,4 @@
+date: 2026-05-22
+tag: rtl
+title: "Hazards hide between two blocks that each look right."
+why: "Core and accelerator can each pass their own checks while the handoff between them breaks. List the boundary cases early and synchronise retirement across both units."
