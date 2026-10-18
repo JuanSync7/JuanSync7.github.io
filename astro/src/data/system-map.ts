@@ -13,6 +13,15 @@ export const MAP_H = 1008;
  */
 export const MIN_WIRE = 60;
 
+/** A wire passes no box it does not join closer than this. */
+export const WIRE_CLEARANCE = 24;
+
+/** A wire meets a box at least this far from the box's corners. */
+export const CORNER_INSET = 16;
+
+/** Wire crossings allowed on the map; each is drawn as a bridge. Raise it only on purpose. */
+export const MAX_CROSSINGS = 3;
+
 export type NodeKind = 'person' | 'surface' | 'core' | 'gateway' | 'side' | 'leaf' | 'next' | 'frame' | 'step' | 'band';
 
 export interface MapNode {
@@ -68,7 +77,7 @@ export const NODES: readonly MapNode[] = [
   { id: 'j-run', title: 'Run', sub: 'agent in workspace', kind: 'step', x: 436, y: 420, w: 128, h: 52 },
   { id: 'j-evidence', title: 'Evidence', sub: 'verified · audited', kind: 'step', x: 244, y: 420, w: 128, h: 52 },
   // knowledge
-  { id: 'kb', title: 'Knowledge bases', sub: 'per project + 1 central company', kind: 'core', x: 648, y: 272, w: 220, h: 88 },
+  { id: 'kb', title: 'Knowledge bases', sub: 'per project + 1 central company', kind: 'core', x: 688, y: 272, w: 180, h: 88 },
   { id: 'brain', title: 'Company brain', sub: 'next · knowledge graph of company activity', kind: 'next', x: 936, y: 272, w: 168, h: 368 },
   { id: 'ip-catalogue', title: 'IP catalogue', sub: 'human-written: what · what for · where', kind: 'side', x: 744, y: 552, w: 144, h: 64 },
   // platform and execution
@@ -98,15 +107,15 @@ export const EDGES: readonly MapEdge[] = [
   { pts: [[520, 356], [520, 416]], arrow: true },
   { pts: [[436, 446], [376, 446]], arrow: true },
   { pts: [[330, 420], [330, 388], [470, 388], [470, 360]], arrow: true },
-  { pts: [[160, 548], [196, 548], [196, 476], [224, 476]], arrow: true },
+  { pts: [[160, 548], [196, 548], [196, 468], [224, 468]], arrow: true },
   { pts: [[300, 204], [300, 268]], arrow: true, both: true },
   { pts: [[468, 204], [468, 268]], arrow: true, both: true },
-  { pts: [[384, 484], [384, 548]], arrow: true },
+  { pts: [[500, 484], [500, 548]], arrow: true },
   // documents in, retrieval out, context to the agents
   { pts: [[816, 64], [816, 128]], arrow: true },
   { pts: [[800, 204], [800, 268]], arrow: true },
   { pts: [[850, 272], [850, 240], [972, 240], [972, 208]], arrow: true },
-  { pts: [[648, 316], [584, 316]], arrow: true },
+  { pts: [[688, 316], [584, 316]], arrow: true },
   { pts: [[808, 552], [808, 364]], arrow: true },
   { pts: [[808, 616], [808, 844]], arrow: false },
   // execution: agents send jobs, EDA tools read the IP, results come back
@@ -115,7 +124,7 @@ export const EDGES: readonly MapEdge[] = [
   { pts: [[544, 744], [564, 744], [564, 584], [584, 584]], arrow: true, both: true },
   { pts: [[654, 616], [654, 704]], arrow: true },
   { pts: [[744, 876], [654, 876], [654, 784]], arrow: true },
-  { pts: [[596, 552], [596, 208]], arrow: true },
+  { pts: [[610, 552], [610, 208]], arrow: true },
   // next: the company brain and what feeds it
   { pts: [[1068, 272], [1068, 208]], arrow: true, next: true },
   { pts: [[868, 316], [932, 316]], arrow: true, next: true },
@@ -126,15 +135,15 @@ export const EDGES: readonly MapEdge[] = [
 export const LABELS: readonly MapLabel[] = [
   { text: 'office docs', x: 824, y: 88, w: 96, align: 'left' },
   { text: 'agents ⇄ evidence', x: 308, y: 228, w: 140, align: 'left' },
-  { text: 'jobs · licences', x: 604, y: 222, w: 120, align: 'left' },
-  { text: 'ingest', x: 808, y: 222, w: 52, align: 'left' },
+  { text: 'jobs · licences', x: 620, y: 222, w: 120, align: 'left' },
+  { text: 'ingest', x: 736, y: 222, w: 60, align: 'right' },
   { text: 'retrieval', x: 880, y: 218, w: 72, align: 'left' },
-  { text: 'context', x: 600, y: 294, w: 48, align: 'left' },
-  { text: 'corrections → rules', x: 244, y: 492, w: 136, align: 'left' },
-  { text: 'agents', x: 392, y: 508, w: 52, align: 'left' },
+  { text: 'context', x: 620, y: 294, w: 64, align: 'left' },
+  { text: 'corrections → rules', x: 344, y: 394, w: 160, align: 'left' },
+  { text: 'agents', x: 508, y: 508, w: 52, align: 'left' },
   { text: 'indexed', x: 816, y: 508, w: 64, align: 'left' },
-  { text: 'ledger · activity', x: 604, y: 434, w: 140, align: 'left', next: true },
-  { text: 'jobs ⇄ results', x: 396, y: 790, w: 140, align: 'left' },
+  { text: 'ledger · activity', x: 624, y: 432, w: 140, align: 'left', next: true },
+  { text: 'jobs', x: 520, y: 660, w: 40, align: 'right' },
   { text: 'reads', x: 664, y: 854, w: 64, align: 'left' },
 ];
 
