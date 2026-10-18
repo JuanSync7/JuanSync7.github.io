@@ -103,6 +103,11 @@ export function mine(P: Plot, k: number): void {
     ]);
     P.port(sx, sz);
     P.trees(0.8, -0.1, 0.12, 0.2, 3, false);
+    // The ore yard: stockpiles, crystals of the richest ore set aside, a shovel loading.
+    P.rocks(0.55, -0.42, 0.3, 0.12, 6);
+    for (let i = 0; i < 3; i++) P.add('crystal', 0.35 + i * 0.12, 0.45, 0.07, 0.07, 0.08, 0, i);
+    P.add('excavator', 0.7, 0.4, 0.09, 0.06, 0.06, 0, 2.2);
+    node(P, -0.6, 0.42, 0.7);
   } else {
     // Underground: drifts follow the ore body; rigs at the faces; loaders haul to the
     // hopper at the shaft.
@@ -114,6 +119,21 @@ export function mine(P: Plot, k: number): void {
     node(P, 0.15, 0.45, 0.8);
     P.rocks(-0.3, 0.15, 0.4, 0.2, 8);
     P.rocks(0.45, -0.3, 0.3, 0.18, 6);
+    // The ore body shows as crystal clusters where the drifts cut it, more rigs working it
+    // and shovels loading at the faces.
+    for (const [x, z] of [
+      [-0.45, -0.15],
+      [-0.2, 0.32],
+      [0.3, 0.12],
+      [-0.6, 0.05],
+      [0.1, -0.2],
+      [0.6, 0.4],
+    ] as const)
+      P.add('crystal', x, z, P.r(0.06, 0.1), P.r(0.06, 0.1), P.r(0.07, 0.12), 0, P.r(0, 3));
+    node(P, 0.42, -0.05, 0.8);
+    node(P, -0.32, -0.32, 0.8);
+    P.add('excavator', -0.5, 0.18, 0.1, 0.07, 0.07, 0, 0.6);
+    P.add('excavator', 0.25, 0.3, 0.1, 0.07, 0.07, 0, 3.6);
     const [hx, hz] = PORT[0] ?? [0, 0];
     P.add('hopper', hx, hz, 0.09, 0.09, 0.09);
     P.add('headframe', hx + 0.14, hz, 0.09, 0.09, 0.18);

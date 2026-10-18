@@ -1,4 +1,5 @@
 import { PLANT, TREES } from './plant';
+import { STRIPED } from './striped';
 import { cone, cuboid, lattice, prism, rect, ringAt, type Out } from './shells';
 
 /** Wire outlines for heavy machinery (`kit/city.ts` kinds), each in the part's own frame
@@ -98,10 +99,15 @@ const MACHINES: Record<string, (o: Out, w: number, d: number, h: number) => void
 
 /** The kinds drawn here. Returns false for a kind it does not draw. */
 export function rig(o: Out, kind: string, w: number, d: number, h: number): boolean {
-  const f = MACHINES[kind] ?? PLANT[kind] ?? TREES[kind];
+  const f = MACHINES[kind] ?? PLANT[kind] ?? TREES[kind] ?? STRIPED[kind];
   if (!f) return false;
   f(o, w, d, h);
   return true;
 }
 
-export const RIG_KINDS = [...Object.keys(MACHINES), ...Object.keys(PLANT), ...Object.keys(TREES)];
+export const RIG_KINDS = [
+  ...Object.keys(MACHINES),
+  ...Object.keys(PLANT),
+  ...Object.keys(TREES),
+  ...Object.keys(STRIPED),
+];

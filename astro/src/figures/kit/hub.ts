@@ -27,13 +27,34 @@ function silicon(P: Plot): void {
   P.line(-1.12, 0.64, -1.12, -0.64);
   for (let x = -1.1; x <= 1.11; x += 0.11) for (const z of [-0.7, 0.7]) P.add('cell', x, z, 0.06, 0.035, 0.04);
   for (let z = -0.6; z <= 0.61; z += 0.12) for (const x of [-1.2, 1.2]) P.add('cell', x, z, 0.035, 0.06, 0.04);
-  P.add('tank', 1.0, 0.5, 0.12, 0.12, 0.05);
+  P.add('pll', 1.0, 0.5, 0.12, 0.12, 0.05);
+  // Register files and decap rows beside the macros, and the clock tree over everything:
+  // an H that splits into smaller H's, so every leaf is the same distance from the root.
+  for (let i = 0; i < 3; i++) P.add('macro', -0.2 + i * 0.22, -0.48, 0.16, 0.12, 0.04);
+  for (let i = 0; i < 4; i++) P.add('louvred', 0.25 + i * 0.12, 0.42, 0.08, 0.1, 0.03);
+  const h = (x: number, z: number, w: number, d: number, k: number): void => {
+    P.line(x - w, z, x + w, z);
+    for (const s of [-1, 1]) {
+      P.line(x + s * w, z - d, x + s * w, z + d);
+      if (k > 0) for (const t of [-1, 1]) h(x + s * w, z + t * d, w / 2, d / 2, k - 1);
+    }
+  };
+  h(0, 0, 0.5, 0.28, 2);
 }
 
 function compute(P: Plot): void {
   // Open server rows on the left, the datacentre's halls on the right, fed by a substation.
   for (let z = -0.56; z <= 0.57; z += 0.28)
     for (let x = -1.05; x <= -0.2; x += 0.15) if (P.rng() > 0.1) P.add('rack', x, z, 0.1, 0.16, P.r(0.12, 0.22));
+  // The generator yard: gensets with their exhaust stacks, fuel tanks, and the louvred
+  // building of the UPS between the yard and the halls.
+  for (let i = 0; i < 4; i++) {
+    P.add('block', 0.95, -0.6 + i * 0.1, 0.12, 0.06, 0.05);
+    P.add('stack', 1.03, -0.6 + i * 0.1, 0.018, 0.018, 0.1);
+  }
+  for (let i = 0; i < 2; i++) P.add('tank', 0.82, -0.55 + i * 0.14, 0.08, 0.08, 0.06);
+  P.add('louvred', 0.95, -0.12, 0.14, 0.2, 0.09);
+  for (let i = 0; i < 2; i++) P.add('cooler', -0.05 + i * 0.16, 0.58, 0.11, 0.11, 0.12);
   for (let z = -0.42; z <= 0.43; z += 0.28) P.line(-1.15, z, -0.1, z);
   datacentre(P, 0.42, -0.1, 3);
   const out = substation(P, 0.95, 0.5);

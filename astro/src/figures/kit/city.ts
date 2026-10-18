@@ -14,6 +14,7 @@ export const PART_KINDS = [
   ...['apartment', 'tree', 'pine', 'park', 'lake', 'headframe', 'pylon', 'gantry', 'solar', 'turbine'],
   ...['drill', 'excavator', 'kiln', 'column', 'flare', 'hopper', 'crane', 'battery', 'fuelcell', 'transformer'],
   ...['rods', 'warehouse', 'factory', 'mesa', 'birch', 'bush', 'cypress', 'oak'],
+  ...['datahall', 'louvred', 'reactor', 'pll', 'crystal'],
 ] as const;
 export type PartKind = (typeof PART_KINDS)[number];
 
@@ -74,9 +75,11 @@ const BODY: Partial<Record<PartKind, Body>> = {
       'transformer',
       'warehouse',
       'factory',
+      'datahall',
+      'louvred',
     ].map((k) => [k, 'box']),
   ),
-  ...Object.fromEntries(['tank', 'tower', 'stack', 'silo', 'column'].map((k) => [k, 'round'])),
+  ...Object.fromEntries(['tank', 'tower', 'stack', 'silo', 'column', 'pll'].map((k) => [k, 'round'])),
   hex: 'hex',
   mesa: 'hex',
   tri: 'tri',

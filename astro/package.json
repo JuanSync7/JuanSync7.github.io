@@ -9,7 +9,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
-    "check": "astro check && npm run lint && prettier --check src/figures && npm run figures:check && npm run map:check",
+    "check": "astro check && npm run lint && prettier --check src/figures && npm run figures:check && npm run posts:check && npm run map:check",
     "map:check": "node scripts/system-map/check.mjs",
     "figure": "node scripts/figures/figure.mjs",
     "figure:seeds": "node scripts/figures/seeds.mjs",
@@ -17,7 +17,9 @@
     "figures:look": "node scripts/figures/look.mjs",
     "figures:audit": "node scripts/figures/check.mjs && node scripts/figures/look.mjs",
     "figures:selftest": "node scripts/figures/check.mjs --selftest && node scripts/figures/look.mjs --selftest --no-sheet",
-    "format:figures": "prettier --write src/figures"
+    "format:figures": "prettier --write src/figures",
+    "posts:check": "node scripts/posts/check.mjs",
+    "posts:selftest": "node scripts/posts/check.mjs --selftest"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",
@@ -39,10 +41,17 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "globals": "^17.5.0",
+    "mdast-util-from-markdown": "^2.0.3",
+    "mdast-util-gfm": "^3.1.0",
+    "mdast-util-mdx": "^3.0.0",
+    "mdast-util-to-string": "^4.0.0",
+    "micromark-extension-gfm": "^3.0.0",
+    "micromark-extension-mdxjs": "^3.0.0",
     "playwright": "^1.56.1",
     "pngjs": "^7.0.0",
     "prettier": "3.8.3",
     "typescript": "~5.5.3",
-    "typescript-eslint": "^8.59.1"
+    "typescript-eslint": "^8.59.1",
+    "yaml": "^2.8.3"
   }
 }

@@ -24,10 +24,11 @@ export function aim(cam: PerspectiveCamera, x: number, y: number, z: number, dis
   cam.lookAt(x, y - 0.06, z);
 }
 
-/** The heading at time t: a slow sway over the overview, and a slow orbit round a stack the
- *  camera has flown in to (`near`, 0 far to 1 close). */
-export function heading(t: number, near: number): number {
-  return 0.7 + Math.sin(t * 0.12) * 0.25 + near * t * 0.07;
+/** The heading at time t: a slow sway, plus `orbit`, the turn the camera has made round a
+ *  stack it flew in to. The orbit is accumulated by the scene a frame at a time, so
+ *  flying in never adds a sudden spin. */
+export function heading(t: number, orbit: number): number {
+  return 0.7 + Math.sin(t * 0.12) * 0.25 + orbit;
 }
 
 /** The stack nearest the pointer as the overview camera sees it, if any is close. */

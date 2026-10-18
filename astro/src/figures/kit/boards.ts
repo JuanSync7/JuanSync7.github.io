@@ -8,11 +8,9 @@ import {
   EdgesGeometry,
   Float32BufferAttribute,
   Group,
-  InstancedMesh,
   LatheGeometry,
   LineBasicMaterial,
   LineSegments,
-  Matrix4,
   Mesh,
   MeshBasicMaterial,
   SphereGeometry,
@@ -33,7 +31,6 @@ import { strip } from './transit';
  *  wind rotors and teal power lines; and teal glass tubes (vias) that join boards, as one
  *  instanced batch. Everything here is built once; scenes move it each frame. */
 
-const m4 = new Matrix4();
 const TEAL = new Color(hexOf('signal'));
 const WHITE = new Color(hexOf('inkStrong'));
 const DARK = new Color(hexOf('line3'));
@@ -190,49 +187,4 @@ export function animate(b: Board, t: number, lit: boolean): void {
   });
   col.needsUpdate = true;
   if (b.parts.some((p) => p.kind === 'turbine')) write(b.ink, rotors(b.parts, t), b.rotorsAt);
-}
-
-/** Vias: open teal glass tubes with a pad at each end, outlined only at their rims so the
- *  flow inside stays readable, and slugs of teal running through them. */
-export interface Tubes {
-  glass: InstancedMesh;
-  pads: InstancedMesh;
-  slugs: InstancedMesh;
-  rims: LineSegments;
-  per: number;
-}
-export function tubes(n: number, per: number): Tubes {
-  const mat = (key: NightKey, opacity = 1): MeshBasicMaterial =>
-    new MeshBasicMaterial({ color: hexOf(key), transparent: opacity < 1, opacity, depthWrite: opacity === 1 });
-  return {
-    glass: new InstancedMesh(new CylinderGeometry(1, 1, 1, 10, 1, true), mat('signalLine', 0.75), n),
-    pads: new InstancedMesh(new CylinderGeometry(2.2, 2.2, 0.012, 14), mat('signalLine'), n * 2),
-    slugs: new InstancedMesh(new CylinderGeometry(0.75, 0.75, 1, 8), mat('signal'), n * per),
-    rims: lines(new Array(n * 2 * 10 * 6).fill(0), 'signal', 0.7),
-    per,
-  };
-}
-
-/** Place tube i from height a to b at (x, z), radius r; `flow` (0..1, rising or falling)
- *  moves its slugs. */
-export function tube(T: Tubes, i: number, x: number, z: number, a: number, b: number, r: number, flow: number): void {
-  T.glass.setMatrixAt(i, m4.makeScale(r, b - a, r).setPosition(x, (a + b) / 2, z));
-  T.pads.setMatrixAt(i * 2, m4.makeScale(r, 1, r).setPosition(x, a + 0.006, z));
-  T.pads.setMatrixAt(i * 2 + 1, m4.makeScale(r, 1, r).setPosition(x, b - 0.006, z));
-  for (let n = 0; n < T.per; n++) {
-    const f = (n / T.per + flow + 4) % 1;
-    T.slugs.setMatrixAt(i * T.per + n, m4.makeScale(r, 0.05, r).setPosition(x, a + 0.03 + f * (b - a - 0.06), z));
-  }
-  const ring: number[] = [];
-  for (const y of [a, b])
-    for (let k = 0; k < 10; k++) {
-      const [u, v] = [(k / 10) * Math.PI * 2, ((k + 1) / 10) * Math.PI * 2];
-      ring.push(x + Math.cos(u) * r, y, z + Math.sin(u) * r, x + Math.cos(v) * r, y, z + Math.sin(v) * r);
-    }
-  write(T.rims, ring, i * 40);
-}
-
-/** Mark every tube's batches as changed, once a frame after placing them. */
-export function commit(T: Tubes): void {
-  for (const m of [T.glass, T.pads, T.slugs]) m.instanceMatrix.needsUpdate = true;
 }
