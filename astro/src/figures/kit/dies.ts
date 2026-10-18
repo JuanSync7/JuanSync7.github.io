@@ -1,12 +1,17 @@
+import { analogBlock, bonded, datapath } from './circuits';
+import { ERA_DIES } from './eras';
 import { BOUND, inset, partition, WX, WY, type Box, type Sketch } from './sketch';
 
 /** The inner half of the silicon chain of plans for a zoom dive (`kit/sketch.ts`): a package
  *  (the die), a die floorplan (one core), a core's blocks (one block), rows of standard
- *  cells. The outer half is `kit/silicon.ts`. */
+ *  cells. These are the modern era's; the older eras' are in `kit/eras.ts` and
+ *  `kit/circuits.ts`, and each level sends a die of another era there. The outer half is
+ *  `kit/silicon.ts`. */
 
 /** A package from above: the die is the window, memory stacks either side on an interposer,
  *  capacitors round it, a stiffener ring, fiducials and the pin-1 corner. */
 export function pkg(S: Sketch): void {
+  if (S.era !== 'modern') return bonded(S);
   S.rect(BOUND, 0);
   S.rect(inset(BOUND, 0.07), 1);
   S.poly(
@@ -68,6 +73,8 @@ export function pkg(S: Sketch): void {
 /** A die's floorplan: the window is one core in a cluster of identical cores; caches, PHYs
  *  along the edges, analog blocks and logic fill the rest, inside the pad ring. */
 export function die(S: Sketch): void {
+  const old = ERA_DIES[S.era as keyof typeof ERA_DIES];
+  if (old) return old(S);
   S.rect(BOUND, 0);
   S.rect(inset(BOUND, 0.018), 2);
   const pads = inset(BOUND, 0.05);
@@ -112,6 +119,8 @@ export function die(S: Sketch): void {
 /** A core's blocks: caches as arrays, a register file, datapaths in bit slices and control
  *  logic in cell rows, one block the window. */
 export function core(S: Sketch): void {
+  if (S.era === 'nmos') return datapath(S);
+  if (S.era !== 'modern') return analogBlock(S);
   S.rect(BOUND, 0);
   for (const b of partition(S, inset(BOUND, 0.04), inset(S.win, -0.02), 0.5)) {
     const r = inset(b, 0.018);
@@ -138,44 +147,5 @@ export function core(S: Sketch): void {
   }
 }
 
-/** Rows of standard cells between power rails: diffusion, poly gates, contacts and metal;
- *  the window is a stretch of one row. */
-export function cell(S: Sketch): void {
-  const rh = WY * 2;
-  let first = S.win[1];
-  while (first - rh >= BOUND[1]) first -= rh;
-  for (let y = first; y + rh <= BOUND[3] + 1e-6; y += rh) {
-    S.rect([BOUND[0], y - 0.02, BOUND[2], y + 0.02], 1);
-    for (let x = BOUND[0] + 0.04; x < BOUND[2]; x += 0.1) S.dot(x, y);
-    const inRow = Math.abs(y - S.win[1]) < 1e-6;
-    let x = BOUND[0];
-    while (x < BOUND[2] - 0.1) {
-      if (inRow && x + 0.12 > S.win[0] && x < S.win[2]) {
-        x = S.win[2];
-        continue;
-      }
-      const g = S.int(2, 7);
-      const x1 = Math.min(BOUND[2], inRow && x < S.win[0] ? S.win[0] : BOUND[2], x + g * 0.06 + 0.04);
-      S.seg(x1, y + 0.02, x1, y + rh - 0.02, 2);
-      S.rect([x + 0.02, y + 0.06, x1 - 0.02, y + 0.19], 1);
-      S.rect([x + 0.02, y + 0.31, x1 - 0.02, y + 0.44], 1);
-      const gates: number[] = [];
-      for (let gx = x + 0.05; gx < x1 - 0.03; gx += 0.06) {
-        S.seg(gx, y + 0.04, gx, y + 0.46, 1);
-        gates.push(gx);
-        S.rect([gx + 0.022, y + 0.11, gx + 0.038, y + 0.13], 2);
-        S.rect([gx + 0.022, y + 0.37, gx + 0.038, y + 0.39], 2);
-      }
-      const mx = (gates[S.int(0, Math.max(0, gates.length - 1))] ?? x) + 0.03;
-      S.poly(
-        [
-          [mx, y + 0.12],
-          [mx, y + 0.38],
-          [Math.min(x1 - 0.02, mx + 0.06), y + 0.38],
-        ],
-        0,
-      );
-      x = x1;
-    }
-  }
-}
+/** The cell level, for every era: rows of real gates as stick diagrams (`kit/circuits.ts`). */
+export { cells as cell } from './circuits';
