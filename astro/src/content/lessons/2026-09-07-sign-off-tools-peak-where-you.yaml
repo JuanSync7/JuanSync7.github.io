@@ -1,0 +1,4 @@
+date: 2026-09-07
+tag: eda
+title: "Sign-off tools peak where you can't restart."
+why: "Timing and physical checks hit peak memory in phases that can't be checkpointed, so an OOM means starting over. Size from a comparable run."

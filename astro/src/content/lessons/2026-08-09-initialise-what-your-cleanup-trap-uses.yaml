@@ -1,0 +1,4 @@
+date: 2026-08-09
+tag: shell
+title: "Initialise what your cleanup trap uses."
+why: "Under set -u, a trap that reads an unset variable fails itself, and the cleanup never runs."

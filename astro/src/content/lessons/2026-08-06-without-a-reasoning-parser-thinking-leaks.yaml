@@ -1,0 +1,4 @@
+date: 2026-08-06
+tag: inference
+title: "Without a reasoning parser, thinking leaks into answers."
+why: "Some models close their thinking with </think> but never open it. The server needs the matching parser to split the thought from the reply."

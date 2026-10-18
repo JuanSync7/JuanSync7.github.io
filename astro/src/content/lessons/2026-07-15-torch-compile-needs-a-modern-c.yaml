@@ -1,0 +1,4 @@
+date: 2026-07-15
+tag: inference
+title: "torch.compile needs a modern C++ compiler."
+why: "TorchInductor compiles kernels at runtime, and an old gcc 8.5 can't build them. Disabling Dynamo works, but compare eager output against CI before trusting it."

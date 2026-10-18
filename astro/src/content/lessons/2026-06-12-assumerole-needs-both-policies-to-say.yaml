@@ -1,0 +1,4 @@
+date: 2026-06-12
+tag: aws
+title: "AssumeRole needs both policies to say yes."
+why: "The caller's identity policy and the role's trust policy must both allow it. Editing a trust template does nothing until deploy updates existing roles."

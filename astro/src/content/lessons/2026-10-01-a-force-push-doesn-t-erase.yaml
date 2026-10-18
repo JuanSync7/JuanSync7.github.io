@@ -1,0 +1,4 @@
+date: 2026-10-01
+tag: git
+title: "A force-push doesn't erase old commits from the host."
+why: "They stay reachable by ID until the host garbage-collects. Rotate the leaked secret; rewriting history is cleanup, not the fix."

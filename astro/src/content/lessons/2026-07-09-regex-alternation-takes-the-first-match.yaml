@@ -1,0 +1,4 @@
+date: 2026-07-09
+tag: python
+title: "Regex alternation takes the first match, not the longest."
+why: "oa|oasis matched '.oa' and truncated the file extension. Put longer options first or add a boundary lookahead."

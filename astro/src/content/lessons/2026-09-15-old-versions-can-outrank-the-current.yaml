@@ -1,0 +1,4 @@
+date: 2026-09-15
+tag: rag
+title: "Old versions can outrank the current doc."
+why: "With several versions in one index, the top hits were drafts 0.5, 0.4 and 0.2 instead of 1.1. Clean out old versions before loading."

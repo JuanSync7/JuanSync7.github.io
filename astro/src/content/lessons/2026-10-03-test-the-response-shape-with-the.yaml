@@ -1,0 +1,4 @@
+date: 2026-10-03
+tag: frontend
+title: "Test the response shape with the route."
+why: "A route that returns 200 with the wrong shape passes a status check. Checking the shape is the same test, extended."

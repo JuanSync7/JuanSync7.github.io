@@ -1,0 +1,4 @@
+date: 2026-06-21
+tag: design
+title: "Your faintest text token is where contrast fails."
+why: "A muted ink at about 3.3:1 sits below the 4.5:1 that small text needs. Check the dimmest token, not just the body colour."

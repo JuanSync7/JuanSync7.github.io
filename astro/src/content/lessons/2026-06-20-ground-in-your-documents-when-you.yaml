@@ -1,0 +1,4 @@
+date: 2026-06-20
+tag: llm
+title: "Ground in your documents when you can't train on them."
+why: "Most companies can't fine-tune on their own data. Retrieving the right document into context gets most of the benefit."

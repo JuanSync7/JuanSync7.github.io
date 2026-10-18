@@ -1,0 +1,4 @@
+date: 2026-08-18
+tag: teams
+title: "Conventions must work for humans and LLMs alike."
+why: "With few programmers, the next reader of your code is often an agent. Written standards make its reading guaranteed rather than lucky."

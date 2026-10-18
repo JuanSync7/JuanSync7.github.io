@@ -1,0 +1,4 @@
+date: 2026-08-24
+tag: tooling
+title: "Use ProxyJump, not nested remotes."
+why: "Remote editors open one remote per window. To reach a host behind a jump box, put ProxyJump in your SSH config."

@@ -1,0 +1,4 @@
+date: 2026-08-02
+tag: sql
+title: "INSERT OR REPLACE is a delete in disguise."
+why: "SQLite deletes the clashing row and inserts a new one, so a guard that blocks UPDATE and DELETE can still be bypassed."

@@ -1,0 +1,4 @@
+date: 2026-09-25
+tag: reviews
+title: "Cap the review loop."
+why: "Each round finds small issues in the last round's fixes. Without a severity cap, a two-line fix grows into thousands of lines."

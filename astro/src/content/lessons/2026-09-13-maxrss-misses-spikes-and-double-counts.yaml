@@ -1,0 +1,4 @@
+date: 2026-09-13
+tag: slurm
+title: "MaxRSS misses spikes and double-counts shared pages."
+why: "It is sampled every 30 seconds, so short peaks vanish, and multi-process jobs can read up to 2x high. The cgroup high-water mark is the true peak."

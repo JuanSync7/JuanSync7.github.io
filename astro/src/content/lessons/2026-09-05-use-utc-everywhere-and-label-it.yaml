@@ -1,0 +1,4 @@
+date: 2026-09-05
+tag: data
+title: "Use UTC everywhere, and label it."
+why: "Host-local summer time put the same wait on two different dates in one report. Labelled UTC keeps day buckets stable."

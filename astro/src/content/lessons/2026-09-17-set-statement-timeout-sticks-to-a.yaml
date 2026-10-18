@@ -1,0 +1,4 @@
+date: 2026-09-17
+tag: postgres
+title: "SET statement_timeout sticks to a pooled connection."
+why: "The next request on that connection inherits it. Use SET LOCAL inside a transaction instead."

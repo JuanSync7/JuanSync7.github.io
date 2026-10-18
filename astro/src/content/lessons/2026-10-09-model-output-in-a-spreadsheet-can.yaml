@@ -1,0 +1,4 @@
+date: 2026-10-09
+tag: security
+title: "Model output in a spreadsheet can run as a formula."
+why: "Cells starting with = + - or @ execute in Excel. Prefix them with an apostrophe, on the export path only."

@@ -1,0 +1,4 @@
+date: 2026-06-20
+tag: ops
+title: "Metrics say how much, never who."
+why: "Token metrics show trend by model but carry no caller. Per-person spend needs the invocation log or a per-key gateway."

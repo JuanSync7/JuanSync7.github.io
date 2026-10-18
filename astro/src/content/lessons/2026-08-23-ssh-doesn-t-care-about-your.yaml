@@ -1,0 +1,4 @@
+date: 2026-08-23
+tag: networking
+title: "SSH doesn't care about your CA bundle."
+why: "SSH trusts host keys, not X.509 certificates, so git over SSH keeps working when HTTPS tools fail under TLS interception."

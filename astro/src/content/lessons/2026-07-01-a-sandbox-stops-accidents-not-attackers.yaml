@@ -1,0 +1,4 @@
+date: 2026-07-01
+tag: security
+title: "A sandbox stops accidents, not attackers."
+why: "It constrains a well-meaning agent. Stopping a hostile user is the network layer's job, at the firewall or proxy."

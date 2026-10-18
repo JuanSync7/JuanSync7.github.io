@@ -1,0 +1,4 @@
+date: 2026-06-17
+tag: postgres
+title: "Naive timestamps take the session's time zone."
+why: "Postgres read naive datetime parameters in the session time zone, so a summer-time shift moved every window by an hour. Pass time-zone-aware values."

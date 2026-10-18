@@ -1,0 +1,4 @@
+date: 2026-08-29
+tag: security
+title: "Skills on shared storage are an injection path."
+why: "Anyone who can write to that folder can write instructions your agent will follow. Lock the folder or don't load from it."

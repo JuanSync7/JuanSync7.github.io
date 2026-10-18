@@ -1,0 +1,4 @@
+date: 2026-04-29
+tag: testing
+title: "Fixtures shouldn't share names with real data."
+why: "A find-and-replace over real names rewrote the fixtures too, and tests failed for no real reason."

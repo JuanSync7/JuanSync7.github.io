@@ -1,0 +1,4 @@
+date: 2026-04-10
+tag: testing
+title: "A pass over zero items is a failure."
+why: "A live eval where every case was 'not run' scored a pass. A check that selected nothing has proven nothing."

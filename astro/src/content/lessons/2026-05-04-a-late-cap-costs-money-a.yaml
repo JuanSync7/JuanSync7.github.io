@@ -1,0 +1,4 @@
+date: 2026-05-04
+tag: ops
+title: "A late cap costs money. A wrong cap takes production down."
+why: "Lateness is bounded, visible and recoverable. A misconfigured automatic stop cuts people off with no human in the loop and no explanation."

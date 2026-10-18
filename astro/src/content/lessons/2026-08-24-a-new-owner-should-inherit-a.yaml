@@ -1,0 +1,4 @@
+date: 2026-08-24
+tag: docs
+title: "A new owner should inherit a system, not a story."
+why: "A handover full of 'then we tried' is history. The next maintainer needs the current design and how to run it."

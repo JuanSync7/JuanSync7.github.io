@@ -1,0 +1,4 @@
+date: 2026-04-22
+tag: testing
+title: "A check has three outcomes: yes, no, and couldn't run."
+why: "Callers must tell 'the answer is no' from 'I couldn't ask'. One exit code for both hides a broken check."

@@ -1,0 +1,4 @@
+date: 2026-06-28
+tag: testing
+title: "Instrument the harness before blaming the tool."
+why: "A 'my change does nothing' result was the test harness cloning the wrong tree. Harness faults look exactly like tool limits."

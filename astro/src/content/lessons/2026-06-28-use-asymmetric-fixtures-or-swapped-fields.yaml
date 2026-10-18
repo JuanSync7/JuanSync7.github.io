@@ -1,0 +1,4 @@
+date: 2026-06-28
+tag: testing
+title: "Use asymmetric fixtures, or swapped fields pass."
+why: "If test values collapse to equal numbers, a bug that swaps two fields is invisible. Use distinct values like 33.3 and 50.0."

@@ -64,6 +64,8 @@ export default function LessonLog({ lessons, note }: Props) {
   });
   const lesson = lessons[index];
   const data = field(today, counts, lesson?.iso ?? null);
+  // The log reaches further back than the field, so the count is only of the days shown.
+  const inField = data.days.reduce((n, d) => n + d.count, 0);
   const show = (i: number): void => {
     if (i >= 0 && i < lessons.length) setIndex(i);
   };
@@ -98,7 +100,7 @@ export default function LessonLog({ lessons, note }: Props) {
 
         <div className="log-side">
           <p className="log-count">
-            {lessons.length} lessons in {WEEKS} weeks
+            {inField} lessons in {WEEKS} weeks
           </p>
           <div className="log-nav">
             <button type="button" className="log-step" onClick={() => show(index - 1)} disabled={index === 0}>

@@ -1,0 +1,4 @@
+date: 2026-09-18
+tag: frontend
+title: "If the UI doesn't show it, it wasn't computed."
+why: "Metrics the database worked out and the page threw away were wasted effort. A lot of value was already there, unshown."

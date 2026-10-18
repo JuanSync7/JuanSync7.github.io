@@ -1,0 +1,4 @@
+date: 2026-08-04
+tag: protocols
+title: "Never make VALID wait for READY."
+why: "If the sender waits for ready and the receiver waits for valid, both stall forever. The source must raise valid on its own and hold it steady."

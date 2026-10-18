@@ -1,0 +1,4 @@
+date: 2026-10-08
+tag: llm
+title: "A neutral API doesn't mean neutral limits."
+why: "One chat API fronts many vendors, yet one model family rejected max tokens below 16 while others accepted 1. Test every model."

@@ -1,0 +1,4 @@
+date: 2026-07-18
+tag: security
+title: "A Unix socket can tell you who is calling."
+why: "SO_PEERCRED gives the peer's uid, stamped by the kernel, so a local service can identify users without a login. Clients should check the server's uid too."

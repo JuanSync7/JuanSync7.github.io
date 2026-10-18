@@ -1,0 +1,4 @@
+date: 2026-07-04
+tag: build
+title: "Hashing makes inputs reproducible, not outputs."
+why: "Content addressing proves you fed the same things in. Outputs repeat only if the tool is deterministic, and LLM steps often aren't."

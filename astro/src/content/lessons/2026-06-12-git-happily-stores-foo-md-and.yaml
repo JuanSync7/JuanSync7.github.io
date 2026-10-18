@@ -1,0 +1,4 @@
+date: 2026-06-12
+tag: git
+title: "Git happily stores Foo.md and foo.md."
+why: "Linux sees two files; a case-insensitive checkout sees a collision. Check case-folded uniqueness wherever filenames are generated."

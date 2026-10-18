@@ -1,0 +1,4 @@
+date: 2026-10-18
+tag: frontend
+title: "Measure text in a real browser with the real font."
+why: "Character counts guess. The rendered width decides whether a column wraps or overflows."

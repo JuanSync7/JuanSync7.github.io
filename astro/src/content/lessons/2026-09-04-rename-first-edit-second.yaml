@@ -1,0 +1,4 @@
+date: 2026-09-04
+tag: git
+title: "Rename first, edit second."
+why: "A pure `git mv` commit keeps `git log --follow` working. Mixing content edits into the move can break rename detection."

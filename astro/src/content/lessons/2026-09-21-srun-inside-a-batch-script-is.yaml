@@ -1,0 +1,4 @@
+date: 2026-09-21
+tag: slurm
+title: "srun inside a batch script is a step, not a job."
+why: "Only sbatch makes a child job. Count steps as jobs, or miss their peaks, and the accounting skews."

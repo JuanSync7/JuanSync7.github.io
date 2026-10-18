@@ -1,0 +1,4 @@
+date: 2026-07-29
+tag: postgres
+title: "A recreated view loses its grants."
+why: "DROP and CREATE make a new object with default privileges. Re-grant in the same script, and test reads, not just denials."

@@ -1,0 +1,4 @@
+date: 2026-07-02
+tag: email
+title: "sendmail exit 0 means queued, not delivered."
+why: "The local mail server accepted it. SPF or DMARC checks at the receiver can still quarantine it silently, with no bounce."

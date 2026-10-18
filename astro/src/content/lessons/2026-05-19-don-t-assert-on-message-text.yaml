@@ -1,0 +1,4 @@
+date: 2026-05-19
+tag: testing
+title: "Don't assert on message text."
+why: "Hundreds of tests checked error wording, so every copy edit broke them. Assert on a code or a field instead."

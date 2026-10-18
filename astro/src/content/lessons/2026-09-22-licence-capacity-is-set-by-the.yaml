@@ -1,0 +1,4 @@
+date: 2026-09-22
+tag: eda
+title: "Licence capacity is set by the scarcest feature."
+why: "Tools that need several licence features at once saturate together, and the rarest one caps everyone."

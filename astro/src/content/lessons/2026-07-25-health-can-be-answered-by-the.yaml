@@ -1,0 +1,4 @@
+date: 2026-07-25
+tag: inference
+title: "/health can be answered by the wrong server."
+why: "An unrelated service holding the port returns OK. Check /v1/models for the expected model name, then send a real completion."

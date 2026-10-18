@@ -1,0 +1,4 @@
+date: 2026-09-11
+tag: typography
+title: "Meet a brand point size with optical size, not scaling."
+why: "A spec like 'Inter 18pt' is honoured through the font's optical-size axis and leading, not by literally blowing the text up."

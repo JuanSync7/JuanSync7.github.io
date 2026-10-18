@@ -1,0 +1,4 @@
+date: 2026-07-27
+tag: linux
+title: "RLIMIT_AS counts reserved memory, not used memory."
+why: "Node, Java and PyTorch reserve big address ranges up front, so a tight cap kills them before they use anything."

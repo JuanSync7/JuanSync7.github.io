@@ -1,0 +1,4 @@
+date: 2026-10-04
+tag: frontend
+title: "Hand-typed API types are a silent contract."
+why: "Rename a backend field and the frontend still compiles. Generate types from one schema so a mismatch goes red."

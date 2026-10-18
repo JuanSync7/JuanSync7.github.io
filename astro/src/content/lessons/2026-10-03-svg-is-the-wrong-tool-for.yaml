@@ -1,0 +1,4 @@
+date: 2026-10-03
+tag: art
+title: "SVG is the wrong tool for painterly looks."
+why: "Watercolour or oil textures need raster generation. Vectors suit line and low-poly diagrams, and they diff and review like code."

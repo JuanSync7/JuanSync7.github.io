@@ -1,0 +1,4 @@
+date: 2026-07-16
+tag: security
+title: "Knowing who's asking isn't the same as being allowed."
+why: "When an API authenticates the key and not the person, it can't scope by user. The layer in front has to own identity."

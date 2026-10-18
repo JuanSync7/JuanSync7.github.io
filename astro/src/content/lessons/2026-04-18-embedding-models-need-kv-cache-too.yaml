@@ -1,0 +1,4 @@
+date: 2026-04-18
+tag: inference
+title: "Embedding models need KV cache too."
+why: "They generate nothing, but the model still stores keys and values for every input token, so an embedder with too little cache won't start."

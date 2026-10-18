@@ -1,0 +1,4 @@
+date: 2026-08-25
+tag: networking
+title: "Check the search domain before calling a host missing."
+why: "A short name can fail while the full name resolves. A reverse lookup is a cheap way to confirm."

@@ -1,0 +1,4 @@
+date: 2026-04-01
+tag: debugging
+title: "To find why a tool refuses, change one input."
+why: "Grepping its output for clues is guessing. Two runs that differ by a single input show the cause directly."

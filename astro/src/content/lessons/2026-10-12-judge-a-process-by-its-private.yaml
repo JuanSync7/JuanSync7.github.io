@@ -1,0 +1,4 @@
+date: 2026-10-12
+tag: linux
+title: "Judge a process by its private memory."
+why: "Listings count shared buffers once per process, so a database looks enormous. Private memory shows what each process really holds."

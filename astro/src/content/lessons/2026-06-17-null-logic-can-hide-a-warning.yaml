@@ -1,0 +1,4 @@
+date: 2026-06-17
+tag: sql
+title: "NULL logic can hide a warning."
+why: "`state='FAILED' AND exit_signal=0` is NULL when the signal is missing, not true, so the warning badge never renders."

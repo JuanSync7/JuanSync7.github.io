@@ -1,0 +1,4 @@
+date: 2026-06-15
+tag: inference
+title: "Check that the GPU shares add up."
+why: "Each model's memory fraction looked fine on its own; together they asked for 1.67 cards. Validate invariants across files before anything starts."

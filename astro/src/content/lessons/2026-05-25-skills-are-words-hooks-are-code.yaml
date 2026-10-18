@@ -1,0 +1,4 @@
+date: 2026-05-25
+tag: security
+title: "Skills are words. Hooks are code."
+why: "An instruction file can't widen permissions; a hook or tool server can run anything. Lock each down by its own risk."

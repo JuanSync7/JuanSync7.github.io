@@ -1,0 +1,4 @@
+date: 2026-10-16
+tag: css
+title: "Tailwind is styling, not a component library."
+why: "Components come from Radix, shadcn or your own set. Borrow their structure and behaviour, but colour, type and spacing should still come from your tokens."

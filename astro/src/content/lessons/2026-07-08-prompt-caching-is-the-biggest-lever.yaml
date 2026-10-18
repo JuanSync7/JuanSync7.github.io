@@ -1,0 +1,4 @@
+date: 2026-07-08
+tag: llm
+title: "Prompt caching is the biggest lever on agent cost."
+why: "Agent sessions resend the same long prompt every turn. Cached reads cost a small fraction of fresh input, so most of the bill falls away."
