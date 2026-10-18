@@ -1,0 +1,4 @@
+date: 2026-08-14
+tag: agents
+title: "Build tools around the user's question, not the API's pages."
+why: "Paging through raw records burns tokens and context. A tool that answers 'how many, grouped by what' directly is cheaper and harder to misuse."

@@ -1,0 +1,4 @@
+date: 2026-07-17
+tag: linux
+title: "One command-line argument is capped at 128 KiB."
+why: "Linux refuses a single argv element over 131,072 bytes, so a big prompt passed as an argument has a hard ceiling. Use stdin or a file."

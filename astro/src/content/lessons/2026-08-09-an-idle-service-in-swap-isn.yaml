@@ -1,0 +1,4 @@
+date: 2026-08-09
+tag: linux
+title: "An idle service in swap isn't a leak."
+why: "A long-lived model server with nothing to do gets its weights paged out. It looks like a leak and is usually just the kernel tidying."

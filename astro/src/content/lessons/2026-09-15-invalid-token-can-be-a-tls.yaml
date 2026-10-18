@@ -1,0 +1,4 @@
+date: 2026-09-15
+tag: tls
+title: "'Invalid token' can be a TLS error."
+why: "gh auth status reports any failure as a bad token. Check for a certificate error before you log in again."

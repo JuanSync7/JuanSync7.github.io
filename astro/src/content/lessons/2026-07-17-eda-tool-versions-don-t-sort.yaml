@@ -1,0 +1,4 @@
+date: 2026-07-17
+tag: eda
+title: "EDA tool versions don't sort."
+why: "Strings like V-2023.12 and T-2022.03-SP1 have no total order, so compare them for equality, never with >=."

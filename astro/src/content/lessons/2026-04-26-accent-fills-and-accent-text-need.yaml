@@ -1,0 +1,4 @@
+date: 2026-04-26
+tag: design
+title: "Accent fills and accent text need separate tokens."
+why: "Bright lime works as a button fill but is unreadable as small text on white, so the text role gets a darker ink in light mode."

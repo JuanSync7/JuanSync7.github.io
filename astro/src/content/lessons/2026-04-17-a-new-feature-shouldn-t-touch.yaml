@@ -1,0 +1,4 @@
+date: 2026-04-17
+tag: design
+title: "A new feature shouldn't touch the spine."
+why: "If adding a feature means changing the core pipeline, the integration point is wrong. Fix the seam first."

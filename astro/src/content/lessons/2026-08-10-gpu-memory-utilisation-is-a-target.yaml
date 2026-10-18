@@ -1,0 +1,4 @@
+date: 2026-08-10
+tag: inference
+title: "GPU memory utilisation is a target, not a cap."
+why: "The same vLLM setting gave different KV cache sizes on different starts. Pin the cache in bytes when you need a fixed footprint."

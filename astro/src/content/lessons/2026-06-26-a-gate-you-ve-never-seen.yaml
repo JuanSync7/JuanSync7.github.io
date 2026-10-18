@@ -1,0 +1,4 @@
+date: 2026-06-26
+tag: testing
+title: "A gate you've never seen fail is unproven."
+why: "Several gates passed over real damage before anyone checked they could go red. Inject the fault, watch it fail, and record what you injected."

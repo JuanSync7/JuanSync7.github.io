@@ -1,0 +1,4 @@
+date: 2026-04-30
+tag: process
+title: "Slice vertically, not horizontally."
+why: "'All the error handling everywhere' is too broad to test and easy to miss. 'Error handling and logging for one part' has a clear edge and a clear test."

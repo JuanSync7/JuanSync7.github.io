@@ -1,0 +1,4 @@
+date: 2026-07-19
+tag: postgres
+title: "READ ONLY transactions still allow advisory locks."
+why: "Session-level advisory locks are permitted and outlive the transaction on a pooled connection, so a read-only fence must deny them by name."

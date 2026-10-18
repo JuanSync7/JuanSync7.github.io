@@ -1,0 +1,4 @@
+date: 2026-08-03
+tag: ops
+title: "On a shared host, look for the farm first."
+why: "Size the job and send heavy work to the scheduler. With no farm, run gently. Only on your own machine do you just run it."

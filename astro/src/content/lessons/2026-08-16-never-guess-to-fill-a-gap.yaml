@@ -1,0 +1,4 @@
+date: 2026-08-16
+tag: data
+title: "Never guess to fill a gap."
+why: "Backfill with NULL or UNKNOWN, so missing stays distinct from zero and later readers can tell the two apart."

@@ -1,0 +1,4 @@
+date: 2026-09-17
+tag: eda
+title: "The scheduler can't see licences checked out mid-run."
+why: "A job gets its node, then waits on a licence the scheduler never knew about, holding memory and cores the whole time."

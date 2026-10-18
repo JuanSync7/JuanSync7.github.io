@@ -1,0 +1,4 @@
+date: 2026-08-25
+tag: linux
+title: "A control that can't work is worse than none."
+why: "BlockIOWeight on RHEL 8 needs the CFQ scheduler, which was removed, so it reads as protection while enforcing nothing. Reading the value back proves acceptance, not effect."

@@ -1,0 +1,4 @@
+date: 2026-09-22
+tag: rag
+title: "An agent that writes to its own knowledge base can poison it."
+why: "Route its writes through an inbox and a review gate, with provenance tags, before they become things it answers from."

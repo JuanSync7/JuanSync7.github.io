@@ -1,0 +1,4 @@
+date: 2026-04-01
+tag: rag
+title: "Text embeddings miss diagrams."
+why: "Embed page images too, as patch vectors, so charts, tables and layouts that text extraction loses can still be found."

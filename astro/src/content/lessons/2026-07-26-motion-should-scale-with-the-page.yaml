@@ -1,0 +1,4 @@
+date: 2026-07-26
+tag: design
+title: "Motion should scale with the page's purpose."
+why: "A showcase page can have theatre. A page someone works in for hours gets one short ease and nothing else. Every page needs a reduced-motion fallback."

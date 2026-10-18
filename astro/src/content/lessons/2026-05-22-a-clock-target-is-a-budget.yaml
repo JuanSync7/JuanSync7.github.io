@@ -1,0 +1,4 @@
+date: 2026-05-22
+tag: sta
+title: "A clock target is a budget."
+why: "At 2.6 GHz the period is about 385 ps, shared by PLL jitter, clock-tree skew, variation and setup time. When one share grows, another must shrink."

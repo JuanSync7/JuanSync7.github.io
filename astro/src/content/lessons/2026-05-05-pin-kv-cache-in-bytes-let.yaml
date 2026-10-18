@@ -1,0 +1,4 @@
+date: 2026-05-05
+tag: inference
+title: "Pin KV cache in bytes. Let the runtime count tokens."
+why: "A fixed byte budget skips memory profiling and makes the footprint repeatable. How many tokens those bytes hold changes between versions, so re-read it after upgrades."

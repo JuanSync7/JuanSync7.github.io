@@ -1,0 +1,4 @@
+date: 2026-08-04
+tag: build
+title: "For Python, build means import."
+why: "Compiling won't catch a module importing a name another change removed. The gate has to import every module."

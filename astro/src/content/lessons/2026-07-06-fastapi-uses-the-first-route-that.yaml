@@ -1,0 +1,4 @@
+date: 2026-07-06
+tag: python
+title: "FastAPI uses the first route that matches."
+why: "A duplicate path silently shadows the later handler. Nothing warns you, so test that each route reaches its own code."

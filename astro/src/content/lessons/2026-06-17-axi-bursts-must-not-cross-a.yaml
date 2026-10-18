@@ -1,0 +1,4 @@
+date: 2026-06-17
+tag: protocols
+title: "AXI bursts must not cross a 4KB boundary."
+why: "The spec forbids it, so an address generator has to split any burst that would run past a 4KB line."

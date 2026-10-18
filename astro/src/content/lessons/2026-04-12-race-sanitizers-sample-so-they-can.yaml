@@ -1,0 +1,4 @@
+date: 2026-04-12
+tag: gpu
+title: "Race sanitizers sample, so they can miss and misfire."
+why: "Tracking every reader's clock costs too much memory, so only a sample is kept. Races with old reads slip by, and a wrapped clock buffer reports races that never happened."

@@ -1,0 +1,4 @@
+date: 2026-04-28
+tag: evals
+title: "No model as the judge in a gate."
+why: "A deterministic scorer gives the same answer twice. A model judge can flip on a rerun, and a gate that flips isn't a gate."

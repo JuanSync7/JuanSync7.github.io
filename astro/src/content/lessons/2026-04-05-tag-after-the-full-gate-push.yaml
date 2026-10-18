@@ -1,0 +1,4 @@
+date: 2026-04-05
+tag: git
+title: "Tag after the full gate. Push last."
+why: "The release order that works: changelog, commit, tag locally, run the full gate, then push. It was found by running it, not by planning it."

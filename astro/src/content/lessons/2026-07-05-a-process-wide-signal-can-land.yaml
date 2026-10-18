@@ -1,0 +1,4 @@
+date: 2026-07-05
+tag: python
+title: "A process-wide signal can land on any thread."
+why: "os.kill targets the whole process, so the kernel may deliver it to any thread that hasn't blocked it. signal.pthread_kill aims at the thread you mean."

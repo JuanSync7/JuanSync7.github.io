@@ -1,0 +1,4 @@
+date: 2026-08-04
+tag: rag
+title: "The key RAG test is a question it can't answer."
+why: "Ask something outside the corpus. The system must say 'not found' rather than invent, because the grounding layer is where quality is won."

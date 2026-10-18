@@ -1,0 +1,4 @@
+date: 2026-05-27
+tag: linux
+title: "A 'read' capability overrides every file mode."
+why: "CAP_DAC_READ_SEARCH skips read and directory-search checks everywhere, so isolation by file modes only holds against processes without it."

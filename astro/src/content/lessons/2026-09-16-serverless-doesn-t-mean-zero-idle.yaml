@@ -1,0 +1,4 @@
+date: 2026-09-16
+tag: aws
+title: "Serverless doesn't mean zero idle cost."
+why: "OpenSearch Serverless bills capacity for as long as the collection exists. Compare standing hourly floors before per-query prices."

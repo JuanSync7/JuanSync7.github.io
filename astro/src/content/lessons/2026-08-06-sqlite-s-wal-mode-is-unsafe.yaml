@@ -1,0 +1,4 @@
+date: 2026-08-06
+tag: sqlite
+title: "SQLite's WAL mode is unsafe on NFS."
+why: "WAL coordinates writers through shared memory on one host, which a network filesystem can't provide. On NFS, pin the rollback journal mode."

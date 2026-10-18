@@ -1,0 +1,4 @@
+date: 2026-09-07
+tag: ops
+title: "Up is not the same as working."
+why: "A collector passed every liveness check while no new data arrived. Check that fresh rows landed, not just that the process answered."

@@ -1,0 +1,4 @@
+date: 2026-08-09
+tag: frontend
+title: "CORS lives in the browser, so curl proves nothing."
+why: "curl and server-to-server calls ignore CORS. And an error response without CORS headers shows up in the console as a CORS failure."

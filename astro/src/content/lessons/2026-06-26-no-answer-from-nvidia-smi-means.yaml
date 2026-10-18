@@ -1,0 +1,4 @@
+date: 2026-06-26
+tag: gpu
+title: "No answer from nvidia-smi means unknown, not free."
+why: "A hung driver or a missing tool says nothing about the card. Treating silence as free lets you start work on a busy GPU."

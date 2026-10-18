@@ -1,0 +1,4 @@
+date: 2026-08-16
+tag: llm
+title: "Long context is paid again every turn."
+why: "The whole context is re-sent on each turn, which raises cost and degrades answers. Default to a modest window and opt in to the huge one."

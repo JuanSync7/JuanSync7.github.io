@@ -1,0 +1,4 @@
+date: 2026-09-17
+tag: linux
+title: "A oneshot unit takes its background children with it."
+why: "When the service's main process exits, systemd cleans up the unit's processes, so work launched with & silently never finishes."

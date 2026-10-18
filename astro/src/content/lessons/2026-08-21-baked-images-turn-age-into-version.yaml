@@ -1,0 +1,4 @@
+date: 2026-08-21
+tag: ops
+title: "Baked images turn age into version drift."
+why: "A machine built from an old image runs old pins forever. In a baked-image world, how old a host is decides which version it runs."

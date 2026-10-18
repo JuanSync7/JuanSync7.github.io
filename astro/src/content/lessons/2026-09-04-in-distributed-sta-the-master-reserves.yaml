@@ -1,0 +1,4 @@
+date: 2026-09-04
+tag: eda
+title: "In distributed STA, the master reserves big and uses little."
+why: "The coordinator mostly hands scenarios to worker jobs, so its memory request skews right-sizing. Its own launch log, not job shape, shows which workers it spawned."

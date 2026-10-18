@@ -1,0 +1,4 @@
+date: 2026-05-14
+tag: networking
+title: "DNS round-robin doesn't balance clients that cache."
+why: "Python clients resolved the name once and stuck to one replica. A real load balancer in front spread the load."

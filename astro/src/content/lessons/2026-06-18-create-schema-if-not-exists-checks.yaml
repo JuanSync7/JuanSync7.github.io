@@ -1,0 +1,4 @@
+date: 2026-06-18
+tag: postgres
+title: "CREATE SCHEMA IF NOT EXISTS checks privileges first."
+why: "Postgres checks the CREATE permission before existence, so the 'safe' statement fails for a role without it, even when the schema is already there."

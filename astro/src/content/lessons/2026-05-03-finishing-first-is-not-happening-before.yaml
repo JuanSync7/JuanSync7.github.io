@@ -1,0 +1,4 @@
+date: 2026-05-03
+tag: gpu
+title: "Finishing first is not happening-before."
+why: "A write that completed earlier is still not visible to a reader unless the two sync through an acquire-release pair. Clock order is not memory order."

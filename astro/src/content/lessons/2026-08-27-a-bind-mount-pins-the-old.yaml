@@ -1,0 +1,4 @@
+date: 2026-08-27
+tag: linux
+title: "A bind mount pins the old file."
+why: "Sessions that mounted a file keep seeing that version even after it is replaced on disk. Restart them after an update."

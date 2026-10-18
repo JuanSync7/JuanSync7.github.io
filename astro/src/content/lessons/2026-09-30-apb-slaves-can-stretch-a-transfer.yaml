@@ -1,0 +1,4 @@
+date: 2026-09-30
+tag: protocols
+title: "APB slaves can stretch a transfer with PREADY."
+why: "A slow peripheral holds PREADY low to stall the access phase, so logic that assumes every APB transfer takes two cycles breaks."

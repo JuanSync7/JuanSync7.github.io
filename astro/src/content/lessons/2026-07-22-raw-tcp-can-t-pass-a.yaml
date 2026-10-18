@@ -1,0 +1,4 @@
+date: 2026-07-22
+tag: networking
+title: "Raw TCP can't pass a domain allowlist."
+why: "Domain filtering works through an HTTP proxy. Licence servers, schedulers and SSH speak raw TCP, so they get blocked."

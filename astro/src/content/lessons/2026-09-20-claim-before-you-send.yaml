@@ -1,0 +1,4 @@
+date: 2026-09-20
+tag: data
+title: "Claim before you send."
+why: "Mark the items in the ledger first, then build the message from exactly those, so a retry can't send twice."

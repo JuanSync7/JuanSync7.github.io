@@ -1,0 +1,4 @@
+date: 2026-10-01
+tag: css
+title: "One CSS system per project."
+why: "Plain CSS on custom-property tokens, and no utility framework beside it. Two systems drift, and nothing tells a new page which one to use."

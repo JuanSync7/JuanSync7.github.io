@@ -1,0 +1,4 @@
+date: 2026-06-06
+tag: linux
+title: "Ctrl+Z can leave your terminal in mouse mode."
+why: "Suspend a program that turned mouse tracking on, and the shell receives escape codes every time you click. A terminal reset fixes it."

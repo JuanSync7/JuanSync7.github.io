@@ -1,0 +1,4 @@
+date: 2026-10-08
+tag: build
+title: "One shared defines header defeats incremental builds."
+why: "When every file includes a hub header, touching it invalidates everything. Skip-based tools like Bazel or Snakemake save little until such hub files are split."

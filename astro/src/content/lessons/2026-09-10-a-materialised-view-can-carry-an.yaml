@@ -1,0 +1,4 @@
+date: 2026-09-10
+tag: postgres
+title: "A materialised view can carry an index. A plain view can't."
+why: "The plain view recomputed everything on every read. Its materialised twin cached the work and turned max() into an index seek: 12 s down to 21 ms."

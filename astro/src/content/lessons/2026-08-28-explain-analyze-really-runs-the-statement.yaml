@@ -1,0 +1,4 @@
+date: 2026-08-28
+tag: postgres
+title: "EXPLAIN ANALYZE really runs the statement."
+why: "It executes the query to time it, so wrap writes in a transaction and roll back. Add BUFFERS to see page counts, not just time."

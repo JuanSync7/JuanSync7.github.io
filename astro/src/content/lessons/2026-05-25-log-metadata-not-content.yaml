@@ -1,0 +1,4 @@
+date: 2026-05-25
+tag: security
+title: "Log metadata, not content."
+why: "Prompts are private, and anyone with log access could read them. Metadata alone still attributes usage and cost to each person, cheaply."

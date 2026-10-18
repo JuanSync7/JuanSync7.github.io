@@ -1,0 +1,4 @@
+date: 2026-05-18
+tag: linux
+title: "Turn off GPU compositing on forwarded displays."
+why: "Chromium's GPU process can crash under ssh -X, VNC or xvfb and black out the whole X session. Disable hardware acceleration there."

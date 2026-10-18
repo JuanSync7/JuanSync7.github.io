@@ -1,0 +1,4 @@
+date: 2026-06-29
+tag: design
+title: "A design simulator isn't an end-to-end test."
+why: "Load-testing a diagram shows what saturates first. It never runs your code, so it can't find a wrong answer."

@@ -1,0 +1,4 @@
+date: 2026-06-14
+tag: integrity
+title: "A content hash is also an address."
+why: "Name a file by the hash of its bytes and the name tells you where it's stored and whether it changed. Git and build caches both work this way."

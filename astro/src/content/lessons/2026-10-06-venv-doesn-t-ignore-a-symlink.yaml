@@ -1,0 +1,4 @@
+date: 2026-10-06
+tag: git
+title: "'.venv/' doesn't ignore a symlink."
+why: "A trailing slash in .gitignore matches only directories, so a symlink named .venv slips into 'git add -A'. Write '.venv'."

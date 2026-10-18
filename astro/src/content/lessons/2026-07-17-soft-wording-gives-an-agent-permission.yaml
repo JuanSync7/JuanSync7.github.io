@@ -1,0 +1,4 @@
+date: 2026-07-17
+tag: agents
+title: "Soft wording gives an agent permission to skip."
+why: "A protocol step loses to the main task unless it is written as a commitment, with a named trigger and stop behaviour."

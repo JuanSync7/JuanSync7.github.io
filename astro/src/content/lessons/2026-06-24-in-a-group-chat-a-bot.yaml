@@ -1,0 +1,4 @@
+date: 2026-06-24
+tag: security
+title: "In a group chat, a bot may only know what everyone may see."
+why: "Its answer is visible to the whole channel, so retrieval must be limited to what every participant is allowed to read."

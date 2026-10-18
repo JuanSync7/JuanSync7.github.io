@@ -1,0 +1,4 @@
+date: 2026-05-27
+tag: frontend
+title: "Refuse min > max. Don't show an empty page."
+why: "An impossible filter returns no rows, which reads as 'nothing matched'. Reject it on both sides with a message."

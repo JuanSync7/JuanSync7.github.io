@@ -1,0 +1,4 @@
+date: 2026-04-22
+tag: security
+title: "A guard that finds nothing to protect should fail."
+why: "'No git here, so nothing to check' let changes through. When a guard can't find its subject, that's an error, not a pass."

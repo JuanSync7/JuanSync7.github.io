@@ -1,0 +1,4 @@
+date: 2026-07-18
+tag: verification
+title: "Traceability is arithmetic, not testimony."
+why: "A tracker status is someone's claim. A trace computed from the repo and test markers can be checked, and fails on any requirement no test names."
