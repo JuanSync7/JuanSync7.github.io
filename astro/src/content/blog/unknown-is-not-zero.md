@@ -1,10 +1,10 @@
 ---
 title: "Unknown is not zero"
-excerpt: "A missing value that turns into a zero looks like an answer. It isn't one. The many quiet ways unknown becomes zero, and how I keep them apart."
+excerpt: "A missing value that turns into a zero looks like an answer, and that is exactly why it gets trusted."
 category: software
 date: 2026-10-18
 cover: ridge-field~4
-readTime: "4 min"
+readTime: "5 min"
 tags: ["Data", "Testing", "Observability", "Agents"]
 ---
 
@@ -18,11 +18,25 @@ Hospital heart monitors solved this a long time ago. If an electrode falls off a
 
 Unknown is not zero. Most software draws the flat line anyway.
 
-Once I'd seen it, I started finding it everywhere. In Python, `exit_code or "not recorded"` throws away a perfectly good exit code of 0, because zero is falsy. In JavaScript, `Number(null)` is 0, so a missing percentage shows up as "0.0%", and `?? 0` on a chart makes the line dip to zero exactly where the data is missing, instead of leaving a gap. In SQL, a condition like `state = 'FAILED' AND exit_signal = 0` is neither true nor false when the signal is missing, so the warning it was meant to raise never appears.
+## Once I saw it, it was everywhere
 
-It happens in status too. Thousands of jobs that had run out of memory or time still reported exit code 0, so "it exited cleanly" said almost nothing about whether they'd worked. A mail command that returns success has only handed the mail on; it hasn't delivered it. A data collector passed every health check for days while no new data arrived, because "the process is up" and "the data is fresh" are two different questions. A function that swallowed its own errors returned an empty list, and a broken scheduler looked exactly like an idle one. An API that answered an empty success on a database error made a dead database look like "no matching jobs".
+In code, it hides in the small conveniences:
+
+- Python: `exit_code or "not recorded"` throws away a perfectly good exit code of 0, because zero is falsy.
+- JavaScript: `Number(null)` is 0, so a missing percentage shows as "0.0%". And `?? 0` on a chart makes the line dip to zero exactly where the data is missing, instead of leaving a gap.
+- SQL: `state = 'FAILED' AND exit_signal = 0` is neither true nor false when the signal is missing, so the warning it was meant to raise never appears.
+
+In status, it hides in signals that sound like success:
+
+- Thousands of jobs that had run out of memory or time still reported exit code 0. "It exited cleanly" said almost nothing.
+- A mail command that returns success has only handed the mail on. It hasn't delivered it.
+- A data collector passed every health check for days while no new data arrived. "The process is up" and "the data is fresh" are different questions.
+- A function that swallowed its own errors returned an empty list, and a broken scheduler looked exactly like an idle one.
+- An API that answered an empty success on a database error made a dead database look like "no matching jobs".
 
 Every one of those questions had three possible answers: yes, no, and couldn't tell. The code only had room for two.
+
+## Then I found it in the tests
 
 I could live with that in a dashboard. What really got me was finding it in the safety nets.
 
@@ -30,7 +44,19 @@ Tests are supposed to be the thing that catches all of this. Then I found a test
 
 That was the moment it stopped being a bug class for me and became a rule. The check that's meant to catch silence can be silent too.
 
-So these days I hold a few lines. Every check gets three outcomes, yes, no and couldn't run, and the third one is loud; a command-line tool gets a different exit code for "the answer is no" and "I couldn't ask". Missing stays missing, all the way from the database to the screen, where it shows as a dash, not a zero, because a dash makes you ask why and a zero makes you move on. A number says how it was known, measured or inferred, and when two sources disagree, both are shown. Every verdict comes with what it counted, and a check that selected nothing fails. And when a guard can't find the thing it's meant to protect, that's an error, not a pass.
+## The lines I hold now
+
+**Every check has three outcomes.** Yes, no, and couldn't run, and the third one is loud. A command-line tool gets a different exit code for "the answer is no" and "I couldn't ask".
+
+**Missing stays missing, all the way to the screen.** Through the database, the API and the page, a missing value shows as a dash, not a zero. A dash makes you ask why. A zero makes you move on.
+
+**A number says how it was known.** Measured or inferred, and when two sources disagree, both are shown.
+
+**A verdict says what it counted.** "All checks passed" means nothing without how many. A check that selected nothing fails.
+
+**A guard that can't find its subject fails.** If the thing it protects isn't there, that's an error, not a pass.
+
+## Why agents make it worse
 
 Toyota has the same idea for factory lines. A line with no reported problems isn't a healthy line; it might be a line that's stopped reporting. Silence is the absence of reporting, not the absence of problems.
 
