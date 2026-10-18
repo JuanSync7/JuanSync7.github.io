@@ -28,20 +28,91 @@
   pointer-events: none;
 }
 
-.log-body {
+/* The lessons slide sideways: one row of cards, newest at the left, snapping card to card.
+   The row scrolls but shows no scrollbar (the arrows, a swipe or the arrow keys move it),
+   and fades out at its right edge to say there is more. */
+.log-head,
+.log-foot {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
-  gap: var(--hf-space-8) var(--hf-space-14);
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--hf-space-3) var(--hf-space-8);
 }
 
-.log-live {
-  flex: 2 1 var(--nt-col);
-  min-width: 0;
+.night .log-count {
+  margin: 0;
+  font-family: var(--nt-display);
+  font-size: var(--nt-fs-intro);
+  color: var(--nt-ink-strong);
 }
 
-.log-entry {
-  animation: entry-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+.log-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--hf-space-3);
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-meta);
+  color: var(--nt-ink-muted);
+}
+
+.log-step {
+  min-width: var(--nt-hit);
+  min-height: var(--nt-hit);
+  padding: 0;
+  border: 1px solid var(--nt-line-2);
+  border-radius: var(--hf-radius-pill);
+  background: none;
+  font: inherit;
+  color: var(--nt-ink);
+  cursor: pointer;
+}
+
+.log-step:hover:not(:disabled) {
+  border-color: var(--nt-signal);
+  color: var(--nt-signal);
+}
+
+.log-step:disabled {
+  color: var(--nt-ink-faint);
+  border-color: var(--nt-line);
+  cursor: default;
+}
+
+.log-slider {
+  mask-image: var(--nt-grad-fade-right);
+}
+
+.log-slider:focus-visible {
+  outline-offset: var(--hf-space-2);
+}
+
+.log-track {
+  display: flex;
+  column-gap: var(--hf-space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.log-track::-webkit-scrollbar {
+  display: none;
+}
+
+.log-card {
+  flex: 0 0 min(var(--nt-col), 82%);
+  scroll-snap-align: start;
+  padding-left: var(--hf-space-5);
+  border-left: 1px solid var(--nt-line-2);
+  transition: border-color 0.3s;
+}
+
+.log-card.is-on {
+  border-left-color: var(--nt-signal);
 }
 
 .log-meta {
@@ -59,9 +130,9 @@
 }
 
 .night .log-title {
-  margin: 0 0 var(--hf-space-4);
+  margin: 0 0 var(--hf-space-3);
   font-family: var(--nt-display);
-  font-size: var(--nt-fs-h2);
+  font-size: var(--nt-fs-h4);
   line-height: var(--nt-lh-heading);
   letter-spacing: var(--nt-tracking-heading);
   color: var(--nt-ink-strong);
@@ -69,113 +140,28 @@
 
 .night .log-why {
   margin: 0;
-  max-width: 60ch;
-  font-size: var(--nt-fs-lead);
+  font-size: var(--nt-fs-small);
   color: var(--nt-ink-2);
 }
 
-.log-side {
-  flex: 1 1 var(--hf-space-14);
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--hf-space-4);
-}
-
-.night .log-count {
-  margin: 0;
-  font-family: var(--nt-display);
-  font-size: var(--nt-fs-intro);
-  color: var(--nt-ink-strong);
-}
-
-.log-nav {
-  display: flex;
-  align-items: center;
-  gap: var(--hf-space-4);
-  font-family: var(--nt-mono);
-  font-size: var(--nt-fs-meta);
-  color: var(--nt-ink-muted);
-}
-
-.log-step,
-.log-day {
-  min-height: var(--nt-hit);
-  padding: 0;
-  border: 0;
-  background: none;
-  font: inherit;
-  color: var(--nt-ink);
-  cursor: pointer;
-}
-
-.log-step:hover:not(:disabled),
-.log-day:hover {
-  color: var(--nt-signal);
-}
-
-.log-step:disabled {
-  color: var(--nt-ink-faint);
-  cursor: default;
-}
-
-/* A rail, not a page: with months of lessons the list scrolls inside its own box. */
-.log-days {
-  position: relative;
-  max-height: calc(var(--hf-space-20) * 4);
-  margin: 0;
-  padding: 0;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
-  list-style: none;
-}
-
-/* The index: one line per lesson, its date in mono and its title cut to the line. */
-.log-day {
-  display: flex;
-  align-items: center;
-  gap: var(--hf-space-3);
-  width: 100%;
-  min-width: 0;
-  text-align: left;
-  color: var(--nt-ink-muted);
-}
-
-.log-day-date {
-  flex: none;
-  min-width: 6ch;
-  font-family: var(--nt-mono);
-  font-size: var(--nt-fs-meta);
-}
-
-.log-day-title {
-  min-width: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  font-size: var(--nt-fs-small);
-}
-
-.log-day[aria-pressed='true'] {
-  color: var(--nt-ink-strong);
-}
-
-.log-day[aria-pressed='true'] .log-day-date {
-  color: var(--nt-signal);
-}
-
 .night .log-note {
+  flex: 1 1 var(--nt-col);
   margin: 0;
   font-size: var(--nt-fs-caption);
   color: var(--nt-ink-muted);
 }
 
-@keyframes entry-in {
-  from {
-    opacity: 0;
-    transform: translateY(var(--hf-space-2));
-  }
+.log-all {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--nt-hit);
+  margin-left: auto;
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-meta);
+}
+
+.night .log-all {
+  color: var(--nt-signal);
 }
 
 /* On a phone the field keeps its full width at a taller ratio, so the days stay legible
@@ -187,7 +173,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .log-entry {
-    animation: none;
+  .log-card {
+    transition: none;
   }
 }

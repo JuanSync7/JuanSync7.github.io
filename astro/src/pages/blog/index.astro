@@ -53,7 +53,7 @@ const lessons: Lesson[] = (await getCollection('lessons'))
 
     <section id="lessons" class="nt-wrap block">
       <SectionHead label="// lessons" title={LESSONS_COPY.title} lead={LESSONS_COPY.body} />
-      <LessonLog client:visible lessons={lessons} note={LESSONS_COPY.key} />
+      <LessonLog client:visible lessons={lessons} note={LESSONS_COPY.key} allHref="/blog/lessons/" />
     </section>
 
     <section id="posts" class="nt-wrap nt-section block">
