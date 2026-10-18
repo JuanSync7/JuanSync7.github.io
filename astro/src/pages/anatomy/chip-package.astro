@@ -1,0 +1,51 @@
+---
+import NightPage from '../../layouts/NightPage.astro';
+import NightNav from '../../components/layout/NightNav.astro';
+import NightFooter from '../../components/layout/NightFooter.astro';
+import AnatomyExplorer from '../../components/anatomy/AnatomyExplorer.tsx';
+import { PACKAGE_STEPS } from '../../data/anatomy';
+---
+
+<NightPage
+  title="Inside a chip package · Juan Kok"
+  description="A 2.5D chip package taken apart one layer at a time, from the lid down to the solder balls."
+>
+  <NightNav />
+  <main class="nt-wrap nt-section page">
+    <header class="head">
+      <span class="label">// anatomy</span>
+      <h1>Inside a chip package</h1>
+      <p>
+        The part of a chip you never see. Step down through a 2.5D package, the way AI accelerators are built: a logic die and
+        stacks of memory side by side on silicon, under one lid. Use the arrows, a number key, or pick a part.
+      </p>
+    </header>
+    <AnatomyExplorer client:visible steps={PACKAGE_STEPS} figure="chip-anatomy" />
+  </main>
+  <NightFooter />
+</NightPage>
+
+<style>
+  .page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-12);
+  }
+
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-4);
+    max-width: var(--nt-measure);
+  }
+
+  .label {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-signal);
+  }
+
+  .head p {
+    color: var(--nt-ink-soft);
+  }
+</style>
