@@ -41,7 +41,9 @@ on what is under the pointer.
 - Under reduced motion, or a frozen capture, the figure is simulated from 0 to rest (1.2 s,
   or the frozen time) in 1/60 s steps and shown once, with `still: true`. Each simulation
   starts from fresh state (the figure is resized, so `setup` runs again), so a figure may
-  accumulate in `state` (a scroll, a drift) and its still still repeats exactly.
+  accumulate in `state` (a scroll, a drift) and its still still repeats exactly. Every step
+  but the last carries `unseen: true`: nobody sees it, so a three.js scene skips its render
+  there (a canvas figure may ignore it).
 - Device pixel ratio is capped at 2. The canvas carries `data-ready`, `data-frames`,
   `data-ms-avg`, `data-ms-max`, `data-readout`, `data-error` for the audit; a three.js
   figure also carries `data-renderer` (`webgl` or `2d-fallback`).
@@ -80,12 +82,25 @@ when exploded. Add a machine here, not in a template.
 
 ## Parts that templates and scenes share
 Moved out of a figure when it outgrew its length budget; add to these, not to the figure.
-- `kit/city.ts`: `district(k, rng)` → `{ parts, traces }` for each stack level (silicon cells
-  to overcity apartments and parks); `Part { kind, x, z, w, d, h }`, `STREETS`, `isBox`, `isRound`.
+- `kit/city.ts`: `district(k, rng)` → `{ parts, traces, pipes? }` for each hub level (silicon
+  cells to overcity apartments and parks); `Part { kind, x, z, w, d, h }`, `STREETS`, `trees`,
+  `bodyOf(kind)` (the solid a kind stands on: box, round, cone, dome, cooler or none),
+  `isBox`, `isRound`.
+- `kit/islands.ts`: `island(kind, k, rng)` for the `ISLANDS` round a hub (mine, foundry,
+  exchange, energy), `DEPTH[kind]` boards each, `IW` × `ID` wide.
 - `kit/citylife.ts`: `windows(parts, rng, max?)` → `Lights`, `bridges(parts, rng, max?)`,
-  `power(parts, n?)`, `roof(parts, rng)`: what makes a district look lived in.
+  `power(parts, n?)`, `roof(parts, rng)`, `rotors(parts, t)`: what makes a district look lived in.
 - `kit/outlines.ts`: `outlines(parts)` → the wire edges of a district's parts (boxes, round
-  parts, wire trees and pines).
+  parts, trees, ore heaps, headframes, saw-tooth sheds, domes, cooling towers, solar rows,
+  turbine masts); `COOLER`, the cooling tower's profile.
+- `kit/transit.ts`: `edgePoint`, `arc(a, b, rise, bow?, n?)`, `strip`, `rails`, `orbit`, `ends`,
+  `airliner()`: the geometry of what runs between stacks.
+- `kit/boards.ts` (three.js): `solids()`, `board(district, w, d, rng, solids, bright)` → a
+  board in three draw calls (plate, baked solids, one RGBA line batch), `animate(board, t, lit)`;
+  `Pen` (many inks, one batch), `lines`, `write`; `tubes(n, per)` + `tube(...)` + `commit` for
+  vias. Draw calls are what a software renderer pays for: bake, don't add objects.
+- `kit/links.ts` (three.js): `links(scene, …)`, then each frame `monorail`, `cable`, `flight`
+  and `settle`: trains, power cables, airliners and satellites between stacks.
 - `kit/patterns.ts`: `MOTIFS`, `motif(m, pen, seed, noise)` (the pattern-cards drawings).
 - `kit/voxels.ts`: `KINDS`, `buildVoxels(spec, rng)` → `VoxelModel` (the voxel-scene objects).
 - `kit/wireobjects.ts` + `kit/machines.ts`: `KINDS`, `FRAME`, `build(spec, t)` → `{ body, hot }`

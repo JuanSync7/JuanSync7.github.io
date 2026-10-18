@@ -1,3 +1,4 @@
+import type { Vec3 } from './camera';
 import type { Rng } from './rng';
 
 /** Cities as parts, for figures that draw districts: what stands where, and the traces
@@ -6,18 +7,12 @@ import type { Rng } from './rng';
  *  drawn by kind: solid blocks with outlines, wireframe apartments, round tanks and towers,
  *  low-poly trees, flat parks. */
 
-export type PartKind =
-  | 'cell'
-  | 'macro'
-  | 'rack'
-  | 'wall'
-  | 'block'
-  | 'apartment'
-  | 'tank'
-  | 'tower'
-  | 'tree'
-  | 'pine'
-  | 'park';
+export const PART_KINDS = [
+  ...['cell', 'macro', 'rack', 'wall', 'block', 'shed', 'belt'],
+  ...['tank', 'tower', 'stack', 'heap', 'dome', 'cooler'],
+  ...['apartment', 'tree', 'pine', 'park', 'headframe', 'solar', 'turbine'],
+] as const;
+export type PartKind = (typeof PART_KINDS)[number];
 
 export interface Part {
   kind: PartKind;
@@ -33,17 +28,36 @@ export interface District {
   parts: Part[];
   /** Ground lines as flat segments: x0, z0, x1, z1. */
   traces: [number, number, number, number][];
+  /** Pipelines and cables in teal, each a polyline that flow pulses along. */
+  pipes?: Vec3[][];
 }
 
 /** The overcity's street grid: walkers keep to these lines. */
 export const STREETS = { x: [-0.95, -0.32, 0.32, 0.95], z: [-0.5, 0, 0.5] } as const;
 
-const BOX: readonly PartKind[] = ['cell', 'macro', 'rack', 'wall', 'block'];
-const ROUND: readonly PartKind[] = ['tank', 'tower'];
-export const isBox = (k: PartKind): boolean => BOX.includes(k);
-export const isRound = (k: PartKind): boolean => ROUND.includes(k);
+/** The solid each kind stands on: a box, a cylinder, a cone, a half sphere, a cooling tower's
+ *  waisted shell, or none (wireframe only). */
+export type Body = 'box' | 'round' | 'cone' | 'dome' | 'cooler' | null;
+const BODY: Partial<Record<PartKind, Body>> = {
+  cell: 'box',
+  macro: 'box',
+  rack: 'box',
+  wall: 'box',
+  block: 'box',
+  shed: 'box',
+  belt: 'box',
+  tank: 'round',
+  tower: 'round',
+  stack: 'round',
+  heap: 'cone',
+  dome: 'dome',
+  cooler: 'cooler',
+};
+export const bodyOf = (k: PartKind): Body => BODY[k] ?? null;
+export const isBox = (k: PartKind): boolean => bodyOf(k) === 'box';
+export const isRound = (k: PartKind): boolean => bodyOf(k) === 'round';
 
-function trees(rng: Rng, x: number, z: number, w: number, d: number, n: number, out: Part[]): void {
+export function trees(rng: Rng, x: number, z: number, w: number, d: number, n: number, out: Part[]): void {
   out.push({ kind: 'park', x, z, w, d, h: 0 });
   for (let i = 0; i < n; i++) {
     const s = 0.05 + rng() * 0.04;

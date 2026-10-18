@@ -78,7 +78,7 @@ export function defineThreeFigure<S>(spec: ThreeFigureSpec<S>): Figure {
         },
         frame(input: FrameInput): string | void {
           const read = update({ ...input, scene, camera, state, w, h });
-          renderer.render(scene, camera);
+          if (!input.unseen) renderer.render(scene, camera);
           return read;
         },
         dispose(): void {
