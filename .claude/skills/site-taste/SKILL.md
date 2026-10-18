@@ -60,8 +60,9 @@ clean minimalistic layout, cool layout diagrams", low-poly and voxel art done pr
 **Flow charts and graphs** (18 Oct 2026): "every arrow must be at least the length of Slurm
 to EDA tools" (60 map units on the home system map), "part of the flow chart or graph rule that
 we need to have". A box that holds arrows grows to fit them; arrows never shrink to fit the box.
-(19 Oct 2026) A line must not run too close to a box ("move right a little to not cut to close
-to a box"), and a label must never be cut by a line. Boxes with no input sit on the outside,
+(18 Oct 2026, later) A line must not run too close to a box ("move right a little to not cut to close
+to a box"), and a label must never be cut by a line. The full rule deck, with cases and examples, is
+in the experience-vault, `Notes/Decks/Drawing diagrams.md`. Boxes with no input sit on the outside,
 busy boxes on the inside; flow runs left to right or top to bottom where it can; few crossings.
 
 **Light** (3 Oct 2026): "Not dark only: there is light too." For light, "not pure white, but
