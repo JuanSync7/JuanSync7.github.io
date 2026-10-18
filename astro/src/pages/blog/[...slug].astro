@@ -1,6 +1,6 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
-import NightLayout from '../../layouts/NightLayout.astro';
+import NightPage from '../../layouts/NightPage.astro';
 import NightNav from '../../components/layout/NightNav.astro';
 import NightFooter from '../../components/layout/NightFooter.astro';
 import FigureCanvas from '../../components/ui/FigureCanvas.tsx';
@@ -29,8 +29,9 @@ const { data } = entry;
 const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(data.date);
 ---
 
-<NightLayout title={`${data.title} · Juan Kok`} description={data.excerpt}>
+<NightPage title={`${data.title} · Juan Kok`} description={data.excerpt}>
   <NightNav current="writing" />
+  <div class="nt-progress" aria-hidden="true"></div>
   <main class="nt-wrap post">
     <a class="back" href="/blog/#posts">← All writing</a>
     <header class="head">
@@ -43,7 +44,7 @@ const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', y
       <p class="excerpt">{data.excerpt}</p>
     </header>
     {data.cover ? (
-      <div class="cover">
+      <div class="cover" style={`view-transition-name: cover-${entry.slug}`}>
         <FigureCanvas client:load id={data.cover} />
       </div>
     ) : null}
@@ -66,7 +67,7 @@ const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', y
     </nav>
   </main>
   <NightFooter />
-</NightLayout>
+</NightPage>
 
 <style>
   .post {
