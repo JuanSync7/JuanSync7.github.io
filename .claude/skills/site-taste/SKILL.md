@@ -57,6 +57,10 @@ implements." The direction is his; propose, don't impose.
 rocket taken apart step by step, zoom transitions, page transitions, "good striking layout,
 clean minimalistic layout, cool layout diagrams", low-poly and voxel art done properly.
 
+**Flow charts and graphs** (18 Oct 2026): "every arrow must be at least the length of Slurm
+to EDA tools" (60 map units on the home system map), "part of the flow chart or graph rule that
+we need to have". A box that holds arrows grows to fit them; arrows never shrink to fit the box.
+
 **Light** (3 Oct 2026): "Not dark only: there is light too." For light, "not pure white, but
 a more cream-coloured paper."
 
@@ -108,6 +112,8 @@ Leave these visible, don't settle them yourself:
 
 - Does every element read as a specific thing (no "doesn't look like anything")?
 - Is it connected: does each line, flow or part go somewhere and come from somewhere?
+- Flow chart or graph: is every arrow at least the minimum length? On the system map,
+  `npm run map:check` measures it.
 - Reading page: dark palette, fewer colours, almost no motion. Showpiece or summary: the
   space and city look may come forward.
 - Tokens only; no hex, no magic pixel value; new tokens shown in `/design-system`.
