@@ -1,0 +1,4 @@
+date: 2026-09-27
+tag: rag
+title: "Better input means better curated, not more."
+why: "Adding a reranker made retrieval worse, and navigation chunks caused refusals. Grounding is curation."

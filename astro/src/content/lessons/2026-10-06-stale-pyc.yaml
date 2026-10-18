@@ -1,0 +1,4 @@
+date: 2026-10-06
+tag: python
+title: "A surviving mutant can be a stale .pyc."
+why: "After an in-place edit within the same second, Python reused the cached bytecode. Run mutation checks with python -B."

@@ -1,0 +1,4 @@
+date: 2026-09-26
+tag: frontend
+title: "Check every width in a real browser."
+why: "Phone-width overflow only showed up in live viewport checks. Unit tests don't render anything."

@@ -1,0 +1,4 @@
+date: 2026-10-09
+tag: linux
+title: "Missing glyphs look like missing words."
+why: "Blank gaps in the terminal were font coverage, not locale. fc-list :charset=<hex> shows which fonts have the character."

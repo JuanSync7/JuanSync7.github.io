@@ -1,0 +1,4 @@
+date: 2026-07-17
+tag: make
+title: "Never name a Makefile variable AS."
+why: "AS, CC and CXX are GNU Make built-ins and are never empty, so '--as $(AS)' quietly became '--as as'."

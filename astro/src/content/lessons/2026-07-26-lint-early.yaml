@@ -1,0 +1,4 @@
+date: 2026-07-26
+tag: lint
+title: "Lint early, or integrate late."
+why: "Hardware integration is slow, so a mistake found there costs days. Lint and static formal move the check to where it is cheap."

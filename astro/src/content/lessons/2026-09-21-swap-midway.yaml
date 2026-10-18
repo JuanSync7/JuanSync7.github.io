@@ -1,0 +1,4 @@
+date: 2026-09-21
+tag: design
+title: "The design shouldn't care which library you picked."
+why: "If the architecture can be described without naming components, swapping one is cheap. I swap them often."

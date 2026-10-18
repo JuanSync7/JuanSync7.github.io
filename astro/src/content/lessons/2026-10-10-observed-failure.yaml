@@ -1,0 +1,4 @@
+date: 2026-10-10
+tag: agents
+title: "Every instruction should answer a failure you saw."
+why: "Rules written for imagined problems pile up and get ignored. Write the rule after the mistake, and say which one."

@@ -1,0 +1,4 @@
+date: 2026-07-31
+tag: sta
+title: "A timing violation is a symptom."
+why: "The cause can be the RTL, the constraints, the library or the layout. Working out which is the real job."

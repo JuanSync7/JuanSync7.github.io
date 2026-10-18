@@ -1,0 +1,4 @@
+date: 2026-09-03
+tag: agents
+title: "Back off in the tool, not in the model."
+why: "Show an LLM a raw 429 and it invents its own retry plan and narrates it. Rate limits are a platform job."

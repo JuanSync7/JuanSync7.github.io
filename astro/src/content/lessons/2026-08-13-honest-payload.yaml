@@ -1,0 +1,4 @@
+date: 2026-08-13
+tag: agents
+title: "Caveats only work if the model reads them."
+why: "'Sample too small' flags do nothing if the agent stops at the headline number. Sometimes you have to force a second step."

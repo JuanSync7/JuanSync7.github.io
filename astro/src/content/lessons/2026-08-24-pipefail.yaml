@@ -1,0 +1,4 @@
+date: 2026-08-24
+tag: shell
+title: "A pipeline ending in tail always exits 0."
+why: "Pipe a failing check into tail and the gate goes green. Use set -o pipefail, or don't pipe the gate."

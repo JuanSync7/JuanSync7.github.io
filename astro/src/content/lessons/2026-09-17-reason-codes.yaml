@@ -1,0 +1,4 @@
+date: 2026-09-17
+tag: slurm
+title: "One field can mean different things in different states."
+why: "A scheduler's reason code explains why a pending job waits, but on a running job it means something else. Summing it as wait time is wrong."

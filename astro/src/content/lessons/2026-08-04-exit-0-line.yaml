@@ -1,0 +1,4 @@
+date: 2026-08-04
+tag: make
+title: "'|| exit 0' only exits its own line."
+why: "Each recipe line in a Makefile runs in its own shell, so an early exit on one line doesn't stop the next."

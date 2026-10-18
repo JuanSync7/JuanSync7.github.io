@@ -1,0 +1,4 @@
+date: 2026-08-14
+tag: tooling
+title: "A formatter outside the gate is decoration."
+why: "The format target existed, but nothing ran it in verify or CI. A tool that isn't wired into a gate isn't enforcing anything."

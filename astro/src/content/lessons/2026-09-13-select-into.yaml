@@ -1,0 +1,4 @@
+date: 2026-09-13
+tag: security
+title: "SELECT ... INTO is a write."
+why: "A blocklist that trusts anything starting with SELECT lets writes through. Use a read-only transaction and a statement timeout instead."

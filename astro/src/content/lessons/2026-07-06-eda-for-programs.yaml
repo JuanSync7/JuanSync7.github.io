@@ -1,0 +1,4 @@
+date: 2026-07-06
+tag: eda
+title: "EDA tools were built for people, not programs."
+why: "Before an agent can help with chip design, the tools need clean CLIs and structured output. Making the flow scriptable is step one, not a nice-to-have."

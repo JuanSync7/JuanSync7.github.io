@@ -119,9 +119,15 @@
   cursor: default;
 }
 
+/* A rail, not a page: with months of lessons the list scrolls inside its own box. */
 .log-days {
+  position: relative;
+  max-height: calc(var(--hf-space-20) * 4);
   margin: 0;
   padding: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
   list-style: none;
 }
 

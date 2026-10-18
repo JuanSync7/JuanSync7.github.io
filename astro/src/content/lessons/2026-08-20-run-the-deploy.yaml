@@ -1,0 +1,4 @@
+date: 2026-08-20
+tag: ops
+title: "Running the deployment finds what reading it won't."
+why: "A health check read the local user file while real accounts lived in the directory service, so it audited almost nobody. Only the live run showed it."

@@ -1,0 +1,4 @@
+date: 2026-08-07
+tag: linux
+title: "inotify doesn't see another machine's writes."
+why: "On NFS, a file changed from another client fires no event. Watching across hosts needs a poller."

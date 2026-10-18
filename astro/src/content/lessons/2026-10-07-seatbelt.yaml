@@ -1,0 +1,4 @@
+date: 2026-10-07
+tag: security
+title: "Env-var filtering is a seatbelt, not a sandbox."
+why: "Stripping variables cuts accidents. It doesn't stop a process that goes looking for another one's environment."

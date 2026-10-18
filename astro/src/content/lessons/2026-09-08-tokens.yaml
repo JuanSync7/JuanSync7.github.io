@@ -1,0 +1,4 @@
+date: 2026-09-08
+tag: css
+title: "Tokens, never hex."
+why: "Every colour, gap and radius comes from a token. One place to change the theme, and no one-off values creeping in."

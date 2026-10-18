@@ -1,0 +1,4 @@
+date: 2026-09-19
+tag: python
+title: "Python truthiness eats zero."
+why: "'exit_code or \"not recorded\"' turned a clean exit into missing data. Test for None, not for falsy."

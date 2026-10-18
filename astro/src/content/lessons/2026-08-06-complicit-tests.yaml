@@ -1,0 +1,4 @@
+date: 2026-08-06
+tag: testing
+title: "Tests can be complicit in the bug."
+why: "If the test was written from the same wrong reading of the spec, it passes with the code. Check what a test assumes, not just that it's green."

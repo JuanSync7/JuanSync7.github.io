@@ -1,0 +1,4 @@
+date: 2026-08-05
+tag: testing
+title: "A skip that looks deliberate hides forever."
+why: "A test that quietly skips on a missing dependency can stay unrun for the life of the project. Make skips loud, or count them as failures."

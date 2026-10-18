@@ -1,0 +1,4 @@
+date: 2026-07-09
+tag: design
+title: "Tight coupling is the real sin."
+why: "A wrong choice is fine if the module can be swapped out. Coupling is what turns a wrong choice into a rewrite."

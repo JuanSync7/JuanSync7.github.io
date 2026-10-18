@@ -1,0 +1,4 @@
+date: 2026-10-16
+tag: agents
+title: "A skill's description says when, not how."
+why: "The description decides when it fires. Put the steps in the body; steps in the description only blur the trigger."

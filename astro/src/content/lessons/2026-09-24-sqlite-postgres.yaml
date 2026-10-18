@@ -1,0 +1,4 @@
+date: 2026-09-24
+tag: postgres
+title: "A green SQLite suite says nothing about Postgres."
+why: "Types, upserts and time zones differ. A test on the real engine found migrations that couldn't rebuild the live database."

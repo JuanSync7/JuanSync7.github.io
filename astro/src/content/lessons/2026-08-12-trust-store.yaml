@@ -1,0 +1,4 @@
+date: 2026-08-12
+tag: tls
+title: "A green smoke test can use a different trust store."
+why: "The smoke test passed with the OS certificates while the real path used its own bundle and failed behind the proxy. Test the path you ship."
