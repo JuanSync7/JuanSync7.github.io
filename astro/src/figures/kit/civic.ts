@@ -101,7 +101,7 @@ export function powerline(P: Plot, from: Vec3, via: [number, number][], h = 0.11
 export function datacentre(P: Plot, x: number, z: number, halls = 2): void {
   for (let i = 0; i < halls; i++) {
     const hz = z + (i - (halls - 1) / 2) * 0.17;
-    P.add('block', x, hz, 0.56, 0.12, 0.07);
+    P.add('datahall', x, hz, 0.56, 0.12, 0.07);
     for (let j = 0; j < 7; j++) P.add('cell', x - 0.24 + j * 0.08, hz, 0.05, 0.06, 0.02, 0.07);
   }
   for (let j = 0; j < 4; j++) P.add('block', x + 0.36, z - 0.15 + j * 0.1, 0.07, 0.05, 0.04);
