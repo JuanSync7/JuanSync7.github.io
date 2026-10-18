@@ -1,0 +1,15 @@
+{
+  "_about": "Settings for scripts/posts/check.mjs, the blog post shape check. Each key's meaning is in the check's header comment; the rules behind them are R-POST-* in the experience vault deck 'Writing posts and articles'.",
+  "postsDir": "src/content/blog",
+  "rulesFrom": "2026-10-18",
+  "hookMaxWords": 30,
+  "openMinWords": 100,
+  "headingsMin": 3,
+  "headingsMax": 5,
+  "wordsMin": 800,
+  "wordsMax": 1400,
+  "wordsPerMinute": 200,
+  "readTimeTolerance": 1,
+  "endingParagraphs": 2,
+  "internalLinkPrefixes": ["/blog/", "/learn/"]
+}
