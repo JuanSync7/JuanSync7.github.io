@@ -40,6 +40,10 @@ export const NAV = [
   { label: 'thinking', href: '/#thinking' },
   { label: 'experience', href: '/#experience' },
   { label: 'work', href: '/#work' },
+  { label: 'lab', href: '/lab/' },
+  { label: 'anatomy', href: '/anatomy/chip-package/' },
+  // Last, because a narrow screen keeps only the last link in the top bar (the footer
+  // carries them all).
   { label: 'writing', href: '/blog/' },
 ] as const;
 
