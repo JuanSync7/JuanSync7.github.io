@@ -1,12 +1,22 @@
 ---
-import { FOOTER } from '../../data/home';
+import { FOOTER, NAV } from '../../data/home';
+import { IDENTITY } from '../../data/site';
 ---
 
 <footer class="foot">
   <div class="nt-wrap foot-inner">
-    <span>{FOOTER.joke}</span>
-    <a href="/design-system">design system</a>
-    <span class="part">{FOOTER.part}</span>
+    {/* Every page's links again at the bottom: the end of a page is where you look for
+        somewhere to go next, and on a phone the top bar shows only one of them. */}
+    <nav class="foot-nav" aria-label="Site">
+      <a href="/">home</a>
+      {NAV.map((l) => <a href={l.href}>{l.label}</a>)}
+      <a href="/design-system">design system</a>
+      <a href={IDENTITY.cvFile}>cv.pdf</a>
+    </nav>
+    <div class="foot-meta">
+      <span>{FOOTER.joke}</span>
+      <span class="part">{FOOTER.part}</span>
+    </div>
   </div>
 </footer>
 
@@ -17,9 +27,8 @@ import { FOOTER } from '../../data/home';
 
   .foot-inner {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--hf-space-3) var(--hf-space-8);
+    flex-direction: column;
+    gap: var(--hf-space-6);
     padding-top: var(--hf-space-8);
     padding-bottom: var(--hf-space-8);
     font-family: var(--nt-mono);
@@ -27,8 +36,29 @@ import { FOOTER } from '../../data/home';
     color: var(--nt-ink-faint);
   }
 
-  a {
+  .foot-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--hf-space-6);
+  }
+
+  .foot-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--nt-hit);
+    font-size: var(--nt-fs-meta);
     color: var(--nt-ink-muted);
+  }
+
+  .foot-nav a:hover {
+    color: var(--nt-ink-strong);
+  }
+
+  .foot-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--hf-space-3) var(--hf-space-8);
   }
 
   .part {
