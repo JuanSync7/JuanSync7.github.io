@@ -1,5 +1,5 @@
 import type { Vec3 } from './camera';
-import { isBox, isRound, type Part } from './city';
+import { bodyOf, isBox, isRound, place, type Part } from './city';
 import type { Rng } from './rng';
 
 /** What makes a district look lived in: windows that come on and go off, skybridges between
@@ -14,7 +14,9 @@ export interface Lights {
   white: boolean[];
 }
 
-const standing = (p: Part): boolean => (isBox(p.kind) || isRound(p.kind) || p.kind === 'apartment') && p.h >= 0.07;
+const WALLED = ['box', 'round', 'hex', 'tri'];
+const standing = (p: Part): boolean =>
+  (WALLED.includes(bodyOf(p.kind) ?? '') || p.kind === 'apartment') && p.h >= 0.07 && p.kind !== 'silo';
 
 /** Window streaks on the two faces a camera in front and to the right sees (+x and +z). */
 export function windows(parts: readonly Part[], rng: Rng, max = 90): Lights {
@@ -24,12 +26,13 @@ export function windows(parts: readonly Part[], rng: Rng, max = 90): Lights {
       for (const face of [0, 1]) {
         if (rng() < 0.45) continue;
         const s = (rng() - 0.5) * 0.4;
+        // In the part's own frame, then turned and lifted with it.
         if (face === 0) {
-          const x = p.x + p.w / 2 + 0.003;
-          out.pos.push(x, y, p.z + (s - 0.24) * p.d, x, y, p.z + (s + 0.24) * p.d);
+          const x = p.w / 2 + 0.003;
+          out.pos.push(...place(p, x, y, (s - 0.24) * p.d), ...place(p, x, y, (s + 0.24) * p.d));
         } else {
-          const z = p.z + p.d / 2 + 0.003;
-          out.pos.push(p.x + (s - 0.24) * p.w, y, z, p.x + (s + 0.24) * p.w, y, z);
+          const z = p.d / 2 + 0.003;
+          out.pos.push(...place(p, (s - 0.24) * p.w, y, z), ...place(p, (s + 0.24) * p.w, y, z));
         }
         out.phase.push(rng());
         out.white.push(rng() > 0.55);
@@ -41,7 +44,8 @@ export function windows(parts: readonly Part[], rng: Rng, max = 90): Lights {
 
 /** Skybridges between pairs of tall buildings a short walk apart, at two thirds of the lower. */
 export function bridges(parts: readonly Part[], rng: Rng, max = 3): Vec3[][] {
-  const tall = parts.filter((p) => standing(p) && p.h >= 0.12);
+  const OFFICES = ['block', 'tower', 'apartment', 'hex', 'tri'];
+  const tall = parts.filter((p) => standing(p) && p.h >= 0.16 && !p.y && OFFICES.includes(p.kind));
   const out: Vec3[][] = [];
   tall.forEach((a, i) => {
     tall.slice(i + 1).forEach((b) => {

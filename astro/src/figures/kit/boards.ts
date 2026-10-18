@@ -4,6 +4,7 @@ import {
   Color,
   ConeGeometry,
   CylinderGeometry,
+  DoubleSide,
   EdgesGeometry,
   Float32BufferAttribute,
   Group,
@@ -19,8 +20,8 @@ import {
   type Material,
 } from 'three';
 import type { Vec3 } from './camera';
-import { bodyOf, type Body, type District, type Part } from './city';
-import { bridges, power, rotors, windows, type Lights } from './citylife';
+import { bodyOf, place, type Body, type District, type Part } from './city';
+import { bridges, rotors, windows, type Lights } from './citylife';
 import type { NightKey } from '../../styles/tokens/palette';
 import { hexOf } from './ink';
 import { COOLER, outlines } from './outlines';
@@ -73,6 +74,15 @@ export const lines = (p: readonly number[], key: NightKey, alpha: number): LineS
   return pen.lines();
 };
 
+/** A low-poly rock, the same octahedron kit/shells.ts outlines: waist low, top off-centre. */
+function rockGeometry(): BufferGeometry {
+  const v = [0.5, 0.3, 0, 0, 0.3, 0.5, -0.5, 0.3, 0, 0, 0.3, -0.5, 0.125, 1, -0.1, 0, 0, 0];
+  const g = new BufferGeometry();
+  g.setAttribute('position', new Float32BufferAttribute(v, 3));
+  g.setIndex([0, 4, 1, 1, 4, 2, 2, 4, 3, 3, 4, 0, 0, 1, 5, 1, 2, 5, 2, 3, 5, 3, 0, 5]);
+  return g;
+}
+
 /** The unit solids every board's parts are scaled from, and the fill they share. */
 export interface Solids {
   geo: Record<Exclude<Body, null>, BufferGeometry>;
@@ -82,7 +92,13 @@ export function solids(): Solids {
   return {
     geo: {
       box: new BoxGeometry(1, 1, 1).translate(0, 0.5, 0),
-      round: new CylinderGeometry(0.5, 0.5, 1, 12).translate(0, 0.5, 0),
+      // Prisms turn a quarter so their corners sit where kit/shells.ts draws them.
+      round: new CylinderGeometry(0.5, 0.5, 1, 12).rotateY(Math.PI / 2).translate(0, 0.5, 0),
+      hex: new CylinderGeometry(0.5, 0.5, 1, 6).rotateY(Math.PI / 2).translate(0, 0.5, 0),
+      tri: new CylinderGeometry(0.5, 0.5, 1, 3).rotateY(Math.PI / 2).translate(0, 0.5, 0),
+      // A half-round hall lying along x, one unit high.
+      hall: new CylinderGeometry(0.5, 0.5, 1, 8, 1, false, 0, Math.PI).rotateZ(Math.PI / 2).scale(1, 2, 1),
+      rock: rockGeometry(),
       cone: new ConeGeometry(0.5, 1, 7).translate(0, 0.5, 0),
       dome: new SphereGeometry(0.5, 16, 6, 0, Math.PI * 2, 0, Math.PI / 2).scale(1, 2, 1),
       cooler: new LatheGeometry(
@@ -95,6 +111,8 @@ export function solids(): Solids {
       polygonOffset: true,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
+      // Rotated parts and the hand-built rock turn some faces away; fill both sides.
+      side: DoubleSide,
     }),
   };
 }
@@ -130,7 +148,7 @@ export function board(city: District, w: number, d: number, rng: Rng, kit: Solid
     const g = kit.geo[body];
     const v = g.getAttribute('position');
     const base = pos.length / 3;
-    for (let i = 0; i < v.count; i++) pos.push(p.x + v.getX(i) * p.w, v.getY(i) * p.h, p.z + v.getZ(i) * p.d);
+    for (let i = 0; i < v.count; i++) pos.push(...place(p, v.getX(i) * p.w, v.getY(i) * p.h, v.getZ(i) * p.d));
     const ix = g.getIndex();
     for (let i = 0; i < (ix?.count ?? v.count); i++) index.push(base + (ix ? ix.getX(i) : i));
   }
@@ -139,7 +157,7 @@ export function board(city: District, w: number, d: number, rng: Rng, kit: Solid
   solid.setIndex(index);
   group.add(plate, new Mesh(solid, kit.fill));
   const lights = windows(city.parts, rng, 140);
-  const wires = [...power(city.parts), ...bridges(city.parts, rng), ...(city.pipes ?? [])];
+  const wires = [...bridges(city.parts, rng), ...(city.pipes ?? [])];
   const pen = new Pen();
   const rimAt = pen.add(
     [...new EdgesGeometry(slab).translate(0, -0.013, 0).getAttribute('position').array],

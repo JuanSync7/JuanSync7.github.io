@@ -107,3 +107,75 @@ export function airliner(): number[] {
   );
   return p;
 }
+
+/** A timed path: points with the time (seconds) at which each is reached. */
+export type Timed = { p: Vec3; at: number }[];
+
+/** Where a timed path is at time t (it loops), and the point just ahead of it. */
+export function timed(path: Timed, t: number): [Vec3, Vec3] {
+  const end = path[path.length - 1]?.at ?? 1;
+  const u = ((t % end) + end) % end;
+  const i = Math.max(0, path.findIndex((q) => q.at >= u) - 1);
+  const [a, b] = [path[i], path[i + 1] ?? path[i]];
+  if (!a || !b)
+    return [
+      [0, 0, 0],
+      [1, 0, 0],
+    ];
+  const k = b.at > a.at ? (u - a.at) / (b.at - a.at) : 0;
+  const p: Vec3 = [a.p[0] + (b.p[0] - a.p[0]) * k, a.p[1] + (b.p[1] - a.p[1]) * k, a.p[2] + (b.p[2] - a.p[2]) * k];
+  return [p, k < 0.98 ? b.p : (path[i + 2]?.p ?? b.p)];
+}
+
+/** An airport circuit from runway end a toward b: take off, climb out, fly round `centre`
+ *  at `radius` and `alt`, come back in on the approach, land, roll out and taxi back along
+ *  the taxiway to the start. Speeds are slow on the ground and fast in the air. */
+export function circuit(a: Vec3, b: Vec3, centre: Vec3, radius: number, alt: number): Timed {
+  const [dx, dz] = [b[0] - a[0], b[2] - a[2]];
+  const len = Math.hypot(dx, dz) || 1;
+  const [ux, uz] = [dx / len, dz / len];
+  const at = (s: number, side: number, y: number): Vec3 => [
+    a[0] + ux * s - uz * side,
+    a[1] + y,
+    a[2] + uz * s + ux * side,
+  ];
+  const climb = at(len + 1.4, 0, alt * 0.55);
+  const approach = at(-1.8, 0, alt * 0.4);
+  const angle = (p: Vec3): number => Math.atan2(p[2] - centre[2], p[0] - centre[0]);
+  const a0 = angle(climb);
+  let a1 = angle(approach);
+  while (a1 < a0 + Math.PI) a1 += Math.PI * 2;
+  const loop: [Vec3, number][] = Array.from({ length: 16 }, (_, i) => {
+    const s = (i + 1) / 17;
+    const r =
+      radius * Math.sin(Math.PI * s) +
+      Math.hypot(climb[0] - centre[0], climb[2] - centre[2]) * (1 - s) +
+      Math.hypot(approach[0] - centre[0], approach[2] - centre[2]) * s * 0.4;
+    const th = a0 + (a1 - a0) * s;
+    return [
+      [centre[0] + Math.cos(th) * r, a[1] + alt * (0.55 + 0.45 * Math.sin(Math.PI * s)), centre[2] + Math.sin(th) * r],
+      1.6,
+    ];
+  });
+  const legs: [Vec3, number][] = [
+    [at(0, 0, 0.012), 0.25],
+    [at(len * 0.65, 0, 0.012), 0.45],
+    [at(len + 0.2, 0, 0.18), 0.9],
+    [climb, 1.4],
+    ...loop,
+    [approach, 1.4],
+    [at(0.15, 0, 0.012), 1.0],
+    [at(len * 0.7, 0, 0.012), 0.45],
+    [at(len * 0.78, 0.11, 0.012), 0.2],
+    [at(0.05, 0.11, 0.012), 0.22],
+    [at(0, 0, 0.012), 0.2],
+  ];
+  const out: Timed = [];
+  let clock = 0;
+  legs.forEach(([p, speed], i) => {
+    const prev = out[i - 1];
+    if (prev) clock += Math.hypot(p[0] - prev.p[0], p[1] - prev.p[1], p[2] - prev.p[2]) / speed;
+    out.push({ p, at: clock });
+  });
+  return out;
+}

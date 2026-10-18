@@ -82,25 +82,39 @@ when exploded. Add a machine here, not in a template.
 
 ## Parts that templates and scenes share
 Moved out of a figure when it outgrew its length budget; add to these, not to the figure.
-- `kit/city.ts`: `district(k, rng)` → `{ parts, traces, pipes? }` for each hub level (silicon
-  cells to overcity apartments and parks); `Part { kind, x, z, w, d, h }`, `STREETS`, `trees`,
-  `bodyOf(kind)` (the solid a kind stands on: box, round, cone, dome, cooler or none),
-  `isBox`, `isRound`.
-- `kit/islands.ts`: `island(kind, k, rng)` for the `ISLANDS` round a hub (mine, foundry,
-  exchange, energy), `DEPTH[kind]` boards each, `IW` × `ID` wide.
+- `kit/city.ts`: `Part { kind, x, z, w, d, h, y?, rot? }` (`y` stands it on a roof, `rot` turns
+  it), `PART_KINDS`, `bodyOf(kind)` (the solid it stands on: box, round, hex, tri, cone, dome,
+  cooler, hall, rock or none), `place(part, lx, ly, lz)`, `STREETS`, and `Plot`, which builds a
+  `District` (`parts`, `traces`, `pipes`, plus `roads`, `lines`, `workers`, `runway`, `apron`
+  for vehicles, assembly lines, people and planes) one `add`/`line`/`pipe`/`trees`/`rocks` at a time.
+- `kit/hub.ts`: `hubLevel(k, rng)`, the hub's six levels (silicon, compute with a datacentre,
+  gateway, knowledge by a lake, apps, the overcity's housing and amenities).
+- `kit/islands.ts`: `island(kind, k, rng)` for the `ISLANDS` (mine, foundry, exchange, energy,
+  airport), `DEPTH[kind]` boards each, `size(kind, k)` per board.
+- `kit/civic.ts`: `housing`, `school`, `shops`, `station`, `stationOn` (a station, substation and
+  power line cleared onto a district's edge), `substation`, `powerline`, `datacentre`, `lake`,
+  `airport`.
+- `kit/industry.ts`: `conveyor`, `pit`, `silos`, `furnace`, `refinery`, `assembly`, `geothermal`,
+  `dam`, `capacitors`, `renewables`: each stage hands on to the next by belt or pipe.
 - `kit/citylife.ts`: `windows(parts, rng, max?)` → `Lights`, `bridges(parts, rng, max?)`,
   `power(parts, n?)`, `roof(parts, rng)`, `rotors(parts, t)`: what makes a district look lived in.
-- `kit/outlines.ts`: `outlines(parts)` → the wire edges of a district's parts (boxes, round
-  parts, trees, ore heaps, headframes, saw-tooth sheds, domes, cooling towers, solar rows,
-  turbine masts); `COOLER`, the cooling tower's profile.
+- `kit/outlines.ts` + `kit/shells.ts`: `outlines(parts)` → every part's wire edges, drawn in its
+  own frame and placed; `shells.ts` has the special shapes (headframe, pylon, gantry, solar,
+  turbine, hall, rock, lake) and the `ring`, `rect`, `prism`, `cone` helpers; `COOLER`, the
+  cooling tower's profile.
 - `kit/transit.ts`: `edgePoint`, `arc(a, b, rise, bow?, n?)`, `strip`, `rails`, `orbit`, `ends`,
-  `airliner()`: the geometry of what runs between stacks.
+  `airliner()`, and `circuit(...)` → a `Timed` airport circuit with `timed(path, t)`.
 - `kit/boards.ts` (three.js): `solids()`, `board(district, w, d, rng, solids, bright)` → a
   board in three draw calls (plate, baked solids, one RGBA line batch), `animate(board, t, lit)`;
   `Pen` (many inks, one batch), `lines`, `write`; `tubes(n, per)` + `tube(...)` + `commit` for
   vias. Draw calls are what a software renderer pays for: bake, don't add objects.
-- `kit/links.ts` (three.js): `links(scene, …)`, then each frame `monorail`, `cable`, `flight`
-  and `settle`: trains, power cables, airliners and satellites between stacks.
+- `kit/links.ts` (three.js): `links(scene, …)`, then each frame `monorail` (rails, a train, and
+  the teal power conduit under it), `flight` and `settle`; `parked(spots, scale)` for planes on
+  an apron. Routes in the air are not drawn: the moving thing is the route.
+- `kit/traffic.ts` (three.js): `fleet(n)`, `plan(cities, model, rng)` → rides on every road and
+  assembly line, `move(fleet, rides, t, at)`; wire cars, chassis, lorries and haulers.
+- `kit/crowd.ts` (three.js): `crowd(cities, walkers, rng)`, `gather(...)`: walkers on a street
+  grid and workers where districts put them, one instanced batch.
 - `kit/patterns.ts`: `MOTIFS`, `motif(m, pen, seed, noise)` (the pattern-cards drawings).
 - `kit/voxels.ts`: `KINDS`, `buildVoxels(spec, rng)` → `VoxelModel` (the voxel-scene objects).
 - `kit/wireobjects.ts` + `kit/machines.ts`: `KINDS`, `FRAME`, `build(spec, t)` → `{ body, hot }`

@@ -4,20 +4,20 @@ import type { Vec3 } from './camera';
 import { hexOf } from './ink';
 import { satellite } from './machines';
 import { along } from './shapes';
-import { airliner, arc, ends, orbit, rails, strip } from './transit';
+import { airliner, arc, ends, orbit, rails, strip, timed, type Timed } from './transit';
 
-/** three.js links between the stacks of a city scene (`kit/boards.ts`): monorails with a
- *  shuttling train, power cables sagging from a plant with current pulsing along them,
- *  airliners flying out and back on high arcs, and wireframe satellites on tilted orbits
- *  overhead. Each kind is one batch; the scene says where each link runs, every frame. */
+/** three.js links between the stacks of a city scene (`kit/boards.ts`): monorails between
+ *  stations, each with a shuttling train and a teal power conduit slung under its beam (the
+ *  grid runs along the tracks); airliners flying circuits from an airport; and wireframe
+ *  satellites overhead. Each kind is one batch; the scene says where each link runs. Routes
+ *  in the air are not drawn: the moving thing is the route. */
 
 const m4 = new Matrix4();
 const dummy = new Object3D();
 const CARS = 3;
 const SEGS = 28;
-const FLIGHT = 40;
 /** A satellite's orbit: radius, height, tilt and turn; the n-th is wider, higher, slower. */
-const ORBIT = (i: number): [number, number, number, number] => [1.4 + i * 0.3, 2.5 + i * 0.22, 0.3 + i * 0.12, i * 2.1];
+const ORBIT = (i: number): [number, number, number, number] => [1.4 + i * 0.3, 2.6 + i * 0.22, 0.3 + i * 0.12, i * 2.1];
 
 const size = (n: number, f: (pts: Vec3[]) => number[]): number => f(arc([0, 0, 0], [1, 0, 0], 0, 0, n)).length / 3;
 const railOf = (pts: Vec3[]): number[] => rails(pts, 0.05);
@@ -25,23 +25,21 @@ const railOf = (pts: Vec3[]): number[] => rails(pts, 0.05);
 export interface Links {
   track: LineSegments;
   cars: InstancedMesh;
-  cable: LineSegments;
+  conduit: LineSegments;
   sparks: InstancedMesh;
-  route: LineSegments;
   planes: LineSegments[];
   sats: LineSegments[];
 }
 
-export function links(scene: Scene, tracks: number, cables: number, flights: number, sats: number): Links {
+export function links(scene: Scene, tracks: number, flights: number, sats: number): Links {
   const zeros = (n: number): number[] => new Array(n * 3).fill(0);
   const box = (x: number, y: number, z: number, key: 'inkSoft' | 'signal', n: number): InstancedMesh =>
     new InstancedMesh(new BoxGeometry(x, y, z), new MeshBasicMaterial({ color: hexOf(key) }), n);
   const L: Links = {
     track: lines(zeros(tracks * size(SEGS, railOf)), 'inkFaint', 0.55),
     cars: box(0.05, 0.035, 0.1, 'inkSoft', tracks * CARS),
-    cable: lines(zeros(cables * size(SEGS, strip)), 'signal', 0.5),
-    sparks: box(0.022, 0.022, 0.022, 'signal', cables * 2),
-    route: lines(zeros(flights * size(FLIGHT, strip)), 'inkFaint', 0.16),
+    conduit: lines(zeros(tracks * size(SEGS, strip)), 'signal', 0.55),
+    sparks: box(0.018, 0.018, 0.018, 'signal', tracks * 3),
     planes: Array.from({ length: flights }, () => lines(airliner(), 'inkStrong', 0.85)),
     sats: Array.from({ length: sats }, (_, i) => {
       const s = satellite(i / 2, 0);
@@ -53,18 +51,23 @@ export function links(scene: Scene, tracks: number, cables: number, flights: num
   };
   L.planes.forEach((p) => p.scale.setScalar(0.3));
   L.sats.forEach((s) => s.scale.setScalar(0.11));
-  const rings = L.sats.flatMap((_, i) => {
-    const [r, y, tilt, turn] = ORBIT(i);
-    return strip(Array.from({ length: 65 }, (_, k) => orbit(r, y, tilt, turn, (k / 64) * Math.PI * 2)));
-  });
-  scene.add(L.track, L.cars, L.cable, L.sparks, L.route, ...L.planes, ...L.sats, lines(rings, 'inkFaint', 0.14));
+  scene.add(L.track, L.cars, L.conduit, L.sparks, ...L.planes, ...L.sats);
   return L;
 }
 
-/** Monorail j from a to b; its train shuttles end to end, dwelling at each platform. */
-export function monorail(L: Links, j: number, a: Vec3, b: Vec3, t: number): void {
+/** Monorail j between stations a and b. Its train shuttles end to end, dwelling at each
+ *  platform; current runs along the conduit under it toward b when `flow` is 1, toward a
+ *  when it is -1. */
+export function monorail(L: Links, j: number, a: Vec3, b: Vec3, t: number, flow: 1 | -1): void {
   const pts = arc(a, b, 0.25, j % 2 ? 0.35 : -0.35, SEGS);
   write(L.track, railOf(pts), j * size(SEGS, railOf));
+  const under = pts.map((p): Vec3 => [p[0], p[1] - 0.018, p[2]]);
+  write(L.conduit, strip(under), j * size(SEGS, strip));
+  for (let k = 0; k < 3; k++) {
+    const u = (((t * 0.16 * flow + k / 3 + j * 0.13) % 1) + 1) % 1;
+    const p = along(under, u);
+    L.sparks.setMatrixAt(j * 3 + k, m4.makeTranslation(p[0], p[1], p[2]));
+  }
   const phase = (t / 10 + j * 0.31) % 1;
   const u = Math.min(1, Math.max(0, Math.abs(phase * 2 - 1) * 1.25 - 0.12));
   for (let k = 0; k < CARS; k++) {
@@ -77,26 +80,13 @@ export function monorail(L: Links, j: number, a: Vec3, b: Vec3, t: number): void
   }
 }
 
-/** Power cable j from a to b, sagging between them, two pulses of current running along. */
-export function cable(L: Links, j: number, a: Vec3, b: Vec3, t: number): void {
-  const pts = arc(a, b, -0.4, 0, SEGS);
-  write(L.cable, strip(pts), j * size(SEGS, strip));
-  [0, 0.5].forEach((o, k) => {
-    const p = along(pts, (t * 0.2 + o + j * 0.13) % 1);
-    L.sparks.setMatrixAt(j * 2 + k, m4.makeTranslation(p[0], p[1], p[2]));
-  });
-}
-
-/** Flight j between a and b: out and back on a high arc, the plane facing where it flies. */
-export function flight(L: Links, j: number, a: Vec3, b: Vec3, t: number): void {
-  const pts = arc(a, b, 1.1, 0.5, FLIGHT);
-  write(L.route, strip(pts), j * size(FLIGHT, strip));
-  const cyc = (t / 16 + j * 0.37) % 1;
-  const u = cyc < 0.5 ? cyc * 2 : 2 - cyc * 2;
-  const ahead = cyc < 0.5 ? Math.min(1, u + 0.01) : Math.max(0, u - 0.01);
-  const [p, n] = [along(pts, u), along(pts, ahead)];
+/** Plane j on its circuit at time t (planes share one circuit, spread round it), facing
+ *  where it goes. */
+export function flight(L: Links, j: number, path: Timed, t: number): void {
+  const period = path[path.length - 1]?.at ?? 1;
+  const [p, n] = timed(path, t + (j * period) / L.planes.length);
   L.planes[j]?.position.set(p[0], p[1], p[2]);
-  L.planes[j]?.lookAt(n[0], n[1], n[2]);
+  if (Math.hypot(n[0] - p[0], n[2] - p[2]) > 1e-4) L.planes[j]?.lookAt(n[0], n[1], n[2]);
 }
 
 /** Satellites round the vertical axis, each facing down at what it watches; then mark the
@@ -110,4 +100,20 @@ export function settle(L: Links, t: number): void {
   });
   L.cars.instanceMatrix.needsUpdate = true;
   L.sparks.instanceMatrix.needsUpdate = true;
+}
+
+/** Planes parked at the given spots (a point, and the heading of the nose), `scale` long,
+ *  as one batch. */
+export function parked(spots: readonly [Vec3, number][], scale: number): LineSegments {
+  const model = airliner();
+  const out: number[] = [];
+  for (const [p, heading] of spots) {
+    // The airliner's nose is +z; turn it to face along the heading.
+    const [c, s] = [Math.cos(heading - Math.PI / 2), Math.sin(heading - Math.PI / 2)];
+    for (let i = 0; i < model.length; i += 3) {
+      const [x, y, z] = [model[i] ?? 0, model[i + 1] ?? 0, model[i + 2] ?? 0];
+      out.push(p[0] + (x * c - z * s) * scale, p[1] + (y + 0.06) * scale, p[2] + (x * s + z * c) * scale);
+    }
+  }
+  return lines(out, 'inkStrong', 0.7);
 }
