@@ -39,6 +39,8 @@ export class Sketch {
   readonly win: Box;
   /** Boxes already used, for `place`; the window is always one. */
   readonly taken: Box[];
+  /** The style the plans of one dive share (a silicon dive's era), set by the dive. */
+  era = 'modern';
 
   constructor(
     readonly rng: Rng,
