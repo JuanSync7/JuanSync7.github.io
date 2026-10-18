@@ -9,7 +9,7 @@ import { BOUND, inset, partition, type Box, type Pt, type Sketch } from './sketc
  *  - bipolar, like the 741 op-amp: transistors as nested rectangles, resistors as strips,
  *    one big capacitor, a ring of large pads, wide aluminium joining them;
  *  - 1970s NMOS, like the 4004 and 6502: a pad ring, a PLA and a ROM as dot arrays, a
- *    datapath of repeated bit slices, random logic wired by hand at angles, buses between.
+ *    datapath of repeated bit slices, logic as cell rows or a dense hatch, buses between.
  *  The window is always the block the next level opens into. */
 
 const centre = (b: Box): Pt => [(b[0] + b[2]) / 2, (b[1] + b[3]) / 2];
@@ -88,12 +88,12 @@ export function bipolar(S: Sketch): void {
   S.rect(inset(S.win, -0.02), 1);
   const area = inset(BOUND, 0.3);
   const terms: Pt[] = [];
-  for (let i = 0; i < S.int(10, 16); i++) {
-    const s = S.r(0.06, 0.1);
+  for (let i = 0; i < S.int(22, 32); i++) {
+    const s = S.r(0.05, 0.09);
     const b = S.place(s * 2.2, s * 1.4, area, 0.05);
     if (b) terms.push(...bjt(S, (b[0] + b[2]) / 2, (b[1] + b[3]) / 2, s));
   }
-  for (let i = 0; i < S.int(5, 9); i++) {
+  for (let i = 0; i < S.int(10, 16); i++) {
     const tall = S.chance(0.5);
     const b = S.place(tall ? 0.05 : S.r(0.3, 0.6), tall ? S.r(0.3, 0.5) : 0.05, area, 0.05);
     if (!b) continue;
@@ -113,22 +113,16 @@ export function bipolar(S: Sketch): void {
   });
 }
 
-/** Wires laid by hand: each wanders in steps of 0.04 along x, y or a diagonal. */
-function organic(S: Sketch, b: Box, n: number): void {
-  for (let k = 0; k < n; k++) {
-    let [x, y] = [S.r(b[0], b[2]), S.r(b[1], b[3])];
-    let dir = S.int(0, 7);
-    const pts: Pt[] = [[x, y]];
-    for (let i = 0; i < S.int(6, 14); i++) {
-      if (S.chance(0.35)) dir = (dir + (S.chance(0.5) ? 1 : 7)) % 8;
-      const a = (dir * Math.PI) / 4;
-      [x, y] = [
-        Math.min(b[2], Math.max(b[0], x + Math.cos(a) * 0.04)),
-        Math.min(b[3], Math.max(b[1], y + Math.sin(a) * 0.04)),
-      ];
-      pts.push([x, y]);
+/** Rows of standard cells in a box: rails, then cells of random widths edge to edge. */
+function rows(S: Sketch, b: Box, rh: number): void {
+  for (let y = b[1]; y < b[3] - rh / 2; y += rh) {
+    S.seg(b[0], y, b[2], y, 1);
+    for (let x = b[0]; x < b[2] - 0.01; ) {
+      const w = Math.min(b[2] - x, S.r(0.02, 0.07));
+      S.rect([x + 0.004, y + rh * 0.18, x + w - 0.004, y + rh * 0.82], 2);
+      if (w > 0.035) S.seg(x + w / 2, y + rh * 0.18, x + w / 2, y + rh * 0.82, 2);
+      x += w;
     }
-    S.poly(pts, k % 3 ? 2 : 1);
   }
 }
 
@@ -140,7 +134,7 @@ export function nmos(S: Sketch): void {
     const r = inset(b, 0.03);
     const [w, h] = [r[2] - r[0], r[3] - r[1]];
     if (w < 0.1 || h < 0.1) continue;
-    const kind = S.int(0, 3);
+    const kind = S.int(0, 4);
     if (kind === 0) {
       // A PLA or ROM: input lines one way, product lines the other, a dot where they meet.
       S.rect(r, 1);
@@ -158,7 +152,14 @@ export function nmos(S: Sketch): void {
         for (let y = r[1] + 0.03; y < r[3] - 0.03; y += 0.07)
           S.rect([x + 0.012, y, x + w / slices - 0.012, y + 0.035], 2);
       }
-    } else organic(S, r, Math.round((w * h) / 0.012));
+    } else if (kind === 2) {
+      S.rect(r, 1);
+      rows(S, r, S.r(0.04, 0.06));
+    } else {
+      // Logic as a dense hatch, the way a plot shows a field of cells too fine to draw.
+      S.rect(r, 1);
+      S.hatch(r, S.r(0.008, 0.014), 2, S.chance(0.5) ? 'h' : 'v');
+    }
   }
   // Buses: bundles of wide lines across the die between the blocks.
   for (let i = 0; i < S.int(1, 2); i++) {

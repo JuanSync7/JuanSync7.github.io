@@ -39,38 +39,25 @@ export function analogBlock(S: Sketch): void {
   if (used[0]) track(S, centre(used[0]), centre(S.win), 0.018);
 }
 
-/** A datapath block of the NMOS era: bit slices of register cells across, an ALU band,
- *  control logic and a carry chain. */
+/** A datapath block of the NMOS era: bit slices across, and in each band one real gate
+ *  repeated in every slice (that is what a bit-sliced datapath is), the bands flipped in
+ *  turn to share their rails, buses running between them. */
 export function datapath(S: Sketch): void {
   S.rect(BOUND, 0);
-  const slices = S.int(8, 16);
+  const slices = S.int(8, 14);
   const sw = (BOUND[2] - BOUND[0]) / slices;
-  for (let i = 0; i <= slices; i++) S.seg(BOUND[0] + i * sw, BOUND[1], BOUND[0] + i * sw, BOUND[3], 2);
-  const bands = S.int(4, 7);
-  const bh = (BOUND[3] - BOUND[1]) / bands;
+  const bands = S.int(4, 6);
+  const gap = 0.05;
+  const bh = (BOUND[3] - BOUND[1] - gap * bands) / bands;
   for (let j = 0; j < bands; j++) {
-    const y = BOUND[1] + j * bh;
-    // A bus of three lines along each band's top, then the band's own cells per slice.
-    for (let k = 0; k < 3; k++) S.seg(BOUND[0], y + 0.02 + k * 0.018, BOUND[2], y + 0.02 + k * 0.018, k ? 2 : 1);
-    const kind = S.int(0, 2);
-    const [t, b] = [y + 0.08, y + bh - 0.03];
+    const y = BOUND[1] + j * (bh + gap);
+    for (let k = 0; k < 3; k++) S.seg(BOUND[0], y + 0.012 + k * 0.014, BOUND[2], y + 0.012 + k * 0.014, k ? 2 : 1);
+    const g = gate(S.rng);
+    const pitch = (sw * 0.9) / width(g, 1);
     for (let i = 0; i < slices; i++) {
       const x = BOUND[0] + i * sw;
-      if (kind === 0) {
-        // A register bit: two transistors, poly across, contacts to the bus.
-        S.rect([x + sw * 0.15, t, x + sw * 0.45, b], 2);
-        S.rect([x + sw * 0.55, t, x + sw * 0.85, b], 2);
-        S.seg(x + sw * 0.08, (t + b) / 2, x + sw * 0.92, (t + b) / 2, 1);
-        contact(S, x + sw * 0.3, t + 0.02, 0.008);
-      } else if (kind === 1) {
-        for (let k = 1; k < 4; k++) S.seg(x + (sw * k) / 4, t, x + (sw * k) / 4, b, 2);
-        S.seg(x + sw * 0.25, b, x + sw * 0.75, t, 1);
-      } else {
-        // The carry chain: one stage per slice, each handing on to the next.
-        contact(S, x + sw / 2, (t + b) / 2, Math.min(sw, bh) * 0.08);
-        S.seg(x + sw / 2, (t + b) / 2, Math.min(BOUND[2], x + sw * 1.5), (t + b) / 2, 0);
-        S.rect([x + sw * 0.2, t, x + sw * 0.8, (t + b) / 2 - 0.02], 2);
-      }
+      stick(S, g, x + sw * 0.05, y + gap, bh, pitch, j % 2 === 1);
+      S.seg(x, y + gap, x, y + gap + bh, 2);
     }
   }
 }
@@ -80,14 +67,18 @@ export function datapath(S: Sketch): void {
  *  transistors and resistors up close instead. The window is a stretch of one row. */
 export function cells(S: Sketch): void {
   if (S.era === 'bipolar') {
-    const ps: Pt[] = [];
-    for (let x = BOUND[0] + 0.45; x < BOUND[2] - 0.3; x += S.r(0.7, 1))
-      ps.push(...bjt(S, x, S.r(-0.5, 0.5), S.r(0.2, 0.3)));
-    for (let i = 0; i < S.int(3, 6); i++) {
-      const b = S.place(S.r(0.6, 1.4), 0.07, BOUND, 0.08);
-      if (b) S.rect(b, 1);
+    // A transistor array, like an array chip seen close: a grid of transistors edge to edge,
+    // the emitters of each row strapped together, a resistor strip between rows.
+    const [cols, rws] = [S.int(5, 8), S.int(3, 4)];
+    const [cw, ch] = [(BOUND[2] - BOUND[0]) / cols, (BOUND[3] - BOUND[1]) / rws];
+    for (let j = 0; j < rws; j++) {
+      const ts: Pt[] = [];
+      for (let i = 0; i < cols; i++)
+        ts.push(bjt(S, BOUND[0] + (i + 0.5) * cw, BOUND[1] + (j + 0.42) * ch, Math.min(cw * 0.38, ch * 0.5))[2]);
+      const y = BOUND[1] + (j + 0.88) * ch;
+      S.rect([BOUND[0] + 0.05, y - 0.012, BOUND[2] - 0.05, y + 0.012], 1);
+      for (let i = 0; i + 1 < ts.length; i++) track(S, ts[i] ?? [0, 0], ts[i + 1] ?? [0, 0], 0.03);
     }
-    for (let i = 0; i + 2 < ps.length; i += 2) track(S, ps[i] ?? [0, 0], ps[i + 2] ?? [0, 0], 0.05);
     return;
   }
   const rh = WY * 2;
@@ -125,66 +116,66 @@ export function cells(S: Sketch): void {
   }
 }
 
-/** The package of an older die: a dual in-line or a quad flat body, its leads, the lead
- *  frame's fingers reaching in toward the cavity, and a bond wire from each finger to the
- *  edge of the die. */
+/** The package of an older die: a ceramic pin-grid array. Rows of pins fill the body up to
+ *  the seal ring; inside it, a ring of bond fingers round the cavity, and a bond wire from
+ *  every finger to the edge of the die. Every part repeats, so the whole body is filled. */
 export function bonded(S: Sketch): void {
-  const dip = S.chance(0.55);
-  const body: Box = dip ? [-1.8, -0.74, 1.8, 0.74] : inset(BOUND, 0.12);
+  const body = inset(BOUND, 0.03);
   S.rect(body, 0);
-  if (dip) S.arc(body[0], 0, 0.1, -Math.PI / 2, Math.PI / 2, 1, 10);
-  else S.circle(body[0] + 0.12, body[1] + 0.12, 0.03, 1);
-  const cavity = inset(S.win, -0.08);
+  S.rect(inset(body, 0.025), 2);
+  S.poly(
+    [
+      [body[0] + 0.05, body[1] + 0.05],
+      [body[0] + 0.14, body[1] + 0.05],
+      [body[0] + 0.05, body[1] + 0.14],
+    ],
+    1,
+    true,
+  );
+  const out = inset(S.win, -S.r(0.3, 0.42));
+  const lim = inset(body, 0.1);
+  const seal: Box = [
+    Math.max(out[0], lim[0]),
+    Math.max(out[1], lim[1]),
+    Math.min(out[2], lim[2]),
+    Math.min(out[3], lim[3]),
+  ];
+  S.rect(seal, 1);
+  S.rect(inset(seal, 0.02), 1);
+  // Pins on a grid, from the rim in to the seal ring: a square pad with its pin in it.
+  const p = S.r(0.075, 0.1);
+  for (let x = body[0] + 0.1; x < body[2] - 0.06; x += p)
+    for (let y = body[1] + 0.1; y < body[3] - 0.06; y += p) {
+      if (x > seal[0] - 0.05 && x < seal[2] + 0.05 && y > seal[1] - 0.05 && y < seal[3] + 0.05) continue;
+      S.rect([x - p * 0.3, y - p * 0.3, x + p * 0.3, y + p * 0.3], 2);
+      S.dot(x, y);
+    }
+  // The bond fingers: a dense ring of short bars pointing in at the cavity, each wired to
+  // the die edge straight toward its centre.
+  const ring = inset(S.win, -0.14);
+  const cavity = inset(S.win, -0.05);
   S.rect(cavity, 1);
-  S.rect(inset(S.win, -0.03), 2);
-  // Leads round the body, a finger from each, and a bond wire from each finger's tip to the
-  // nearest edge of the die.
-  const n = dip ? S.int(7, 14) : S.int(8, 16);
-  const m = dip ? 0 : Math.max(3, Math.round((n * (body[3] - body[1])) / (body[2] - body[0])));
-  const leads: [Pt, Pt][] = [];
-  for (let i = 0; i < n; i++) {
-    const x = body[0] + ((body[2] - body[0]) * (i + 0.5)) / n;
-    leads.push([
-      [x, body[1]],
-      [x, BOUND[1]],
-    ]);
-  }
-  for (let i = 0; i < m; i++) {
-    const y = body[1] + ((body[3] - body[1]) * (i + 0.5)) / m;
-    leads.push([
-      [body[2], y],
-      [BOUND[2], y],
-    ]);
-  }
-  for (let i = n - 1; i >= 0; i--) {
-    const x = body[0] + ((body[2] - body[0]) * (i + 0.5)) / n;
-    leads.push([
-      [x, body[3]],
-      [x, BOUND[3]],
-    ]);
-  }
-  for (let i = m - 1; i >= 0; i--) {
-    const y = body[1] + ((body[3] - body[1]) * (i + 0.5)) / m;
-    leads.push([
-      [body[0], y],
-      [BOUND[0], y],
-    ]);
-  }
-  const ring = inset(S.win, -0.2);
-  const [cx, cy] = [(S.win[0] + S.win[2]) / 2, (S.win[1] + S.win[3]) / 2];
-  // Each finger runs straight in toward the die's centre and stops at the ring round the
-  // cavity, so the frame fans in without crossing whatever the body's shape.
-  leads.forEach(([p, out]) => {
-    const [dx, dy] = [p[0] - cx, p[1] - cy];
-    const k = Math.min(
-      dx ? ((dx > 0 ? ring[2] : ring[0]) - cx) / dx : Infinity,
-      dy ? ((dy > 0 ? ring[3] : ring[1]) - cy) / dy : Infinity,
-    );
-    const tip: Pt = [cx + dx * k, cy + dy * k];
-    S.seg(p[0], p[1], out[0], out[1], 1);
-    S.seg(p[0], p[1], tip[0], tip[1], 2);
-    S.rect([tip[0] - 0.012, tip[1] - 0.012, tip[0] + 0.012, tip[1] + 0.012], 2);
-    const die: Pt = [Math.min(S.win[2], Math.max(S.win[0], tip[0])), Math.min(S.win[3], Math.max(S.win[1], tip[1]))];
-    S.seg(tip[0], tip[1], die[0], die[1], 2);
-  });
+  const [cx, cy] = centre(S.win);
+  const pitch = 0.035;
+  const fingersOn = (a: Pt, b: Pt): void => {
+    const n = Math.floor(Math.hypot(b[0] - a[0], b[1] - a[1]) / pitch);
+    for (let i = 1; i < n; i++) {
+      const [x, y] = [a[0] + ((b[0] - a[0]) * i) / n, a[1] + ((b[1] - a[1]) * i) / n];
+      const [dx, dy] = [cx - x, cy - y];
+      const l = Math.hypot(dx, dy) || 1;
+      S.seg(x, y, x + (dx / l) * 0.05, y + (dy / l) * 0.05, 1);
+      // Where the wire meets the die: the ray enters the die's box when it has crossed the
+      // last of its two slabs, so take the larger of the two entry distances.
+      const k = Math.max(
+        dx ? ((dx > 0 ? S.win[0] : S.win[2]) - x) / dx : -Infinity,
+        dy ? ((dy > 0 ? S.win[1] : S.win[3]) - y) / dy : -Infinity,
+      );
+      S.seg(x + (dx / l) * 0.05, y + (dy / l) * 0.05, x + dx * k, y + dy * k, 2);
+    }
+  };
+  const [x0, y0, x1, y1] = ring;
+  fingersOn([x0, y0], [x1, y0]);
+  fingersOn([x1, y0], [x1, y1]);
+  fingersOn([x1, y1], [x0, y1]);
+  fingersOn([x0, y1], [x0, y0]);
 }

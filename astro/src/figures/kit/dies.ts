@@ -108,10 +108,10 @@ export function die(S: Sketch): void {
     S.rect(r, 1);
     const edge = r[0] <= area[0] + 0.03 || r[2] >= area[2] - 0.03 || r[1] <= area[1] + 0.03 || r[3] >= area[3] - 0.03;
     const kind = edge && Math.min(w, h) < 0.3 ? 0 : S.int(1, 3);
-    if (kind === 0) S.hatch(r, 0.04, 2, w > h ? 'v' : 'h');
+    if (kind === 0) S.hatch(r, 0.02, 2, w > h ? 'v' : 'h');
     else if (kind === 1)
       S.grid(inset(r, 0.02), Math.max(1, Math.round(w / 0.16)), Math.max(1, Math.round(h / 0.12)), 2);
-    else if (kind === 2) S.hatch(r, 0.02, 2);
+    else if (kind === 2) S.hatch(r, 0.01, 2);
     else for (let d = 0.02; d < Math.min(w, h) / 2; d += 0.025) S.rect(inset(r, d), 2);
   }
 }
@@ -141,9 +141,9 @@ export function core(S: Sketch): void {
           ];
           S.hatch(inset(cell, 0.015), 0.012, 2);
         }
-    } else if (kind === 1) S.grid(inset(r, 0.015), Math.round(w / 0.04), Math.round(h / 0.04), 2);
-    else if (kind === 2) S.hatch(r, 0.03, 2, 'v');
-    else S.hatch(r, 0.022, 2);
+    } else if (kind === 1) S.grid(inset(r, 0.015), Math.round(w / 0.025), Math.round(h / 0.025), 2);
+    else if (kind === 2) S.hatch(r, 0.014, 2, 'v');
+    else S.hatch(r, 0.011, 2);
   }
 }
 
