@@ -1,4 +1,6 @@
-import type { Box, Sketch, Tone } from './sketch';
+import { Layout } from './layout';
+import { Piece } from './piece';
+import type { Box, Sketch } from './sketch';
 
 /** Furniture seen from above for floor plans (`kit/rooms.ts`), the way an architect draws
  *  it: beds with pillows and nightstands, sofas, armchairs, coffee and dining tables with
@@ -22,44 +24,6 @@ export const ROOMS = [
   'store',
 ] as const;
 export type Room = (typeof ROOMS)[number];
-
-/** A pen in a piece's own frame: (x, y) in metres from its centre, turned by `turn`
- *  quarter turns, placed at (cx, cy). */
-class Piece {
-  constructor(
-    private readonly S: Sketch,
-    private readonly cx: number,
-    private readonly cy: number,
-    private readonly turn: number,
-    private readonly m: number,
-  ) {}
-  private at(x: number, y: number): [number, number] {
-    const [u, v] = [
-      [x, y],
-      [-y, x],
-      [-x, -y],
-      [y, -x],
-    ][((this.turn % 4) + 4) % 4] ?? [x, y];
-    return [this.cx + u * this.m, this.cy + v * this.m];
-  }
-  seg(x0: number, y0: number, x1: number, y1: number, t: Tone = 2): void {
-    const [a, b] = [this.at(x0, y0), this.at(x1, y1)];
-    this.S.seg(a[0], a[1], b[0], b[1], t);
-  }
-  rect(x0: number, y0: number, x1: number, y1: number, t: Tone = 2): void {
-    this.seg(x0, y0, x1, y0, t);
-    this.seg(x1, y0, x1, y1, t);
-    this.seg(x1, y1, x0, y1, t);
-    this.seg(x0, y1, x0, y0, t);
-  }
-  circle(x: number, y: number, r: number, t: Tone = 2, a0 = 0, a1 = Math.PI * 2): void {
-    const n = r > 0.3 ? 16 : 10;
-    for (let i = 0; i < n; i++) {
-      const [a, b] = [a0 + ((a1 - a0) * i) / n, a0 + ((a1 - a0) * (i + 1)) / n];
-      this.seg(x + Math.cos(a) * r, y + Math.sin(a) * r, x + Math.cos(b) * r, y + Math.sin(b) * r, t);
-    }
-  }
-}
 
 /** A chair at (x, y) facing +y: the seat and its back. */
 const chair = (p: Piece, x: number, y: number, flip = false): void => {
@@ -160,55 +124,63 @@ export const PIECES = {
   },
 };
 
-/** Lay out room r (its door at the top-left corner) for what it is for, M plan units to a
- *  metre. */
-export function furnish(S: Sketch, r: Box, room: Room, M = METRE): void {
+/** Lay out room r for what it is for, M plan units to a metre, keeping every piece clear
+ *  of the boxes in `keepOut` (the door's swing) and of each other (`kit/layout.ts`).
+ *  Returns the layout, so a test can check what it placed. */
+export function furnish(S: Sketch, r: Box, room: Room, M = METRE, keepOut: readonly Box[] = []): Layout {
   const [x0, y0, x1, y1] = r;
   const [w, h] = [(x1 - x0) / M, (y1 - y0) / M];
   const [cx, cy] = [(x0 + x1) / 2, (y0 + y1) / 2];
-  const at = (x: number, y: number, turn = 0): Piece => new Piece(S, x, y, turn, M);
+  const L = new Layout(S, r, keepOut);
+  /** Place a piece at (x, y), turned, drawn by `draw`. */
+  const put = (x: number, y: number, turn: number, draw: (p: Piece) => void, solid = true): void => {
+    L.put((B) => draw(new Piece(B, x, y, turn, M)), solid);
+  };
   const fits = (mw: number, mh: number): boolean => w >= mw && h >= mh;
   if (room === 'bedroom') {
-    PIECES.bed(at(cx, y0 + 1.1 * M), fits(4, 3.4));
-    if (fits(5, 4)) PIECES.wardrobe(at(x1 - 0.35 * M, cy, 1), Math.min(2.4, h - 1));
-    PIECES.plant(at(x0 + 0.4 * M, y1 - 0.4 * M));
+    put(cx, y0 + 1.1 * M, 0, (p) => PIECES.bed(p, fits(4, 3.4)));
+    if (fits(5, 4)) put(x1 - 0.35 * M, cy, 1, (p) => PIECES.wardrobe(p, Math.min(2.4, h - 1)));
+    put(x0 + 0.4 * M, y1 - 0.4 * M, 0, PIECES.plant);
   } else if (room === 'living') {
-    PIECES.rug(at(cx, cy), Math.min(3, w - 1.5), Math.min(2.2, h - 1.8));
-    PIECES.sofa(at(cx, y1 - 0.55 * M, 2), Math.min(2.6, w - 1.2));
-    PIECES.table(at(cx, cy), 0);
-    if (fits(5, 4)) PIECES.armchair(at(x0 + 0.6 * M, cy, 3));
-    S.rect([cx - 0.8 * M, y0 + 0.05 * M, cx + 0.8 * M, y0 + 0.4 * M], 1);
-    PIECES.plant(at(x1 - 0.4 * M, y0 + 0.4 * M));
+    put(cx, cy, 0, (p) => PIECES.rug(p, Math.min(3, w - 1.5), Math.min(2.2, h - 1.8)), false);
+    put(cx, y1 - 0.55 * M, 2, (p) => PIECES.sofa(p, Math.min(2.6, w - 1.2)));
+    put(cx, cy, 0, (p) => PIECES.table(p, 0));
+    if (fits(5, 4)) put(x0 + 0.6 * M, cy, 3, PIECES.armchair);
+    L.put((B) => B.rect([cx - 0.8 * M, y0 + 0.05 * M, cx + 0.8 * M, y0 + 0.4 * M], 1));
+    put(x1 - 0.4 * M, y0 + 0.4 * M, 0, PIECES.plant);
   } else if (room === 'kitchen' || room === 'dining') {
-    if (room === 'kitchen') PIECES.kitchen(at(cx, y0 + 0.35 * M), Math.min(w - 0.4, 4));
+    if (room === 'kitchen') put(cx, y0 + 0.35 * M, 0, (p) => PIECES.kitchen(p, Math.min(w - 0.4, 4)));
     const round = !fits(4.5, 3.5);
-    PIECES.table(
-      at(cx, room === 'kitchen' ? cy + 0.5 * M : cy),
-      round ? 4 : Math.min(8, Math.floor((w - 1) / 0.64) * 2),
-      round,
-    );
+    const seats = round ? 4 : Math.min(8, Math.floor((w - 1) / 0.64) * 2);
+    put(cx, room === 'kitchen' ? cy + 0.5 * M : cy, 0, (p) => PIECES.table(p, seats, round));
   } else if (room === 'bath' || room === 'wc') {
-    if (room === 'bath' && fits(2, 1.6)) PIECES.bath(at(cx, y0 + 0.45 * M));
+    if (room === 'bath' && fits(2, 1.6)) put(cx, y0 + 0.45 * M, 0, PIECES.bath);
     const n = room === 'wc' ? Math.max(1, Math.floor(w / 0.9)) : 1;
     for (let i = 0; i < n; i++) {
       const x = x0 + (i + 0.5) * (w / n) * M;
-      PIECES.toilet(at(x, y1 - 0.4 * M, 2));
-      if (room === 'wc') S.seg(x + (w / n / 2) * M, y1, x + (w / n / 2) * M, y1 - 1.2 * M, 2);
+      put(x, y1 - 0.4 * M, 2, PIECES.toilet);
+      if (room === 'wc' && i < n - 1)
+        L.put((B) => B.seg(x + (w / n / 2) * M, y1, x + (w / n / 2) * M, y1 - 1.2 * M, 2));
     }
-    PIECES.basin(at(x0 + 0.4 * M, cy, 3));
+    put(x0 + 0.4 * M, cy, 3, PIECES.basin);
   } else if (room === 'study' || room === 'office') {
     const cols = room === 'study' ? 1 : Math.max(1, Math.floor((w - 0.6) / 1.6));
     const rows = room === 'study' ? 1 : Math.max(1, Math.floor((h - 0.6) / 1.6));
     for (let i = 0; i < cols; i++)
-      for (let j = 0; j < rows; j++) PIECES.desk(at(x0 + (0.9 + i * 1.6) * M, y0 + (0.6 + j * 1.6) * M));
-    if (room === 'study') S.rect([x1 - 0.35 * M, y0 + 0.1 * M, x1 - 0.05 * M, y1 - 0.1 * M], 1);
+      for (let j = 0; j < rows; j++) put(x0 + (0.9 + i * 1.6) * M, y0 + (0.6 + j * 1.6) * M, 0, PIECES.desk);
+    if (room === 'study') L.put((B) => B.rect([x1 - 0.35 * M, y0 + 0.1 * M, x1 - 0.05 * M, y1 - 0.1 * M], 1));
   } else if (room === 'meeting') {
-    PIECES.table(at(cx, cy), Math.max(4, Math.min(10, Math.floor((w - 1.4) / 0.64) * 2)));
-    S.seg(cx - 0.9 * M, y0 + 0.08 * M, cx + 0.9 * M, y0 + 0.08 * M, 1);
+    const seats = Math.max(4, Math.min(10, Math.floor((w - 1.4) / 0.64) * 2));
+    put(cx, cy, 0, (p) => PIECES.table(p, seats));
+    L.put((B) => B.seg(cx - 0.9 * M, y0 + 0.08 * M, cx + 0.9 * M, y0 + 0.08 * M, 1));
   } else if (room === 'stair') {
-    S.hatch([cx - 0.6 * M, y0 + 0.4 * M, cx + 0.6 * M, y1 - 0.4 * M], 0.28 * M, 2);
-    S.seg(cx, y1 - 0.6 * M, cx, y0 + 0.6 * M, 1);
+    L.put((B) => {
+      B.hatch([cx - 0.6 * M, y0 + 0.4 * M, cx + 0.6 * M, y1 - 0.4 * M], 0.28 * M, 2);
+      B.seg(cx, y1 - 0.6 * M, cx, y0 + 0.6 * M, 1);
+    });
   } else {
-    for (let y = y0 + 0.2 * M; y < y1 - 0.5 * M; y += 0.9 * M) S.rect([x0 + 0.2 * M, y, x1 - 0.2 * M, y + 0.45 * M], 2);
+    for (let y = y0 + 0.2 * M; y < y1 - 0.5 * M; y += 0.9 * M)
+      L.put((B) => B.rect([x0 + 0.2 * M, y, x1 - 0.2 * M, y + 0.45 * M], 2));
   }
+  return L;
 }

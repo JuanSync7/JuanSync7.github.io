@@ -1,3 +1,4 @@
+import { beacon } from './glow';
 import { ink, rgb } from './ink';
 import { fbm, noise2 } from './noise';
 import { between, pick, type Rng } from './rng';
@@ -84,14 +85,17 @@ export function drawGas(
     const hot = i === 0;
     const b = hot ? 1 : 0.4 + 0.5 * ((i * 0.37) % 1);
     const spike = (hot ? 9 : 3 + (i % 4) * 2) * (0.85 + 0.15 * Math.sin(t * 1.5 + i));
-    ctx.strokeStyle = hot ? ink.signal(0.8) : ink.line(b * 0.6);
+    ctx.strokeStyle = hot ? ink.signal(0.45) : ink.line(b * 0.6);
     ctx.beginPath();
     ctx.moveTo(x - spike, y);
     ctx.lineTo(x + spike, y);
     ctx.moveTo(x, y - spike);
     ctx.lineTo(x, y + spike);
     ctx.stroke();
-    ctx.fillStyle = hot ? ink.signal(0.95) : ink.line(b);
-    ctx.fillRect(x - 1.5, y - 1.5, 3, 3);
+    if (hot) beacon(ctx, x, y, 8);
+    else {
+      ctx.fillStyle = ink.line(b);
+      ctx.fillRect(x - 1.5, y - 1.5, 3, 3);
+    }
   });
 }
