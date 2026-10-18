@@ -63,27 +63,28 @@ function foundry(P: Plot, k: number): void {
     assembly(P, -0.52, 0.42, -0.02);
     for (let i = 0; i < 3; i++) P.add('stack', -0.5 + i * 0.36, -0.4, 0.045, 0.045, P.r(0.24, 0.32));
     P.add('hall', 0.0, -0.36, 0.5, 0.14, 0.07);
-    P.ellipse(0.1, 0.33, 0.42, 0.13, 24);
-    P.roads.push(
+    P.road(
       Array.from({ length: 24 }, (_, i) => [
         0.1 + Math.cos((i / 24) * Math.PI * 2) * 0.42,
         0.004,
         0.33 + Math.sin((i / 24) * Math.PI * 2) * 0.13,
       ]),
+      0.045,
     );
     P.trees(0.1, 0.33, 0.5, 0.12, 4, false);
   } else {
     // The press shop and parts store feed the line above; trucks bring the steel in.
     for (let i = 0; i < 3; i++) P.add('hall', -0.45 + i * 0.3, -0.22, 0.24, 0.16, 0.08);
     for (let i = 0; i < 4; i++) P.add('block', -0.5 + i * 0.3, 0.2, 0.2, 0.14, P.r(0.05, 0.08));
-    P.roads.push([
-      [-0.75, 0.004, 0.0],
-      [0.75, 0.004, 0.0],
-      [0.75, 0.004, 0.42],
-      [-0.75, 0.004, 0.42],
-    ]);
-    P.line(-0.75, 0, 0.75, 0);
-    P.line(-0.75, 0.42, 0.75, 0.42);
+    P.road(
+      [
+        [-0.75, 0.004, 0.0],
+        [0.75, 0.004, 0.0],
+        [0.75, 0.004, 0.42],
+        [-0.75, 0.004, 0.42],
+      ],
+      0.05,
+    );
   }
 }
 

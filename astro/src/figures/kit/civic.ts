@@ -13,17 +13,26 @@ import type { Rng } from './rng';
 export function housing(P: Plot, x: number, z: number, n: number): void {
   const pitch = 0.13;
   const x0 = x - ((n - 1) * pitch) / 2;
-  P.line(x0 - 0.08, z, x0 + (n - 1) * pitch + 0.08, z);
+  const x1 = x0 + (n - 1) * pitch;
+  P.road(
+    [
+      [x0 - 0.08, 0, z],
+      [x1 + 0.08, 0, z],
+    ],
+    0.05,
+    true,
+  );
   for (let i = 0; i < n; i++)
     for (const s of [-1, 1]) {
       const hx = x0 + i * pitch + P.r(-0.01, 0.01);
       P.add('house', hx, z + s * 0.08, 0.075, 0.06, P.r(0.04, 0.06));
       if (P.rng() > 0.45) P.trees(hx + 0.045, z + s * 0.14, 0.04, 0.03, 1, false);
     }
+  // Traffic keeps to its lane: out on one side of the centre line, back on the other.
   P.roads.push([
     [x0 - 0.06, 0.004, z - 0.012],
-    [x0 + (n - 1) * pitch + 0.06, 0.004, z - 0.012],
-    [x0 + (n - 1) * pitch + 0.06, 0.004, z + 0.012],
+    [x1 + 0.06, 0.004, z - 0.012],
+    [x1 + 0.06, 0.004, z + 0.012],
     [x0 - 0.06, 0.004, z + 0.012],
   ]);
 }
