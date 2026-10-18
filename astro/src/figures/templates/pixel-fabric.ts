@@ -1,8 +1,8 @@
 import { defineTemplate } from '../defineTemplate';
 import { ink } from '../kit/ink';
-import { noise2 } from '../kit/noise';
 import { bayer, cell, pixelGrid, type PixelGrid } from '../kit/pixel';
-import { between, pick, type Rng } from '../kit/rng';
+import { between, pick } from '../kit/rng';
+import { MOVES, tealAt, WEIGHTS, weights, type Move } from '../kit/fabric';
 import { order, SWEEPS, type Order, type Sweep } from '../kit/sweeps';
 
 /** A fabric of pixel blocks in a grid, with a wave of dithered tone passing over it, all
@@ -10,14 +10,14 @@ import { order, SWEEPS, type Order, type Sweep } from '../kit/sweeps';
  *  block's pixels are (solid, a frame, dots, rows, a cross or a look-up pattern), how heavy
  *  each block is, the order the wave takes (one of `kit/sweeps.ts`, sometimes two at once),
  *  its timing (smooth, stepped, missing a beat, eased) and the shape of its front (a blip,
- *  a trail, a wipe, a swell). The teal is a whole block, half blocks, a column, a corner or
- *  the block riding the front. The pointer lights the block under it and its neighbours. */
+ *  a trail, a wipe, a swell). The teal has a shape (a whole block, halves, a column, a corner,
+ *  a dot) and a way of moving: wandering, hopping, scanning, riding the front, blinking
+ *  between two blocks, now and then standing still. The pointer lights the block under it and its neighbours. */
 
 const FILLS = ['solid', 'frame', 'dots', 'rows', 'cross', 'lut'] as const;
-const WEIGHTS = ['even', 'random', 'gradient', 'clusters', 'sparse', 'bands'] as const;
 const TIMES = ['smooth', 'stepped', 'skip', 'ease'] as const;
 const FRONTS = ['blip', 'trail', 'wipe', 'swell'] as const;
-const TEALS = ['block', 'halves', 'column', 'corner', 'rider'] as const;
+const TEALS = ['block', 'halves', 'column', 'corner', 'dot'] as const;
 
 interface P {
   bw: number;
@@ -40,28 +40,16 @@ interface P {
   front: (typeof FRONTS)[number];
   width: number;
   teal: (typeof TEALS)[number];
-  /** The teal's blocks, by index. */
+  move: Move;
+  /** Its beats a second (hop, scan, blink), and its wander's two rates and phases. */
+  beat: number;
+  wander: [number, number, number, number];
+  /** The teal's blocks, by index, when it stands or blinks. */
   at: [number, number];
   salt: number;
 }
 interface S {
   orders: Order[];
-}
-
-function weights(rng: Rng, kind: (typeof WEIGHTS)[number], cols: number, rows: number): number[] {
-  const n = noise2(rng);
-  const [dx, dy] = [rng() - 0.5, rng() - 0.5];
-  const band = 2 + Math.floor(rng() * 3);
-  return Array.from({ length: cols * rows }, (_, k) => {
-    const [i, j] = [k % cols, Math.floor(k / cols)];
-    if (kind === 'even') return 0.8;
-    if (kind === 'gradient')
-      return 0.25 + 0.75 * Math.min(1, Math.max(0, 0.5 + (i / cols - 0.5) * dx * 2 + (j / rows - 0.5) * dy * 2));
-    if (kind === 'clusters') return 0.2 + 0.8 * Math.max(0, n(i * 0.35, j * 0.35) * 0.5 + 0.5);
-    if (kind === 'sparse') return rng() < 0.35 ? 0.1 : 0.6 + rng() * 0.4;
-    if (kind === 'bands') return (Math.floor(j / band) + Math.floor(i / band)) % 2 ? 0.95 : 0.4;
-    return 0.25 + rng() * 0.75;
-  });
 }
 
 /** Whether pixel (x, y) of a bw × bh block is part of it, for the block's fill. */
@@ -123,7 +111,10 @@ export default defineTemplate<P, S>({
       steps: 4 + Math.floor(rng() * 9),
       front: pick(rng, FRONTS),
       width: between(rng, 0.1, 0.28),
-      teal: pick(rng, bw >= 4 && bh >= 4 ? TEALS : (['block', 'halves', 'rider'] as const)),
+      teal: pick(rng, bw >= 4 && bh >= 4 ? TEALS : (['block', 'halves'] as const)),
+      move: pick(rng, MOVES),
+      beat: between(rng, 0.7, 2.6),
+      wander: [between(rng, 0.25, 0.7), between(rng, 0.3, 0.8), rng() * 6.3, rng() * 6.3],
       at: [Math.floor(rng() * n), Math.floor(rng() * n)],
       salt: Math.floor(rng() * 1e6),
     };
@@ -166,15 +157,16 @@ export default defineTemplate<P, S>({
       for (let i = 0; i < p.cols; i++)
         for (let j = 0; j < p.rows; j++) if (gx >= origin(i, p.bw, p) && gy >= origin(j, p.bh, p)) [pi, pj] = [i, j];
     const tones = Array.from({ length: p.cols * p.rows }, (_, k) => at(k) * (p.weight[k] ?? 0.5));
-    let rider = 0;
-    if (p.teal === 'rider') tones.forEach((v, k) => (v > (tones[rider] ?? 0) ? (rider = k) : 0));
+    const home = tealAt(p.move, p, tones, t);
+    const next = Math.floor(home / p.cols) * p.cols + (((home % p.cols) + 1) % p.cols);
     const teal = (k: number, x: number, y: number): boolean => {
       if (Math.floor(k / p.cols) === pj && k % p.cols === pi) return true;
-      if (p.teal === 'rider') return k === rider;
-      if (p.teal === 'halves') return (k === p.at[0] && x < p.bw / 2) || (k === p.at[1] && x >= p.bw / 2);
-      if (p.teal === 'column') return k === p.at[0] && x === Math.floor(p.bw / 2);
-      if (p.teal === 'corner') return k === p.at[0] && (x === 0 || y === p.bh - 1);
-      return k === p.at[0];
+      if (p.teal === 'halves') return (k === home && x < p.bw / 2) || (k === next && x >= p.bw / 2);
+      if (k !== home) return false;
+      if (p.teal === 'column') return x === Math.floor(p.bw / 2);
+      if (p.teal === 'corner') return x === 0 || y === p.bh - 1;
+      if (p.teal === 'dot') return Math.abs(x - (p.bw - 1) / 2) < 1 && Math.abs(y - (p.bh - 1) / 2) < 1;
+      return true;
     };
     for (let j = 0; j < p.rows; j++)
       for (let i = 0; i < p.cols; i++) {

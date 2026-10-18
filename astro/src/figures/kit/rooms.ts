@@ -1,4 +1,4 @@
-import { mid } from './maps';
+import { furnish, type Room } from './furniture';
 import { BOUND, inset, overlaps, partition, WX, type Box, type Sketch } from './sketch';
 
 /** The inner half of the city chain of plans for a zoom dive (`kit/sketch.ts`): a block (one
@@ -83,58 +83,44 @@ export function building(S: Sketch): void {
     S.rect(room, 2);
     S.arc(room[0], room[3], 0.07, -Math.PI / 2, 0, 2, 6);
     S.seg(room[0], room[3], room[0], room[3] - 0.07, 2);
+    // Furniture at this plan's scale: a quarter of the floor plan's, as the floor plan is
+    // one wing of this building drawn four times bigger.
+    furnish(
+      S,
+      inset(room, 0.008),
+      (['office', 'bedroom', 'living', 'kitchen', 'bedroom'] as const)[S.int(0, 4)] ?? 'office',
+      0.025,
+    );
   }
 }
 
 /** A floor plan: outside walls with windows set in them, rooms with doors, and in each room
- *  what it is for: desks and chairs, a meeting table, washrooms, a stair, a lounge, a
- *  kitchen; the window is one room. */
+ *  what it is for, furnished from above (`kit/furniture.ts`): a home's living room,
+ *  kitchen, bedrooms and baths, or an office's desks, meeting rooms and washrooms; the
+ *  window is one room. */
 export function floor(S: Sketch): void {
   const wall = inset(BOUND, 0.02);
   S.rect(wall, 0);
   S.rect(inset(wall, 0.03), 0);
   for (let x = wall[0] + 0.15; x < wall[2] - 0.2; x += 0.3)
     for (const y of [wall[1] + 0.015, wall[3] - 0.015]) S.seg(x, y, x + 0.16, y, 2);
-  for (const b of partition(S, inset(wall, 0.03), inset(S.win, -0.012), 0.6)) {
-    const r = inset(b, 0.012);
-    const [w, h] = [r[2] - r[0], r[3] - r[1]];
-    if (w < 0.12 || h < 0.12) continue;
+  // A home or an office: the biggest room takes the main use, the next ones the rest in
+  // turn, and the small ones are baths, washrooms, stairs and stores.
+  const home = S.chance(0.55);
+  const big: Room[] = home
+    ? ['living', 'kitchen', 'bedroom', 'bedroom', 'dining', 'study', 'bedroom']
+    : ['office', 'meeting', 'office', 'kitchen', 'meeting', 'office'];
+  const small: Room[] = home ? ['bath', 'store', 'bath'] : ['wc', 'stair', 'store', 'wc'];
+  const rooms = partition(S, inset(wall, 0.03), inset(S.win, -0.012), 0.6)
+    .map((b) => inset(b, 0.012))
+    .filter((r) => r[2] - r[0] >= 0.12 && r[3] - r[1] >= 0.12)
+    .sort((a, b) => (b[2] - b[0]) * (b[3] - b[1]) - (a[2] - a[0]) * (a[3] - a[1]));
+  let [nb, ns] = [0, 0];
+  for (const r of rooms) {
     S.rect(r, 1);
     S.arc(r[0] + 0.02, r[1], 0.08, 0, Math.PI / 2, 2, 6);
     S.seg(r[0] + 0.02, r[1], r[0] + 0.02, r[1] + 0.08, 2);
-    const [cx, cy] = mid(r);
-    const kind = S.int(0, 5);
-    if (kind <= 1)
-      for (let x = r[0] + 0.12; x < r[2] - 0.14; x += 0.2)
-        for (let y = r[1] + 0.12; y < r[3] - 0.1; y += 0.2) {
-          S.rect([x, y, x + 0.12, y + 0.06], 2);
-          S.circle(x + 0.06, y + 0.085, 0.018);
-        }
-    else if (kind === 2) {
-      const t: Box = [cx - w * 0.28, cy - h * 0.16, cx + w * 0.28, cy + h * 0.16];
-      S.rect(t, 1);
-      for (let x = t[0] + 0.04; x < t[2]; x += 0.08) {
-        S.circle(x, t[1] - 0.03, 0.018);
-        S.circle(x, t[3] + 0.03, 0.018);
-      }
-    } else if (kind === 3) {
-      for (let x = r[0]; x < r[2] - 0.08; x += 0.1) S.rect([x, r[1], x + 0.1, r[1] + 0.14], 2);
-      for (let x = r[0] + 0.06; x < r[2] - 0.04; x += 0.1) S.circle(x, r[3] - 0.05, 0.022);
-    } else if (kind === 4) {
-      S.hatch([cx - 0.12, r[1] + 0.05, cx + 0.12, r[3] - 0.05], 0.03, 2);
-      S.seg(cx, r[3] - 0.08, cx, r[1] + 0.08, 1);
-    } else {
-      S.poly(
-        [
-          [cx - 0.12, cy - 0.06],
-          [cx - 0.12, cy + 0.06],
-          [cx + 0.12, cy + 0.06],
-          [cx + 0.12, cy - 0.06],
-        ],
-        1,
-      );
-      S.circle(cx, cy - 0.12, 0.04);
-      S.rect([r[0], r[3] - 0.05, r[2], r[3]], 2);
-    }
+    const tiny = Math.min(r[2] - r[0], r[3] - r[1]) < 0.24;
+    furnish(S, r, tiny ? (small[ns++ % small.length] ?? 'store') : (big[nb++ % big.length] ?? 'office'));
   }
 }
