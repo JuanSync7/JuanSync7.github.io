@@ -12,6 +12,8 @@ export const PART_KINDS = [
   ...['cell', 'macro', 'rack', 'wall', 'block', 'shed', 'belt', 'house'],
   ...['tank', 'tower', 'stack', 'silo', 'hex', 'tri', 'heap', 'dome', 'cooler', 'hall', 'rock'],
   ...['apartment', 'tree', 'pine', 'park', 'lake', 'headframe', 'pylon', 'gantry', 'solar', 'turbine'],
+  ...['drill', 'excavator', 'kiln', 'column', 'flare', 'hopper', 'crane', 'battery', 'fuelcell', 'transformer'],
+  ...['rods', 'warehouse', 'factory', 'mesa', 'birch', 'bush', 'cypress', 'oak'],
 ] as const;
 export type PartKind = (typeof PART_KINDS)[number];
 
@@ -46,6 +48,9 @@ export interface District {
   runway?: [Vec3, Vec3];
   /** Parked planes: where each stands and which way its nose points (radians, 0 along +x). */
   apron?: [Vec3, number][];
+  /** Where goods leave this level for the one above (a gathering point): the via up starts
+   *  here. */
+  ports?: Vec3[];
 }
 
 /** The overcity's street grid: walkers keep to these lines. */
@@ -54,9 +59,26 @@ export const STREETS = { x: [-0.95, -0.32, 0.32, 0.95], z: [-0.5, 0, 0.5] } as c
 /** The solid each kind stands on, or none (wireframe only). */
 export type Body = 'box' | 'round' | 'hex' | 'tri' | 'cone' | 'dome' | 'cooler' | 'hall' | 'rock' | null;
 const BODY: Partial<Record<PartKind, Body>> = {
-  ...Object.fromEntries(['cell', 'macro', 'rack', 'wall', 'block', 'shed', 'belt', 'house'].map((k) => [k, 'box'])),
-  ...Object.fromEntries(['tank', 'tower', 'stack', 'silo'].map((k) => [k, 'round'])),
+  ...Object.fromEntries(
+    [
+      'cell',
+      'macro',
+      'rack',
+      'wall',
+      'block',
+      'shed',
+      'belt',
+      'house',
+      'battery',
+      'fuelcell',
+      'transformer',
+      'warehouse',
+      'factory',
+    ].map((k) => [k, 'box']),
+  ),
+  ...Object.fromEntries(['tank', 'tower', 'stack', 'silo', 'column'].map((k) => [k, 'round'])),
   hex: 'hex',
+  mesa: 'hex',
   tri: 'tri',
   heap: 'cone',
   dome: 'dome',
@@ -86,7 +108,12 @@ export class Plot {
   workers: Vec3[] = [];
   runway?: [Vec3, Vec3];
   apron: [Vec3, number][] = [];
+  ports: Vec3[] = [];
   constructor(readonly rng: Rng) {}
+  /** A gathering point where goods leave for the level above. */
+  port(x: number, z: number): void {
+    this.ports.push([x, 0, z]);
+  }
   /** A number between a and b. */
   r(a: number, b: number): number {
     return a + this.rng() * (b - a);
@@ -150,14 +177,42 @@ export class Plot {
   pipe(...pts: Vec3[]): void {
     this.pipes.push(pts);
   }
-  /** A park with n trees, broadleaf and pine, scattered over w × d. */
+  /** A park of trees scattered over w × d: about 1.6 n of them, of six kinds, with bushes
+   *  under them. */
   trees(x: number, z: number, w: number, d: number, n: number, lawn = true): void {
     if (lawn) this.add('park', x, z, w, d, 0);
-    for (let i = 0; i < n; i++) {
-      const s = this.r(0.05, 0.09);
-      const kind = this.rng() > 0.5 ? 'tree' : 'pine';
-      this.add(kind, x + this.r(-0.4, 0.4) * w, z + this.r(-0.4, 0.4) * d, s, s, s * this.r(1.4, 2.4));
+    const kinds = ['tree', 'pine', 'birch', 'cypress', 'oak', 'oak'] as const;
+    for (let i = 0; i < Math.round(n * 1.6); i++) {
+      const s = this.r(0.04, 0.09);
+      const kind = kinds[Math.floor(this.rng() * kinds.length)] ?? 'tree';
+      const tall =
+        kind === 'cypress' || kind === 'birch' ? this.r(2.2, 3) : kind === 'oak' ? this.r(1.1, 1.5) : this.r(1.4, 2.4);
+      this.add(kind, x + this.r(-0.45, 0.45) * w, z + this.r(-0.45, 0.45) * d, s, s, s * tall);
+      if (this.rng() < 0.5)
+        this.add('bush', x + this.r(-0.45, 0.45) * w, z + this.r(-0.45, 0.45) * d, s * 0.8, s * 0.7, s * 0.4);
     }
+  }
+  /** A ridge of mountains along x from x0 to x1 at z: big low-poly peaks with mesas and
+   *  scree at their feet, and contour lines round the biggest. */
+  mountains(x0: number, x1: number, z: number, depth: number): void {
+    for (let x = x0; x < x1; x += this.r(0.12, 0.2)) {
+      const s = this.r(0.14, 0.3);
+      this.add(
+        'rock',
+        x,
+        z + this.r(-0.3, 0.3) * depth,
+        s * this.r(1.1, 1.6),
+        s,
+        s * this.r(0.9, 1.6),
+        0,
+        this.r(0, 3),
+      );
+      if (this.rng() < 0.4)
+        this.add('mesa', x + this.r(-0.06, 0.06), z + depth * 0.5, s * 0.5, s * 0.4, s * this.r(0.5, 0.9));
+    }
+    const mx = (x0 + x1) / 2;
+    for (const k of [1, 1.3, 1.6]) this.ellipse(mx, z, ((x1 - x0) / 2) * k * 0.7, depth * k * 0.6, 22);
+    this.rocks(mx, z + depth, x1 - x0, depth * 0.6, 8);
   }
   /** A formation of n low-poly rocks over w × d, big ones in the middle. */
   rocks(x: number, z: number, w: number, d: number, n: number): void {
@@ -168,7 +223,7 @@ export class Plot {
     }
   }
   done(): District {
-    const { parts, traces, pipes, roads, lines, workers, runway, apron } = this;
-    return { parts, traces, pipes, roads, lines, workers, apron, ...(runway ? { runway } : {}) };
+    const { parts, traces, pipes, roads, lines, workers, runway, apron, ports } = this;
+    return { parts, traces, pipes, roads, lines, workers, apron, ports, ...(runway ? { runway } : {}) };
   }
 }

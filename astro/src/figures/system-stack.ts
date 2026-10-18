@@ -6,21 +6,20 @@ import {
   Mesh,
   MeshBasicMaterial,
   PerspectiveCamera,
-  Vector3,
 } from 'three';
 import { defineThreeFigure } from './defineThree';
 import { animate, board, commit, lines, solids, tube, tubes, write, type Board, type Tubes } from './kit/boards';
-import { isometric, type Vec3 } from './kit/camera';
+import type { Vec3 } from './kit/camera';
 import { STREETS, type District } from './kit/city';
 import { roof } from './kit/citylife';
 import { stationOn } from './kit/civic';
 import { hubLevel, HUB_LEVELS } from './kit/hub';
-import { box } from './kit/draw';
-import { hexOf, ink, mix } from './kit/ink';
+import { hexOf } from './kit/ink';
 import { DEPTH, island, size, type Island } from './kit/islands';
 import { flight, links, monorail, parked, settle, type Links } from './kit/links';
 import { follow } from './kit/motion';
 import { along } from './kit/shapes';
+import { aim, flatStacks, heading, pickAt } from './kit/stackview';
 import { crowd, gather, type Crowd } from './kit/crowd';
 import { fleet, move, plan, type Fleet, type Model, type Ride } from './kit/traffic';
 import { circuit, type Timed } from './kit/transit';
@@ -57,6 +56,14 @@ const STACKS: Spec[] = [
   { kind: 'energy', name: 'energy · reactor, wind, sun, earth, water', x: 1.0, z: -3.44, base: -0.1, feeds: 1 },
   { kind: 'airport', name: 'airport · flights out', x: -2.43, z: -2.89, base: 1.25, feeds: 5 },
 ];
+/** Island-to-island lines: metal to the foundry, power to the mine and the foundry, cars
+ *  out to the airport; each its own monorail between two island stations. */
+const LINKS: [number, number][] = [
+  [1, 2],
+  [4, 1],
+  [4, 2],
+  [2, 5],
+];
 const ENERGY = 4;
 const AIRPORT = 5;
 const [W, D] = [2.5, 1.5];
@@ -76,7 +83,7 @@ const MODEL: Record<Kind, Model> = {
 const FAR = 15.5;
 /** The overview aims at the hub's middle, so the airport above and the islands below both fit. */
 const LOOK = -0.05;
-const NEAR = [8.4, 4.4];
+const NEAR = [6.8, 3.8];
 
 interface Stack {
   spec: Spec;
@@ -112,31 +119,20 @@ interface State {
   path: ReturnType<typeof lines>;
   packet: Mesh;
   over: PerspectiveCamera;
+  across: (readonly [Vec3, Vec3])[];
   view: { x: number; y: number; z: number; dist: number };
 }
 
 const m4 = new Matrix4();
-const v3 = new Vector3();
 const levels = (c: Spec): number => (c.kind === 'hub' ? HUB_LEVELS : DEPTH[c.kind]);
 const dimsOf = (c: Spec, k: number): [number, number] => (c.kind === 'hub' ? [W, D] : size(c.kind, k));
 /** A board-local point on stack S's level k, in the world. */
 const world = (S: Stack, k: number, p: Vec3): Vec3 => [S.spec.x + p[0], (S.ys[k] ?? 0) + p[1], S.spec.z + p[2]];
 
-/** The stack nearest the pointer as the overview camera sees it, if any is close. */
-function pickAt(over: PerspectiveCamera, px: number, py: number): number {
-  let [best, pick] = [0.55, -1];
-  STACKS.forEach((c, i) => {
-    v3.set(c.x, c.base, c.z).project(over);
-    const d = Math.hypot(v3.x - (px * 2 - 1), v3.y - (1 - py * 2));
-    if (d < best) [best, pick] = [d, i];
-  });
-  return pick;
-}
-
 export default defineThreeFigure<State>({
   id: 'system-stack',
   title: 'System stack',
-  alt: 'A tall stack of six boards like the levels of a city, each with traces and round parts like a circuit board, from a silicon undercity through a datacentre, a walled gateway and a library by a lake to an overcity of houses, a school, shops and parks with people walking, ringed by five floating islands: a mine with an open pit, rock, haul trucks, a crusher, silos, a blast furnace and a refinery; a foundry whose open line builds cars under gantries and runs them into a hall; a finance exchange of towers round a dome; an energy island with a reactor, cooling towers, wind turbines, solar rows, geothermal wells and a dam; and an airport whose planes take off, circle and land. Monorails run between stations with teal power conduits under them, substations and pylons carry power on, and teal glass tubes join the levels with flow running through them.',
+  alt: 'A tall stack of six boards like the levels of a city, each with traces and round parts like a circuit board, from a silicon undercity through a datacentre, a walled gateway and a library by a lake to an overcity of houses, a school, shops and parks with people walking, ringed by five floating islands of several levels each: a mine with mountains and mesas behind an open pit, a mining shovel, drill rigs, haul trucks, a hopper and crusher, and below a rotary kiln, smelter and refinery columns; a foundry with an open car line, a warehouse with its crane yard and a second enclosed line; a finance exchange of towers round a dome; an energy island with a reactor, cooling towers, wind turbines, solar rows, fuel cells, a fuel-rod store, transformers and a battery station by a dam; and an airport whose planes take off, circle and land. Each level has its substation and poles; goods climb between levels by teal glass tubes from each gathering point, and monorails join the islands to the hub and to each other',
   idea: 'From one person to the whole company: the platform is a living city on stacked boards, and the islands round it each make one thing (ore and metal, cars, money, power, flights) and ship it in by monorail along a grid that carries the power.',
   motion: 'ambient',
   answers: true,
@@ -157,6 +153,16 @@ export default defineThreeFigure<State>({
       const a: Vec3 = here ? stationOn(here, w, d, -c.x, -c.z, rng) : [0, 0, 0];
       const b: Vec3 = there ? stationOn(there, W, D, c.x, c.z, rng) : [0, 0, 0];
       return [a, b];
+    });
+    const across = LINKS.map(([a, b]) => {
+      const [A, B] = [STACKS[a], STACKS[b]];
+      const on = (c: Spec | undefined, i: number, o: Spec | undefined): Vec3 => {
+        const top = c ? levels(c) - 1 : 0;
+        const city = cities[i]?.[top];
+        const [w, d] = c ? dimsOf(c, top) : [W, D];
+        return city && c && o ? stationOn(city, w, d, o.x - c.x, o.z - c.z, rng) : [0, 0, 0];
+      };
+      return [on(A, a, B), on(B, b, A)] as const;
     });
     const stacks: Stack[] = STACKS.map((spec, i) => {
       const dims = cities[i]?.map((_, k) => dimsOf(spec, k)) ?? [];
@@ -182,9 +188,14 @@ export default defineThreeFigure<State>({
       const energy = s === ENERGY;
       const via = (x: number, z: number, lo: number, foot: number): number =>
         vias.push({ s, x, z, lo, foot, r: energy && !foot ? R * 1.5 : R, up: vias.length % 2 === 1 });
+      // A level's ports (its gathering points) carry its goods up; otherwise a tube stands
+      // where it falls.
       for (let k = 0; k + 1 < S.boards.length; k++)
-        for (let j = 0; j < (energy ? 2 : 1); j++)
-          via(((k + j) % 2 ? -1 : 1) * (S.dims[k]?.[0] ?? 1) * (0.2 + (rng() - 0.5) * 0.12), (rng() - 0.5) * 0.6, k, 0);
+        for (let j = 0; j < (energy ? 2 : 1); j++) {
+          const port = S.cities[k]?.ports?.[j];
+          const x = ((k + j) % 2 ? -1 : 1) * (S.dims[k]?.[0] ?? 1) * (0.2 + (rng() - 0.5) * 0.12);
+          via(port ? port[0] : x, port ? port[2] : (rng() - 0.5) * 0.6, k, 0);
+        }
       for (let n = 0; S.boards.length > 1 && n < (s === 0 ? 8 : energy ? 3 : 2); n++) {
         const lo = Math.floor(rng() * (S.boards.length - 1));
         const p = roof(S.boards[lo]?.parts ?? [], rng);
@@ -194,7 +205,7 @@ export default defineThreeFigure<State>({
     const T = tubes(vias.length, 3);
     const wires = stacks.reduce((n, S) => n + S.boards.reduce((m, b) => m + b.wires.length, 0), 0);
     const pulses = new InstancedMesh(
-      new BoxGeometry(0.022, 0.022, 0.022),
+      new BoxGeometry(0.014, 0.014, 0.014),
       new MeshBasicMaterial({ color: hexOf('signal') }),
       wires,
     );
@@ -220,7 +231,8 @@ export default defineThreeFigure<State>({
       vias,
       tubes: T,
       pulses,
-      links: links(scene, STACKS.length - 1, PLANES, 3),
+      links: links(scene, STACKS.length - 1 + LINKS.length, PLANES, 3),
+      across,
       flights,
       fleet: F,
       rides,
@@ -236,23 +248,18 @@ export default defineThreeFigure<State>({
     // nearest it there (so flying in never moves what is under the pointer), and the camera
     // flies to it, levelling out as it nears.
     const wide = w / h < 0.9 ? 1.18 : 1;
-    const yaw = 0.7 + Math.sin(t * 0.12) * 0.25;
-    const place = (cam: PerspectiveCamera, x: number, y: number, z: number, dist: number): void => {
-      const el = 0.5 + 0.12 * Math.min(1, Math.max(0, (dist - 5) / 10));
-      cam.position.set(x + Math.sin(yaw) * dist, y + dist * el, z + Math.cos(yaw) * dist);
-      cam.lookAt(x, y - 0.1, z);
-    };
+    const v = s.view;
+    const near = 1 - Math.min(1, Math.max(0, (v.dist - 3) / (FAR * wide - 3)));
     s.over.aspect = w / h;
-    place(s.over, 0, LOOK, 0, FAR * wide);
+    aim(s.over, 0, LOOK, 0, FAR * wide, heading(t, 0));
     s.over.updateProjectionMatrix();
     s.over.updateMatrixWorld();
-    const pick = pointer.active && hover > 0.3 ? pickAt(s.over, pointer.x, pointer.y) : -1;
+    const pick = pointer.active && hover > 0.3 ? pickAt(s.over, STACKS, pointer.x, pointer.y) : -1;
     const c = STACKS[pick];
     const goal = c ? [c.x, c.base, c.z, (NEAR[c.kind === 'hub' ? 0 : 1] ?? 5) * wide] : [0, LOOK, 0, FAR * wide];
-    const v = s.view;
-    const ease = (a: number, b = 0): number => (still ? b : follow(a, b, dt, 1.6));
+    const ease = (a: number, b = 0): number => (still ? b : follow(a, b, dt, 1.3));
     [v.x, v.y, v.z, v.dist] = [ease(v.x, goal[0]), ease(v.y, goal[1]), ease(v.z, goal[2]), ease(v.dist, goal[3])];
-    place(camera, v.x, v.y, v.z, v.dist);
+    aim(camera, v.x, v.y, v.z, v.dist, heading(t, near));
     // Every stack breathes on its own phase, so the tubes between its boards stretch.
     let pulse = 0;
     s.stacks.forEach((S, i) => {
@@ -283,6 +290,11 @@ export default defineThreeFigure<State>({
     s.stacks.slice(1).forEach((S, j) => {
       const from = world(S, S.ys.length - 1, S.stop);
       monorail(s.links, j, from, world(hub, S.spec.feeds, S.hubStop), t, j + 1 === ENERGY ? 1 : -1);
+    });
+    s.across.forEach(([a, b], e) => {
+      const [A, B] = [s.stacks[LINKS[e]?.[0] ?? 0], s.stacks[LINKS[e]?.[1] ?? 0]];
+      if (A && B)
+        monorail(s.links, STACKS.length - 1 + e, world(A, A.ys.length - 1, a), world(B, B.ys.length - 1, b), t, 1);
     });
     for (let j = 0; j < PLANES; j++) flight(s.links, j, s.flights, t);
     settle(s.links, t);
@@ -315,24 +327,20 @@ export default defineThreeFigure<State>({
     return c ? c.name : 'rest';
   },
   fallback: ({ ctx, w, h, pointer, hover }) => {
-    const cam = isometric(w / 2, h * 0.5, Math.min(w, h) * 0.075);
     const pick =
       pointer.active && hover > 0.3 ? Math.min(STACKS.length - 1, Math.floor(pointer.x * STACKS.length)) : -1;
-    STACKS.forEach((c, i) => {
-      const n = levels(c);
-      const lit = i === pick;
-      for (let k = 0; k < n; k++) {
-        const [hw, hd] = dimsOf(c, k).map((v) => v / 2) as [number, number];
-        const y = c.base + (k - (n - 1) / 2) * (c.kind === 'hub' ? 0.52 : 0.42);
-        box(ctx, cam, c.x - hw, c.z - hd, c.x + hw, c.z + hd, y, y + 0.03, {
-          top: lit ? mix('panelSignal', 'signalLine', 0.5) : mix('panel', 'panel2', 0.8),
-          left: mix('ground', 'panel', 0.9),
-          right: mix('ground', 'panel', 0.5),
-          edge: lit ? ink.signal(0.95) : ink.line(0.5),
-          crease: lit ? ink.signal(0.35) : ink.line(0.14),
-        });
-      }
-    });
+    flatStacks(
+      ctx,
+      w,
+      h,
+      STACKS,
+      (i) =>
+        Array.from({ length: STACKS[i] ? levels(STACKS[i]) : 0 }, (_, k) =>
+          STACKS[i] ? dimsOf(STACKS[i], k) : [W, D],
+        ),
+      (i) => (i ? 0.42 : 0.52),
+      pick,
+    );
     return pick >= 0 ? (STACKS[pick]?.name ?? 'rest') : 'rest';
   },
 });
