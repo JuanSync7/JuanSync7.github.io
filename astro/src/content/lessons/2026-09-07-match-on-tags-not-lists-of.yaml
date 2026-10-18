@@ -1,0 +1,4 @@
+date: 2026-09-07
+tag: aws
+title: "Match on tags, not lists of ARNs."
+why: "Listing each model in an IAM policy hits the size limit at around fifty. Matching a tier tag scales to any number."

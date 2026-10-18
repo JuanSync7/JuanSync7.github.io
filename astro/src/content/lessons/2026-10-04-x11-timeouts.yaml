@@ -1,0 +1,4 @@
+date: 2026-10-04
+tag: linux
+title: "X has no timeouts."
+why: "One stalled hop in a forwarded display chain can freeze a whole shared desktop. Remove the forwarding; moving users doesn't help."

@@ -1,0 +1,4 @@
+date: 2026-09-27
+tag: tls
+title: "AWS CLI v2 ignores the system trust store."
+why: "It ships its own CA bundle, so a proxy root added to the OS does nothing. Set ca_bundle or AWS_CA_BUNDLE."

@@ -1,0 +1,4 @@
+date: 2026-08-01
+tag: docs
+title: "A '- - -' bullet becomes a horizontal rule."
+why: "Content inside a list item can start a new block, so the text '- - -' turns into a thematic break and the bullet deletes itself."

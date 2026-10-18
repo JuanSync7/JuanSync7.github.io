@@ -1,0 +1,4 @@
+date: 2026-10-02
+tag: aws
+title: "A wrong tag key gives you $0 forever."
+why: "Budget tag filters need the user: prefix. Get it wrong and there's no error, just a budget that never moves. Prove it with real spend."

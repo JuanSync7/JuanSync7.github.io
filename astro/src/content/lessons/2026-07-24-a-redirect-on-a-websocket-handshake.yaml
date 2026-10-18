@@ -1,0 +1,4 @@
+date: 2026-07-24
+tag: networking
+title: "A redirect on a WebSocket handshake means a proxy answered."
+why: "Upgrades only accept 101. A 303 with a branded HTML page came from an inspecting proxy, not the server."

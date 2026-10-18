@@ -1,0 +1,4 @@
+date: 2026-08-10
+tag: integrity
+title: "Read-only is a promise about a path. A hash is a fact about bytes."
+why: "Permissions say who may write. Only a content hash tells you whether anything actually changed."

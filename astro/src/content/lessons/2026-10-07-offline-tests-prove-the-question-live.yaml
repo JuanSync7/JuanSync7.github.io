@@ -1,0 +1,4 @@
+date: 2026-10-07
+tag: testing
+title: "Offline tests prove the question. Live data proves the answer."
+why: "A mocked page test shows the UI asks the server the right thing. Only live data shows the server answers it correctly."

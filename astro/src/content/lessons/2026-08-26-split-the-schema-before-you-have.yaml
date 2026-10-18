@@ -1,0 +1,4 @@
+date: 2026-08-26
+tag: data
+title: "Split the schema before you have data."
+why: "A storage layout is cheapest to change while nothing is committed and no corpus exists. After that, every split is a migration."

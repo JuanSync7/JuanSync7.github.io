@@ -111,6 +111,7 @@ const GRADIENT_TOKENS = [
   { name: 'night dots',              token: '--nt-grad-dots',                  note: 'dot grid behind night sections (.nt-dots)' },
   { name: 'night fade left',         token: '--nt-grad-fade-left',             note: 'writing hero: words readable over the lattice' },
   { name: 'night fade up',           token: '--nt-grad-fade-up',               note: 'fade a panel into the ground' },
+  { name: 'night fade right',        token: '--nt-grad-fade-right',            note: 'mask: a sliding row fades out at its right edge (lesson slider)' },
   { name: 'page shade',              token: '--nt-grad-page-shade',            note: 'shadow across a featured page as it turns' },
   { name: 'page gloss',              token: '--nt-grad-page-gloss',            note: 'brief sheen on a page as it lifts' },
   { name: 'card spotlight',          token: '--nt-grad-spot',                  note: 'post-card pointer spotlight, sized by --nt-spot-size' },
@@ -766,12 +767,20 @@ ${NebulaStarsSrc}
         <div><span class="ds-naming-tag2">ticker</span> — portfolio stats scroll, 35s linear infinite translateX</div>
         <div><span class="ds-naming-tag2">card-in</span> — project cards, 0.4s ease-out, opacity + translateY(12px)</div>
         <div><span class="ds-naming-tag2">star-twinkle</span> — &lt;PurpleSkyTransition&gt; stars, 2s alternate</div>
+        <div><span class="ds-naming-tag2">--nt-dur-morph</span> — a shared element travelling between pages (post cover), 460ms</div>
+        <div><span class="ds-naming-tag2">--nt-ease-out</span> — decelerating, no overshoot: cubic-bezier(0.22, 1, 0.36, 1)</div>
+        <div><span class="ds-naming-tag2">nt-read</span> — post reading-progress hairline, driven by scroll in CSS (animation-timeline: scroll(root)); absent without support or under reduced motion</div>
       </div>
     </section>
 
     {/* ───────────────────────── 11 PAGE TRANSITIONS ───────────────────────── */}
     <section class="ds-section">
       <div class="ds-section-title">11 — page transitions</div>
+      <div class="ds-section-sub">
+        Night pages (NightLayout) navigate with Astro's router: the page crossfades, the nav holds
+        still (<code>view-transition-name: site-nav</code>), and a post card's cover travels to the
+        post's cover (<code>cover-&lt;slug&gt;</code> on both). Reduced motion swaps without animating.
+      </div>
       <div class="ds-section-sub">
         Sequenced zoom-out → scroll → zoom-in pattern used by the cockpit
         when navigating between skill pages. Click ◀ ▶ or a dot to play it.

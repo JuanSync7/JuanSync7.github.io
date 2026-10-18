@@ -1,0 +1,4 @@
+date: 2026-07-30
+tag: git
+title: "core.fileMode=false drops exec bits silently."
+why: "With file modes ignored, a chmod +x never reaches the commit, and the script fails on the next clone."

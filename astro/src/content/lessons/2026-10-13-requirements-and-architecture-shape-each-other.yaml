@@ -1,0 +1,4 @@
+date: 2026-10-13
+tag: design
+title: "Requirements and architecture shape each other."
+why: "A design choice shows a requirement is vague or too costly; a requirement shows a missing block. Write them together, in short loops."

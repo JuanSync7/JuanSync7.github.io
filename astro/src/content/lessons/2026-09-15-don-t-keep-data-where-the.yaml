@@ -1,0 +1,4 @@
+date: 2026-09-15
+tag: linux
+title: "Don't keep data where the cleaner sweeps."
+why: "systemd-tmpfiles ages out files under /tmp and /var/tmp. A database kept there was deleted, starting with the tables nobody read, so it looked harmless at first."

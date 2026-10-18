@@ -1,0 +1,4 @@
+date: 2026-09-01
+tag: shell
+title: "grep -q under pipefail can fail on a match."
+why: "grep exits as soon as it matches, the writer gets SIGPIPE, and pipefail reports the whole pipe as failed."

@@ -1,0 +1,4 @@
+date: 2026-07-19
+tag: tooling
+title: "A desktop build is the wrong artifact for a headless host."
+why: "Remote editing needs only a small server on the host; the UI stays on your own machine."

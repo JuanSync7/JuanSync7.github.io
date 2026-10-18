@@ -1,0 +1,4 @@
+date: 2026-09-19
+tag: linux
+title: "Closing any descriptor drops a POSIX lock."
+why: "fcntl locks belong to the process, so opening and closing the same file anywhere else in your code quietly releases the lock."

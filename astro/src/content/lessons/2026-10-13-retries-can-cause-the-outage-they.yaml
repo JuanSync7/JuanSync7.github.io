@@ -1,0 +1,4 @@
+date: 2026-10-13
+tag: systems
+title: "Retries can cause the outage they're meant to survive."
+why: "A timed-out request is retried while the first attempt is still running downstream. Under load, that doubles traffic exactly when it hurts."

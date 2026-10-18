@@ -1,0 +1,4 @@
+date: 2026-07-11
+tag: dft
+title: "Coverage is a number. The holes are the to-do list."
+why: "Pushing ATPG coverage up meant chasing each uncovered fault class one by one. The percentage says how far you are; the holes say what to do next."

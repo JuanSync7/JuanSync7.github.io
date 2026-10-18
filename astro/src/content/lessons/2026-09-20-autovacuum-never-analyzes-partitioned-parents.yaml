@@ -1,0 +1,4 @@
+date: 2026-09-20
+tag: postgres
+title: "Autovacuum never analyzes partitioned parents."
+why: "The parent's statistics stay empty until an explicit ANALYZE, which can hide planner and counting bugs for weeks."

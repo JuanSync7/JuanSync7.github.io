@@ -1,8 +1,8 @@
-/* Long-form text on the night pages: a post's rendered Markdown or MDX. Measure-limited,
-   tokens only; code blocks keep Shiki's token colours on the panel ground. */
+/* Long-form text on the night pages: a post's rendered Markdown or MDX. It runs the full width
+   of the page container, the same as the cover above it (Juan, 18 Oct 2026: the posts "are not
+   using the full width"). Tokens only; code blocks keep Shiki's token colours on the panel ground. */
 
 .night .prose {
-  max-width: var(--nt-measure);
   font-size: var(--nt-fs-lead);
   line-height: var(--nt-lh-body);
   color: var(--nt-ink-2);

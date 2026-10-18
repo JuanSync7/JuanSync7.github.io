@@ -1,0 +1,4 @@
+date: 2026-05-30
+tag: aws
+title: "Ask for a model family, not a version."
+why: "Callers that use a family alias never need a config edit when a new version ships. The mapping moves in one place."

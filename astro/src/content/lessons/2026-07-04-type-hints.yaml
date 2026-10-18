@@ -1,0 +1,4 @@
+date: 2026-07-04
+tag: python
+title: "Type hints are port declarations."
+why: "In SystemVerilog the ports say what goes in and out before anything runs. Type hints do the same for a Python function, and a checker can read them."

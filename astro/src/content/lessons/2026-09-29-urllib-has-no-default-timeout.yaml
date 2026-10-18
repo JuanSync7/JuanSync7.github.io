@@ -1,0 +1,4 @@
+date: 2026-09-29
+tag: python
+title: "urllib has no default timeout."
+why: "A probe can hang forever unless you set one. Also catch HTTPError, which urllib raises for any non-2xx response."

@@ -1,0 +1,4 @@
+date: 2026-08-19
+tag: yaml
+title: "Quote your YAML."
+why: "Bare no, yes, on and off become booleans, and an unquoted id: 42 becomes an int. Identity keys need a type, not a guess."

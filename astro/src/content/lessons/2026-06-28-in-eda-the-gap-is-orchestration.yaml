@@ -1,0 +1,4 @@
+date: 2026-06-28
+tag: eda
+title: "In EDA, the gap is orchestration, not tools."
+why: "People forget updates and skip steps. Tools should be deterministic recipe runners, with AI only judging, converting or fixing around them."

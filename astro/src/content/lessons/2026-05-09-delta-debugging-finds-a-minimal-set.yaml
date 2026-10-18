@@ -1,0 +1,4 @@
+date: 2026-05-09
+tag: debugging
+title: "Delta debugging finds a minimal set, not the smallest."
+why: "ddmin guarantees that dropping any one difference stops the failure, not that no smaller set exists. Both ends must reproduce before you start."

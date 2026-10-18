@@ -1,0 +1,4 @@
+date: 2026-08-11
+tag: eda
+title: "Broken DFT flows are ownership problems, not tool problems."
+why: "Engineers copy the last project's scan scripts and edit them, so nobody owns the flow and a fix has nowhere to live."

@@ -48,6 +48,9 @@ export interface FrameInput {
   pulses: readonly Pulse[];
   /** True under reduced motion or a frozen capture: draw the composed rest frame. */
   still: boolean;
+  /** True for a step still mode simulates on the way to the rest time, whose picture is
+   *  never shown: a figure may skip painting it (a three.js scene skips its render). */
+  unseen?: boolean;
   /** Whatever the page handed the figure (the lesson calendar's days, say). Unknown on
    *  purpose: a figure narrows it, and draws a sample of its own when it is absent. */
   data?: unknown;

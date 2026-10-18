@@ -1,0 +1,4 @@
+date: 2026-09-15
+tag: debugging
+title: "You can rule something out without knowing the cause."
+why: "I couldn't prove why a host wedged, but I could prove my service wasn't the reason. Label what you measured apart from what you inferred."

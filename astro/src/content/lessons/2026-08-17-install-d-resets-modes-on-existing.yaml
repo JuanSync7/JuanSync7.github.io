@@ -1,0 +1,4 @@
+date: 2026-08-17
+tag: linux
+title: "install -d resets modes on existing directories."
+why: "It applies mode and owner even when the directory already exists, so a deploy step quietly loosened a 0700 directory to 0755."

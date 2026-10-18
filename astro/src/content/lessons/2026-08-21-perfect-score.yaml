@@ -1,0 +1,4 @@
+date: 2026-08-21
+tag: evals
+title: "A score can be perfect while the output is wrong."
+why: "Word recall was 1.0 while list nesting and emphasis were broken. A word count can't see structure; structure needs its own check."

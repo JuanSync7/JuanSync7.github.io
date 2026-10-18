@@ -1,0 +1,4 @@
+date: 2026-10-04
+tag: eda
+title: "Closing the viewer doesn't stop the job."
+why: "A GUI tool in a detached session keeps its licence until a cut-off or time limit, long after the user walked away."

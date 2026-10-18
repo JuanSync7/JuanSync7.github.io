@@ -1,0 +1,4 @@
+date: 2026-06-10
+tag: frontend
+title: "A test that scrolls first can't see the fold."
+why: "Scrolling the element into view hides what a real first visit shows. Test at the real screen size, from the top."

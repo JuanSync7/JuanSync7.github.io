@@ -1,0 +1,4 @@
+date: 2026-08-18
+tag: python
+title: "Read text with utf-8-sig."
+why: "A byte-order mark survives a plain utf-8 read and breaks the parser on line one. One codec name saves a confusing SyntaxError."

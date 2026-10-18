@@ -1,0 +1,4 @@
+date: 2026-05-10
+tag: ops
+title: "Read the output, not the task status."
+why: "A background run reported success because its wrapper exited cleanly. The file it was meant to write said otherwise."

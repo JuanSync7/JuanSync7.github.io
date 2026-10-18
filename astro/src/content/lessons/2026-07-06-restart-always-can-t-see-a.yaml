@@ -1,0 +1,4 @@
+date: 2026-07-06
+tag: inference
+title: "Restart=always can't see a wedged model."
+why: "systemd only reacts to process exit, so a hung server needs a probe. A model that runs out of GPU memory minutes after start never trips the start limit and restarts forever."

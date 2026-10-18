@@ -1,0 +1,4 @@
+date: 2026-08-08
+tag: aws
+title: "An assumed-role profile doesn't inherit ca_bundle."
+why: "The source profile worked behind the proxy and the role profile failed TLS. Each profile needs the setting."

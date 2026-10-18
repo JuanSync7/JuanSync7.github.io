@@ -1,0 +1,4 @@
+date: 2026-08-02
+tag: shell
+title: "dirname $0 breaks under a symlink."
+why: "It returns the link's folder, not the script's. Use readlink -f to find where the script really lives."

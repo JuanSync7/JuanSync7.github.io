@@ -1,0 +1,4 @@
+date: 2026-09-02
+tag: systemd
+title: "In systemd, a failed condition counts as success."
+why: "A false ConditionPathExists skips the unit and reports success, and Before= only sets order. A fail-closed guard needs Requires=."

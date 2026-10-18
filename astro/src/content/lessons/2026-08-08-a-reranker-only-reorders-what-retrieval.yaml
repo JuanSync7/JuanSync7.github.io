@@ -1,0 +1,4 @@
+date: 2026-08-08
+tag: rag
+title: "A reranker only reorders what retrieval found."
+why: "It scores query and candidate together, but if the right chunk wasn't in the first-stage top-N, no amount of reranking brings it back."

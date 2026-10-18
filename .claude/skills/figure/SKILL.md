@@ -29,8 +29,10 @@ text (like the system map on the home page), not a figure.
 Work in this order. Stop where it says stop.
 
 1. **Size it.** *Mark* (a post cover, under ~80 lines), *Figure* (a hero, a slide, 80–200
-   lines), or *Scene* (three.js; needs a 2D fallback; at most one per page). Over 200 lines
-   is two ideas: cut one.
+   lines), or *Scene* (three.js, up to 350 lines; needs a 2D fallback; at most one per page).
+   Over 200 lines (350 for a scene) is two ideas: cut one, or move a reusable part into
+   `kit/`. Lines are counted after Prettier (120 columns, `npm run format:figures`), so
+   packing statements onto one line buys nothing; `npm run check` fails unformatted figures.
 2. **Read the neighbours.** `npm run figures:check -- --list` prints every figure by group
    and style. Your figure's group (`cover`, `feature`, `hero`, `post`) must not repeat the
    style of a date neighbour, and no style may cover more than a third of a group. Pick from

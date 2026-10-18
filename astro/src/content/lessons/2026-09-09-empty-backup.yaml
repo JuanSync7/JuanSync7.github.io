@@ -1,0 +1,4 @@
+date: 2026-09-09
+tag: postgres
+title: "A backup that exits 0 can be empty."
+why: "Check a dump by listing what's inside it, not by its exit code."

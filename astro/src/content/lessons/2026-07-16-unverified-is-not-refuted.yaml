@@ -1,0 +1,4 @@
+date: 2026-07-16
+tag: testing
+title: "Unverified is not refuted."
+why: "When a checker dies before finishing, its findings are a third state. Scoring them as false quietly drops real bugs."

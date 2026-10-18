@@ -53,9 +53,15 @@ export default defineCanvasFigure<State>({
     for (let j = 0; j < rows - 1; j++) {
       for (let i = 0; i < cols - 1; i++) {
         if (j % 2 === 0) {
-          tris.push([id(i, j), id(i + 1, j), id(i, j + 1), rnd()], [id(i + 1, j), id(i + 1, j + 1), id(i, j + 1), rnd()]);
+          tris.push(
+            [id(i, j), id(i + 1, j), id(i, j + 1), rnd()],
+            [id(i + 1, j), id(i + 1, j + 1), id(i, j + 1), rnd()],
+          );
         } else {
-          tris.push([id(i, j), id(i + 1, j + 1), id(i, j + 1), rnd()], [id(i, j), id(i + 1, j), id(i + 1, j + 1), rnd()]);
+          tris.push(
+            [id(i, j), id(i + 1, j + 1), id(i, j + 1), rnd()],
+            [id(i, j), id(i + 1, j), id(i + 1, j + 1), rnd()],
+          );
         }
       }
     }

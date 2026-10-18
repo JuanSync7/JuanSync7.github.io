@@ -1,0 +1,4 @@
+date: 2026-10-16
+tag: security
+title: "List what an agent inherits, not just what it may do."
+why: "Passphraseless SSH keys, plaintext git credentials, cloud profiles and tokens left in settings files all come along with the user's session."

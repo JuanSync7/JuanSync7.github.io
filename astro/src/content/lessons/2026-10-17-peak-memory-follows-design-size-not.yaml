@@ -1,0 +1,4 @@
+date: 2026-10-17
+tag: eda
+title: "Peak memory follows design size, not input file size."
+why: "Predicting from the size of the input files made forecasts worse. The tool's own log of design size was the signal."

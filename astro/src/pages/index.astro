@@ -1,5 +1,5 @@
 ---
-import NightLayout from '../layouts/NightLayout.astro';
+import NightPage from '../layouts/NightPage.astro';
 import NightNav from '../components/layout/NightNav.astro';
 import NightFooter from '../components/layout/NightFooter.astro';
 import HomeHero from '../components/home/HomeHero.astro';
@@ -12,7 +12,7 @@ import Contact from '../components/home/Contact.astro';
 import { IDENTITY } from '../data/site';
 ---
 
-<NightLayout title={`Juan Kok · ${IDENTITY.title}`}>
+<NightPage title={`Juan Kok · ${IDENTITY.title}`}>
   <NightNav />
   <main>
     <HomeHero />
@@ -24,4 +24,4 @@ import { IDENTITY } from '../data/site';
     <Contact />
   </main>
   <NightFooter />
-</NightLayout>
+</NightPage>

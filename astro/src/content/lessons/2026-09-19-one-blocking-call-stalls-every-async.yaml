@@ -1,0 +1,4 @@
+date: 2026-09-19
+tag: python
+title: "One blocking call stalls every async route."
+why: "A subprocess or sync DB call inside `async def` freezes the event loop, health checks included. Push it to a thread."

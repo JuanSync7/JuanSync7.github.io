@@ -1,0 +1,121 @@
+/* The anatomy explorer: the figure and its list of parts side by side, the list beside the
+   figure on wide screens and under it on narrow ones. The lit step's name is where the
+   figure's leader line ends. */
+
+.anatomy {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+  gap: var(--hf-space-6);
+  align-items: center;
+}
+
+.anatomy:focus-visible {
+  outline: 1px solid var(--nt-signal-line-2);
+  outline-offset: var(--hf-space-3);
+}
+
+.anatomy-stage {
+  aspect-ratio: 1.25;
+}
+
+.anatomy-side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hf-space-5);
+}
+
+.anatomy-parts {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.anatomy-parts li {
+  border-left: 1px solid var(--nt-line-2);
+  padding-left: var(--hf-space-4);
+}
+
+.anatomy-parts li.is-on {
+  border-left-color: var(--nt-signal);
+}
+
+.anatomy-parts button {
+  display: flex;
+  gap: var(--hf-space-3);
+  align-items: baseline;
+  width: 100%;
+  min-height: var(--hf-space-8);
+  padding: var(--hf-space-1) 0;
+  background: none;
+  border: 0;
+  color: var(--nt-ink-muted);
+  text-align: left;
+  cursor: pointer;
+}
+
+.anatomy-parts button:hover,
+.anatomy-parts .is-on button {
+  color: var(--nt-ink-strong);
+}
+
+.anatomy-index {
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-meta);
+  color: var(--nt-ink-faint);
+}
+
+.anatomy-parts .is-on .anatomy-index {
+  color: var(--nt-signal);
+}
+
+.anatomy-name {
+  font-size: var(--nt-fs-ui);
+}
+
+.anatomy-body {
+  max-width: var(--nt-measure);
+  padding-bottom: var(--hf-space-3);
+  font-size: var(--nt-fs-small);
+  line-height: var(--nt-lh-body);
+  color: var(--nt-ink-soft);
+}
+
+.anatomy-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--hf-space-4);
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-meta);
+}
+
+.anatomy-controls button {
+  min-height: var(--nt-hit);
+  padding: 0 var(--hf-space-4);
+  background: none;
+  border: 1px solid var(--nt-line-2);
+  border-radius: var(--hf-radius-pill);
+  color: var(--nt-ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.anatomy-controls button:hover:not(:disabled) {
+  border-color: var(--nt-signal);
+}
+
+.anatomy-controls button:disabled {
+  color: var(--nt-ink-faint);
+  cursor: default;
+}
+
+.anatomy-count {
+  color: var(--nt-ink-muted);
+}
+
+@media (max-width: 900px) {
+  .anatomy {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

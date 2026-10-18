@@ -1,0 +1,4 @@
+date: 2026-07-19
+tag: python
+title: "Rich will happily colour your dollar signs."
+why: "Its number highlighter split '$0.04' with ANSI codes. Turn highlighting off for text that has to stay intact."

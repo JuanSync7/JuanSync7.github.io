@@ -1,0 +1,4 @@
+date: 2026-07-11
+tag: inference
+title: "Size images to the model's training geometry."
+why: "Feeding 300 DPI pages to a vision retriever trained on small fixed-size images explodes patch count, time and VRAM. Resize first and batch to bound memory."

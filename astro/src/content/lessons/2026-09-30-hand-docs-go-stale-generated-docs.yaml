@@ -1,0 +1,4 @@
+date: 2026-09-30
+tag: docs
+title: "Hand docs go stale. Generated docs go wrong."
+why: "Nothing checks the prose of a hand doc, so it drifts. Generated docs are fluent, cited and sometimes false. Both need a drift test."

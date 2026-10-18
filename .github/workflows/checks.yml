@@ -21,8 +21,10 @@ jobs:
           cache-dependency-path: astro/package-lock.json
       - name: Install dependencies
         run: npm ci
-      - name: Types, lint and figure source check
+      - name: Types, lint, figure source and post shape checks
         run: npm run check
+      - name: Post check selftest (every rule still catches its broken post)
+        run: npm run posts:selftest
       - name: Build
         run: npm run build
       - name: Install Chromium for the figure look

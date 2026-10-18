@@ -1,0 +1,4 @@
+date: 2026-07-18
+tag: llm
+title: "Instructions loaded early fade by decision time."
+why: "Later context dilutes early instructions. Inject the rule at the point where the decision is made, not only at the start of the prompt."

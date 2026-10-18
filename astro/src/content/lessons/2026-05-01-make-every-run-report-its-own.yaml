@@ -1,0 +1,4 @@
+date: 2026-05-01
+tag: llm
+title: "Make every run report its own spend."
+why: "Cost was visible only for runs that logged their tokens. A run that doesn't report spend is spend you find out about later."

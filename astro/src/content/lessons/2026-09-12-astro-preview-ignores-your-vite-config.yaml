@@ -1,0 +1,4 @@
+date: 2026-09-12
+tag: frontend
+title: "astro preview ignores your Vite config."
+why: "It builds Vite with configFile:false, so proxy and allowedHosts settings silently drop. Use the Astro server block, or astro dev."

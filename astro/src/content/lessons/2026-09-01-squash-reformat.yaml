@@ -1,0 +1,4 @@
+date: 2026-09-01
+tag: git
+title: "Squash merge undoes a reformat commit."
+why: "A mechanical reformat kept as its own commit protects git blame. Squash it into the feature and blame points at the formatter again."

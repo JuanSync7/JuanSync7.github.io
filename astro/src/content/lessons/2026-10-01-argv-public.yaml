@@ -1,0 +1,4 @@
+date: 2026-10-01
+tag: security
+title: "Anything on the command line is public."
+why: "Every user on the host can read argv. Pipe secrets and sensitive names in through stdin."

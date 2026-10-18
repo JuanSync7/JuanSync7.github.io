@@ -1,0 +1,4 @@
+date: 2026-10-15
+tag: ci
+title: "If setup is good, CI should just call it."
+why: "Then every CI run tests the real bootstrap on a fresh machine, and the setup steps can't quietly rot."

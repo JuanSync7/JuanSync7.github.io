@@ -1,5 +1,5 @@
 ---
-import NightLayout from '../../layouts/NightLayout.astro';
+import NightPage from '../../layouts/NightPage.astro';
 import NightNav from '../../components/layout/NightNav.astro';
 import NightFooter from '../../components/layout/NightFooter.astro';
 import TemplateLab from '../../components/lab/TemplateLab.tsx';
@@ -13,8 +13,8 @@ const { template } = Astro.params as { template: string };
 const t = await loadTemplate(template);
 ---
 
-<NightLayout title={`${t.title} · Lab · Juan Kok`} description={t.idea}>
-  <NightNav />
+<NightPage title={`${t.title} · Lab · Juan Kok`} description={t.idea}>
+  <NightNav current="lab" />
   <main class="nt-wrap nt-section">
     <header class="tpl-head">
       <a class="tpl-back" href="/lab/">← all templates</a>
@@ -25,7 +25,7 @@ const t = await loadTemplate(template);
     <TemplateLab client:only="react" template={template} />
   </main>
   <NightFooter />
-</NightLayout>
+</NightPage>
 
 <style>
   .tpl-head {

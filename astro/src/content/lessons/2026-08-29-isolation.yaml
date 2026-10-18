@@ -1,0 +1,4 @@
+date: 2026-08-29
+tag: agents
+title: "Isolation beats a shared soup of state."
+why: "Multi-agent works when each agent gets a bounded context and a clean handoff. Without that discipline, one agent does better."

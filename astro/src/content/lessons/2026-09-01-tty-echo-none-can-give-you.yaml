@@ -1,0 +1,4 @@
+date: 2026-09-01
+tag: shell
+title: "$(tty || echo none) can give you both."
+why: "tty prints 'not a tty' to stdout and still exits non-zero, so you get two strings. It only shows up in non-interactive runs."

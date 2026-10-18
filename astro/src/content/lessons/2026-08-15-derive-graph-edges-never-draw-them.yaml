@@ -1,0 +1,4 @@
+date: 2026-08-15
+tag: design
+title: "Derive graph edges. Never draw them."
+why: "A graph view is a projection of a store. Hand-drawn edges go stale; edges aggregated from the data can't."

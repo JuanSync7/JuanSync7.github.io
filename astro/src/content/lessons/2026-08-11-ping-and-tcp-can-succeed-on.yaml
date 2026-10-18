@@ -1,0 +1,4 @@
+date: 2026-08-11
+tag: networking
+title: "Ping and TCP can succeed on a starved host."
+why: "The kernel answers ICMP and completes TCP handshakes even when userspace is wedged. Only SSH or VNC banner timing showed the host was stuck."

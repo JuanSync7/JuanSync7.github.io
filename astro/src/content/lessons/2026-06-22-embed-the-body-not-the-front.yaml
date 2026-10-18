@@ -1,0 +1,4 @@
+date: 2026-06-22
+tag: rag
+title: "Embed the body, not the front matter."
+why: "On small documents the metadata header can be most of the tokens, so the vector ends up describing the header, not the content."

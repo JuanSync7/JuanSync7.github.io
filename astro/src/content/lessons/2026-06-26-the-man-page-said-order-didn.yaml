@@ -1,0 +1,4 @@
+date: 2026-06-26
+tag: slurm
+title: "The man page said order didn't matter. It did."
+why: "An experiment showed the first listed partition wins when both have room. Test scheduler behaviour; don't just read it."

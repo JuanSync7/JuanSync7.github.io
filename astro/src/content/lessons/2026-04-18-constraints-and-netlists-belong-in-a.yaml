@@ -1,0 +1,4 @@
+date: 2026-04-18
+tag: eda
+title: "Constraints and netlists belong in a release area."
+why: "A user's own directory is the least reproducible input. Local config tweaks are fine, but SDC, UPF and netlists need a controlled, traceable source."

@@ -1,0 +1,4 @@
+date: 2026-07-08
+tag: testing
+title: "Random checks need a seed, a snapshot and an oracle."
+why: "The seed replays any failure, one snapshot keeps a race from looking like a bug, and a simple evaluator that shares no code says what's right."

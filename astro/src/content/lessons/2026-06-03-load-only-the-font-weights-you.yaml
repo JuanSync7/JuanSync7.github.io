@@ -1,0 +1,4 @@
+date: 2026-06-03
+tag: typography
+title: "Load only the font weights you use."
+why: "Each weight is another file on every page load. Fonts from a CDN also fail on locked-down networks, so self-host when needed."

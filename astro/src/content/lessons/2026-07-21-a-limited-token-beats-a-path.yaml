@@ -1,0 +1,4 @@
+date: 2026-07-21
+tag: security
+title: "A limited token beats a path deny."
+why: "Deny rules match text, and child programs like git read their own config. A narrowly scoped token stays narrow whatever reads it."

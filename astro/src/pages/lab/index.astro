@@ -1,5 +1,5 @@
 ---
-import NightLayout from '../../layouts/NightLayout.astro';
+import NightPage from '../../layouts/NightPage.astro';
 import NightNav from '../../components/layout/NightNav.astro';
 import NightFooter from '../../components/layout/NightFooter.astro';
 import FigureCanvas from '../../components/ui/FigureCanvas.tsx';
@@ -17,8 +17,8 @@ const templates = await Promise.all(
 );
 ---
 
-<NightLayout title="Lab · Juan Kok" description="The figure templates behind the drawings on this site: every one draws a different picture from each seed.">
-  <NightNav />
+<NightPage title="Lab · Juan Kok" description="The figure templates behind the drawings on this site: every one draws a different picture from each seed.">
+  <NightNav current="lab" />
   <main class="nt-wrap nt-section">
     <header class="lab-head">
       <span class="lab-label">// lab</span>
@@ -28,6 +28,7 @@ const templates = await Promise.all(
         parts), seeded noise shapes the detail, and the template's grammar keeps every combination deliberate. Open one to walk its seeds.
       </p>
       <p class="lab-count">{templates.length} templates · 1,000,000,000 seeds each</p>
+      <p class="lab-also"><a href="/anatomy/chip-package/">Also: inside a chip package, taken apart one layer at a time →</a></p>
     </header>
     <ul class="lab-grid">
       {
@@ -49,7 +50,7 @@ const templates = await Promise.all(
     </ul>
   </main>
   <NightFooter />
-</NightLayout>
+</NightPage>
 
 <style>
   .lab-head {
@@ -60,6 +61,10 @@ const templates = await Promise.all(
     margin-bottom: var(--hf-space-12);
   }
   .lab-label,
+  .lab-also a {
+    color: var(--nt-signal);
+  }
+
   .lab-count,
   .lab-meta {
     font-family: var(--nt-mono);

@@ -1,0 +1,4 @@
+date: 2026-10-12
+tag: linux
+title: "On a RAM-backed /tmp, scratch files are memory."
+why: "Files in tmpfs count against RAM and can dwarf a process's own footprint. Clean up scratch after every slice."

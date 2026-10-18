@@ -1,0 +1,4 @@
+date: 2026-07-22
+tag: systemverilog
+title: "Keep state and logic in separate blocks."
+why: "Flops in always_ff, next-state logic in always_comb. Mixing them is how latches and sim-versus-synthesis mismatches sneak in."

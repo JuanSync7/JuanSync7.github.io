@@ -1,0 +1,4 @@
+date: 2026-06-07
+tag: ops
+title: "Systemd is enough for a handful of GPU boxes."
+why: "Kubernetes pays off at fleet scale. For a few servers, one unit template and one config file per model are simpler to run and to explain."

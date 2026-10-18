@@ -1,0 +1,4 @@
+date: 2026-06-23
+tag: systemd
+title: "MemoryHigh throttles. MemoryLimit kills."
+why: "On cgroup v2, MemoryHigh slows a service down. The older v1 MemoryLimit is a hard OOM kill. Know which one your host has."

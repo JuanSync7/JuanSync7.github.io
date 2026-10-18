@@ -1,0 +1,4 @@
+date: 2026-09-30
+tag: aws
+title: "Bedrock has no dollar cap."
+why: "Only token rate limits, and budgets lag by hours. The only hard stop is a gateway in front, and only for traffic that goes through it."

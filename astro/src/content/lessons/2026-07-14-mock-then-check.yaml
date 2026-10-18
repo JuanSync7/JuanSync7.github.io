@@ -1,0 +1,4 @@
+date: 2026-07-14
+tag: testing
+title: "Mock the world, then check the mock once."
+why: "Most tests should be fast and mocked. A few unmocked tests on storage, auth and timing prove the mocks aren't lying."

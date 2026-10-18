@@ -1,0 +1,4 @@
+date: 2026-07-04
+tag: security
+title: "shred doesn't wipe a network drive."
+why: "The filer may keep copies and snapshots. Revoking the secret is what actually helps."

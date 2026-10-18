@@ -1,0 +1,4 @@
+date: 2026-07-16
+tag: security
+title: "The prompt is not the boundary."
+why: "Scope has to be enforced by code the model can't talk its way past, like a hook that re-checks arguments and live ownership and fails closed."

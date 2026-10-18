@@ -3,29 +3,18 @@ import { camera, project, type Camera } from '../kit/camera';
 import { poly } from '../kit/draw';
 import { ink, mix } from '../kit/ink';
 import { follow } from '../kit/motion';
-import { noise2 } from '../kit/noise';
 import { between, pick } from '../kit/rng';
+import { FORMS, layout, type Form, type Tower } from '../kit/plans';
 
 /** Cities as formations of flat-shaded towers, each laid out by a different rule: a street
  *  grid, a ring round a plaza, two banks of a river, terraces up a hill, a spiral, a strip
  *  along a coast. One window is lit. The camera drifts round it; the pointer turns it. */
-
-const FORMS = ['grid', 'ring', 'river', 'hill', 'spiral', 'coast'] as const;
-type Form = (typeof FORMS)[number];
 
 interface P {
   form: Form;
   density: number;
   pitch: number;
   yaw0: number;
-}
-
-interface Tower {
-  x: number;
-  z: number;
-  w: number;
-  d: number;
-  h: number;
 }
 
 interface S {
@@ -36,50 +25,11 @@ interface S {
 
 const LIGHT = [0.5, 0.7, 0.45] as const;
 
-function layout(p: P, rng: () => number): Tower[] {
-  const n = noise2(rng);
-  const out: Tower[] = [];
-  const add = (x: number, z: number, h: number, s = 0.07): void => {
-    if (Math.hypot(x, z) > 1.25 || h <= 0.02) return;
-    out.push({ x, z, w: s * (0.7 + rng() * 0.5), d: s * (0.7 + rng() * 0.5), h });
-  };
-  const step = 0.2 - p.density * 0.05;
-  for (let i = -6; i <= 6; i++) {
-    for (let j = -6; j <= 6; j++) {
-      const x = i * step + (rng() - 0.5) * step * 0.3;
-      const z = j * step + (rng() - 0.5) * step * 0.3;
-      const r = Math.hypot(x, z);
-      const a = Math.atan2(z, x);
-      const base = 0.1 + Math.max(0, n(x * 2, z * 2)) * 0.5;
-      switch (p.form) {
-        case 'grid':
-          if (i % 3 !== 0 && j % 3 !== 0 && rng() < 0.75) add(x, z, base * (1.3 - r));
-          break;
-        case 'ring':
-          if (r > 0.35 && r < 0.95) add(x, z, base * (1.5 - Math.abs(r - 0.6) * 2));
-          break;
-        case 'river':
-          if (Math.abs(z - Math.sin(x * 3) * 0.15) > 0.16) add(x, z, base * (1.2 - r * 0.6));
-          break;
-        case 'hill':
-          if ((i + j) % 2 === 0) add(x, z, Math.max(0, 0.9 - r) * 0.7 + base * 0.25, 0.08);
-          break;
-        case 'spiral': {
-          const arm = Math.abs(((a + r * 5) % (Math.PI * 2 / 3) + Math.PI * 2) % (Math.PI * 2 / 3) - Math.PI / 3);
-          if (arm < 0.45) add(x, z, base * (1.6 - r));
-          break;
-        }
-        case 'coast':
-          if (x + Math.sin(z * 4) * 0.1 < 0.25) add(x, z, base * (0.5 + (0.25 - x)));
-          break;
-      }
-    }
-  }
-  return out;
-}
-
 function face(ctx: CanvasRenderingContext2D, cam: Camera, pts: [number, number, number][], shade: number): void {
-  poly(ctx, pts.map((p) => project(cam, p[0], p[1], p[2])));
+  poly(
+    ctx,
+    pts.map((p) => project(cam, p[0], p[1], p[2])),
+  );
   ctx.fillStyle = mix('ground', 'line4', shade);
   ctx.fill();
   ctx.strokeStyle = ink.line(0.04 + shade * 0.08);
@@ -94,21 +44,36 @@ export default defineTemplate<P, S>({
   motion: 'ambient',
   answers: true,
   aspect: 2,
-  grammar: (rng) => ({ form: pick(rng, FORMS), density: rng(), pitch: between(rng, 0.38, 0.75), yaw0: between(rng, 0, Math.PI * 2) }),
+  grammar: (rng) => ({
+    form: pick(rng, FORMS),
+    density: rng(),
+    pitch: between(rng, 0.38, 0.75),
+    yaw0: between(rng, 0, Math.PI * 2),
+  }),
   name: (p) => `${p.form} city`,
-  alt: (p) => `A low-poly city of flat-shaded grey towers arranged as a ${p.form}, seen from above at an angle, with one teal window.`,
+  alt: (p) =>
+    `A low-poly city of flat-shaded grey towers arranged as a ${p.form}, seen from above at an angle, with one teal window.`,
   setup: ({ rng, params }) => {
     const towers = layout(params, rng);
-    const lit = towers.reduce((best, tw, i) => ((tw.h > (towers[best]?.h ?? 0)) ? i : best), 0);
+    const lit = towers.reduce((best, tw, i) => (tw.h > (towers[best]?.h ?? 0) ? i : best), 0);
     return { towers, yaw: params.yaw0, lit };
   },
   draw: ({ ctx, w, h, t, dt, pointer, hover, still, params, state }) => {
     const target = params.yaw0 + t * 0.08 + (pointer.active ? (pointer.x - 0.5) * 2 * hover : 0);
     state.yaw = still ? target : follow(state.yaw, target, dt, 3);
-    const cam = camera({ cx: w / 2, cy: h * 0.58, scale: Math.min(w * 0.3, h * 0.64), yaw: state.yaw, pitch: params.pitch, dist: 4.5 });
+    const cam = camera({
+      cx: w / 2,
+      cy: h * 0.58,
+      scale: Math.min(w * 0.3, h * 0.64),
+      yaw: state.yaw,
+      pitch: params.pitch,
+      dist: 4.5,
+    });
     const cy = Math.cos(state.yaw);
     const sy = Math.sin(state.yaw);
-    const order = state.towers.map((tw, i) => ({ tw, i })).sort((a, b) => a.tw.x * sy + a.tw.z * cy - (b.tw.x * sy + b.tw.z * cy));
+    const order = state.towers
+      .map((tw, i) => ({ tw, i }))
+      .sort((a, b) => a.tw.x * sy + a.tw.z * cy - (b.tw.x * sy + b.tw.z * cy));
     const nx = cy * LIGHT[0] - sy * LIGHT[2];
     for (const { tw, i } of order) {
       const x0 = tw.x - tw.w;
@@ -116,10 +81,42 @@ export default defineTemplate<P, S>({
       const z0 = tw.z - tw.d;
       const z1 = tw.z + tw.d;
       const sides: [[number, number, number][], number][] = [
-        [[[x1, 0, z0], [x1, tw.h, z0], [x1, tw.h, z1], [x1, 0, z1]], 0.16 + 0.34 * Math.abs(nx)],
-        [[[x0, 0, z0], [x0, tw.h, z0], [x0, tw.h, z1], [x0, 0, z1]], 0.16 + 0.34 * Math.abs(nx)],
-        [[[x0, 0, z1], [x1, 0, z1], [x1, tw.h, z1], [x0, tw.h, z1]], 0.1 + 0.2 * (1 - Math.abs(nx))],
-        [[[x0, 0, z0], [x1, 0, z0], [x1, tw.h, z0], [x0, tw.h, z0]], 0.1 + 0.2 * (1 - Math.abs(nx))],
+        [
+          [
+            [x1, 0, z0],
+            [x1, tw.h, z0],
+            [x1, tw.h, z1],
+            [x1, 0, z1],
+          ],
+          0.16 + 0.34 * Math.abs(nx),
+        ],
+        [
+          [
+            [x0, 0, z0],
+            [x0, tw.h, z0],
+            [x0, tw.h, z1],
+            [x0, 0, z1],
+          ],
+          0.16 + 0.34 * Math.abs(nx),
+        ],
+        [
+          [
+            [x0, 0, z1],
+            [x1, 0, z1],
+            [x1, tw.h, z1],
+            [x0, tw.h, z1],
+          ],
+          0.1 + 0.2 * (1 - Math.abs(nx)),
+        ],
+        [
+          [
+            [x0, 0, z0],
+            [x1, 0, z0],
+            [x1, tw.h, z0],
+            [x0, tw.h, z0],
+          ],
+          0.1 + 0.2 * (1 - Math.abs(nx)),
+        ],
       ];
       // Only the two sides that face the camera are drawn; the far two are hidden anyway.
       const facing = sides.filter(([pts]) => {
@@ -130,17 +127,36 @@ export default defineTemplate<P, S>({
         return mx * sy + mz * cy > 0;
       });
       for (const [pts, shade] of facing) face(ctx, cam, pts, shade);
-      face(ctx, cam, [[x0, tw.h, z0], [x1, tw.h, z0], [x1, tw.h, z1], [x0, tw.h, z1]], 0.7);
+      face(
+        ctx,
+        cam,
+        [
+          [x0, tw.h, z0],
+          [x1, tw.h, z0],
+          [x1, tw.h, z1],
+          [x0, tw.h, z1],
+        ],
+        0.7,
+      );
       if (i === state.lit) {
         const y = tw.h * 0.7;
         const f = facing[0]?.[0];
         if (f) {
-          const lerp = (a: [number, number, number], b: [number, number, number], k: number): [number, number, number] => [a[0] + (b[0] - a[0]) * k, y, a[2] + (b[2] - a[2]) * k];
+          const lerp = (
+            a: [number, number, number],
+            b: [number, number, number],
+            k: number,
+          ): [number, number, number] => [a[0] + (b[0] - a[0]) * k, y, a[2] + (b[2] - a[2]) * k];
           const a = f[0] as [number, number, number];
           const b = f[3] as [number, number, number];
           const p0 = lerp(a, b, 0.3);
           const p1 = lerp(a, b, 0.7);
-          poly(ctx, [project(cam, p0[0], y, p0[2]), project(cam, p1[0], y, p1[2]), project(cam, p1[0], y + 0.04, p1[2]), project(cam, p0[0], y + 0.04, p0[2])]);
+          poly(ctx, [
+            project(cam, p0[0], y, p0[2]),
+            project(cam, p1[0], y, p1[2]),
+            project(cam, p1[0], y + 0.04, p1[2]),
+            project(cam, p0[0], y + 0.04, p0[2]),
+          ]);
           ctx.fillStyle = ink.signal(0.95);
           ctx.fill();
         }

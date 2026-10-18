@@ -1,0 +1,4 @@
+date: 2026-07-03
+tag: lint
+title: "Put the coding standard in the lint deck, not in people's heads."
+why: "Teams wrote RTL their own way and paid for it at integration. A shared rule set that runs on every block fixed what review kept missing."

@@ -1,0 +1,4 @@
+date: 2026-07-07
+tag: unicode
+title: "NFKC is for comparing, not storing."
+why: "It folds ligatures, superscripts and full-width forms, which is great for matching extracted text and lossy for content you keep."

@@ -1,0 +1,4 @@
+date: 2026-09-14
+tag: python
+title: "Path.exists() can raise."
+why: "On a path you're not allowed to read, it re-raises the permission error. One unreadable file killed whole poll cycles."

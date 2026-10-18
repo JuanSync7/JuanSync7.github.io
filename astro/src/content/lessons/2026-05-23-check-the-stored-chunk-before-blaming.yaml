@@ -1,0 +1,4 @@
+date: 2026-05-23
+tag: rag
+title: "Check the stored chunk before blaming the model."
+why: "A wrong answer about a PDF table came from corruption at parse time. Swapping the LLM would never have fixed it."

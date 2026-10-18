@@ -1,0 +1,4 @@
+date: 2026-10-16
+tag: slurm
+title: "A job that ends exactly at the time limit wasn't finished."
+why: "Runs stopping at the partition ceiling were hung, not done. Raising the limit to unlimited only let them hang longer."

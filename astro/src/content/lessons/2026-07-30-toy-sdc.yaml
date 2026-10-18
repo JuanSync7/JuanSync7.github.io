@@ -1,0 +1,4 @@
+date: 2026-07-30
+tag: synthesis
+title: "Toy constraints give toy answers."
+why: "A synthesis run with simple SDC says little about real timing. Results are only as real as the constraints and libraries you feed in."

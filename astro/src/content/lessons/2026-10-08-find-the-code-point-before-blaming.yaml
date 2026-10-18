@@ -1,0 +1,4 @@
+date: 2026-10-08
+tag: typography
+title: "Find the code point before blaming the font."
+why: "Name the exact glyph (say U+23FA), check which installed fonts cover it, then add a fallback font in your user font folder. No root needed."

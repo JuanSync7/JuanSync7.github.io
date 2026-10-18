@@ -27,7 +27,13 @@ function cup(ctx: CanvasRenderingContext2D, g: PixelGrid, cx: number, base: numb
     cell(ctx, g, cx + 4 - (y > base - 3 ? 1 : 0), y, line);
   }
   for (let x = cx - 3; x <= cx + 3; x++) cell(ctx, g, x, base - 1, line);
-  for (const [dx, dy] of [[5, -6], [6, -5], [6, -4], [5, -3]] as const) cell(ctx, g, cx + dx, base + dy, line);
+  for (const [dx, dy] of [
+    [5, -6],
+    [6, -5],
+    [6, -4],
+    [5, -3],
+  ] as const)
+    cell(ctx, g, cx + dx, base + dy, line);
   for (let x = cx - 3; x <= cx + 3; x++) cell(ctx, g, x, base - 6, winner ? ink.signal(0.9) : ink.line(0.25));
   for (let x = cx - 6; x <= cx + 6; x++) cell(ctx, g, x, base, ink.line(0.35));
 }

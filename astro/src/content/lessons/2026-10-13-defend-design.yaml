@@ -1,0 +1,4 @@
+date: 2026-10-13
+tag: design
+title: "Make the design defend itself."
+why: "Take every feature it must carry and ask the hard questions: ten times the input, a second user, a failure nobody notices. Gaps found now cost an edit."

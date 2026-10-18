@@ -1,0 +1,4 @@
+date: 2026-07-02
+tag: python
+title: "`import a.b` binds a, not b."
+why: "The name added to your namespace is the top package. Any tool that resolves or patches imports has to follow that rule."

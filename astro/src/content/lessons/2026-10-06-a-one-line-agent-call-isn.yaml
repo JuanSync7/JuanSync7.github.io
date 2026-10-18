@@ -1,0 +1,4 @@
+date: 2026-10-06
+tag: llm
+title: "A one-line agent call isn't a small call."
+why: "Most of its cost is the agent writing its own long system prompt to cache. Tiny requests carry a fixed overhead."
