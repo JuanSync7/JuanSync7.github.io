@@ -58,6 +58,7 @@ These rules apply to all code in this repo. They are enforced where possible by 
 
 ## Doing the work
 
+- **Design pages to Juan's taste.** Before designing or changing a page, section, component or page motion, read the `site-taste` skill (`.claude/skills/site-taste/SKILL.md`): what he has said, what is built, what he rejected, and what is still open. Drawings use the `figure` skill.
 - Don't introduce abstractions for hypothetical futures. Three repetitions is the bar for extraction.
 - Don't write comments that restate the code. Comments are for *why*, not *what*.
 - Don't add backwards-compat shims to legacy `*.jsx` files — they're being replaced wholesale.
