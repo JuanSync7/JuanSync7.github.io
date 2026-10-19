@@ -29,9 +29,6 @@ The site is an Astro + React + TypeScript single-page experience styled around a
 │   │   └── hooks/
 │   └── public/
 ├── .github/workflows/astro.yml  # GitHub Pages deploy on push to main
-├── KokShewJuan_CV_Data.yaml     # Structured CV source
-├── generate_cv_from_yaml.py     # Renders Markdown CV from the YAML (filters by `selected: true`)
-├── Kok_Shew_Juan_CV_2026.pdf    # Current CV artifact
 ├── CLAUDE.md                    # Project rules enforced on contributions
 └── README.md
 ```
@@ -73,13 +70,16 @@ Requires Node 20 (matches CI).
 
 GitHub Actions (`.github/workflows/astro.yml`) builds `astro/` on every push to `main` and publishes `astro/dist` to GitHub Pages. No manual deploy step.
 
-## CV generator
+## CV and Experience
 
-```bash
-python generate_cv_from_yaml.py KokShewJuan_CV_Data.yaml > cv.md
-```
+The CV and the home page's role line, title and Experience section come from a private career
+repository, which pushes two generated files here whenever the CV changes:
 
-`generate_cv_from_yaml.py` reads `KokShewJuan_CV_Data.yaml` and emits a Markdown CV containing only entries marked `selected: true`. This lets the YAML hold a long master record while each render produces a focused CV for a specific role.
+- `astro/public/Kok_Shew_Juan_CV_2026.pdf`, the public CV (email only, no phone);
+- `astro/src/data/profile.json`, read through `astro/src/data/profile.ts`, which checks its shape
+  at build time so a malformed file fails the deploy.
+
+Don't edit either here: the next publish overwrites them. Change the wording in the career repo.
 
 ## Contributing rules
 

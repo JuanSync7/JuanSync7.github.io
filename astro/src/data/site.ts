@@ -6,12 +6,14 @@
  * "facts about me", or change more than once a year belong here.
  */
 
+import { PROFILE } from './profile';
+
 export const IDENTITY = {
   name: 'Shew Juan Kok',
   shortName: 'juan_kok',
-  title: 'Senior Design & AI Engineer',
+  title: PROFILE.title,
   blurb: 'Senior Design & AI Engineer — ASIC front-end, verification, SoC architecture & DFT, plus production AI platforms (agentic systems, RAG, MCP).',
-  cvFile: '/Kok_Shew_Juan_CV_2026.pdf',
+  cvFile: PROFILE.cv_file,
 } as const;
 
 export const CONTACT = {
