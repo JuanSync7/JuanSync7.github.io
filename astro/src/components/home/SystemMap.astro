@@ -4,6 +4,8 @@ import { EDGES, LABELS, MAP_H, MAP_W, NODES, STEPS } from '../../data/system-map
 // The map is words and connections, so it is DOM, not a figure (CLAUDE.md, Figures 2):
 // boxes are real text, and one SVG layer underneath carries the connectors.
 const pct = (v: number, of: number): string => `${((v / of) * 100).toFixed(3)}%`;
+const liveEdges = EDGES.filter((e) => !e.next);
+const nextEdges = EDGES.filter((e) => e.next);
 const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([x, y], i) => `${i === 0 ? 'M' : 'L'} ${x} ${y}`).join(' ');
 ---
 
@@ -15,7 +17,7 @@ const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([
 
   {/* Screen readers get the steps below, in reading order; the map is the same story laid
       out for the eye, so it is hidden from them rather than read box by box. */}
-  <div class="map" aria-hidden="true">
+  <div class="map" aria-hidden="true" style={`aspect-ratio:${MAP_W} / ${MAP_H}`}>
     <svg class="wires" viewBox={`0 0 ${MAP_W} ${MAP_H}`} aria-hidden="true">
       <defs>
         <marker id="map-head" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto">
@@ -24,9 +26,20 @@ const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([
         <marker id="map-head-next" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto">
           <path d="M0 0 L6 3 L0 6 Z" class="head-next"></path>
         </marker>
+        <marker id="map-tail" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0 0 L6 3 L0 6 Z" class="head"></path>
+        </marker>
       </defs>
-      {EDGES.map((e) => (
-        <path class={e.next ? 'wire next' : 'wire'} d={path(e.pts)} marker-end={e.arrow ? (e.next ? 'url(#map-head-next)' : 'url(#map-head)') : undefined}></path>
+      {/* Next wires first; then each live wire over its own ground-coloured halo, so where two
+          wires cross, the one underneath breaks and the crossing reads as a bridge. */}
+      {nextEdges.map((e) => (
+        <path class="wire next" d={path(e.pts)} marker-end={e.arrow ? 'url(#map-head-next)' : undefined}></path>
+      ))}
+      {liveEdges.map((e) => (
+        <g>
+          <path class="halo" d={path(e.pts)}></path>
+          <path class="wire" d={path(e.pts)} marker-end={e.arrow ? 'url(#map-head)' : undefined} marker-start={e.both ? 'url(#map-tail)' : undefined}></path>
+        </g>
       ))}
     </svg>
     {LABELS.map((l) => (
@@ -84,7 +97,6 @@ const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([
 
   .map {
     position: relative;
-    aspect-ratio: 1104 / 584;
   }
 
   .wires {
@@ -103,6 +115,12 @@ const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([
     stroke-linejoin: round;
     stroke-dasharray: 4 4;
     animation: flow 1s linear infinite;
+  }
+
+  .halo {
+    fill: none;
+    stroke: var(--nt-ground);
+    stroke-width: 10;
   }
 
   .wire.next {
@@ -153,6 +171,28 @@ const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([
 
   .node.core,
   .node.gateway {
+    background: var(--nt-panel-signal);
+    border-color: var(--nt-signal-line-2);
+  }
+
+  /* A frame is drawn behind its steps and the wires between them, so it has no fill. */
+  .node.frame {
+    justify-content: flex-start;
+    padding-top: var(--hf-space-3);
+    background: transparent;
+    border-color: var(--nt-signal-line-2);
+  }
+
+  .node.step {
+    padding: 0 var(--hf-space-3);
+    gap: 0;
+    background: var(--nt-panel-signal);
+    border-color: var(--nt-signal-line-2);
+  }
+
+  .node.band {
+    align-items: center;
+    text-align: center;
     background: var(--nt-panel-signal);
     border-color: var(--nt-signal-line-2);
   }
