@@ -1,5 +1,9 @@
+import { Batch } from './batch';
+import { beacon, puff } from './glow';
 import { ink } from './ink';
 import { between, pick, type Rng } from './rng';
+
+export { Batch };
 
 /** Galaxies as clouds of stars: spirals with their arms, knots and dust, barred spirals,
  *  ellipticals and irregulars, every one seeded, each seen at its own tilt and roll and
@@ -21,11 +25,14 @@ export interface Star {
   y: number;
   /** Brightness 0..1; below 0 a dust grain, drawn dark. */
   b: number;
+  /** A soft glow round the star this wide (galaxy radii), for the haze along an arm. */
+  glow?: number | undefined;
 }
 export interface Galaxy {
   kind: Kind;
   stars: Star[];
-  /** How far the disc is tipped from face-on, and its turn on the sky. */
+  /** How far the disc is tipped up from edge-on (0 edge-on, π/2 face-on), and its turn
+   *  on the sky. */
   tilt: number;
   roll: number;
   spin: number;
@@ -119,52 +126,7 @@ export interface Look {
   /** The core in the signal. */
   hot?: boolean;
   /** Where each star was a moment ago, to draw it as a streak (a fly-through). */
-  was?: Place;
-}
-
-/** Marks gathered by brightness, so each of a few buckets is one fill colour and one
- *  stroke: thousands of stars cost a handful of canvas state changes, not thousands. */
-export class Batch {
-  private readonly rects: number[][] = Array.from({ length: 8 }, () => []);
-  private readonly segs: number[][] = Array.from({ length: 8 }, () => []);
-  private readonly dark: number[] = [];
-  /** a in 0..1, relative to the batch's top opacity. */
-  private slot(a: number): number {
-    return Math.max(0, Math.min(7, Math.floor(a * 8)));
-  }
-  dot(x: number, y: number, d: number, a: number): void {
-    this.rects[this.slot(a)]?.push(x - d / 2, y - d / 2, d);
-  }
-  dust(x: number, y: number, d: number): void {
-    this.dark.push(x - d, y - d, d * 2);
-  }
-  line(p: Pt, q: Pt, a: number): void {
-    this.segs[this.slot(a)]?.push(q[0], q[1], p[0], p[1]);
-  }
-  flush(ctx: CanvasRenderingContext2D, top: number, width = 1): void {
-    ctx.lineWidth = width;
-    this.rects.forEach((r, k) => {
-      if (!r.length) return;
-      ctx.fillStyle = ink.line((top * (k + 0.5)) / 8);
-      for (let i = 0; i < r.length; i += 3) ctx.fillRect(r[i] ?? 0, r[i + 1] ?? 0, r[i + 2] ?? 1, r[i + 2] ?? 1);
-    });
-    this.segs.forEach((l, k) => {
-      if (!l.length) return;
-      ctx.strokeStyle = ink.line((top * (k + 0.5)) / 8);
-      ctx.beginPath();
-      for (let i = 0; i < l.length; i += 4) {
-        ctx.moveTo(l[i] ?? 0, l[i + 1] ?? 0);
-        ctx.lineTo(l[i + 2] ?? 0, l[i + 3] ?? 0);
-      }
-      ctx.stroke();
-    });
-    if (this.dark.length) {
-      ctx.fillStyle = ink.ground(0.5 * top);
-      for (let i = 0; i < this.dark.length; i += 3)
-        ctx.fillRect(this.dark[i] ?? 0, this.dark[i + 1] ?? 0, this.dark[i + 2] ?? 1, this.dark[i + 2] ?? 1);
-    }
-    ctx.lineWidth = 1;
-  }
+  was?: Place | undefined;
 }
 
 export function drawGalaxy(ctx: CanvasRenderingContext2D, g: Galaxy, t: number, place: Place, look: Look): void {
@@ -175,7 +137,7 @@ export function drawGalaxy(ctx: CanvasRenderingContext2D, g: Galaxy, t: number, 
     ctx.save();
     ctx.translate(c[0], c[1]);
     ctx.rotate(g.roll);
-    ctx.scale(1, Math.max(0.12, Math.cos(g.tilt)));
+    ctx.scale(1, Math.max(0.12, Math.sin(g.tilt)));
     const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, size * g.core * 2.2);
     glow.addColorStop(0, ink.line(0.32 * alpha));
     glow.addColorStop(1, ink.line(0));
@@ -184,31 +146,45 @@ export function drawGalaxy(ctx: CanvasRenderingContext2D, g: Galaxy, t: number, 
     ctx.restore();
   }
   const dot = Math.max(1, Math.min(2.4, size / 220));
-  // A galaxy only a few pixels across needs only some of its stars to read.
-  const stride = Math.max(
-    1,
-    Math.min(size < 30 ? 8 : size < 80 ? 4 : size < 160 ? 2 : 1, Math.floor(g.stars.length / 150)),
-  );
+  // A galaxy only a few pixels across needs only some of its stars to read. The count
+  // grows smoothly with its size, and the last stars fade in, so none pops into view.
+  const all = g.stars.length;
+  const want = Math.min(all, Math.max(150, all * Math.min(1, size / 160)));
   const b = new Batch();
-  for (let i = 0; i < g.stars.length; i += stride) {
+  const haze: [number, number, number, number][] = [];
+  for (let i = 0; i < want; i++) {
     const s = g.stars[i];
     if (!s) continue;
     const [x, y] = sky(g, s, t);
     const p = place(x, y);
     if (!p) continue;
     if (s.b < 0) {
-      b.dust(p[0], p[1], dot);
+      b.dust(p[0], p[1], Math.min(dot, 1.4));
       continue;
     }
-    const a = 0.15 + s.b * 0.75;
+    const a = (0.15 + s.b * 0.75) * Math.min(1, (want - i) / (want * 0.15));
+    // The haze reads only while it is a soft blur among the stars; close up it would be a
+    // white wash over the view, so it thins as it grows and is gone past 90 px.
+    const hr = s.glow ? size * s.glow : 0;
+    if (hr > 3 && hr < 90) haze.push([p[0], p[1], hr, a * Math.min(1, 14 / hr)]);
     const q = look.was?.(x, y);
-    if (q && Math.hypot(q[0] - p[0], q[1] - p[1]) > 1.5) b.line(p, q, a);
-    else b.dot(p[0], p[1], s.b > 0.93 ? dot * 1.6 : dot, a);
+    // A streak once it is longer than a dot, blended in over a few pixels, never swapped.
+    const len = q ? Math.hypot(q[0] - p[0], q[1] - p[1]) : 0;
+    const k = Math.min(1, Math.max(0, (len - 1) / 3));
+    if (q && k > 0) b.line(p, q, a * k);
+    if (k < 1) b.dot(p[0], p[1], s.b > 0.93 ? dot * 1.6 : dot, a * (1 - k * 0.7));
+  }
+  if (haze.length) {
+    const img = puff();
+    for (const [x, y, r, a] of haze) {
+      ctx.globalAlpha = Math.min(1, a * alpha * 0.16);
+      ctx.drawImage(img, x - r, y - r, r * 2, r * 2);
+    }
+    ctx.globalAlpha = 1;
   }
   b.flush(ctx, alpha * 0.8, dot);
   if (look.hot && c) {
-    ctx.fillStyle = ink.signal(0.95);
-    ctx.fillRect(c[0] - 2, c[1] - 2, 4, 4);
+    beacon(ctx, c[0], c[1], 8);
   }
 }
 

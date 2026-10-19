@@ -23,7 +23,7 @@ const ALT: Record<Form, string> = {
   blackhole:
     'A black hole in a field of stars: a grey accretion disc crossing in front of the dark shadow, its far side arching over the top, with a teal hot spot orbiting.',
   supernova:
-    'A supernova remnant: a clumpy grey shell expanding and thinning with ejecta fingers past it, a teal pulsar sweeping its beams at the centre.',
+    'A supernova remnant: a clumpy grey shell expanding and thinning, ejecta streaming out past it as particles and soft rays of light pulsing outward, a teal pulsar glowing at the centre.',
   spiral:
     'A great spiral galaxy in grey points, its arms, knots and dust lanes slowly turning, smaller galaxies behind it, its core teal.',
 };

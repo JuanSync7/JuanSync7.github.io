@@ -53,6 +53,15 @@ export function block(S: Sketch): void {
   }
 }
 
+/** The floor a door sweeps: a square of its leaf's length from its hinge corner (x, y),
+ *  with a margin to walk through. */
+const doorway = (x: number, y: number, leaf: number): Box => [
+  x - leaf * 0.3,
+  y - 0.001,
+  x + leaf * 1.3,
+  y + leaf * 1.3,
+];
+
 /** A building's plan: walls, the column grid in its dash-dot lines, stair and lift cores,
  *  a corridor, and rooms with their doors; the window is one wing. */
 export function building(S: Sketch): void {
@@ -90,6 +99,7 @@ export function building(S: Sketch): void {
       inset(room, 0.008),
       (['office', 'bedroom', 'living', 'kitchen', 'bedroom'] as const)[S.int(0, 4)] ?? 'office',
       0.025,
+      [doorway(room[0], room[3] - 0.07, 0.07)],
     );
   }
 }
@@ -121,6 +131,7 @@ export function floor(S: Sketch): void {
     S.arc(r[0] + 0.02, r[1], 0.08, 0, Math.PI / 2, 2, 6);
     S.seg(r[0] + 0.02, r[1], r[0] + 0.02, r[1] + 0.08, 2);
     const tiny = Math.min(r[2] - r[0], r[3] - r[1]) < 0.24;
-    furnish(S, r, tiny ? (small[ns++ % small.length] ?? 'store') : (big[nb++ % big.length] ?? 'office'));
+    const use = tiny ? (small[ns++ % small.length] ?? 'store') : (big[nb++ % big.length] ?? 'office');
+    furnish(S, r, use, undefined, [doorway(r[0] + 0.02, r[1], 0.08)]);
   }
 }

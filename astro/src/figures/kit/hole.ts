@@ -1,4 +1,5 @@
 import { Batch } from './cosmos';
+import { beacon } from './glow';
 import { ink } from './ink';
 import { between, type Rng } from './rng';
 
@@ -95,7 +96,6 @@ export function drawHole(ctx: CanvasRenderingContext2D, d: Disc, cx: number, cy:
   const [hx, hz] = [Math.cos(ha) * d.inner * 1.1, Math.sin(ha) * d.inner * 1.1];
   const hp = at(hx, hz * st);
   if (hz >= 0 || Math.abs(hx) > 1.05) {
-    ctx.fillStyle = ink.signal(0.95);
-    ctx.fillRect(hp[0] - 2.5, hp[1] - 2.5, 5, 5);
+    beacon(ctx, hp[0], hp[1], 9);
   }
 }

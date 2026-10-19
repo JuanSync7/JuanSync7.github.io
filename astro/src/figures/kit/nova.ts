@@ -1,4 +1,5 @@
 import { Batch } from './cosmos';
+import { beacon, ray } from './glow';
 import { ink } from './ink';
 import { fbm, noise2 } from './noise';
 import { between, pick, type Rng } from './rng';
@@ -88,27 +89,47 @@ export function drawNova(ctx: CanvasRenderingContext2D, v: Nova, cx: number, cy:
     const r = rad * reach * (v.kind === 'ring' ? 0.5 : 1);
     dots.dot(cx + X * r, cy + Y * r, 1.5, (v.kind === 'web' ? 1 : 0.5) * limb * limb);
   }
-  dots.flush(ctx, 0.62 * fade);
-  ctx.lineWidth = 1;
-  ctx.strokeStyle = ink.line(0.16 * fade);
-  ctx.beginPath();
-  for (const [a, reach] of v.fingers) {
-    const [c, s] = [Math.cos(a + spin * 0.3), Math.sin(a + spin * 0.3)];
-    ctx.moveTo(cx + c * rad * 0.75, cy + s * rad * 0.75);
-    ctx.lineTo(cx + c * rad * reach, cy + s * rad * reach);
+  // The ejecta: each finger a stream of particles flying out from the shell, brightest
+  // where they leave it and thinning as they go.
+  const turn = spin * 0.3;
+  for (const [k, [a, reach]] of v.fingers.entries()) {
+    const [c, s] = [Math.cos(a + turn), Math.sin(a + turn)];
+    for (let j = 0; j < 7; j++) {
+      const q = (j / 7 + t * (0.05 + (k % 5) * 0.012) + k * 0.37) % 1;
+      const d = rad * (0.78 + q * (reach - 0.62));
+      dots.dot(cx + c * d, cy + s * d, 1.6, (1 - q) * 0.95);
+    }
   }
-  ctx.stroke();
-  ctx.strokeStyle = ink.line(0.14 * fade);
-  ctx.beginPath();
-  ctx.arc(cx, cy, rad * 1.18, 0, Math.PI * 2);
-  ctx.stroke();
-  // The pulsar: the star's collapsed core, in the signal, with its two beams sweeping.
+  // The shock front ahead of it: a thin ring of faint points, not a drawn circle.
+  for (let k = 0; k < 220; k++) {
+    const a = (k / 220) * Math.PI * 2 + Math.sin(k * 12.9898) * 0.02;
+    const d = rad * (1.18 + Math.sin(k * 78.233) * 0.015);
+    dots.dot(cx + Math.cos(a) * d, cy + Math.sin(a) * d, 1, 0.22 + 0.12 * Math.sin(k * 3.1));
+  }
+  dots.flush(ctx, 0.62 * fade);
+  // Light rays: soft wedges whose brightness is a pulse running outward, the light of the
+  // blast still crossing the remnant.
+  ctx.globalCompositeOperation = 'lighter';
+  for (const [k, [a]] of v.fingers.entries()) {
+    if (k % 2) continue;
+    const phase = (t * 0.18 + k * 0.29) % 1;
+    ray(ctx, cx, cy, a + turn, rad * 0.55, rad * 1.6, rad * 0.12, phase, 0.16 * fade * (1 - phase * 0.6));
+  }
+  ctx.globalCompositeOperation = 'source-over';
+  // The pulsar: the star's collapsed core in the signal, a soft point with its two beams
+  // as jets of particles sweeping round.
   const b = t * 0.9;
-  ctx.strokeStyle = ink.signal(0.5);
-  ctx.beginPath();
-  ctx.moveTo(cx - Math.cos(b) * R * 0.3, cy - Math.sin(b) * R * 0.12);
-  ctx.lineTo(cx + Math.cos(b) * R * 0.3, cy + Math.sin(b) * R * 0.12);
-  ctx.stroke();
-  ctx.fillStyle = ink.signal(0.95);
-  ctx.fillRect(cx - 2.5, cy - 2.5, 5, 5);
+  ctx.fillStyle = ink.signal(0.8);
+  for (const side of [-1, 1])
+    for (let j = 0; j < 6; j++) {
+      const q = (j / 6 + t * 0.45) % 1;
+      const wob = Math.sin(j * 7.1 + side) * 0.05;
+      const [x, y] = [cx + side * Math.cos(b + wob) * R * 0.28 * q, cy + side * Math.sin(b + wob) * R * 0.11 * q];
+      ctx.globalAlpha = (1 - q) * (1 - q) * 0.9;
+      ctx.beginPath();
+      ctx.arc(x, y, 1.3 * (1 - q * 0.5), 0, Math.PI * 2);
+      ctx.fill();
+    }
+  ctx.globalAlpha = 1;
+  beacon(ctx, cx, cy, 9);
 }

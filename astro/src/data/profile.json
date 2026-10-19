@@ -1,0 +1,60 @@
+{
+  "source": "local",
+  "draft": false,
+  "title": "Senior Design & AI Engineer",
+  "role_line": "Senior Design & AI Engineer · AI platform, agents & governance",
+  "cv_file": "/Kok_Shew_Juan_CV_2026.pdf",
+  "experience": [
+    {
+      "title": "Senior Design & AI Engineer",
+      "org": "Aion Silicon",
+      "dates": "Feb 2026 – Present",
+      "place": "London, UK",
+      "summary": "Building the company AI platform, largely as its sole engineer: the gateway, retrieval, agents, evaluation and governance that let the engineering organisation use AI safely.",
+      "points": [
+        {
+          "tag": "adoption & governance",
+          "text": "Wrote the security case that got Claude approved company-wide, then led the Claude Code rollout across engineering (about 100 engineers) to daily use on every shared engineering host, under a policy set by IT that users cannot override, with credentials protected and activity logged per user."
+        },
+        {
+          "tag": "knowledge",
+          "text": "Moved company RAG from a self-built platform (LangGraph, Temporal, Weaviate, vLLM) to AWS Bedrock Knowledge Bases, now used by about 100 engineers through Open WebUI: one company-wide base, plus a base per customer project visible only to that team via IAM Identity Center and Entra ID."
+        },
+        {
+          "tag": "measurement",
+          "text": "Made retrieval quality measurable (Recall@k, MRR, nDCG, faithfulness, LLM-as-judge), which overturned assumptions: replaced a reranker that was cutting nDCG by 39% with a generation model, caught 18% of the corpus silently converted to empty text, and lifted a failing sanity set from 1/10 to 8/10."
+        },
+        {
+          "tag": "agents",
+          "text": "Designing and building an agentic project-delivery platform to keep complex engineering projects on time and observable. Each project is a graph of owned tasks with typed inputs and outputs, so work hands over cleanly between domains and every result traces back to the customer requirement."
+        },
+        {
+          "tag": "platform",
+          "text": "Designed the company AI platform's foundations around LiteLLM as a single gateway, so any team reaches any model, on Bedrock or self-hosted, through one API. Temporal workflows to orchestrate AI calls; PostgreSQL, Weaviate, Neo4j and MinIO for storage."
+        },
+        {
+          "tag": "visibility",
+          "text": "Built compute and licence analytics over a 3.3M-job Slurm archive and 1,300+ FlexLM features; management uses it to forecast licence use per project and cut memory waste."
+        }
+      ]
+    },
+    {
+      "title": "Senior Design Engineer",
+      "org": "Aion Silicon",
+      "dates": "Aug 2025 – Feb 2026",
+      "summary": "Re-engineered a RISC-V vector core to drive an external VPU accelerator, plus flow automation in Python, Tcl and Bash."
+    },
+    {
+      "title": "ASIC Design Engineer",
+      "org": "Aion Silicon",
+      "dates": "Sep 2023 – Aug 2025",
+      "summary": "Front-end RTL across IP and SoC projects; set up the company-wide lint methodology; owned DFT on an automotive SoC."
+    },
+    {
+      "title": "MEng Electrical & Electronic Engineering",
+      "org": "University of Southampton",
+      "dates": "2017 – 2023",
+      "summary": "First-Class Honours. Malaysia campus, then UK."
+    }
+  ]
+}
