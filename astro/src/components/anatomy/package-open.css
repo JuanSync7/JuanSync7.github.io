@@ -1,0 +1,119 @@
+/* The opened accelerator: the tall figure on the left, its switch, the lit part's note and
+   the list of parts beside it, stacked on narrow screens. The note keeps a fixed height so
+   the list does not jump while the figure tours. */
+
+.package-open {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: var(--hf-space-10);
+  align-items: center;
+}
+
+.package-open-stage {
+  aspect-ratio: 0.7;
+  cursor: pointer;
+}
+
+.package-open-side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hf-space-6);
+}
+
+.package-open-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--hf-space-4);
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-meta);
+}
+
+.package-open-controls button {
+  min-height: var(--nt-hit);
+  padding: 0 var(--hf-space-4);
+  background: none;
+  border: 1px solid var(--nt-line-2);
+  border-radius: var(--hf-radius-pill);
+  color: var(--nt-ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.package-open-controls button:hover {
+  border-color: var(--nt-signal);
+}
+
+.package-open-state {
+  color: var(--nt-ink-muted);
+}
+
+.package-open-now {
+  min-height: var(--hf-space-26);
+  border-left: 1px solid var(--nt-signal);
+  padding-left: var(--hf-space-4);
+}
+
+.package-open-label {
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-meta);
+  color: var(--nt-signal);
+}
+
+.package-open-now p {
+  margin-top: var(--hf-space-2);
+  font-size: var(--nt-fs-small);
+  line-height: var(--nt-lh-body);
+  color: var(--nt-ink-soft);
+}
+
+.package-open-parts {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--hf-space-4);
+}
+
+.package-open-parts button {
+  display: flex;
+  gap: var(--hf-space-3);
+  align-items: baseline;
+  width: 100%;
+  min-height: var(--hf-space-8);
+  padding: var(--hf-space-1) 0;
+  background: none;
+  border: 0;
+  color: var(--nt-ink-muted);
+  font-size: var(--nt-fs-ui);
+  text-align: left;
+  cursor: pointer;
+}
+
+.package-open-parts button:hover,
+.package-open-parts .is-on button {
+  color: var(--nt-ink-strong);
+}
+
+.package-open-index {
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-meta);
+  color: var(--nt-ink-faint);
+}
+
+.package-open-parts .is-on .package-open-index {
+  color: var(--nt-signal);
+}
+
+@media (max-width: 900px) {
+  .package-open {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--hf-space-6);
+  }
+
+  .package-open-stage {
+    max-width: var(--nt-measure);
+    width: 100%;
+    margin: 0 auto;
+  }
+}

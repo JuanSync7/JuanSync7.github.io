@@ -21,19 +21,26 @@ export default function AnatomyExplorer({ steps, figure }: Props) {
   const [step, setStep] = useState(0);
   const [held, setHeld] = useState(false);
   const [target, setTarget] = useState<[number, number] | undefined>(undefined);
+  const [targets, setTargets] = useState<[number, number][]>([]);
   const stage = useRef<HTMLDivElement>(null);
   const items = useRef<(HTMLLIElement | null)[]>([]);
   const root = useRef<HTMLElement>(null);
   const last = steps.length - 1;
   const go = (n: number): void => setStep(Math.max(0, Math.min(last, n)));
 
-  // Where the lit step's name is, as a fraction of the stage: the figure aims its leader there.
+  // Where the names are, as fractions of the stage: the figure aims its leaders there.
   useEffect(() => {
     const measure = (): void => {
       const s = stage.current?.getBoundingClientRect();
+      if (!s || s.width === 0) return;
+      const at = (li: DOMRect): [number, number] => [
+        (li.left - s.left) / s.width,
+        (li.top + Math.min(li.height, 28) / 2 - s.top) / s.height,
+      ];
       const li = items.current[step]?.getBoundingClientRect();
-      if (!s || !li || s.width === 0) return;
-      setTarget([(li.left - s.left) / s.width, (li.top + Math.min(li.height, 28) / 2 - s.top) / s.height]);
+      if (li) setTarget(at(li));
+      // Every part's name, top down (step 0 is the whole package, not a part).
+      setTargets(items.current.slice(1).flatMap((el) => (el ? [at(el.getBoundingClientRect())] : [])));
     };
     measure();
     const watch = new ResizeObserver(measure);
@@ -69,7 +76,7 @@ export default function AnatomyExplorer({ steps, figure }: Props) {
     e.preventDefault();
     setHeld(true);
   };
-  const data: AnatomyData = { step, ...(target ? { target } : {}) };
+  const data: AnatomyData = { step, targets, ...(target ? { target } : {}) };
   const current = steps[step];
 
   return (
