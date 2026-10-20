@@ -1,11 +1,11 @@
 import { Color, Group, IcosahedronGeometry, LineBasicMaterial, LineSegments, MeshBasicMaterial, Vector3 } from 'three';
 import { defineThreeFigure } from './defineThree';
-import { lines, write } from './kit/boards';
+import { Pen, write } from './kit/boards';
 import { isometric } from './kit/camera';
 import { box } from './kit/draw';
 import { hexOf, ink, mix } from './kit/ink';
 import { follow } from './kit/motion';
-import { build, PART_IDS, type PartId } from './kit/package';
+import { ANCHOR, build, PART_IDS, type PartId } from './kit/package';
 
 /** A 2.5D chip package taken apart, top down: lid, thermal interface, compute die, memory
  *  stacks, underfill, microbumps, interposer, C4 bumps, capacitors, substrate, solder balls
@@ -13,13 +13,17 @@ import { build, PART_IDS, type PartId } from './kit/package';
  *  assembled; each later step lifts the layers apart and lights one part, its edges in the
  *  signal, with a hairline leader out to where the page puts its label. Parts are drawn as
  *  solids filled with the ground under their edges, so near parts hide far ones, as in a
- *  technical drawing. The page drives the step (`data`); on its own the figure tours. */
+ *  technical drawing. Apart, every part carries a ring marker with a hairline out to its
+ *  name, the lit one in the signal, the way a teardown sheet is labelled. The page drives
+ *  the step (`data`); on its own the figure tours. */
 
 export interface AnatomyData {
   /** 0 assembled; 1.. the parts, top down. */
   step: number;
   /** Where the lit part's label is, as fractions of the canvas (may lie outside it). */
   target?: [number, number];
+  /** Where every part's label is, top down, the same way: each part gets a leader. */
+  targets?: readonly (readonly [number, number])[];
 }
 const isData = (x: unknown): x is AnatomyData =>
   typeof x === 'object' && x !== null && typeof (x as { step?: unknown }).step === 'number';
@@ -45,6 +49,11 @@ const TEAL = new Color(hexOf('signal'));
 const GREY = new Color(hexOf('inkFaint'));
 /** Joints (bumps, balls) are many small solids: a darker grey, so they read as texture. */
 const DIM = new Color(hexOf('line4'));
+/** One callout: a ring and its centre dot (12 + 6 segments) and a leader of three. */
+const RING = 12;
+const DOT = 6;
+const CALLOUT = (RING + DOT + 3) * 2;
+const v2 = new Vector3();
 
 interface Part {
   group: Group;
@@ -61,13 +70,16 @@ interface State {
   parts: Part[];
   explode: number;
   yaw: number;
-  leader: LineSegments;
+  /** Every part's callout in grey, and the lit part's again in the signal on top. */
+  dim: LineSegments;
+  lit: LineSegments;
+  buf: number[];
 }
 
 export default defineThreeFigure<State>({
   id: 'chip-anatomy',
   title: 'Chip package anatomy',
-  alt: 'A 2.5D chip package drawn in thin lines, taken apart layer by layer: a copper lid, a thermal interface layer, a compute die with its floorplan beside stacks of eight memory dies with vias through them, underfill fillets round a carpet of microbumps, a silicon interposer with wiring and a via field, larger C4 bumps, rows of capacitors, a layered substrate with plated vias, and a grid of solder balls with capacitors in its open centre. One part at a time is outlined in teal, with a thin line leading out to its label.',
+  alt: 'A 2.5D chip package drawn in thin lines, taken apart layer by layer: a copper lid, a thermal interface layer, a compute die with its banks of cores between four stacks of eight memory dies with vias through them, underfill fillets round a carpet of microbumps, a silicon interposer with wiring and a via field, larger C4 bumps, rows of capacitors, a layered substrate with plated vias, and a grid of solder balls with capacitors in its open centre. Every part carries a small ring with a thin line out to its label; one part at a time is outlined in teal.',
   idea: 'Take a 2.5D package apart one layer at a time, top to bottom, and light each part as it is named.',
   motion: 'ambient',
   answers: true,
@@ -101,9 +113,19 @@ export default defineThreeFigure<State>({
       parts.push({ group: g, edge, fine, dots, base, top: h, lift: 0 });
     }
     parts.reverse();
-    const leader = lines(new Array(12).fill(0), 'signal', 0.8);
-    scene.add(leader);
-    return { parts, explode: 0, yaw: 0.6, leader };
+    const overlay = (n: number, key: 'inkFaint' | 'signal', a: number): LineSegments => {
+      const pen = new Pen();
+      pen.add(new Array(n * CALLOUT * 3).fill(0), key, a);
+      const l = pen.lines();
+      const mat = l.material;
+      if (!Array.isArray(mat)) mat.depthTest = false;
+      l.renderOrder = 10;
+      scene.add(l);
+      return l;
+    };
+    const dim = overlay(PARTS.length, 'inkFaint', 0.42);
+    const lit = overlay(1, 'signal', 0.95);
+    return { parts, explode: 0, yaw: 0.6, dim, lit, buf: [] };
   },
   update: ({ camera, t, dt, pointer, hover, still, data, state: s, w, h }) => {
     // Without a page to drive it, the figure tours the parts, starting at the compute die.
@@ -129,22 +151,51 @@ export default defineThreeFigure<State>({
       p.fine.opacity = on ? 0.6 : step > 0 ? 0.18 : 0.35;
       p.dots?.color.copy(on ? TEAL : DIM);
     });
-    // The leader: from the lit part's front corner out to its label, in screen space.
-    const part = s.parts[Math.max(0, lit)];
-    const target = isData(data) ? data.target : undefined;
-    // A label beside the canvas gets a leader; one below it (a phone) is lit in its list.
-    if (part && target && step > 0 && target[1] <= 1) {
-      const [tx, ty] = [Math.min(1, target[0]) * 2 - 1, 1 - Math.min(0.98, Math.max(0.02, target[1])) * 2];
-      const a = v3.set(1.2, part.group.position.y + part.top, 1.2).project(camera);
-      const from = a.clone().unproject(camera);
-      const knee = v3
-        .clone()
-        .set(tx - 0.08, ty, a.z)
-        .unproject(camera);
-      const to = v3.set(tx, ty, a.z).unproject(camera);
-      write(s.leader, [from.x, from.y, from.z, knee.x, knee.y, knee.z, knee.x, knee.y, knee.z, to.x, to.y, to.z]);
-      s.leader.visible = true;
-    } else s.leader.visible = false;
+    // Callouts: a ring on each part with a hairline out to its name, drawn over the parts in
+    // screen space. A label beside the canvas gets a leader; one below it (a phone) only its
+    // ring, lit in the list instead.
+    const targets = isData(data) ? (data.targets ?? []) : [];
+    const show = step > 0 ? Math.max(0, (s.explode - 0.6) / 0.4) : 0;
+    const call = (i: number, out: number[]): void => {
+      const p = s.parts[i];
+      const id = PARTS[i];
+      if (!p || !id) return;
+      const [ax, az] = ANCHOR[id];
+      const a = v2.set(ax, p.group.position.y + p.top, az).project(camera);
+      const [rx, ry] = [12 / w, 12 / h];
+      const at = (x: number, y: number): void => {
+        const q = v3.set(x, y, 0).unproject(camera);
+        out.push(q.x, q.y, q.z);
+      };
+      const ring = (r: number, n: number): void => {
+        for (let k = 0; k < n; k++) {
+          const [u, v] = [(k / n) * Math.PI * 2, ((k + 1) / n) * Math.PI * 2];
+          at(a.x + Math.cos(u) * rx * r, a.y + Math.sin(u) * ry * r);
+          at(a.x + Math.cos(v) * rx * r, a.y + Math.sin(v) * ry * r);
+        }
+      };
+      ring(1, RING);
+      ring(0.3, DOT);
+      const t = targets[i] ?? (i === lit && isData(data) ? data.target : undefined);
+      if (t && t[1] <= 1) {
+        const [tx, ty] = [Math.min(1, t[0]) * 2 - 1, 1 - Math.min(0.99, Math.max(0.01, t[1])) * 2];
+        const knee = Math.max(a.x + rx, tx - 0.11);
+        [a.x + rx, a.y, knee, a.y, knee, a.y, knee + 0.05, ty, knee + 0.05, ty, tx, ty].forEach((c, k, l) => {
+          if (k % 2 === 0) at(c, l[k + 1] ?? 0);
+        });
+      } else for (let k = 0; k < 6; k++) at(a.x, a.y);
+    };
+    const fill = (l: LineSegments, ids: number[]): void => {
+      s.buf.length = 0;
+      ids.forEach((i) => call(i, s.buf));
+      while (s.buf.length < l.geometry.getAttribute('position').count * 3) s.buf.push(0, 0, 0);
+      write(l, s.buf);
+      const mat = l.material;
+      if (!Array.isArray(mat)) mat.opacity = show;
+      l.visible = show > 0.01;
+    };
+    fill(s.dim, targets.length ? PARTS.map((_, i) => i).filter((i) => i !== lit) : []);
+    fill(s.lit, [lit]);
     return step > 0 ? (PARTS[lit] ?? 'rest') : pointer.active ? 'package' : 'rest';
   },
   fallback: ({ ctx, w, h }) => {

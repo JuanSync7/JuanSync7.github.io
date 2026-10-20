@@ -3,7 +3,8 @@ import NightPage from '../../layouts/NightPage.astro';
 import NightNav from '../../components/layout/NightNav.astro';
 import NightFooter from '../../components/layout/NightFooter.astro';
 import AnatomyExplorer from '../../components/anatomy/AnatomyExplorer.tsx';
-import { PACKAGE_STEPS } from '../../data/anatomy';
+import PackageOpen from '../../components/anatomy/PackageOpen.tsx';
+import { ACCELERATOR_PARTS, PACKAGE_STEPS } from '../../data/anatomy';
 ---
 
 <NightPage
@@ -21,6 +22,16 @@ import { PACKAGE_STEPS } from '../../data/anatomy';
       </p>
     </header>
     <AnatomyExplorer client:visible steps={PACKAGE_STEPS} figure="chip-anatomy" />
+    <header class="head">
+      <span class="label">// open it up</span>
+      <h2>An accelerator, opened</h2>
+      <p>
+        The same idea at full size, the way the largest AI chips are built: two compute dies joined edge to edge, eight
+        memory stacks along their sides, all on one silicon interposer. Click it to close it or open it again, or point at a
+        part.
+      </p>
+    </header>
+    <PackageOpen client:visible parts={ACCELERATOR_PARTS} />
   </main>
   <NightFooter />
 </NightPage>

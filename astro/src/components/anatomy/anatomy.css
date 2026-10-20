@@ -33,8 +33,28 @@
 }
 
 .anatomy-parts li {
+  position: relative;
   border-left: 1px solid var(--nt-line-2);
   padding-left: var(--hf-space-4);
+}
+
+/* The last stretch of each leader, from the figure's edge across the gap to the rail, so
+   every line lands on its name. */
+.anatomy-parts li::before {
+  content: '';
+  position: absolute;
+  top: calc(var(--hf-space-7) / 2);
+  left: calc(-1 * var(--hf-space-6));
+  width: var(--hf-space-6);
+  border-top: 1px solid var(--nt-line-2);
+}
+
+.anatomy-parts li:first-child::before {
+  content: none;
+}
+
+.anatomy-parts li.is-on::before {
+  border-top-color: var(--nt-signal);
 }
 
 .anatomy-parts li.is-on {
@@ -117,5 +137,9 @@
 @media (max-width: 900px) {
   .anatomy {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .anatomy-parts li::before {
+    content: none;
   }
 }
