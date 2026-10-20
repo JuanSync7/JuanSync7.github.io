@@ -1,5 +1,5 @@
 import { Batch } from './batch';
-import { beacon, puff } from './glow';
+import { beacon } from './glow';
 import { ink } from './ink';
 import { between, pick, type Rng } from './rng';
 
@@ -125,8 +125,22 @@ export interface Look {
   size: number;
   /** The core in the signal. */
   hot?: boolean;
-  /** Where each star was a moment ago, to draw it as a streak (a fly-through). */
+  /** Where each star was a moment ago, in a fly-through. A star moving fast across the
+   *  view is close to the camera: it is drawn bigger and softer, never as a streak. */
   was?: Place | undefined;
+}
+
+/** A star at p, d pixels across, that was at q a moment ago. The faster it crosses the view
+ *  the nearer the camera it is, so it grows into a soft round glow and dims as it grows (its
+ *  light spread over more of the view); a slow one stays a sharp point. */
+function near(b: Batch, p: Pt, q: Pt | null | undefined, d: number, a: number): void {
+  const move = q ? Math.hypot(q[0] - p[0], q[1] - p[1]) : 0;
+  const k = Math.min(1, Math.max(0, (move - 1.5) / 5));
+  if (k < 1) b.dot(p[0], p[1], d, a * (1 - k));
+  if (k > 0) {
+    const r = d * (1.2 + Math.min(move, 24) * 0.22);
+    b.glow(p[0], p[1], r, a * k * Math.min(1, (2.4 * d) / r));
+  }
 }
 
 export function drawGalaxy(ctx: CanvasRenderingContext2D, g: Galaxy, t: number, place: Place, look: Look): void {
@@ -151,7 +165,6 @@ export function drawGalaxy(ctx: CanvasRenderingContext2D, g: Galaxy, t: number, 
   const all = g.stars.length;
   const want = Math.min(all, Math.max(150, all * Math.min(1, size / 160)));
   const b = new Batch();
-  const haze: [number, number, number, number][] = [];
   for (let i = 0; i < want; i++) {
     const s = g.stars[i];
     if (!s) continue;
@@ -166,23 +179,10 @@ export function drawGalaxy(ctx: CanvasRenderingContext2D, g: Galaxy, t: number, 
     // The haze reads only while it is a soft blur among the stars; close up it would be a
     // white wash over the view, so it thins as it grows and is gone past 90 px.
     const hr = s.glow ? size * s.glow : 0;
-    if (hr > 3 && hr < 90) haze.push([p[0], p[1], hr, a * Math.min(1, 14 / hr)]);
-    const q = look.was?.(x, y);
-    // A streak once it is longer than a dot, blended in over a few pixels, never swapped.
-    const len = q ? Math.hypot(q[0] - p[0], q[1] - p[1]) : 0;
-    const k = Math.min(1, Math.max(0, (len - 1) / 3));
-    if (q && k > 0) b.line(p, q, a * k);
-    if (k < 1) b.dot(p[0], p[1], s.b > 0.93 ? dot * 1.6 : dot, a * (1 - k * 0.7));
+    if (hr > 3 && hr < 90) b.glow(p[0], p[1], hr, a * Math.min(1, 14 / hr) * 0.2);
+    near(b, p, look.was?.(x, y), s.b > 0.93 ? dot * 1.6 : dot, a);
   }
-  if (haze.length) {
-    const img = puff();
-    for (const [x, y, r, a] of haze) {
-      ctx.globalAlpha = Math.min(1, a * alpha * 0.16);
-      ctx.drawImage(img, x - r, y - r, r * 2, r * 2);
-    }
-    ctx.globalAlpha = 1;
-  }
-  b.flush(ctx, alpha * 0.8, dot);
+  b.flush(ctx, alpha * 0.8);
   if (look.hot && c) {
     beacon(ctx, c[0], c[1], 8);
   }
@@ -206,9 +206,7 @@ export function drawField(
     const p = place(s.r, s.a);
     if (!p) continue;
     const a = (0.12 + s.b * 0.85) * (0.75 + 0.25 * Math.sin(t * (0.8 + (i % 7) * 0.3) + i));
-    const q = was?.(s.r, s.a);
-    if (q && Math.hypot(q[0] - p[0], q[1] - p[1]) > 1.5) b.line(p, q, a);
-    else b.dot(p[0], p[1], s.b > 0.8 ? 2 : 1, a);
+    near(b, p, was?.(s.r, s.a), s.b > 0.8 ? 2 : 1, a);
   }
   b.flush(ctx, alpha * 0.7);
 }
