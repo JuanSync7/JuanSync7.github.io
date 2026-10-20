@@ -11,7 +11,10 @@ defaults:
 
 jobs:
   checks:
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest moved to Ubuntu 26 on 19 Oct 2026, and Playwright 1.56's
+    # --with-deps only knows Ubuntu up to 24.04, so the Chromium install fails there.
+    # Move to ubuntu-latest again once Playwright supports the new image.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
