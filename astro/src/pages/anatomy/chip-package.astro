@@ -9,7 +9,7 @@ import { ACCELERATOR_PARTS, PACKAGE_STEPS } from '../../data/anatomy';
 
 <NightPage
   title="Inside a chip package · Juan Kok"
-  description="A 2.5D chip package taken apart one layer at a time, from the lid down to the solder balls."
+  description="A phone processor's package taken apart one layer at a time, then an AI accelerator's opened up: memory on top, and memory beside."
 >
   <NightNav current="anatomy" />
   <main class="nt-wrap nt-section page">
@@ -17,8 +17,8 @@ import { ACCELERATOR_PARTS, PACKAGE_STEPS } from '../../data/anatomy';
       <span class="label">// anatomy</span>
       <h1>Inside a chip package</h1>
       <p>
-        The part of a chip you never see. Step down through a 2.5D package, the way AI accelerators are built: a logic die and
-        stacks of memory side by side on silicon, under one lid. Use the arrows, a number key, or pick a part.
+        The part of a chip you never see. Step down through the package of a phone's processor: one die, no lid, and its
+        memory stacked right on top. Use the arrows, a number key, or pick a part.
       </p>
     </header>
     <AnatomyExplorer client:visible steps={PACKAGE_STEPS} figure="chip-anatomy" />
@@ -26,9 +26,10 @@ import { ACCELERATOR_PARTS, PACKAGE_STEPS } from '../../data/anatomy';
       <span class="label">// open it up</span>
       <h2>An accelerator, opened</h2>
       <p>
-        The same idea at full size, the way the largest AI chips are built: two compute dies joined edge to edge, eight
-        memory stacks along their sides, all on one silicon interposer. Click it to close it or open it again, or point at a
-        part.
+        A phone stacks its memory on top of the processor and reaches it through a ring of a few hundred balls. The largest
+        AI chips need thousands of memory wires, so their memory sits beside the compute dies on one slab of silicon: two
+        dies joined edge to edge, eight memory stacks along their sides. Click it to close it or open it again, or point at
+        a part.
       </p>
     </header>
     <PackageOpen client:visible parts={ACCELERATOR_PARTS} />
