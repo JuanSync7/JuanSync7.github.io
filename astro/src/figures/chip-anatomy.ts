@@ -5,13 +5,14 @@ import { isometric } from './kit/camera';
 import { box } from './kit/draw';
 import { hexOf, ink, mix } from './kit/ink';
 import { follow } from './kit/motion';
-import { ANCHOR, build, PART_IDS, type PartId } from './kit/package';
+import { ANCHOR, build, JOINTS, LEVEL, ON, PART_IDS, type PartId } from './kit/package';
 
-/** A 2.5D chip package taken apart, top down: lid, thermal interface, compute die, memory
- *  stacks, underfill, microbumps, interposer, C4 bumps, capacitors, substrate, solder balls
- *  (built in `kit/package.ts`). Step 0 is the package
- *  assembled; each later step lifts the layers apart and lights one part, its edges in the
- *  signal, with a hairline leader out to where the page puts its label. Parts are drawn as
+/** A phone processor's package taken apart, top down, TSMC InFO-PoP as in Apple's A-series
+ *  (built in `kit/package.ts`): the memory's epoxy cap, its stacked DRAM dies and their wire
+ *  bonds, its substrate, the ring of balls it sits on, then the processor's mould, the copper
+ *  vias through it, the die, the fan-out wiring, the capacitors under it and the ball grid.
+ *  Step 0 is the package assembled; each later step lifts the layers apart and lights one
+ *  part, its edges in the signal, with a hairline leader out to where the page puts its label. Parts are drawn as
  *  solids filled with the ground under their edges, so near parts hide far ones, as in a
  *  technical drawing. Apart, every part carries a ring marker with a hairline out to its
  *  name, the lit one in the signal, the way a teardown sheet is labelled. The page drives
@@ -29,20 +30,9 @@ const isData = (x: unknown): x is AnatomyData =>
   typeof x === 'object' && x !== null && typeof (x as { step?: unknown }).step === 'number';
 
 const PARTS = PART_IDS;
-/** Each part's layer from the bottom: parts on one layer lift together. */
-const LAYER: Record<PartId, number> = {
-  balls: 0,
-  substrate: 1,
-  caps: 2,
-  c4: 2,
-  interposer: 3,
-  ubumps: 4,
-  underfill: 4,
-  die: 5,
-  hbm: 5,
-  tim: 6,
-  lid: 7,
-};
+/** Each part's level from the bottom: parts on one level lift together. */
+const LAYER = LEVEL;
+const TOP = Math.max(...Object.values(LEVEL));
 const GAP = 0.55;
 const v3 = new Vector3();
 const TEAL = new Color(hexOf('signal'));
@@ -79,8 +69,8 @@ interface State {
 export default defineThreeFigure<State>({
   id: 'chip-anatomy',
   title: 'Chip package anatomy',
-  alt: 'A 2.5D chip package drawn in thin lines, taken apart layer by layer: a copper lid, a thermal interface layer, a compute die with its banks of cores between four stacks of eight memory dies with vias through them, underfill fillets round a carpet of microbumps, a silicon interposer with wiring and a via field, larger C4 bumps, rows of capacitors, a layered substrate with plated vias, and a grid of solder balls with capacitors in its open centre. Every part carries a small ring with a thin line out to its label; one part at a time is outlined in teal.',
-  idea: 'Take a 2.5D package apart one layer at a time, top to bottom, and light each part as it is named.',
+  alt: 'A phone processor package drawn in thin lines, taken apart layer by layer: the marked epoxy cap of the memory, eight DRAM dies stacked in four stepped layers with gold wires looped from their edges down to a thin substrate, a ring of solder balls, a mould with a ring of copper posts through it round the processor die and its floorplan of CPU, GPU and neural engine cores and cache, fan-out wiring with traces running from the die to the posts, four small capacitors underneath, and a grid of solder balls. Every part carries a small ring with a thin line out to its label; one part at a time is outlined in teal.',
+  idea: 'Take the package of a phone processor apart one layer at a time, top to bottom, and light each part as it is named: the memory stacked on top, the processor beneath.',
   motion: 'ambient',
   answers: true,
   group: 'feature',
@@ -95,19 +85,17 @@ export default defineThreeFigure<State>({
     });
     const ball = new IcosahedronGeometry(1, 1);
     const parts: Part[] = [];
-    // Bottom up: each layer starts where the one below it ends, and every part is built in
-    // its own frame (ground at 0), so lifting the group lifts the part.
-    let [base, top, layer, substrate] = [0, 0, -1, 0];
+    // Bottom up: each part stands on the top of the part it rests on (ON), and every part is
+    // built in its own frame (ground at 0), so lifting the group lifts the part.
+    const tops = new Map<PartId | 'ground', number>([['ground', 0]]);
     for (const id of [...PARTS].reverse()) {
       const g = new Group();
       const edge = new LineBasicMaterial({ color: hexOf('inkFaint'), transparent: true, opacity: 0.6 });
-      let dots: MeshBasicMaterial | null = null;
-      if (LAYER[id] !== layer) [layer, base] = [LAYER[id], top];
-      if (id === 'balls' || id === 'c4' || id === 'ubumps') dots = new MeshBasicMaterial({ color: hexOf('inkFaint') });
+      const dots = JOINTS.includes(id) ? new MeshBasicMaterial({ color: hexOf('inkFaint') }) : null;
       const fine = new LineBasicMaterial({ color: hexOf('inkFaint'), transparent: true, opacity: 0.35 });
-      const h = build(id, g, { edge, fine, fill, dots, ball }, base - substrate);
-      if (id === 'substrate') substrate = base + h;
-      top = Math.max(top, base + h);
+      const base = tops.get(ON[id]) ?? 0;
+      const h = build(id, g, { edge, fine, fill, dots, ball });
+      tops.set(id, base + h);
       g.position.y = base;
       scene.add(g);
       parts.push({ group: g, edge, fine, dots, base, top: h, lift: 0 });
@@ -120,6 +108,8 @@ export default defineThreeFigure<State>({
       const mat = l.material;
       if (!Array.isArray(mat)) mat.depthTest = false;
       l.renderOrder = 10;
+      // Rewritten every frame, so its bounds are never current: never cull it.
+      l.frustumCulled = false;
       scene.add(l);
       return l;
     };
@@ -128,20 +118,20 @@ export default defineThreeFigure<State>({
     return { parts, explode: 0, yaw: 0.6, dim, lit, buf: [] };
   },
   update: ({ camera, t, dt, pointer, hover, still, data, state: s, w, h }) => {
-    // Without a page to drive it, the figure tours the parts, starting at the compute die.
-    const step = isData(data) ? data.step : ((Math.floor(t / 3) + 2) % PARTS.length) + 1;
+    // Without a page to drive it, the figure tours the parts, starting at the DRAM dies.
+    const step = isData(data) ? data.step : ((Math.floor(t / 3) + 1) % PARTS.length) + 1;
     const lit = step - 1;
     const goal = step > 0 ? 1 : 0;
     s.explode = still ? goal : follow(s.explode, goal, dt, 3);
     const yawGoal = 0.6 + Math.sin(t * 0.15) * 0.2 + (pointer.active ? (pointer.x - 0.5) * 1.4 * hover : 0);
     s.yaw = still ? yawGoal : follow(s.yaw, yawGoal, dt, 3);
-    const dist = (10.5 + 3 * s.explode) * (w / h < 1 ? 1.25 : 1);
+    const dist = (9.5 + 3 * s.explode) * (w / h < 1 ? 1.25 : 1);
     camera.position.set(Math.sin(s.yaw) * dist, dist * 0.55, Math.cos(s.yaw) * dist);
-    camera.lookAt(0, 1.75 * s.explode + 0.15, 0);
+    camera.lookAt(0, (TOP * GAP * s.explode) / 2 + 0.3, 0);
     s.parts.forEach((p, i) => {
-      const id = PARTS[i] ?? 'lid';
+      const id = PARTS[i] ?? 'mcap';
       // Everything above the lit part rises further, so the lit part stands clear.
-      const above = lit >= 0 && LAYER[id] > LAYER[PARTS[lit] ?? 'lid'] ? 0.5 : 0;
+      const above = lit >= 0 && LAYER[id] > LAYER[PARTS[lit] ?? 'mcap'] ? 0.5 : 0;
       p.lift = still ? above : follow(p.lift, above, dt, 4);
       p.group.position.y = p.base + LAYER[id] * GAP * s.explode + p.lift;
       const on = i === lit;
@@ -200,14 +190,16 @@ export default defineThreeFigure<State>({
   },
   fallback: ({ ctx, w, h }) => {
     const cam = isometric(w / 2, h * 0.6, Math.min(w, h) * 0.13);
-    [...PARTS].reverse().forEach((id, i) => {
-      const y = i * GAP;
-      const s = id === 'balls' || id === 'substrate' ? 1.8 : id === 'lid' ? 1.6 : 1.1;
+    const levels = [...new Set(Object.values(LEVEL))];
+    levels.forEach((lv) => {
+      const y = lv * GAP;
+      const die = lv === LEVEL.die;
+      const s = die ? 1.05 : 1.5;
       box(ctx, cam, -s, -s, s, s, y, y + 0.06, {
         top: mix('panel', 'panel2', 0.8),
         left: mix('ground', 'panel', 0.9),
         right: mix('ground', 'panel', 0.5),
-        edge: id === 'die' ? ink.signal(0.95) : ink.line(0.5),
+        edge: die ? ink.signal(0.95) : ink.line(0.5),
         crease: ink.line(0.14),
       });
     });

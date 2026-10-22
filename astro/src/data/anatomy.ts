@@ -1,60 +1,61 @@
-/** The chip-package teardown (`/anatomy/chip-package/`, figure `chip-anatomy`): one step
- *  per part, top down, after the assembled package. The figure lights step i's part. */
+/** The chip-package teardown (`/anatomy/chip-package/`, figure `chip-anatomy`): a phone
+ *  processor's package, one step per part, top down, after the assembled package. The figure
+ *  lights step i's part. */
 
 export interface AnatomyStep {
   name: string;
-  /** One sentence: what the part is and what it does. */
+  /** One or two sentences: what the part is and what it does. */
   body: string;
 }
 
 export const PACKAGE_STEPS: readonly AnatomyStep[] = [
   {
     name: 'The package',
-    body: 'A 2.5D package: a logic die and stacks of memory side by side on a silicon interposer, under one lid, on one substrate. From outside, the lid is all you see.',
+    body: "A phone's processor, packaged the way TSMC builds Apple's A-series chips (InFO-PoP): one die, no lid, and the memory stacked right on top of it. About 14 mm across and under a millimetre tall; the drawing stretches the heights so the layers read.",
   },
   {
-    name: 'Lid',
-    body: 'A nickel-plated copper heat spreader. It carries heat from the dies to the heatsink and keeps them from being knocked or bent.',
+    name: 'Memory cap',
+    body: "The memory package's own epoxy, moulded over its dies and marked with its part number. It is the top of the stack, so heat from the processor underneath leaves partly up through it, into the phone's heat spreader.",
   },
   {
-    name: 'Thermal interface',
-    body: 'A thin layer of indium or polymer paste between the dies and the lid, filling the microscopic gaps so heat can cross.',
+    name: 'DRAM dies',
+    body: 'LPDDR memory: eight DRAM dies in four layers, two side by side on each, ground down to tens of micrometres. Each layer is set back a little from the edge so the pads along the edge of the one below stay uncovered.',
   },
   {
-    name: 'Compute die',
-    body: 'The logic itself: billions of transistors on a slab of silicon a few hundred square millimetres in area. On top you can see its floorplan: the cores, a band of cache, and the PHY lanes along the edge that faces the memory.',
+    name: 'Wire bonds',
+    body: "Gold wires thinner than a hair, looped from every pad down to fingers on the memory's substrate. Wire is cheap and proven, but it limits a die to a few hundred connections, so phone memory has a narrow bus where an accelerator's memory has thousands of wires.",
   },
   {
-    name: 'Memory stacks',
-    body: 'High-bandwidth memory: eight DRAM dies stacked on a slightly larger base die and joined straight through the silicon by columns of vias, so data moves up and down the stack, not around it.',
+    name: 'Memory substrate',
+    body: 'A thin, coreless circuit board under the dies. Its bond fingers catch the wires, and wiring inside it takes each one down to a ball underneath.',
   },
   {
-    name: 'Underfill',
-    body: 'Epoxy flowed in under each die and cured round its microbumps. It holds the joints against the strain of heating and cooling, and shows as a fillet flaring out from every edge.',
+    name: 'PoP balls',
+    body: 'Package-on-package joints: about four hundred solder balls in a ring round the edge of the memory, each landing on a copper via in the package below. That ring is the whole path between the processor and its memory.',
   },
   {
-    name: 'Microbumps',
-    body: 'Thousands of tiny solder joints, tens of micrometres apart, only under the dies: they connect each die to the interposer.',
+    name: 'Mould',
+    body: 'Epoxy moulding compound round the die. InFO places the die on a carrier, pours this round it and grinds it flat, then builds the wiring straight onto the die and the mould: the die never sits on a substrate.',
   },
   {
-    name: 'Interposer',
-    body: 'Passive silicon with very fine wiring that links logic and memory side by side: a bundle of lines from the die to each stack, and a field of through-silicon vias down to the bumps. Putting dies next to each other on it is what makes the package 2.5D.',
+    name: 'Processor die',
+    body: "The phone's whole computer on about a hundred square millimetres: two performance and four efficiency CPU cores, a six-core GPU, a sixteen-core neural engine, two banks of system cache, the image, display and media engines, and memory interfaces along both long edges. Drawn face up; in the package it faces down, onto the wiring.",
   },
   {
-    name: 'C4 bumps',
-    body: 'Controlled-collapse chip connections, a little over a tenth of a millimetre apart, carrying signals and power from the interposer down to the substrate.',
+    name: 'Through vias',
+    body: 'Copper posts through the mould, in two rows round the die (through-InFO vias). They carry the memory signals and power from the wiring under the die up to the balls of the memory on top.',
+  },
+  {
+    name: 'Fan-out wiring',
+    body: "Three thin layers of copper and polymer in place of a substrate. They spread the die's tightly packed pads out to the vias round it and to the balls under the package, which is what 'fan-out' means: traces run from the die's edge to each via of the inner row.",
   },
   {
     name: 'Capacitors',
-    body: 'Decoupling capacitors in rows on the substrate round the bump field, close to where power comes in, to steady the supply when the die suddenly draws more current.',
-  },
-  {
-    name: 'Substrate',
-    body: 'Layers of organic build-up wiring either side of a thicker core, joined through it by plated vias, that fan the connections out from bump pitch to a pitch a circuit board can use.',
+    body: 'Small silicon capacitors bonded to the underside, in the gap the ball grid leaves under the die, as close as they can get to where the cores draw their power.',
   },
   {
     name: 'Solder balls',
-    body: 'A ball grid array: solder balls about a millimetre apart that join the whole package to the board, with the centre left open for land-side capacitors.',
+    body: "About thirteen hundred solder balls, four tenths of a millimetre apart, join it all to the phone's board.",
   },
 ];
 
