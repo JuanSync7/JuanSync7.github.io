@@ -33,3 +33,13 @@ export interface Lesson {
   title: string;
   why: string;
 }
+
+export interface CategorisedLesson extends Lesson {
+  /** A LessonCategory id, from the lesson's tag. */
+  category: string;
+}
+
+export interface LessonCategoryLabel {
+  id: string;
+  label: string;
+}
