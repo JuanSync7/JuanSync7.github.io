@@ -1,5 +1,5 @@
 import { getCollection } from 'astro:content';
-import type { CategorisedLesson } from '../components/writing/types';
+import type { Lesson } from '../components/writing/types';
 import { LESSON_CATEGORIES, categoryOf } from './lesson-categories';
 
 /** The full log is cut into pages at build time so no page grows with the log: one page per
@@ -12,7 +12,7 @@ export const CATEGORY_HREF = `${LESSONS_HREF}category/`;
 export interface LessonGroup {
   key: string;
   label: string;
-  items: CategorisedLesson[];
+  items: Lesson[];
   /** How many lessons the group has in all, when the page shows only some of them. */
   total?: number;
   more?: string;
@@ -38,7 +38,7 @@ const monthShort = new Intl.DateTimeFormat('en-GB', { month: 'short', year: 'num
 const firstOf = (key: string): Date => new Date(`${key}-01T00:00:00Z`);
 
 /** Newest first. */
-export async function allLessons(): Promise<CategorisedLesson[]> {
+export async function allLessons(): Promise<Lesson[]> {
   return (await getCollection('lessons'))
     .map((l) => ({
       iso: l.data.date.toISOString().slice(0, 10),
@@ -51,7 +51,7 @@ export async function allLessons(): Promise<CategorisedLesson[]> {
 }
 
 /** Lessons already newest first stay in order, a group per month. */
-export function byMonth(lessons: readonly CategorisedLesson[]): LessonGroup[] {
+export function byMonth(lessons: readonly Lesson[]): LessonGroup[] {
   const groups: LessonGroup[] = [];
   for (const l of lessons) {
     const key = l.iso.slice(0, 7);
@@ -62,7 +62,7 @@ export function byMonth(lessons: readonly CategorisedLesson[]): LessonGroup[] {
   return groups;
 }
 
-export function months(lessons: readonly CategorisedLesson[]): LessonMonth[] {
+export function months(lessons: readonly Lesson[]): LessonMonth[] {
   return byMonth(lessons).map((g, i) => ({
     key: g.key,
     label: monthShort.format(firstOf(g.key)),
@@ -72,17 +72,11 @@ export function months(lessons: readonly CategorisedLesson[]): LessonMonth[] {
   }));
 }
 
-export function categoryLinks(lessons: readonly CategorisedLesson[]): LessonCategoryLink[] {
+export function categoryLinks(lessons: readonly Lesson[]): LessonCategoryLink[] {
   return LESSON_CATEGORIES.map((c) => ({
     id: c.id,
     label: c.label,
     href: `${CATEGORY_HREF}${c.id}/`,
     count: lessons.filter((l) => l.category === c.id).length,
   })).filter((c) => c.count > 0);
-}
-
-export function categoryLabel(id: string): string {
-  const c = LESSON_CATEGORIES.find((k) => k.id === id);
-  if (!c) throw new Error(`unknown lesson category "${id}"`);
-  return c.label;
 }

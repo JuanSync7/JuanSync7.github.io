@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import FigureCanvas from '../ui/FigureCanvas';
 import type { LessonFieldData } from '../../figures/lesson-field';
+import { categoryLabel } from '../../data/lesson-categories';
 import type { Lesson } from './types';
 import './lesson-log.css';
 
@@ -140,7 +141,8 @@ export default function LessonLog({ lessons, note, allHref }: Props) {
             <li key={`${l.iso}-${i}`} className={`log-card${i === index ? ' is-on' : ''}`}>
               <p className="log-meta">
                 <time dateTime={l.iso}>{longDate(l.iso)}</time>
-                <span className="log-tag">{l.tag}</span>
+                <span className="log-tag">{categoryLabel(l.category)}</span>
+                {l.tag !== categoryLabel(l.category) ? <span>{l.tag}</span> : null}
               </p>
               <h3 className="log-title">{l.title}</h3>
               <p className="log-why">{l.why}</p>

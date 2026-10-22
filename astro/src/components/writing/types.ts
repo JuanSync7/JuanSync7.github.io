@@ -30,11 +30,8 @@ export interface Lesson {
   /** yyyy-mm-dd, UTC. */
   iso: string;
   tag: string;
+  /** A LessonCategory id, from the tag: the label shown in teal on every lesson. */
+  category: string;
   title: string;
   why: string;
-}
-
-export interface CategorisedLesson extends Lesson {
-  /** A LessonCategory id, from the lesson's tag. */
-  category: string;
 }

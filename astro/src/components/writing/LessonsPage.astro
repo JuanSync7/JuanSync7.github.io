@@ -2,7 +2,8 @@
 import NightPage from '../../layouts/NightPage.astro';
 import NightNav from '../layout/NightNav.astro';
 import NightFooter from '../layout/NightFooter.astro';
-import { CATEGORY_HREF, LESSONS_HREF, categoryLabel } from '../../data/lessons';
+import { CATEGORY_HREF, LESSONS_HREF } from '../../data/lessons';
+import { categoryLabel } from '../../data/lesson-categories';
 import type { LessonCategoryLink, LessonGroup, LessonMonth } from '../../data/lessons';
 
 /** One page of the full lesson log, read by month or by category. Every page is built
@@ -122,8 +123,8 @@ const shownMonths = months.filter((m) => m.key.startsWith(year));
               <li>
                 <p class="meta">
                   <time datetime={l.iso}>{day.format(asDate(l.iso))}</time>
-                  {view === 'month' ? <span>{categoryLabel(l.category)}</span> : null}
-                  <span class="tag">{l.tag}</span>
+                  <span class="tag">{categoryLabel(l.category)}</span>
+                  {l.tag !== categoryLabel(l.category) ? <span>{l.tag}</span> : null}
                 </p>
                 <h3>{l.title}</h3>
                 <p class="why">{l.why}</p>

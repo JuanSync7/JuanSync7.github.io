@@ -47,6 +47,12 @@ export const LESSON_CATEGORIES: readonly LessonCategory[] = [
 
 const BY_TAG = new Map(LESSON_CATEGORIES.flatMap((c) => c.tags.map((t) => [t, c.id] as const)));
 
+export function categoryLabel(id: string): string {
+  const c = LESSON_CATEGORIES.find((k) => k.id === id);
+  if (!c) throw new Error(`unknown lesson category "${id}"`);
+  return c.label;
+}
+
 export function categoryOf(tag: string): string {
   const id = BY_TAG.get(tag);
   if (!id)
