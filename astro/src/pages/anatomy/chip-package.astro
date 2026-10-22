@@ -5,11 +5,12 @@ import NightFooter from '../../components/layout/NightFooter.astro';
 import AnatomyExplorer from '../../components/anatomy/AnatomyExplorer.tsx';
 import PackageOpen from '../../components/anatomy/PackageOpen.tsx';
 import { ACCELERATOR_PARTS, HBM_PARTS, PACKAGE_STEPS } from '../../data/anatomy';
+import { DIE_PARTS } from '../../data/die-section';
 ---
 
 <NightPage
   title="Inside a chip package · Juan Kok"
-  description="A phone processor's package taken apart one layer at a time, then an AI accelerator's opened up, and one of its memory stacks cut open: memory on top, memory beside, and memory wired straight through."
+  description="A phone processor's package taken apart one layer at a time, then an AI accelerator's opened up, one of its memory stacks cut open, and one die cut down to its transistors: memory on top, memory beside, memory wired straight through, and the wiring over the silicon."
 >
   <NightNav current="anatomy" />
   <main class="nt-wrap nt-section page">
@@ -55,6 +56,25 @@ import { ACCELERATOR_PARTS, HBM_PARTS, PACKAGE_STEPS } from '../../data/anatomy'
       figure="hbm-stack"
       label="A memory stack, cut open"
       closed="Closed, it is a small block of epoxy with bare silicon on top, a few millimetres from the compute die on the same slab of interposer."
+    />
+    <header class="head">
+      <span class="label">// one die, cut open</span>
+      <h2>Inside the silicon</h2>
+      <p>
+        Every logic die here is built in three stages. The front end makes the transistors, in the top hundred nanometres
+        of the wafer; the middle of the line makes the contacts that reach down to them; the back end stacks the wiring
+        over them, fifteen to twenty levels of copper on a leading chip, each turned a right angle from the one below and
+        coarser than it. Here a block a few gates wide is cut open on two faces and lifted apart. The heights are
+        stretched: the transistors are about a hundred nanometres tall, the wiring over them about ten micrometres. Click
+        it to close it or open it again, or point at a layer.
+      </p>
+    </header>
+    <PackageOpen
+      client:visible
+      parts={DIE_PARTS}
+      figure="die-section"
+      label="A logic die, cut open"
+      closed="Closed, the block is what the bump sees: passivation with one opening over an aluminium pad, and under it every layer the chip has."
     />
   </main>
   <NightFooter />
