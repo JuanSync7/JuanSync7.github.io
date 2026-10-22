@@ -12,10 +12,12 @@ export interface Paint {
   ctx: Ctx;
   cam: Camera;
   lit: boolean;
+  /** Added to every height: paints a part where it sits when opened (`kit/hbm.ts`). */
+  lift?: number;
 }
 
 export const pt = (p: Paint, x: number, y: number, z: number): [number, number] => {
-  const s = project(p.cam, x, y, z);
+  const s = project(p.cam, x, y + (p.lift ?? 0), z);
   return [s[0], s[1]];
 };
 

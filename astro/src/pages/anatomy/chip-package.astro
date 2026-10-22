@@ -4,12 +4,12 @@ import NightNav from '../../components/layout/NightNav.astro';
 import NightFooter from '../../components/layout/NightFooter.astro';
 import AnatomyExplorer from '../../components/anatomy/AnatomyExplorer.tsx';
 import PackageOpen from '../../components/anatomy/PackageOpen.tsx';
-import { ACCELERATOR_PARTS, PACKAGE_STEPS } from '../../data/anatomy';
+import { ACCELERATOR_PARTS, HBM_PARTS, PACKAGE_STEPS } from '../../data/anatomy';
 ---
 
 <NightPage
   title="Inside a chip package · Juan Kok"
-  description="A phone processor's package taken apart one layer at a time, then an AI accelerator's opened up: memory on top, and memory beside."
+  description="A phone processor's package taken apart one layer at a time, then an AI accelerator's opened up, and one of its memory stacks cut open: memory on top, memory beside, and memory wired straight through."
 >
   <NightNav current="anatomy" />
   <main class="nt-wrap nt-section page">
@@ -32,7 +32,30 @@ import { ACCELERATOR_PARTS, PACKAGE_STEPS } from '../../data/anatomy';
         a part.
       </p>
     </header>
-    <PackageOpen client:visible parts={ACCELERATOR_PARTS} />
+    <PackageOpen
+      client:visible
+      parts={ACCELERATOR_PARTS}
+      figure="accelerator-package"
+      label="An accelerator package, opened"
+      closed="Closed, the lid and its foot are all there is to see: one part number, one copper block on a board."
+    />
+    <header class="head">
+      <span class="label">// one stack, cut open</span>
+      <h2>Inside a memory stack</h2>
+      <p>
+        Each of those eight stacks is a tower of its own: a logic die at the bottom, eight DRAM dies above it, and no wire
+        bonds or package balls anywhere. The phone's memory wires each die from its edge; a stack this wide has to wire
+        straight down through the middle of every die. Here one stack is cut along a row of those vias and lifted apart.
+        Click it to close it or open it again, or point at a layer.
+      </p>
+    </header>
+    <PackageOpen
+      client:visible
+      parts={HBM_PARTS}
+      figure="hbm-stack"
+      label="A memory stack, cut open"
+      closed="Closed, it is a small block of epoxy with bare silicon on top, a few millimetres from the compute die on the same slab of interposer."
+    />
   </main>
   <NightFooter />
 </NightPage>
