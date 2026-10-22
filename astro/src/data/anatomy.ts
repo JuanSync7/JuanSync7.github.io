@@ -114,3 +114,53 @@ export const ACCELERATOR_PARTS: readonly PackagePartInfo[] = [
     body: 'Solder balls about a millimetre apart join the package to the board, with the centre left open for capacitors right under the core power.',
   },
 ];
+
+/** One memory stack, opened (`/anatomy/chip-package/`, figure `hbm-stack`): one entry per part
+ *  the figure lights, top down; `id` is the figure's read-out for it. */
+export const HBM_PARTS: readonly PackagePartInfo[] = [
+  {
+    id: 'mould',
+    name: 'Mould',
+    body: 'Epoxy cast round the dies and ground flush with the top one, so the bare silicon on top meets the heat spreader. SK hynix lets the same compound flow into the gaps between the dies (MR-MUF); opened, it is left behind as an outline.',
+  },
+  {
+    id: 'top',
+    name: 'Top die',
+    body: 'The last DRAM die. Nothing sits above it, so it needs no vias, and it is left thick so the whole stack grinds to the height the standard sets (720 µm for HBM3E), level with the compute die beside it.',
+  },
+  {
+    id: 'dram',
+    name: 'DRAM dies',
+    body: "Seven more memory dies, each thinned to a few tens of micrometres. Each holds banks of cells for its share of the stack's channels, around a band of vias down the middle. They face down; the drawing shows their layout as if through the silicon.",
+  },
+  {
+    id: 'tsv',
+    name: 'Through-silicon vias',
+    body: "Copper columns a few micrometres wide running straight down through every die, thousands of them, cut open here along one row. A wire bond can only leave from a die's edge, which caps it at a few hundred connections; going through the middle is how the stack reaches a 1024-bit bus (2048 in HBM4).",
+  },
+  {
+    id: 'ubumps',
+    name: 'Microbumps',
+    body: 'A copper pillar with a solder cap under every via, a few tens of micrometres apart, and dummy bumps across the arrays that carry no signal, only heat and weight. A thin non-conductive film or the mould fills the gap. Hybrid bonding, copper straight onto copper, will replace the bumps in the tallest stacks.',
+  },
+  {
+    id: 'base',
+    name: 'Base die',
+    body: "A logic die, not memory. Its PHY along the edge facing the compute die drives the bus; between them sit the channel controllers, error correction, self-test and the logic that swaps in spare vias. The pads on the far edge are a test port. From HBM4 it is made on a foundry logic process and can carry a customer's own logic.",
+  },
+  {
+    id: 'bumps',
+    name: 'Bumps to the interposer',
+    body: 'Larger microbumps join the base die to the interposer: a dense field under the PHY for the data lines, power and ground across the rest, sealed in underfill that flares out at the edge.',
+  },
+  {
+    id: 'interposer',
+    name: 'Interposer',
+    body: "The silicon slab the stack and the compute die share. Fine wiring on top runs one wire per data line, a millimetre or two from under the PHY to the pads where the compute die's PHY lands; wide vias take power down to the substrate.",
+  },
+  {
+    id: 'caps',
+    name: 'Deep-trench capacitors',
+    body: 'Thousands of narrow trenches etched into the interposer under the stack and lined as capacitors. They hold the supply steady right under the dies, where a phone puts small silicon capacitors under its package instead.',
+  },
+];
