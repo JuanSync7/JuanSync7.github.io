@@ -6,7 +6,7 @@ import NightFooter from '../../components/layout/NightFooter.astro';
 import SectionHead from '../../components/ui/SectionHead.astro';
 import WritingHero from '../../components/writing/WritingHero.astro';
 import FeaturedBook from '../../components/writing/FeaturedBook.tsx';
-import LessonLog from '../../components/writing/LessonLog.tsx';
+import LessonLog, { WEEKS } from '../../components/writing/LessonLog.tsx';
 import PostGrid from '../../components/writing/PostGrid.tsx';
 import Trackers from '../../components/writing/Trackers.astro';
 import Follow from '../../components/writing/Follow.astro';
@@ -35,9 +35,13 @@ const featured: FeaturedPage[] = FEATURED.items.flatMap((f) => {
   return [{ ...f, href: post.data.externalUrl ?? `/blog/${post.slug}`, title: post.data.title, date: show(post.data.date), read: post.data.readTime }];
 });
 
-const lessons: Lesson[] = (await getCollection('lessons'))
+// Only the lessons the field can show, a week of slack included for a reader whose today is
+// after the build: the page must not grow with the whole log, which is on /blog/lessons/.
+const all: Lesson[] = (await getCollection('lessons'))
   .map((l) => ({ iso: l.data.date.toISOString().slice(0, 10), tag: l.data.tag, title: l.data.title, why: l.data.why }))
   .sort((a, b) => b.iso.localeCompare(a.iso));
+const reach = Date.parse(`${all[0]?.iso ?? '1970-01-01'}T00:00:00Z`) - (WEEKS + 1) * 7 * 86_400_000;
+const lessons = all.filter((l) => Date.parse(`${l.iso}T00:00:00Z`) >= reach);
 ---
 
 <NightPage title="Writing · Juan Kok" description="How AI inference works, from the transistor to the token, plus chip design and building with agents.">

@@ -1,0 +1,26 @@
+---
+import LessonsPage from '../../../../components/writing/LessonsPage.astro';
+import { allLessons, categoryLinks, months } from '../../../../data/lessons';
+
+// Each category's newest few, with a link to all of it: the index stays the same length
+// however long the log grows.
+const PREVIEW = 3;
+const lessons = await allLessons();
+const categories = categoryLinks(lessons);
+const groups = categories.map((c) => {
+  const items = lessons.filter((l) => l.category === c.id);
+  return { key: c.id, label: c.label, items: items.slice(0, PREVIEW), total: items.length, more: items.length > PREVIEW ? c.href : undefined };
+});
+---
+
+<LessonsPage
+  title="Lessons by category · Juan Kok"
+  heading="Every lesson, by category"
+  lead={`${lessons.length} lessons in ${categories.length} categories: the newest of each, then all of it.`}
+  view="category"
+  current="all"
+  months={months(lessons)}
+  categories={categories}
+  total={lessons.length}
+  groups={groups}
+/>

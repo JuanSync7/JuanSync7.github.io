@@ -1,0 +1,313 @@
+---
+import NightPage from '../../layouts/NightPage.astro';
+import NightNav from '../layout/NightNav.astro';
+import NightFooter from '../layout/NightFooter.astro';
+import { CATEGORY_HREF, LESSONS_HREF, categoryLabel } from '../../data/lessons';
+import type { LessonCategoryLink, LessonGroup, LessonMonth } from '../../data/lessons';
+
+/** One page of the full lesson log, read by month or by category. Every page is built
+ *  ahead of time and holds at most a month or one category page, so the log can grow to
+ *  any length without any page growing with it. The pills and the pager are plain links. */
+interface Pager {
+  newer?: { href: string; label: string };
+  older?: { href: string; label: string };
+  at?: string;
+}
+
+interface Props {
+  title: string;
+  heading: string;
+  lead: string;
+  view: 'month' | 'category';
+  /** The month key or category id this page shows; 'all' for the category index. */
+  current: string;
+  months: readonly LessonMonth[];
+  categories: readonly LessonCategoryLink[];
+  total: number;
+  groups: readonly LessonGroup[];
+  pager?: Pager;
+}
+
+const { title, heading, lead, view, current, months, categories, total, groups, pager } = Astro.props;
+const day = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+const asDate = (iso: string): Date => new Date(`${iso}T00:00:00Z`);
+const here = (on: boolean): 'page' | undefined => (on ? 'page' : undefined);
+// A row of years, then the months of the year on show: twelve pills at most, however many
+// years the log spans. A year's pill opens its newest month.
+const year = (current || (months[0]?.key ?? '')).slice(0, 4);
+const years = months.reduce<{ year: string; href: string; count: number }[]>((ys, m) => {
+  const y = ys[ys.length - 1];
+  if (y && y.year === m.key.slice(0, 4)) y.count += m.count;
+  else ys.push({ year: m.key.slice(0, 4), href: m.href, count: m.count });
+  return ys;
+}, []);
+const shownMonths = months.filter((m) => m.key.startsWith(year));
+---
+
+<NightPage title={title} description="One thing I learned, most days: every lesson in the log, by month or by category.">
+  <NightNav current="writing" />
+  <main class="nt-wrap nt-section page">
+    <a class="back" href="/blog/#lessons">← Writing</a>
+    <header class="head">
+      <span class="label">// lessons</span>
+      <h1>{heading}</h1>
+      <p>{lead}</p>
+    </header>
+
+    <nav class="controls" aria-label="Lesson log">
+      <div class="row">
+        <span class="key">// view</span>
+        <div class="pills">
+          <a class="pill" href={LESSONS_HREF} aria-current={here(view === 'month')}>by month</a>
+          <a class="pill" href={CATEGORY_HREF} aria-current={here(view === 'category')}>by category</a>
+        </div>
+      </div>
+      {
+        view === 'month' ? (
+          <>
+            {years.length > 1 ? (
+              <div class="row">
+                <span class="key">// year</span>
+                <div class="pills">
+                  {years.map((y) => (
+                    <a class="pill" href={y.href} aria-current={here(y.year === year)}>
+                      {y.year}
+                      <span class="count">{y.count}</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+            <div class="row">
+              <span class="key">// month</span>
+              <div class="pills">
+                {shownMonths.map((m) => (
+                  <a class="pill" href={m.href} aria-current={here(m.key === current)}>
+                    {m.label}
+                    <span class="count">{m.count}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </>
+        ) : (
+          <div class="row">
+            <span class="key">// category</span>
+            <div class="pills">
+              <a class="pill" href={CATEGORY_HREF} aria-current={here(current === 'all')}>
+                all
+                <span class="count">{total}</span>
+              </a>
+              {categories.map((c) => (
+                <a class="pill" href={c.href} aria-current={here(c.id === current)}>
+                  {c.label}
+                  <span class="count">{c.count}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )
+      }
+    </nav>
+
+    {
+      groups.map((g) => (
+        <section class="group" aria-label={g.label}>
+          <h2>
+            {g.label}
+            <span class="count">{g.total ?? g.items.length}</span>
+          </h2>
+          <ol>
+            {g.items.map((l) => (
+              <li>
+                <p class="meta">
+                  <time datetime={l.iso}>{day.format(asDate(l.iso))}</time>
+                  {view === 'month' ? <span>{categoryLabel(l.category)}</span> : null}
+                  <span class="tag">{l.tag}</span>
+                </p>
+                <h3>{l.title}</h3>
+                <p class="why">{l.why}</p>
+              </li>
+            ))}
+            {g.more ? (
+              <li>
+                <a class="more" href={g.more}>
+                  All {g.total} in {g.label} →
+                </a>
+              </li>
+            ) : null}
+          </ol>
+        </section>
+      ))
+    }
+
+    {
+      pager && (pager.newer || pager.older) ? (
+        <nav class="pager" aria-label="More lessons">
+          {pager.newer ? <a href={pager.newer.href}>← {pager.newer.label}</a> : <span />}
+          {pager.at ? <span class="at">{pager.at}</span> : null}
+          {pager.older ? <a href={pager.older.href}>{pager.older.label} →</a> : <span />}
+        </nav>
+      ) : null
+    }
+  </main>
+  <NightFooter />
+</NightPage>
+
+<style>
+  .page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-12);
+  }
+
+  .back,
+  .pager {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-ink-muted);
+  }
+
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-4);
+    max-width: var(--nt-measure);
+  }
+
+  .label,
+  .key,
+  .tag {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-signal);
+  }
+
+  .head p {
+    color: var(--nt-ink-soft);
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-3);
+  }
+
+  /* The same two columns as the lesson groups below, so the pills line up with the lessons. */
+  .row,
+  .group {
+    display: grid;
+    grid-template-columns: minmax(0, var(--nt-thumb-min)) minmax(0, 1fr);
+    gap: var(--hf-space-6);
+  }
+
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--hf-space-2);
+    max-width: var(--nt-measure);
+  }
+
+  /* As tall as one pill, so the label sits level with the first row however many rows wrap. */
+  .key {
+    display: flex;
+    align-self: start;
+    align-items: center;
+    min-height: var(--nt-hit);
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--hf-space-2);
+    min-height: var(--nt-hit);
+    padding: 0 var(--hf-space-4);
+    border: 1px solid var(--nt-line-2);
+    border-radius: var(--hf-radius-pill);
+    color: var(--nt-ink-2);
+    /* What the writing page's filter pills come out at: buttons there inherit the body size. */
+    font-size: var(--nt-fs-body);
+  }
+
+  .pill[aria-current='page'] {
+    border-color: var(--nt-signal);
+    color: var(--nt-ink-strong);
+  }
+
+  .count {
+    font-family: var(--nt-mono);
+    font-size: var(--hf-fs-sm);
+    color: var(--nt-ink-faint);
+  }
+
+  .group {
+    padding-top: var(--hf-space-8);
+    border-top: 1px solid var(--nt-rule);
+  }
+
+  .group h2 {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-1);
+    font-size: var(--nt-fs-h4);
+  }
+
+  ol {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    max-width: var(--nt-measure);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--hf-space-3);
+    margin-bottom: var(--hf-space-2);
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-ink-muted);
+  }
+
+  h3 {
+    margin-bottom: var(--hf-space-2);
+    font-size: var(--nt-fs-intro);
+  }
+
+  .why {
+    font-size: var(--nt-fs-small);
+    color: var(--nt-ink-2);
+  }
+
+  .more {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-signal);
+  }
+
+  .pager {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--hf-space-4);
+    padding-top: var(--hf-space-8);
+    border-top: 1px solid var(--nt-rule);
+  }
+
+  .pager a {
+    color: var(--nt-ink-2);
+  }
+
+  @media (max-width: 720px) {
+    .row,
+    .group {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .row {
+      gap: var(--hf-space-2);
+    }
+  }
+</style>

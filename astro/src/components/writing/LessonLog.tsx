@@ -13,7 +13,8 @@ interface Props {
 }
 
 const DAY = 86_400_000;
-const WEEKS = 16;
+/** The field's reach; the writing page hands over only the lessons inside it. */
+export const WEEKS = 16;
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 const utcDay = (iso: string): number => Date.parse(`${iso}T00:00:00Z`);

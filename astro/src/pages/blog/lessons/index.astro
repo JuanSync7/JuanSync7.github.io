@@ -1,0 +1,23 @@
+---
+import LessonsPage from '../../../components/writing/LessonsPage.astro';
+import { allLessons, byMonth, categoryLinks, months } from '../../../data/lessons';
+
+// The log's front page is its newest month; older months are their own pages ([month].astro).
+const lessons = await allLessons();
+const all = months(lessons);
+const [newest] = byMonth(lessons);
+const older = all[1];
+---
+
+<LessonsPage
+  title="Lessons · Juan Kok"
+  heading="Every lesson"
+  lead={`${lessons.length} lessons, one month to a page, newest first. One thing I learned, most days.`}
+  view="month"
+  current={newest?.key ?? ''}
+  months={all}
+  categories={categoryLinks(lessons)}
+  total={lessons.length}
+  groups={newest ? [newest] : []}
+  pager={older ? { older: { href: older.href, label: older.label } } : undefined}
+/>

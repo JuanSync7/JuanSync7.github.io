@@ -1,0 +1,37 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import LessonsPage from '../../../components/writing/LessonsPage.astro';
+import { allLessons, byMonth, categoryLinks, months } from '../../../data/lessons';
+
+// Every month but the newest, which is the front page (index.astro).
+export const getStaticPaths = (async () => {
+  const lessons = await allLessons();
+  const all = months(lessons);
+  const categories = categoryLinks(lessons);
+  return byMonth(lessons)
+    .map((group, i) => ({
+      params: { month: group.key },
+      props: { group, newer: all[i - 1], older: all[i + 1], months: all, categories, total: lessons.length },
+    }))
+    .slice(1);
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { group, newer, older, months: all, categories, total } = Astro.props;
+---
+
+<LessonsPage
+  title={`Lessons, ${group.label} · Juan Kok`}
+  heading={group.label}
+  lead={`${group.items.length} of ${total} lessons, newest first.`}
+  view="month"
+  current={group.key}
+  months={all}
+  categories={categories}
+  total={total}
+  groups={[group]}
+  pager={{
+    newer: newer ? { href: newer.href, label: newer.label } : undefined,
+    older: older ? { href: older.href, label: older.label } : undefined,
+  }}
+/>

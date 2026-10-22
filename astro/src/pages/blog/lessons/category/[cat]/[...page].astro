@@ -1,0 +1,42 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import LessonsPage from '../../../../../components/writing/LessonsPage.astro';
+import { PAGE_SIZE, allLessons, byMonth, categoryLinks, months } from '../../../../../data/lessons';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const lessons = await allLessons();
+  const categories = categoryLinks(lessons);
+  const shared = { categories, months: months(lessons), total: lessons.length };
+  return categories.flatMap((c) =>
+    paginate(
+      lessons.filter((l) => l.category === c.id),
+      { pageSize: PAGE_SIZE, params: { cat: c.id }, props: { category: c, ...shared } },
+    ),
+  );
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { page, category, categories, months: all, total } = Astro.props;
+const pageOf = page.lastPage > 1 ? `page ${page.currentPage} of ${page.lastPage}` : undefined;
+// paginate's links have no trailing slash; the site's addresses do.
+const slash = (href: string | undefined): string | undefined => (href ? `${href.replace(/\/$/, '')}/` : undefined);
+const newer = slash(page.url.prev);
+const older = slash(page.url.next);
+---
+
+<LessonsPage
+  title={`Lessons, ${category.label}${page.currentPage > 1 ? `, page ${page.currentPage}` : ''} · Juan Kok`}
+  heading={category.label}
+  lead={`${category.count} of ${total} lessons, newest first${pageOf ? `, ${PAGE_SIZE} to a page` : ''}.`}
+  view="category"
+  current={category.id}
+  months={all}
+  categories={categories}
+  total={total}
+  groups={byMonth(page.data)}
+  pager={{
+    newer: newer ? { href: newer, label: 'newer' } : undefined,
+    older: older ? { href: older, label: 'older' } : undefined,
+    at: pageOf,
+  }}
+/>
