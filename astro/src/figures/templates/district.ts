@@ -9,6 +9,7 @@ import { island, size, type Island } from '../kit/islands';
 import { library } from '../kit/library';
 import { follow } from '../kit/motion';
 import { outlines } from '../kit/outlines';
+import { separate } from '../kit/separate';
 import { between, mulberry32, pick } from '../kit/rng';
 import { along } from '../kit/shapes';
 import { MODELS, onLoop } from '../kit/traffic';
@@ -105,14 +106,19 @@ export default defineTemplate<P, S>({
             ? hubLevel(k, rng)
             : island(kind as Island, k, rng);
     const [w, d] = name === 'dam' ? DAM_BOARD : kind === 'hub' ? [2.5, 1.5] : size(kind as Island, k);
-    const top = Math.max(...city.parts.map((p) => (p.y ?? 0) + p.h));
-    const pieces = city.parts.map((p) => ({
-      mark: city.landmark ? p === city.landmark : (p.y ?? 0) + p.h === top,
+    // Nothing stands in anything else unless it is meant to.
+    const parts = separate(city.parts, w, d, city.landmark);
+    const mark = city.landmark
+      ? parts.find((p) => p.x === city.landmark?.x && p.kind === city.landmark?.kind)
+      : undefined;
+    const top = Math.max(...parts.map((p) => (p.y ?? 0) + p.h));
+    const pieces = parts.map((p) => ({
+      mark: mark ? p === mark : (p.y ?? 0) + p.h === top,
       segs: outlines([p]),
       at: [p.x, p.y ?? 0, p.z] as Vec3,
       solid: bodyOf(p.kind) !== null,
     }));
-    return { city, pieces, w, d, yaw: params.yaw };
+    return { city: { ...city, parts }, pieces, w, d, yaw: params.yaw };
   },
   draw: ({ ctx, w, h, t, dt, pointer, hover, still, params, state }) => {
     const target = params.yaw + (pointer.active ? (pointer.x - 0.5) * 1.2 * hover : Math.sin(t * 0.15) * 0.12);
