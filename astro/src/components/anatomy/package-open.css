@@ -1,6 +1,6 @@
 /* The opened accelerator: the tall figure on the left, its switch, the lit part's note and
-   the list of parts beside it, stacked on narrow screens. The note keeps a fixed height so
-   the list does not jump while the figure tours. */
+   the list of parts beside it, stacked on narrow screens. The note is as tall as its longest
+   text, so the list does not move while the figure tours or the pointer crosses it. */
 
 .package-open {
   display: grid;
@@ -48,7 +48,6 @@
 }
 
 .package-open-now {
-  min-height: var(--hf-space-26);
   border-left: 1px solid var(--nt-signal);
   padding-left: var(--hf-space-4);
 }
@@ -59,11 +58,21 @@
   color: var(--nt-signal);
 }
 
-.package-open-now p {
+.package-open-notes {
+  display: grid;
+}
+
+.package-open-notes p {
+  grid-area: 1 / 1;
+  visibility: hidden;
   margin-top: var(--hf-space-2);
   font-size: var(--nt-fs-small);
   line-height: var(--nt-lh-body);
   color: var(--nt-ink-soft);
+}
+
+.package-open-notes p.is-on {
+  visibility: visible;
 }
 
 .package-open-parts {

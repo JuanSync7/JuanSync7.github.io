@@ -38,17 +38,28 @@ export default function PackageOpen({ parts, figure, label, closed }: Props) {
         </div>
         <div className="package-open-now" aria-live="polite">
           <span className="package-open-label">{current ? `// ${current.name.toLowerCase()}` : '// closed'}</span>
-          <p>
-            {current ? current.body : closed}
-          </p>
+          {/* Every note is laid out in the same cell, so the box is as tall as the longest and
+              nothing below it moves when the lit part changes. */}
+          <div className="package-open-notes">
+            {[...parts.map((p) => ({ id: p.id, body: p.body })), { id: '', body: closed }].map((n) => (
+              <p
+                key={n.id}
+                className={n.id === (current?.id ?? '') ? 'is-on' : undefined}
+                aria-hidden={n.id !== (current?.id ?? '')}
+              >
+                {n.body}
+              </p>
+            ))}
+          </div>
         </div>
-        <ol className="package-open-parts">
+        {/* The pick holds while the pointer crosses the gaps between names, and clears only
+            when it leaves the list. */}
+        <ol className="package-open-parts" onPointerLeave={() => setPick(undefined)}>
           {parts.map((p, i) => (
             <li key={p.id} className={p.id === lit ? 'is-on' : undefined}>
               <button
                 type="button"
                 onPointerEnter={() => setPick(p.id)}
-                onPointerLeave={() => setPick(undefined)}
                 onFocus={() => setPick(p.id)}
                 onBlur={() => setPick(undefined)}
                 onClick={() => {
