@@ -20,9 +20,8 @@ export function library(rng: Rng): District {
   const at = (x: number, z: number): [number, number] => [x * c - z * s, x * s + z * c];
   const add = (kind: PartKind, x: number, z: number, w: number, d: number, h: number, y = 0, rot = 0) => {
     const [bx, bz] = at(x, z);
-    return Math.abs(bx) < BW - w / 2 && Math.abs(bz) < BD - d / 2
-      ? P.add(kind, bx, bz, w, d, h, y, turn + rot)
-      : undefined;
+    if (Math.abs(bx) > BW - w / 2 || Math.abs(bz) > BD - d / 2) return undefined;
+    return P.add(kind, bx, bz, w, d, h, y, turn + rot);
   };
   const line = (x0: number, z0: number, x1: number, z1: number): void => {
     const [a, b] = [at(x0, z0), at(x1, z1)];

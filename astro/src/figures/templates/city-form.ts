@@ -4,17 +4,20 @@ import { poly } from '../kit/draw';
 import { ink, mix } from '../kit/ink';
 import { follow } from '../kit/motion';
 import { between, pick } from '../kit/rng';
-import { FORMS, layout, type Form, type Tower } from '../kit/plans';
+import { FORMS, layout, windows, type Form, type Tower } from '../kit/plans';
 
 /** Cities as formations of flat-shaded towers, each laid out by a different rule: a street
  *  grid, a ring round a plaza, two banks of a river, terraces up a hill, a spiral, a strip
- *  along a coast. One window is lit. The camera drifts round it; the pointer turns it. */
+ *  along a coast. Some windows are lit, as many as the seed says, and a few go on and off;
+ *  one window is teal. The camera drifts round it; the pointer turns it. */
 
 interface P {
   form: Form;
   density: number;
   pitch: number;
   yaw0: number;
+  /** How much of the city is still up: the share of windows lit. */
+  lights: number;
 }
 
 interface S {
@@ -24,7 +27,6 @@ interface S {
 }
 
 const LIGHT = [0.5, 0.7, 0.45] as const;
-
 function face(ctx: CanvasRenderingContext2D, cam: Camera, pts: [number, number, number][], shade: number): void {
   poly(
     ctx,
@@ -39,7 +41,7 @@ function face(ctx: CanvasRenderingContext2D, cam: Camera, pts: [number, number, 
 export default defineTemplate<P, S>({
   id: 'city-form',
   title: 'City form',
-  idea: 'A night city laid out by one rule (a grid, a ring, a river, a hill, a spiral, a coast), its towers flat-shaded, one window lit, the camera drifting round it.',
+  idea: 'A night city laid out by one rule (a grid, a ring, a river, a hill, a spiral, a coast), its towers flat-shaded, some of its windows lit and a few going on and off, one window teal, the camera drifting round it.',
   style: 'lowpoly',
   motion: 'ambient',
   answers: true,
@@ -49,10 +51,11 @@ export default defineTemplate<P, S>({
     density: rng(),
     pitch: between(rng, 0.38, 0.75),
     yaw0: between(rng, 0, Math.PI * 2),
+    lights: between(rng, 0.2, 0.6),
   }),
   name: (p) => `${p.form} city`,
   alt: (p) =>
-    `A low-poly city of flat-shaded grey towers arranged as a ${p.form}, seen from above at an angle, with one teal window.`,
+    `A low-poly city of flat-shaded grey towers arranged as a ${p.form}, seen from above at an angle, with lit windows and one teal window.`,
   setup: ({ rng, params }) => {
     const towers = layout(params, rng);
     const lit = towers.reduce((best, tw, i) => (tw.h > (towers[best]?.h ?? 0) ? i : best), 0);
@@ -127,6 +130,10 @@ export default defineTemplate<P, S>({
         return mx * sy + mz * cy > 0;
       });
       for (const [pts, shade] of facing) face(ctx, cam, pts, shade);
+      facing.forEach(([pts], k) => {
+        const [a, b] = pts.filter((p) => p[1] === 0);
+        if (a && b) windows(ctx, cam, a, b, tw.h, i * 4 + k, params.lights, t);
+      });
       face(
         ctx,
         cam,

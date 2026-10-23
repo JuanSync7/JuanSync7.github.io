@@ -24,21 +24,25 @@ export function hydro(rng: Rng): District {
   const face = xd - 0.15 * T;
   const reach = face + BW;
   P.add('reservoir', face - reach / 2, 0, reach, L, H * 0.8);
-  const on = (x: number, z: number, r = 0): boolean => Math.abs(x) < BW - r && Math.abs(z) < BD - r;
+  const on = (x: number, z: number): boolean => Math.abs(x) < BW && Math.abs(z) < BD;
+  // Rock is drawn in wherever it falls short of the board's edge, never left out.
+  const fit = (x: number, z: number, r: number): [number, number] => [
+    Math.max(-BW + r, Math.min(BW - r, x)),
+    Math.max(-BD + r, Math.min(BD - r, z)),
+  ];
 
   // The gorge: tall rock at both ends of the dam, and formations along the shore beyond the
   // water, so the lake is held by stone on every side.
   for (const s of [-1, 1]) {
     for (let k = 0; k < 6; k++) {
-      const [x, z] = [xd + P.r(-0.3, 0.3), s * (L / 2 + P.r(0.06, 0.2))];
       const r = P.r(0.18, 0.3);
-      if (on(x, z, r * 0.7)) P.add('rock', x, z, r * P.r(1.1, 1.5), r, P.r(H * 1.0, H * 1.35), 0, P.r(0, 3));
+      const [x, z] = fit(xd + P.r(-0.3, 0.3), s * (L / 2 + P.r(0.06, 0.2)), r * 0.75);
+      P.add('rock', x, z, r * P.r(1.1, 1.5), r, P.r(H * 1.0, H * 1.35), 0, P.r(0, 3));
     }
     // Boulders and low shelves of rock, close together, round the shore.
     for (let a = 0.1; a < 1.5; a += P.r(0.07, 0.11)) {
-      const [x, z] = [face - Math.sin(a) * reach * 1.04, s * Math.cos(a) * (L / 2) * 1.7];
       const r = P.r(0.12, 0.2);
-      if (!on(x, z, r)) continue;
+      const [x, z] = fit(face - Math.sin(a) * reach * 1.04, s * Math.cos(a) * (L / 2) * 1.7, r * 0.8);
       if (P.rng() < 0.2) P.add('mesa', x, z, r * 2.2, r * 1.4, H * P.r(0.55, 0.7), 0, P.r(0, 3));
       else P.add('rock', x, z, r * P.r(1.2, 1.6), r, P.r(H * 0.85, H * 1.1), 0, P.r(0, 3));
     }
