@@ -15,6 +15,8 @@ export const PART_KINDS = [
   ...['drill', 'excavator', 'kiln', 'column', 'flare', 'hopper', 'crane', 'battery', 'fuelcell', 'transformer'],
   ...['rods', 'warehouse', 'factory', 'mesa', 'birch', 'bush', 'cypress', 'oak'],
   ...['datahall', 'louvred', 'reactor', 'pll', 'crystal'],
+  ...['storey', 'portico', 'clocktower', 'bench', 'lamp', 'person', 'flowers', 'fountain'],
+  ...['damwall', 'reservoir', 'powerhouse', 'generator', 'runner'],
 ] as const;
 export type PartKind = (typeof PART_KINDS)[number];
 
@@ -52,6 +54,8 @@ export interface District {
   /** Where goods leave this level for the one above (a gathering point): the via up starts
    *  here. */
   ports?: Vec3[];
+  /** The part a drawing marks as the district's landmark, when it is not simply the tallest. */
+  landmark?: Part;
 }
 
 /** The overcity's street grid: walkers keep to these lines. */
@@ -77,6 +81,8 @@ const BODY: Partial<Record<PartKind, Body>> = {
       'factory',
       'datahall',
       'louvred',
+      'storey',
+      'clocktower',
     ].map((k) => [k, 'box']),
   ),
   ...Object.fromEntries(['tank', 'tower', 'stack', 'silo', 'column', 'pll'].map((k) => [k, 'round'])),
@@ -112,6 +118,7 @@ export class Plot {
   runway?: [Vec3, Vec3];
   apron: [Vec3, number][] = [];
   ports: Vec3[] = [];
+  landmark?: Part;
   constructor(readonly rng: Rng) {}
   /** A gathering point where goods leave for the level above. */
   port(x: number, z: number): void {
@@ -226,7 +233,10 @@ export class Plot {
     }
   }
   done(): District {
-    const { parts, traces, pipes, roads, lines, workers, runway, apron, ports } = this;
-    return { parts, traces, pipes, roads, lines, workers, apron, ports, ...(runway ? { runway } : {}) };
+    const { parts, traces, pipes, roads, lines, workers, runway, apron, ports, landmark } = this;
+    const out: District = { parts, traces, pipes, roads, lines, workers, apron, ports };
+    if (runway) out.runway = runway;
+    if (landmark) out.landmark = landmark;
+    return out;
   }
 }

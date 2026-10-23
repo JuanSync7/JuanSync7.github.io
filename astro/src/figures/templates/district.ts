@@ -1,10 +1,12 @@
 import { defineTemplate } from '../defineTemplate';
 import { project, type Camera, type ScreenPoint, type Vec3 } from '../kit/camera';
 import { bodyOf, type District } from '../kit/city';
-import { rotors } from '../kit/citylife';
+import { rotors, turning } from '../kit/citylife';
 import { hubLevel } from '../kit/hub';
+import { DAM_BOARD, hydro } from '../kit/hydro';
 import { ink } from '../kit/ink';
 import { island, size, type Island } from '../kit/islands';
+import { library } from '../kit/library';
 import { follow } from '../kit/motion';
 import { outlines } from '../kit/outlines';
 import { between, mulberry32, pick } from '../kit/rng';
@@ -92,11 +94,20 @@ export default defineTemplate<P, S>({
   setup: ({ params }) => {
     const [kind, k] = params.board;
     const rng = mulberry32(params.salt);
-    const city = kind === 'hub' ? hubLevel(k, rng) : island(kind as Island, k, rng);
-    const [w, d] = kind === 'hub' ? [2.5, 1.5] : size(kind as Island, k);
+    // The library and the dam have boards of their own, richer than their levels in the stack.
+    const name = params.board[2];
+    const city =
+      name === 'library'
+        ? library(rng)
+        : name === 'dam'
+          ? hydro(rng)
+          : kind === 'hub'
+            ? hubLevel(k, rng)
+            : island(kind as Island, k, rng);
+    const [w, d] = name === 'dam' ? DAM_BOARD : kind === 'hub' ? [2.5, 1.5] : size(kind as Island, k);
     const top = Math.max(...city.parts.map((p) => (p.y ?? 0) + p.h));
     const pieces = city.parts.map((p) => ({
-      mark: (p.y ?? 0) + p.h === top,
+      mark: city.landmark ? p === city.landmark : (p.y ?? 0) + p.h === top,
       segs: outlines([p]),
       at: [p.x, p.y ?? 0, p.z] as Vec3,
       solid: bodyOf(p.kind) !== null,
@@ -151,6 +162,7 @@ export default defineTemplate<P, S>({
       stroke(p.segs, p.mark ? ink.signal(0.9) : ink.line(0.7));
     }
     stroke(rotors(state.city.parts, t), ink.line(0.55));
+    stroke(turning(state.city.parts, t, state.yaw), ink.line(0.7));
     // Teal flow: the pipes and lines, a pulse running along each.
     const pipes = state.city.pipes ?? [];
     stroke(
