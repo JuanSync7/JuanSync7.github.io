@@ -1,3 +1,4 @@
+import { GROUNDS } from './grounds';
 import { PLANT, TREES } from './plant';
 import { STRIPED } from './striped';
 import { cone, cuboid, lattice, prism, rect, ringAt, type Out } from './shells';
@@ -99,7 +100,7 @@ const MACHINES: Record<string, (o: Out, w: number, d: number, h: number) => void
 
 /** The kinds drawn here. Returns false for a kind it does not draw. */
 export function rig(o: Out, kind: string, w: number, d: number, h: number): boolean {
-  const f = MACHINES[kind] ?? PLANT[kind] ?? TREES[kind] ?? STRIPED[kind];
+  const f = MACHINES[kind] ?? PLANT[kind] ?? TREES[kind] ?? STRIPED[kind] ?? GROUNDS[kind];
   if (!f) return false;
   f(o, w, d, h);
   return true;

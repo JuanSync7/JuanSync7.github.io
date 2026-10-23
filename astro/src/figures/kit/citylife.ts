@@ -104,3 +104,43 @@ export function rotors(parts: readonly Part[], t: number): number[] {
     });
   return out;
 }
+
+const TAU = Math.PI * 2;
+
+/** What moves: every runner's six blades at time t, and the hands of every clock face the
+ *  camera (at yaw) can see, as segment endpoints in the district's frame. */
+export function turning(parts: readonly Part[], t: number, yaw: number): number[] {
+  const out: number[] = [];
+  for (const p of parts) {
+    const put = (x: number, y: number, z: number): void => void out.push(...place(p, x, y, z));
+    if (p.kind === 'runner')
+      for (let k = 0; k < 6; k++) {
+        const a = t * 2.4 + (k / 6) * TAU;
+        put(Math.cos(a) * p.w * 0.08, p.h * 0.6, Math.sin(a) * p.d * 0.08);
+        put(Math.cos(a + 0.6) * p.w * 0.3, p.h * 0.6, Math.sin(a + 0.6) * p.d * 0.3);
+      }
+    if (p.kind !== 'clocktower') continue;
+    const [m, hr] = [t * 0.35, (t * 0.35) / 12 + 1.1];
+    const y = p.h * 0.62;
+    for (const [nx, nz] of [
+      [1, 0],
+      [-1, 0],
+      [0, 1],
+      [0, -1],
+    ] as const) {
+      const r = p.rot ?? 0;
+      const [wx, wz] = [nx * Math.cos(r) - nz * Math.sin(r), nx * Math.sin(r) + nz * Math.cos(r)];
+      if (wx * Math.sin(yaw) + wz * Math.cos(yaw) <= 0.05) continue;
+      const [fx, fz] = [nx * (p.w / 2 + 0.002), nz * (p.d / 2 + 0.002)];
+      for (const [a, len] of [
+        [m, 0.26],
+        [hr, 0.16],
+      ] as const) {
+        const [u, v] = [Math.sin(a) * p.w * len, Math.cos(a) * p.w * len];
+        put(fx, y, fz);
+        put(fx + (nz !== 0 ? u : 0), y + v, fz + (nx !== 0 ? -nx * u : 0));
+      }
+    }
+  }
+  return out;
+}
