@@ -1,7 +1,8 @@
-import type { LineSegments } from 'three';
+import type { InstancedMesh, LineSegments } from 'three';
 import { Pen, write } from './boards';
 import type { Vec3 } from './camera';
 import type { District } from './city';
+import { placeVehicle, vehicleSolids } from './movers';
 import type { Rng } from './rng';
 import { along } from './shapes';
 
@@ -59,6 +60,8 @@ const SLOT = Math.max(...Object.values(MODELS).map((m) => m.length));
 
 export interface Fleet {
   ink: LineSegments;
+  /** Each model's solid twin, shown in the hard-surface look (`kit/movers.ts`). */
+  solids: Record<string, InstancedMesh>;
   size: number;
 }
 
@@ -66,7 +69,7 @@ export interface Fleet {
 export function fleet(n: number): Fleet {
   const pen = new Pen();
   pen.add(new Array(n * SLOT).fill(0), 'inkSoft', 0.85);
-  return { ink: pen.lines(), size: n };
+  return { ink: pen.lines(), solids: vehicleSolids(n), size: n };
 }
 
 /** Put slot i's vehicle at p facing `heading` (radians about the vertical, 0 along +x),
@@ -82,6 +85,7 @@ export function drive(F: Fleet, i: number, model: Model, p: Vec3, heading: numbe
     out[k + 2] = p[2] + (x * s + z * c) * scale;
   }
   write(F.ink, out, (i * SLOT) / 3);
+  placeVehicle(F.solids, i, model, p, heading, scale);
 }
 
 /** Where a vehicle is u of the way round a closed loop, and which way it faces. */

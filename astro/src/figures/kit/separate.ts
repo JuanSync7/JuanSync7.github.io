@@ -12,7 +12,8 @@ import { bodyOf } from './city';
  *  standing on another (y > 0), a machine wholly inside its hall, rocks piled on rocks, and
  *  ground that other things stand on (a lawn, a lake, a conveyor, a wall ring, the dam). */
 
-const FLAT: readonly PartKind[] = ['park', 'lake', 'reservoir', 'belt', 'wall', 'damwall', 'cell', 'macro'];
+// Pylons carry power lines strung to their tops: they stay where the line put them.
+const FLAT: readonly PartKind[] = ['park', 'lake', 'reservoir', 'belt', 'wall', 'damwall', 'cell', 'macro', 'pylon'];
 const PROPS: readonly PartKind[] = [
   'tree',
   'pine',

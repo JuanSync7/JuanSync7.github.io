@@ -8,7 +8,8 @@ import {
   PerspectiveCamera,
 } from 'three';
 import { defineThreeFigure } from './defineThree';
-import { animate, board, lines, show, solids, write, type Board, type Look } from './kit/boards';
+import { animate, board, lines, solids, write, type Board, type Look } from './kit/boards';
+import { showLook } from './kit/movers';
 import type { Vec3 } from './kit/camera';
 import type { District } from './kit/city';
 import { stationOn } from './kit/civic';
@@ -20,6 +21,7 @@ import { follow } from './kit/motion';
 import { along } from './kit/shapes';
 import { commit, lay, request, tube, tubes, type Tubes, type Via, type ViaKind } from './kit/vias';
 import { aim, flatStacks, heading, pickAt } from './kit/stackview';
+import { separate } from './kit/separate';
 import { crowd, gather, type Crowd } from './kit/crowd';
 import { fleet, move, plan, type Fleet, type Model, type Ride } from './kit/traffic';
 import { circuit, type Timed } from './kit/transit';
@@ -145,8 +147,13 @@ export default defineThreeFigure<State>({
   aspect: 1,
   build: ({ scene, rng }) => {
     const kit = solids();
+    // Every level is built, then its parts are moved apart so none stands in another.
     const cities = STACKS.map((c) =>
-      Array.from({ length: levels(c) }, (_, k) => (c.kind === 'hub' ? hubLevel(k, rng) : island(c.kind, k, rng))),
+      Array.from({ length: levels(c) }, (_, k) => {
+        const city = c.kind === 'hub' ? hubLevel(k, rng) : island(c.kind, k, rng);
+        const [w, d] = dimsOf(c, k);
+        return { ...city, parts: separate(city.parts, w, d) };
+      }),
     );
     // Stations first, so each board is built with its platform, substation and power line.
     const stops = STACKS.slice(1).map((c, i) => {
@@ -222,7 +229,7 @@ export default defineThreeFigure<State>({
           0.2,
         ),
       );
-    scene.add(T.frame, T.movers, pulses, people.mesh, path, packet, F.ink);
+    scene.add(T.frame, T.movers, pulses, people.mesh, path, packet, F.ink, ...Object.values(F.solids));
     return {
       stacks,
       vias,
@@ -241,11 +248,11 @@ export default defineThreeFigure<State>({
       look: '',
     };
   },
-  update: ({ camera, t, dt, pointer, hover, still, data, state: s, w, h }) => {
+  update: ({ scene, camera, t, dt, pointer, hover, still, data, state: s, w, h }) => {
     // The look the page asks for: hard-surface unless it asks for the wireframe.
     const look: Look =
       typeof data === 'object' && data !== null && 'look' in data && data.look === 'wire' ? 'wire' : 'solid';
-    if (look !== s.look) s.stacks.forEach((S) => S.boards.forEach((b) => show(b, look)));
+    if (look !== s.look) showLook(scene, look);
     s.look = look;
     // The overview frames the whole archipelago and turns slowly; the pointer picks the stack
     // nearest it there (so flying in never moves what is under the pointer), and the camera
