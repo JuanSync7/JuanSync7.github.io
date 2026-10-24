@@ -1,0 +1,39 @@
+/* The hero city and its look switch: two small mono words in the stage's lower corner, the
+   chosen one in ink, the other muted; the figure fills the rest. */
+
+.hero-city {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-city-looks {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  gap: var(--hf-space-1);
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-meta);
+}
+
+.hero-city-looks button {
+  min-height: var(--nt-hit);
+  padding: 0 var(--hf-space-2);
+  background: none;
+  border: 0;
+  color: var(--nt-ink-muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+.hero-city-looks button[aria-pressed='true'] {
+  color: var(--nt-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--nt-signal);
+  text-underline-offset: 0.2em;
+}
+
+.hero-city-looks button:hover {
+  color: var(--nt-ink);
+}

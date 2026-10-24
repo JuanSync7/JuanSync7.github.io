@@ -49,6 +49,10 @@ implements." The direction is his; propose, don't impose.
 - "envision the layers like PCB where there are some round cylinders as well", "proper city
   design to the layers like blocks, apartment, parks".
 - "currently this is the correct style of design that i want." (after the archipelago)
+- (24 Oct 2026) Shown an isometric hard-surface illustration (dark solids toned by face, bevelled
+  corners, thin bright edges, only visible edges drawn), he asked: "can you do the hero city with
+  this isometric hard surface illustration? But don't delete the old wireframe." Both looks are
+  kept; the hero switches between them.
 - Things should work as a system, not stand side by side: production lines "look
   disconnected and not as one"; power lines "dangling" need "a proper power station and then
   power distribution"; "when there is airplane there need to be an airport."
