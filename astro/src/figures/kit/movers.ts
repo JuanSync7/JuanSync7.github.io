@@ -140,3 +140,22 @@ export function placeVehicle(
     im.instanceMatrix.needsUpdate = true;
   }
 }
+
+/** A monorail's guideway, n segments: a box beam one unit long along +z, scaled to each. */
+export function guideway(n: number): InstancedMesh {
+  const o: Tris = [];
+  cuboid(o, -0.012, 0, -0.5, 0.012, 0.024, 0.5);
+  const m = tonedMesh(o);
+  return solid(new InstancedMesh(m.geometry, m.material, n));
+}
+
+/** A monorail car along +z, its nose and tail drawn in, its skirt down either side of the beam. */
+export function monorailCar(n: number): InstancedMesh {
+  const o: Tris = [];
+  const at = (z: number, k: number): Vec3[] =>
+    ring(8, 0.025 * k, 0.02 * k, 0, Math.PI / 8).map(([x, , y]): Vec3 => [x, 0.006 + y, z]);
+  loft(o, [at(-0.05, 0.35), at(-0.04, 0.9), at(-0.032, 1), at(0.032, 1), at(0.04, 0.9), at(0.05, 0.35)]);
+  for (const s of [-1, 1]) cuboid(o, s > 0 ? 0.012 : -0.02, -0.03, -0.035, s > 0 ? 0.02 : -0.012, -0.005, 0.035);
+  const m = tonedMesh(o);
+  return solid(new InstancedMesh(m.geometry, m.material, n));
+}

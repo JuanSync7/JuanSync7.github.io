@@ -8,25 +8,17 @@ import type { Rng } from './rng';
  *  a lake, an airport. Each takes the plot and a place in the district's frame and adds
  *  parts, traces and pipes; none draws anything itself. */
 
-/** A street of houses with gardens: n plots either side of a road running along x, a car
- *  loop on the road. */
+/** A street of houses with gardens: n plots either side of a street running along x (its
+ *  kerbs and crossings are `kit/streets.ts`'s), a car loop on the street. */
 export function housing(P: Plot, x: number, z: number, n: number): void {
   const pitch = 0.13;
   const x0 = x - ((n - 1) * pitch) / 2;
   const x1 = x0 + (n - 1) * pitch;
-  P.road(
-    [
-      [x0 - 0.08, 0, z],
-      [x1 + 0.08, 0, z],
-    ],
-    0.05,
-    true,
-  );
   for (let i = 0; i < n; i++)
     for (const s of [-1, 1]) {
       const hx = x0 + i * pitch + P.r(-0.01, 0.01);
-      P.add('house', hx, z + s * 0.08, 0.075, 0.06, P.r(0.04, 0.06));
-      if (P.rng() > 0.45) P.trees(hx + 0.045, z + s * 0.14, 0.04, 0.03, 1, false);
+      P.add('house', hx, z + s * 0.11, 0.075, 0.06, P.r(0.04, 0.06));
+      if (P.rng() > 0.45) P.trees(hx + 0.05, z + s * 0.13, 0.03, 0.02, 1, false);
     }
   // Traffic keeps to its lane: out on one side of the centre line, back on the other.
   P.roads.push([

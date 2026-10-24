@@ -18,12 +18,28 @@ const PORT: [number, number][] = [
   [-0.72, -0.4],
 ];
 
-/** A haul road through the stops (closed), so trucks loop between them. */
-function haul(P: Plot, stops: [number, number][], w = 0.045): void {
-  P.road(
-    stops.map(([x, z]): Vec3 => [x, 0.004, z]),
-    w,
-  );
+/** A haul route through the stops (closed), so trucks loop between them. A mine has no
+ *  paved roads: the trucks run on the ground, and nothing stands in their way. */
+function haul(P: Plot, stops: [number, number][]): void {
+  P.roads.push(stops.map(([x, z]): Vec3 => [x, 0.004, z]));
+}
+
+/** A mineral site: a cleared pad, an outcrop of the ore with its crystals showing, and the
+ *  heap broken off it. */
+function site(P: Plot, x: number, z: number, s = 1): void {
+  P.ellipse(x, z, 0.08 * s, 0.06 * s, 12);
+  P.add('crystal', x, z, 0.09 * s, 0.08 * s, 0.11 * s, 0, P.r(0, 3));
+  P.add('heap', x + 0.08 * s, z - 0.04 * s, 0.05 * s, 0.05 * s, 0.035 * s);
+}
+
+/** A ridge of rock formations along x from x0 to x1 at z: boulders shouldering together,
+ *  a mesa now and then. */
+function ridge(P: Plot, x0: number, x1: number, z: number): void {
+  for (let x = x0; x < x1; x += P.r(0.07, 0.12)) {
+    const r = P.r(0.07, 0.13);
+    if (P.rng() < 0.2) P.add('mesa', x, z + P.r(-0.03, 0.03), r * 1.6, r * 1.2, P.r(0.06, 0.1), 0, P.r(0, 3));
+    else P.add('rock', x, z + P.r(-0.04, 0.04), r * 1.3, r, P.r(0.06, 0.13), 0, P.r(0, 3));
+  }
 }
 
 /** A drill rig on its pad, with the pile it has broken. */
@@ -38,7 +54,14 @@ export function mine(P: Plot, k: number): void {
     P.mountains(-0.85, 0.15, -0.45, 0.12);
     // The pit: benches stepping down, the shovel on the floor, rigs on the rim.
     const [px, pz] = [-0.35, 0.15];
-    for (let i = 1; i <= 5; i++) P.ellipse(px, pz, 0.065 * i, 0.045 * i, 22);
+    P.add('pit', px, pz, 0.66, 0.46, 0.05);
+    // A second, smaller working to the east, hills and a ridge of rock along the front.
+    P.add('pit', 0.05, -0.42, 0.3, 0.2, 0.035);
+    P.add('hill', -0.72, 0.42, 0.3, 0.2, 0.08, 0, 0.3);
+    P.add('hill', 0.48, 0.42, 0.22, 0.14, 0.06, 0, -0.2);
+    ridge(P, -0.2, 0.3, 0.52);
+    site(P, -0.05, 0.36, 0.8);
+    site(P, 0.6, -0.42, 0.7);
     P.add('excavator', px + 0.03, pz, 0.12, 0.08, 0.08, 0, 2.4);
     node(P, px - 0.28, pz - 0.12, 0.8);
     node(P, px + 0.25, pz + 0.18, 0.8);
@@ -71,6 +94,9 @@ export function mine(P: Plot, k: number): void {
     // Ore in from below, roasted, smelted; metal piped to the refinery; product stored at the
     // second port.
     const [rx, rz] = PORT[0] ?? [0, 0];
+    // The works stand on a shelf cut into the hillside: rock along the back edge.
+    ridge(P, -0.85, 0.75, -0.52);
+    P.add('hill', 0.72, 0.45, 0.2, 0.14, 0.07);
     silos(P, rx - 0.03, rz, 2);
     conveyor(P, [rx - 0.05, rz - 0.02], [0.42, 0.28]);
     P.add('kiln', 0.25, 0.28, 0.32, 0.08, 0.12);
@@ -119,6 +145,10 @@ export function mine(P: Plot, k: number): void {
     node(P, 0.15, 0.45, 0.8);
     P.rocks(-0.3, 0.15, 0.4, 0.2, 8);
     P.rocks(0.45, -0.3, 0.3, 0.18, 6);
+    // More of the ore body shows where the drifts cut it: outcrops, and rock round them.
+    site(P, 0.62, -0.12, 0.8);
+    site(P, -0.32, 0.5, 0.7);
+    ridge(P, -0.9, -0.4, -0.55);
     // The ore body shows as crystal clusters where the drifts cut it, more rigs working it
     // and shovels loading at the faces.
     for (const [x, z] of [

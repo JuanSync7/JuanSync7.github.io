@@ -3,10 +3,11 @@ import type { Vec3 } from './camera';
 import { STREETS, type District } from './city';
 import { hexOf } from './ink';
 import type { Rng } from './rng';
+import { PAVEMENT } from './streets';
 import type { At } from './traffic';
 
 /** People in a city scene, one instanced batch: walkers out on a district's street grid
- *  (`STREETS`, `kit/city.ts`), and workers standing where districts put them (along an
+ *  (`STREETS`, `kit/city.ts`), on its pavements (`kit/streets.ts`), and workers standing where districts put them (along an
  *  assembly line, on a platform). */
 
 const m4 = new Matrix4();
@@ -43,7 +44,9 @@ export function gather(C: Crowd, t: number, at: At, s: number, k: number, w: num
   C.walkers.forEach((p, i) => {
     const span = p.along ? w * 0.9 : d * 0.9;
     const u = (((((p.u + (p.v * t) / span) % 1) + 1) % 1) - 0.5) * span;
-    const fixed = p.along ? (STREETS.z[p.line] ?? 0) : (STREETS.x[p.line] ?? 0);
+    // On the pavement, one side or the other, so where streets cross they cross on the zebra.
+    const side = i % 2 ? PAVEMENT : -PAVEMENT;
+    const fixed = (p.along ? (STREETS.z[p.line] ?? 0) : (STREETS.x[p.line] ?? 0)) + side;
     put(i, at(s, k, p.along ? [u, 0, fixed] : [fixed, 0, u]));
   });
   C.workers.forEach((q, i) => put(C.walkers.length + i, at(q.s, q.k, q.p)));

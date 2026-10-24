@@ -1,6 +1,7 @@
 import { Plot, STREETS, type District } from './city';
 import { datacentre, housing, lake, school, shops, substation, powerline } from './civic';
 import { capacitors } from './industry';
+import { block, streets } from './streets';
 import type { Rng } from './rng';
 
 /** The hub's six levels, bottom (silicon) to top (where people live), each a district on a
@@ -103,40 +104,53 @@ function knowledge(P: Plot): void {
 }
 
 function apps(P: Plot): void {
-  const kinds = ['block', 'block', 'tower', 'hex', 'tri'] as const;
-  for (let i = -3; i <= 3; i++)
-    for (let j = -2; j <= 2; j++) {
-      if (P.rng() < 0.28) continue;
-      const tall = P.rng() > 0.85;
-      const kind = kinds[Math.floor(P.rng() * kinds.length)] ?? 'block';
-      const s = kind === 'block' ? P.r(0.08, 0.17) : 0.1;
-      P.add(
-        kind,
-        i * 0.33 + P.r(-0.04, 0.04),
-        j * 0.27 + P.r(-0.03, 0.03),
-        s,
-        s,
-        tall ? P.r(0.3, 0.38) : P.r(0.06, 0.18),
-      );
+  // Downtown: a grid of streets, towers on every block, each with a top of its own, and the
+  // landmarks round a plaza: a twisting tower, an observation needle, a glass pyramid.
+  // Another board hangs half a unit above, so nothing here, spire and all, rises past 0.4.
+  const [xs, zs] = [
+    [-0.62, 0, 0.62],
+    [-0.2, 0.3],
+  ];
+  streets(P, xs, zs, [-1.22, 1.22, -0.72, 0.72]);
+  const xb = [-1.22, ...xs, 1.22];
+  const zb = [-0.72, ...zs, 0.72];
+  for (let i = 0; i + 1 < xb.length; i++)
+    for (let j = 0; j + 1 < zb.length; j++) {
+      const [x0, x1, z0, z1] = [xb[i] ?? 0, xb[i + 1] ?? 0, zb[j] ?? 0, zb[j + 1] ?? 0];
+      if (i === 2 && j === 1) continue;
+      if (i === 1 && j === 1) {
+        P.add('twist', -0.31, 0.05, 0.12, 0.12, 0.38);
+        block(P, x0, (x0 + x1) / 2 - 0.06, z0, z1, 0.3, 0.32);
+        continue;
+      }
+      if (i === 3 && j === 0) {
+        P.add('needle', 0.92, -0.47, 0.12, 0.12, 0.4);
+        continue;
+      }
+      block(P, x0, x1, z0, z1, j === 1 ? 0.75 : 0.45, 0.32);
     }
-  for (const x of [-0.83, -0.17, 0.5]) P.line(x, -0.7, x, 0.7);
-  for (const z of [-0.14, 0.4]) P.line(-1.2, z, 1.2, z);
+  // The plaza: the pyramid over the station hall below, trees round it.
+  P.add('pyramid', 0.31, 0.05, 0.18, 0.18, 0.12);
+  P.trees(0.31, 0.05, 0.4, 0.34, 3, true);
 }
 
 function overcity(P: Plot): void {
-  // Where people live: two streets of houses, apartment rows, a school, shops with a clinic
-  // and a playground, a park and the stadium, all on the walkers' street grid.
-  housing(P, -0.64, -0.5, 6);
-  housing(P, -0.64, 0.5, 6);
-  for (let i = 0; i < 3; i++) P.add('apartment', -0.82 + i * 0.17, 0, 0.12, 0.14, P.r(0.16, 0.3));
+  // Where people live, every building inside a block of the walkers' street grid: streets
+  // of houses, apartment rows, a school, shops with a clinic and a playground, the stadium,
+  // the Ferris wheel by the park.
+  streets(P, STREETS.x, STREETS.z, [-1.22, 1.22, -0.72, 0.72]);
+  housing(P, -0.64, -0.5, 4);
+  housing(P, -0.64, 0.5, 4);
+  housing(P, 0, -0.5, 4);
+  housing(P, 0, 0.5, 4);
+  for (let i = 0; i < 3; i++) P.add('apartment', -0.82 + i * 0.17, 0.25, 0.12, 0.14, P.r(0.16, 0.3));
   for (let i = 0; i < 2; i++) P.add('apartment', -0.12 + i * 0.17, -0.25, 0.12, 0.14, P.r(0.18, 0.3));
-  school(P, 0.62, -0.5);
-  shops(P, 0.08, 0.17, 3);
-  P.trees(0.0, 0.42, 0.42, 0.2, 7);
-  P.add('tank', 0.66, 0.0, 0.38, 0.32, 0.05);
-  P.trees(1.12, 0.25, 0.2, 0.4, 5);
-  for (const x of STREETS.x) P.line(x, -0.7, x, 0.7);
-  for (const z of STREETS.z) P.line(-1.2, z, 1.2, z);
+  school(P, 0.62, -0.25);
+  shops(P, -0.22, 0.2, 3);
+  P.add('stadium', 0.64, 0.25, 0.42, 0.3, 0.08);
+  P.add('wheel', 1.1, 0.25, 0.08, 0.06, 0.26);
+  P.trees(1.1, -0.25, 0.14, 0.3, 4);
+  P.trees(-1.1, 0, 0.14, 0.5, 4);
 }
 
 /** Level k of the hub. */

@@ -3,7 +3,7 @@ import { lines, Pen, write } from './boards';
 import type { Vec3 } from './camera';
 import { hexOf } from './ink';
 import { satellite } from './machines';
-import { airlinerSolid, satelliteSolid } from './movers';
+import { airlinerSolid, guideway, monorailCar, satelliteSolid } from './movers';
 import { along } from './shapes';
 import { airliner, arc, ends, orbit, rails, strip, timed, type Timed } from './transit';
 
@@ -26,6 +26,9 @@ const railOf = (pts: Vec3[]): number[] => rails(pts, 0.05);
 export interface Links {
   track: LineSegments;
   cars: InstancedMesh;
+  /** The hard-surface look's guideway, one beam per segment, and its streamlined cars. */
+  beam: InstancedMesh;
+  coaches: InstancedMesh;
   conduit: LineSegments;
   sparks: InstancedMesh;
   planes: LineSegments[];
@@ -39,6 +42,8 @@ export function links(scene: Scene, tracks: number, flights: number, sats: numbe
   const L: Links = {
     track: lines(zeros(tracks * size(SEGS, railOf)), 'inkFaint', 0.55),
     cars: box(0.05, 0.035, 0.1, 'inkSoft', tracks * CARS),
+    beam: guideway(tracks * SEGS),
+    coaches: monorailCar(tracks * CARS),
     conduit: lines(zeros(tracks * size(SEGS, strip)), 'signal', 0.55),
     sparks: box(0.018, 0.018, 0.018, 'signal', tracks * 3),
     planes: Array.from({ length: flights }, () => lines(airliner(), 'inkStrong', 0.85)),
@@ -53,7 +58,9 @@ export function links(scene: Scene, tracks: number, flights: number, sats: numbe
   // Each wire model carries its solid twin, shown in the hard-surface look.
   L.planes.forEach((p) => p.add(airlinerSolid()).scale.setScalar(0.3));
   L.sats.forEach((s, i) => s.add(satelliteSolid(0.9 + (i / 2) * 0.4)).scale.setScalar(0.11));
-  scene.add(L.track, L.cars, L.conduit, L.sparks, ...L.planes, ...L.sats);
+  L.track.userData['look'] = 'wire';
+  L.cars.userData['look'] = 'wire';
+  scene.add(L.track, L.cars, L.beam, L.coaches, L.conduit, L.sparks, ...L.planes, ...L.sats);
   return L;
 }
 
@@ -63,6 +70,16 @@ export function links(scene: Scene, tracks: number, flights: number, sats: numbe
 export function monorail(L: Links, j: number, a: Vec3, b: Vec3, t: number, flow: 1 | -1): void {
   const pts = arc(a, b, 0.25, j % 2 ? 0.35 : -0.35, SEGS);
   write(L.track, railOf(pts), j * size(SEGS, railOf));
+  // The guideway: a box beam from each point of the arc to the next.
+  for (let i = 0; i + 1 < pts.length; i++) {
+    const [p, q] = [pts[i] ?? a, pts[i + 1] ?? b];
+    dummy.position.set((p[0] + q[0]) / 2, (p[1] + q[1]) / 2, (p[2] + q[2]) / 2);
+    dummy.lookAt(q[0], q[1], q[2]);
+    dummy.scale.set(1, 1, Math.hypot(q[0] - p[0], q[1] - p[1], q[2] - p[2]));
+    dummy.updateMatrix();
+    L.beam.setMatrixAt(j * SEGS + i, dummy.matrix);
+  }
+  dummy.scale.set(1, 1, 1);
   const under = pts.map((p): Vec3 => [p[0], p[1] - 0.018, p[2]]);
   write(L.conduit, strip(under), j * size(SEGS, strip));
   for (let k = 0; k < 3; k++) {
@@ -79,6 +96,7 @@ export function monorail(L: Links, j: number, a: Vec3, b: Vec3, t: number, flow:
     dummy.lookAt(n[0], n[1] + 0.03, n[2]);
     dummy.updateMatrix();
     L.cars.setMatrixAt(j * CARS + k, dummy.matrix);
+    L.coaches.setMatrixAt(j * CARS + k, dummy.matrix);
   }
 }
 
@@ -101,6 +119,8 @@ export function settle(L: Links, t: number): void {
     g.lookAt(0, p[1] - 1, 0);
   });
   L.cars.instanceMatrix.needsUpdate = true;
+  L.coaches.instanceMatrix.needsUpdate = true;
+  L.beam.instanceMatrix.needsUpdate = true;
   L.sparks.instanceMatrix.needsUpdate = true;
 }
 

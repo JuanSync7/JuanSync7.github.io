@@ -1,5 +1,6 @@
 import { Plot, type District } from './city';
 import { airport, datacentre } from './civic';
+import { block, streets } from './streets';
 import { mine } from './mining';
 import { energy, grid, smalls } from './power';
 import type { Rng } from './rng';
@@ -27,28 +28,19 @@ export function size(kind: Island, k: number): [number, number] {
 
 function exchange(P: Plot, k: number): void {
   if (k === 1) {
-    // Towers crowd round the trading hall's dome, leaving a plaza open in front of it.
-    P.add('dome', -0.05, -0.02, 0.4, 0.4, 0.2);
-    const kinds = ['tower', 'block', 'hex', 'tri'] as const;
-    for (let i = 0; i < 12; i++) {
-      const a = (i / 12) * Math.PI * 2 + P.r(-0.1, 0.1);
-      if (Math.cos(a) > 0.15 && Math.sin(a) > 0.15) continue;
-      const kind = kinds[i % 4] ?? 'block';
-      P.add(
-        kind,
-        Math.cos(a) * P.r(0.42, 0.68),
-        Math.sin(a) * P.r(0.32, 0.44),
-        P.r(0.08, 0.12),
-        P.r(0.08, 0.12),
-        P.r(0.22, 0.52),
-        0,
-        a,
-      );
-    }
-    P.trees(0.45, 0.3, 0.36, 0.22, 6);
-    P.ellipse(-0.05, -0.02, 0.3, 0.27);
-    grid(P, -0.7, 0.4, [
-      [-0.05, 0.2],
+    // The financial district: the trading hall's dome behind the stock exchange's columned
+    // front on its plaza, towers on the blocks either side, each crowned its own way.
+    streets(P, [-0.42, 0.42], [0.22], [-0.85, 0.85, -0.55, 0.55]);
+    P.add('dome', 0, -0.2, 0.36, 0.36, 0.2);
+    P.add('bourse', 0, 0.36, 0.34, 0.14, 0.12);
+    block(P, -0.85, -0.42, -0.55, 0.22, 0.85);
+    block(P, 0.42, 0.85, -0.55, 0.22, 0.85);
+    block(P, -0.85, -0.42, 0.22, 0.55, 0.4);
+    block(P, 0.42, 0.85, 0.22, 0.55, 0.4);
+    P.trees(-0.25, 0.4, 0.12, 0.16, 2, true);
+    P.trees(0.25, 0.4, 0.12, 0.16, 2, true);
+    grid(P, -0.7, 0.45, [
+      [0, -0.2],
       [-0.6, -0.1],
     ]);
   } else {
@@ -58,6 +50,9 @@ function exchange(P: Plot, k: number): void {
       P.add('wall', Math.cos(t) * 0.3 - 0.35, Math.sin(t) * 0.22, 0.07, 0.07, 0.06, 0, t);
     }
     P.add('tank', -0.35, 0, 0.2, 0.2, 0.1);
+    // The banks' own offices and the museum of money round the vault.
+    P.add('museum', -0.35, 0.38, 0.26, 0.16, 0.12);
+    block(P, -0.85, -0.55, -0.55, 0.0, 0.5, 0.26);
     datacentre(P, 0.42, 0, 2);
     grid(P, 0.42, 0.4, [[0.42, 0.12]]);
     smalls(P, -0.75, 0.42, 4);
