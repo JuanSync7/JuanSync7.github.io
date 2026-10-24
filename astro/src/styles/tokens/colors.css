@@ -124,4 +124,27 @@
   --nt-dot: rgba(255, 255, 255, 0.05);
   --nt-scrim: rgba(7, 8, 12, 0.6);
   --nt-scrim-strong: rgba(7, 8, 12, 0.88);
+
+  /* Paper: the reading column of a /learn article, paper and ink with one highlight (Juan, 3 Oct
+     2026: "a proper learning article with words gets the paper-and-ink style of my /learn
+     articles, with just a highlight colour"). The values are the old /learn light theme's. */
+  --nt-paper-ground: #dcd8cc;
+  --nt-paper-panel: #e6e2d6;
+  --nt-paper-panel-2: #d4cfc1;
+  --nt-paper-line: #c8c3b4;
+  --nt-paper-ink-strong: #24221d;
+  --nt-paper-ink: #34302a;
+  --nt-paper-ink-2: #4c4840;
+  --nt-paper-ink-muted: #5a564d;
+  --nt-paper-signal: #0a7164;
+  --nt-paper-signal-line: #9ec8bd;
+
+  /* Code keeps a dark terminal window wherever it sits, paper included ("if there is code, it
+     goes in a macOS-style terminal window"). */
+  --nt-code-ground: #0b0d13;
+  --nt-code-line: #1c2030;
+  --nt-code-ink: #e6e8ee;
+  --nt-term-red: #ff5f56;
+  --nt-term-amber: #febc2e;
+  --nt-term-green: #28c840;
 }

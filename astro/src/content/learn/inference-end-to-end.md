@@ -3,9 +3,12 @@ title: "Inference, End to End"
 summary: "Prefill and decode, why one decode is memory-bound, precision and the KV cache, speculative decoding, the memory hierarchy, and where the CPU re-enters the picture."
 eyebrow: "Field guide · how inference actually runs"
 tracker: "inference-engines"
-art: "flow"
-bg: "cube"
 date: 2026-06-16
+subject: inference
+cover: "ridge-lines"
+featured: true
+shelfFigure: "prefill-tunnel"
+shelfNotes: ["prefill: all prompt tokens at once", "decode: one per step"]
 ---
 
 Prefill and decode, why one decode is memory-bound, precision and the KV cache, speculative decoding, the memory hierarchy, and where the CPU re-enters the picture — with diagrams and a KV-cache reference table.

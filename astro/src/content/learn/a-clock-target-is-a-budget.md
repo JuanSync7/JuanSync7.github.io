@@ -2,8 +2,9 @@
 title: "A clock target is a budget"
 summary: "\"Run at 2.6 GHz\" sounds like one number, but it's a budget of about 385 picoseconds that four different teams have to share."
 eyebrow: "Chip design"
-art: "wave"
 date: 2026-10-18
+subject: silicon
+cover: "ridge-field~9"
 ---
 
 A chip's clock speed reads like a single fact on a spec sheet: 2.6 GHz. Inside the project, it's a slice of time, the same few hundred picoseconds, and several things all have to happen inside it on every path in the design, on every chip that comes off the line, at every temperature and voltage it's sold for. Each of those things is owned by a different part of the team. Get the split wrong and the chip runs slower than promised, or not at all.

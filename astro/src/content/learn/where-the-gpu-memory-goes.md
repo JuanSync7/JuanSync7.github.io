@@ -3,8 +3,9 @@ title: "Where the GPU memory goes"
 summary: "On a shared GPU, the memory for every request is set aside before the first one arrives, and most serving surprises come from not knowing where it went."
 eyebrow: "Inference serving"
 tracker: "inference-engines"
-art: "stack"
 date: 2026-10-18
+subject: inference
+cover: "voxel-scene~12"
 ---
 
 Put two models on one GPU and you find out quickly that "it fits" isn't a yes-or-no question. I ran a small fleet of vLLM servers on one 48 GB card: a chat model and an embedding model, side by side. Sometimes a server refused to start. Sometimes the same config started fine, and the next restart came up with a different amount of room for requests. Nothing was broken. I just didn't know where the memory was going.

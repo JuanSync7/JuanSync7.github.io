@@ -10,8 +10,9 @@ import LessonLog from '../../components/writing/LessonLog.tsx';
 import PostGrid from '../../components/writing/PostGrid.tsx';
 import Trackers from '../../components/writing/Trackers.astro';
 import Follow from '../../components/writing/Follow.astro';
-import type { FeaturedPage, Lesson, PostSummary } from '../../components/writing/types';
+import type { Lesson, PostSummary } from '../../components/writing/types';
 import { CATEGORY_LABEL, FEATURED, LESSONS_COPY, POSTS_COPY } from '../../data/writing';
+import { LEARN_COPY, learnEntries, learnShelf } from '../../data/learn';
 
 const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 const show = (d: Date): string => fmt.format(d);
@@ -28,12 +29,7 @@ const posts: PostSummary[] = entries.map((e) => ({
   href: e.data.externalUrl ?? `/blog/${e.slug}`,
 }));
 
-// Featured pages take title, date and read time from the post itself, so they can't drift.
-const featured: FeaturedPage[] = FEATURED.items.flatMap((f) => {
-  const post = entries.find((e) => e.slug === f.slug);
-  if (!post) throw new Error(`featured post "${f.slug}" is not in the blog collection`);
-  return [{ ...f, href: post.data.externalUrl ?? `/blog/${post.slug}`, title: post.data.title, date: show(post.data.date), read: post.data.readTime }];
-});
+const featured = learnShelf(await learnEntries());
 
 const lessons: Lesson[] = (await getCollection('lessons'))
   .map((l) => ({ iso: l.data.date.toISOString().slice(0, 10), tag: l.data.tag, title: l.data.title, why: l.data.why }))
@@ -47,7 +43,9 @@ const lessons: Lesson[] = (await getCollection('lessons'))
     <WritingHero />
 
     <section id="featured" class="nt-wrap nt-section block">
-      <SectionHead label="// featured" title={FEATURED.title} lead={FEATURED.body} />
+      <SectionHead label="// featured" title={FEATURED.title} lead={FEATURED.body}>
+        <a class="all" href={LEARN_COPY.all.href}>{LEARN_COPY.all.label} →</a>
+      </SectionHead>
       <FeaturedBook client:visible pages={featured} />
     </section>
 
@@ -68,6 +66,13 @@ const lessons: Lesson[] = (await getCollection('lessons'))
 </NightPage>
 
 <style>
+  .all {
+    align-self: flex-start;
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-signal);
+  }
+
   .block {
     display: flex;
     flex-direction: column;

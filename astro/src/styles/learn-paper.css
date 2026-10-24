@@ -1,0 +1,123 @@
+/* The reading column of a /learn article: paper and ink with one highlight colour, on a night
+   page (Juan, 3 Oct 2026: "a proper learning article with words gets the paper-and-ink style of
+   my /learn articles, with just a highlight colour"; 24 Oct 2026: paper body, night chrome).
+   Inside .paper the night tokens are remapped to paper, so night-prose.css sets the type as it
+   does for posts. Code stays in a dark terminal window ("if there is code, it goes in a
+   macOS-style terminal window"). The --bg / --panel / ... names are what Mermaid.astro reads. */
+
+.night .paper {
+  --nt-ground: var(--nt-paper-ground);
+  --nt-panel: var(--nt-paper-panel);
+  --nt-panel-2: var(--nt-paper-panel-2);
+  --nt-rule: var(--nt-paper-line);
+  --nt-line: var(--nt-paper-line);
+  --nt-ink-strong: var(--nt-paper-ink-strong);
+  --nt-ink: var(--nt-paper-ink);
+  --nt-ink-2: var(--nt-paper-ink-2);
+  --nt-ink-soft: var(--nt-paper-ink-2);
+  --nt-ink-muted: var(--nt-paper-ink-muted);
+  --nt-ink-faint: var(--nt-paper-ink-muted);
+  --nt-signal: var(--nt-paper-signal);
+  --nt-signal-line-2: var(--nt-paper-signal-line);
+
+  --bg: var(--nt-paper-ground);
+  --panel: var(--nt-paper-panel);
+  --line: var(--nt-paper-line);
+  --txt: var(--nt-paper-ink);
+  --muted: var(--nt-paper-ink-muted);
+  --teal: var(--nt-paper-signal);
+  --mono: var(--nt-mono);
+
+  padding: var(--hf-space-12) var(--hf-space-10);
+  border-radius: var(--hf-radius-2xl);
+  background: var(--nt-paper-ground);
+  color: var(--nt-paper-ink-2);
+}
+
+.night .paper .prose h2,
+.night .paper .prose h3 {
+  color: var(--nt-paper-ink-strong);
+}
+
+/* A terminal window: three dots in a title bar, a rule under it, the code scrolling below. */
+.night .paper .prose pre {
+  position: relative;
+  padding: var(--hf-space-12) var(--hf-space-5) var(--hf-space-5);
+  border-color: var(--nt-code-line);
+  background: var(--nt-code-ground) !important;
+  color: var(--nt-code-ink);
+}
+
+.night .paper .prose pre::before {
+  content: '';
+  position: absolute;
+  top: var(--hf-space-4);
+  left: var(--hf-space-5);
+  width: var(--hf-space-3);
+  height: var(--hf-space-3);
+  border-radius: var(--hf-radius-pill);
+  background: var(--nt-term-red);
+  box-shadow:
+    var(--hf-space-5) 0 0 var(--nt-term-amber),
+    var(--hf-space-10) 0 0 var(--nt-term-green);
+}
+
+.night .paper .prose pre::after {
+  content: '';
+  position: absolute;
+  top: var(--hf-space-10);
+  right: 0;
+  left: 0;
+  border-top: 1px solid var(--nt-code-line);
+}
+
+.night .paper .prose :not(pre) > code {
+  background: var(--nt-paper-panel);
+}
+
+/* A Mermaid diagram is a figure, not code: no window, centred, captioned. */
+.night .paper .prose figure.ig-fig {
+  margin: var(--hf-space-10) 0;
+}
+
+.night .paper .prose pre.mermaid {
+  padding: 0;
+  border: none;
+  background: none !important;
+  text-align: center;
+  line-height: 0;
+  color: transparent;
+}
+
+.night .paper .prose pre.mermaid::before,
+.night .paper .prose pre.mermaid::after {
+  content: none;
+}
+
+.night .paper .prose pre.mermaid svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.night .paper .prose figure.ig-fig figcaption {
+  text-align: center;
+}
+
+/* On a phone a wide table would push the whole page sideways: its columns share the width and
+   long cells wrap, as the old /learn pages did. */
+@media (max-width: 720px) {
+  .night .paper {
+    padding: var(--hf-space-8) var(--hf-space-4);
+  }
+
+  .night .paper .prose table {
+    table-layout: fixed;
+  }
+
+  .night .paper .prose th,
+  .night .paper .prose td {
+    overflow-wrap: anywhere;
+  }
+}
