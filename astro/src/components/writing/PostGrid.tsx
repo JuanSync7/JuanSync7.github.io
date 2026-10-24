@@ -6,6 +6,8 @@ import './post-grid.css';
 interface Props {
   posts: readonly PostSummary[];
   labels: Readonly<Record<string, string>>;
+  /** What a card's link says. */
+  cta?: string;
 }
 
 /** Moves the card's spotlight to the pointer: two custom properties, no re-render. */
@@ -17,7 +19,7 @@ function spot(e: PointerEvent<HTMLAnchorElement>): void {
 
 /** Every post as a hairline grid of cards, each with its own live cover figure, filtered by
  *  category. Changing the filter re-deals the cards with a short stagger. */
-export default function PostGrid({ posts, labels }: Props) {
+export default function PostGrid({ posts, labels, cta = 'Read post →' }: Props) {
   const [filter, setFilter] = useState('all');
   const [deal, setDeal] = useState(0);
   const cats = Array.from(new Set(posts.map((p) => p.category)));
@@ -31,7 +33,7 @@ export default function PostGrid({ posts, labels }: Props) {
 
   return (
     <div className="posts">
-      <div className="pills" role="group" aria-label="Filter posts">
+      <div className="pills" role="group" aria-label="Filter">
         {filters.map((f) => (
           <button key={f.id} type="button" className="pill" aria-pressed={f.id === filter} onClick={() => choose(f.id)}>
             {f.label}
@@ -54,7 +56,7 @@ export default function PostGrid({ posts, labels }: Props) {
               </span>
               <span className="card-title">{p.title}</span>
               <span className="card-excerpt">{p.excerpt}</span>
-              <span className="card-go">Read post →</span>
+              <span className="card-go">{cta}</span>
             </div>
           </a>
         ))}

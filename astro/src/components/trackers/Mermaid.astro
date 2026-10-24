@@ -1,13 +1,15 @@
 ---
 /* Renders every <pre class="mermaid"> on the page as a flowchart, themed from the
    design tokens (neutral nodes + a single teal accent on `:::accent` focal nodes).
-   Re-renders on the dark/light theme toggle so colours always match the page. */
+   Re-renders on the dark/light theme toggle so colours always match the page. The colours are
+   read where the first diagram sits, not at the page root, so a diagram on a learn article's
+   paper column takes the paper's colours on a night page. */
 ---
 <script>
   import mermaid from 'mermaid';
 
-  const readTokens = () => {
-    const s = getComputedStyle(document.documentElement);
+  const readTokens = (at: Element) => {
+    const s = getComputedStyle(at);
     const g = (n: string) => s.getPropertyValue(n).trim();
     return { bg: g('--bg'), panel: g('--panel'), line: g('--line'), txt: g('--txt'), muted: g('--muted'), teal: g('--teal'), mono: g('--mono') };
   };
@@ -15,7 +17,7 @@
   const render = () => {
     const nodes = Array.from(document.querySelectorAll<HTMLElement>('pre.mermaid'));
     if (!nodes.length) return;
-    const t = readTokens();
+    const t = readTokens(nodes[0]);
     for (const n of nodes) {
       if (!n.dataset.src) n.dataset.src = (n.textContent || '').trim();
       else { n.innerHTML = n.dataset.src; n.removeAttribute('data-processed'); }

@@ -45,6 +45,7 @@ export const NAV = [
   { label: 'work', href: '/#work' },
   { label: 'lab', href: '/lab/' },
   { label: 'anatomy', href: '/anatomy/chip-package/' },
+  { label: 'learn', href: '/learn/' },
   // Last, because a narrow screen keeps only the last link in the top bar (the footer
   // carries them all).
   { label: 'writing', href: '/blog/' },

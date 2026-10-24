@@ -2,8 +2,11 @@
 title: "Agents you can repeat"
 summary: "The agents I trust aren't the clever ones. They're the ones whose every decision a script could make has been taken away from them."
 eyebrow: "Agents"
-art: "hub"
 date: 2026-10-24
+subject: agents
+cover: "workflow~3"
+featured: true
+shelfNotes: ["one job walks the graph, station by station", "the lit station is the one at work"]
 ---
 
 I have agents doing real work across my projects: writing code, filing notes, reviewing each other, drawing figures for my site. A lot of it is good. The trouble is the work that was good once and different the next time. In one project a question that blocked every task sat unanswered for a day; then the agent went ahead on a guess it never wrote down, and the guess was wrong. In an experiment, a rule written in the prompt was ignored in 19 of 20 runs. Agreed decisions lived in a chat and were gone when the session ended. And the agent I needed wasn't always the one called at the right time.

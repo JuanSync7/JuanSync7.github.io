@@ -3,8 +3,12 @@ title: "How Inference Chips Are Built"
 summary: "Why GPUs are inefficient for LLM inference, how ASICs go from RTL to silicon, and what Cerebras, Fractile, Groq, Etched, and Tenstorrent are doing differently to overcome the memory wall."
 eyebrow: "Chip design deep-dive"
 tracker: "inference-silicon"
-art: "lattice"
 date: 2026-06-16
+subject: silicon
+cover: "chip-package"
+featured: true
+shelfFigure: "systolic-array"
+shelfNotes: ["a systolic array, 6 × 6", "one cell per clock"]
 ---
 
 Why GPUs are inefficient for LLM inference, how ASICs go from RTL to silicon, and what Cerebras, Fractile, Groq, Etched, and Tenstorrent are doing differently to overcome the memory wall. A few numbers frame the whole story:

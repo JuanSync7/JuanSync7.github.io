@@ -1,30 +1,140 @@
 ---
-import TrackerLayout from '../../layouts/TrackerLayout.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
-import ArticleArt from '../../components/trackers/ArticleArt.astro';
+import NightPage from '../../layouts/NightPage.astro';
+import NightNav from '../../components/layout/NightNav.astro';
+import NightFooter from '../../components/layout/NightFooter.astro';
+import FigureCanvas from '../../components/ui/FigureCanvas.tsx';
 import Mermaid from '../../components/trackers/Mermaid.astro';
-import { learnArt } from '../../lib/content';
-import '../../components/trackers/tracker-skin.css';
+import { LEARN_COPY, LEARN_SUBJECT, readTime } from '../../data/learn';
+import '../../styles/night-prose.css';
+import '../../styles/learn-paper.css';
 
 export async function getStaticPaths() {
   const entries = await getCollection('learn');
   return entries.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
 }
-type Props = { entry: CollectionEntry<'learn'> };
+
+interface Props {
+  entry: CollectionEntry<'learn'>;
+}
+
+// A field guide: the night page's nav, header and live cover, then the text on paper, then the
+// tracker that follows the same subject week by week.
 const { entry } = Astro.props;
 const { Content } = await entry.render();
-const tracker = entry.data.tracker;
-const active = tracker === 'inference-engines' ? 'engines' : tracker === 'frontier-models' ? 'models' : tracker === 'inference-silicon' ? 'silicon' : '';
-const { motif, space } = learnArt(entry.data);
+const { data } = entry;
+const subject = LEARN_SUBJECT[data.subject];
+const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(data.date);
 ---
-<TrackerLayout title={`${entry.data.title} · learn`} active={active} mainWidth="760px">
-  <article class="release-article">
-    <a class="back" href="/learn"><span class="arr">←</span> back to learn</a>
-    <ArticleArt seed={entry.slug} motif={motif} space={space} height={220} class="article-hero" />
-    {entry.data.eyebrow && <div class="eyebrow">{entry.data.eyebrow}</div>}
-    <h1>{entry.data.title}</h1>
-    {entry.data.summary && <p class="sub">{entry.data.summary}</p>}
-    <div class="prose"><Content /></div>
-  </article>
+
+<NightPage title={`${data.title} · Juan Kok`} description={data.summary}>
+  <NightNav current="learn" />
+  <div class="nt-progress" aria-hidden="true"></div>
+  <main class="nt-wrap guide">
+    <a class="back" href={LEARN_COPY.all.href}>← {LEARN_COPY.all.label}</a>
+    <header class="head">
+      <p class="meta">
+        <span class="cat">{subject.label}</span>
+        <time datetime={data.date.toISOString()}>{date}</time>
+        <span>{readTime(entry.body)}</span>
+      </p>
+      <h1>{data.title}</h1>
+      {data.summary ? <p class="excerpt">{data.summary}</p> : null}
+    </header>
+    {data.cover ? (
+      <div class="cover" style={`view-transition-name: cover-${entry.slug}`}>
+        <FigureCanvas client:load id={data.cover} />
+      </div>
+    ) : null}
+    <div class="paper">
+      <article class="prose">
+        <Content />
+      </article>
+    </div>
+    <nav class="next" aria-label="More on this subject">
+      <a href={subject.tracker.href}>
+        <span class="dir">this week in {subject.label}</span>
+        <span>{subject.tracker.name} tracker →</span>
+      </a>
+      <a class="all" href={LEARN_COPY.all.href}>
+        <span class="dir">more guides</span>
+        <span>{LEARN_COPY.all.label} →</span>
+      </a>
+    </nav>
+  </main>
   <Mermaid />
-</TrackerLayout>
+  <NightFooter />
+</NightPage>
+
+<style>
+  .guide {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-10);
+    padding-top: var(--nt-section-y-tight);
+    padding-bottom: var(--nt-section-y);
+  }
+
+  .back,
+  .meta,
+  .dir {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-caption);
+    color: var(--nt-ink-muted);
+  }
+
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-5);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--hf-space-2) var(--hf-space-4);
+  }
+
+  .cat {
+    color: var(--nt-signal);
+  }
+
+  h1 {
+    font-size: var(--nt-fs-h1);
+    line-height: var(--nt-lh-tight);
+    letter-spacing: var(--nt-tracking-display);
+  }
+
+  .excerpt {
+    font-size: var(--nt-fs-intro);
+    color: var(--nt-ink-soft);
+  }
+
+  .cover {
+    aspect-ratio: 2;
+    overflow: hidden;
+    border: 1px solid var(--nt-line);
+    border-radius: var(--hf-radius-2xl);
+  }
+
+  .next {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--hf-space-6);
+    padding-top: var(--hf-space-8);
+    border-top: 1px solid var(--nt-rule);
+  }
+
+  .next a {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-1);
+    max-width: 45%;
+    color: var(--nt-ink-2);
+  }
+
+  .all {
+    margin-left: auto;
+    text-align: right;
+  }
+</style>

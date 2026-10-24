@@ -35,11 +35,22 @@ const releases = defineCollection({
   }),
 });
 
+// Learn articles: long explainers, each filed under one subject. `cover` is a figure id (or a
+// template instance) drawn as the hero and on every card; `featured` puts the article on the
+// writing page's shelf, at most one per subject (checked where the shelf is built).
+export const LEARN_SUBJECTS = ['inference', 'silicon', 'agents'] as const;
+
 const learn = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
     summary: z.string().optional(),
+    subject: z.enum(LEARN_SUBJECTS),
+    cover: z.string().optional(),
+    featured: z.boolean().default(false),
+    /** The shelf's drawing, when it is not the cover, and two captions under it: what to look at. */
+    shelfFigure: z.string().optional(),
+    shelfNotes: z.tuple([z.string(), z.string()]).optional(),
     eyebrow: z.string().optional(),
     tracker: z.enum(['inference-engines', 'frontier-models', 'inference-silicon']).optional(),
     art: artMotif.optional(),

@@ -14,8 +14,10 @@ because they all obey the rules below.
   **`src/components/blog/ArticleArt.tsx`** + **`ArtMotifs.tsx`** (React island) are
   **thin renderers** over that scene — they differ only in framework syntax, never
   in geometry. The Astro and React art are therefore identical by construction.
-- **Category → motif/accent/image** is resolved by `src/config/registry.ts`; a
-  page's hero art is resolved by `src/lib/content.ts` (`learnArt`/`resolveBlogArt`).
+- **Category → motif/accent/image** is resolved by `src/config/registry.ts`. Learn
+  articles no longer use this art: since 2026-10-24 their hero and cards are figures
+  (`cover:` in the learn collection, drawn by `FigureCanvas`); `/learn/art-gallery`
+  still shows the motifs.
 
 **Determinism invariant (non-negotiable):** the art must be a pure function of the
 seed. **Never** use `Math.random()` or `Date` in `artGeometry.ts` — derive every

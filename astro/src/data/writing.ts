@@ -3,16 +3,6 @@
  * blog collection; this file holds what the page says around them.
  */
 
-export interface Featured {
-  slug: string;
-  kind: string;
-  blurb: string;
-  cta: string;
-  figure: string;
-  /** Two short captions under the drawing: what to look at. */
-  notes: readonly [string, string];
-}
-
 export const WRITING_HERO = {
   title: 'Where silicon meets syntax.',
   body: 'Explainers on how AI inference really works, from the transistor to the token. Plus chip design, tooling, and the lessons I pick up building with agents.',
@@ -21,35 +11,10 @@ export const WRITING_HERO = {
   hint: 'Move across the lattice. Click to send a pulse.',
 } as const;
 
+// The shelf's pages are the learn articles flagged `featured`, one per subject (data/learn.ts).
 export const FEATURED = {
   title: 'Featured explainers',
-  body: 'Long reads with diagrams. Turn the page.',
-  items: [
-    {
-      slug: 'inference-end-to-end',
-      kind: 'tutorial',
-      blurb: 'From prompt to token: prefill versus decode, the KV-cache, precision, speculative decoding, the memory hierarchy, and how the big labs serve at scale.',
-      cta: 'Read the explainer',
-      figure: 'prefill-tunnel',
-      notes: ['prefill: all prompt tokens at once', 'decode: one per step'],
-    },
-    {
-      slug: 'how-inference-chips-are-built',
-      kind: 'silicon',
-      blurb: 'From transistors and dataflow to wafer-scale engines: how the silicon behind AI inference is designed, and why startups think they can unseat the GPU.',
-      cta: 'Read the explainer',
-      figure: 'systolic-array',
-      notes: ['a systolic array, 6 × 6', 'one cell per clock'],
-    },
-    {
-      slug: 'rtl-to-gds',
-      kind: 'silicon',
-      blurb: 'From Verilog to tapeout in digestible steps: synthesis, place and route, timing closure, and the dark arts of DRC.',
-      cta: 'Read the walkthrough',
-      figure: 'wafer-stack',
-      notes: ['a wafer, die by die', 'any die lifted out'],
-    },
-  ] satisfies readonly Featured[],
+  body: 'Long reads with diagrams, one way into each subject. Turn the page.',
 } as const;
 
 export const LESSONS_COPY = {

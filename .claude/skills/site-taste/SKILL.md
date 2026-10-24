@@ -72,6 +72,12 @@ busy boxes on the inside; flow runs left to right or top to bottom where it can;
 **Light** (3 Oct 2026): "Not dark only: there is light too." For light, "not pure white, but
 a more cream-coloured paper."
 
+**Learn, blog and the trackers as one site** (24 Oct 2026, choosing between proposals): learn
+article pages keep a paper-and-ink reading column inside the night page's nav, header and live
+cover ("paper body, night chrome"); the /learn index and the three trackers move to the night
+system; "Featured explainers" is one learn article per subject, flagged in its own frontmatter,
+and a newer one takes the slot only if it covers the same ground better.
+
 ## Built
 
 - **Night system** (`astro/src/styles/tokens/`, `night.css`, `NightLayout`, `NightPage`):
