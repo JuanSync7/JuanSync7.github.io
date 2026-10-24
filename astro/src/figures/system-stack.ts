@@ -8,7 +8,7 @@ import {
   PerspectiveCamera,
 } from 'three';
 import { defineThreeFigure } from './defineThree';
-import { animate, board, lines, solids, write, type Board } from './kit/boards';
+import { animate, board, lines, show, solids, write, type Board, type Look } from './kit/boards';
 import type { Vec3 } from './kit/camera';
 import type { District } from './kit/city';
 import { stationOn } from './kit/civic';
@@ -36,7 +36,9 @@ import { circuit, type Timed } from './kit/transit';
  *  cars drive the roads, an open line builds cars, planes fly circuits from the airport and
  *  satellites orbit overhead. Teal is the city's energy: vias are wireframe lift shafts, pipes and bucket elevators carrying teal up and down, windows light
  *  teal and white. The pointer flies the camera to the stack under it: from one person's
- *  work to the whole company's. */
+ *  work to the whole company's. The page picks the look (`data.look`): hard-surface by
+ *  default, toned bevelled solids lined only at their folds (`kit/hardsurface.ts`), or the
+ *  original wireframe. */
 
 type Kind = 'hub' | Island;
 interface Spec {
@@ -122,6 +124,7 @@ interface State {
   over: PerspectiveCamera;
   across: (readonly [Vec3, Vec3])[];
   view: { x: number; y: number; z: number; dist: number; orbit: number };
+  look: Look | '';
 }
 
 const m4 = new Matrix4();
@@ -134,7 +137,7 @@ export default defineThreeFigure<State>({
   id: 'system-stack',
   title: 'System stack',
   alt: 'A tall stack of six boards like the levels of a city, each with traces and round parts like a circuit board, from a silicon undercity through a datacentre, a walled gateway and a library by a lake to an overcity of houses, a school, shops and parks with people walking, ringed by five floating islands of several levels each: a mine with mountains and mesas behind an open pit, a mining shovel, drill rigs, haul trucks, a hopper and crusher, and below a rotary kiln, smelter and refinery columns; a foundry with an open car line, a warehouse with its crane yard and a second enclosed line; a finance exchange of towers round a dome; an energy island with a reactor, cooling towers, wind turbines, solar rows, fuel cells, a fuel-rod store, transformers and a battery station by a dam; and an airport whose planes take off, circle and land. Each level has its substation and poles; goods climb between levels by teal glass tubes from each gathering point, and monorails join the islands to the hub and to each other',
-  idea: 'From one person to the whole company: the platform is a living city on stacked boards, and the islands round it each make one thing (ore and metal, cars, money, power, flights) and ship it in by monorail along a grid that carries the power.',
+  idea: 'From one person to the whole company: the platform is a living city on stacked boards, and the islands round it each make one thing (ore and metal, cars, money, power, flights) and ship it in by monorail along a grid that carries the power. Drawn hard-surface (toned, bevelled solids lined at their folds) or, on request, in wireframe.',
   motion: 'ambient',
   answers: true,
   group: 'hero',
@@ -235,9 +238,15 @@ export default defineThreeFigure<State>({
       packet,
       over: new PerspectiveCamera(30, 1, 0.1, 60),
       view: { x: 0, y: LOOK, z: 0, dist: FAR, orbit: 0 },
+      look: '',
     };
   },
-  update: ({ camera, t, dt, pointer, hover, still, state: s, w, h }) => {
+  update: ({ camera, t, dt, pointer, hover, still, data, state: s, w, h }) => {
+    // The look the page asks for: hard-surface unless it asks for the wireframe.
+    const look: Look =
+      typeof data === 'object' && data !== null && 'look' in data && data.look === 'wire' ? 'wire' : 'solid';
+    if (look !== s.look) s.stacks.forEach((S) => S.boards.forEach((b) => show(b, look)));
+    s.look = look;
     // The overview frames the whole archipelago and turns slowly; the pointer picks the stack
     // nearest it there (so flying in never moves what is under the pointer), and the camera
     // flies to it, levelling out as it nears.
