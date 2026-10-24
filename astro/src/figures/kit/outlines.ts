@@ -1,4 +1,6 @@
 import { bodyOf, place, type Part } from './city';
+import { folds } from './folds';
+import { LANDMARKS } from './landmarks';
 import { rig } from './rigs';
 import { cone, prism, rect, ring, shell, type Out } from './shells';
 
@@ -25,6 +27,14 @@ export const COOLER: [number, number][] = Array.from({ length: 9 }, (_, i) => {
 function local(o: Out, { kind, w, d, h }: Part): void {
   const [hw, hd] = [w / 2, d / 2];
   const body = bodyOf(kind);
+  // A landmark has no hand-drawn wire: its wire is where its solid folds.
+  const mark = LANDMARKS[kind];
+  if (mark) {
+    const t: number[] = [];
+    mark(t, w, d, h);
+    o.push(...folds(t));
+    return;
+  }
   if (shell(o, kind, w, d, h) || rig(o, kind, w, d, h)) return;
   if (kind === 'cell') {
     // A standard cell is a tile only a few units high: its top is all that reads.

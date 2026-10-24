@@ -17,6 +17,8 @@ export const PART_KINDS = [
   ...['datahall', 'louvred', 'reactor', 'pll', 'crystal'],
   ...['storey', 'portico', 'clocktower', 'bench', 'lamp', 'person', 'flowers', 'fountain'],
   ...['damwall', 'reservoir', 'powerhouse', 'generator', 'runner'],
+  ...['stadium', 'needle', 'wheel', 'arch', 'museum', 'bourse', 'pyramid', 'twist', 'zebra', 'hill', 'pit'],
+  ...['turbinehall', 'ventstack'],
 ] as const;
 export type PartKind = (typeof PART_KINDS)[number];
 
@@ -56,6 +58,8 @@ export interface District {
   ports?: Vec3[];
   /** The part a drawing marks as the district's landmark, when it is not simply the tallest. */
   landmark?: Part;
+  /** Streets people walk (open lines, x0, z0, x1, z1): kept clear like roads, but no traffic. */
+  lanes?: Trace[];
 }
 
 /** The overcity's street grid: walkers keep to these lines. */
@@ -65,25 +69,9 @@ export const STREETS = { x: [-0.95, -0.32, 0.32, 0.95], z: [-0.5, 0, 0.5] } as c
 export type Body = 'box' | 'round' | 'hex' | 'tri' | 'cone' | 'dome' | 'cooler' | 'hall' | 'rock' | null;
 const BODY: Partial<Record<PartKind, Body>> = {
   ...Object.fromEntries(
-    [
-      'cell',
-      'macro',
-      'rack',
-      'wall',
-      'block',
-      'shed',
-      'belt',
-      'house',
-      'battery',
-      'fuelcell',
-      'transformer',
-      'warehouse',
-      'factory',
-      'datahall',
-      'louvred',
-      'storey',
-      'clocktower',
-    ].map((k) => [k, 'box']),
+    `cell macro rack wall block shed belt house battery fuelcell transformer warehouse factory datahall louvred storey clocktower bourse museum turbinehall`
+      .split(' ')
+      .map((k) => [k, 'box']),
   ),
   ...Object.fromEntries(['tank', 'tower', 'stack', 'silo', 'column', 'pll'].map((k) => [k, 'round'])),
   hex: 'hex',
@@ -119,6 +107,7 @@ export class Plot {
   apron: [Vec3, number][] = [];
   ports: Vec3[] = [];
   landmark?: Part;
+  lanes: Trace[] = [];
   constructor(readonly rng: Rng) {}
   /** A gathering point where goods leave for the level above. */
   port(x: number, z: number): void {
@@ -233,8 +222,8 @@ export class Plot {
     }
   }
   done(): District {
-    const { parts, traces, pipes, roads, lines, workers, runway, apron, ports, landmark } = this;
-    const out: District = { parts, traces, pipes, roads, lines, workers, apron, ports };
+    const { parts, traces, pipes, roads, lines, workers, runway, apron, ports, landmark, lanes } = this;
+    const out: District = { parts, traces, pipes, roads, lines, workers, apron, ports, lanes };
     if (runway) out.runway = runway;
     if (landmark) out.landmark = landmark;
     return out;

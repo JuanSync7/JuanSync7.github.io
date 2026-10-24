@@ -1,5 +1,6 @@
 import type { Vec3 } from './camera';
 import { bodyOf, isBox, isRound, place, type Part } from './city';
+import { tall } from './landmarks';
 import type { Rng } from './rng';
 
 /** What makes a district look lived in: windows that come on and go off, skybridges between
@@ -35,7 +36,8 @@ export function windows(parts: readonly Part[], rng: Rng, max = 90): Lights {
   const out: Lights = { pos: [], phase: [], white: [] };
   for (const p of parts.filter(standing)) {
     const fs = faces(p);
-    for (let y = 0.03; y < p.h - 0.015 && out.phase.length < max; y += 0.04) {
+    const top = tall(p) ? p.h * 0.76 : p.h - 0.015;
+    for (let y = 0.03; y < top && out.phase.length < max; y += 0.04) {
       for (const [a, apo] of fs) {
         if (rng() < (fs.length > 6 ? 0.75 : 0.5)) continue;
         // On the face: out from the centre along its normal, across it along its tangent.

@@ -10,6 +10,7 @@ import {
 import type { Vec3 } from './camera';
 import { bevelled, BUILT, type Tris } from './bodies';
 import { DIM, OWN_LINES, SHAPES } from './bodyshapes';
+import { crowned, LANDMARKS, styleOf, tall } from './landmarks';
 import { bodyOf, place, type Part } from './city';
 import { hexOf } from './ink';
 
@@ -37,13 +38,18 @@ const tone = (n: Vec3, f: number): Color => {
 };
 
 /** Whether a part's wire outline lies on its solid, so its detail can be drawn over it. */
-export const detailed = (p: Part): boolean => !OWN_LINES.has(p.kind);
+export const detailed = (p: Part): boolean => !OWN_LINES.has(p.kind) && !LANDMARKS[p.kind] && !tall(p);
 
 /** One part's triangles in the part's frame: its own shape if it has one, else its body (a
  *  box bevelled, any other body from the shared unit solid scaled to the part). */
 function local(p: Part, geo: Record<string, BufferGeometry>): Tris {
   const o: Tris = [];
-  const own = BUILT[p.kind] ?? SHAPES[p.kind];
+  if (tall(p)) {
+    const sides = p.kind === 'block' ? 4 : p.kind === 'hex' ? 6 : p.kind === 'tri' ? 3 : 12;
+    crowned(o, sides, p.w, p.d, p.h, styleOf(p.x, p.z));
+    return o;
+  }
+  const own = LANDMARKS[p.kind] ?? BUILT[p.kind] ?? SHAPES[p.kind];
   if (own) {
     own(o, p.w, p.d, p.h);
     return o;

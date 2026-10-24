@@ -1,3 +1,4 @@
+import type { Vec3 } from './camera';
 import type { Part, PartKind } from './city';
 import { bodyOf } from './city';
 
@@ -13,7 +14,19 @@ import { bodyOf } from './city';
  *  ground that other things stand on (a lawn, a lake, a conveyor, a wall ring, the dam). */
 
 // Pylons carry power lines strung to their tops: they stay where the line put them.
-const FLAT: readonly PartKind[] = ['park', 'lake', 'reservoir', 'belt', 'wall', 'damwall', 'cell', 'macro', 'pylon'];
+const FLAT: readonly PartKind[] = [
+  'park',
+  'lake',
+  'reservoir',
+  'belt',
+  'wall',
+  'damwall',
+  'cell',
+  'macro',
+  'pylon',
+  'zebra',
+  'pit',
+];
 const PROPS: readonly PartKind[] = [
   'tree',
   'pine',
@@ -92,8 +105,40 @@ const meant = (a: Part, b: Part, ba: Box, bb: Box): boolean =>
   (STONE.includes(a.kind) && STONE.includes(b.kind)) ||
   (!PROPS.includes(a.kind) && !PROPS.includes(b.kind) && (inside(ba, bb) || inside(bb, ba)));
 
-/** The district's parts with no unmeant overlaps, on a board w × d. */
-export function separate(parts: readonly Part[], w: number, d: number, landmark?: Part): Part[] {
+/** A road or street as a footprint: the strip `half` either side of the segment a to b. */
+export type Way = [x0: number, z0: number, x1: number, z1: number, half: number];
+const wayBox = ([x0, z0, x1, z1, half]: Way): Box => {
+  const a = Math.atan2(z1 - z0, x1 - x0);
+  return {
+    x: (x0 + x1) / 2,
+    z: (z0 + z1) / 2,
+    hw: Math.hypot(x1 - x0, z1 - z0) / 2,
+    hd: half,
+    c: Math.cos(a),
+    s: Math.sin(a),
+  };
+};
+/** Every road loop and street of a district as ways, `road` and `lane` wide either side. */
+export function waysOf(roads: readonly Vec3[][], lanes: readonly number[][], road: number, lane: number): Way[] {
+  const out: Way[] = [];
+  for (const loop of roads)
+    loop.forEach((p, i) => {
+      const q = loop[(i + 1) % loop.length] ?? p;
+      out.push([p[0], p[2], q[0], q[2], road]);
+    });
+  for (const [x0 = 0, z0 = 0, x1 = 0, z1 = 0] of lanes) out.push([x0, z0, x1, z1, lane]);
+  return out;
+}
+
+/** The district's parts with no unmeant overlaps, on a board w × d; nothing stands on a way
+ *  (a road vehicles drive, a street people walk), so traffic never passes through a thing. */
+export function separate(
+  parts: readonly Part[],
+  w: number,
+  d: number,
+  landmark?: Part,
+  ways: readonly Way[] = [],
+): Part[] {
   const free = parts.filter((p) => (p.y ?? 0) > 0 || FLAT.includes(p.kind));
   const rank = (p: Part): number =>
     p === landmark ? -1e9 : (PROPS.includes(p.kind) ? 0 : -1e3) - p.w * p.d * (bodyOf(p.kind) ? 2 : 1);
@@ -104,6 +149,13 @@ export function separate(parts: readonly Part[], w: number, d: number, landmark?
     let ok = false;
     for (let k = 0; k < 6 && !ok; k++) {
       ok = true;
+      for (const way of ways) {
+        const m = push(wayBox(way), boxOf(p));
+        if (!m) continue;
+        [p.x, p.z, ok] = [p.x + m[0], p.z + m[1], false];
+        break;
+      }
+      if (!ok) continue;
       for (const q of placed) {
         const [bq, bp] = [boxOf(q), boxOf(p)];
         if (meant(q, p, bq, bp)) continue;

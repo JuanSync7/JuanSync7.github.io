@@ -41,8 +41,13 @@ export function energy(P: Plot, k: number): void {
     // the dome above stays in view.
     P.add('reactor', -0.35, -0.15, 0.26, 0.26, 0.3);
     P.add('tank', -0.35, -0.15, 0.25, 0.25, 0.13);
+    // Round the containment: the auxiliary and fuel buildings hard against it, the turbine
+    // hall the steam goes to, the control building and the vent stack.
+    P.add('block', -0.35, -0.36, 0.2, 0.1, 0.11);
+    P.add('block', -0.56, -0.12, 0.1, 0.18, 0.09);
+    P.add('ventstack', -0.55, -0.38, 0.05, 0.05, 0.36);
     P.add('louvred', -0.12, 0.18, 0.1, 0.12, 0.08);
-    P.add('hall', -0.05, -0.15, 0.24, 0.14, 0.08);
+    P.add('turbinehall', -0.02, -0.15, 0.28, 0.13, 0.11);
     P.add('factory', -0.35, 0.18, 0.22, 0.12, 0.07);
     P.add('cooler', -0.78, -0.32, 0.3, 0.3, 0.34);
     P.add('cooler', -0.82, 0.12, 0.26, 0.26, 0.3);

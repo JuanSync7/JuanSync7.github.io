@@ -21,7 +21,7 @@ import { follow } from './kit/motion';
 import { along } from './kit/shapes';
 import { commit, lay, request, tube, tubes, type Tubes, type Via, type ViaKind } from './kit/vias';
 import { aim, flatStacks, heading, pickAt } from './kit/stackview';
-import { separate } from './kit/separate';
+import { separate, waysOf } from './kit/separate';
 import { crowd, gather, type Crowd } from './kit/crowd';
 import { fleet, move, plan, type Fleet, type Model, type Ride } from './kit/traffic';
 import { circuit, type Timed } from './kit/transit';
@@ -152,7 +152,10 @@ export default defineThreeFigure<State>({
       Array.from({ length: levels(c) }, (_, k) => {
         const city = c.kind === 'hub' ? hubLevel(k, rng) : island(c.kind, k, rng);
         const [w, d] = dimsOf(c, k);
-        return { ...city, parts: separate(city.parts, w, d) };
+        return {
+          ...city,
+          parts: separate(city.parts, w, d, undefined, waysOf(city.roads ?? [], city.lanes ?? [], 0.035, 0.065)),
+        };
       }),
     );
     // Stations first, so each board is built with its platform, substation and power line.
