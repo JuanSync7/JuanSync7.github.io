@@ -18,22 +18,33 @@ const WALLED = ['box', 'round', 'hex', 'tri'];
 const standing = (p: Part): boolean =>
   (WALLED.includes(bodyOf(p.kind) ?? '') || p.kind === 'apartment') && p.h >= 0.07 && p.kind !== 'silo';
 
-/** Window streaks on the two faces a camera in front and to the right sees (+x and +z). */
+/** The faces a body's walls are made of, as `kit/shells.ts` draws them: a box's four, a hex's
+ *  six, a triangle's three, a round tower's twelve; each as its outward angle and its
+ *  distance out (at unit size: the part's w and d scale it). */
+function faces(p: Part): [number, number][] {
+  const body = bodyOf(p.kind) ?? (p.kind === 'apartment' ? 'box' : null);
+  const n = body === 'box' ? 4 : body === 'hex' ? 6 : body === 'tri' ? 3 : body === 'round' ? 12 : 0;
+  const a0 = n === 4 ? Math.PI / 4 : 0;
+  const r = n === 4 ? Math.SQRT1_2 : 0.5;
+  return Array.from({ length: n }, (_, k) => [a0 + ((k + 0.5) / n) * Math.PI * 2, r * Math.cos(Math.PI / n)]);
+}
+
+/** Window streaks on every face of every standing part, each lying on the face itself (a
+ *  round tower's on its facets, a hex's on its six sides), floor by floor. */
 export function windows(parts: readonly Part[], rng: Rng, max = 90): Lights {
   const out: Lights = { pos: [], phase: [], white: [] };
   for (const p of parts.filter(standing)) {
+    const fs = faces(p);
     for (let y = 0.03; y < p.h - 0.015 && out.phase.length < max; y += 0.04) {
-      for (const face of [0, 1]) {
-        if (rng() < 0.45) continue;
-        const s = (rng() - 0.5) * 0.4;
-        // In the part's own frame, then turned and lifted with it.
-        if (face === 0) {
-          const x = p.w / 2 + 0.003;
-          out.pos.push(...place(p, x, y, (s - 0.24) * p.d), ...place(p, x, y, (s + 0.24) * p.d));
-        } else {
-          const z = p.d / 2 + 0.003;
-          out.pos.push(...place(p, (s - 0.24) * p.w, y, z), ...place(p, (s + 0.24) * p.w, y, z));
-        }
+      for (const [a, apo] of fs) {
+        if (rng() < (fs.length > 6 ? 0.75 : 0.5)) continue;
+        // On the face: out from the centre along its normal, across it along its tangent.
+        const [c, sn] = [Math.cos(a), Math.sin(a)];
+        const half = Math.tan(Math.PI / fs.length) * apo;
+        const u = (rng() - 0.5) * half * 0.8;
+        const at = (v: number) =>
+          place(p, (c * apo - sn * v) * p.w + c * 0.003, y, (sn * apo + c * v) * p.d + sn * 0.003);
+        out.pos.push(...at(u - half * 0.45), ...at(u + half * 0.45));
         out.phase.push(rng());
         out.white.push(rng() > 0.55);
       }

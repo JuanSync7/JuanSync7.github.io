@@ -3,6 +3,7 @@ import { lines, Pen, write } from './boards';
 import type { Vec3 } from './camera';
 import { hexOf } from './ink';
 import { satellite } from './machines';
+import { airlinerSolid, satelliteSolid } from './movers';
 import { along } from './shapes';
 import { airliner, arc, ends, orbit, rails, strip, timed, type Timed } from './transit';
 
@@ -49,8 +50,9 @@ export function links(scene: Scene, tracks: number, flights: number, sats: numbe
       return pen.lines();
     }),
   };
-  L.planes.forEach((p) => p.scale.setScalar(0.3));
-  L.sats.forEach((s) => s.scale.setScalar(0.11));
+  // Each wire model carries its solid twin, shown in the hard-surface look.
+  L.planes.forEach((p) => p.add(airlinerSolid()).scale.setScalar(0.3));
+  L.sats.forEach((s, i) => s.add(satelliteSolid(0.9 + (i / 2) * 0.4)).scale.setScalar(0.11));
   scene.add(L.track, L.cars, L.conduit, L.sparks, ...L.planes, ...L.sats);
   return L;
 }
@@ -115,5 +117,13 @@ export function parked(spots: readonly [Vec3, number][], scale: number): LineSeg
       out.push(p[0] + (x * c - z * s) * scale, p[1] + (y + 0.06) * scale, p[2] + (x * s + z * c) * scale);
     }
   }
-  return lines(out, 'inkStrong', 0.7);
+  const ink = lines(out, 'inkStrong', 0.7);
+  for (const [p, heading] of spots) {
+    const m = airlinerSolid();
+    m.position.set(p[0], p[1] + 0.06 * scale, p[2]);
+    m.rotation.y = Math.PI / 2 - heading;
+    m.scale.setScalar(scale);
+    ink.add(m);
+  }
+  return ink;
 }
