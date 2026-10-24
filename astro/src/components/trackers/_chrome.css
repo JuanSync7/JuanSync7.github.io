@@ -1,14 +1,5 @@
 /* Personal-site tracker chrome — additions on top of the lumen theme. */
 @import '../../styles/tokens/spacing.css';
-.sitenav .brand { gap: 8px; }
-.tnav-back { color: var(--muted); }
-.tnav-back:hover { color: var(--accent); }
-
-/* light/dark toggle */
-.theme-toggle { font-family: var(--mono); font-size: 15px; line-height: 1; color: var(--muted);
-  background: none; border: 1px solid var(--line); border-radius: 8px; width: 36px; height: 32px;
-  cursor: pointer; transition: color .18s, border-color .18s; }
-.theme-toggle:hover { color: var(--txt); border-color: var(--muted); }
 
 .release-article { max-width: 760px; margin: 0 auto; padding-top: 56px; }
 .release-article .back {
@@ -94,7 +85,7 @@
 
 /* Versioned tracker layout: timeline is a flush-left nav rail; main panel centers in the space beside it */
 .tracker-grid { display: grid; grid-template-columns: 188px minmax(0, 1fr); gap: 56px; align-items: start; }
-.tracker-main { min-width: 0; max-width: 1200px; margin: 0 auto; }
+.tracker-main { width: 100%; min-width: 0; max-width: 1200px; margin: 0 auto; }
 .tracker-side { position: sticky; top: 84px; }
 .vtl-head { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
 .vtl { position: relative; }                         /* no left indent: text is flush-left */
@@ -132,9 +123,6 @@
   body .tracker-main { width: 100%; }
 }
 @media (max-width: 640px) {
-  body .sitenav .inner { flex-wrap: wrap; padding: var(--hf-space-3) var(--hf-space-4); gap: var(--hf-space-2); }
-  body .sitenav .navlinks { flex-wrap: wrap; gap: var(--hf-space-1); margin-left: calc(var(--hf-space-3) * -1); }
-  body .sitenav .navlinks a { padding: var(--hf-space-2) var(--hf-space-3); }
   body .wrap { padding-left: var(--hf-space-4); padding-right: var(--hf-space-4); }
   body .grid, body .uc { grid-template-columns: minmax(0, 1fr); }
   body .bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }

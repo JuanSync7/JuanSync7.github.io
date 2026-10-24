@@ -1,0 +1,51 @@
+/* The trackers on the night system (Juan, 24 Oct 2026: restyle them with learn). The dashboards
+   and articles keep tracker-skin.css; on a night page its variables point at the night tokens,
+   so the same markup takes the night ground, inks, signal and fonts. The light theme and its
+   toggle are gone: the night system is dark, and the cream light theme is not designed yet. */
+
+.night {
+  --bg: var(--nt-ground);
+  --panel: var(--nt-panel);
+  --panel2: var(--nt-panel-2);
+  --line: var(--nt-line);
+  --txt: var(--nt-ink);
+  --txt2: var(--nt-ink-2);
+  --muted: var(--nt-ink-muted);
+  --teal: var(--nt-signal);
+  --accent: var(--nt-signal);
+  --accent2: var(--nt-signal);
+  --chip: var(--nt-panel-2);
+  --hover: var(--nt-panel-2);
+  --display: var(--nt-display);
+  --sans: var(--nt-sans);
+  --mono: var(--nt-mono);
+}
+
+/* The row under the site nav: the trackers and the field guides, in mono, the current one lit. */
+.night .tnav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--hf-space-2) var(--hf-space-5);
+  padding: var(--hf-space-8) 0 var(--hf-space-4);
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-meta);
+}
+
+.night .tnav a {
+  color: var(--nt-ink-muted);
+}
+
+.night .tnav a:hover,
+.night .tnav a[aria-current='page'] {
+  color: var(--nt-signal);
+}
+
+.night .tnav .tnav-home {
+  color: var(--nt-signal);
+}
+
+.night .tnav .tnav-learn {
+  margin-left: auto;
+  color: var(--nt-ink-2);
+}
