@@ -22,14 +22,19 @@ import { bodyOf, place, type Body, type District, type Part } from './city';
 import { bridges, rotors, windows, type Lights } from './citylife';
 import type { NightKey } from '../../styles/tokens/palette';
 import { hexOf } from './ink';
+import { hardSurface } from './hardsurface';
 import { COOLER, outlines } from './outlines';
 import type { Rng } from './rng';
 import { strip } from './transit';
 
-/** three.js boards for city scenes: one district (`kit/city.ts`, `kit/islands.ts`) on a
- *  translucent PCB plate, its parts as instanced solids under wire outlines, its windows,
- *  wind rotors and teal power lines; and teal glass tubes (vias) that join boards, as one
- *  instanced batch. Everything here is built once; scenes move it each frame. */
+/** three.js boards for city scenes: one district (`kit/city.ts`, `kit/islands.ts`) in two
+ *  looks, both built once and shown one at a time (`show`). The wire look: a translucent PCB
+ *  plate, its parts as dark solids under their full wire outlines. The hard-surface look
+ *  (`kit/hardsurface.ts`): a bevelled slab and bevelled solids toned by facing, lined only
+ *  along their folds. Both share the windows, wind rotors, traces and teal power lines.
+ *  Everything here is built once; scenes move it each frame. */
+
+export type Look = 'wire' | 'solid';
 
 const TEAL = new Color(hexOf('signal'));
 const WHITE = new Color(hexOf('inkStrong'));
@@ -116,6 +121,7 @@ export function solids(): Solids {
 
 export interface Board {
   group: Group;
+  looks: Record<Look, Group>;
   parts: Part[];
   lights: Lights;
   /** Every line on the board in one batch; windows and rotors are runs inside it. */
@@ -152,7 +158,15 @@ export function board(city: District, w: number, d: number, rng: Rng, kit: Solid
   const solid = new BufferGeometry();
   solid.setAttribute('position', new Float32BufferAttribute(pos, 3));
   solid.setIndex(index);
-  group.add(plate, new Mesh(solid, kit.fill));
+  const wire = new Group();
+  wire.add(plate, new Mesh(solid, kit.fill), lines(outlines(city.parts), 'inkFaint', 0.5 + bright * 0.3));
+  // The hard-surface look: toned bodies, their folds, and wire only for parts with no body.
+  const hard = hardSurface(city.parts, w, d, kit.geo);
+  const bare = outlines(city.parts.filter((p) => !bodyOf(p.kind)));
+  const surface = new Group();
+  surface.add(hard.mesh, lines(hard.folds, 'inkSoft', 0.42 + bright * 0.2), lines(bare, 'inkFaint', 0.55));
+  surface.visible = false;
+  group.add(wire, surface);
   const lights = windows(city.parts, rng, 140);
   const wires = [...bridges(city.parts, rng), ...(city.pipes ?? [])];
   const pen = new Pen();
@@ -166,13 +180,18 @@ export function board(city: District, w: number, d: number, rng: Rng, kit: Solid
     'line4',
     0.75,
   );
-  pen.add(outlines(city.parts), 'inkFaint', 0.5 + bright * 0.3);
   pen.add(wires.flatMap(strip), 'signal', 0.65);
   const windowsAt = pen.add(lights.pos, 'signal', 0.95);
   const rotorsAt = pen.add(rotors(city.parts, 0), 'inkSoft', 0.8);
   const ink = pen.lines();
   group.add(ink);
-  return { group, parts: city.parts, lights, ink, rimAt, windowsAt, rotorsAt, wires };
+  return { group, looks: { wire, solid: surface }, parts: city.parts, lights, ink, rimAt, windowsAt, rotorsAt, wires };
+}
+
+/** Show a board in one look. */
+export function show(b: Board, look: Look): void {
+  b.looks.wire.visible = look === 'wire';
+  b.looks.solid.visible = look === 'solid';
 }
 
 /** Bring a board to time t: each window keeps its own slow rhythm, the rotors turn, and the
