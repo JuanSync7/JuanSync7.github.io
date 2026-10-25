@@ -1,0 +1,64 @@
+---
+import type { Diagram } from '../../data/diagram';
+import './diagram.css';
+
+// A learn diagram is words and connections, so it is DOM, not a figure (CLAUDE.md, Figures 3),
+// drawn the way the home page's system map is: boxes are real text over one SVG layer of wires.
+interface Props {
+  id: string;
+}
+
+const modules = import.meta.glob<{ DIAGRAMS: readonly Diagram[] }>('../../data/diagrams/*.ts', { eager: true });
+const all = Object.values(modules).flatMap((m) => m.DIAGRAMS);
+const d = all.find((x) => x.id === Astro.props.id);
+if (!d) throw new Error(`Diagram "${Astro.props.id}" is not in src/data/diagrams/`);
+
+const pct = (v: number, of: number): string => `${((v / of) * 100).toFixed(3)}%`;
+const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([x, y], i) => `${i === 0 ? 'M' : 'L'} ${x} ${y}`).join(' ');
+const head = `dg-head-${d.id}`;
+const tail = `dg-tail-${d.id}`;
+---
+
+<figure class="dg" style={`--dg-w:${d.w}`}>
+  <p class="dg-key">{d.key}</p>
+  {/* Screen readers get the steps; the drawing is the same story for the eye. */}
+  <div class="dg-map" aria-hidden="true" style={`aspect-ratio:${d.w} / ${d.h}`}>
+    <svg class="dg-wires" viewBox={`0 0 ${d.w} ${d.h}`}>
+      <defs>
+        <marker id={head} viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0 0 L6 3 L0 6 Z" class="dg-head"></path>
+        </marker>
+        <marker id={tail} viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0 0 L6 3 L0 6 Z" class="dg-head"></path>
+        </marker>
+      </defs>
+      {/* Each wire over its own paper-coloured halo, so a crossing reads as a bridge. */}
+      {d.edges.map((e) => (
+        <g>
+          <path class="dg-halo" d={path(e.pts)}></path>
+          <path class="dg-wire" d={path(e.pts)} marker-end={`url(#${head})`} marker-start={e.both ? `url(#${tail})` : undefined}></path>
+        </g>
+      ))}
+    </svg>
+    {d.labels.map((l) => (
+      <span class={`dg-label ${l.align}`} style={`left:${pct(l.x, d.w)};top:${pct(l.y, d.h)};width:${pct(l.w, d.w)}`}>
+        {l.text}
+      </span>
+    ))}
+    {d.nodes.map((n) => (
+      <div class={`dg-node ${n.kind}`} style={`left:${pct(n.x, d.w)};top:${pct(n.y, d.h)};width:${pct(n.w, d.w)};height:${pct(n.h, d.h)}`}>
+        <span class="dg-name">{n.title}</span>
+        {n.sub ? <span class="dg-sub">{n.sub}</span> : null}
+      </div>
+    ))}
+  </div>
+  <ol class="dg-steps">
+    {d.steps.map((s) => (
+      <li class:list={['dg-step', { core: s.core }]}>
+        <span class="dg-step-label">{s.label}</span>
+        <span>{s.text}</span>
+      </li>
+    ))}
+  </ol>
+  <figcaption>{d.caption}</figcaption>
+</figure>

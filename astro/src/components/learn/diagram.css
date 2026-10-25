@@ -1,0 +1,191 @@
+/* A learn diagram (Diagram.astro). It takes its colours from where it sits: on a learn article's
+   paper the night tokens are remapped to paper and ink (learn-paper.css). The figure is a size
+   container: below DIAGRAM_NARROWEST (640px, src/data/diagram.ts) the boxes can't hold their
+   words, so the drawing gives way to its steps. */
+
+.dg {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: var(--hf-space-4);
+  margin: var(--hf-space-10) 0;
+}
+
+.dg-key {
+  margin: 0;
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-caption);
+  color: var(--nt-ink-muted);
+  text-align: center;
+}
+
+.dg-map {
+  position: relative;
+  width: 100%;
+  max-width: calc(var(--dg-w) * 1px);
+  margin: 0 auto;
+}
+
+.dg-wires {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.dg-wire {
+  fill: none;
+  stroke: var(--nt-signal);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 4 4;
+  animation: dg-flow 1s linear infinite;
+}
+
+.dg-halo {
+  fill: none;
+  stroke: var(--nt-ground);
+  stroke-width: 10;
+}
+
+.dg-head {
+  fill: var(--nt-signal);
+}
+
+@keyframes dg-flow {
+  to {
+    stroke-dashoffset: -16;
+  }
+}
+
+.dg-node {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--hf-space-1);
+  padding: 0 var(--hf-space-3);
+  background: var(--nt-panel);
+  border: 1px solid var(--nt-line);
+  border-radius: var(--hf-radius-lg);
+  font-size: var(--nt-fs-small);
+  line-height: var(--nt-lh-heading);
+  color: var(--nt-ink-strong);
+}
+
+.dg-node.lit {
+  background: var(--nt-panel-signal);
+  border-color: var(--nt-signal);
+}
+
+/* A frame is drawn behind its steps and the wires between them, so it has no fill. */
+.dg-node.frame {
+  justify-content: flex-start;
+  padding-top: var(--hf-space-3);
+  background: transparent;
+  border-color: var(--nt-signal-line-2);
+}
+
+.dg-name {
+  font-weight: 500;
+}
+
+.dg-sub,
+.dg-label {
+  font-family: var(--nt-mono);
+  font-size: var(--hf-fs-sm);
+  font-weight: 400;
+  color: var(--nt-ink-muted);
+}
+
+.dg-label {
+  position: absolute;
+}
+
+.dg-label.center {
+  text-align: center;
+}
+
+.dg-label.right {
+  text-align: right;
+}
+
+/* The steps stay in the page for screen readers, visually hidden while the drawing shows. */
+.dg-steps {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  flex-direction: column;
+  gap: var(--hf-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Inside an article the prose list rules would indent the steps and space them twice. */
+.prose .dg .dg-steps {
+  padding: 0;
+}
+
+.prose .dg .dg-step {
+  margin: 0;
+  font-size: var(--nt-fs-ui);
+}
+
+.dg-step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hf-space-1);
+  padding: var(--hf-space-3) var(--hf-space-4);
+  border: 1px solid var(--nt-line);
+  border-radius: var(--hf-radius-lg);
+  color: var(--nt-ink-2);
+}
+
+.dg-step.core {
+  border-color: var(--nt-signal);
+  background: var(--nt-panel-signal);
+  color: var(--nt-ink-strong);
+}
+
+.dg-step-label {
+  font-family: var(--nt-mono);
+  font-size: var(--hf-fs-sm);
+  color: var(--nt-ink-muted);
+}
+
+.dg-step.core .dg-step-label {
+  color: var(--nt-signal);
+}
+
+.dg figcaption {
+  text-align: center;
+}
+
+@container (max-width: 639px) {
+  .dg-key,
+  .dg-map {
+    display: none;
+  }
+
+  .dg-steps {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    display: flex;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dg-wire {
+    animation: none;
+  }
+}

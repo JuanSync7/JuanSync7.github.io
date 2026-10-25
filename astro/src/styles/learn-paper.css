@@ -19,6 +19,7 @@
   --nt-ink-faint: var(--nt-paper-ink-muted);
   --nt-signal: var(--nt-paper-signal);
   --nt-signal-line-2: var(--nt-paper-signal-line);
+  --nt-panel-signal: var(--nt-paper-signal-panel);
 
   --bg: var(--nt-paper-ground);
   --panel: var(--nt-paper-panel);
