@@ -7,6 +7,8 @@ subject: silicon
 cover: "ridge-field~9"
 ---
 
+import Diagram from '../../components/learn/Diagram.astro';
+
 A chip's clock speed reads like a single fact on a spec sheet: 2.6 GHz. Inside the project, it's a slice of time, the same few hundred picoseconds, and several things all have to happen inside it on every path in the design, on every chip that comes off the line, at every temperature and voltage it's sold for. Each of those things is owned by a different part of the team. Get the split wrong and the chip runs slower than promised, or not at all.
 
 Airports have the same problem, and they solved it with a number they publish: the minimum connection time. Say it's 45 minutes. Inside those 45 minutes, your first plane has to taxi to the gate and open its doors, you have to walk to the next gate, and you have to get there before boarding closes, which is well before the second plane leaves. And the airport has to leave room for what it can't control: a plane that lands a few minutes late, or a busy day that slows everyone's walk. Nobody owns the whole 45 minutes. Everybody owns a piece of it.
@@ -17,22 +19,7 @@ A clock period is a minimum connection time for data. This article builds it fro
 
 Almost all digital logic is made of the same unit: a flip-flop launches a value on a clock edge, the value travels through a cloud of logic gates, and a second flip-flop captures it on the next clock edge. That's a timing path.
 
-<figure class="ig-fig">
-<pre class="mermaid">
-graph TD
-  pll(["Clock source &middot; PLL"])
-  tree["Clock tree"]
-  ff1["Launch flip-flop"]
-  logic["Logic gates"]
-  ff2["Capture flip-flop"]
-  pll-->tree
-  tree-->|"launch edge"|ff1
-  tree-->|"capture edge"|ff2
-  ff1-->|"clock-to-q"|logic-->|"must arrive before setup"|ff2
-  class logic accent
-</pre>
-<figcaption>One timing path. The same clock reaches both flip-flops through the clock tree, and the data has one period to get from the first to the second.</figcaption>
-</figure>
+<Diagram id="clock-path" />
 
 The period is just one over the frequency:
 

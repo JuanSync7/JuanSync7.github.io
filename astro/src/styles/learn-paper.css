@@ -32,6 +32,7 @@
     --nt-ink-faint: var(--nt-paper-ink-muted);
     --nt-signal: var(--nt-paper-signal);
     --nt-signal-line-2: var(--nt-paper-signal-line);
+    --nt-panel-signal: var(--nt-paper-signal-panel);
 
     padding: var(--hf-space-12) var(--hf-space-10);
     border-radius: var(--hf-radius-2xl);

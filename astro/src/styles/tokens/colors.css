@@ -138,6 +138,7 @@
   --nt-paper-ink-muted: #5a564d;
   --nt-paper-signal: #0a7164;
   --nt-paper-signal-line: #9ec8bd;
+  --nt-paper-signal-panel: #cfdcd2;
 
   /* Code keeps a dark terminal window wherever it sits, paper included ("if there is code, it
      goes in a macOS-style terminal window"). */
