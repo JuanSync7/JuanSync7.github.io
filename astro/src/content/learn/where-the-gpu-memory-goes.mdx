@@ -8,6 +8,8 @@ subject: inference
 cover: "voxel-scene~12"
 ---
 
+import Diagram from '../../components/learn/Diagram.astro';
+
 Put two models on one GPU and you find out quickly that "it fits" isn't a yes-or-no question. I ran a small fleet of vLLM servers on one 48 GB card: a chat model and an embedding model, side by side. Sometimes a server refused to start. Sometimes the same config started fine, and the next restart came up with a different amount of room for requests. Nothing was broken. I just didn't know where the memory was going.
 
 A car park is the easiest way to see it. Some spaces are taken all day by staff cars: those are the model's weights, loaded once and never moved. The rest are kept for visitors. Each request that arrives parks one car per token of its conversation, so a long conversation fills a whole row. Those visitor spaces are the KV cache. Before the car park opens, it marks out how many visitor spaces it has, and it promises it can take at least one conversation of the longest length it allows. If it can't fit that one, it doesn't open at all.
@@ -56,21 +58,7 @@ Context length doesn't decide how big the cache is. It decides the smallest cach
 
 vLLM's `gpu-memory-utilization` is a fraction of the whole card, like 0.24. It reads like a limit. It behaves more like a target. At start-up, the server takes its share of the card, loads the weights, runs a profiling pass to measure how much working memory a forward pass needs, and gives whatever is left to the KV cache:
 
-<figure class="ig-fig">
-<pre class="mermaid">
-graph TD
-  share["Share of the card &middot; total × gpu-memory-utilization"]
-  weights["Minus the weights"]
-  profile["Minus the profiled working memory &middot; measured at start-up"]
-  kv["KV cache = whatever is left"]
-  pin["kv-cache-memory-bytes &middot; a fixed number of bytes"]
-  kv2["KV cache = exactly that &middot; the share is ignored"]
-  share-->weights-->profile-->kv
-  pin-->kv2
-  class pin accent
-</pre>
-<figcaption>Two ways to size the KV cache. A share leaves the cache as a remainder of a measurement; pinned bytes make it a fixed number.</figcaption>
-</figure>
+<Diagram id="kv-sizing" />
 
 Here's what that meant for the embedding server on a card that reports 46,068 MiB. Its weights and fixed overhead took about 9,130 MiB, and the KV cache got the rest of its share:
 
