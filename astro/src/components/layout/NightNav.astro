@@ -99,7 +99,19 @@ const { current } = Astro.props;
     border-color: var(--nt-line-4);
   }
 
-  @media (max-width: 720px) {
+  /* Eight links and the cv button fit at 24px gaps only above 900px; below it they close up,
+     and below 760px only writing (the last link) stays. */
+  @media (max-width: 900px) {
+    .nav-inner {
+      gap: var(--hf-space-4);
+    }
+
+    ul {
+      gap: var(--hf-space-3);
+    }
+  }
+
+  @media (max-width: 760px) {
     nav li:not(:last-child) {
       display: none;
     }
