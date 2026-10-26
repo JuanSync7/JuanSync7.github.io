@@ -11,6 +11,12 @@ export interface Principle {
   body: string;
 }
 
+export interface Proof {
+  value: string;
+  unit: string;
+  text: string;
+}
+
 export interface Case {
   title: string;
   noticed: string;
@@ -29,16 +35,39 @@ export interface Role {
 export const HERO = {
   place: 'Reading, UK',
   role: PROFILE.role_line,
-  lead: 'From individual productivity',
-  accent: 'to company-wide.',
-  body: "I build the system that puts AI to work across a chip-design company: governed agents on every engineer's machine, knowledge siloed by project, one gateway for every model, and a ledger that ties each customer requirement to the work and evidence behind it.",
+  lead: 'ASIC designer,',
+  accent: 'building the AI platform.',
+  body: 'I build the AI platform at a semiconductor company where customer design IP sits under NDA: the gateway, retrieval, agents, evaluation and governance that let the whole engineering organisation use AI safely. I work like a forward-deployed engineer: sit with the teams, find the real problem, and ship what fits their constraints.',
   at: 'Aion Silicon',
   after: ', after three years designing chips.',
   primary: { label: 'See the system', href: '#system' },
   secondary: { label: 'Get in touch', href: '#contact' },
 } as const;
 
+/** What the work has already done, in numbers, straight under the hero. */
+export const PROOF = {
+  label: '// proof',
+  items: [
+    { value: '100', unit: 'engineers', text: 'Wrote the security case that got Claude approved company-wide in an IP-sensitive company, then led its rollout to daily use.' },
+    { value: '176', unit: 'profiles', text: 'AI spend made predictable: tagged inference profiles across 3 EU regions, each budget capped automatically by IAM.' },
+    { value: '3.3M', unit: 'jobs', text: 'One dashboard over the Slurm archive and 1,300+ licence features, so management can see memory waste and judge licence use.' },
+    { value: '>90%', unit: 'coverage', text: 'Owned DFT on an ASIL-B automotive SoC, closing ATPG coverage holes to meet automotive safety requirements.' },
+    { value: '1', unit: 'rule deck', text: 'A lint methodology every team adopted in a customer’s environment: every block checked against one shared deck.' },
+    { value: 'MEng', unit: 'first', text: 'Electrical and Electronic Engineering, First-Class Honours, University of Southampton.' },
+  ] satisfies readonly Proof[],
+} as const;
+
+/** The system map's heading: the hero's old line, which says what the map shows. */
+export const SYSTEM = {
+  label: '// 0x01 · the system I’m building',
+  key: 'arrows flow the way data moves · dashed = next',
+  title: 'From individual productivity',
+  accent: 'to company-wide.',
+  lead: "The system that puts AI to work across a chip-design company: governed agents on every engineer's machine, knowledge siloed by project, one gateway for every model, and a ledger that ties each customer requirement to the work and evidence behind it.",
+} as const;
+
 export const NAV = [
+  { label: 'cases', href: '/#cases' },
   { label: 'system', href: '/#system' },
   { label: 'thinking', href: '/#thinking' },
   { label: 'experience', href: '/#experience' },
@@ -52,7 +81,7 @@ export const NAV = [
 ] as const;
 
 export const THINKING = {
-  label: '// 0x01 · how I think',
+  label: '// 0x02 · how I think',
   title: 'Decide slowly,',
   accent: 'then move fast.',
   body: 'Before you build is the cheap window. I lay everything out up front (the plan, the workflows, the system) while being wrong still costs an edit, and everyone can see it and push back. Once a project ramps up, every mistake costs more and the team ends up firefighting.',
@@ -91,7 +120,7 @@ export const THINKING = {
 } as const;
 
 export const CASES = {
-  label: '// 0x02 · problems, reasoned through',
+  label: '// 0x00 · problems, reasoned through',
   title: 'The obvious fix is usually wrong.',
   body: 'Three problems from the last year, and what changed once I looked past the first answer.',
   items: [
@@ -134,7 +163,7 @@ export const CONTACT_SECTION = {
   label: '// contact.sh',
   title: 'Let’s build',
   accent: 'something.',
-  body: 'Happy to talk agentic systems, LLM platforms, or getting AI past an IT security review.',
+  body: 'Open to senior AI-platform roles, founding-engineer and co-founder conversations, and forward-deployed work. Happy to talk agentic systems, LLM platforms, or getting AI past an IT security review.',
 } as const;
 
 export const FOOTER = {
