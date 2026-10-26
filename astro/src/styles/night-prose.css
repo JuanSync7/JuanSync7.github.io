@@ -126,3 +126,70 @@
   font-size: var(--nt-fs-caption);
   color: var(--nt-ink-faint);
 }
+
+/* On a phone a table's columns get too narrow to read (25 Oct 2026), so each row becomes a card:
+   every cell on its own line, with its column's heading beside it (data-label, set at build time by
+   src/plugins/rehype-table-labels.mjs). The first cell, usually what the row is about, leads. */
+@media (max-width: 600px) {
+  .night .prose table,
+  .night .prose tbody,
+  .night .prose tr,
+  .night .prose td {
+    display: block;
+  }
+
+  .night .prose thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .night .prose tr {
+    padding: var(--hf-space-3) 0;
+    border-top: 1px solid var(--nt-rule);
+  }
+
+  .night .prose td {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: var(--hf-space-3);
+    padding: var(--hf-space-1) 0;
+    border-top: none;
+  }
+
+  .night .prose td::before {
+    content: attr(data-label);
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-caption);
+    color: var(--nt-ink-muted);
+  }
+
+  .night .prose td:not([data-label]) {
+    display: block;
+  }
+
+  .night .prose td:first-child {
+    font-weight: 600;
+    color: var(--nt-ink-strong);
+  }
+}
+
+/* On a phone code wraps instead of scrolling sideways inside its window (25 Oct 2026). A wrapped
+   line hangs by its own --hang (src/plugins/rehype-code-hang.mjs), so where each real line starts
+   stays plain. */
+@media (max-width: 720px) {
+  .night .prose pre {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font-size: var(--nt-fs-caption);
+  }
+
+  .night .prose pre .line {
+    display: inline-block;
+    width: 100%;
+    padding-left: var(--hang, 4ch);
+    text-indent: calc(-1 * var(--hang, 4ch));
+  }
+}

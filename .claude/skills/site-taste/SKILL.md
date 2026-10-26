@@ -78,6 +78,12 @@ cover ("paper body, night chrome"); the /learn index and the three trackers move
 system; "Featured explainers" is one learn article per subject, flagged in its own frontmatter,
 and a newer one takes the slot only if it covers the same ground better.
 
+**Reading on a phone** (25 Oct 2026): on a phone in dark mode the paper read as white, tables were
+"hard to read" with so little room per column, and the terminal window was "a slider bar to read".
+Built in response (his to keep or change): the paper is for light-mode readers and dark-mode readers
+keep the night ground; on a phone each table row becomes a card with every value labelled by its
+column, and code wraps with a hanging indent instead of scrolling sideways.
+
 ## Built
 
 - **Night system** (`astro/src/styles/tokens/`, `night.css`, `NightLayout`, `NightPage`):
