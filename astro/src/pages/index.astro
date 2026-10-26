@@ -8,6 +8,7 @@ import Thinking from '../components/home/Thinking.astro';
 import Cases from '../components/home/Cases.astro';
 import Experience from '../components/home/Experience.astro';
 import Repos from '../components/home/Repos.astro';
+import Proof from '../components/home/Proof.astro';
 import Contact from '../components/home/Contact.astro';
 import { IDENTITY } from '../data/site';
 ---
@@ -16,9 +17,10 @@ import { IDENTITY } from '../data/site';
   <NightNav />
   <main>
     <HomeHero />
+    <Proof />
+    <Cases />
     <SystemMap />
     <Thinking />
-    <Cases />
     <Experience />
     <Repos />
     <Contact />

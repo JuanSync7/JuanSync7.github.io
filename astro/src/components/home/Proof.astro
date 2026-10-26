@@ -1,0 +1,85 @@
+---
+import { PROOF } from '../../data/home';
+---
+
+<section class="nt-wrap proof" aria-label="What the work has done">
+  <span class="label">{PROOF.label}</span>
+  <ul class="grid">
+    {PROOF.items.map((p) => (
+      <li class="cell">
+        <span class="figure">
+          {p.value}
+          <span class="unit">{p.unit}</span>
+        </span>
+        <p>{p.text}</p>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .proof {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-4);
+    padding-bottom: var(--nt-section-y-tight);
+  }
+
+  .label {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-signal);
+  }
+
+  .grid {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--nt-line);
+    border-left: 1px solid var(--nt-line);
+  }
+
+  .cell {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-2);
+    padding: var(--hf-space-5) var(--hf-space-6);
+    border-right: 1px solid var(--nt-line);
+    border-bottom: 1px solid var(--nt-line);
+  }
+
+  .figure {
+    display: flex;
+    align-items: baseline;
+    gap: var(--hf-space-2);
+    font-family: var(--nt-display);
+    font-size: var(--nt-fs-h3);
+    line-height: var(--nt-lh-tight);
+    color: var(--nt-ink-strong);
+  }
+
+  .unit {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-caption);
+    color: var(--nt-signal);
+  }
+
+  p {
+    font-size: var(--nt-fs-small);
+    color: var(--nt-ink-soft);
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 560px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
