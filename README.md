@@ -91,6 +91,37 @@ See `CLAUDE.md` for the enforced rules. The headlines:
 - **React:** no globals, every effect cleans up its listeners/intervals/tweens, memoize only with a measured reason.
 - **Branching:** feature work off `develop`, merge to `main` only when shippable; conventional-commit prefixes.
 
+## Lesson log
+
+The vault's `Site/Lessons/<date>-<slug>.md` files own the public lesson text. Read its
+`Notes/Protocols/Lessons learned.md` before drafting. Each note contains one fenced
+`json lesson-public` block; only that block is copied to this repo. Evidence, source
+paths and review notes stay in the vault.
+
+From `astro/`, with both repositories checked out:
+
+```bash
+npm run lessons:sync -- --vault /path/to/experience-vault
+npm run lessons:sync -- --vault /path/to/experience-vault --write
+npm run lessons:sync -- --vault /path/to/experience-vault
+npm run check
+npm run build
+```
+
+The first command checks drift without writing. `--write` stages the named payloads
+as JSON-formatted YAML (valid YAML), preserving older lesson files. It does not commit,
+push or approve publication. Review both diffs and the vault's publication requirements
+before merging. A missing or empty source, malformed block, unknown field or date/id
+mismatch fails. Deletions are deliberate: removing a vault note does not delete a public
+lesson. Keep a tombstone note or remove the public file in a reviewed change.
+
+The existing date, tag, title and why fields still feed the writing page cards. Optional
+problem, cause, steps, solution, verification and limitations fields expand in the lesson
+log under “How it works”; plain text is escaped by Astro. `npm run lessons:selftest`
+checks failed inputs, drift, repeat writes and legacy preservation and runs in the main
+check gate. Cross-repository drift needs the private vault checkout and is run locally.
+
 ## License
 
 See `LICENSE`.
+

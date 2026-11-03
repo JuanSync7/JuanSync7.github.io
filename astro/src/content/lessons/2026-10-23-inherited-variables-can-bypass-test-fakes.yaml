@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-23",
+  "tag": "Testing",
+  "title": "A fake binary on PATH can lose to an inherited environment variable.",
+  "why": "The tests installed a fake aws command, but the launcher had already selected a real binary through AWS_CLI_BIN.",
+  "problem": "A test puts a fake aws command on PATH and expects all calls to reach it. That expectation fails if the application also accepts an explicit binary path from its environment. The fake can be present and executable while never being called.",
+  "cause": "The tests inherited AWS_CLI_BIN from the session launcher. That explicit binary selection took precedence over the fake command on PATH. Plain shells and CI did not set the variable, so their successful runs missed this route.",
+  "steps": [
+    "Check how the command chooses its executable, including explicit environment overrides.",
+    "Remove the inherited override in the default test fixture. Let tests that need it set their own value.",
+    "Start a nested test run with the variable deliberately set and confirm the fixture still removes it."
+  ],
+  "solution": "Make the test environment explicit at the suite boundary. A fake on PATH only covers callers that use PATH, so test the launch environment that can override it too. A harmless worked example can use two toy executables that print different sentinel words: set the override to one and PATH to the other, then check which word appears.",
+  "verification": "The source reports a nested-test regression that failed without the fixture and passing CI after the fix. The toy sentinel example is a suggested reproduction, not a run performed for this post.",
+  "limitations": "This closes the recorded AWS_CLI_BIN leak. Clearing one variable does not make live cloud access impossible; other credential or executable-selection routes need their own isolation."
+}

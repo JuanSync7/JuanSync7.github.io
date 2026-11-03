@@ -50,6 +50,15 @@ These rules apply to all code in this repo. They are enforced where possible by 
 2. **`npm run posts:check` holds the mechanical rules** for posts dated from `rulesFrom` in `scripts/posts/config.json`: a one-sentence hook as the excerpt, no table above the first heading, a real opening before it, 3 to 5 headings, no links to other posts before the ending, length and read time, ending on a paragraph. It runs inside `npm run check`; `npm run posts:selftest` proves each rule still catches a post that breaks it. Change `config.json` only with a reason in the commit message.
 3. **Done means the check passed and a fresh reader compared it.** Before merging a new post, a fresh agent reads it against the previous draft (or a plain alternative) blind, with shuffled labels, and says which reads better and why (R-POST-11).
 
+## Writing lessons
+
+Before generating, backfilling or editing a lesson, read the experience vault's
+`Notes/Protocols/Lessons learned.md`, its linked templates and writing references.
+The canonical curated note lives in the vault's `Site/Lessons/`; this repository
+receives only its `json lesson-public` payload through `npm run lessons:sync`.
+Keep source trails and review evidence private. Run the drift check with both
+checkouts, then the site checks and build. A local copy is not publication approval.
+
 ## React rules
 
 1. **No globals.** No `window.Foo = Foo`, no implicit reliance on script-tag load order. Use ESM imports.
@@ -68,3 +77,4 @@ These rules apply to all code in this repo. They are enforced where possible by 
 - Don't introduce abstractions for hypothetical futures. Three repetitions is the bar for extraction.
 - Don't write comments that restate the code. Comments are for *why*, not *what*.
 - Don't add backwards-compat shims to legacy `*.jsx` files — they're being replaced wholesale.
+

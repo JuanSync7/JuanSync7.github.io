@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-20",
+  "tag": "Testing",
+  "title": "A green test can depend on a file Git never tracked.",
+  "why": "A clean worktree exposed a bug that the main checkout had been hiding with an untracked symlink.",
+  "problem": "The full verification run failed in a clean worktree: a separate checkout containing the committed files, without my local extras. The familiar checkout had looked healthy. The new changes seemed the obvious cause, but the same failure appeared on the base revision.",
+  "cause": "An untracked symlink, a file pointing to another location, made the test take an easier path in the main checkout. Without that local shortcut, the audit and update checks followed the failing path. A second failure came from inherited make settings changing the command output.",
+  "steps": [
+    "Run the failing test in clean checkouts of the base revision and each changed revision.",
+    "Compare the tracked and untracked state. Add back one suspected file and check whether it changes the result.",
+    "Clear inherited runner settings when testing output, then rerun through the original failing route."
+  ],
+  "solution": "Put the state a test needs in its fixture. Keep an independent clean-checkout run in the verification flow so my working directory cannot quietly supply missing setup.",
+  "verification": "The investigation reproduced the failure on clean origin. Adding one untracked file made that test pass. Clearing inherited make settings also made the output test pass.",
+  "limitations": "The record opened a fix slice for the fixture, the underlying bug and the output test. It does not establish that the complete fix had landed that day."
+}

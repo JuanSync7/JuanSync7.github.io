@@ -67,7 +67,14 @@ const lessons = defineCollection({
     tag: z.string(),
     title: z.string(),
     why: z.string(),
+    problem: z.string().min(1).optional(),
+    cause: z.string().min(1).optional(),
+    steps: z.array(z.string().min(1)).min(1).optional(),
+    solution: z.string().min(1).optional(),
+    verification: z.string().min(1).optional(),
+    limitations: z.string().min(1).optional(),
   }),
 });
 
 export const collections = { blog, releases, learn, lessons };
+
