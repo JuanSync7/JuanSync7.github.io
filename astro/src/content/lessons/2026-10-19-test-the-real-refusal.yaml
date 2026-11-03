@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-19",
+  "tag": "Testing",
+  "title": "A fake host cannot prove an update leaves a busy real host alone.",
+  "why": "The suite had tested the refusal against fakes. A supervised host pilot checked the behaviour where the update would actually run.",
+  "problem": "An update is supposed to stop when the application is busy. A passing test tells me the check works in the environment the test created. I still need to know what the real host does, including whether a refused update has already changed anything.",
+  "cause": "Fakes leave out parts of the installed system. The real pilot found an old loader and a rotated-log naming case that the existing checks had missed.",
+  "steps": [
+    "Keep the application open and record the installed state before starting the update.",
+    "Run the update in a supervised terminal. Capture its message and exit code, then compare the state afterwards.",
+    "Separate a product defect from a host configuration fact. Reproduce a defect before changing code."
+  ],
+  "solution": "Make refusal a behaviour I can demonstrate: the command explains why it stopped, returns the expected code and leaves the installation alone. Keep a short evidence record so the next person can repeat the same check.",
+  "verification": "The pilot reported BUSY, returned exit 4 and changed nothing while the application was open. Host report values were also compared with operating-system tools.",
+  "limitations": "This was a supervised pilot. Dashboard and fleet-path steps were not run, so it did not prove the whole deployment flow."
+}

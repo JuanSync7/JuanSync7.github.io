@@ -7,7 +7,7 @@ import NightFooter from '../../components/layout/NightFooter.astro';
 // Every lesson, newest first, grouped by month: the writing page shows a slider of them;
 // this is the whole log, set as plain type to read straight down.
 const lessons = (await getCollection('lessons'))
-  .map((l) => ({ iso: l.data.date.toISOString().slice(0, 10), tag: l.data.tag, title: l.data.title, why: l.data.why }))
+  .map((l) => ({ ...l.data, iso: l.data.date.toISOString().slice(0, 10) }))
   .sort((a, b) => b.iso.localeCompare(a.iso));
 const month = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' });
 const day = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
@@ -42,6 +42,19 @@ for (const l of lessons) {
                 </p>
                 <h3>{l.title}</h3>
                 <p class="why">{l.why}</p>
+                {(l.problem || l.cause || l.steps || l.solution || l.verification || l.limitations) && (
+                  <details>
+                    <summary>How it works</summary>
+                    <div class="explanation">
+                      {l.problem && <section><h4>The problem</h4><p>{l.problem}</p></section>}
+                      {l.cause && <section><h4>Why it happens</h4><p>{l.cause}</p></section>}
+                      {l.steps && <section><h4>How to work through it</h4><ol class="steps">{l.steps.map((step) => <li>{step}</li>)}</ol></section>}
+                      {l.solution && <section><h4>The solution</h4><p>{l.solution}</p></section>}
+                      {l.verification && <section><h4>How to check it</h4><p>{l.verification}</p></section>}
+                      {l.limitations && <section><h4>Where this stops</h4><p>{l.limitations}</p></section>}
+                    </div>
+                  </details>
+                )}
               </li>
             ))}
           </ol>
@@ -124,9 +137,49 @@ for (const l of lessons) {
     color: var(--nt-ink-2);
   }
 
+  details {
+    margin-top: var(--hf-space-3);
+    color: var(--nt-ink-2);
+    font-size: var(--nt-fs-small);
+  }
+
+  summary {
+    cursor: pointer;
+    color: var(--nt-signal);
+  }
+
+  summary:focus-visible {
+    outline: 2px solid var(--nt-signal);
+    outline-offset: var(--hf-space-1);
+  }
+
+  .explanation {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-4);
+    margin-top: var(--hf-space-4);
+  }
+
+  h4 {
+    color: var(--nt-ink-soft);
+    margin-bottom: var(--hf-space-2);
+    font-size: inherit;
+  }
+
+  .steps {
+    display: block;
+    padding-left: var(--hf-space-6);
+    list-style: decimal;
+  }
+
+  .steps li + li {
+    margin-top: var(--hf-space-2);
+  }
+
   @media (max-width: 720px) {
     .month {
       grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>
+

@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-21",
+  "tag": "Bash",
+  "title": "exec inside a pipeline can leave the parent script running.",
+  "why": "The personal statusline appeared, but the default appeared too. The handover test only checked that the personal output existed.",
+  "problem": "A personal statusline was supposed to replace the default. Instead, both printed. The two lines differed in one field, which pointed to two producers rather than one producer repeating its output.",
+  "cause": "The script used a pipeline to feed input into exec. In this Bash execution path, exec replaced the pipeline child. The parent script continued and printed its own statusline afterwards.",
+  "steps": [
+    "Reproduce the duplicate output with a small personal script whose output is easy to recognise.",
+    "Write a failing test that checks the entire output: the personal line appears and the default line does not.",
+    "Replace the pipe with exec bash \"$user_sl\" <<<\"$input\" so the handover happens in the parent script."
+  ],
+  "solution": "Use a redirect or here-string when exec needs to replace the current script. A replacement contract needs an exclusive-output assertion; checking that the new output appears leaves half the contract untested.",
+  "verification": "Two failing tests were added before the change. The fix merged to main. The source also records four full-suite failures reproduced on unchanged main.",
+  "limitations": "This correction uses Bash; a here-string adds a newline, so use a suitable input redirect if exact bytes matter. The fix merged, but the privileged deployment remained with the operator and is not established by this record."
+}
