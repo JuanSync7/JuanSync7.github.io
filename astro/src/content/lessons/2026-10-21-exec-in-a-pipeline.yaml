@@ -2,7 +2,7 @@
   "date": "2026-10-21",
   "tag": "Bash",
   "title": "exec inside a pipeline can leave the parent script running.",
-  "why": "The personal statusline appeared, but the company default appeared too. The handover test only checked that the personal output existed.",
+  "why": "The personal statusline appeared, but the default appeared too. The handover test only checked that the personal output existed.",
   "problem": "A personal statusline was supposed to replace the default. Instead, both printed. The two lines differed in one field, which pointed to two producers rather than one producer repeating its output.",
   "cause": "The script used a pipeline to feed input into exec. In this Bash execution path, exec replaced the pipeline child. The parent script continued and printed its own statusline afterwards.",
   "steps": [
