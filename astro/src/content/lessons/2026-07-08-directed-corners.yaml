@@ -12,5 +12,10 @@
   ],
   "solution": "For example, test a queue becoming full directly, then randomize reads and writes around that boundary. The directed test protects a named rule; random traffic explores the interactions around it.",
   "verification": "Inspect coverage for the intended conditions rather than counting generated cycles. Replay a failing seed and confirm that the same stimulus reaches the same check.",
-  "limitations": "A coverage hit does not prove the output was checked, and random testing only explores what the generator permits. Formal checks can complement both approaches when a property and tractable model are available."
+  "limitations": "A coverage hit does not prove the output was checked, and random testing only explores what the generator permits. Formal checks can complement both approaches when a property and tractable model are available.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "verification",
+    "testing"
+  ]
 }

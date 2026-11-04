@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: validating a policy on a test workstation does not establish coverage on a desktop used every day. Include both in the inventory and record the observed deployment state separately.",
   "verification": "For a representative host in each supported class, inspect policy presence, hook availability and an approved behavior check. Missing coverage should remain visible in the report.",
-  "limitations": "One successful sample is not fleet-wide proof. Managed application settings also have a limited enforcement boundary and do not replace operating-system or network controls."
+  "limitations": "One successful sample is not fleet-wide proof. Managed application settings also have a limited enforcement boundary and do not replace operating-system or network controls.",
+  "category": "security-and-networking",
+  "tags": [
+    "security",
+    "delivery",
+    "configuration"
+  ]
 }

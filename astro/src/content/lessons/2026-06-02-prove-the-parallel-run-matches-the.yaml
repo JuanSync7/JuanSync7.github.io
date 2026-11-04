@@ -12,5 +12,11 @@
   ],
   "solution": "Treat a parallel-only failure as evidence about isolation. If one test changes a shared setting and another assumes its original value, a scheduling change can expose a real weakness in the suite.",
   "verification": "Compare collected, passed, failed and skipped cases, not just the final exit status. Expect the same intended coverage and outcomes across the selected execution modes.",
-  "limitations": "These runs sample possible schedules; they do not prove every interleaving safe. Use isolated fixtures and separate checks for truly concurrent behavior, and run heavy suites on appropriate compute resources."
+  "limitations": "These runs sample possible schedules; they do not prove every interleaving safe. Use isolated fixtures and separate checks for truly concurrent behavior, and run heavy suites on appropriate compute resources.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "isolation",
+    "reproducibility"
+  ]
 }

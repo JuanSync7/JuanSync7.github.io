@@ -12,5 +12,10 @@
   ],
   "solution": "Illustrative: a cosmetic naming suggestion discovered during a narrow correctness fix can go into a follow-up rather than trigger another broad refactor and review cycle.",
   "verification": "Check that the final verdict names the reviewed revision, unresolved blockers and deferred findings. The stop should follow an explicit rule rather than fatigue or an arbitrary round count.",
-  "limitations": "A severity cap is not permission to ignore a serious newly discovered issue. If evidence changes the risk or scope materially, revise the work boundary explicitly."
+  "limitations": "A severity cap is not permission to ignore a serious newly discovered issue. If evidence changes the risk or scope materially, revise the work boundary explicitly.",
+  "category": "work-and-delivery",
+  "tags": [
+    "review",
+    "delivery"
+  ]
 }

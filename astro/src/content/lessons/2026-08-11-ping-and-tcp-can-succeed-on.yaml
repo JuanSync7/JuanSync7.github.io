@@ -11,5 +11,11 @@
   ],
   "solution": "Put an application-level response into the health check, with a timeout meaningful to users. Keep ping as evidence of network reachability rather than evidence of a usable login service.",
   "verification": "The probe should distinguish “cannot connect” from “connected but no banner.” Compare those observations with process waits and kernel messages when diagnosing memory pressure or blocked storage.",
-  "limitations": "A missing banner does not uniquely prove userspace starvation. Service configuration, filtering and a failed daemon can look similar; the deeper evidence determines the diagnosis."
+  "limitations": "A missing banner does not uniquely prove userspace starvation. Service configuration, filtering and a failed daemon can look similar; the deeper evidence determines the diagnosis.",
+  "category": "security-and-networking",
+  "tags": [
+    "networking",
+    "linux",
+    "observability"
+  ]
 }

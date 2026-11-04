@@ -12,5 +12,10 @@
   ],
   "solution": "Use the article view as a quieter mode of the same system. A heading can keep its familiar type while decorative blinking, repeated colour accents and competing widgets step back.",
   "verification": "Read a full passage at the intended viewport and check whether the next line and section are easy to follow. Compare the page with the main site to see whether the shared visual identity still holds.",
-  "limitations": "Restraint does not fix poor contrast, line length or hierarchy. Some pages need richer interaction; use the mode according to the reading task rather than removing useful feedback everywhere."
+  "limitations": "Restraint does not fix poor contrast, line length or hierarchy. Some pages need richer interaction; use the mode according to the reading task rather than removing useful feedback everywhere.",
+  "category": "frontend-and-design",
+  "tags": [
+    "design",
+    "accessibility"
+  ]
 }

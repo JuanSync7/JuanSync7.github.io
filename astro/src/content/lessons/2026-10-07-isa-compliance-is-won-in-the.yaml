@@ -11,5 +11,11 @@
   ],
   "solution": "Treat the boundary cases as design inputs. They determine which state must be held, which operation may proceed and when a result is allowed to become visible.",
   "verification": "For an illustrative check, delay one operation while a later one completes. Verify that the resulting architectural state still follows the specified ordering rules.",
-  "limitations": "The original work is described only at CV level. This procedure does not establish compliance for a particular design, and the exact cases depend on the ISA version and implemented extensions."
+  "limitations": "The original work is described only at CV level. This procedure does not establish compliance for a particular design, and the exact cases depend on the ISA version and implemented extensions.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "riscv",
+    "verification",
+    "rtl"
+  ]
 }

@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: assigning the output of tty followed by an echo fallback can capture both 'not a tty' and 'none'. Branching on success gives the field exactly one value.",
   "verification": "Inspect raw records from both invocation modes. Each event should remain one parseable record, and the terminal field should contain either a real terminal name or the agreed missing value.",
-  "limitations": "Suppress only the expected terminal probe output. Other audit failures still need to be visible, and a missing terminal must not be confused with a missing event."
+  "limitations": "Suppress only the expected terminal probe output. Other audit failures still need to be visible, and a missing terminal must not be confused with a missing event.",
+  "category": "systems-and-operations",
+  "tags": [
+    "shell",
+    "data",
+    "error-handling"
+  ]
 }

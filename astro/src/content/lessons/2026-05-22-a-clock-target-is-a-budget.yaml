@@ -12,5 +12,10 @@
   ],
   "solution": "For example, if the clock uncertainty increases, that time must come from the remaining path budget unless another share shrinks. Changing the frequency label without revisiting those assumptions leaves the design target inconsistent.",
   "verification": "Check that the timing constraint defines the intended clock period on the right pins, then compare the budget with the relevant timing analysis. The period calculation alone is not timing closure.",
-  "limitations": "The shares depend on the technology, path and analysis conditions. This is an illustrative budget from the source, not a claim that all timing terms can always be added without checking the tool’s model."
+  "limitations": "The shares depend on the technology, path and analysis conditions. This is an illustrative budget from the source, not a claim that all timing terms can always be added without checking the tool’s model.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "sta",
+    "resource-limits"
+  ]
 }

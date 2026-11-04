@@ -12,5 +12,10 @@
   ],
   "solution": "Illustrative: an occasionally used knowledge base may spend more on its idle floor than on all its queries. A usage-priced alternative can change that trade-off even if individual requests cost more.",
   "verification": "Use the current regional pricing and chosen configuration to calculate idle and active scenarios separately. Check actual billing categories after a controlled pilot.",
-  "limitations": "Prices and minimum capacities change. A lower idle bill does not establish equivalent search features, latency, operational behavior or total cost at sustained load."
+  "limitations": "Prices and minimum capacities change. A lower idle bill does not establish equivalent search features, latency, operational behavior or total cost at sustained load.",
+  "category": "security-and-networking",
+  "tags": [
+    "aws",
+    "cost-control"
+  ]
 }

@@ -12,5 +12,10 @@
   ],
   "solution": "Illustrative: a top result containing only a menu and page links offers little evidence for a technical answer. Removing that chunk can be more useful than making its ranking score more precise.",
   "verification": "Run retrieval-only cases and inspect relevance, source identity and useful answer content. Keep a ranking change only if the observed evidence improves for the intended tasks.",
-  "limitations": "Curation can also remove needed context. Preserve document provenance and test difficult queries, rather than assuming that a smaller corpus or another ranking stage is always better."
+  "limitations": "Curation can also remove needed context. Preserve document provenance and test difficult queries, rather than assuming that a smaller corpus or another ranking stage is always better.",
+  "category": "ai-and-agents",
+  "tags": [
+    "rag",
+    "knowledge"
+  ]
 }

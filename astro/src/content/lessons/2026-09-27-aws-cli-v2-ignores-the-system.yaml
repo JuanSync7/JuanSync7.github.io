@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: updating the operating-system store may repair one client while leaving an AWS login unchanged. Configuring the CLI's explicit bundle addresses that client-specific trust boundary.",
   "verification": "Repeat a small HTTPS-backed AWS operation with certificate verification enabled. Expect the trust error to disappear before judging credentials or service permissions.",
-  "limitations": "A valid bundle does not grant access or repair an expired session. Keep the approved root source and bundle maintenance clear, since a stale custom bundle can become another source of failures."
+  "limitations": "A valid bundle does not grant access or repair an expired session. Keep the approved root source and bundle maintenance clear, since a stale custom bundle can become another source of failures.",
+  "category": "security-and-networking",
+  "tags": [
+    "tls",
+    "aws",
+    "configuration"
+  ]
 }

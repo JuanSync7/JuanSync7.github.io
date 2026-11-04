@@ -12,5 +12,11 @@
   ],
   "solution": "For example, disabling Dynamo can avoid an unsupported compilation path. That restores eager execution; it should be evaluated as a different execution mode, with its output and performance checked rather than assumed.",
   "verification": "Run the same representative inputs through the chosen mode and compare against the established baseline. Keep pre-existing failing cases visible instead of renaming a matching mixed result as a complete pass.",
-  "limitations": "Compiler requirements vary with PyTorch, backend and generated kernels. The old-compiler failure in the source is a particular environment, not a universal minimum-version rule."
+  "limitations": "Compiler requirements vary with PyTorch, backend and generated kernels. The old-compiler failure in the source is a particular environment, not a universal minimum-version rule.",
+  "category": "ai-and-agents",
+  "tags": [
+    "inference",
+    "build",
+    "python"
+  ]
 }

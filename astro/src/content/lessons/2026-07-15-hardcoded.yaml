@@ -12,5 +12,10 @@
   ],
   "solution": "For example, a retry limit that differs by environment belongs in validated settings. A mathematical constant inside an algorithm usually does not. The distinction is whether the value represents a changeable decision.",
   "verification": "Change the setting in a fixture and confirm the behavior and displayed documentation agree. Reject invalid values at startup instead of accepting a configuration that cannot work.",
-  "limitations": "Configuration adds another interface to maintain. Keep true invariants in code, avoid exposing internal details without a use case, and record which changes require a restart."
+  "limitations": "Configuration adds another interface to maintain. Keep true invariants in code, avoid exposing internal details without a use case, and record which changes require a restart.",
+  "category": "software-engineering",
+  "tags": [
+    "configuration",
+    "maintainability"
+  ]
 }

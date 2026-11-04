@@ -12,5 +12,11 @@
   ],
   "solution": "For an illustrative language-model step, store the prompt, model identifier and generation settings, then preserve the actual answer. Repeating the same prompt may produce another valid answer; that does not mean either input digest was wrong.",
   "verification": "Repeat a representative run and compare outputs against the promised level of agreement. If they differ, identify the source of variation instead of calling the hash a failed determinism guarantee.",
-  "limitations": "Even deterministic code needs all relevant inputs declared. A matching hash is evidence of matching captured inputs, not proof that the capture was complete or the result correct."
+  "limitations": "Even deterministic code needs all relevant inputs declared. A matching hash is evidence of matching captured inputs, not proof that the capture was complete or the result correct.",
+  "category": "software-engineering",
+  "tags": [
+    "build",
+    "reproducibility",
+    "integrity"
+  ]
 }

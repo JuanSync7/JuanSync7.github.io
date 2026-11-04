@@ -12,5 +12,11 @@
   ],
   "solution": "Keep the source trail with the work. The citation should help the next engineer answer both why this exists and what would need rechecking if the requirement changed.",
   "verification": "Take one implemented behaviour and follow its citation back to the brief. If the passage does not require or explain it, the work still needs a reason.",
-  "limitations": "A citation is a route to evidence, not proof on its own. A wrong or stale citation can make unsupported work look more credible."
+  "limitations": "A citation is a route to evidence, not proof on its own. A wrong or stale citation can make unsupported work look more credible.",
+  "category": "work-and-delivery",
+  "tags": [
+    "agents",
+    "provenance",
+    "contracts"
+  ]
 }

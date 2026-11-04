@@ -11,5 +11,12 @@
   ],
   "solution": "Choose the intervention from the measured loss. Time limits and wrapper fixes may matter more than caching when jobs fail to terminate or hold allocations after useful work ends.",
   "verification": "Compare total elapsed and compute time before and after the trial. A credible cache benefit comes from avoided unchanged actions, not a claim that the longest action itself became faster.",
-  "limitations": "Undeclared absolute-path reads, tool versions and nondeterministic outputs can make caching unsafe. The historical investigation remained in progress; it did not establish that a new build system was adopted."
+  "limitations": "Undeclared absolute-path reads, tool versions and nondeterministic outputs can make caching unsafe. The historical investigation remained in progress; it did not establish that a new build system was adopted.",
+  "category": "software-engineering",
+  "tags": [
+    "build",
+    "eda",
+    "caching",
+    "performance"
+  ]
 }

@@ -11,5 +11,11 @@
   ],
   "solution": "Use the measured rates to make an explicit policy decision. Keep a failed tripwire visible while the threshold is undecided instead of quietly weakening the test.",
   "verification": "Replay the same window after a proposed change. The expected check is that ordinary periods stay below the ceiling while genuinely concerning waits remain visible.",
-  "limitations": "A low firing rate alone does not make an alarm useful. Some frequent conditions really need action, and the correct ceiling depends on the team's response capacity."
+  "limitations": "A low firing rate alone does not make an alarm useful. Some frequent conditions really need action, and the correct ceiling depends on the team's response capacity.",
+  "category": "frontend-and-design",
+  "tags": [
+    "frontend",
+    "observability",
+    "measurement"
+  ]
 }

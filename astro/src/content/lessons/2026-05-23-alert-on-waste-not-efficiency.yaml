@@ -12,5 +12,11 @@
   ],
   "solution": "For illustration, leaving 0.9 GB unused for an hour wastes 0.9 GB·h. Leaving 300 GB unused for the same hour wastes 300 GB·h. Both may look poor as percentages, but their capacity impact is very different.",
   "verification": "Check the units and the held-memory definition, then compare representative small and large jobs. The larger resource loss should rise in priority even if its efficiency percentage looks less dramatic.",
-  "limitations": "Peak usage, grouping and shared allocations can make estimates approximate. Keep those limits visible instead of presenting a precise-looking total as an exact bill."
+  "limitations": "Peak usage, grouping and shared allocations can make estimates approximate. Keep those limits visible instead of presenting a precise-looking total as an exact bill.",
+  "category": "systems-and-operations",
+  "tags": [
+    "measurement",
+    "resource-limits",
+    "cost-control"
+  ]
 }

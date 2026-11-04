@@ -11,5 +11,11 @@
   ],
   "solution": "Treat visual inspection as part of completion. The audit supplies repeatable checks; the reader judges whether the image communicates the system it claims to explain.",
   "verification": "Ask the reader to trace one complete path and read its labels at the narrow size. The expected result is a clear route with legible text and no unexplained dead ends.",
-  "limitations": "A person's glance is not proof of technical accuracy or accessibility. Keep the source model and text alternative correct, and do not claim someone inspected the candidate unless that review actually happened."
+  "limitations": "A person's glance is not proof of technical accuracy or accessibility. Keep the source model and text alternative correct, and do not claim someone inspected the candidate unless that review actually happened.",
+  "category": "frontend-and-design",
+  "tags": [
+    "art",
+    "review",
+    "testing"
+  ]
 }

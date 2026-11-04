@@ -11,5 +11,11 @@
   ],
   "solution": "A maintainer role might need to restart one service and edit its validated configuration. It does not automatically need permission to manage every service or launch an arbitrary privileged command.",
   "verification": "Test an allowed action as a group member and an unrelated action that must be denied. Remove a test member and confirm how revocation takes effect for new and existing sessions.",
-  "limitations": "Some policy tools cannot distinguish every verb. Writable service configuration can itself grant substantial power, so the allowed settings need careful review."
+  "limitations": "Some policy tools cannot distinguish every verb. Writable service configuration can itself grant substantial power, so the allowed settings need careful review.",
+  "category": "security-and-networking",
+  "tags": [
+    "security",
+    "linux",
+    "ownership"
+  ]
 }

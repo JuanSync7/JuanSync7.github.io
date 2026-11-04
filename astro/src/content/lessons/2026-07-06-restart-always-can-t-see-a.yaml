@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a model server may start successfully and run out of GPU memory later. A bounded request probe can expose that failure; a startup-only check cannot. Recovery should include a limit or escalation path.",
   "verification": "Rehearse a nonresponsive fixture and a delayed-exit fixture. Confirm that each becomes unhealthy and that the recovery policy eventually stops or escalates repeated failures.",
-  "limitations": "Probe failure can also reflect network or dependency problems, so avoid restarting blindly on every timeout. CPU-only control tests do not verify real GPU memory behavior."
+  "limitations": "Probe failure can also reflect network or dependency problems, so avoid restarting blindly on every timeout. CPU-only control tests do not verify real GPU memory behavior.",
+  "category": "systems-and-operations",
+  "tags": [
+    "systemd",
+    "inference",
+    "observability"
+  ]
 }

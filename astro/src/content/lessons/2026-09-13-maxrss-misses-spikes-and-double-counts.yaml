@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: a ten-second burst between two thirty-second samples can disappear from the curve. A continuous high-water counter can retain that maximum after the burst ends.",
   "verification": "Compare sampled values and the cgroup peak for a representative multiprocess job. Preserve disagreements as different measurement semantics rather than silently overwriting one with the other.",
-  "limitations": "A cgroup peak is only as useful as its scope and collection lifetime. A missing capture is unknown; it cannot be reconstructed exactly from a flat sampled curve."
+  "limitations": "A cgroup peak is only as useful as its scope and collection lifetime. A missing capture is unknown; it cannot be reconstructed exactly from a flat sampled curve.",
+  "category": "systems-and-operations",
+  "tags": [
+    "slurm",
+    "resource-limits",
+    "measurement"
+  ]
 }

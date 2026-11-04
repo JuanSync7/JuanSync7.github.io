@@ -11,5 +11,11 @@
   ],
   "solution": "Keep reviewed instruction releases distinct from a collaborative working folder. Check the resolved path as well as its displayed name, because a protected-looking entry can point into writable storage.",
   "verification": "Using a harmless test instruction, confirm that untrusted shared content is not loaded. Verify trusted release identity and how existing sessions pick up or retain a policy update.",
-  "limitations": "Filesystem protection reduces this injection route; it does not make every instruction trustworthy. Review content and other loading paths, and distinguish agent governance from controls a determined local user can bypass."
+  "limitations": "Filesystem protection reduces this injection route; it does not make every instruction trustworthy. Review content and other loading paths, and distinguish agent governance from controls a determined local user can bypass.",
+  "category": "security-and-networking",
+  "tags": [
+    "security",
+    "agents",
+    "integrity"
+  ]
 }

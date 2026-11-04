@@ -11,5 +11,11 @@
   ],
   "solution": "For example, show “failed” beside an error mark rather than expecting a red circle to explain itself. Keep the label attached to the item, so the reader need not repeatedly consult a distant key.",
   "verification": "View the screen in greyscale and ask someone to identify each state without using its colour. Check that text and marks also remain legible at the intended size.",
-  "limitations": "This is one accessibility check, not a complete accessibility review. Contrast, keyboard use and assistive technology still need their own checks."
+  "limitations": "This is one accessibility check, not a complete accessibility review. Contrast, keyboard use and assistive technology still need their own checks.",
+  "category": "frontend-and-design",
+  "tags": [
+    "accessibility",
+    "frontend",
+    "design"
+  ]
 }

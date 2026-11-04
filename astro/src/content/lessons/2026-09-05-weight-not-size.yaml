@@ -12,5 +12,10 @@
   ],
   "solution": "Illustrative: a modest semibold section title followed by a clear gap can distinguish a group without pushing its key values below the fold. Keep the main finding visually distinct from routine labels.",
   "verification": "Scan the page at normal viewing size and browser zoom. The reader should identify the main finding and section boundaries without losing access to small text.",
-  "limitations": "Density is not permission to reduce legibility. Low contrast, tiny labels or a reader's accessibility needs can justify larger text even when the preferred visual style is compact."
+  "limitations": "Density is not permission to reduce legibility. Low contrast, tiny labels or a reader's accessibility needs can justify larger text even when the preferred visual style is compact.",
+  "category": "frontend-and-design",
+  "tags": [
+    "typography",
+    "design"
+  ]
 }

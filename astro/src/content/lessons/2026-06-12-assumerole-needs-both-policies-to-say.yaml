@@ -12,5 +12,11 @@
   ],
   "solution": "If the application role is trusted but its caller cannot request sts:AssumeRole for that target, changing trust again will not fix the missing permission. Inspect both sides of the path.",
   "verification": "Use a controlled assumption request and inspect the returned identity. Also read the deployed policies to confirm that the successful request used the intended role relationship.",
-  "limitations": "Other controls, such as explicit denies, boundaries and organization policies, can still block access. Same-account resource-policy grants have nuances; use the exact IAM evaluation rules for the relationship in question."
+  "limitations": "Other controls, such as explicit denies, boundaries and organization policies, can still block access. Same-account resource-policy grants have nuances; use the exact IAM evaluation rules for the relationship in question.",
+  "category": "security-and-networking",
+  "tags": [
+    "aws",
+    "security",
+    "delivery"
+  ]
 }

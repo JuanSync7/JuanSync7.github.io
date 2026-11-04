@@ -12,5 +12,10 @@
   ],
   "solution": "Treat the embedder as a separate memory consumer. A small model sharing a card with a chat server can still need enough reserved cache for its longest accepted input.",
   "verification": "Expect startup to succeed with capacity for at least one maximum-length request. Then check an input at the supported length rather than relying only on a short test sentence.",
-  "limitations": "This is a serving-runtime requirement, not a claim that every embedding architecture uses persistent generation-style cache. Check the actual backend and version before copying a memory budget."
+  "limitations": "This is a serving-runtime requirement, not a claim that every embedding architecture uses persistent generation-style cache. Check the actual backend and version before copying a memory budget.",
+  "category": "ai-and-agents",
+  "tags": [
+    "inference",
+    "resource-limits"
+  ]
 }

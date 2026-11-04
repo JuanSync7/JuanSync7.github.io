@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: a custom-format PostgreSQL dump should list the expected TABLE DATA entries through pg_restore -l. A file that exists but lists no required data is not a usable backup.",
   "verification": "Alert on an unreadable archive or missing required entries, and perform a restore rehearsal on a separate instance when validating recovery readiness.",
-  "limitations": "A contents list is a necessary structural check, not proof that restoration succeeds or that every row is intact. Partition growth can legitimately change the expected entry count."
+  "limitations": "A contents list is a necessary structural check, not proof that restoration succeeds or that every row is intact. Partition growth can legitimately change the expected entry count.",
+  "category": "data-and-databases",
+  "tags": [
+    "postgres",
+    "testing",
+    "evidence"
+  ]
 }

@@ -12,5 +12,11 @@
   ],
   "solution": "For example, “finish the parser” is weaker than a handoff naming the supported grammar, changed files, remaining failing fixture and command that checks it. The latter gives the next worker a bounded problem.",
   "verification": "Give the handoff to a fresh reader and ask them to identify their first action and definition of done. Any required hidden fact is a concrete repair to the document.",
-  "limitations": "Self-contained does not mean copying the entire project. Stable links and concise relevant context can be enough, and the source’s cost warning is not a measured universal growth formula."
+  "limitations": "Self-contained does not mean copying the entire project. Stable links and concise relevant context can be enough, and the source’s cost warning is not a measured universal growth formula.",
+  "category": "ai-and-agents",
+  "tags": [
+    "agents",
+    "contracts",
+    "delivery"
+  ]
 }

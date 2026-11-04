@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: three similar drafts can fill the top matches while a current version ranks below them. Cleaning the corpus addresses the evidence selection before changing the model prompt.",
   "verification": "Run a retrieval-only question set and inspect the versions of the returned documents. Current-answer queries should resolve to the intended current source.",
-  "limitations": "Historical research may need old versions. Retain them with explicit version metadata and scope rather than deleting the only record of past decisions."
+  "limitations": "Historical research may need old versions. Retain them with explicit version metadata and scope rather than deleting the only record of past decisions.",
+  "category": "ai-and-agents",
+  "tags": [
+    "rag",
+    "knowledge",
+    "provenance"
+  ]
 }

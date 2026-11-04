@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-25",
+  "tag": "Telemetry",
+  "title": "A streaming usage field may be a snapshot, not a total.",
+  "why": "Adding every usage field in a transcript can produce a neat total from incomplete counters. Cross-check one complete session before using that total to price a change.",
+  "problem": "A cost study needs to separate input, cached input and output. A transcript may expose fields for all three, yet still record some of them before the response has finished. Summing those fields does not make them complete.",
+  "cause": "Streaming systems can record usage at different stages. An early event may know how much input was sent while knowing very little about the answer still being generated. The field name describes the quantity; it does not establish when the quantity was measured.",
+  "steps": [
+    "Choose a completed session and compare each usage category with the harness or provider total for that same session. Keep the model, time range and units the same.",
+    "Check whether the transcript records a final event. Compare visible answer size as a rough sanity check, while keeping hidden reasoning and tokenisation differences separate.",
+    "Use the authoritative final counters where available. If only partial telemetry survives, label its coverage. Call the cost a lower bound only after checking that no usage was counted twice."
+  ],
+  "solution": "Validate the counter before building the spreadsheet around it. Input telemetry can be useful even when output telemetry is incomplete, so judge the categories separately.",
+  "verification": "For a new audit, reconcile one session end to end before aggregating many. A large unexplained gap means the total is not ready to support a savings claim.",
+  "limitations": "The recorded study reported incomplete output counters; this is not a claim that every provider or transcript format behaves the same way. Character counts are estimates, and list-price calculations are not billed spend.",
+  "category": "ai-and-agents",
+  "tags": [
+    "agents",
+    "measurement",
+    "evidence"
+  ]
+}

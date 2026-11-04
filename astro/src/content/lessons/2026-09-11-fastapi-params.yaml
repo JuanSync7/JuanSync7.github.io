@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: a days=30 request should exclude older fixture records. A successful response containing those records reveals that route existence and filter semantics are separate checks.",
   "verification": "Send the same request with two deliberately different filter values. Expect the population to change as specified, and verify that companion tables use the same scope.",
-  "limitations": "Some APIs intentionally tolerate unknown parameters. That convention still requires explicit tests for supported filters; a status-only smoke check cannot establish their behavior."
+  "limitations": "Some APIs intentionally tolerate unknown parameters. That convention still requires explicit tests for supported filters; a status-only smoke check cannot establish their behavior.",
+  "category": "software-engineering",
+  "tags": [
+    "python",
+    "contracts",
+    "testing"
+  ]
 }

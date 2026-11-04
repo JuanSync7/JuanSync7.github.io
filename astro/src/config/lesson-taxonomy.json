@@ -1,0 +1,506 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "software-engineering",
+      "label": "Software engineering",
+      "description": "Code, tests, builds, configuration and debugging."
+    },
+    {
+      "id": "ai-and-agents",
+      "label": "AI and agents",
+      "description": "Models, inference, retrieval, agent instructions and evaluation."
+    },
+    {
+      "id": "systems-and-operations",
+      "label": "Systems and operations",
+      "description": "Linux, shell, infrastructure, schedulers and deployment."
+    },
+    {
+      "id": "security-and-networking",
+      "label": "Security and networking",
+      "description": "Identity, permissions, secrets, trust and connections."
+    },
+    {
+      "id": "data-and-databases",
+      "label": "Data and databases",
+      "description": "Queries, storage, data modelling and measurement."
+    },
+    {
+      "id": "hardware-and-eda",
+      "label": "Hardware and EDA",
+      "description": "RTL, chip verification, timing, synthesis and EDA flows."
+    },
+    {
+      "id": "frontend-and-design",
+      "label": "Frontend and design",
+      "description": "Interfaces, visual systems, accessibility and design judgement."
+    },
+    {
+      "id": "writing-and-knowledge",
+      "label": "Writing and knowledge",
+      "description": "Documentation, writing voice, sources and knowledge structure."
+    },
+    {
+      "id": "work-and-delivery",
+      "label": "Work and delivery",
+      "description": "Planning, ownership, reviews, collaboration and completing work."
+    },
+    {
+      "id": "personal-learning",
+      "label": "Personal learning",
+      "description": "Learning habits, career, music, games and personal judgement."
+    }
+  ],
+  "tagTypes": [
+    {
+      "id": "topic",
+      "label": "Topics"
+    },
+    {
+      "id": "tool",
+      "label": "Tools and languages"
+    },
+    {
+      "id": "practice",
+      "label": "Practices"
+    }
+  ],
+  "tags": [
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "type": "practice"
+    },
+    {
+      "id": "agents",
+      "label": "Agents",
+      "type": "topic"
+    },
+    {
+      "id": "ai",
+      "label": "AI",
+      "type": "topic"
+    },
+    {
+      "id": "art",
+      "label": "Art",
+      "type": "topic"
+    },
+    {
+      "id": "aws",
+      "label": "AWS",
+      "type": "tool"
+    },
+    {
+      "id": "build",
+      "label": "Build",
+      "type": "topic"
+    },
+    {
+      "id": "caching",
+      "label": "Caching",
+      "type": "practice"
+    },
+    {
+      "id": "career",
+      "label": "Career",
+      "type": "topic"
+    },
+    {
+      "id": "ci",
+      "label": "CI",
+      "type": "topic"
+    },
+    {
+      "id": "code",
+      "label": "Code",
+      "type": "topic"
+    },
+    {
+      "id": "configuration",
+      "label": "Configuration",
+      "type": "practice"
+    },
+    {
+      "id": "contracts",
+      "label": "Contracts",
+      "type": "practice"
+    },
+    {
+      "id": "cost-control",
+      "label": "Cost control",
+      "type": "practice"
+    },
+    {
+      "id": "css",
+      "label": "CSS",
+      "type": "tool"
+    },
+    {
+      "id": "data",
+      "label": "Data",
+      "type": "topic"
+    },
+    {
+      "id": "debugging",
+      "label": "Debugging",
+      "type": "practice"
+    },
+    {
+      "id": "delivery",
+      "label": "Delivery",
+      "type": "practice"
+    },
+    {
+      "id": "design",
+      "label": "Design",
+      "type": "topic"
+    },
+    {
+      "id": "dft",
+      "label": "DFT",
+      "type": "topic"
+    },
+    {
+      "id": "docs",
+      "label": "Documentation",
+      "type": "topic"
+    },
+    {
+      "id": "eda",
+      "label": "EDA",
+      "type": "topic"
+    },
+    {
+      "id": "email",
+      "label": "Email",
+      "type": "topic"
+    },
+    {
+      "id": "error-handling",
+      "label": "Error handling",
+      "type": "practice"
+    },
+    {
+      "id": "evals",
+      "label": "Evaluations",
+      "type": "topic"
+    },
+    {
+      "id": "evidence",
+      "label": "Evidence",
+      "type": "practice"
+    },
+    {
+      "id": "frontend",
+      "label": "Frontend",
+      "type": "topic"
+    },
+    {
+      "id": "games",
+      "label": "Games",
+      "type": "topic"
+    },
+    {
+      "id": "git",
+      "label": "Git",
+      "type": "tool"
+    },
+    {
+      "id": "gpu",
+      "label": "GPU",
+      "type": "topic"
+    },
+    {
+      "id": "growth",
+      "label": "Growth",
+      "type": "topic"
+    },
+    {
+      "id": "idempotency",
+      "label": "Idempotency",
+      "type": "practice"
+    },
+    {
+      "id": "inference",
+      "label": "Inference",
+      "type": "topic"
+    },
+    {
+      "id": "integrity",
+      "label": "Integrity",
+      "type": "topic"
+    },
+    {
+      "id": "interfaces",
+      "label": "Interfaces",
+      "type": "topic"
+    },
+    {
+      "id": "isolation",
+      "label": "Isolation",
+      "type": "practice"
+    },
+    {
+      "id": "knowledge",
+      "label": "Knowledge",
+      "type": "topic"
+    },
+    {
+      "id": "learning",
+      "label": "Learning",
+      "type": "topic"
+    },
+    {
+      "id": "ledgers",
+      "label": "Ledgers",
+      "type": "topic"
+    },
+    {
+      "id": "lint",
+      "label": "Lint",
+      "type": "topic"
+    },
+    {
+      "id": "linux",
+      "label": "Linux",
+      "type": "topic"
+    },
+    {
+      "id": "llm",
+      "label": "LLMs",
+      "type": "topic"
+    },
+    {
+      "id": "maintainability",
+      "label": "Maintainability",
+      "type": "practice"
+    },
+    {
+      "id": "make",
+      "label": "Make",
+      "type": "tool"
+    },
+    {
+      "id": "mcp",
+      "label": "MCP",
+      "type": "tool"
+    },
+    {
+      "id": "measurement",
+      "label": "Measurement",
+      "type": "practice"
+    },
+    {
+      "id": "migration",
+      "label": "Migration",
+      "type": "practice"
+    },
+    {
+      "id": "music",
+      "label": "Music",
+      "type": "topic"
+    },
+    {
+      "id": "networking",
+      "label": "Networking",
+      "type": "topic"
+    },
+    {
+      "id": "observability",
+      "label": "Observability",
+      "type": "practice"
+    },
+    {
+      "id": "ops",
+      "label": "Operations",
+      "type": "topic"
+    },
+    {
+      "id": "ownership",
+      "label": "Ownership",
+      "type": "practice"
+    },
+    {
+      "id": "performance",
+      "label": "Performance",
+      "type": "practice"
+    },
+    {
+      "id": "planning",
+      "label": "Planning",
+      "type": "topic"
+    },
+    {
+      "id": "postgres",
+      "label": "PostgreSQL",
+      "type": "tool"
+    },
+    {
+      "id": "privacy",
+      "label": "Privacy",
+      "type": "practice"
+    },
+    {
+      "id": "process",
+      "label": "Process",
+      "type": "topic"
+    },
+    {
+      "id": "protocols",
+      "label": "Protocols",
+      "type": "topic"
+    },
+    {
+      "id": "provenance",
+      "label": "Provenance",
+      "type": "practice"
+    },
+    {
+      "id": "python",
+      "label": "Python",
+      "type": "tool"
+    },
+    {
+      "id": "rag",
+      "label": "RAG",
+      "type": "topic"
+    },
+    {
+      "id": "reporting",
+      "label": "Reporting",
+      "type": "topic"
+    },
+    {
+      "id": "reproducibility",
+      "label": "Reproducibility",
+      "type": "practice"
+    },
+    {
+      "id": "resource-limits",
+      "label": "Resource limits",
+      "type": "practice"
+    },
+    {
+      "id": "review",
+      "label": "Review",
+      "type": "practice"
+    },
+    {
+      "id": "riscv",
+      "label": "RISC-V",
+      "type": "topic"
+    },
+    {
+      "id": "rtl",
+      "label": "RTL",
+      "type": "topic"
+    },
+    {
+      "id": "security",
+      "label": "Security",
+      "type": "practice"
+    },
+    {
+      "id": "shell",
+      "label": "Shell",
+      "type": "topic"
+    },
+    {
+      "id": "slurm",
+      "label": "Slurm",
+      "type": "tool"
+    },
+    {
+      "id": "sql",
+      "label": "SQL",
+      "type": "topic"
+    },
+    {
+      "id": "sqlite",
+      "label": "SQLite",
+      "type": "tool"
+    },
+    {
+      "id": "sta",
+      "label": "Static timing",
+      "type": "topic"
+    },
+    {
+      "id": "synthesis",
+      "label": "Synthesis",
+      "type": "topic"
+    },
+    {
+      "id": "systemd",
+      "label": "systemd",
+      "type": "tool"
+    },
+    {
+      "id": "systems",
+      "label": "Systems",
+      "type": "topic"
+    },
+    {
+      "id": "systemverilog",
+      "label": "SystemVerilog",
+      "type": "tool"
+    },
+    {
+      "id": "teams",
+      "label": "Teams",
+      "type": "topic"
+    },
+    {
+      "id": "testing",
+      "label": "Testing",
+      "type": "practice"
+    },
+    {
+      "id": "thoughts",
+      "label": "Thoughts",
+      "type": "topic"
+    },
+    {
+      "id": "tls",
+      "label": "TLS",
+      "type": "topic"
+    },
+    {
+      "id": "tooling",
+      "label": "Tooling",
+      "type": "topic"
+    },
+    {
+      "id": "typography",
+      "label": "Typography",
+      "type": "topic"
+    },
+    {
+      "id": "unicode",
+      "label": "Unicode",
+      "type": "topic"
+    },
+    {
+      "id": "validation",
+      "label": "Validation",
+      "type": "practice"
+    },
+    {
+      "id": "verification",
+      "label": "Verification",
+      "type": "topic"
+    },
+    {
+      "id": "writing",
+      "label": "Writing",
+      "type": "practice"
+    },
+    {
+      "id": "yaml",
+      "label": "YAML",
+      "type": "tool"
+    }
+  ]
+}

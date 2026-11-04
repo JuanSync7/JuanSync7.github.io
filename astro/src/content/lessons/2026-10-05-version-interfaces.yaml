@@ -11,5 +11,11 @@
   ],
   "solution": "Make interface change a migration with a compatibility window. This keeps a small internal refactor from becoming an unplanned coordinated release.",
   "verification": "Exercise old and new clients against the transition version. Each supported combination should behave as documented, and an unsupported version should fail with a clear explanation.",
-  "limitations": "Compatibility costs code and tests, so retire old paths deliberately. In a single process with an atomic release, a long public versioning scheme may add little value."
+  "limitations": "Compatibility costs code and tests, so retire old paths deliberately. In a single process with an atomic release, a long public versioning scheme may add little value.",
+  "category": "work-and-delivery",
+  "tags": [
+    "interfaces",
+    "contracts",
+    "migration"
+  ]
 }

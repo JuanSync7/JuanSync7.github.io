@@ -12,5 +12,11 @@
   ],
   "solution": "Use a concrete imagined failure rather than an open invitation for concerns. For example, “the release missed its reliability target” directs attention toward dependencies and missing evidence that a general discussion may skip.",
   "verification": "Check whether the exercise changed the plan or created owned actions. A long list with no decisions is an unfinished review.",
-  "limitations": "This is a proposed review method, not evidence that a particular project used it. It cannot find risks nobody can imagine, and the source’s research claims were not independently checked."
+  "limitations": "This is a proposed review method, not evidence that a particular project used it. It cannot find risks nobody can imagine, and the source’s research claims were not independently checked.",
+  "category": "work-and-delivery",
+  "tags": [
+    "process",
+    "planning",
+    "review"
+  ]
 }

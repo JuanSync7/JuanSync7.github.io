@@ -12,5 +12,11 @@
   ],
   "solution": "A shared directory may need a group owner and setgid so new files inherit the group. Record that rule in setup rather than assuming a clone will preserve the source directory’s mode.",
   "verification": "Inspect a clean installation as the intended service and team identities. Check effective access and group inheritance, not just whether the tracked scripts retained their executable bit.",
-  "limitations": "Hooks can help restore local state but are not automatically installed by every clone. The deployment process must own their installation or enforce the permissions through another reliable mechanism."
+  "limitations": "Hooks can help restore local state but are not automatically installed by every clone. The deployment process must own their installation or enforce the permissions through another reliable mechanism.",
+  "category": "software-engineering",
+  "tags": [
+    "git",
+    "linux",
+    "delivery"
+  ]
 }

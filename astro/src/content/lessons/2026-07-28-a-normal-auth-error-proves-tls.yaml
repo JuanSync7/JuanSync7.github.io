@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a normal unauthenticated service error is useful progress after a certificate-verification failure. It shows that the client accepted the certificate chain and exchanged application traffic.",
   "verification": "Confirm the response came from the intended endpoint over a verified TLS connection. Then test authorized access separately if that is within scope.",
-  "limitations": "A proxy can generate its own denial, and disabled verification proves no trust repair. This observation is narrow evidence for that client and connection, not proof that every tool uses the same CA store."
+  "limitations": "A proxy can generate its own denial, and disabled verification proves no trust repair. This observation is narrow evidence for that client and connection, not proof that every tool uses the same CA store.",
+  "category": "security-and-networking",
+  "tags": [
+    "tls",
+    "security",
+    "debugging"
+  ]
 }

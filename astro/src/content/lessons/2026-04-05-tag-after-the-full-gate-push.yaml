@@ -13,5 +13,11 @@
   ],
   "solution": "Treat the tag as local preparation until verification finishes. If a release check reads the version tag, it can now inspect the same version that would be pushed.",
   "verification": "Inspect the gate’s real result and confirm which commit the local tag resolves to. A successful earlier test run is not a substitute for this release check.",
-  "limitations": "The original title is shorthand; the recorded procedure creates the local tag before the full gate and pushes last. Repositories with different release contracts may need another order."
+  "limitations": "The original title is shorthand; the recorded procedure creates the local tag before the full gate and pushes last. Repositories with different release contracts may need another order.",
+  "category": "software-engineering",
+  "tags": [
+    "git",
+    "delivery",
+    "testing"
+  ]
 }

@@ -12,5 +12,10 @@
   ],
   "solution": "For example, a credential-holding broker can receive a request from a local user while keeping the service key unreadable to that user. Authorization then uses the peer identity, not an arbitrary act-as field.",
   "verification": "Connect as an allowed and an unmapped local user, and try a socket served by the wrong account in an isolated fixture. Check that each side rejects the wrong peer.",
-  "limitations": "This mechanism applies to supported local Unix sockets, not remote HTTP requests. Shared accounts still collapse identity, and peer authentication does not replace operation-level authorization."
+  "limitations": "This mechanism applies to supported local Unix sockets, not remote HTTP requests. Shared accounts still collapse identity, and peer authentication does not replace operation-level authorization.",
+  "category": "security-and-networking",
+  "tags": [
+    "security",
+    "linux"
+  ]
 }

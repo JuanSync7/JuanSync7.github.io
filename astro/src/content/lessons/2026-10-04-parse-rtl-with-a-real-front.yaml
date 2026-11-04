@@ -11,5 +11,11 @@
   ],
   "solution": "Choose a structural representation for structural questions. A graph can then follow a relationship while retaining the source evidence for each step.",
   "verification": "Use a small known design to compare extracted instances and connections against the source. Include repeated names in different scopes so a name-only approach cannot accidentally pass.",
-  "limitations": "A syntax tree alone may not resolve all elaborated behaviour. Parameters, macros and tool-specific constructs require the right analysis stage and configuration; the parser's coverage limits the graph."
+  "limitations": "A syntax tree alone may not resolve all elaborated behaviour. Parameters, macros and tool-specific constructs require the right analysis stage and configuration; the parser's coverage limits the graph.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "rtl",
+    "systemverilog",
+    "data"
+  ]
 }

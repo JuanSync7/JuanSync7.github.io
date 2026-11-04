@@ -11,5 +11,11 @@
   ],
   "solution": "Treat session refresh as part of deployment when file replacement changes policy. A current host-side file is not proof that every already-running session sees the current bytes.",
   "verification": "In a disposable setup, compare digests before replacement, after replacement in the old session, and in a fresh session. The final session should read the intended deployed version.",
-  "limitations": "An in-place write differs from replacing a file object, and a process may cache configuration separately. Check both mount identity and application reload behaviour before choosing the refresh operation."
+  "limitations": "An in-place write differs from replacing a file object, and a process may cache configuration separately. Check both mount identity and application reload behaviour before choosing the refresh operation.",
+  "category": "systems-and-operations",
+  "tags": [
+    "linux",
+    "delivery",
+    "configuration"
+  ]
 }

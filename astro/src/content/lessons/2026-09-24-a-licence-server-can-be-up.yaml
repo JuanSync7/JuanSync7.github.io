@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: a green manager status alongside one failed vendor daemon should produce a degraded service verdict, with the unavailable feature group visible to the operator.",
   "verification": "Exercise a disposable or recorded response with the manager up and one expected daemon down. The aggregate status should reveal the partial failure rather than report full health.",
-  "limitations": "A daemon answering does not prove every feature has available capacity. Checkout denials, expiry and collector outages require additional evidence, and unknown probe results should remain unknown."
+  "limitations": "A daemon answering does not prove every feature has available capacity. Checkout denials, expiry and collector outages require additional evidence, and unknown probe results should remain unknown.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "eda",
+    "observability",
+    "testing"
+  ]
 }

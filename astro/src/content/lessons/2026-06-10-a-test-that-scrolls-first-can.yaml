@@ -12,5 +12,10 @@
   ],
   "solution": "For a primary action expected above the fold, check its position in the initial viewport. A locator that scrolls it into view can still be useful for clicking, but it cannot establish initial visibility.",
   "verification": "Capture the first viewport and check clipping, overlap and the action’s bounds. Repeat at the actual small screen sizes the page supports, not only a large standard screenshot size.",
-  "limitations": "Some content intentionally belongs below the fold. Define which elements must be visible initially, and test keyboard access and later scrolling separately."
+  "limitations": "Some content intentionally belongs below the fold. Define which elements must be visible initially, and test keyboard access and later scrolling separately.",
+  "category": "frontend-and-design",
+  "tags": [
+    "frontend",
+    "testing"
+  ]
 }

@@ -11,5 +11,11 @@
   ],
   "solution": "For example, `text = path.read_text(encoding=\"utf-8-sig\")` removes an optional leading BOM before `ast.parse(text)`. Apply the same input rule to every reader of that file kind.",
   "verification": "Prepare equivalent files with and without the BOM and expect the same parsed structure. Include a genuinely invalid file and expect an explicit error, not a missing corpus entry.",
-  "limitations": "This codec handles an optional UTF-8 BOM; it does not detect every encoding or fix invalid source. Use it where the input contract is UTF-8, rather than guessing an arbitrary document’s encoding."
+  "limitations": "This codec handles an optional UTF-8 BOM; it does not detect every encoding or fix invalid source. Use it where the input contract is UTF-8, rather than guessing an arbitrary document’s encoding.",
+  "category": "software-engineering",
+  "tags": [
+    "python",
+    "integrity",
+    "error-handling"
+  ]
 }

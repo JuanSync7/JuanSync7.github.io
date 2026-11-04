@@ -12,5 +12,11 @@
   ],
   "solution": "For example, an annotated parser returning a result object is easier to use correctly than one returning an undocumented mixture of strings and dictionaries. The annotation helps callers, while runtime validation still handles malformed input.",
   "verification": "Change a fixture caller to pass an incompatible type and confirm that the configured checker reports it. Then exercise a malformed external value to check the runtime boundary.",
-  "limitations": "Python annotations do not automatically enforce types when code runs. Broad Any annotations and unchecked dependencies weaken the guarantee, and type correctness does not establish the function’s intended behavior."
+  "limitations": "Python annotations do not automatically enforce types when code runs. Broad Any annotations and unchecked dependencies weaken the guarantee, and type correctness does not establish the function’s intended behavior.",
+  "category": "software-engineering",
+  "tags": [
+    "python",
+    "contracts",
+    "systemverilog"
+  ]
 }

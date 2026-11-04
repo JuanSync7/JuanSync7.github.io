@@ -11,5 +11,11 @@
   ],
   "solution": "Use varied inputs to explore a defined correctness boundary. Preserve failing examples so the next change can be checked against the same cases.",
   "verification": "Plant a clearly wrong output and confirm the evaluation rejects it. Then inspect borderline cases to see whether the scoring rule matches the intended task.",
-  "limitations": "A judge can share the model's blind spots, and a fixed set can be overfit. Keep some examples aside and report what the evaluation covers rather than calling the model generally correct."
+  "limitations": "A judge can share the model's blind spots, and a fixed set can be overfit. Keep some examples aside and report what the evaluation covers rather than calling the model generally correct.",
+  "category": "ai-and-agents",
+  "tags": [
+    "evals",
+    "verification",
+    "testing"
+  ]
 }

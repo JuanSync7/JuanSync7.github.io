@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: changing the panel background token should update every panel assigned that role. A single hardcoded panel remains visibly different and reveals where ownership drifted.",
   "verification": "Inspect representative components in each supported theme and search for unexplained literals. Required runtime tokens should exist in the built stylesheet as well as in source.",
-  "limitations": "Tokens do not guarantee contrast or a good hierarchy. Several distinct roles can need distinct tokens even when they currently share a value; avoid coupling them merely because the numbers match."
+  "limitations": "Tokens do not guarantee contrast or a good hierarchy. Several distinct roles can need distinct tokens even when they currently share a value; avoid coupling them merely because the numbers match.",
+  "category": "frontend-and-design",
+  "tags": [
+    "css",
+    "design",
+    "maintainability"
+  ]
 }

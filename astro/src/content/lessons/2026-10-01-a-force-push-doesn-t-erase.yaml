@@ -11,5 +11,11 @@
   ],
   "solution": "Treat revocation as the control that stops use of the credential, and history cleanup as a separate task that reduces further disclosure.",
   "verification": "Check that the old credential is rejected and the replacement works only where intended. Scan the rewritten history and ask the host about retained objects when needed.",
-  "limitations": "A rewritten repository cannot recall forks, clones or downloaded copies. Rotation addresses credentials; a leaked name or document needs a separate response."
+  "limitations": "A rewritten repository cannot recall forks, clones or downloaded copies. Rotation addresses credentials; a leaked name or document needs a separate response.",
+  "category": "security-and-networking",
+  "tags": [
+    "git",
+    "security",
+    "privacy"
+  ]
 }

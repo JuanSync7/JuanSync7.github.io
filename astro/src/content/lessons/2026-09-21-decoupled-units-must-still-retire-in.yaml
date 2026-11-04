@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: a later short operation can finish before an earlier long one. Completion may be recorded internally, but retirement must preserve the architecture's required ordering.",
   "verification": "Review directed dependency and exception cases against the architectural contract. A later completion should not expose a state change before an older instruction's required outcome is resolved.",
-  "limitations": "The source supports the interface principle, not a detailed implementation or measured verification result. Different architectures allow different internal schedules and need their own ordering specification."
+  "limitations": "The source supports the interface principle, not a detailed implementation or measured verification result. Different architectures allow different internal schedules and need their own ordering specification.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "rtl",
+    "verification",
+    "interfaces"
+  ]
 }

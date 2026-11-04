@@ -12,5 +12,11 @@
   ],
   "solution": "Make refusal a behaviour I can demonstrate: the command explains why it stopped, returns the expected code and leaves the installation alone. Keep a short evidence record so the next person can repeat the same check.",
   "verification": "The pilot reported BUSY, returned exit 4 and changed nothing while the application was open. Host report values were also compared with operating-system tools.",
-  "limitations": "This was a supervised pilot. Dashboard and fleet-path steps were not run, so it did not prove the whole deployment flow."
+  "limitations": "This was a supervised pilot. Dashboard and fleet-path steps were not run, so it did not prove the whole deployment flow.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "evidence",
+    "delivery"
+  ]
 }

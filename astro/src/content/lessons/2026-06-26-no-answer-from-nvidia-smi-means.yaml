@@ -12,5 +12,11 @@
   ],
   "solution": "If nvidia-smi times out, report GPU state as unknown and stop the admission decision. Do not fill in zero used memory simply because no number was parsed.",
   "verification": "In a safe fixture, simulate a missing executable, timeout and malformed response. Expect each to remain unknown, while a valid idle reading follows the normal admission path.",
-  "limitations": "A fresh reading still is not a reservation. Another process can allocate memory after the check, so concurrent launchers need coordination in addition to honest state reporting."
+  "limitations": "A fresh reading still is not a reservation. Another process can allocate memory after the check, so concurrent launchers need coordination in addition to honest state reporting.",
+  "category": "systems-and-operations",
+  "tags": [
+    "gpu",
+    "measurement",
+    "error-handling"
+  ]
 }

@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a model can propose an explanation for a failed check while a script gathers the logs and a real test evaluates the proposed repair. The model’s answer is useful input to the process, not its final evidence of success.",
   "verification": "Compare complete-task outcomes and correction effort across representative cases. Check that a wrong or incomplete model answer is caught before the workflow reports completion.",
-  "limitations": "This is a design preference, not a measured claim that AI is overvalued in every domain. Some tasks need more exploration, but they still benefit from an explicit way to judge the result."
+  "limitations": "This is a design preference, not a measured claim that AI is overvalued in every domain. Some tasks need more exploration, but they still benefit from an explicit way to judge the result.",
+  "category": "ai-and-agents",
+  "tags": [
+    "ai",
+    "agents",
+    "reproducibility"
+  ]
 }

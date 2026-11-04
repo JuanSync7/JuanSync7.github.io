@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a presentation whose order is slide3, slide1, slide2 must keep that sequence. Sorting the part names would produce a coherent-looking but incorrect document.",
   "verification": "Build a fixture whose filename order deliberately differs from presentation order. Check the output sequence and the independent expected result, so both sides cannot make the same filename-order mistake.",
-  "limitations": "Hidden slides and custom shows need an explicit output policy. Text recall alone will not detect this ordering defect, and changing conversion order can require updating downstream expectations and structural checks."
+  "limitations": "Hidden slides and custom shows need an explicit output policy. Text recall alone will not detect this ordering defect, and changing conversion order can require updating downstream expectations and structural checks.",
+  "category": "data-and-databases",
+  "tags": [
+    "data",
+    "docs",
+    "testing"
+  ]
 }

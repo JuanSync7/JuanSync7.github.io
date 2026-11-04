@@ -11,5 +11,11 @@
   ],
   "solution": "Use private memory for process attribution and shared-page-aware totals for the host view. Keep scratch files in the investigation too, because RAM-backed files may not be obvious in one process's listing.",
   "verification": "For an illustrative comparison, inspect several connections to the same database. Their listed resident sizes should not be treated as independent private allocations of the shared buffer pool.",
-  "limitations": "Private memory alone does not describe every resource a process causes the system to retain. Permissions, kernel accounting and swapped pages can limit what a single snapshot reveals."
+  "limitations": "Private memory alone does not describe every resource a process causes the system to retain. Permissions, kernel accounting and swapped pages can limit what a single snapshot reveals.",
+  "category": "systems-and-operations",
+  "tags": [
+    "linux",
+    "resource-limits",
+    "measurement"
+  ]
 }

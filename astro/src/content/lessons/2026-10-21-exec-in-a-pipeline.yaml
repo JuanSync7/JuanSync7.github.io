@@ -12,5 +12,11 @@
   ],
   "solution": "Use a redirect or here-string when exec needs to replace the current script. A replacement contract needs an exclusive-output assertion; checking that the new output appears leaves half the contract untested.",
   "verification": "Two failing tests were added before the change. The fix merged to main. The source also records four full-suite failures reproduced on unchanged main.",
-  "limitations": "This correction uses Bash; a here-string adds a newline, so use a suitable input redirect if exact bytes matter. The fix merged, but the privileged deployment remained with the operator and is not established by this record."
+  "limitations": "This correction uses Bash; a here-string adds a newline, so use a suitable input redirect if exact bytes matter. The fix merged, but the privileged deployment remained with the operator and is not established by this record.",
+  "category": "systems-and-operations",
+  "tags": [
+    "shell",
+    "error-handling",
+    "testing"
+  ]
 }

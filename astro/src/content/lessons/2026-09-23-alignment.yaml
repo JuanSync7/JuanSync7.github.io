@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: two people may both build a good dashboard while one optimizes investigation and the other optimizes a weekly summary. A shared reader task exposes that difference before both layouts are finished.",
   "verification": "Ask each contributor to describe the goal and acceptance condition independently. Material disagreement means the direction still needs discussion before more implementation is useful.",
-  "limitations": "Alignment is not unanimity about every detail. Keep routine reversible choices with their owner, and return to shared discussion when new evidence changes the goal or its important constraints."
+  "limitations": "Alignment is not unanimity about every detail. Keep routine reversible choices with their owner, and return to shared discussion when new evidence changes the goal or its important constraints.",
+  "category": "work-and-delivery",
+  "tags": [
+    "teams",
+    "planning",
+    "delivery"
+  ]
 }

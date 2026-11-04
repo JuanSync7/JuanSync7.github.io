@@ -11,5 +11,10 @@
   ],
   "solution": "Match the medium to the job so effort goes into meaning and composition. A diagram benefits from visible structure; an atmospheric image benefits from texture.",
   "verification": "Inspect the result at its actual page size. Check that diagram labels remain legible, or that the raster texture survives without distracting from the surrounding text.",
-  "limitations": "This is a practical default rather than a hard format limit. SVG filters and mixed media can imitate texture, but they add complexity that a simple illustration may not need."
+  "limitations": "This is a practical default rather than a hard format limit. SVG filters and mixed media can imitate texture, but they add complexity that a simple illustration may not need.",
+  "category": "frontend-and-design",
+  "tags": [
+    "art",
+    "design"
+  ]
 }

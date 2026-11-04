@@ -11,5 +11,11 @@
   ],
   "solution": "Let a green status follow evidence that actually meets the acceptance rule. A recorded statement about outside work can remain useful while waiting for a check inside the trusted workflow.",
   "verification": "Remove an expected result from an illustrative fixture. The summary should become unknown or incomplete rather than improve its apparent pass rate.",
-  "limitations": "Not every inactive component is faulty. A deliberate exclusion or waiver needs its own visible meaning, and a zero-item run should not satisfy a requirement that expected real checks."
+  "limitations": "Not every inactive component is faulty. A deliberate exclusion or waiver needs its own visible meaning, and a zero-item run should not satisfy a requirement that expected real checks.",
+  "category": "work-and-delivery",
+  "tags": [
+    "reporting",
+    "evidence",
+    "observability"
+  ]
 }

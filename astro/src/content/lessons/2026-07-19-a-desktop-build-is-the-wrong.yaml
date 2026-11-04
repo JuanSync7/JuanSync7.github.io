@@ -12,5 +12,10 @@
   ],
   "solution": "For example, a headless build host can run an editor’s remote server without opening a graphical session. That avoids introducing a desktop stack just to edit files and run tools near the source.",
   "verification": "Connect from the intended client, open a fixture file and run a small remote command. Verify where extensions and processes execute rather than assuming everything stays local.",
-  "limitations": "Remote servers still have operating-system and library requirements. This is deployment guidance, not a claim that every desktop package is wrong or that the legacy installation was reproduced."
+  "limitations": "Remote servers still have operating-system and library requirements. This is deployment guidance, not a claim that every desktop package is wrong or that the legacy installation was reproduced.",
+  "category": "systems-and-operations",
+  "tags": [
+    "tooling",
+    "linux"
+  ]
 }

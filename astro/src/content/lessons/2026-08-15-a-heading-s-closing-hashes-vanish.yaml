@@ -11,5 +11,11 @@
   ],
   "solution": "Test the rendered title rather than comparing raw Markdown alone. The unescaped `# Drain procedure #` and the escaped form carry different visible text.",
   "verification": "Render both tiny examples with the target parser. Expect the first to show “Drain procedure” and the escaped form to show “Drain procedure #”, with the same heading level.",
-  "limitations": "Escaping rules depend on context. This fixes literal heading content; it does not justify escaping intentional Markdown syntax throughout the document."
+  "limitations": "Escaping rules depend on context. This fixes literal heading content; it does not justify escaping intentional Markdown syntax throughout the document.",
+  "category": "writing-and-knowledge",
+  "tags": [
+    "docs",
+    "data",
+    "integrity"
+  ]
 }

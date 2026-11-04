@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a pipeline with ingest, validate and export blocks should make those three responsibilities easy to locate. Shared utilities can support the blocks, but should not hide the direction of data flow or become an unexplained extra core.",
   "verification": "Ask a fresh reader where a validation change belongs, then compare the answer with the diagram and actual imports. Disagreement reveals a boundary or naming problem.",
-  "limitations": "A diagram is a model, so small helpers need not each become a box. Keep the view at a useful level and revise it when responsibilities move."
+  "limitations": "A diagram is a model, so small helpers need not each become a box. Keep the view at a useful level and revise it when responsibilities move.",
+  "category": "software-engineering",
+  "tags": [
+    "design",
+    "maintainability",
+    "ownership"
+  ]
 }

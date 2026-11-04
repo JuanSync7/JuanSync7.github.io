@@ -11,5 +11,11 @@
   ],
   "solution": "Do not use an unconditional `install -d -m 0755` as a harmless existence check for a directory expected to remain 0700. Keep permission changes deliberate and reviewable.",
   "verification": "In a temporary tree, prepare a 0700 directory and run the proposed deployment step. Read its mode back and expect preservation if that is the contract; also test initial creation.",
-  "limitations": "A check-then-create sequence can race. Security-sensitive directories may need stronger creation and ownership checks, and deployment should fail when an existing path violates its required policy."
+  "limitations": "A check-then-create sequence can race. Security-sensitive directories may need stronger creation and ownership checks, and deployment should fail when an existing path violates its required policy.",
+  "category": "security-and-networking",
+  "tags": [
+    "linux",
+    "security",
+    "delivery"
+  ]
 }

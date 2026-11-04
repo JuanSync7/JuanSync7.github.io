@@ -12,5 +12,11 @@
   ],
   "solution": "Have the run report its own totals when it finishes. A campaign report can then add known amounts and name the runs whose cost is still unknown, instead of silently treating those runs as free.",
   "verification": "Compare the run list with the usage-record list and investigate unmatched entries. Cross-check one representative record against the harness or billing source before trusting a large aggregate.",
-  "limitations": "Token counts and billed cost are different quantities. Pricing, caching and incomplete streaming records can affect conversion, so an estimate should keep its label."
+  "limitations": "Token counts and billed cost are different quantities. Pricing, caching and incomplete streaming records can affect conversion, so an estimate should keep its label.",
+  "category": "ai-and-agents",
+  "tags": [
+    "llm",
+    "cost-control",
+    "observability"
+  ]
 }

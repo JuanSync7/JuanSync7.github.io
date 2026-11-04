@@ -12,5 +12,10 @@
   ],
   "solution": "Illustrative: a history control needed for frequent comparison may belong near the comparison figures, while a rarely used configuration control may suit a quieter location. The task explains the placement.",
   "verification": "Ask a reader to complete the named task in each candidate layout. Observe whether the needed information and controls are found in the intended order.",
-  "limitations": "Several tasks can be equally important. If the task evidence does not distinguish the options, keep the choice reversible and identify what later observation would justify changing it."
+  "limitations": "Several tasks can be equally important. If the task evidence does not distinguish the options, keep the choice reversible and identify what later observation would justify changing it.",
+  "category": "frontend-and-design",
+  "tags": [
+    "frontend",
+    "design"
+  ]
 }

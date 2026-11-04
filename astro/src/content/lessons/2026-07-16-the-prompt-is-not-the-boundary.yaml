@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a hook can compare a requested record with the authenticated caller before allowing a service-key operation. The model may explain its request, but its explanation cannot override that check.",
   "verification": "Try cross-user identifiers, extra scope-changing fields and a failed ownership lookup. Each should stop at the enforcing layer, even with persuasive instructions in the model context.",
-  "limitations": "The boundary also depends on protecting the credential and blocking alternate routes. If callers can read the shared key directly, the hook is a workflow guard rather than complete access control."
+  "limitations": "The boundary also depends on protecting the credential and blocking alternate routes. If callers can read the shared key directly, the hook is a workflow guard rather than complete access control.",
+  "category": "security-and-networking",
+  "tags": [
+    "security",
+    "agents",
+    "validation"
+  ]
 }

@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-26",
+  "tag": "Data integrity",
+  "title": "A snapshot id must cover its immutable metadata.",
+  "why": "If two records share an id but differ in fields the store promises never to change, an ordinary second write becomes a collision. Decide what the identity owns before hashing it.",
+  "problem": "The same unchanged source can be selected for two jobs: as a reference in one task and as a rule in another. If both selections receive the same snapshot id while their stored metadata differs, an append-only store has to reject the second one.",
+  "cause": "The id and the immutability promise describe different objects. Hashing the source bytes alone identifies those bytes. It does not identify a record that also freezes the source role, area or other metadata.",
+  "steps": [
+    "List every field that is immutable in the stored snapshot. Separate source facts from the reason a particular task selected it.",
+    "Either include all immutable record fields in its identity, or keep the snapshot independent of the task and move task-specific selection metadata into the receipt.",
+    "Test selecting the same source in two roles, then repeat both writes. Both legitimate selections should work, and a replay should keep the same ids and bytes."
+  ],
+  "solution": "Make the identity boundary match the record boundary. A refusal on changed bytes is useful; a refusal on two supported ways of selecting the same source reveals a mismatch in the design.",
+  "verification": "The source review reports that its original two-role reproduction succeeded after the identity was expanded. For another store, replay that sequence and also confirm that a changed immutable field cannot silently replace the old record.",
+  "limitations": "The review establishes its recorded reproduction and recheck, not every downstream use. Content hashes do not authenticate the writer or prove the source is true.",
+  "category": "software-engineering",
+  "tags": [
+    "integrity",
+    "provenance",
+    "testing"
+  ]
+}

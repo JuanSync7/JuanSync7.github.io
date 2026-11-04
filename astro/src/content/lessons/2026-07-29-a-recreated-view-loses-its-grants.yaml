@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a reporting view can return correct data to its owner while an analyst gets permission denied. An owner-only smoke test misses the permission regression.",
   "verification": "Run the migration on a fixture database, including a repeated run, and query as the intended reader. Check schema access, view grants and the negative boundary separately.",
-  "limitations": "Changing ownership or using security-sensitive view options can alter access semantics too. Successful reads must not come from granting a broader role than the design intended."
+  "limitations": "Changing ownership or using security-sensitive view options can alter access semantics too. Successful reads must not come from granting a broader role than the design intended.",
+  "category": "data-and-databases",
+  "tags": [
+    "postgres",
+    "migration",
+    "security"
+  ]
 }

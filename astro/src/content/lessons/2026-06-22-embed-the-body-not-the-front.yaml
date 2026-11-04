@@ -12,5 +12,10 @@
   ],
   "solution": "A short note with two long digests can spend much of its token budget on identifiers. Removing those fields from the embedding input leaves more of the representation devoted to the note’s actual explanation.",
   "verification": "Inspect the exact text sent to the embedding model and its token composition. Then compare retrieval on representative content questions while confirming that metadata filters still work.",
-  "limitations": "Some titles and concise contextual labels improve retrieval. The boundary is deliberate selection of useful context, not a requirement to discard every metadata field or the provenance needed to audit a result."
+  "limitations": "Some titles and concise contextual labels improve retrieval. The boundary is deliberate selection of useful context, not a requirement to discard every metadata field or the provenance needed to audit a result.",
+  "category": "ai-and-agents",
+  "tags": [
+    "rag",
+    "data"
+  ]
 }

@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: low service resource use during the observed window can weaken a resource-exhaustion theory, while an unrelated GUI-lock theory remains unproven.",
   "verification": "Ask whether another reader can trace every exclusion to an observation and every proposed cause to its test. The report should distinguish measured facts from plausible explanations.",
-  "limitations": "Negative evidence is bounded by sampling and access. Do not turn 'not observed here' into a claim that a service could never contribute under different conditions."
+  "limitations": "Negative evidence is bounded by sampling and access. Do not turn 'not observed here' into a claim that a service could never contribute under different conditions.",
+  "category": "software-engineering",
+  "tags": [
+    "debugging",
+    "evidence",
+    "measurement"
+  ]
 }

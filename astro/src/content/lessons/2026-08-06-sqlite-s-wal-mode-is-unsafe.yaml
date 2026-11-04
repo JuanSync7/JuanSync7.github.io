@@ -11,5 +11,11 @@
   ],
   "solution": "Make the storage assumption part of the database contract. Keep WAL on suitable local storage; reconsider the database choice when clients need shared writes.",
   "verification": "Reopen through each supported entry point and check the journal mode and recovery behaviour on a disposable database. Configuration text alone does not establish the active mode.",
-  "limitations": "Rollback journaling does not make every network filesystem safe. Locking behaviour and the deployment topology still need validation; a database server may be the better boundary."
+  "limitations": "Rollback journaling does not make every network filesystem safe. Locking behaviour and the deployment topology still need validation; a database server may be the better boundary.",
+  "category": "data-and-databases",
+  "tags": [
+    "sqlite",
+    "linux",
+    "data"
+  ]
 }

@@ -12,5 +12,11 @@
   ],
   "solution": "If body copy uses regular and headings use medium, loading every available static weight adds no reading benefit. A variable font may cover the needed range in one resource, so inspect the actual files rather than counting CSS weight values alone.",
   "verification": "Check the browser’s network panel on a cold load and in the intended network environment. Expect only required font resources, readable fallback text and no dependency on an unreachable CDN.",
-  "limitations": "Licensing, character coverage and subset choices still matter. Fewer files are useful only if the page keeps the glyphs and styles its readers need."
+  "limitations": "Licensing, character coverage and subset choices still matter. Fewer files are useful only if the page keeps the glyphs and styles its readers need.",
+  "category": "frontend-and-design",
+  "tags": [
+    "typography",
+    "performance",
+    "networking"
+  ]
 }

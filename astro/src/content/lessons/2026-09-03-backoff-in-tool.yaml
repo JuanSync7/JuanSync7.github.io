@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: increasing a supported page size can turn many small page requests into fewer large ones. The tool can then return the actual sample size instead of letting the model imply complete coverage.",
   "verification": "Inject a rate-limit response and a dropped connection. Expect bounded recovery, no duplicate page accumulation and an explicit partial-result signal when the budget is exhausted.",
-  "limitations": "Retries do not create more capacity. Respect endpoint semantics and avoid replaying non-idempotent writes without a separate duplicate-protection design."
+  "limitations": "Retries do not create more capacity. Respect endpoint semantics and avoid replaying non-idempotent writes without a separate duplicate-protection design.",
+  "category": "ai-and-agents",
+  "tags": [
+    "agents",
+    "error-handling",
+    "resource-limits"
+  ]
 }

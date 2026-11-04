@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: shortening two different dotted IP addresses to their first component creates a plausible match that never represented the same machine. Keeping each literal whole avoids that collision.",
   "verification": "Test distinct IPs, short hostnames and fully qualified names. Inspect known joins and intentionally ambiguous candidates; only supported unique matches should be attributed.",
-  "limitations": "Even a unique user-host-time match can be inferred when the source records no job id. Label the evidence level and prefer source-recorded identity when it becomes available."
+  "limitations": "Even a unique user-host-time match can be inferred when the source records no job id. Label the evidence level and prefer source-recorded identity when it becomes available.",
+  "category": "data-and-databases",
+  "tags": [
+    "data",
+    "integrity",
+    "validation"
+  ]
 }

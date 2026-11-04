@@ -12,5 +12,11 @@
   ],
   "solution": "For example, rolling back a read-only transaction does not make a session-level lock safe to ignore. The next borrower of that connection may inherit its consequences even though no table row changed.",
   "verification": "In an isolated database fixture, try the forbidden lock operation through the actual read-only entry point. Confirm it is refused and that returning a connection leaves no unexpected session lock.",
-  "limitations": "Transaction-scoped and session-scoped locks have different lifetimes. A read-only fence also needs resource limits for long queries and sleeps; preventing row changes alone does not make arbitrary SQL harmless."
+  "limitations": "Transaction-scoped and session-scoped locks have different lifetimes. A read-only fence also needs resource limits for long queries and sleeps; preventing row changes alone does not make arbitrary SQL harmless.",
+  "category": "security-and-networking",
+  "tags": [
+    "postgres",
+    "security",
+    "isolation"
+  ]
 }

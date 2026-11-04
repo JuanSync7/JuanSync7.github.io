@@ -12,5 +12,11 @@
   ],
   "solution": "For example, adding parity to stored control data also requires deciding when to check it and what happens on a mismatch. A parity bit without a defined reaction is only part of the safety mechanism.",
   "verification": "Use an explicit fault model and inspect whether representative injected faults reach the detector and required response within the design’s timing assumptions.",
-  "limitations": "The source records parity and an out-of-phase dual-copy design, but does not prove when those choices were made. This is architectural guidance, not a complete functional-safety argument or certification claim."
+  "limitations": "The source records parity and an out-of-phase dual-copy design, but does not prove when those choices were made. This is architectural guidance, not a complete functional-safety argument or certification claim.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "rtl",
+    "design",
+    "verification"
+  ]
 }

@@ -12,5 +12,10 @@
   ],
   "solution": "In an illustrative module, import package.worker makes package.worker.run() reachable through package. By contrast, import package.worker as worker binds worker. A resolver needs both the spelling used locally and the target it denotes.",
   "verification": "Inspect the module namespace in a small fixture and compare the graph’s resolved target with Python’s actual lookup. Include a case where a package and a function share a name.",
-  "limitations": "Dynamic imports, re-exports and attribute chains need additional rules. Mark unresolved targets rather than turning a partial static analysis into a confident but false edge."
+  "limitations": "Dynamic imports, re-exports and attribute chains need additional rules. Mark unresolved targets rather than turning a partial static analysis into a confident but false edge.",
+  "category": "software-engineering",
+  "tags": [
+    "python",
+    "contracts"
+  ]
 }

@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a stable rule deck followed by the current task can reuse more input than a prompt that inserts changing status text before the deck. Check actual token categories rather than inferring a hit from identical-looking prompts.",
   "verification": "Compare uncached input, cache writes and cache reads for similar workloads using the correct model prices. Keep output cost separate so the source of the saving remains visible.",
-  "limitations": "Caching is not always the largest lever. Short sessions, changing prefixes and expired entries may gain little, and model choice or smaller context may matter more."
+  "limitations": "Caching is not always the largest lever. Short sessions, changing prefixes and expired entries may gain little, and model choice or smaller context may matter more.",
+  "category": "ai-and-agents",
+  "tags": [
+    "llm",
+    "caching",
+    "cost-control"
+  ]
 }

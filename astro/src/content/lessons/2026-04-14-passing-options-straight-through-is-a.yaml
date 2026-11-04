@@ -12,5 +12,10 @@
   ],
   "solution": "For example, expose a timeout as a bounded numeric setting rather than a free-form “extra arguments” string. The caller can change the timeout without gaining every other operation supported by the underlying command.",
   "verification": "Try an unknown field and an out-of-range value. Expect validation to reject each before the tool starts, and check that valid settings produce only the intended arguments.",
-  "limitations": "An expert-facing wrapper may deliberately expose a raw command interface. That needs an explicit trust contract; calling the input “configuration” does not make it a smaller interface."
+  "limitations": "An expert-facing wrapper may deliberately expose a raw command interface. That needs an explicit trust contract; calling the input “configuration” does not make it a smaller interface.",
+  "category": "security-and-networking",
+  "tags": [
+    "configuration",
+    "security"
+  ]
 }

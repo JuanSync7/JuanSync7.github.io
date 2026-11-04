@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: a job may receive a node immediately and then wait for a scarce feature. Its short scheduler wait does not mean its total resource wait was short.",
   "verification": "Trace a representative job from allocation through checkout to useful work. Check that the report names the two waits separately and labels inferred attribution.",
-  "limitations": "Polling and indirect joins may not prove an exact job-to-checkout link. Scheduler-aware licence integration also requires accurate feature demand and an operational policy, not merely another dashboard metric."
+  "limitations": "Polling and indirect joins may not prove an exact job-to-checkout link. Scheduler-aware licence integration also requires accurate feature demand and an operational policy, not merely another dashboard metric.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "eda",
+    "slurm",
+    "resource-limits"
+  ]
 }

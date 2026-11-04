@@ -12,5 +12,10 @@
   ],
   "solution": "For example, a token limited to one repository remains limited when another client reads it. That is a property of server-side authorization, rather than the spelling of the local command used to obtain it.",
   "verification": "Use controlled allowed and disallowed operations to confirm the credential’s scope. Also check that alternative authentication paths do not silently supply a broader credential.",
-  "limitations": "Limited credentials can still expose or modify data within their scope. Combine them with operating-system and network controls; a token scope is one boundary, not complete isolation."
+  "limitations": "Limited credentials can still expose or modify data within their scope. Combine them with operating-system and network controls; a token scope is one boundary, not complete isolation.",
+  "category": "security-and-networking",
+  "tags": [
+    "security",
+    "git"
+  ]
 }

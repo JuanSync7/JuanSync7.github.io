@@ -11,5 +11,11 @@
   ],
   "solution": "Treat retries as extra load that needs a budget. A visible final failure can be healthier than silently keeping every timed-out operation alive.",
   "verification": "In a controlled delay test, inspect downstream attempts as well as client errors. The number of active operations should remain bounded, and a timeout should not cause repeated side effects.",
-  "limitations": "Backoff cannot create capacity, and some servers ignore cancellation. Simulations can expose a risky mechanism but do not establish that production code has survived it; a real integration test is a separate check."
+  "limitations": "Backoff cannot create capacity, and some servers ignore cancellation. Simulations can expose a risky mechanism but do not establish that production code has survived it; a real integration test is a separate check.",
+  "category": "systems-and-operations",
+  "tags": [
+    "networking",
+    "error-handling",
+    "performance"
+  ]
 }

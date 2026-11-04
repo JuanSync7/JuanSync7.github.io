@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a lint wrapper can accept an RTL file list and rule deck, run the tool, and return report paths plus violation counts. The wrapper supplies a repeatable interface around the existing EDA tool.",
   "verification": "Run the wrapper on a small valid design and a deliberately invalid fixture. Check both the summary and the native tool log, including missing-license and missing-input cases.",
-  "limitations": "Scriptability is a prerequisite for useful automation, not proof that an agent understands the design or that a successful tool run establishes silicon correctness."
+  "limitations": "Scriptability is a prerequisite for useful automation, not proof that an agent understands the design or that a successful tool run establishes silicon correctness.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "eda",
+    "agents",
+    "interfaces"
+  ]
 }

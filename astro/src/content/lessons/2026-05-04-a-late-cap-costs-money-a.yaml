@@ -12,5 +12,11 @@
   ],
   "solution": "Use the alert as a decision point. The operator can inspect whether the right tier actually exceeded its budget before changing access, rather than letting a mis-scoped total stop unrelated work.",
   "verification": "Check the proposed target and budget filter with a safe, controlled case. Verify that an alert alone does not attach a production deny and that an approved action has a documented reversal.",
-  "limitations": "Manual review can be too slow for a strict financial ceiling. This is a trade-off for the stated service risk, not a universal ban on automatic caps."
+  "limitations": "Manual review can be too slow for a strict financial ceiling. This is a trade-off for the stated service risk, not a universal ban on automatic caps.",
+  "category": "systems-and-operations",
+  "tags": [
+    "ops",
+    "cost-control",
+    "error-handling"
+  ]
 }

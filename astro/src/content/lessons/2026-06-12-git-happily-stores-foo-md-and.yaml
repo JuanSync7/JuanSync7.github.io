@@ -12,5 +12,10 @@
   ],
   "solution": "Foo.md and foo.md are different Git entries but can collide on a default Windows checkout. Choosing one canonical spelling before generation avoids leaving the conflict for the next machine to discover.",
   "verification": "Run the collision check over the full generated path set, including existing tracked files. Expect the example pair to fail even when the check runs on a case-sensitive host.",
-  "limitations": "Case folding is one portability risk. Unicode normalization, reserved names and path-length limits can also matter; a case-only check does not establish complete cross-platform compatibility."
+  "limitations": "Case folding is one portability risk. Unicode normalization, reserved names and path-length limits can also matter; a case-only check does not establish complete cross-platform compatibility.",
+  "category": "software-engineering",
+  "tags": [
+    "git",
+    "validation"
+  ]
 }

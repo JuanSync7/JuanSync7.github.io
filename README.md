@@ -108,11 +108,14 @@ npm run check
 npm run build
 ```
 
-The first command checks drift without writing. `--write` stages the named payloads
+The first command checks lesson and taxonomy drift without writing. The vault’s
+`Site/lesson-taxonomy.json` owns the vocabulary, copied to
+`astro/src/config/lesson-taxonomy.json` by the same sync. `--write` stages the named payloads
 as JSON-formatted YAML (valid YAML), preserving older lesson files. It does not commit,
 push or approve publication. Review both diffs and the vault's publication requirements
 before merging. A missing or empty source, malformed block, unknown field or date/id
-mismatch fails. Deletions are deliberate: removing a vault note does not delete a public
+mismatch fails. Each lesson must have one registered category and one to five distinct
+registered tags. Vocabulary additions follow the vault’s `Notes/Protocols/Lesson categories and tags.md`. Deletions are deliberate: removing a vault note does not delete a public
 lesson. Keep a tombstone note or remove the public file in a reviewed change.
 
 The existing date, tag, title and why fields still feed the writing page cards. Optional
@@ -120,6 +123,12 @@ problem, cause, steps, solution, verification and limitations fields expand in t
 log under “How it works”; plain text is escaped by Astro. `npm run lessons:selftest`
 checks failed inputs, drift, repeat writes and legacy preservation and runs in the main
 check gate. Cross-repository drift needs the private vault checkout and is run locally.
+
+The full lessons page opens in category groups, with an alternative month view. Category
+and multiple tag filters work together: every selected tag must match. Tags are grouped
+into topics, tools and languages, and practices. The selection is kept in the URL and
+restored by browser navigation. Without JavaScript all lessons remain readable by category.
+`npm run lessons:check` validates every public file against the registry during `npm run check`.
 
 ## License
 

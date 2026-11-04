@@ -12,5 +12,11 @@
   ],
   "solution": "If a function expects a number and a caller passes text, bundling may still work. The type-checking step should catch the mismatch before the bundle is accepted.",
   "verification": "Introduce a small deliberate type mismatch in a disposable copy. Expect the type gate to fail even if bundling succeeds, then remove the fault and expect both checks to pass.",
-  "limitations": "Type checks do not establish runtime API correctness. Handwritten interfaces can drift from real responses, so important boundaries also need contract or integration checks."
+  "limitations": "Type checks do not establish runtime API correctness. Handwritten interfaces can drift from real responses, so important boundaries also need contract or integration checks.",
+  "category": "software-engineering",
+  "tags": [
+    "frontend",
+    "build",
+    "testing"
+  ]
 }

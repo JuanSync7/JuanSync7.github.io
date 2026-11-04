@@ -12,5 +12,10 @@
   ],
   "solution": "For a filter, the plan should say how empty input, invalid ranges and boundary values behave. Tests can encode those decisions before the parser’s current behavior has a chance to become the accidental specification.",
   "verification": "Compare the tests back to the plan and introduce a fault that violates one promised behavior. Expect the corresponding test to fail for the intended reason.",
-  "limitations": "A plan can also be wrong or incomplete. Independent review and integration checks still matter; writing tests first separates two artifacts, but does not make their shared assumptions true."
+  "limitations": "A plan can also be wrong or incomplete. Independent review and integration checks still matter; writing tests first separates two artifacts, but does not make their shared assumptions true.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "planning"
+  ]
 }

@@ -12,5 +12,11 @@
   ],
   "solution": "For example, “explain the cause with a worked domain example” gives a clearer target than “be authentic.” A reviewer can quote whether the example helped and whether each sentence advanced the explanation.",
   "verification": "Compare drafts blind using the same underlying facts. Ask which explains the point better and require quoted reasons, rather than accepting a self-reported style score.",
-  "limitations": "Style matching must not invent experiences, feelings or outcomes. Samples guide expression; factual claims still need their own source, and inferred style rules remain proposals until adopted."
+  "limitations": "Style matching must not invent experiences, feelings or outcomes. Samples guide expression; factual claims still need their own source, and inferred style rules remain proposals until adopted.",
+  "category": "writing-and-knowledge",
+  "tags": [
+    "writing",
+    "llm",
+    "review"
+  ]
 }

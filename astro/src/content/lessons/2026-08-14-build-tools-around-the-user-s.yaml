@@ -11,5 +11,11 @@
   ],
   "solution": "For “how many tickets by category over 30 days,” expose a bounded aggregation tool. Leave interpretation and possible causes to the model after deterministic counting is complete.",
   "verification": "Compare the tool with a small known dataset and reconcile group totals with the declared population. Simulate a missing API page and expect partial coverage to remain visible.",
-  "limitations": "Aggregation cannot answer every qualitative question. Keep a bounded way to inspect representative records, and do not describe incomplete collection as a complete report."
+  "limitations": "Aggregation cannot answer every qualitative question. Keep a bounded way to inspect representative records, and do not describe incomplete collection as a complete report.",
+  "category": "ai-and-agents",
+  "tags": [
+    "agents",
+    "data",
+    "cost-control"
+  ]
 }

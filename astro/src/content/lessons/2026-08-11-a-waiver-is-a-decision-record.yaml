@@ -11,5 +11,11 @@
   ],
   "solution": "For example, waive one named violation in one bounded configuration. Keep the same check active elsewhere, so the exception cannot quietly become a project-wide opt-out.",
   "verification": "Ask a reader what is still failing, who accepted it and what ends the exception. Check that an out-of-scope violation still fails and the waiver expires when its specified milestone passes.",
-  "limitations": "A record makes risk visible, not automatically acceptable. The original card’s date does not define expiry: a milestone-based contract binds acceptance to scoped evidence and a structural milestone, and rejects calendar expiry."
+  "limitations": "A record makes risk visible, not automatically acceptable. The original card’s date does not define expiry: a milestone-based contract binds acceptance to scoped evidence and a structural milestone, and rejects calendar expiry.",
+  "category": "work-and-delivery",
+  "tags": [
+    "process",
+    "ownership",
+    "evidence"
+  ]
 }

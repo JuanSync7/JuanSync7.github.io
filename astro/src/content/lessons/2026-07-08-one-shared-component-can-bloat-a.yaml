@@ -12,5 +12,11 @@
   ],
   "solution": "Keep shared UI code close to the data types and behavior it actually needs. In an illustrative split, a filter accepts values and a change callback; it does not import the jobs page to obtain them.",
   "verification": "Build the affected pages and inspect emitted chunk sizes and their imports. Then exercise the control in both pages to confirm that the smaller boundary preserved behavior.",
-  "limitations": "Bundle size is one cost, and an intentional shared dependency may be worthwhile. The source reports a large chunk increase; this rewrite does not claim it has been removed."
+  "limitations": "Bundle size is one cost, and an intentional shared dependency may be worthwhile. The source reports a large chunk increase; this rewrite does not claim it has been removed.",
+  "category": "frontend-and-design",
+  "tags": [
+    "frontend",
+    "performance",
+    "maintainability"
+  ]
 }

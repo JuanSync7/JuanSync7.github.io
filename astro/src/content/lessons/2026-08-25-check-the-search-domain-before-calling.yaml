@@ -11,5 +11,11 @@
   ],
   "solution": "For a placeholder host called build, compare build with build.example.internal before changing DNS or declaring the host absent. Keep the exact name used in diagnostics.",
   "verification": "Record forward lookup results for both names and any reverse mapping. Then test the intended service separately: successful DNS resolution is only a name-to-address result.",
-  "limitations": "Reverse DNS can be absent or stale, so a PTR record is supporting evidence rather than proof of identity or authorization. Split DNS and VPN routing may also change what each resolver knows."
+  "limitations": "Reverse DNS can be absent or stale, so a PTR record is supporting evidence rather than proof of identity or authorization. Split DNS and VPN routing may also change what each resolver knows.",
+  "category": "security-and-networking",
+  "tags": [
+    "networking",
+    "configuration",
+    "debugging"
+  ]
 }

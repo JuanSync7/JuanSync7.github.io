@@ -12,5 +12,11 @@
   ],
   "solution": "For example, calculate a charge from supplied usage and a supplied rate table, then save the result separately. A failed calculation can be replayed with those values without rebuilding a database session.",
   "verification": "Call the calculation twice with the same inputs and compare results; then vary one input and check the expected change. Test the surrounding storage path separately.",
-  "limitations": "Hardware also contains state, and large input spaces cannot always be enumerated as a truth table. This is a design preference for isolating state, not a claim that every useful function must be pure."
+  "limitations": "Hardware also contains state, and large input spaces cannot always be enumerated as a truth table. This is a design preference for isolating state, not a claim that every useful function must be pure.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "rtl",
+    "testing",
+    "isolation"
+  ]
 }

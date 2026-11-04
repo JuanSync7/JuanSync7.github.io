@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: value if value is not None else 'not recorded' displays an exit code of 0 as zero while still naming an absent record. The distinction changes how a reader interprets the run.",
   "verification": "Exercise None, 0 and a nonzero value through the real rendering path. Expect all three states to remain distinguishable, including a valid zero threshold in filters.",
-  "limitations": "Empty strings and false booleans may also be valid in other fields. Choose the missing-value rule from the field's contract rather than replacing every or expression mechanically."
+  "limitations": "Empty strings and false booleans may also be valid in other fields. Choose the missing-value rule from the field's contract rather than replacing every or expression mechanically.",
+  "category": "software-engineering",
+  "tags": [
+    "python",
+    "data",
+    "error-handling"
+  ]
 }

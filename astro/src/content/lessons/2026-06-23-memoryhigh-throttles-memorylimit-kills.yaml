@@ -12,5 +12,10 @@
   ],
   "solution": "For a shared service, a soft ceiling can reduce its impact before a hard backstop is reached. Copying a v1 hard-limit directive as if it were a v2 throttle changes that operational contract.",
   "verification": "Use a safe bounded test workload and inspect reclaim, throttling and termination signals. A setting present in a file does not establish that the running host enforces it.",
-  "limitations": "A soft threshold is not an absolute memory ceiling. A throttled service can look hung, and limits do not repair a leak; pair them with health checks and investigation."
+  "limitations": "A soft threshold is not an absolute memory ceiling. A throttled service can look hung, and limits do not repair a leak; pair them with health checks and investigation.",
+  "category": "systems-and-operations",
+  "tags": [
+    "systemd",
+    "resource-limits"
+  ]
 }

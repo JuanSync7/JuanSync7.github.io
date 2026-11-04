@@ -12,5 +12,11 @@
   ],
   "solution": "For example, if both paths reorder slides by filename, comparing their text will not expose the wrong presentation order. The expected sequence must come from the presentation’s own ordering relationships.",
   "verification": "Plant a one-sided defect and a shared-helper defect in disposable fixtures. The check should reveal whether its independence is real or only assumed.",
-  "limitations": "An independent checker is still an implementation with blind spots. Token recall also ignores extra text and order, so a perfect recall score must not stand in for structural fidelity or full correctness."
+  "limitations": "An independent checker is still an implementation with blind spots. Token recall also ignores extra text and order, so a perfect recall score must not stand in for structural fidelity or full correctness.",
+  "category": "ai-and-agents",
+  "tags": [
+    "evals",
+    "testing",
+    "isolation"
+  ]
 }

@@ -12,5 +12,10 @@
   ],
   "solution": "For example, a mocked database can confirm that save is called. An unmocked check should save, reconnect and read the data back, because persistence across a connection boundary is the property at risk.",
   "verification": "Compare the observed real behavior with the mock’s contract. Include authentication refusal or a relevant timing boundary rather than testing only a happy path.",
-  "limitations": "The right balance depends on risk and test cost; a fixed mock percentage is not a universal rule. Real-dependency tests also need isolation and repeatable cleanup to remain useful."
+  "limitations": "The right balance depends on risk and test cost; a fixed mock percentage is not a universal rule. Real-dependency tests also need isolation and repeatable cleanup to remain useful.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "evidence"
+  ]
 }

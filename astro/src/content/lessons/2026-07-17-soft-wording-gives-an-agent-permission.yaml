@@ -12,5 +12,10 @@
   ],
   "solution": "For example, “Before reporting completion, run the named check; if it cannot run, report the blocker and do not claim a pass” gives the agent a decision it can apply. “Try to test” leaves the important branch unspecified.",
   "verification": "Exercise the instruction with a successful check and a missing prerequisite. Inspect whether the agent reports the actual result and follows the defined stop behavior.",
-  "limitations": "Stronger wording helps clarify intent, but a prompt remains guidance. Put high-consequence requirements in enforceable gates rather than relying on capitalization or repetition alone."
+  "limitations": "Stronger wording helps clarify intent, but a prompt remains guidance. Put high-consequence requirements in enforceable gates rather than relying on capitalization or repetition alone.",
+  "category": "ai-and-agents",
+  "tags": [
+    "agents",
+    "contracts"
+  ]
 }

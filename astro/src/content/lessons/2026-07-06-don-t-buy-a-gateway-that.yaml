@@ -12,5 +12,11 @@
   ],
   "solution": "In an illustrative ticket assistant, the wrapper must bind a request to the authenticated caller and verify record ownership before using a broad key. Routing alone adds no such check.",
   "verification": "Try an allowed request and a cross-user request through the real entry point. The latter should fail before protected data is returned, including when a caller changes supplied identifiers.",
-  "limitations": "A thin wrapper still needs review, maintenance and secure key handling. A managed gateway may be appropriate if it provides the actual identity and policy features required."
+  "limitations": "A thin wrapper still needs review, maintenance and secure key handling. A managed gateway may be appropriate if it provides the actual identity and policy features required.",
+  "category": "work-and-delivery",
+  "tags": [
+    "security",
+    "ownership",
+    "networking"
+  ]
 }

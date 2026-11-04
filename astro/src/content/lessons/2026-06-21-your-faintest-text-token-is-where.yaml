@@ -12,5 +12,11 @@
   ],
   "solution": "A muted colour around 3.3:1 falls below the usual 4.5:1 requirement for normal-size text. Darkening or lightening the shared token, as appropriate for the background, can fix the same problem across many components.",
   "verification": "Check the rendered pairs in each supported theme and state. Include the smallest secondary text; a passing body colour does not establish that the page’s whole text system passes.",
-  "limitations": "Contrast thresholds differ for large text and some exempt content. A numerical pass also does not fix tiny type, poor spacing or colour-only status cues, so inspect the reading experience too."
+  "limitations": "Contrast thresholds differ for large text and some exempt content. A numerical pass also does not fix tiny type, poor spacing or colour-only status cues, so inspect the reading experience too.",
+  "category": "frontend-and-design",
+  "tags": [
+    "design",
+    "accessibility",
+    "testing"
+  ]
 }

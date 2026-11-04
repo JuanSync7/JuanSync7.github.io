@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a private engineering document should not enter a channel answer merely because the person mentioning the bot can read it. The channel’s guest rules need enforcement in code.",
   "verification": "Test a group with a lower-privilege participant and a document that only some members can read. Expect the group reply to exclude that document and any details derived from it.",
-  "limitations": "This is a design rule, not a claim that the source’s agent already implemented it. Membership changes, cached answers and quoted history also need a clear policy."
+  "limitations": "This is a design rule, not a claim that the source’s agent already implemented it. Membership changes, cached answers and quoted history also need a clear policy.",
+  "category": "security-and-networking",
+  "tags": [
+    "security",
+    "rag",
+    "privacy"
+  ]
 }

@@ -11,5 +11,11 @@
   ],
   "solution": "For a requirement-to-test view, derive the display from the requirement id carried by the test and the execution record carrying the test id. Keep display labels separate from join keys.",
   "verification": "Use a small fixture with a complete chain, a missing test and an unmatched execution. The generated mapping should show the valid connection and expose both gaps.",
-  "limitations": "A join can faithfully reproduce bad source data. Identifier uniqueness, relation meaning and coverage still need checks; the query does not establish that a test truly verifies its requirement."
+  "limitations": "A join can faithfully reproduce bad source data. Identifier uniqueness, relation meaning and coverage still need checks; the query does not establish that a test truly verifies its requirement.",
+  "category": "data-and-databases",
+  "tags": [
+    "data",
+    "maintainability",
+    "contracts"
+  ]
 }

@@ -12,5 +12,10 @@
   ],
   "solution": "Make absence visible at the level that decides whether the work is complete. A skip can be a useful result when it is explicit and does not silently remove promised coverage.",
   "verification": "The normal environment should execute the required checks. The deliberately incomplete environment should produce a clear missing-prerequisite failure, not an indistinguishable green verdict.",
-  "limitations": "Some integrations cannot run on every host. Keep those intentional limits documented and visible instead of making every optional environment a hard failure."
+  "limitations": "Some integrations cannot run on every host. Keep those intentional limits documented and visible instead of making every optional environment a hard failure.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "evidence"
+  ]
 }

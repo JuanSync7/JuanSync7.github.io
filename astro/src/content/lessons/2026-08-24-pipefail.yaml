@@ -11,5 +11,11 @@
   ],
   "solution": "As an illustrative check, `set -o pipefail; false | tail -n 5` should return non-zero. The failure has no output, which makes the exit status the essential signal.",
   "verification": "Test a failing producer and a successful producer through the real wrapper. Expect failure to remain non-zero after logging and success to remain successful.",
-  "limitations": "The unchanged title’s “always” is too broad: tail can fail too. Early-closing consumers can also cause SIGPIPE under pipefail, so inspect expected pipeline behaviour rather than blindly enabling it."
+  "limitations": "The unchanged title’s “always” is too broad: tail can fail too. Early-closing consumers can also cause SIGPIPE under pipefail, so inspect expected pipeline behaviour rather than blindly enabling it.",
+  "category": "systems-and-operations",
+  "tags": [
+    "shell",
+    "error-handling",
+    "testing"
+  ]
 }

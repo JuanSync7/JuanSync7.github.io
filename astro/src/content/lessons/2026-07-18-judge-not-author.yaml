@@ -12,5 +12,10 @@
   ],
   "solution": "For example, a reviewer can ask what happens when a dependency fails even if the author tested the successful response thoroughly. The finding should name the broken behavior and a way to reproduce it.",
   "verification": "Confirm that the reviewed revision matches the candidate being merged and that each blocker has an explicit resolution. Separate individual branch checks do not prove the merged tree.",
-  "limitations": "Fresh review is another source of evidence, not proof of perfection. Match its depth to risk, and keep reviewer uncertainty visible instead of forcing every comment into approve or reject."
+  "limitations": "Fresh review is another source of evidence, not proof of perfection. Match its depth to risk, and keep reviewer uncertainty visible instead of forcing every comment into approve or reject.",
+  "category": "work-and-delivery",
+  "tags": [
+    "review",
+    "testing"
+  ]
 }

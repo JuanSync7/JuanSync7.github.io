@@ -12,5 +12,10 @@
   ],
   "solution": "For example, an unexpected setup failure may come from an incorrectly constrained interface rather than a newly deep logic cone. Changing the datapath first can hide the setup mistake instead of correcting it.",
   "verification": "Rerun the relevant analysis after the supported correction and check related paths and conditions. A local improvement should not silently trade a setup problem for a hold or coverage problem.",
-  "limitations": "The source frames cause attribution as an open design question, not a record of signoff work. This is an investigation order, not an automated rule that can identify every cause from one report."
+  "limitations": "The source frames cause attribution as an open design question, not a record of signoff work. This is an investigation order, not an automated rule that can identify every cause from one report.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "sta",
+    "debugging"
+  ]
 }

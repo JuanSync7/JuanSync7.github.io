@@ -11,5 +11,10 @@
   ],
   "solution": "For a block diagram, let the boxes, ports and lines remain visible as constructed marks. A code-generated SVG can make that treatment repeatable while keeping the drawing editable.",
   "verification": "Ask a reader to trace one input through the drawing and identify its output. Check the same route at the size where the diagram will actually be read.",
-  "limitations": "This is a design preference, not a rule for every image. The source distinguishes line-based diagrams from painterly raster imagery; a photograph or texture has a different purpose."
+  "limitations": "This is a design preference, not a rule for every image. The source distinguishes line-based diagrams from painterly raster imagery; a photograph or texture has a different purpose.",
+  "category": "frontend-and-design",
+  "tags": [
+    "art",
+    "design"
+  ]
 }

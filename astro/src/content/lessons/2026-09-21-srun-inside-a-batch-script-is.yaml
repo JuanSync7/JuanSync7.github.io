@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: one batch script with three srun steps is one allocation with several steps. Reporting four independent jobs changes the denominator without adding four independent allocations.",
   "verification": "Inspect representative scheduler records and reconcile job counts with step counts separately. Replaying a partial accounting window should not reduce a previously established high-water value.",
-  "limitations": "srun outside an allocation can obtain its own allocation, and nested submission can create child jobs. Inspect the actual scheduler relationship rather than classifying by the command name alone."
+  "limitations": "srun outside an allocation can obtain its own allocation, and nested submission can create child jobs. Inspect the actual scheduler relationship rather than classifying by the command name alone.",
+  "category": "systems-and-operations",
+  "tags": [
+    "slurm",
+    "measurement",
+    "data"
+  ]
 }

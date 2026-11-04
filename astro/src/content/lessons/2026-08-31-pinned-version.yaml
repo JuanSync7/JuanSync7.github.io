@@ -11,5 +11,10 @@
   ],
   "solution": "For a setting that accepts an array in the deployed version, do not substitute an object because a newer reference shows one. Bind the policy release to its supported client versions.",
   "verification": "Check effective configuration where available and exercise a harmless action the setting should prevent. Expect the pinned client to enforce the decision, not merely accept the file without an error.",
-  "limitations": "A version pin is reproducibility, not proof of security or continued support. Keep an upgrade path and test older clients explicitly if they remain permitted in the fleet."
+  "limitations": "A version pin is reproducibility, not proof of security or continued support. Keep an upgrade path and test older clients explicitly if they remain permitted in the fleet.",
+  "category": "software-engineering",
+  "tags": [
+    "configuration",
+    "testing"
+  ]
 }

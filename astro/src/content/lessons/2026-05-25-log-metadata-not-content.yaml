@@ -12,5 +12,11 @@
   ],
   "solution": "Keep identity, model, time and token usage where the service supports them, while leaving prompt text out. This gives an operator a way to understand usage without storing the engineering conversation itself.",
   "verification": "Inspect an emitted record for both required metadata and absent message content. Configuration flags alone are weaker evidence than the record the service actually wrote.",
-  "limitations": "Metadata can still be sensitive and may not provide complete identity in every service. Content capture for agent improvement is a separate decision with its own scope and access controls."
+  "limitations": "Metadata can still be sensitive and may not provide complete identity in every service. Content capture for agent improvement is a separate decision with its own scope and access controls.",
+  "category": "security-and-networking",
+  "tags": [
+    "security",
+    "privacy",
+    "cost-control"
+  ]
 }

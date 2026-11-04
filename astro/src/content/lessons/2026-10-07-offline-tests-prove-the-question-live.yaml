@@ -11,5 +11,11 @@
   ],
   "solution": "Use both layers to locate errors. A bad outgoing parameter points to the page; a correct request with a bad result points to the server or data interpretation.",
   "verification": "Choose a case with included and excluded rows. The live-path check should return the intended set and matching total, not merely a successful status code.",
-  "limitations": "Live data changes and can contain sensitive information. Record the dataset boundary, avoid modifying live stores, and do not call an offline replay proof of current server behaviour."
+  "limitations": "Live data changes and can contain sensitive information. Record the dataset boundary, avoid modifying live stores, and do not call an offline replay proof of current server behaviour.",
+  "category": "software-engineering",
+  "tags": [
+    "frontend",
+    "testing",
+    "data"
+  ]
 }

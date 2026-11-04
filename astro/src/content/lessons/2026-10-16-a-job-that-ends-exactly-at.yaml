@@ -11,5 +11,11 @@
   ],
   "solution": "Fix the termination and progress mechanism before extending the limit. A longer allowance is justified by evidence of useful work, not by the fact that the previous run reached its ceiling.",
   "verification": "Use controlled cases for a slow advancing task, a stalled task and a disconnected client. The wrapper should preserve useful work within policy and reclaim resources when progress or ownership is lost.",
-  "limitations": "CPU activity alone cannot prove progress. Some legitimate runs are long, and the historical exact-cap pattern is a diagnostic clue rather than proof that every capped job was hung."
+  "limitations": "CPU activity alone cannot prove progress. Some legitimate runs are long, and the historical exact-cap pattern is a diagnostic clue rather than proof that every capped job was hung.",
+  "category": "systems-and-operations",
+  "tags": [
+    "slurm",
+    "resource-limits",
+    "observability"
+  ]
 }

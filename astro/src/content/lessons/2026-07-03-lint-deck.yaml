@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a width-mismatch rule should produce the same result in a small unit and at subsystem integration. Sharing the deck moves that feedback to the engineer making the change, before another team inherits it.",
   "verification": "Place a known violation in a disposable fixture and confirm that the normal flow reports it. Check that each participating block actually loads the same rule configuration.",
-  "limitations": "Lint does not prove functional correctness. The source supports the shared-methodology lesson, but this rewrite makes no new claim about integration time saved or particular customer designs."
+  "limitations": "Lint does not prove functional correctness. The source supports the shared-methodology lesson, but this rewrite makes no new claim about integration time saved or particular customer designs.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "rtl",
+    "lint",
+    "testing"
+  ]
 }

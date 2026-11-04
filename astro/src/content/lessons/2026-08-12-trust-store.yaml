@@ -11,5 +11,11 @@
   ],
   "solution": "Prefer one deliberate trust configuration over a test-only workaround. For example, a successful curl request does not validate an application that silently selects certifi instead of the OS store.",
   "verification": "Exercise a verified request through the production client constructor and record which bundle it selected. Keep a failure visible when the required inspection root is missing.",
-  "limitations": "Equivalent trust configuration only establishes this part of the path. Authentication, request headers and streaming behaviour may still differ, so keep the smoke test’s claim narrow."
+  "limitations": "Equivalent trust configuration only establishes this part of the path. Authentication, request headers and streaming behaviour may still differ, so keep the smoke test’s claim narrow.",
+  "category": "security-and-networking",
+  "tags": [
+    "tls",
+    "testing",
+    "configuration"
+  ]
 }

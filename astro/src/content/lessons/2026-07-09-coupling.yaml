@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a storage interface can expose read and write operations without requiring every caller to know a database driver’s connection object. Another backend then has one boundary to implement.",
   "verification": "Try a second minimal implementation in a fixture. If replacing it requires edits across the core pipeline, inspect which assumptions escaped the boundary.",
-  "limitations": "Indirection has a cost, and an interface cannot predict every future need. Keep it tied to real behavior instead of creating speculative layers. Swappability reduces the cost of a wrong choice; it does not make every choice equally good."
+  "limitations": "Indirection has a cost, and an interface cannot predict every future need. Keep it tied to real behavior instead of creating speculative layers. Swappability reduces the cost of a wrong choice; it does not make every choice equally good.",
+  "category": "software-engineering",
+  "tags": [
+    "design",
+    "maintainability",
+    "interfaces"
+  ]
 }

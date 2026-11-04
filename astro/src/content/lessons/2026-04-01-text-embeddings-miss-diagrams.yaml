@@ -12,5 +12,10 @@
   ],
   "solution": "Keep the text path and add a visual path beside it. For example, a block diagram with very little text can then be retrieved as a page rather than disappearing from the searchable content.",
   "verification": "Use a question whose answer depends on a diagram. Check that retrieval returns the right page and that the answer points to the relevant visual evidence.",
-  "limitations": "Visual retrieval adds storage and model cost. A retrieved page still needs to be read correctly; finding it does not prove the answer."
+  "limitations": "Visual retrieval adds storage and model cost. A retrieved page still needs to be read correctly; finding it does not prove the answer.",
+  "category": "ai-and-agents",
+  "tags": [
+    "rag",
+    "design"
+  ]
 }

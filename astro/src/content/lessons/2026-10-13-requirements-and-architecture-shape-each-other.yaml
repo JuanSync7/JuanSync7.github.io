@@ -11,5 +11,11 @@
   ],
   "solution": "Keep intent and mechanism in conversation. For an illustrative latency target, divide the budget across processing and transport; if one part cannot meet its share, revisit the allocation or target explicitly.",
   "verification": "Check that each important requirement has a design path and that each major design block has a reason. An infeasible budget should appear as an open decision, not a quietly omitted number.",
-  "limitations": "A repeated, well-understood design may need less exploration. The source's research model was not independently checked against its cited paper, so this lesson presents the working method rather than a research finding."
+  "limitations": "A repeated, well-understood design may need less exploration. The source's research model was not independently checked against its cited paper, so this lesson presents the working method rather than a research finding.",
+  "category": "software-engineering",
+  "tags": [
+    "design",
+    "planning",
+    "contracts"
+  ]
 }

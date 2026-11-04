@@ -11,5 +11,11 @@
   ],
   "solution": "Let the evidence choose the layer to investigate. A valid character with no covering font points to a glyph gap; a coverage result by itself still leaves font selection and terminal rendering to check.",
   "verification": "Render a short line containing ordinary text and the affected symbols in the original terminal. After any cache refresh or restart, check both the symbols and neighbouring spacing rather than relying on a font preview.",
-  "limitations": "The source records a recommended installation, not a verified fix. This is the same font-coverage case used in the related code-point lesson, viewed as a diagnosis across layers. The two historical log dates do not establish separate observed failures."
+  "limitations": "The source records a recommended installation, not a verified fix. This is the same font-coverage case used in the related code-point lesson, viewed as a diagnosis across layers. The two historical log dates do not establish separate observed failures.",
+  "category": "systems-and-operations",
+  "tags": [
+    "typography",
+    "unicode",
+    "debugging"
+  ]
 }

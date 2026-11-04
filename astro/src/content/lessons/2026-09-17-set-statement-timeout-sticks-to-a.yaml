@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: one analytical request needs a strict timeout while a later report has a different budget. Transaction-local configuration keeps the first request's choice from leaking into the second.",
   "verification": "Borrow the same connection for two sequential transactions and inspect the effective timeout in each. The second should use the intended baseline after the first ends.",
-  "limitations": "SET LOCAL depends on an actual transaction boundary. Review autocommit behavior and error cleanup; a connection left in a failed transaction can create a separate pool-reuse failure."
+  "limitations": "SET LOCAL depends on an actual transaction boundary. Review autocommit behavior and error cleanup; a connection left in a failed transaction can create a separate pool-reuse failure.",
+  "category": "data-and-databases",
+  "tags": [
+    "postgres",
+    "isolation",
+    "configuration"
+  ]
 }

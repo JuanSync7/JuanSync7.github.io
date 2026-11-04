@@ -11,5 +11,11 @@
   ],
   "solution": "Pin the cache in bytes when repeatable allocation matters. Treat the fraction as planning information once the runtime uses an explicit cache size.",
   "verification": "After each restart, inspect the reported cache bytes and available token capacity. After an upgrade, check both again; the same byte budget may hold a different number of tokens.",
-  "limitations": "A cache pin fixes one allocation, not the whole process footprint or an operating-system-enforced GPU cap. Context length and concurrency still have to fit."
+  "limitations": "A cache pin fixes one allocation, not the whole process footprint or an operating-system-enforced GPU cap. Context length and concurrency still have to fit.",
+  "category": "ai-and-agents",
+  "tags": [
+    "inference",
+    "resource-limits",
+    "reproducibility"
+  ]
 }

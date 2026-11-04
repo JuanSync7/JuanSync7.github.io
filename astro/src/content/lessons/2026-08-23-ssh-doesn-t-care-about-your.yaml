@@ -11,5 +11,11 @@
   ],
   "solution": "Use the supported SSH route when its independent trust and access requirements are satisfied. Keep the HTTPS CA problem recorded, because changing the Git remote does not repair other HTTPS tools.",
   "verification": "Check the effective remote URL and establish an authenticated SSH connection to the intended server. A changed host-key warning should remain an error to investigate, not something the workaround disables.",
-  "limitations": "SSH can still be blocked by routing, host policy or missing authorization. It avoids this particular TLS trust-store dependency; it does not bypass security controls or guarantee connectivity."
+  "limitations": "SSH can still be blocked by routing, host policy or missing authorization. It avoids this particular TLS trust-store dependency; it does not bypass security controls or guarantee connectivity.",
+  "category": "security-and-networking",
+  "tags": [
+    "networking",
+    "tls",
+    "git"
+  ]
 }

@@ -12,5 +12,11 @@
   ],
   "solution": "If missing signal information should trigger an unknown warning, encode that outcome directly. Do not replace it with zero just to force a Boolean result; that would change the meaning of the record.",
   "verification": "Check the truth table for failed and non-failed states with zero, nonzero and missing signals. Expect every combination to produce the intended status and badge behavior.",
-  "limitations": "The correct missing-value policy is domain-specific. Explicit handling prevents accidental suppression, but the lesson does not decide that every NULL is a failure or that missing means zero."
+  "limitations": "The correct missing-value policy is domain-specific. Explicit handling prevents accidental suppression, but the lesson does not decide that every NULL is a failure or that missing means zero.",
+  "category": "data-and-databases",
+  "tags": [
+    "sql",
+    "error-handling",
+    "frontend"
+  ]
 }

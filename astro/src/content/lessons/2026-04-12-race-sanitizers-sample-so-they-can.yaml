@@ -12,5 +12,11 @@
   ],
   "solution": "Inspect synchronization as well as the report. For example, a producer writes a shared value, then signals completion; a consumer waits for that signal before reading it. If that synchronization orders the write before the read, those two accesses are ordered. Without the wait, their apparent order in a log does not establish safety. This is an illustrative check, not a tested kernel.",
   "verification": "For a suspected access pair, identify the synchronization operation that orders one before the other. If supported by the GSan configuration, more read samples or a larger clock buffer can reduce these failure modes at the cost of memory. Repeated silence still does not prove every access is ordered.",
-  "limitations": "These limits describe GSan’s sampled clock design. Its synchronization must be instrumented and recognized; code or synchronization outside its coverage can cause missed races or misleading reports. Other sanitizers may track ordering differently."
+  "limitations": "These limits describe GSan’s sampled clock design. Its synchronization must be instrumented and recognized; code or synchronization outside its coverage can cause missed races or misleading reports. Other sanitizers may track ordering differently.",
+  "category": "software-engineering",
+  "tags": [
+    "gpu",
+    "testing",
+    "resource-limits"
+  ]
 }

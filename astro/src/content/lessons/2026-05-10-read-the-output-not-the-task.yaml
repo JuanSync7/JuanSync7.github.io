@@ -12,5 +12,11 @@
   ],
   "solution": "If a wrapper exits cleanly but the verification file records exit 1, the verification failed. An echoed command or a status field containing the word “success” does not override that record.",
   "verification": "Compare the wrapper status, child exit and artifact for a deliberately failing command in a safe fixture. Expect the reporting path to preserve the failure rather than promote wrapper completion to a pass.",
-  "limitations": "An output file can also be stale or belong to another run. Match it to the current run identifier and inputs before treating it as evidence."
+  "limitations": "An output file can also be stale or belong to another run. Match it to the current run identifier and inputs before treating it as evidence.",
+  "category": "systems-and-operations",
+  "tags": [
+    "ops",
+    "observability",
+    "error-handling"
+  ]
 }

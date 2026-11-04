@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: an event shortly after local midnight may still belong to the previous UTC date. A UTC-labelled table and a UTC-labelled chart can then agree about which bucket contains it.",
   "verification": "Check events around midnight and a daylight-saving transition. The same instant should retain one UTC bucket across the API, export and visible report.",
-  "limitations": "UTC cannot repair a timestamp that was originally parsed in the wrong zone. A local-time business report may be valid, but its grouping and labels must use that zone consistently."
+  "limitations": "UTC cannot repair a timestamp that was originally parsed in the wrong zone. A local-time business report may be valid, but its grouping and labels must use that zone consistently.",
+  "category": "data-and-databases",
+  "tags": [
+    "data",
+    "measurement",
+    "reporting"
+  ]
 }

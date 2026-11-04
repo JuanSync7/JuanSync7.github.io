@@ -11,5 +11,12 @@
   ],
   "solution": "For a scan-script correction, decide whether it belongs in the common release or a documented project override before copying it. That decision gives the next maintainer somewhere to send a related fix.",
   "verification": "Trace one correction from report to shared release and then to a consuming project. Check that the project can identify its version and retain its supported differences without editing the common scripts.",
-  "limitations": "This addresses ownership-driven decay. Tool defects, missing artifacts and unsuitable interfaces can still need technical changes; ownership is not proof those problems are absent."
+  "limitations": "This addresses ownership-driven decay. Tool defects, missing artifacts and unsuitable interfaces can still need technical changes; ownership is not proof those problems are absent.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "eda",
+    "dft",
+    "ownership",
+    "maintainability"
+  ]
 }

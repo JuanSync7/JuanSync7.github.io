@@ -11,5 +11,11 @@
   ],
   "solution": "Choose the smallest execution path that can do the task. A direct structured call may suit a tiny operation; an agent is worthwhile when its tools and judgement earn their setup cost.",
   "verification": "Check whether reducing the user prompt changes total billed work meaningfully. The expected result is a cost breakdown that explains the bill, including context outside the visible request.",
-  "limitations": "Cache behaviour depends on provider, lifetime and exact prompt reuse. One reported call does not establish a universal token overhead, and saving cost must not remove context needed for correctness."
+  "limitations": "Cache behaviour depends on provider, lifetime and exact prompt reuse. One reported call does not establish a universal token overhead, and saving cost must not remove context needed for correctness.",
+  "category": "ai-and-agents",
+  "tags": [
+    "agents",
+    "llm",
+    "cost-control"
+  ]
 }

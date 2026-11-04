@@ -12,5 +12,11 @@
   ],
   "solution": "Use software rendering as the safe default for the affected remote-display setup. This puts the rendering choice in the desktop shell, where it belongs, rather than changing unrelated page code.",
   "verification": "Expect the window to render and startup to complete without taking down the X session. A local-machine launch alone does not check this failure mode.",
-  "limitations": "Software rendering may cost more CPU and reduce graphical performance. Keep the setting tied to the supported environment, and investigate separately if the same failure occurs without GPU compositing."
+  "limitations": "Software rendering may cost more CPU and reduce graphical performance. Keep the setting tied to the supported environment, and investigate separately if the same failure occurs without GPU compositing.",
+  "category": "systems-and-operations",
+  "tags": [
+    "frontend",
+    "linux",
+    "debugging"
+  ]
 }

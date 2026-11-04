@@ -11,5 +11,11 @@
   ],
   "solution": "For example, a destination entry can contain `HostName target.example` and `ProxyJump jump`. The editor connects to the destination, while SSH handles the intermediate hop.",
   "verification": "On connection, confirm the terminal hostname and opened filesystem belong to the final target. Verify host keys for both hops and test file access needed by the project.",
-  "limitations": "The example names are placeholders. ProxyJump still requires network reachability, credentials and server policy at both hops; it does not make files mounted only on another host appear on the target."
+  "limitations": "The example names are placeholders. ProxyJump still requires network reachability, credentials and server policy at both hops; it does not make files mounted only on another host appear on the target.",
+  "category": "systems-and-operations",
+  "tags": [
+    "tooling",
+    "networking",
+    "configuration"
+  ]
 }

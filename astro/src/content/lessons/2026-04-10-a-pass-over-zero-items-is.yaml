@@ -12,5 +12,11 @@
   ],
   "solution": "A live evaluation with ten selected cases and ten marked “not run” should say it was not evaluated. It should never share the same success signal as ten completed, passing cases.",
   "verification": "Deliberately remove a required prerequisite and expect the gate to stop or report incomplete execution. Also run a known failing case to check that failure reaches the final verdict.",
-  "limitations": "An intentionally optional suite can be skipped, but the caller must see that distinction. No completed cases means no evidence about the behavior under test."
+  "limitations": "An intentionally optional suite can be skipped, but the caller must see that distinction. No completed cases means no evidence about the behavior under test.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "evidence",
+    "evals"
+  ]
 }

@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: a page that loads by loopback address may still fail through its actual hostname. Test the intended Host header as well as a relative API request.",
   "verification": "Expect both the real hostname request and the proxied API request to reach their intended handlers. A listening port alone does not establish either result.",
-  "limitations": "This describes the inspected Astro behavior and configuration. Check the installed version's documented options before assuming every preview release supports the same settings."
+  "limitations": "This describes the inspected Astro behavior and configuration. Check the installed version's documented options before assuming every preview release supports the same settings.",
+  "category": "frontend-and-design",
+  "tags": [
+    "frontend",
+    "configuration",
+    "debugging"
+  ]
 }

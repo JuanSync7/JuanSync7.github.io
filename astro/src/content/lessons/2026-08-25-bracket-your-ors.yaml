@@ -11,5 +11,11 @@
   ],
   "solution": "Use parentheses to make the common filter apply to both alternatives. Treat a change in result count as a reason to inspect membership, not automatic proof that either query is correct.",
   "verification": "Build four small cases: recent B, recent C, old B and old C. Expect only the first two. Add an unrelated category to confirm that the OR did not broaden the query beyond its intended set.",
-  "limitations": "Operator rules and query syntax vary. Check the actual engine, and keep NULL behaviour and boundary timestamps as separate cases where they matter."
+  "limitations": "Operator rules and query syntax vary. Check the actual engine, and keep NULL behaviour and boundary timestamps as separate cases where they matter.",
+  "category": "data-and-databases",
+  "tags": [
+    "data",
+    "sql",
+    "validation"
+  ]
 }

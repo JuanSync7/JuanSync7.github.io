@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a task handoff can name an input artifact, required operation and acceptance check as separate fields. The next stage should not need to infer those from a paragraph that mixes instructions with background.",
   "verification": "Replay an accepted handoff through the consumer and test one with a missing requirement or unknown status. Validation should stop it before execution, with a useful error.",
-  "limitations": "A schema checks shape, not truth or completeness. Human judgment still has a role in resolving ambiguous intent, and prose remains useful as explanation alongside the fields."
+  "limitations": "A schema checks shape, not truth or completeness. Human judgment still has a role in resolving ambiguous intent, and prose remains useful as explanation alongside the fields.",
+  "category": "ai-and-agents",
+  "tags": [
+    "agents",
+    "contracts",
+    "validation"
+  ]
 }

@@ -12,5 +12,10 @@
   ],
   "solution": "For example, the command to restart a service belongs in its operating instructions. Why that supervisor was chosen belongs in the decision record, linked from the current reference if useful.",
   "verification": "Ask a fresh reader to find what to do, what is true now and why the design exists. Check each answer against its intended owner and remove duplicated facts.",
-  "limitations": "The names are a useful local taxonomy, not the only documentation system. A small project can combine sections if the purpose and maintenance rules remain clear."
+  "limitations": "The names are a useful local taxonomy, not the only documentation system. A small project can combine sections if the purpose and maintenance rules remain clear.",
+  "category": "writing-and-knowledge",
+  "tags": [
+    "docs",
+    "knowledge"
+  ]
 }

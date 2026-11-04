@@ -12,5 +12,10 @@
   ],
   "solution": "For two percentages, use values such as 33.3 and 50.0 rather than two paths that both produce 50.0. A swapped mapping then gives visibly wrong output instead of passing by coincidence.",
   "verification": "Deliberately swap the two fields in a disposable mutation and expect the test to fail. If it still passes, inspect whether formatting or shared helper logic erased the distinction.",
-  "limitations": "Distinct values do not guarantee independence. Keep the expected calculation separate from the implementation, and include boundary cases as well as the asymmetric example."
+  "limitations": "Distinct values do not guarantee independence. Keep the expected calculation separate from the implementation, and include boundary cases as well as the asymmetric example.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "data"
+  ]
 }

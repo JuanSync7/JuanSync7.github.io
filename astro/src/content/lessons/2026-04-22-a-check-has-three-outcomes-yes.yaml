@@ -12,5 +12,10 @@
   ],
   "solution": "For example, “the file is absent” can support a normal decision, while “permission denied while reading the directory” should stop that decision. Both may look like no result unless the check preserves its error state.",
   "verification": "Exercise a positive fixture, a valid negative fixture and an unavailable prerequisite. Expect three distinguishable outcomes and confirm that the caller does not turn the last one into an ordinary no.",
-  "limitations": "The numeric exit codes are an interface choice and need documentation. A nonzero code is not automatically an error if the tool contract uses it for a valid negative result."
+  "limitations": "The numeric exit codes are an interface choice and need documentation. A nonzero code is not automatically an error if the tool contract uses it for a valid negative result.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "error-handling"
+  ]
 }

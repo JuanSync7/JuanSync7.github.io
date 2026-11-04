@@ -11,5 +11,11 @@
   ],
   "solution": "Give the test an independent basis for its answer. For a boundary rule, include values just below, at and above the boundary.",
   "verification": "The deliberately wrong implementation should fail for the intended reason. A passing mutation means the test has not established that rule.",
-  "limitations": "Independence reduces shared assumptions; it does not prove the requirement itself is right. Keep ambiguous wording open for review."
+  "limitations": "Independence reduces shared assumptions; it does not prove the requirement itself is right. Keep ambiguous wording open for review.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "contracts",
+    "evidence"
+  ]
 }

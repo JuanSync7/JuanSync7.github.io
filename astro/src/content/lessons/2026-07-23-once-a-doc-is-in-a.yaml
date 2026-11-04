@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a connector reading as one application may index documents more broadly than an individual user could read. Search must preserve the required permission boundary instead of assuming source permissions automatically follow.",
   "verification": "Test an allowed and a forbidden retrieval with representative identities. Inspect what the indexing account can see and what each search user can receive.",
-  "limitations": "A retrieval test proves the cases exercised, not that past exposure never happened. Audit logs can help investigate, but incomplete logs should remain an uncertainty rather than a claim of no access."
+  "limitations": "A retrieval test proves the cases exercised, not that past exposure never happened. Audit logs can help investigate, but incomplete logs should remain an uncertainty rather than a claim of no access.",
+  "category": "security-and-networking",
+  "tags": [
+    "security",
+    "privacy",
+    "rag"
+  ]
 }

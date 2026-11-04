@@ -12,5 +12,10 @@
   ],
   "solution": "For illustration, a cache that holds 32,000 tokens can fit more short requests than requests near a 16,000-token limit. Advertising a limit above the cache’s total capacity cannot be rescued by testing only short prompts.",
   "verification": "Expect startup to report enough capacity for the maximum length. Then exercise representative lengths and inspect admission or memory behavior before treating a concurrency estimate as operational capacity.",
-  "limitations": "The arithmetic is a planning model. Model architecture, runtime version and scheduling affect the real capacity, and token capacity should come from the running configuration’s report."
+  "limitations": "The arithmetic is a planning model. Model architecture, runtime version and scheduling affect the real capacity, and token capacity should come from the running configuration’s report.",
+  "category": "ai-and-agents",
+  "tags": [
+    "inference",
+    "resource-limits"
+  ]
 }

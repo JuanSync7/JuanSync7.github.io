@@ -11,5 +11,11 @@
   ],
   "solution": "Treat a surviving mutant as something to investigate: first establish which code executed, then judge whether the assertion detected the changed behaviour.",
   "verification": "Make a mutation with a clear expected failure and inspect the imported module path. After the clean-cache run, the relevant test should fail for the planted defect.",
-  "limitations": "The short lesson preserves the historical -B advice, but -B suppresses writes; it does not guarantee existing bytecode will not be read. Import paths and already-loaded modules are separate causes to rule out."
+  "limitations": "The short lesson preserves the historical -B advice, but -B suppresses writes; it does not guarantee existing bytecode will not be read. Import paths and already-loaded modules are separate causes to rule out.",
+  "category": "software-engineering",
+  "tags": [
+    "python",
+    "testing",
+    "caching"
+  ]
 }

@@ -11,5 +11,11 @@
   ],
   "solution": "Separate retained model data from unbounded growth. If an idle service is unnecessary, an idle timeout may address resource use without calling normal paging a leak.",
   "verification": "The useful evidence is a time series: does memory settle after comparable work, or keep growing? Include response latency after idle, because paging back in can still affect users.",
-  "limitations": "Swapping can coexist with a real leak or host pressure. A stable footprint does not establish acceptable performance, and a single observation cannot settle either question."
+  "limitations": "Swapping can coexist with a real leak or host pressure. A stable footprint does not establish acceptable performance, and a single observation cannot settle either question.",
+  "category": "systems-and-operations",
+  "tags": [
+    "linux",
+    "inference",
+    "resource-limits"
+  ]
 }

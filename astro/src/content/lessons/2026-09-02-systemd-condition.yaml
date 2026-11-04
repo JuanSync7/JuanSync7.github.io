@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: a missing policy file should fail an explicit validator. Requiring that validator and ordering startup after it makes the intended gate visible in the unit configuration.",
   "verification": "Start a disposable protected service with valid and missing guard inputs. The valid case should start; a failed validator should prevent protected startup and leave an observable failure.",
-  "limitations": "Requires= alone does not turn a skipped condition into a failure. Startup gating also does not continuously enforce a policy after the protected service has already started."
+  "limitations": "Requires= alone does not turn a skipped condition into a failure. Startup gating also does not continuously enforce a policy after the protected service has already started.",
+  "category": "systems-and-operations",
+  "tags": [
+    "systemd",
+    "contracts",
+    "error-handling"
+  ]
 }

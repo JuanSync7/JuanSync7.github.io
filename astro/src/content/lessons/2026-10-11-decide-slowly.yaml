@@ -11,5 +11,11 @@
   ],
   "solution": "Spend early effort on decisions that would be costly to reverse. The sketch should make choices easier, not become a promise to build every box it contains.",
   "verification": "Ask whether a reviewer can trace the first slice from the goal through its interfaces to a concrete check. Unanswered questions that block that path need a decision or a bounded experiment.",
-  "limitations": "Software can be cheap to change, so endless design has its own cost. Estimates from one earlier project remain uncertain; a reusable blueprint is evidence to adapt, not a fixed multiplier."
+  "limitations": "Software can be cheap to change, so endless design has its own cost. Estimates from one earlier project remain uncertain; a reusable blueprint is evidence to adapt, not a fixed multiplier.",
+  "category": "work-and-delivery",
+  "tags": [
+    "process",
+    "planning",
+    "design"
+  ]
 }

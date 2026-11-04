@@ -11,5 +11,11 @@
   ],
   "solution": "Use ordinary EXPLAIN when an estimated plan is sufficient. Add ANALYZE deliberately when actual execution is needed, and use BUFFERS to inspect block activity alongside timing.",
   "verification": "On test data, compare affected rows before and after rollback and inspect the reported plan. Confirm the transaction ended; a copied command sequence is not evidence that the write was undone.",
-  "limitations": "Rollback does not reverse every effect: sequence advances, external effects and some function behaviour may survive or matter during execution. Locks and load still occur, so a transaction is not a substitute for a safe test environment."
+  "limitations": "Rollback does not reverse every effect: sequence advances, external effects and some function behaviour may survive or matter during execution. Locks and load still occur, so a transaction is not a substitute for a safe test environment.",
+  "category": "data-and-databases",
+  "tags": [
+    "postgres",
+    "security",
+    "measurement"
+  ]
 }

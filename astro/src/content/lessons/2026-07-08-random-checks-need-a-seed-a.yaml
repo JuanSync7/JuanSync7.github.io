@@ -12,5 +12,11 @@
   ],
   "solution": "For an illustrative filter check, compare exact row-id sets, not only counts. Equal counts can hide one missing row and one extra row. Save the snapshot identity and mismatch so a later investigation starts with the same problem.",
   "verification": "Replay a saved seed and snapshot and confirm the same query and result sets. Plant one known filtering defect to prove that the independent check detects it.",
-  "limitations": "The cited design is a proposal, not evidence that a periodic production checker was installed. A simple oracle can still be wrong, so give it its own examples and boundaries."
+  "limitations": "The cited design is a proposal, not evidence that a periodic production checker was installed. A simple oracle can still be wrong, so give it its own examples and boundaries.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "reproducibility",
+    "isolation"
+  ]
 }

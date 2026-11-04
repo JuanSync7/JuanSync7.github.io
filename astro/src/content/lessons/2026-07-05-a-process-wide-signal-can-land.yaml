@@ -12,5 +12,10 @@
   ],
   "solution": "For example, a test of an interrupted worker should identify that worker rather than relying on whichever thread the kernel chooses. Keep the signal action small and arrange deterministic synchronization around the expected interruption.",
   "verification": "Repeat the isolated test and check which thread was targeted and which handler behavior occurred. A test that merely observed some signal is too weak.",
-  "limitations": "Python handlers normally run in the main thread, and pthread_kill is not a general way to execute Python callbacks in a worker. The source trail for this exact historical assertion is weak; treat the procedure as general guidance."
+  "limitations": "Python handlers normally run in the main thread, and pthread_kill is not a general way to execute Python callbacks in a worker. The source trail for this exact historical assertion is weak; treat the procedure as general guidance.",
+  "category": "software-engineering",
+  "tags": [
+    "python",
+    "testing"
+  ]
 }

@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: a tool needing one seat of A and one of B cannot run more than four copies if B has four seats, even when A has ten.",
   "verification": "Inspect simultaneous checkout combinations and associated wait periods. A proposed capacity increase should address the observed bundle constraint rather than the largest isolated utilization number.",
-  "limitations": "Feature demand can vary by stage, tool version and seat multiplier. Correlated saturation suggests a bundle but does not by itself prove every job needs exactly one of each feature."
+  "limitations": "Feature demand can vary by stage, tool version and seat multiplier. Correlated saturation suggests a bundle but does not by itself prove every job needs exactly one of each feature.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "eda",
+    "resource-limits",
+    "performance"
+  ]
 }

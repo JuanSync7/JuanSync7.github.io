@@ -12,5 +12,10 @@
   ],
   "solution": "If change a fails alone while b and c fail only together, a search can return {b, c}. Neither member can be removed from that result, even though {a} is a smaller failure case.",
   "verification": "Expect the reduced set to reproduce and every single-member removal to stop reproducing. If either original endpoint no longer behaves as recorded, stop and repair the experiment first.",
-  "limitations": "Flaky tests and unresolved intermediate outcomes weaken the result. A 1-minimal set is useful evidence about a reproducer, not proof of the unique root cause or globally smallest explanation."
+  "limitations": "Flaky tests and unresolved intermediate outcomes weaken the result. A 1-minimal set is useful evidence about a reproducer, not proof of the unique root cause or globally smallest explanation.",
+  "category": "software-engineering",
+  "tags": [
+    "debugging",
+    "testing"
+  ]
 }

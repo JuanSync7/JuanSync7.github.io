@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-31",
+  "tag": "Reviews",
+  "title": "Severity and blocking are different decisions.",
+  "why": "A finding can be serious without belonging to this change. Decide both how harmful it is and whether it makes the change’s promise false, then give it a clear next action.",
+  "problem": "An adversarial review can always find another real weakness nearby. If every weakness blocks the change, review becomes an expanding hardening project with no clear finish.",
+  "cause": "Severity describes the harm if a defect is reached. Blocking describes the relationship between that defect and the change being reviewed. Combining them into one label makes an old severe issue and a new small regression look like the same delivery decision.",
+  "steps": [
+    "Write the change’s promise before review: the behaviour, affected paths and checks it commits to. Keep that promise available beside the findings.",
+    "For each finding, ask whether the change broke working behaviour or whether an explicit promise is false. A blocking finding should name that regression or the promise it contradicts.",
+    "Record other real defects where the owning project keeps leftover findings. Keep severity for prioritisation, and include them in the same repair when they share its cause and fit its boundary."
+  ],
+  "solution": "Use two decisions: how bad is it, and what happens next? Review can then close its bounded job while leaving an honest, owned record of work still to do.",
+  "verification": "Try the rule on two illustrative findings: an old high-impact bug outside the promise, and a new low-impact regression inside it. Their severities differ from their blocking decisions; neither should disappear from the record.",
+  "limitations": "The source records an adopted ranking method and reported project use, not a measured reduction in review time. An old defect that makes the current promise false still blocks under this method; urgent release-wide risk may also need an owner decision.",
+  "category": "work-and-delivery",
+  "tags": [
+    "review",
+    "delivery",
+    "contracts"
+  ]
+}

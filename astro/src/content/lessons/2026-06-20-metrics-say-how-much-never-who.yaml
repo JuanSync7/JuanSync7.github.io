@@ -12,5 +12,11 @@
   ],
   "solution": "If a daily chart rises, it can tell an operator that usage increased. It cannot divide the increase between two people unless another record preserves their identities and relevant usage.",
   "verification": "Trace one controlled request from the caller to its invocation record and then to the aggregate metric. Confirm which fields identify the person and which are merely client-supplied labels.",
-  "limitations": "The title refers to this metric setup, not every possible custom metric system. Assumed roles, missing identity fields and price-table assumptions can all limit a per-person cost report."
+  "limitations": "The title refers to this metric setup, not every possible custom metric system. Assumed roles, missing identity fields and price-table assumptions can all limit a per-person cost report.",
+  "category": "systems-and-operations",
+  "tags": [
+    "ops",
+    "measurement",
+    "cost-control"
+  ]
 }

@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a short easing transition can make a control’s state change clear without keeping the rest of the dashboard in motion. A continuously moving backdrop adds no information to that task.",
   "verification": "Use the page for a representative work session, then enable the system’s reduced-motion setting and check every animated element. Inspect whether content remains visible and interactions still make sense.",
-  "limitations": "These are recorded design preferences, not universal duration limits. Accessibility, performance and user feedback still determine whether a particular animation earns its place."
+  "limitations": "These are recorded design preferences, not universal duration limits. Accessibility, performance and user feedback still determine whether a particular animation earns its place.",
+  "category": "frontend-and-design",
+  "tags": [
+    "design",
+    "accessibility",
+    "frontend"
+  ]
 }

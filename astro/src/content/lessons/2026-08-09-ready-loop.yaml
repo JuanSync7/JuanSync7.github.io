@@ -11,5 +11,11 @@
   ],
   "solution": "For a generated report, identify the source totals, the comparison with those totals and the correction when they disagree. That loop is meaningful before choosing a report engine.",
   "verification": "Walk one plausible bad output through the drawing. Someone should be able to say how it is detected, what changes next and what result ends the correction.",
-  "limitations": "A feedback loop does not make a goal useful or a measurement accurate. Those choices remain design questions, and some checks need a human rather than automatic retries."
+  "limitations": "A feedback loop does not make a goal useful or a measurement accurate. Those choices remain design questions, and some checks need a human rather than automatic retries.",
+  "category": "software-engineering",
+  "tags": [
+    "design",
+    "testing",
+    "validation"
+  ]
 }

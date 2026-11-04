@@ -11,5 +11,11 @@
   ],
   "solution": "Use the code point and coverage result to choose a narrow fallback. Keep the main text font when only a few symbols need another source of glyphs.",
   "verification": "Print the exact character in the affected terminal after any change. It should appear at a sensible width beside ordinary text; a coverage listing alone does not prove the terminal selected the font.",
-  "limitations": "The font installation was recommended, not confirmed applied. The related lesson on missing glyphs uses this same font-coverage example to distinguish encoding from rendering faults. Their dates are historical log dates, not evidence of two separate failures."
+  "limitations": "The font installation was recommended, not confirmed applied. The related lesson on missing glyphs uses this same font-coverage example to distinguish encoding from rendering faults. Their dates are historical log dates, not evidence of two separate failures.",
+  "category": "frontend-and-design",
+  "tags": [
+    "typography",
+    "unicode",
+    "linux"
+  ]
 }

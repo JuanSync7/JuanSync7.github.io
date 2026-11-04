@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a reproducer that times out should retain its evidence and timeout reason. Calling it a false positive would erase a potentially real issue merely because the checking path failed.",
   "verification": "Feed the review pipeline one confirmed issue, one refuted issue and one deliberately interrupted check. Confirm that all three remain distinct in the report and any aggregate score.",
-  "limitations": "Unverified does not mean the finding is probably correct. It means the evidence is unfinished. A later completed check may support or refute it, and the report should preserve that transition."
+  "limitations": "Unverified does not mean the finding is probably correct. It means the evidence is unfinished. A later completed check may support or refute it, and the report should preserve that transition.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "evidence",
+    "error-handling"
+  ]
 }

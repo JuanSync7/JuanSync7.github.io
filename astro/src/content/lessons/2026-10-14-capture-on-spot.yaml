@@ -11,5 +11,11 @@
   ],
   "solution": "Make capture part of the existing workflow so it does not depend on a large retrospective meeting. A short accurate record is a better starting point than a polished account written from memory.",
   "verification": "Ask someone outside the original task to explain when the lesson applies and how to check the correction. Missing steps or unclear limits show what the capture still needs.",
-  "limitations": "Immediate notes can be incomplete and sensitive. Review them before reuse, respect contractual limits on design details, and do not turn a mistake record into an individual's performance file."
+  "limitations": "Immediate notes can be incomplete and sensitive. Review them before reuse, respect contractual limits on design details, and do not turn a mistake record into an individual's performance file.",
+  "category": "work-and-delivery",
+  "tags": [
+    "process",
+    "knowledge",
+    "learning"
+  ]
 }

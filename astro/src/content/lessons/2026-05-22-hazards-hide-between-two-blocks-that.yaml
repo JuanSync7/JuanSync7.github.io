@@ -12,5 +12,11 @@
   ],
   "solution": "For example, an accelerator operation and a later core operation may complete in a different order. Their handoff must still preserve the architectural ordering the design promises, rather than exposing each block’s local completion order directly.",
   "verification": "Check the combined retirement trace and state changes for the boundary cases. Passing the core’s suite and the accelerator’s suite separately does not establish that the handoff is correct.",
-  "limitations": "The exact hazard set depends on the ISA and integration contract. The lesson is to name and verify the seam; it does not supply a universal retirement protocol for every accelerator."
+  "limitations": "The exact hazard set depends on the ISA and integration contract. The lesson is to name and verify the seam; it does not supply a universal retirement protocol for every accelerator.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "rtl",
+    "verification",
+    "interfaces"
+  ]
 }

@@ -11,5 +11,10 @@
   ],
   "solution": "For a required metadata field, validate its presence and type instead of repeating “remember the field” in more documents. Keep a link to the reason so future maintainers know what the check protects.",
   "verification": "Run the negative example through the same gate used for real work. Confirm a non-zero result and a specific diagnostic, then confirm a valid case is accepted.",
-  "limitations": "Checks can encode the wrong rule or be disconnected from real acceptance. They do not replace judgment, and the historical audit claim in the original card is a source report rather than a new comparison here."
+  "limitations": "Checks can encode the wrong rule or be disconnected from real acceptance. They do not replace judgment, and the historical audit claim in the original card is a source report rather than a new comparison here.",
+  "category": "ai-and-agents",
+  "tags": [
+    "agents",
+    "validation"
+  ]
 }

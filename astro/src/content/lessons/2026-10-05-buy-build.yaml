@@ -11,5 +11,10 @@
   ],
   "solution": "Prefer an extension when it can satisfy the real requirement without fragile coupling. Keep custom work at the boundary where the existing product stops being sufficient.",
   "verification": "Run a representative workflow through the extended product and confirm that ordinary features still work. The gap should be closed without forcing users to recover lost basics elsewhere.",
-  "limitations": "Some constraints justify replacement: incompatible security boundaries, blocked deployment or a core model that cannot express the task. The percentages in the short lesson are a decision prompt, not a measured cost ratio."
+  "limitations": "Some constraints justify replacement: incompatible security boundaries, blocked deployment or a core model that cannot express the task. The percentages in the short lesson are a decision prompt, not a measured cost ratio.",
+  "category": "work-and-delivery",
+  "tags": [
+    "planning",
+    "maintainability"
+  ]
 }

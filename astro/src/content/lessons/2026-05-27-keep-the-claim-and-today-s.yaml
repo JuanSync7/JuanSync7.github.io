@@ -12,5 +12,10 @@
   ],
   "solution": "For example, “tracks delivery evidence” can be the product goal while today’s state says which records exist, which checks run and which integrations remain planned. A reader can then assess both the direction and the usable capability.",
   "verification": "For each current-state sentence, point to a present artifact or recorded check. If the only support is a plan, move it out of the built-state column.",
-  "limitations": "A two-column layout is a writing aid, not an implementation guarantee. Keep the state dated or versioned and revisit it when the product changes."
+  "limitations": "A two-column layout is a writing aid, not an implementation guarantee. Keep the state dated or versioned and revisit it when the product changes.",
+  "category": "work-and-delivery",
+  "tags": [
+    "reporting",
+    "evidence"
+  ]
 }

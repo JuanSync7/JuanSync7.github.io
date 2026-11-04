@@ -12,5 +12,12 @@
   ],
   "solution": "Illustrative: a meeting summary can be staged as a proposed note with timestamped source references. Until reviewed, it should not become a fact the answering agent cites as company knowledge.",
   "verification": "Trace a proposed write through staging, review and ingestion. An unreviewed statement should remain unavailable to the trusted-answer path, while approved material retains its provenance.",
-  "limitations": "This is a design safeguard in the source, not evidence that the complete agent was deployed. Review also needs access controls and a way to correct or withdraw already ingested material."
+  "limitations": "This is a design safeguard in the source, not evidence that the complete agent was deployed. Review also needs access controls and a way to correct or withdraw already ingested material.",
+  "category": "ai-and-agents",
+  "tags": [
+    "agents",
+    "rag",
+    "provenance",
+    "review"
+  ]
 }

@@ -12,5 +12,11 @@
   ],
   "solution": "For example, repairing a raw line break inside a string should not authorize an unknown action field. Keep the original response and record the repair so a later failure can be traced to what the model actually returned.",
   "verification": "Replay captured malformed answers and planted invalid fields through the real parser and validator. Confirm recoverable syntax succeeds while wrong shape and meaning still fail.",
-  "limitations": "Syntax repair can change meaning, so keep it narrow. Some applications should retry or reject malformed output entirely; tolerant parsing is not permission to guess missing facts."
+  "limitations": "Syntax repair can change meaning, so keep it narrow. Some applications should retry or reject malformed output entirely; tolerant parsing is not permission to guess missing facts.",
+  "category": "ai-and-agents",
+  "tags": [
+    "llm",
+    "validation",
+    "contracts"
+  ]
 }

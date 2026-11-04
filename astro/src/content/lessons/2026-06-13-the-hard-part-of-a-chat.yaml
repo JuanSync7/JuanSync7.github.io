@@ -12,5 +12,11 @@
   ],
   "solution": "For a local single-user prototype, a lightweight UI may be enough. Before sharing it, decide how one user’s saved chat is prevented from appearing in another user’s session and which service owns that check.",
   "verification": "Test two separate identities and their conversation histories through the actual sign-in path. A working model reply does not establish that history storage and access controls are correct.",
-  "limitations": "Managed frontends can reduce the work but bring their own integration and data-handling contracts. Compare those responsibilities before choosing on screen-building effort alone."
+  "limitations": "Managed frontends can reduce the work but bring their own integration and data-handling contracts. Compare those responsibilities before choosing on screen-building effort alone.",
+  "category": "frontend-and-design",
+  "tags": [
+    "frontend",
+    "security",
+    "data"
+  ]
 }

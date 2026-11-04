@@ -11,5 +11,10 @@
   ],
   "solution": "Chain the test on completion evidence so fast machines move on promptly and slow machines get the time they actually need.",
   "verification": "Exercise the test with an intentionally delayed dependency and with one that never becomes ready. It should proceed after real readiness and fail clearly at the deadline when readiness never arrives.",
-  "limitations": "Some tests deliberately study timing, and simulator time has different semantics. Even then, distinguish a required duration from a guessed pause used to hide a missing readiness signal."
+  "limitations": "Some tests deliberately study timing, and simulator time has different semantics. Even then, distinguish a required duration from a guessed pause used to hide a missing readiness signal.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "contracts"
+  ]
 }
