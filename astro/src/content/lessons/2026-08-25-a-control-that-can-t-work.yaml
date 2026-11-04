@@ -1,4 +1,15 @@
-date: 2026-08-25
-tag: linux
-title: "A control that can't work is worse than none."
-why: "BlockIOWeight on RHEL 8 needs the CFQ scheduler, which was removed, so it reads as protection while enforcing nothing. Reading the value back proves acceptance, not effect."
+{
+  "date": "2026-08-25",
+  "tag": "linux",
+  "title": "A control that can't work is worse than none.",
+  "why": "BlockIOWeight on RHEL 8 needs the CFQ scheduler, which was removed, so it reads as protection while enforcing nothing. Reading the value back proves acceptance, not effect.",
+  "problem": "A resource limit can appear in a service manager’s configuration while doing nothing on the host where it was deployed.",
+  "cause": "The manager accepting a property does not establish kernel support, the active scheduler or that the constrained process sits in the intended group.",
+  "steps": [
+    "Check the host’s cgroup version, controller availability and scheduler support before selecting a resource-control setting.",
+    "After deployment, confirm the target process’s scope and use a bounded disposable workload to observe whether the intended control changes behaviour."
+  ],
+  "solution": "For a legacy I/O weight setting, inspect the scheduler it depends on instead of treating `systemctl show` as proof of protection. Remove or replace a control that cannot take effect on the supported host.",
+  "verification": "Read-back should match the intended configuration, and the behavioural check should demonstrate the specific resource effect. Record those as separate observations.",
+  "limitations": "The source’s RHEL 8/cgroup v1 finding is version-specific. It does not establish that every CPU or I/O controller is ineffective everywhere, and a behavioural test needs a safe scope on shared machines."
+}

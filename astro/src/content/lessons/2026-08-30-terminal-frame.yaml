@@ -1,4 +1,15 @@
-date: 2026-08-30
-tag: design
-title: "Code goes in a terminal window."
-why: "On my pages, prose gets paper and ink, and code gets a terminal frame. The frame tells you what kind of text you're reading."
+{
+  "date": "2026-08-30",
+  "tag": "design",
+  "title": "Code goes in a terminal window.",
+  "why": "On my pages, prose gets paper and ink, and code gets a terminal frame. The frame tells you what kind of text you're reading.",
+  "problem": "A reading page can make prose, shell commands and output look too similar, leaving readers unsure which text they should execute.",
+  "cause": "Visual framing signals the role of a passage before its details are read. In this site’s design, a terminal frame gives code a consistent place inside the paper-and-ink page.",
+  "steps": [
+    "Render code blocks through the shared terminal-style component while leaving the surrounding explanation on the reading surface.",
+    "Label commands and expected output clearly inside that frame, preserving whitespace and providing accessible text rather than a screenshot of code."
+  ],
+  "solution": "For a two-command example, keep the commands copyable and distinguish any illustrative prompt marker from the command itself. The decorative frame should support that reading, not add work to copying.",
+  "verification": "Inspect a long line, a short snippet and a command/output pair in both themes and at narrow widths. Confirm the text remains readable, selectable and correctly ordered.",
+  "limitations": "This is a personal page convention, not a rule for all technical writing. A terminal appearance must not imply that an illustrative command was actually run or that all framed code is shell syntax."
+}

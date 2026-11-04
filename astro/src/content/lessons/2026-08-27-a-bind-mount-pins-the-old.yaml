@@ -1,4 +1,15 @@
-date: 2026-08-27
-tag: linux
-title: "A bind mount pins the old file."
-why: "Sessions that mounted a file keep seeing that version even after it is replaced on disk. Restart them after an update."
+{
+  "date": "2026-08-27",
+  "tag": "linux",
+  "title": "A bind mount pins the old file.",
+  "why": "Sessions that mounted a file keep seeing that version even after it is replaced on disk. Restart them after an update.",
+  "problem": "A long-running session can keep reading an old policy file after deployment has replaced the file visible to new sessions.",
+  "cause": "A file bind mount can keep referring to the mounted object while an atomic replacement changes what the original pathname resolves to. Updating the pathname does not necessarily replace that existing mount.",
+  "steps": [
+    "After changing a mounted policy, inspect the content from inside an existing session as well as through the deployment path.",
+    "Recreate the affected sessions or their mounts through the supported lifecycle, then check the content visible inside the new session."
+  ],
+  "solution": "Treat session refresh as part of deployment when file replacement changes policy. A current host-side file is not proof that every already-running session sees the current bytes.",
+  "verification": "In a disposable setup, compare digests before replacement, after replacement in the old session, and in a fresh session. The final session should read the intended deployed version.",
+  "limitations": "An in-place write differs from replacing a file object, and a process may cache configuration separately. Check both mount identity and application reload behaviour before choosing the refresh operation."
+}

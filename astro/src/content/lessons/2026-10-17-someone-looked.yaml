@@ -1,4 +1,15 @@
-date: 2026-10-17
-tag: art
-title: "Done means someone looked."
-why: "Code that draws can be valid and still ugly. A figure is finished when the audit passes and a person has seen the render."
+{
+  "date": "2026-10-17",
+  "tag": "art",
+  "title": "Done means someone looked.",
+  "why": "Code that draws can be valid and still ugly. A figure is finished when the audit passes and a person has seen the render.",
+  "problem": "A drawing can pass its structural checks while remaining hard to read. Valid markup and correctly connected nodes do not guarantee that labels fit or that the eye can follow the intended flow.",
+  "cause": "Automated checks can measure known constraints. A rendered diagram also depends on font metrics, available space and visual relationships that a narrow audit may not represent.",
+  "steps": [
+    "Run the available audit for geometry, labels and connections, then render the exact candidate at its widest and narrowest supported sizes.",
+    "Have a fresh reader inspect the render for overflow, confusing routes, disconnected boxes and misleading emphasis. Fix the observed problem and inspect the new render rather than assuming the code change was enough."
+  ],
+  "solution": "Treat visual inspection as part of completion. The audit supplies repeatable checks; the reader judges whether the image communicates the system it claims to explain.",
+  "verification": "Ask the reader to trace one complete path and read its labels at the narrow size. The expected result is a clear route with legible text and no unexplained dead ends.",
+  "limitations": "A person's glance is not proof of technical accuracy or accessibility. Keep the source model and text alternative correct, and do not claim someone inspected the candidate unless that review actually happened."
+}

@@ -1,4 +1,16 @@
-date: 2026-07-04
-tag: python
-title: "Type hints are port declarations."
-why: "In SystemVerilog the ports say what goes in and out before anything runs. Type hints do the same for a Python function, and a checker can read them."
+{
+  "date": "2026-07-04",
+  "tag": "python",
+  "title": "Type hints are port declarations.",
+  "why": "In SystemVerilog the ports say what goes in and out before anything runs. Type hints do the same for a Python function, and a checker can read them.",
+  "problem": "A function’s calling convention is harder to review when readers must inspect its body to discover expected inputs and outputs.",
+  "cause": "Type hints expose part of the interface before execution. Like declared port types, they let tools check whether connected pieces agree on the values they exchange.",
+  "steps": [
+    "Annotate the public inputs and return value with useful domain types.",
+    "Run a type checker as a separate verification step.",
+    "Validate data arriving from untrusted or untyped boundaries at runtime."
+  ],
+  "solution": "For example, an annotated parser returning a result object is easier to use correctly than one returning an undocumented mixture of strings and dictionaries. The annotation helps callers, while runtime validation still handles malformed input.",
+  "verification": "Change a fixture caller to pass an incompatible type and confirm that the configured checker reports it. Then exercise a malformed external value to check the runtime boundary.",
+  "limitations": "Python annotations do not automatically enforce types when code runs. Broad Any annotations and unchecked dependencies weaken the guarantee, and type correctness does not establish the function’s intended behavior."
+}

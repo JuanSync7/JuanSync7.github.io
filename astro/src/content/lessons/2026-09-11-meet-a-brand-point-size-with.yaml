@@ -1,4 +1,16 @@
-date: 2026-09-11
-tag: typography
-title: "Meet a brand point size with optical size, not scaling."
-why: "A spec like 'Inter 18pt' is honoured through the font's optical-size axis and leading, not by literally blowing the text up."
+{
+  "date": "2026-09-11",
+  "tag": "typography",
+  "title": "Meet a brand point size with optical size, not scaling.",
+  "why": "A spec like 'Inter 18pt' is honoured through the font's optical-size axis and leading, not by literally blowing the text up.",
+  "problem": "A brand typography instruction can be translated into an oversized web layout if its intent is copied without considering the screen.",
+  "cause": "Font size, optical-size design and line spacing are separate controls. A variable font's optical-size axis adjusts letterforms; leading adjusts room between lines. Neither is identical to a literal point-size conversion.",
+  "steps": [
+    "Identify which parts of the brand requirement are mandatory.",
+    "Choose the supported font settings and line spacing for the reading role.",
+    "Review the rendered result and resolve any literal-size requirement with the design owner."
+  ],
+  "solution": "Illustrative: a dense interface can use the chosen Inter letterforms and generous leading while keeping a practical screen size. Document that interpretation instead of silently claiming numerical equivalence.",
+  "verification": "Inspect actual loaded font settings, line breaks and reading comfort at normal zoom. Confirm that the result matches the agreed interpretation of the spec.",
+  "limitations": "Optical size does not make small text physically 18 points. If the requirement is a literal size or an accessibility minimum, follow it rather than substituting a different axis."
+}

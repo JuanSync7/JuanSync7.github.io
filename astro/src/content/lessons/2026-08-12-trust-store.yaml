@@ -1,4 +1,15 @@
-date: 2026-08-12
-tag: tls
-title: "A green smoke test can use a different trust store."
-why: "The smoke test passed with the OS certificates while the real path used its own bundle and failed behind the proxy. Test the path you ship."
+{
+  "date": "2026-08-12",
+  "tag": "tls",
+  "title": "A green smoke test can use a different trust store.",
+  "why": "The smoke test passed with the OS certificates while the real path used its own bundle and failed behind the proxy. Test the path you ship.",
+  "problem": "A smoke test can pass while the shipped HTTP client still fails TLS verification on the same machine and network.",
+  "cause": "The test may use the operating system’s certificates while the application uses its own bundle. Those are different trust decisions even when both requests target the same URL.",
+  "steps": [
+    "Identify the client, bundle and proxy settings used by the real application path.",
+    "Run the smoke test through that same client configuration, with an explicit supported override for operators who need a different approved bundle."
+  ],
+  "solution": "Prefer one deliberate trust configuration over a test-only workaround. For example, a successful curl request does not validate an application that silently selects certifi instead of the OS store.",
+  "verification": "Exercise a verified request through the production client constructor and record which bundle it selected. Keep a failure visible when the required inspection root is missing.",
+  "limitations": "Equivalent trust configuration only establishes this part of the path. Authentication, request headers and streaming behaviour may still differ, so keep the smoke test’s claim narrow."
+}

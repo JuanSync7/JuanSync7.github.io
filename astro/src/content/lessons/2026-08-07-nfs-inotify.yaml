@@ -1,4 +1,15 @@
-date: 2026-08-07
-tag: linux
-title: "inotify doesn't see another machine's writes."
-why: "On NFS, a file changed from another client fires no event. Watching across hosts needs a poller."
+{
+  "date": "2026-08-07",
+  "tag": "linux",
+  "title": "inotify doesn't see another machine's writes.",
+  "why": "On NFS, a file changed from another client fires no event. Watching across hosts needs a poller.",
+  "problem": "A watcher can react immediately to local edits and still miss a configuration file changed by someone on another machine.",
+  "cause": "inotify reports events through the local kernel. A write made through another NFS client need not generate the local event on which the watcher relies.",
+  "steps": [
+    "Keep the local event watcher for quick feedback, but add a bounded polling interval for shared files.",
+    "On each poll compare the relevant content or version, and send changes through the same validation and apply path as local events."
+  ],
+  "solution": "Use events for speed and polling for eventual detection across hosts. Record the maximum expected delay so a quiet watcher is not mistaken for proof that nothing changed.",
+  "verification": "On a disposable shared file, edit from a second client and expect detection within the polling bound. Also check that an unchanged poll does not reapply the configuration.",
+  "limitations": "Polling adds delay and filesystem work. NFS caching may affect visibility, so measure the supported arrangement rather than promising instant cross-host notification."
+}

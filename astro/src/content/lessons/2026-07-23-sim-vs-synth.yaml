@@ -1,4 +1,16 @@
-date: 2026-07-23
-tag: systemverilog
-title: "Simulates fine does not mean synthesises."
-why: "SystemVerilog is two languages: a small synthesisable subset and a big verification one. A construct can pass simulation and fail synthesis."
+{
+  "date": "2026-07-23",
+  "tag": "systemverilog",
+  "title": "Simulates fine does not mean synthesises.",
+  "why": "SystemVerilog is two languages: a small synthesisable subset and a big verification one. A construct can pass simulation and fail synthesis.",
+  "problem": "Passing a simulation does not establish that a hardware description can be implemented by the synthesis flow.",
+  "cause": "SystemVerilog includes both hardware-description constructs and a larger verification language. A simulator can execute behavior that has no supported circuit mapping, or whose synthesis support differs by tool.",
+  "steps": [
+    "Separate synthesizable design code from testbench and verification helpers.",
+    "Check the constructs against the intended synthesis tool’s supported subset.",
+    "Run a small synthesis check alongside simulation before integrating the block."
+  ],
+  "solution": "For example, a delay used to coordinate a testbench describes simulation scheduling rather than a physical delay element suitable for an ordinary RTL flow. Its usefulness in verification does not make it hardware.",
+  "verification": "Elaborate and synthesize a representative design with the real constraints and libraries. Inspect warnings, inferred structures and reports instead of accepting a simulation pass as a substitute.",
+  "limitations": "Tool support changes, and some verification constructs are accepted for analysis without becoming gates. This is general language guidance; the inspected topic note does not establish a specific simulation-versus-synthesis incident."
+}

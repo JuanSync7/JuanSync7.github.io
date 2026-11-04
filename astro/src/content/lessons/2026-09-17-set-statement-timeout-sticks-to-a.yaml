@@ -1,4 +1,16 @@
-date: 2026-09-17
-tag: postgres
-title: "SET statement_timeout sticks to a pooled connection."
-why: "The next request on that connection inherits it. Use SET LOCAL inside a transaction instead."
+{
+  "date": "2026-09-17",
+  "tag": "postgres",
+  "title": "SET statement_timeout sticks to a pooled connection.",
+  "why": "The next request on that connection inherits it. Use SET LOCAL inside a transaction instead.",
+  "problem": "A short timeout chosen for one request can unexpectedly affect a later request that borrows the same database connection.",
+  "cause": "Plain SET changes session state. Connection pooling reuses that session, so returning the connection does not necessarily erase the request's configuration.",
+  "steps": [
+    "Start a transaction for the bounded query.",
+    "Apply SET LOCAL statement_timeout inside that transaction.",
+    "Commit or roll back before returning the connection to the pool."
+  ],
+  "solution": "Illustrative: one analytical request needs a strict timeout while a later report has a different budget. Transaction-local configuration keeps the first request's choice from leaking into the second.",
+  "verification": "Borrow the same connection for two sequential transactions and inspect the effective timeout in each. The second should use the intended baseline after the first ends.",
+  "limitations": "SET LOCAL depends on an actual transaction boundary. Review autocommit behavior and error cleanup; a connection left in a failed transaction can create a separate pool-reuse failure."
+}

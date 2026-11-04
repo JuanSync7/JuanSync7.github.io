@@ -1,4 +1,16 @@
-date: 2026-09-21
-tag: slurm
-title: "srun inside a batch script is a step, not a job."
-why: "Only sbatch makes a child job. Count steps as jobs, or miss their peaks, and the accounting skews."
+{
+  "date": "2026-09-21",
+  "tag": "slurm",
+  "title": "srun inside a batch script is a step, not a job.",
+  "why": "Only sbatch makes a child job. Count steps as jobs, or miss their peaks, and the accounting skews.",
+  "problem": "A batch allocation can be counted several times if each srun step is treated as another submitted job.",
+  "cause": "Inside an existing allocation, srun launches a step under that job. Step metrics and job-level metrics describe different scopes, so mixing them can duplicate counts or overwrite the job's peak with a partial observation.",
+  "steps": [
+    "Retain both job identity and step identity.",
+    "Define which scope each aggregate counts.",
+    "Combine memory evidence without replacing a known peak with a smaller partial step value."
+  ],
+  "solution": "Illustrative: one batch script with three srun steps is one allocation with several steps. Reporting four independent jobs changes the denominator without adding four independent allocations.",
+  "verification": "Inspect representative scheduler records and reconcile job counts with step counts separately. Replaying a partial accounting window should not reduce a previously established high-water value.",
+  "limitations": "srun outside an allocation can obtain its own allocation, and nested submission can create child jobs. Inspect the actual scheduler relationship rather than classifying by the command name alone."
+}

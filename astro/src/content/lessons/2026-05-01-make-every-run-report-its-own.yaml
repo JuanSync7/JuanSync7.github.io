@@ -1,4 +1,16 @@
-date: 2026-05-01
-tag: llm
-title: "Make every run report its own spend."
-why: "Cost was visible only for runs that logged their tokens. A run that doesn't report spend is spend you find out about later."
+{
+  "date": "2026-05-01",
+  "tag": "llm",
+  "title": "Make every run report its own spend.",
+  "why": "Cost was visible only for runs that logged their tokens. A run that doesn't report spend is spend you find out about later.",
+  "problem": "A campaign total can look precise while leaving out runs that did not record usage. Automated runs are easy to miss because nobody is watching their individual invoices.",
+  "cause": "The total can only include the usage records that exist. Missing reporting creates unknown spend, not zero spend.",
+  "steps": [
+    "Give each run a stable identifier and a usage record.",
+    "Include automated and delegated work in the same accounting boundary.",
+    "Label each amount as billed, estimated or notional, and surface missing records."
+  ],
+  "solution": "Have the run report its own totals when it finishes. A campaign report can then add known amounts and name the runs whose cost is still unknown, instead of silently treating those runs as free.",
+  "verification": "Compare the run list with the usage-record list and investigate unmatched entries. Cross-check one representative record against the harness or billing source before trusting a large aggregate.",
+  "limitations": "Token counts and billed cost are different quantities. Pricing, caching and incomplete streaming records can affect conversion, so an estimate should keep its label."
+}

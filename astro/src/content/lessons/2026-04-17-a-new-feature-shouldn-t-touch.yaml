@@ -1,4 +1,16 @@
-date: 2026-04-17
-tag: design
-title: "A new feature shouldn't touch the spine."
-why: "If adding a feature means changing the core pipeline, the integration point is wrong. Fix the seam first."
+{
+  "date": "2026-04-17",
+  "tag": "design",
+  "title": "A new feature shouldn't touch the spine.",
+  "why": "If adding a feature means changing the core pipeline, the integration point is wrong. Fix the seam first.",
+  "problem": "Adding a feature becomes expensive when it requires changes throughout the central pipeline. Each new branch increases the amount of core behavior that must be understood again.",
+  "cause": "The extension point does not own a clear contract, so feature-specific details leak into orchestration.",
+  "steps": [
+    "Locate the part of the core that knows the new feature’s details.",
+    "Define the inputs, outputs and failure behavior at that boundary.",
+    "Move feature-specific behavior behind the boundary and let the core call the shared contract."
+  ],
+  "solution": "For example, a new model provider should implement the provider interface and register itself. The pipeline should not need a new provider-name conditional at every stage.",
+  "verification": "Compare the next feature addition against the boundary. It should be possible to explain its integration through one contract and test that contract without rebuilding the whole pipeline.",
+  "limitations": "Some features change the system’s actual responsibilities. In that case the core contract may need a deliberate redesign. The warning is repeated feature-specific edits, not a rule that the core can never change."
+}

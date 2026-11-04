@@ -1,4 +1,15 @@
-date: 2026-10-16
-tag: slurm
-title: "A job that ends exactly at the time limit wasn't finished."
-why: "Runs stopping at the partition ceiling were hung, not done. Raising the limit to unlimited only let them hang longer."
+{
+  "date": "2026-10-16",
+  "tag": "slurm",
+  "title": "A job that ends exactly at the time limit wasn't finished.",
+  "why": "Runs stopping at the partition ceiling were hung, not done. Raising the limit to unlimited only let them hang longer.",
+  "problem": "A job that ends at exactly the scheduler's maximum runtime may have been stopped by the limit rather than completed. Raising the ceiling can make the same defect consume more resources for longer.",
+  "cause": "The scheduler enforces elapsed time, not useful progress. A runaway simulation can keep a core busy, while a broken wrapper can hold an allocation after the real tool has finished.",
+  "steps": [
+    "Compare elapsed time with the configured cap, exit reason, CPU use and tool log progress. Separate a long advancing run from a stuck tool and from an idle allocation.",
+    "Set realistic per-stage deadlines from run history and make missing time limits a visible submission problem. Ensure the wrapper releases resources even if its client disappears."
+  ],
+  "solution": "Fix the termination and progress mechanism before extending the limit. A longer allowance is justified by evidence of useful work, not by the fact that the previous run reached its ceiling.",
+  "verification": "Use controlled cases for a slow advancing task, a stalled task and a disconnected client. The wrapper should preserve useful work within policy and reclaim resources when progress or ownership is lost.",
+  "limitations": "CPU activity alone cannot prove progress. Some legitimate runs are long, and the historical exact-cap pattern is a diagnostic clue rather than proof that every capped job was hung."
+}

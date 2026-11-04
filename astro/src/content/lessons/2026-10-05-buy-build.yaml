@@ -1,4 +1,15 @@
-date: 2026-10-05
-tag: building
-title: "Buy the commodity. Build the differentiator."
-why: "A missing 10% is rarely a reason to rebuild the other 90%. Wrap it, extend it, or write a plugin."
+{
+  "date": "2026-10-05",
+  "tag": "building",
+  "title": "Buy the commodity. Build the differentiator.",
+  "why": "A missing 10% is rarely a reason to rebuild the other 90%. Wrap it, extend it, or write a plugin.",
+  "problem": "A useful product may lack one feature that matters to a particular workflow. Replacing the whole product to obtain it also makes the team responsible for every capability that already worked.",
+  "cause": "The missing feature is visible; the cost of rebuilding ordinary functions is easier to overlook. Authentication, upgrades and compatibility still need an owner after the replacement is written.",
+  "steps": [
+    "List the precise gap and the constraints around it. Check whether a wrapper, preprocessing step, extension point or plugin can supply the missing behaviour.",
+    "Build a small end-to-end trial around that boundary. Compare its maintenance and integration cost with the cost of owning a replacement, including the routine features users expect."
+  ],
+  "solution": "Prefer an extension when it can satisfy the real requirement without fragile coupling. Keep custom work at the boundary where the existing product stops being sufficient.",
+  "verification": "Run a representative workflow through the extended product and confirm that ordinary features still work. The gap should be closed without forcing users to recover lost basics elsewhere.",
+  "limitations": "Some constraints justify replacement: incompatible security boundaries, blocked deployment or a core model that cannot express the task. The percentages in the short lesson are a decision prompt, not a measured cost ratio."
+}

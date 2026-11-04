@@ -1,4 +1,16 @@
-date: 2026-05-27
-tag: linux
-title: "A 'read' capability overrides every file mode."
-why: "CAP_DAC_READ_SEARCH skips read and directory-search checks everywhere, so isolation by file modes only holds against processes without it."
+{
+  "date": "2026-05-27",
+  "tag": "linux",
+  "title": "A 'read' capability overrides every file mode.",
+  "why": "CAP_DAC_READ_SEARCH skips read and directory-search checks everywhere, so isolation by file modes only holds against processes without it.",
+  "problem": "A service with a broadly named read capability can bypass the file modes that were supposed to isolate users’ data.",
+  "cause": "CAP_DAC_READ_SEARCH bypasses normal discretionary read and directory-search permission checks on reachable local files. It is much broader than access to one intended log directory.",
+  "steps": [
+    "Inspect the effective capabilities of the actual service process.",
+    "Remove the broad read capability when file modes are part of the isolation design.",
+    "Grant the narrow required path through ownership, groups, ACLs or a dedicated collection location."
+  ],
+  "solution": "If a collector only needs usage records, put those records in a controlled shared directory. Giving it a capability to traverse private homes expands its authority far beyond the data it needs.",
+  "verification": "Check access as the running service identity, including its effective capabilities. A mode-bit review alone cannot establish isolation when the process can bypass those bits.",
+  "limitations": "This capability does not override every security mechanism. NFS server decisions, mandatory access controls and other boundaries still matter; its broad local scope is the reason to avoid treating it as a small grant."
+}

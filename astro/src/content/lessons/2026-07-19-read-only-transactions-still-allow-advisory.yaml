@@ -1,4 +1,16 @@
-date: 2026-07-19
-tag: postgres
-title: "READ ONLY transactions still allow advisory locks."
-why: "Session-level advisory locks are permitted and outlive the transaction on a pooled connection, so a read-only fence must deny them by name."
+{
+  "date": "2026-07-19",
+  "tag": "postgres",
+  "title": "READ ONLY transactions still allow advisory locks.",
+  "why": "Session-level advisory locks are permitted and outlive the transaction on a pooled connection, so a read-only fence must deny them by name.",
+  "problem": "A PostgreSQL connection can leave a disruptive advisory lock behind even when its work ran inside a read-only transaction.",
+  "cause": "READ ONLY restricts particular database writes, but session-level advisory locks are a separate mechanism. A session lock can outlive the transaction and remain attached to a pooled connection.",
+  "steps": [
+    "Use a least-privilege role and an explicit allowed-operation boundary.",
+    "Exclude unwanted advisory-lock functions from any query interface.",
+    "Bound query time and clean pooled session state as part of connection handling."
+  ],
+  "solution": "For example, rolling back a read-only transaction does not make a session-level lock safe to ignore. The next borrower of that connection may inherit its consequences even though no table row changed.",
+  "verification": "In an isolated database fixture, try the forbidden lock operation through the actual read-only entry point. Confirm it is refused and that returning a connection leaves no unexpected session lock.",
+  "limitations": "Transaction-scoped and session-scoped locks have different lifetimes. A read-only fence also needs resource limits for long queries and sleeps; preventing row changes alone does not make arbitrary SQL harmless."
+}

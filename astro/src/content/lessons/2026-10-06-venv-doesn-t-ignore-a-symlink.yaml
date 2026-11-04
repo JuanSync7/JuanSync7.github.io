@@ -1,4 +1,15 @@
-date: 2026-10-06
-tag: git
-title: "'.venv/' doesn't ignore a symlink."
-why: "A trailing slash in .gitignore matches only directories, so a symlink named .venv slips into 'git add -A'. Write '.venv'."
+{
+  "date": "2026-10-06",
+  "tag": "git",
+  "title": "'.venv/' doesn't ignore a symlink.",
+  "why": "A trailing slash in .gitignore matches only directories, so a symlink named .venv slips into 'git add -A'. Write '.venv'.",
+  "problem": "A local environment link can slip into a commit even when .gitignore contains .venv/. The pattern looks right because the link points to a directory, but Git sees a different kind of entry.",
+  "cause": "A trailing slash restricts an ignore pattern to directories. A symbolic link named .venv is a link in the working tree, so a directory-only rule does not cover it.",
+  "steps": [
+    "Use .venv without the trailing slash when both a directory and a symlink should be ignored. Keep the pattern scoped to the intended repository location.",
+    "Check the index before adding everything. If the link is already tracked, remove it from the index deliberately; changing .gitignore alone does not untrack an existing entry."
+  ],
+  "solution": "Write ignore rules for the entry Git records, rather than the type of its target. This keeps local environment layout out of the repository across different developer setups.",
+  "verification": "Use git check-ignore -v .venv to identify the matching rule, then inspect the staged names. A local symlink should remain untracked after the normal add command.",
+  "limitations": "Ignore patterns are not protection for secrets already committed. A tracked environment entry needs separate cleanup, and other ignore files can affect which pattern wins."
+}

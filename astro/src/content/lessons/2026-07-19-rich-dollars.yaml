@@ -1,4 +1,16 @@
-date: 2026-07-19
-tag: python
-title: "Rich will happily colour your dollar signs."
-why: "Its number highlighter split '$0.04' with ANSI codes. Turn highlighting off for text that has to stay intact."
+{
+  "date": "2026-07-19",
+  "tag": "python",
+  "title": "Rich will happily colour your dollar signs.",
+  "why": "Its number highlighter split '$0.04' with ANSI codes. Turn highlighting off for text that has to stay intact.",
+  "problem": "A terminal footer can display a price correctly to a person while breaking code that expects the amount to be one intact string.",
+  "cause": "Rich’s automatic highlighter can insert ANSI formatting around numeric portions of text. Those invisible escape sequences divide values such as $0.04 in the raw output.",
+  "steps": [
+    "Decide whether the output is for display, machine parsing or both.",
+    "Disable automatic highlighting for text whose byte sequence must stay intact.",
+    "Provide a separate plain or structured output mode for machine consumers."
+  ],
+  "solution": "For example, a cost footer can use highlight=False while retaining deliberate styling around the whole line. That prevents a number-specific highlighter from modifying the middle of the amount.",
+  "verification": "Capture raw output with the actual terminal settings and inspect the complete amount. Test colored and noncolored paths, because a nonterminal capture may omit ANSI sequences and miss the bug.",
+  "limitations": "Other styling can still add escapes. Turning off highlighting is a targeted fix, while a supported JSON or plain-text interface gives downstream parsers a clearer contract."
+}

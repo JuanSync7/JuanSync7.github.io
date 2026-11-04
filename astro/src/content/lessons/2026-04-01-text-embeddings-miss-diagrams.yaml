@@ -1,4 +1,16 @@
-date: 2026-04-01
-tag: rag
-title: "Text embeddings miss diagrams."
-why: "Embed page images too, as patch vectors, so charts, tables and layouts that text extraction loses can still be found."
+{
+  "date": "2026-04-01",
+  "tag": "rag",
+  "title": "Text embeddings miss diagrams.",
+  "why": "Embed page images too, as patch vectors, so charts, tables and layouts that text extraction loses can still be found.",
+  "problem": "A search can find the words on a page and still miss the diagram that explains them. Text extraction drops the positions, shapes and connections that made the page useful.",
+  "cause": "A text vector represents extracted words. A page-image model represents visual patches, so it can preserve signals that never became text.",
+  "steps": [
+    "Parse the document once, keeping both text chunks and page images.",
+    "Embed the text and page images into separate collections, joined by a stable document identifier.",
+    "Query both tracks and merge their results with the visual model’s scoring method."
+  ],
+  "solution": "Keep the text path and add a visual path beside it. For example, a block diagram with very little text can then be retrieved as a page rather than disappearing from the searchable content.",
+  "verification": "Use a question whose answer depends on a diagram. Check that retrieval returns the right page and that the answer points to the relevant visual evidence.",
+  "limitations": "Visual retrieval adds storage and model cost. A retrieved page still needs to be read correctly; finding it does not prove the answer."
+}

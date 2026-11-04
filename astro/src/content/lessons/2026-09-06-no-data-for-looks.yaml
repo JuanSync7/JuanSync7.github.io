@@ -1,4 +1,16 @@
-date: 2026-09-06
-tag: frontend
-title: "Never trade information for looks."
-why: "Wide tables get merged cells and an 'all columns' view, not hidden data. A pretty table that drops a column is a wrong table."
+{
+  "date": "2026-09-06",
+  "tag": "frontend",
+  "title": "Never trade information for looks.",
+  "why": "Wide tables get merged cells and an 'all columns' view, not hidden data. A pretty table that drops a column is a wrong table.",
+  "problem": "A table redesign can look cleaner by removing fields that a reader still needs to answer the question.",
+  "cause": "Layout pressure is a presentation problem. Hiding a data column to fit the screen changes what can be learned from the table and can make an incomplete answer appear complete.",
+  "steps": [
+    "List the information each task requires before redesigning.",
+    "Group related values or merge suitable presentation cells without discarding their meaning.",
+    "Provide a clear route to all columns and verify narrow-screen access."
+  ],
+  "solution": "Illustrative: a compact view may combine requested and used memory in one cell while an all-columns view keeps both separately available. The relationship stays visible without deleting either measurement.",
+  "verification": "Compare the redesigned table against the original field inventory. Every required value should be accessible, correctly labelled and usable at a phone-width viewport.",
+  "limitations": "Not every field belongs in the default view. Progressive disclosure is useful when access is clear; silently removing required information is the failure this lesson addresses."
+}

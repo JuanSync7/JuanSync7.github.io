@@ -1,4 +1,16 @@
-date: 2026-09-01
-tag: shell
-title: "grep -q under pipefail can fail on a match."
-why: "grep exits as soon as it matches, the writer gets SIGPIPE, and pipefail reports the whole pipe as failed."
+{
+  "date": "2026-09-01",
+  "tag": "shell",
+  "title": "grep -q under pipefail can fail on a match.",
+  "why": "grep exits as soon as it matches, the writer gets SIGPIPE, and pipefail reports the whole pipe as failed.",
+  "problem": "A shell check can find the expected text and still make a deployment script stop. That makes a working host look broken.",
+  "cause": "With pipefail enabled, every process contributes to pipeline status. grep -q exits after its first match; a producer still writing can receive SIGPIPE when the reader closes.",
+  "steps": [
+    "Keep pipefail enabled and inspect each pipeline status.",
+    "Replace the early-exit reader with one that consumes the full stream, such as grep -c, and interpret its result deliberately.",
+    "Keep a genuine producer error distinct from a missing match."
+  ],
+  "solution": "Illustrative: a long package listing piped to grep -q can fail only when the match appears early. Consuming the whole listing removes that timing-dependent broken pipe without hiding real errors.",
+  "verification": "Exercise a matching input, a nonmatching input and a producer failure. Expect three correctly interpreted results, including success for the first case.",
+  "limitations": "The failure depends on output size and timing, so a small local example may not reproduce it. Do not fix it by ignoring every nonzero pipeline status."
+}

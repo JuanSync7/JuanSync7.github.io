@@ -1,4 +1,16 @@
-date: 2026-04-01
-tag: debugging
-title: "To find why a tool refuses, change one input."
-why: "Grepping its output for clues is guessing. Two runs that differ by a single input show the cause directly."
+{
+  "date": "2026-04-01",
+  "tag": "debugging",
+  "title": "To find why a tool refuses, change one input.",
+  "why": "Grepping its output for clues is guessing. Two runs that differ by a single input show the cause directly.",
+  "problem": "A tool refuses an input, but its output contains several warnings. Matching one sentence does not show which condition caused the refusal.",
+  "cause": "Messages are written for people and can change. If two controlled runs differ in one input, their structured results give a cleaner causal signal.",
+  "steps": [
+    "Build a small input that is accepted.",
+    "Copy it and change only the condition you want to test.",
+    "Run both under the same environment and compare exit codes or structured result fields."
+  ],
+  "solution": "For an installer check, keep the destination and settings fixed, then add one invalid setting. If the accepted copy succeeds and the changed copy refuses, the test now targets that setting instead of guessing from wording.",
+  "verification": "Restore the changed input and expect acceptance again. Keep unrelated warnings identical across both runs so they cannot explain the difference.",
+  "limitations": "This isolates one condition only when other inputs and state stay fixed. Use text assertions when exact wording is itself a promised interface."
+}

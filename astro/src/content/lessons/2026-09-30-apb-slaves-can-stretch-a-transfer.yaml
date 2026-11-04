@@ -1,4 +1,16 @@
-date: 2026-09-30
-tag: protocols
-title: "APB slaves can stretch a transfer with PREADY."
-why: "A slow peripheral holds PREADY low to stall the access phase, so logic that assumes every APB transfer takes two cycles breaks."
+{
+  "date": "2026-09-30",
+  "tag": "protocols",
+  "title": "APB slaves can stretch a transfer with PREADY.",
+  "why": "A slow peripheral holds PREADY low to stall the access phase, so logic that assumes every APB transfer takes two cycles breaks.",
+  "problem": "A peripheral bus controller can work with a fast device and fail as soon as a slower device stretches a transfer.",
+  "cause": "APB has a setup phase followed by an access phase. PREADY can keep the access phase active for extra cycles, so completing every transfer after a fixed two-cycle sequence discards the handshake.",
+  "steps": [
+    "Enter access after setup and keep the request selected.",
+    "Hold address and control stable while PREADY is low.",
+    "Complete the transfer only on the valid access handshake and sample the result then."
+  ],
+  "solution": "Illustrative: insert three wait cycles before the peripheral raises PREADY. The controller should remain in access through those cycles rather than advance to the next request.",
+  "verification": "Simulate immediate completion and several wait lengths. Check stable request signals during the wait and exactly one completion when PSEL, PENABLE and PREADY are high.",
+  "limitations": "Signal availability and error handling depend on the APB revision. Reset, back-to-back transfers and PSLVERR timing need separate cases beyond this basic wait-state check."
+}

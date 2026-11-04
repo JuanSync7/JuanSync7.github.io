@@ -1,4 +1,15 @@
-date: 2026-08-14
-tag: data
-title: "Too many categories is as bad as too many synonyms."
-why: "Split a vocabulary too finely and tags scatter; leave it open and synonyms pile up. Both break grouping, so keep the list closed and short."
+{
+  "date": "2026-08-14",
+  "tag": "data",
+  "title": "Too many categories is as bad as too many synonyms.",
+  "why": "Split a vocabulary too finely and tags scatter; leave it open and synonyms pile up. Both break grouping, so keep the list closed and short.",
+  "problem": "A classification system can fail even with no spelling variants: too many nearly identical categories scatter related records across different buckets.",
+  "cause": "A free vocabulary lets names drift, while an over-split closed vocabulary asks users or models to make distinctions the documents do not support.",
+  "steps": [
+    "Build the first list from real records and merge categories that do not change a useful downstream decision.",
+    "Keep values closed, define each boundary and provide an explicit unknown state rather than forcing a guess."
+  ],
+  "solution": "For decision status, use a small standard set and place separate nuance in qualifier fields. An assumed accepted decision can remain accepted with an assumption flag instead of gaining another near-synonym status.",
+  "verification": "Classify a mixed sample and inspect disagreements and the unknown rate. Validate the examples against the same enum the tool enforces, including the qualifier needed to retain meaning.",
+  "limitations": "A short list is not automatically the right list. Add a distinction when evidence and a consuming workflow need it, and treat the change as a versioned schema decision."
+}

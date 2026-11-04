@@ -1,4 +1,16 @@
-date: 2026-08-06
-tag: tooling
-title: "A tool nobody updates is worse than none."
-why: "People trust stale data. Put the truth next to the work so updating it is a side effect, not a chore people skip."
+{
+  "date": "2026-08-06",
+  "tag": "tooling",
+  "title": "A tool nobody updates is worse than none.",
+  "why": "People trust stale data. Put the truth next to the work so updating it is a side effect, not a chore people skip.",
+  "problem": "A tracker can keep showing a confident status long after the work has moved on. The danger is not an empty field; it is a field people still trust.",
+  "cause": "When recording progress is a separate chore in another interface, it competes with the work itself. A complete tool can still become stale if using it is awkward or its updates have no natural owner.",
+  "steps": [
+    "Find the action that already establishes the fact: a completed run, an approved change or a recorded requirement decision.",
+    "Capture that evidence beside the work and let other views read from it. Keep manually entered claims distinct from results that have an execution record.",
+    "Give readers a way to see freshness and uncertainty. Test the workflow with the people who must update it, not only with the person building the tool."
+  ],
+  "solution": "Make keeping the record current a side effect of doing the job. A familiar dashboard can remain a view without becoming a second place where the same truth must be retyped.",
+  "verification": "Follow one completed task from its actual evidence to the displayed status. Then change the work and check whether the view updates or visibly becomes stale.",
+  "limitations": "Automatic collection does not make an interpretation correct. Decisions, exceptions and human judgment still need clear ownership and a way to be corrected."
+}

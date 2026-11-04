@@ -1,4 +1,16 @@
-date: 2026-09-07
-tag: eda
-title: "Sign-off tools peak where you can't restart."
-why: "Timing and physical checks hit peak memory in phases that can't be checkpointed, so an OOM means starting over. Size from a comparable run."
+{
+  "date": "2026-09-07",
+  "tag": "eda",
+  "title": "Sign-off tools peak where you can't restart.",
+  "why": "Timing and physical checks hit peak memory in phases that can't be checkpointed, so an OOM means starting over. Size from a comparable run.",
+  "problem": "A long electronic-design check can lose hours of work when memory runs out at a phase with no restart point.",
+  "cause": "Some peak-memory phases cannot be checkpointed mid-step. A completed earlier stage may be recoverable, but it does not preserve progress through the phase that was killed.",
+  "steps": [
+    "Find a comparable successful run and inspect its peak memory.",
+    "Request enough memory before launching the nonrestartable phase.",
+    "Save supported stage-boundary databases and document the real restart point."
+  ],
+  "solution": "Illustrative: a physical check that peaks near completion may still have to restart from the beginning of that check after an out-of-memory kill. A late failure is not necessarily a cheap retry.",
+  "verification": "Review the tool's supported recovery behavior and a comparable run's measured peak. The plan should say which stage can resume and which work must be repeated.",
+  "limitations": "Comparable means similar design and settings. More requested memory reduces risk but is not proof of sufficiency, and scheduler changes to a running allocation may not be available."
+}

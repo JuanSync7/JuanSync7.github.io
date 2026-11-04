@@ -1,4 +1,16 @@
-date: 2026-06-16
-tag: testing
-title: "Some checks need no oracle at all."
-why: "A AND B must sit inside A. count(A) plus count(NOT A) must equal the total. Relations like these catch parser bugs cheaply."
+{
+  "date": "2026-06-16",
+  "tag": "testing",
+  "title": "Some checks need no oracle at all.",
+  "why": "A AND B must sit inside A. count(A) plus count(NOT A) must equal the total. Relations like these catch parser bugs cheaply.",
+  "problem": "A query layer can return plausible rows without a known exact answer for every possible query. That makes broad parser checks difficult.",
+  "cause": "Some results must obey relationships even without a separate expected-answer system. These checks are often called metamorphic checks.",
+  "steps": [
+    "Choose a fixed data snapshot and a relation that should hold.",
+    "Run the related queries against that same snapshot.",
+    "Compare row sets as well as counts, and save the inputs needed to replay a failure."
+  ],
+  "solution": "For example, rows matching A AND B must be contained in the rows matching A. On a complete two-valued partition, count(A) plus count(NOT A) must equal the total. A broken parser can violate either relation.",
+  "verification": "Deliberately alter a query interpretation in a safe test and expect a relation check to fail. A repeatable seed and snapshot make the failure useful to investigate.",
+  "limitations": "NULL semantics, pagination and changing data can invalidate a relation’s assumptions. These checks complement independent expected answers; an implementation can preserve the chosen relations and still be wrong elsewhere."
+}

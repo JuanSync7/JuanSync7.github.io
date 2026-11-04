@@ -1,4 +1,15 @@
-date: 2026-08-17
-tag: linux
-title: "install -d resets modes on existing directories."
-why: "It applies mode and owner even when the directory already exists, so a deploy step quietly loosened a 0700 directory to 0755."
+{
+  "date": "2026-08-17",
+  "tag": "linux",
+  "title": "install -d resets modes on existing directories.",
+  "why": "It applies mode and owner even when the directory already exists, so a deploy step quietly loosened a 0700 directory to 0755.",
+  "problem": "A deployment step intended only to ensure a directory exists can also change the permissions of a directory that was already deliberately private.",
+  "cause": "install -d applies requested directory attributes to existing directories too. Existence and ownership or mode enforcement are different operations hidden behind one convenient command.",
+  "steps": [
+    "Decide whether deployment owns the directory’s policy or merely needs to use an existing parent.",
+    "If preserving an existing directory is the requirement, avoid applying a broad install mode to it; inspect the parent and create only the missing path under an explicit policy."
+  ],
+  "solution": "Do not use an unconditional `install -d -m 0755` as a harmless existence check for a directory expected to remain 0700. Keep permission changes deliberate and reviewable.",
+  "verification": "In a temporary tree, prepare a 0700 directory and run the proposed deployment step. Read its mode back and expect preservation if that is the contract; also test initial creation.",
+  "limitations": "A check-then-create sequence can race. Security-sensitive directories may need stronger creation and ownership checks, and deployment should fail when an existing path violates its required policy."
+}

@@ -1,4 +1,15 @@
-date: 2026-10-16
-tag: agents
-title: "A skill's description says when, not how."
-why: "The description decides when it fires. Put the steps in the body; steps in the description only blur the trigger."
+{
+  "date": "2026-10-16",
+  "tag": "agents",
+  "title": "A skill's description says when, not how.",
+  "why": "The description decides when it fires. Put the steps in the body; steps in the description only blur the trigger.",
+  "problem": "A skill may be selected correctly and still have its procedure skipped. If its description contains a miniature workflow, the agent can treat that summary as enough to act on.",
+  "cause": "The description is the routing surface: it helps choose when to load the skill. Mixing trigger conditions with abbreviated steps gives the reader a shortcut that omits the body's checks and decision points.",
+  "steps": [
+    "Write the description around the task symptoms and situations that should trigger the skill. Include a confusing near-match if it helps distinguish the skill from another available one.",
+    "Put the ordered procedure, prerequisites and checks in the body. Keep one maintained process so the description cannot drift into an older, shorter version of it."
+  ],
+  "solution": "Separate finding the right instructions from following them. A good trigger gets the agent to the full procedure rather than trying to replace that procedure with a sentence.",
+  "verification": "Test should-trigger and should-not-trigger prompts, then inspect a selected run to see whether the body was actually read and followed. Routing success and process compliance are separate results.",
+  "limitations": "A clearer description cannot guarantee obedience, and overlapping skills may still compete. Report the scope and sample of any routing evaluation instead of treating a few successes as a universal firing rate."
+}

@@ -1,4 +1,16 @@
-date: 2026-07-23
-tag: security
-title: "Once a doc is in a shared index, assume it was read."
-why: "You can't know who already searched it. Decide what goes in up front, because removing it later doesn't undo the exposure."
+{
+  "date": "2026-07-23",
+  "tag": "security",
+  "title": "Once a doc is in a shared index, assume it was read.",
+  "why": "You can't know who already searched it. Decide what goes in up front, because removing it later doesn't undo the exposure.",
+  "problem": "Removing a sensitive document from a search system does not prove that nobody already retrieved or copied it.",
+  "cause": "Indexing creates an access path and may create derived chunks, embeddings, caches or generated answers. Deletion can close future paths but cannot recall information already delivered.",
+  "steps": [
+    "Decide which content and audiences are permitted before indexing.",
+    "Verify that retrieval enforces the intended per-user or per-group scope.",
+    "Plan deletion across original documents and derived stores, while keeping exposure uncertainty explicit."
+  ],
+  "solution": "For example, a connector reading as one application may index documents more broadly than an individual user could read. Search must preserve the required permission boundary instead of assuming source permissions automatically follow.",
+  "verification": "Test an allowed and a forbidden retrieval with representative identities. Inspect what the indexing account can see and what each search user can receive.",
+  "limitations": "A retrieval test proves the cases exercised, not that past exposure never happened. Audit logs can help investigate, but incomplete logs should remain an uncertainty rather than a claim of no access."
+}

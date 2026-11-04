@@ -1,4 +1,16 @@
-date: 2026-07-30
-tag: git
-title: "core.fileMode=false drops exec bits silently."
-why: "With file modes ignored, a chmod +x never reaches the commit, and the script fails on the next clone."
+{
+  "date": "2026-07-30",
+  "tag": "git",
+  "title": "core.fileMode=false drops exec bits silently.",
+  "why": "With file modes ignored, a chmod +x never reaches the commit, and the script fails on the next clone.",
+  "problem": "A script can run locally after chmod +x and still arrive non-executable in a fresh clone.",
+  "cause": "Git records an executable bit in its index. When core.fileMode is false, ordinary working-tree mode changes are ignored, so chmod alone may never update the committed mode.",
+  "steps": [
+    "Inspect both the local permissions and the mode recorded by Git.",
+    "Use a supported index mode update when the filesystem cannot reliably track it.",
+    "Review and commit the mode change along with the script."
+  ],
+  "solution": "For example, an executable script should normally appear with mode 100755 in the index rather than 100644. The file’s local ls output cannot establish what another clone will receive.",
+  "verification": "Inspect the staged mode change and launch the script from a fresh disposable clone on a compatible filesystem. That checks the committed artifact rather than the author’s workspace.",
+  "limitations": "Disabling file-mode detection can be legitimate on some filesystems. The fix is to record the intended index mode deliberately, not to assume every environment must use the same local setting."
+}

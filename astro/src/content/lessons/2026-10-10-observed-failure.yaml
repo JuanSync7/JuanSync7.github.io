@@ -1,4 +1,15 @@
-date: 2026-10-10
-tag: agents
-title: "Every instruction should answer a failure you saw."
-why: "Rules written for imagined problems pile up and get ignored. Write the rule after the mistake, and say which one."
+{
+  "date": "2026-10-10",
+  "tag": "agents",
+  "title": "Every instruction should answer a failure you saw.",
+  "why": "Rules written for imagined problems pile up and get ignored. Write the rule after the mistake, and say which one.",
+  "problem": "An agent rule file can grow with plausible warnings until the important rules become hard to find. Advice without a real case is difficult to test and difficult to remove.",
+  "cause": "A rule spends attention on every task where it is loaded. Without a specific failure behind it, nobody can tell whether it prevents a recurring problem or merely sounds cautious.",
+  "steps": [
+    "Capture the observed mistake and the condition that made it possible. Write the smallest correction that would have changed that case, including the scope where it applies.",
+    "Ask whether a script, test or hook can enforce the correction. Put deterministic checks there and leave the agent the judgement that cannot be reduced to a reliable check."
+  ],
+  "solution": "Keep the rule, its reason and the case connected. This lets a future reviewer narrow or retire the rule when the workflow changes.",
+  "verification": "Replay the original failure as a fixture where practical. The new check should reject it while accepting a nearby valid case, so a broad prohibition does not quietly replace the real correction.",
+  "limitations": "Some preventative controls are justified by external requirements or known hazards before a local failure occurs. Name that basis explicitly instead of inventing an observed incident."
+}

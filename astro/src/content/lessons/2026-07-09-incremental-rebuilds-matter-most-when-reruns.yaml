@@ -1,4 +1,16 @@
-date: 2026-07-09
-tag: build
-title: "Incremental rebuilds matter most when reruns cost money."
-why: "Skipping unchanged steps saves minutes for a compiler and real money for an LLM step, where every rerun is billed."
+{
+  "date": "2026-07-09",
+  "tag": "build",
+  "title": "Incremental rebuilds matter most when reruns cost money.",
+  "why": "Skipping unchanged steps saves minutes for a compiler and real money for an LLM step, where every rerun is billed.",
+  "problem": "Rerunning an unchanged language-model stage spends money again even when its previous accepted result is still applicable.",
+  "cause": "A dependency graph makes it possible to identify which results depend on changed inputs. Without that relationship, a small edit can trigger a full rebuild or leave old results looking current.",
+  "steps": [
+    "Record each stage’s inputs, recipe identity and accepted output.",
+    "Invalidate affected descendants when a relevant input changes.",
+    "Reuse unaffected accepted results and rerun stale stages in dependency order."
+  ],
+  "solution": "For example, editing one source document should invalidate its summary and consumers, while leaving unrelated summaries available. The reuse decision belongs to deterministic input tracking, not to a model’s opinion that nothing important changed.",
+  "verification": "Change one fixture input and inspect the exact set of stages marked stale. Confirm that unrelated stages remain reusable and that changed configuration also invalidates the right results.",
+  "limitations": "The declared dependency set must be complete. A reused model answer remains a saved accepted answer, not a promise that generating it again would produce identical text."
+}

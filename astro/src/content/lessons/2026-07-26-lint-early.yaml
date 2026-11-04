@@ -1,4 +1,16 @@
-date: 2026-07-26
-tag: lint
-title: "Lint early, or integrate late."
-why: "Hardware integration is slow, so a mistake found there costs days. Lint and static formal move the check to where it is cheap."
+{
+  "date": "2026-07-26",
+  "tag": "lint",
+  "title": "Lint early, or integrate late.",
+  "why": "Hardware integration is slow, so a mistake found there costs days. Lint and static formal move the check to where it is cheap.",
+  "problem": "A structural RTL mistake found during subsystem integration costs more to isolate because many blocks and assumptions are already interacting.",
+  "cause": "Lint and static analysis can inspect local rules before a long simulation or full integration run. Earlier feedback keeps the investigation close to the change that introduced the problem.",
+  "steps": [
+    "Choose relevant lint and static-formal goals for the block.",
+    "Run them through a repeatable script during local development.",
+    "Review violations and govern waivers before accepting the block into the next integration stage."
+  ],
+  "solution": "For example, a width mismatch can be caught at a module interface before it turns into unexpected data several blocks downstream. The earlier report gives a smaller search area than a late behavioral symptom.",
+  "verification": "Use a known-bad fixture to confirm the normal flow runs the intended rule. Check tool logs and loaded configuration, not just the wrapper’s exit status.",
+  "limitations": "Early analysis complements simulation and later implementation checks. It does not prove that the requirements are right or that every functional path works, and no new estimate of days saved is claimed."
+}

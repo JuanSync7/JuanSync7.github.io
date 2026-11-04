@@ -1,4 +1,15 @@
-date: 2026-08-26
-tag: process
-title: "Enforce the standard one level up."
-why: "If the job wrapper adds the metadata every job needs, nobody below has to remember it, and the data comes out clean."
+{
+  "date": "2026-08-26",
+  "tag": "process",
+  "title": "Enforce the standard one level up.",
+  "why": "If the job wrapper adds the metadata every job needs, nobody below has to remember it, and the data comes out clean.",
+  "problem": "A team can ask every job author to include the same metadata and still receive incomplete records, because each script has to remember the rule independently.",
+  "cause": "The requirement is shared, but enforcement sits below the common boundary. Every new caller becomes another opportunity to omit or invent the fields.",
+  "steps": [
+    "Identify the wrapper or submission boundary that every supported job already crosses.",
+    "Have that layer derive common metadata, validate required caller inputs and reject incomplete submissions before the lower-level work begins."
+  ],
+  "solution": "For a job record, the wrapper can attach submission identity and timing consistently while the job supplies only task-specific fields. Define which fields callers may override instead of silently accepting conflicting copies.",
+  "verification": "Submit a minimal job through the wrapper and expect a complete standard record. Test a missing required input and an attempted protected-field override; both should produce a clear decision.",
+  "limitations": "This works only for paths that cross the boundary. Direct execution needs to be disallowed or explicitly outside the contract, and centrally added metadata still needs a trustworthy source."
+}

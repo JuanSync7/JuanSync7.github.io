@@ -1,4 +1,16 @@
-date: 2026-09-17
-tag: eda
-title: "The scheduler can't see licences checked out mid-run."
-why: "A job gets its node, then waits on a licence the scheduler never knew about, holding memory and cores the whole time."
+{
+  "date": "2026-09-17",
+  "tag": "eda",
+  "title": "The scheduler can't see licences checked out mid-run.",
+  "why": "A job gets its node, then waits on a licence the scheduler never knew about, holding memory and cores the whole time.",
+  "problem": "A job can reserve cores and memory while making no useful progress because its tool is waiting for a licence.",
+  "cause": "The scheduler allocates compute before a tool performs a runtime checkout. If that licence demand is absent from scheduler accounting, the compute allocation looks active throughout the wait.",
+  "steps": [
+    "Separate scheduler queue time from runtime licence wait.",
+    "Correlate the tool's checkout evidence with its compute allocation.",
+    "Expose held compute during the wait before deciding whether scheduling or flow changes would help."
+  ],
+  "solution": "Illustrative: a job may receive a node immediately and then wait for a scarce feature. Its short scheduler wait does not mean its total resource wait was short.",
+  "verification": "Trace a representative job from allocation through checkout to useful work. Check that the report names the two waits separately and labels inferred attribution.",
+  "limitations": "Polling and indirect joins may not prove an exact job-to-checkout link. Scheduler-aware licence integration also requires accurate feature demand and an operational policy, not merely another dashboard metric."
+}

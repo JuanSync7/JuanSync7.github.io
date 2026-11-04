@@ -1,4 +1,15 @@
-date: 2026-10-11
-tag: planning
-title: "Decide slowly, then move fast."
-why: "Before you build is the cheap window. Lay everything out while being wrong still costs an edit; once a project ramps up, every mistake costs more and the team ends up firefighting."
+{
+  "date": "2026-10-11",
+  "tag": "planning",
+  "title": "Decide slowly, then move fast.",
+  "why": "Before you build is the cheap window. Lay everything out while being wrong still costs an edit; once a project ramps up, every mistake costs more and the team ends up firefighting.",
+  "problem": "Building quickly can make a wrong assumption expensive before anyone sees it. Once code, dependencies and schedules form around the choice, a small correction can turn into substantial rework.",
+  "cause": "Early sketches are cheap to change because they have few consumers. Laying out goals, workflows and interfaces exposes mismatches while removing or moving a block still costs an edit.",
+  "steps": [
+    "Sketch the whole system far enough to show its users, main flows, dependencies and acceptance checks. Use an earlier project as a starting point, cutting what does not fit rather than inheriting every feature.",
+    "Challenge the risky assumptions with small prototypes and feedback. Then select a narrow working slice, keeping the wider layout open to revision as evidence arrives."
+  ],
+  "solution": "Spend early effort on decisions that would be costly to reverse. The sketch should make choices easier, not become a promise to build every box it contains.",
+  "verification": "Ask whether a reviewer can trace the first slice from the goal through its interfaces to a concrete check. Unanswered questions that block that path need a decision or a bounded experiment.",
+  "limitations": "Software can be cheap to change, so endless design has its own cost. Estimates from one earlier project remain uncertain; a reusable blueprint is evidence to adapt, not a fixed multiplier."
+}

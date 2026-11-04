@@ -1,4 +1,16 @@
-date: 2026-07-16
-tag: evals
-title: "The grader must not share code with the thing it grades."
-why: "If the checker and the converter use the same extraction, their mistakes cancel and the score reads perfect."
+{
+  "date": "2026-07-16",
+  "tag": "evals",
+  "title": "The grader must not share code with the thing it grades.",
+  "why": "If the checker and the converter use the same extraction, their mistakes cancel and the score reads perfect.",
+  "problem": "A converter and its checker can agree perfectly because both make the same extraction mistake.",
+  "cause": "If the expected result comes through the same parser or intermediate conversion as the output under test, a shared loss appears on both sides and cancels out of the comparison.",
+  "steps": [
+    "Trace how the output and expected result are produced.",
+    "Read the original source independently for the properties being checked.",
+    "Use damaged fixtures that alter text, order and structure separately."
+  ],
+  "solution": "For example, if both paths reorder slides by filename, comparing their text will not expose the wrong presentation order. The expected sequence must come from the presentation’s own ordering relationships.",
+  "verification": "Plant a one-sided defect and a shared-helper defect in disposable fixtures. The check should reveal whether its independence is real or only assumed.",
+  "limitations": "An independent checker is still an implementation with blind spots. Token recall also ignores extra text and order, so a perfect recall score must not stand in for structural fidelity or full correctness."
+}

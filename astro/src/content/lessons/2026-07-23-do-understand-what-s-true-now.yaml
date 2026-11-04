@@ -1,4 +1,16 @@
-date: 2026-07-23
-tag: docs
-title: "Do, understand, what's true now."
-why: "Docs split into runsheets, references and registers, plus frozen decision records for why. Mix them and every one gets worse."
+{
+  "date": "2026-07-23",
+  "tag": "docs",
+  "title": "Do, understand, what's true now.",
+  "why": "Docs split into runsheets, references and registers, plus frozen decision records for why. Mix them and every one gets worse.",
+  "problem": "A document becomes harder to trust when instructions, current facts, task status and historical decisions are mixed on the same page.",
+  "cause": "These forms answer different questions and age differently. A current reference must change with the system, while a decision record should preserve why a choice was made at that time.",
+  "steps": [
+    "Put repeatable actions in a runsheet with prerequisites and checks.",
+    "Keep current facts in a reference and changing inventories or status in a register.",
+    "Record the reasoning behind a decision in a dated, preserved decision record."
+  ],
+  "solution": "For example, the command to restart a service belongs in its operating instructions. Why that supervisor was chosen belongs in the decision record, linked from the current reference if useful.",
+  "verification": "Ask a fresh reader to find what to do, what is true now and why the design exists. Check each answer against its intended owner and remove duplicated facts.",
+  "limitations": "The names are a useful local taxonomy, not the only documentation system. A small project can combine sections if the purpose and maintenance rules remain clear."
+}

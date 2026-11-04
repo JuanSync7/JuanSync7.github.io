@@ -1,4 +1,16 @@
-date: 2026-04-28
-tag: evals
-title: "No model as the judge in a gate."
-why: "A deterministic scorer gives the same answer twice. A model judge can flip on a rerun, and a gate that flips isn't a gate."
+{
+  "date": "2026-04-28",
+  "tag": "evals",
+  "title": "No model as the judge in a gate.",
+  "why": "A deterministic scorer gives the same answer twice. A model judge can flip on a rerun, and a gate that flips isn't a gate.",
+  "problem": "A required gate becomes difficult to trust when the same unchanged answer can pass once and fail on the next run.",
+  "cause": "A language-model judge adds variable interpretation and generation to the scoring step. That variability can obscure whether the candidate itself changed.",
+  "steps": [
+    "State the properties the gate must establish.",
+    "Score machine-checkable properties with deterministic code.",
+    "Keep judgment-based review visible as a separate verdict with its evidence and limits."
+  ],
+  "solution": "For a structured output, validate required fields and exact invariants in code. The same input should receive the same structural verdict, leaving a reviewer to judge qualities such as clarity that the schema cannot establish.",
+  "verification": "Run the scorer twice on identical fixtures and expect identical results. Add a known invalid fixture and confirm that it is rejected for the intended rule.",
+  "limitations": "Deterministic scoring is only as good as its rules. Free-form quality may still need human or bounded model review; a stable score does not prove that every important property was checked."
+}

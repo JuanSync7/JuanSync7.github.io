@@ -1,4 +1,15 @@
-date: 2026-10-12
-tag: linux
-title: "Judge a process by its private memory."
-why: "Listings count shared buffers once per process, so a database looks enormous. Private memory shows what each process really holds."
+{
+  "date": "2026-10-12",
+  "tag": "linux",
+  "title": "Judge a process by its private memory.",
+  "why": "Listings count shared buffers once per process, so a database looks enormous. Private memory shows what each process really holds.",
+  "problem": "Summing process memory listings can make a database look much larger than the memory it uniquely occupies. Stopping the largest-looking process on that basis may target the wrong source of pressure.",
+  "cause": "Resident memory can include pages shared by several processes. Adding those numbers counts shared buffers repeatedly, whereas private memory identifies pages belonging to only one process.",
+  "steps": [
+    "Separate private and shared memory in the inspection, using the operating system's available accounting tools. Compare process figures with total host pressure, swap and filesystem-backed memory.",
+    "Take another sample after an interval to distinguish a growing footprint from stable shared buffers. Check the process role before deciding whether its memory is expected or idle waste."
+  ],
+  "solution": "Use private memory for process attribution and shared-page-aware totals for the host view. Keep scratch files in the investigation too, because RAM-backed files may not be obvious in one process's listing.",
+  "verification": "For an illustrative comparison, inspect several connections to the same database. Their listed resident sizes should not be treated as independent private allocations of the shared buffer pool.",
+  "limitations": "Private memory alone does not describe every resource a process causes the system to retain. Permissions, kernel accounting and swapped pages can limit what a single snapshot reveals."
+}

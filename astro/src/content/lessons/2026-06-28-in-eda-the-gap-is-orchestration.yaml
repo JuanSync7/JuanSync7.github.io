@@ -1,4 +1,16 @@
-date: 2026-06-28
-tag: eda
-title: "In EDA, the gap is orchestration, not tools."
-why: "People forget updates and skip steps. Tools should be deterministic recipe runners, with AI only judging, converting or fixing around them."
+{
+  "date": "2026-06-28",
+  "tag": "eda",
+  "title": "In EDA, the gap is orchestration, not tools.",
+  "why": "People forget updates and skip steps. Tools should be deterministic recipe runners, with AI only judging, converting or fixing around them.",
+  "problem": "A design flow can have capable tools and still fail because an update was forgotten or a required handoff step was skipped.",
+  "cause": "The missing layer is coordination: declared inputs, ordered work and evidence of completion. A new reasoning model does not by itself make those dependencies reliable.",
+  "steps": [
+    "Express the repeatable flow as deterministic steps with explicit inputs and outputs.",
+    "Record tool versions and the evidence produced by each step.",
+    "Use AI for bounded judgment, conversion or diagnosis around that controlled execution."
+  ],
+  "solution": "For example, run a known recipe to produce a timing report, then ask an assistant to explain the failing paths. Keep the execution and report identity independent of the explanation so the result can be reproduced and checked.",
+  "verification": "Follow one handoff from input revision to output evidence. Confirm that a missing prerequisite prevents the downstream claim of completion rather than being hidden by a plausible summary.",
+  "limitations": "This is an architectural direction from the source. Deterministic orchestration does not remove tool defects, incomplete requirements or the need for engineering judgment."
+}

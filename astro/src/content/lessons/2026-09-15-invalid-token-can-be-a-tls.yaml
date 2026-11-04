@@ -1,4 +1,16 @@
-date: 2026-09-15
-tag: tls
-title: "'Invalid token' can be a TLS error."
-why: "gh auth status reports any failure as a bad token. Check for a certificate error before you log in again."
+{
+  "date": "2026-09-15",
+  "tag": "tls",
+  "title": "'Invalid token' can be a TLS error.",
+  "why": "gh auth status reports any failure as a bad token. Check for a certificate error before you log in again.",
+  "problem": "An authentication status command can call a token invalid when its request never reaches the authentication service.",
+  "cause": "Certificate verification happens before the server can judge credentials. A wrapper may flatten that transport error into a generic authentication failure, sending troubleshooting down the wrong path.",
+  "steps": [
+    "Read the underlying error before replacing credentials.",
+    "Check the certificate chain and the client's actual trust store.",
+    "Install the approved trust root or configure the supported CA bundle, then retry the same request."
+  ],
+  "solution": "Illustrative: if HTTPS fails with a certificate error while an independently configured SSH path works, changing the token will not repair the HTTPS trust chain.",
+  "verification": "Expect certificate validation to complete before interpreting the service's authentication response. Keep transport success and credential acceptance as separate observations.",
+  "limitations": "A TLS fix does not prove the token is valid. Client trust stores differ, and certificate verification should remain enabled while the missing trust configuration is corrected."
+}

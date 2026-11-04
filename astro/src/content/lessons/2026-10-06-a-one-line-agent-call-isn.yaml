@@ -1,4 +1,15 @@
-date: 2026-10-06
-tag: llm
-title: "A one-line agent call isn't a small call."
-why: "Most of its cost is the agent writing its own long system prompt to cache. Tiny requests carry a fixed overhead."
+{
+  "date": "2026-10-06",
+  "tag": "llm",
+  "title": "A one-line agent call isn't a small call.",
+  "why": "Most of its cost is the agent writing its own long system prompt to cache. Tiny requests carry a fixed overhead.",
+  "problem": "A one-line request to an agent can cost more than its visible prompt suggests. Estimating from the user's sentence misses the context the agent framework sends before it can answer.",
+  "cause": "The request may include a long system prompt, tool definitions and a cache write. Those are input costs even when the requested answer is only a few words.",
+  "steps": [
+    "Measure the whole invocation with token and cost telemetry. Separate ordinary input, cache creation, cache reads and output so the fixed overhead is visible.",
+    "Compare a fresh invocation with a warm repeat under the same configuration. Use the actual billing categories rather than assuming all cached tokens have the same price."
+  ],
+  "solution": "Choose the smallest execution path that can do the task. A direct structured call may suit a tiny operation; an agent is worthwhile when its tools and judgement earn their setup cost.",
+  "verification": "Check whether reducing the user prompt changes total billed work meaningfully. The expected result is a cost breakdown that explains the bill, including context outside the visible request.",
+  "limitations": "Cache behaviour depends on provider, lifetime and exact prompt reuse. One reported call does not establish a universal token overhead, and saving cost must not remove context needed for correctness."
+}

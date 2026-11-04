@@ -1,4 +1,16 @@
-date: 2026-04-30
-tag: process
-title: "Slice vertically, not horizontally."
-why: "'All the error handling everywhere' is too broad to test and easy to miss. 'Error handling and logging for one part' has a clear edge and a clear test."
+{
+  "date": "2026-04-30",
+  "tag": "process",
+  "title": "Slice vertically, not horizontally.",
+  "why": "'All the error handling everywhere' is too broad to test and easy to miss. 'Error handling and logging for one part' has a clear edge and a clear test.",
+  "problem": "A task such as “fix error handling everywhere” spreads across too many paths to test as one coherent change.",
+  "cause": "The work is cut by concern across the whole system rather than by a bounded behavior. Ownership and the test boundary become unclear.",
+  "steps": [
+    "Define shared error and logging contracts first.",
+    "Choose one part of the system with a clear input and output.",
+    "Plan, test, implement and review that part end to end before widening the work."
+  ],
+  "solution": "A slice might handle validation errors and logging for one import path. It can be exercised from bad input to the final response, so missing behavior has a clear owner.",
+  "verification": "Check that each promised behavior has a test within the slice and that the slice agrees with the shared contract. Then inspect the seam where it hands work to the next part.",
+  "limitations": "Vertical slices do not remove cross-cutting work. Without a common contract and an integration pass, several small slices can still produce inconsistent error behavior."
+}

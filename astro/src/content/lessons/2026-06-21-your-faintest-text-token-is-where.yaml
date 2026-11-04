@@ -1,4 +1,16 @@
-date: 2026-06-21
-tag: design
-title: "Your faintest text token is where contrast fails."
-why: "A muted ink at about 3.3:1 sits below the 4.5:1 that small text needs. Check the dimmest token, not just the body colour."
+{
+  "date": "2026-06-21",
+  "tag": "design",
+  "title": "Your faintest text token is where contrast fails.",
+  "why": "A muted ink at about 3.3:1 sits below the 4.5:1 that small text needs. Check the dimmest token, not just the body colour.",
+  "problem": "A page can have readable body text while its small comments and secondary labels fail contrast checks.",
+  "cause": "The faintest text token often receives less attention than the main ink colour. Its foreground/background pair still needs enough contrast for the text’s size and role.",
+  "steps": [
+    "List every text token and its actual backgrounds.",
+    "Measure the weakest pairs, including secondary labels and states.",
+    "Adjust the token or its use rather than fixing only one visible instance."
+  ],
+  "solution": "A muted colour around 3.3:1 falls below the usual 4.5:1 requirement for normal-size text. Darkening or lightening the shared token, as appropriate for the background, can fix the same problem across many components.",
+  "verification": "Check the rendered pairs in each supported theme and state. Include the smallest secondary text; a passing body colour does not establish that the page’s whole text system passes.",
+  "limitations": "Contrast thresholds differ for large text and some exempt content. A numerical pass also does not fix tiny type, poor spacing or colour-only status cues, so inspect the reading experience too."
+}

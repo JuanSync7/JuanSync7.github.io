@@ -1,4 +1,15 @@
-date: 2026-08-09
-tag: linux
-title: "An idle service in swap isn't a leak."
-why: "A long-lived model server with nothing to do gets its weights paged out. It looks like a leak and is usually just the kernel tidying."
+{
+  "date": "2026-08-09",
+  "tag": "linux",
+  "title": "An idle service in swap isn't a leak.",
+  "why": "A long-lived model server with nothing to do gets its weights paged out. It looks like a leak and is usually just the kernel tidying.",
+  "problem": "A long-lived model service can show substantial swap usage after sitting idle. That number alone is not enough to diagnose a memory leak.",
+  "cause": "The kernel can move infrequently used pages out of RAM. Model weights remain part of the process even when those pages are not resident, so swap records placement rather than proving continued allocation.",
+  "steps": [
+    "Observe the process’s resident memory and swap over time, together with its workload and idle periods.",
+    "Compare repeated equivalent requests and subsequent idle periods; look for continuing growth rather than judging one snapshot."
+  ],
+  "solution": "Separate retained model data from unbounded growth. If an idle service is unnecessary, an idle timeout may address resource use without calling normal paging a leak.",
+  "verification": "The useful evidence is a time series: does memory settle after comparable work, or keep growing? Include response latency after idle, because paging back in can still affect users.",
+  "limitations": "Swapping can coexist with a real leak or host pressure. A stable footprint does not establish acceptable performance, and a single observation cannot settle either question."
+}

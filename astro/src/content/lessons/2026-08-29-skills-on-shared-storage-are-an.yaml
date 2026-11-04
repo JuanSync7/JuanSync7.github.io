@@ -1,4 +1,15 @@
-date: 2026-08-29
-tag: security
-title: "Skills on shared storage are an injection path."
-why: "Anyone who can write to that folder can write instructions your agent will follow. Lock the folder or don't load from it."
+{
+  "date": "2026-08-29",
+  "tag": "security",
+  "title": "Skills on shared storage are an injection path.",
+  "why": "Anyone who can write to that folder can write instructions your agent will follow. Lock the folder or don't load from it.",
+  "problem": "An agent can load apparently useful project instructions that another user has changed on a shared filesystem.",
+  "cause": "A skill is executable influence over future decisions. Anyone who can alter its loaded bytes can change what the agent is told to read, run or trust, even without changing the main task.",
+  "steps": [
+    "Inventory loaded skill paths and determine who can write their files and parent directories.",
+    "Restrict trusted skill sources to controlled releases with protected permissions, or disable loading from paths that untrusted users can modify."
+  ],
+  "solution": "Keep reviewed instruction releases distinct from a collaborative working folder. Check the resolved path as well as its displayed name, because a protected-looking entry can point into writable storage.",
+  "verification": "Using a harmless test instruction, confirm that untrusted shared content is not loaded. Verify trusted release identity and how existing sessions pick up or retain a policy update.",
+  "limitations": "Filesystem protection reduces this injection route; it does not make every instruction trustworthy. Review content and other loading paths, and distinguish agent governance from controls a determined local user can bypass."
+}

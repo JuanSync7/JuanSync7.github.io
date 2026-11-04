@@ -1,4 +1,16 @@
-date: 2026-05-30
-tag: aws
-title: "Ask for a model family, not a version."
-why: "Callers that use a family alias never need a config edit when a new version ships. The mapping moves in one place."
+{
+  "date": "2026-05-30",
+  "tag": "aws",
+  "title": "Ask for a model family, not a version.",
+  "why": "Callers that use a family alias never need a config edit when a new version ships. The mapping moves in one place.",
+  "problem": "Callers become tied to model releases when each configuration names a concrete version. Upgrading then requires finding and editing every consumer.",
+  "cause": "The version-selection rule is duplicated across callers instead of owned by one model registry or resolver.",
+  "steps": [
+    "Let callers request a stable family name.",
+    "Resolve that name centrally to an approved, working version for the required environment.",
+    "Reject unresolved aliases clearly and retain the resolved version in run records."
+  ],
+  "solution": "A caller can ask for an “opus” family while the registry maps it to the newest working member found by the platform sweep. The caller’s intent stays stable and the upgrade rule changes in one place.",
+  "verification": "Check that all consumers resolve through the same mapping and that an unknown family fails visibly. Record the concrete model used so a past run can still be explained after the mapping moves.",
+  "limitations": "A family alias favors maintained behavior over exact replay. Use a recorded concrete version where reproducibility requires it, and do not promote an untested release merely because it is newer."
+}

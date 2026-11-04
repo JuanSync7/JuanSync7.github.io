@@ -1,4 +1,16 @@
-date: 2026-09-23
-tag: teams
-title: "When prototypes take hours, alignment is the bottleneck."
-why: "Building stopped being the slow part. Agreeing on direction is, so talk it through together and early."
+{
+  "date": "2026-09-23",
+  "tag": "teams",
+  "title": "When prototypes take hours, alignment is the bottleneck.",
+  "why": "Building stopped being the slow part. Agreeing on direction is, so talk it through together and early.",
+  "problem": "A team can build competing solutions quickly when it has not agreed which problem matters.",
+  "cause": "Faster prototyping reduces the cost of implementation but increases the cost of discovering disagreement late. Unstated direction lets each contributor optimize a different result.",
+  "steps": [
+    "Agree on the user need and a concrete success condition early.",
+    "Make unresolved choices visible before parallel implementation.",
+    "Use a small reviewable artifact to settle the next decision together."
+  ],
+  "solution": "Illustrative: two people may both build a good dashboard while one optimizes investigation and the other optimizes a weekly summary. A shared reader task exposes that difference before both layouts are finished.",
+  "verification": "Ask each contributor to describe the goal and acceptance condition independently. Material disagreement means the direction still needs discussion before more implementation is useful.",
+  "limitations": "Alignment is not unanimity about every detail. Keep routine reversible choices with their owner, and return to shared discussion when new evidence changes the goal or its important constraints."
+}

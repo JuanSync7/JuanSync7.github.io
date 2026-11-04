@@ -1,4 +1,15 @@
-date: 2026-08-08
-tag: accessibility
-title: "Colour alone can't carry state."
-why: "A red dot means nothing to a colour-blind reader or on a grey printout. Add a shape, a pattern or a word."
+{
+  "date": "2026-08-08",
+  "tag": "accessibility",
+  "title": "Colour alone can't carry state.",
+  "why": "A red dot means nothing to a colour-blind reader or on a grey printout. Add a shape, a pattern or a word.",
+  "problem": "A status display loses meaning when a reader cannot distinguish its colours, or when the page is printed in grey.",
+  "cause": "Colour conveys a difference without necessarily naming it. Even readers who see every colour still need to know whether a particular dot means queued, running or failed.",
+  "steps": [
+    "Give each state a visible word or a distinct shape, then use colour as an additional cue.",
+    "Put the legend near the display and check it against every state the data can produce, including missing or unknown data."
+  ],
+  "solution": "For example, show “failed” beside an error mark rather than expecting a red circle to explain itself. Keep the label attached to the item, so the reader need not repeatedly consult a distant key.",
+  "verification": "View the screen in greyscale and ask someone to identify each state without using its colour. Check that text and marks also remain legible at the intended size.",
+  "limitations": "This is one accessibility check, not a complete accessibility review. Contrast, keyboard use and assistive technology still need their own checks."
+}

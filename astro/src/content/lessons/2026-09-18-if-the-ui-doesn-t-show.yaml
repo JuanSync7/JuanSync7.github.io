@@ -1,4 +1,16 @@
-date: 2026-09-18
-tag: frontend
-title: "If the UI doesn't show it, it wasn't computed."
-why: "Metrics the database worked out and the page threw away were wasted effort. A lot of value was already there, unshown."
+{
+  "date": "2026-09-18",
+  "tag": "frontend",
+  "title": "If the UI doesn't show it, it wasn't computed.",
+  "why": "Metrics the database worked out and the page threw away were wasted effort. A lot of value was already there, unshown.",
+  "problem": "A useful metric can exist in the database and still be unavailable to the person making the decision.",
+  "cause": "A response field that is dropped by the UI or export has no visible gap where it should have been. Backend computation alone does not establish that the product exposes its result.",
+  "steps": [
+    "Inventory the fields the backend already returns.",
+    "Map each decision-relevant metric to a visible explanation or export field.",
+    "Check coverage in both directions so removed and newly added fields are noticed."
+  ],
+  "solution": "Illustrative: adding a computed waste measure to SQL is incomplete if neither the page nor its CSV includes it. Surfacing the existing field may solve the need without another query.",
+  "verification": "Compare the actual API response with the displayed and exported field sets. Required metrics should appear with units and scope, and obsolete fields should not linger silently.",
+  "limitations": "Not every internal field belongs in the UI. Select fields by the user's task and privacy needs; coverage should guard the agreed public contract rather than expose the database wholesale."
+}

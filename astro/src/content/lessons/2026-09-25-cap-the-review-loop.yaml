@@ -1,4 +1,16 @@
-date: 2026-09-25
-tag: reviews
-title: "Cap the review loop."
-why: "Each round finds small issues in the last round's fixes. Without a severity cap, a two-line fix grows into thousands of lines."
+{
+  "date": "2026-09-25",
+  "tag": "reviews",
+  "title": "Cap the review loop.",
+  "why": "Each round finds small issues in the last round's fixes. Without a severity cap, a two-line fix grows into thousands of lines.",
+  "problem": "A small fix can turn into an unbounded campaign when each review round expands the set of issues worth fixing.",
+  "cause": "Review creates useful new observations, but it also finds minor issues introduced by earlier corrections. Without a severity and scope rule, the stopping point moves after every pass.",
+  "steps": [
+    "Define the blocking severity and intended scope before review.",
+    "Fix findings that cross that boundary and record the rest separately.",
+    "Run the agreed final gate on the exact revised change and stop when its blockers are resolved."
+  ],
+  "solution": "Illustrative: a cosmetic naming suggestion discovered during a narrow correctness fix can go into a follow-up rather than trigger another broad refactor and review cycle.",
+  "verification": "Check that the final verdict names the reviewed revision, unresolved blockers and deferred findings. The stop should follow an explicit rule rather than fatigue or an arbitrary round count.",
+  "limitations": "A severity cap is not permission to ignore a serious newly discovered issue. If evidence changes the risk or scope materially, revise the work boundary explicitly."
+}

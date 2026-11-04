@@ -1,4 +1,15 @@
-date: 2026-08-25
-tag: networking
-title: "Check the search domain before calling a host missing."
-why: "A short name can fail while the full name resolves. A reverse lookup is a cheap way to confirm."
+{
+  "date": "2026-08-25",
+  "tag": "networking",
+  "title": "Check the search domain before calling a host missing.",
+  "why": "A short name can fail while the full name resolves. A reverse lookup is a cheap way to confirm.",
+  "problem": "A failed lookup of a short hostname can be mistaken for a missing machine when the fully qualified name resolves normally.",
+  "cause": "The short form depends on the client’s search domains and resolver configuration. A resolver that does not know the relevant private zone cannot infer the intended full name.",
+  "steps": [
+    "Inspect the configured search domain and try the expected fully qualified hostname with the active resolver.",
+    "If it resolves, inspect the address’s reverse record as a consistency check and use the confirmed full name for the next connection test."
+  ],
+  "solution": "For a placeholder host called build, compare build with build.example.internal before changing DNS or declaring the host absent. Keep the exact name used in diagnostics.",
+  "verification": "Record forward lookup results for both names and any reverse mapping. Then test the intended service separately: successful DNS resolution is only a name-to-address result.",
+  "limitations": "Reverse DNS can be absent or stale, so a PTR record is supporting evidence rather than proof of identity or authorization. Split DNS and VPN routing may also change what each resolver knows."
+}

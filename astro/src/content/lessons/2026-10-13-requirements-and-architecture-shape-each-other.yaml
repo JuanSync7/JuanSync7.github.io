@@ -1,4 +1,15 @@
-date: 2026-10-13
-tag: design
-title: "Requirements and architecture shape each other."
-why: "A design choice shows a requirement is vague or too costly; a requirement shows a missing block. Write them together, in short loops."
+{
+  "date": "2026-10-13",
+  "tag": "design",
+  "title": "Requirements and architecture shape each other.",
+  "why": "A design choice shows a requirement is vague or too costly; a requirement shows a missing block. Write them together, in short loops.",
+  "problem": "Finishing all requirements before exploring any architecture can hide an impossible or needlessly expensive demand. Designing first can hide the opposite problem: a neat system with no answer to an actual need.",
+  "cause": "Requirements constrain the design, while design choices expose missing detail and derived obligations. Working in only one direction delays that feedback until changes have more dependencies.",
+  "steps": [
+    "Write a small set of goals and a rough architecture together. Allocate each requirement across the parts that contribute to it, identifying the budget or interface each part must meet.",
+    "Use what the allocation reveals to refine the requirement or change the design. Record the trade-off, then repeat the loop at the next useful level of detail."
+  ],
+  "solution": "Keep intent and mechanism in conversation. For an illustrative latency target, divide the budget across processing and transport; if one part cannot meet its share, revisit the allocation or target explicitly.",
+  "verification": "Check that each important requirement has a design path and that each major design block has a reason. An infeasible budget should appear as an open decision, not a quietly omitted number.",
+  "limitations": "A repeated, well-understood design may need less exploration. The source's research model was not independently checked against its cited paper, so this lesson presents the working method rather than a research finding."
+}

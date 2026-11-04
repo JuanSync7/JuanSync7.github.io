@@ -1,4 +1,15 @@
-date: 2026-10-06
-tag: python
-title: "A surviving mutant can be a stale .pyc."
-why: "After an in-place edit within the same second, Python reused the cached bytecode. Run mutation checks with python -B."
+{
+  "date": "2026-10-06",
+  "tag": "python",
+  "title": "A surviving mutant can be a stale .pyc.",
+  "why": "After an in-place edit within the same second, Python reused the cached bytecode. Run mutation checks with python -B.",
+  "problem": "A mutation check can appear to tolerate a deliberate bug because the test imported old bytecode. That turns a cache problem into a false conclusion about test quality.",
+  "cause": "Python may validate cached bytecode using source timestamps and size. A rapid same-size edit can therefore be hard to distinguish from the source that produced the cache.",
+  "steps": [
+    "Run mutation probes in an isolated copy and remove existing bytecode caches before the probe, or direct caches to a fresh location. Confirm that the test imports the mutated source file.",
+    "Use python -B to avoid writing more bytecode during the probe, then restore the source and check the working tree. Keep mutation debris out of later tests."
+  ],
+  "solution": "Treat a surviving mutant as something to investigate: first establish which code executed, then judge whether the assertion detected the changed behaviour.",
+  "verification": "Make a mutation with a clear expected failure and inspect the imported module path. After the clean-cache run, the relevant test should fail for the planted defect.",
+  "limitations": "The short lesson preserves the historical -B advice, but -B suppresses writes; it does not guarantee existing bytecode will not be read. Import paths and already-loaded modules are separate causes to rule out."
+}

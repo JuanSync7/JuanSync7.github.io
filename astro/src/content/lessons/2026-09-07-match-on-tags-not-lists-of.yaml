@@ -1,4 +1,16 @@
-date: 2026-09-07
-tag: aws
-title: "Match on tags, not lists of ARNs."
-why: "Listing each model in an IAM policy hits the size limit at around fifty. Matching a tier tag scales to any number."
+{
+  "date": "2026-09-07",
+  "tag": "aws",
+  "title": "Match on tags, not lists of ARNs.",
+  "why": "Listing each model in an IAM policy hits the size limit at around fifty. Matching a tier tag scales to any number.",
+  "problem": "An authorization policy can run out of room as its list of model resources grows.",
+  "cause": "Enumerating resource identifiers makes policy size grow with the catalogue. A resource-tag condition expresses the tier rule once, keeping the authorization rule separate from the model count.",
+  "steps": [
+    "Choose a tier tag and assign it to the supported resources.",
+    "Restrict invocation through a condition matching the intended tier.",
+    "Check who can change the tag as part of the same authorization design."
+  ],
+  "solution": "Illustrative: adding another model to a tier should require correctly tagging its application profile, rather than adding another resource string to every caller's policy.",
+  "verification": "Probe a permitted tier resource, another tier and an untagged resource. Expect only the intended tier to be available through the tested role.",
+  "limitations": "Tag conditions depend on service and action support. Constant policy size does not mean unlimited service capacity, and another unrestricted invocation path can defeat the intended isolation."
+}

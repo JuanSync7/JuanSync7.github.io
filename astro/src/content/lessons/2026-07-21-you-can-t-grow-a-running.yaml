@@ -1,4 +1,16 @@
-date: 2026-07-21
-tag: slurm
-title: "You can't grow a running Slurm job's memory."
-why: "The cgroup limit is fixed when the step launches, so even an admin edit after start doesn't change what is enforced. Get the request right before submitting."
+{
+  "date": "2026-07-21",
+  "tag": "slurm",
+  "title": "You can't grow a running Slurm job's memory.",
+  "why": "The cgroup limit is fixed when the step launches, so even an admin edit after start doesn't change what is enforced. Get the request right before submitting.",
+  "problem": "A running job can approach its memory ceiling while an administrative request change gives the false impression that more memory has become available.",
+  "cause": "The scheduler installs the enforced resource limit when the job step starts. In the environment described by the source, changing the request after launch did not resize that running cgroup.",
+  "steps": [
+    "Estimate and request memory before submission using representative peak measurements.",
+    "Check the effective limit on the running step rather than only the scheduler’s requested value.",
+    "If more memory is needed, use a supported restart or requeue plan with checkpoints."
+  ],
+  "solution": "For example, a long EDA flow can save a stage-boundary database and resume a later stage in a newly sized allocation. A mid-stage memory peak without a checkpoint may require repeating that stage.",
+  "verification": "On an authorized test job, compare the submitted request with the effective cgroup limit. Verify that the chosen restart path restores the expected state before relying on it.",
+  "limitations": "This reflects the cited cluster behavior, not every scheduler version or administrative configuration. Accounting samples can miss short memory peaks, and a pending request change is not proof of effective enforcement."
+}

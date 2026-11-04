@@ -1,4 +1,16 @@
-date: 2026-07-02
-tag: design
-title: "If you can't draw it, you don't understand it."
-why: "A system should fit on a block diagram, and the code should be laid out like the diagram, so a reader knows where to look without grep."
+{
+  "date": "2026-07-02",
+  "tag": "design",
+  "title": "If you can't draw it, you don't understand it.",
+  "why": "A system should fit on a block diagram, and the code should be laid out like the diagram, so a reader knows where to look without grep.",
+  "problem": "A reader should not need a repository-wide search to discover which part of a system owns a task.",
+  "cause": "When code is arranged by incidental helpers rather than system responsibilities, the architecture exists only in the author’s head. Changes then require rediscovering the same boundaries.",
+  "steps": [
+    "Draw the main responsibilities and the data crossing their boundaries.",
+    "Give each block a clear owner in the code layout.",
+    "Walk one real request from entry point to result and check that the diagram follows it."
+  ],
+  "solution": "For example, a pipeline with ingest, validate and export blocks should make those three responsibilities easy to locate. Shared utilities can support the blocks, but should not hide the direction of data flow or become an unexplained extra core.",
+  "verification": "Ask a fresh reader where a validation change belongs, then compare the answer with the diagram and actual imports. Disagreement reveals a boundary or naming problem.",
+  "limitations": "A diagram is a model, so small helpers need not each become a box. Keep the view at a useful level and revise it when responsibilities move."
+}

@@ -1,4 +1,16 @@
-date: 2026-07-02
-tag: build
-title: "Same commit, different report means a hidden input."
-why: "Reruns with no code change still differed, because released IP, flow scripts and tool versions weren't declared. Declare them before trusting a cache."
+{
+  "date": "2026-07-02",
+  "tag": "build",
+  "title": "Same commit, different report means a hidden input.",
+  "why": "Reruns with no code change still differed, because released IP, flow scripts and tool versions weren't declared. Declare them before trusting a cache.",
+  "problem": "A cache keyed only by source commit can reuse a result produced under a different external environment.",
+  "cause": "A flow can consume released IP, scripts, libraries and tool builds that live outside the source repository. The commit stays fixed while these inputs change, so apparently identical reruns are not identical experiments.",
+  "steps": [
+    "Inventory external inputs at each stage, including tool builds and library releases.",
+    "Record immutable versions or content digests in a run manifest.",
+    "Build the cache key from the complete declared input set."
+  ],
+  "solution": "Compare report content separately from run metadata. An illustrative report with a new build number is not a functional change; a changed timing result under an unchanged source commit is a reason to inspect the environment.",
+  "verification": "Rerun a small stage with pinned inputs, then deliberately change one external input and confirm that the cache misses. Compare normalized reports only where removing metadata is justified.",
+  "limitations": "Declaring inputs is necessary for safe caching, but does not make a nondeterministic tool deterministic. The historical source reports hidden-input drift; this draft does not reproduce that trial."
+}

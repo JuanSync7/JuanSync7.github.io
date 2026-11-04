@@ -1,4 +1,16 @@
-date: 2026-04-18
-tag: eda
-title: "Constraints and netlists belong in a release area."
-why: "A user's own directory is the least reproducible input. Local config tweaks are fine, but SDC, UPF and netlists need a controlled, traceable source."
+{
+  "date": "2026-04-18",
+  "tag": "eda",
+  "title": "Constraints and netlists belong in a release area.",
+  "why": "A user's own directory is the least reproducible input. Local config tweaks are fine, but SDC, UPF and netlists need a controlled, traceable source.",
+  "problem": "A flow can use the right tool version and still be hard to reproduce when the exact design inputs and their owner cannot be traced. A personal directory alone does not establish that problem.",
+  "cause": "Untracked edits to timing constraints, power intent or a netlist change the design being built. A path alone does not identify which bytes were used.",
+  "steps": [
+    "Put shared design inputs under a controlled source or release process.",
+    "Record their versions with the run.",
+    "Keep local convenience settings separate from the authoritative design inputs."
+  ],
+  "solution": "For example, a user may choose local display settings, but the run should resolve its SDC timing constraints and netlist from a traceable revision. Another person can then obtain the same inputs without copying an entire home directory.",
+  "verification": "Inspect the run record and resolve each design input to exact bytes and a responsible owner. A personal checkout can be acceptable when its revision and ownership are traceable; inspect the actual control rule before accepting a path-based warning.",
+  "limitations": "Location alone does not establish control. Exploration can start with local files, but comparisons and handoffs need traceable inputs. A shared pathname that can be overwritten is not enough either."
+}

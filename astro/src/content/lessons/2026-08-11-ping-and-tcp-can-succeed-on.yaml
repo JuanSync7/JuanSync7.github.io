@@ -1,4 +1,15 @@
-date: 2026-08-11
-tag: networking
-title: "Ping and TCP can succeed on a starved host."
-why: "The kernel answers ICMP and completes TCP handshakes even when userspace is wedged. Only SSH or VNC banner timing showed the host was stuck."
+{
+  "date": "2026-08-11",
+  "tag": "networking",
+  "title": "Ping and TCP can succeed on a starved host.",
+  "why": "The kernel answers ICMP and completes TCP handshakes even when userspace is wedged. Only SSH or VNC banner timing showed the host was stuck.",
+  "problem": "A machine can answer ping and accept a TCP connection while interactive services remain unusable. Treating those probes as a full health check hides the failure users see.",
+  "cause": "The kernel can handle network responses while the userspace process that should send a service banner is stalled. The connection and the application response exercise different layers.",
+  "steps": [
+    "Measure connection establishment separately from the time to an SSH or other expected service banner.",
+    "If the banner stalls, gather process state and kernel diagnostics through an available console or monitoring route before deciding the cause."
+  ],
+  "solution": "Put an application-level response into the health check, with a timeout meaningful to users. Keep ping as evidence of network reachability rather than evidence of a usable login service.",
+  "verification": "The probe should distinguish “cannot connect” from “connected but no banner.” Compare those observations with process waits and kernel messages when diagnosing memory pressure or blocked storage.",
+  "limitations": "A missing banner does not uniquely prove userspace starvation. Service configuration, filtering and a failed daemon can look similar; the deeper evidence determines the diagnosis."
+}

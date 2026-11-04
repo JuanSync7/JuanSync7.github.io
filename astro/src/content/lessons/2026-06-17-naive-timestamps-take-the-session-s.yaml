@@ -1,4 +1,16 @@
-date: 2026-06-17
-tag: postgres
-title: "Naive timestamps take the session's time zone."
-why: "Postgres read naive datetime parameters in the session time zone, so a summer-time shift moved every window by an hour. Pass time-zone-aware values."
+{
+  "date": "2026-06-17",
+  "tag": "postgres",
+  "title": "Naive timestamps take the session's time zone.",
+  "why": "Postgres read naive datetime parameters in the session time zone, so a summer-time shift moved every window by an hour. Pass time-zone-aware values.",
+  "problem": "A time-window query can shift by an hour when a datetime without a time zone is bound to PostgreSQL under a daylight-saving session setting.",
+  "cause": "A naive value lacks an explicit offset. The database can interpret it using the session time zone, so the same wall-clock text does not necessarily mean the intended instant.",
+  "steps": [
+    "Parse incoming time values into timezone-aware datetimes.",
+    "Choose a clear internal convention, such as UTC.",
+    "Bind those typed values and test the window on the real PostgreSQL path."
+  ],
+  "solution": "If a request means a UTC instant, send an aware UTC value rather than a bare local-looking timestamp. The query then carries the intended instant instead of asking the session to supply its missing meaning.",
+  "verification": "Use records around a summer-time transition and compare results under different session time zones. Expect the same intended instants to remain inside the requested window.",
+  "limitations": "Column type and driver behavior still matter. SQLite-only tests can miss PostgreSQL binding differences, and a timestamp intended as local civil time needs an explicit, different contract."
+}

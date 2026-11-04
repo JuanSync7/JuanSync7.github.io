@@ -1,4 +1,15 @@
-date: 2026-08-20
-tag: ops
-title: "Running the deployment finds what reading it won't."
-why: "A health check read the local user file while real accounts lived in the directory service, so it audited almost nobody. Only the live run showed it."
+{
+  "date": "2026-08-20",
+  "tag": "ops",
+  "title": "Running the deployment finds what reading it won't.",
+  "why": "A health check read the local user file while real accounts lived in the directory service, so it audited almost nobody. Only the live run showed it.",
+  "problem": "A deployment health check can run cleanly while inspecting only a small local subset of the accounts the host actually uses.",
+  "cause": "Reading a local user file assumes that identity is local. On a directory-backed host, that assumption can omit the people whose setup the deployment is meant to verify.",
+  "steps": [
+    "State the host assumptions and use the system’s supported identity lookup rather than treating the local file as the whole population.",
+    "Run the deployment and its health check on a representative host, comparing discovered accounts and paths with the intended scope."
+  ],
+  "solution": "Include a directory-backed account in the acceptance case. A script that audits local accounts successfully still needs to demonstrate that the real identity source reaches the audit.",
+  "verification": "Check which accounts were examined, not only the exit code. Exercise a known bad setup for an in-scope directory account and expect the health check to report it.",
+  "limitations": "A live run covers that host and version, not an entire fleet. Keep differences such as directory services, home-directory links and security policy explicit when expanding deployment."
+}

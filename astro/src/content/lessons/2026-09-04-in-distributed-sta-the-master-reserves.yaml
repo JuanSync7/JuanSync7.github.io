@@ -1,4 +1,16 @@
-date: 2026-09-04
-tag: eda
-title: "In distributed STA, the master reserves big and uses little."
-why: "The coordinator mostly hands scenarios to worker jobs, so its memory request skews right-sizing. Its own launch log, not job shape, shows which workers it spawned."
+{
+  "date": "2026-09-04",
+  "tag": "eda",
+  "title": "In distributed STA, the master reserves big and uses little.",
+  "why": "The coordinator mostly hands scenarios to worker jobs, so its memory request skews right-sizing. Its own launch log, not job shape, shows which workers it spawned.",
+  "problem": "A distributed timing job can look wasteful when its coordinator is sized like the workers that do the analysis.",
+  "cause": "The coordinator dispatches scenarios while worker jobs hold the analysis state. Similar job names or requests do not prove the jobs share the same role or memory needs.",
+  "steps": [
+    "Read the coordinator's launch log to identify its workers.",
+    "Separate coordinator measurements from worker measurements.",
+    "Compare memory needs within the same role and a comparable scenario set."
+  ],
+  "solution": "Illustrative: a small coordinator and several large workers should form separate sizing groups. Reducing every job to the coordinator's observed memory would undersize the workers; treating every request as worker demand hides coordinator waste.",
+  "verification": "Trace a sample launch from parent to child jobs, then inspect measured peaks by role. The reported distributed footprint should include the actual workers without counting unrelated lookalikes.",
+  "limitations": "Job shape is only a clue. If launch evidence is absent, keep lineage unknown rather than deriving a confident parent-child relationship from names alone."
+}

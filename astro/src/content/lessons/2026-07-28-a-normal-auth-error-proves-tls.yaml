@@ -1,4 +1,16 @@
-date: 2026-07-28
-tag: tls
-title: "A normal auth error proves TLS works."
-why: "If an unauthenticated request gets a plain 'access denied' back, the handshake succeeded, so the certificate problem is fixed."
+{
+  "date": "2026-07-28",
+  "tag": "tls",
+  "title": "A normal auth error proves TLS works.",
+  "why": "If an unauthenticated request gets a plain 'access denied' back, the handshake succeeded, so the certificate problem is fixed.",
+  "problem": "A certificate repair can be hard to judge when the next request fails for an unrelated authentication reason.",
+  "cause": "TLS verification happens before the application’s authorization response. If a verified connection receives the expected service’s normal access-denied result, the request progressed beyond the certificate problem on that path.",
+  "steps": [
+    "Keep certificate verification enabled while applying the intended trust bundle.",
+    "Send a minimal request that reaches the actual service without exposing secrets.",
+    "Classify the returned error by layer before changing credentials or application configuration."
+  ],
+  "solution": "For example, a normal unauthenticated service error is useful progress after a certificate-verification failure. It shows that the client accepted the certificate chain and exchanged application traffic.",
+  "verification": "Confirm the response came from the intended endpoint over a verified TLS connection. Then test authorized access separately if that is within scope.",
+  "limitations": "A proxy can generate its own denial, and disabled verification proves no trust repair. This observation is narrow evidence for that client and connection, not proof that every tool uses the same CA store."
+}

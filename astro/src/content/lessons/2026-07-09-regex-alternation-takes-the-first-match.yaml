@@ -1,4 +1,16 @@
-date: 2026-07-09
-tag: python
-title: "Regex alternation takes the first match, not the longest."
-why: "oa|oasis matched '.oa' and truncated the file extension. Put longer options first or add a boundary lookahead."
+{
+  "date": "2026-07-09",
+  "tag": "python",
+  "title": "Regex alternation takes the first match, not the longest.",
+  "why": "oa|oasis matched '.oa' and truncated the file extension. Put longer options first or add a boundary lookahead.",
+  "problem": "A filename extractor can return a plausible shorter extension instead of the full extension present in the text.",
+  "cause": "In a typical backtracking regular expression, alternatives are tried in order. If oa matches the start of oasis and no following boundary is required, the first successful branch can end the match early.",
+  "steps": [
+    "Put longer overlapping alternatives first and require the intended end boundary.",
+    "Add fixtures for every overlapping extension and for suffix text that should not match.",
+    "Inspect downstream stored results as well as the parser after fixing the expression."
+  ],
+  "solution": "For example, matching .oasis must not emit .oa. A boundary or full-token check protects the intended token more clearly than relying on branch order alone.",
+  "verification": "Compare extracted full paths against expected paths, then check any derived records that the old extractor populated. A corrected parser does not automatically repair rows already saved.",
+  "limitations": "Regex is often too weak for a complete command language. Prefer a parser, tool-reported inputs or observed file access when the surrounding syntax matters."
+}

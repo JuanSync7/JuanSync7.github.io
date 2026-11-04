@@ -1,4 +1,16 @@
-date: 2026-07-28
-tag: thoughts
-title: "Chip design's exclusivity is artificial."
-why: "The complexity is real. The gatekeeping isn't. More people in means more ideas and faster progress."
+{
+  "date": "2026-07-28",
+  "tag": "thoughts",
+  "title": "Chip design's exclusivity is artificial.",
+  "why": "The complexity is real. The gatekeeping isn't. More people in means more ideas and faster progress.",
+  "problem": "A field can be genuinely difficult while still making entry harder than the technical problem requires.",
+  "cause": "Hidden assumptions, inaccessible examples and unexplained tool flows add learning barriers beyond the underlying engineering. Those barriers limit who can contribute without improving correctness.",
+  "steps": [
+    "Separate essential prerequisites from knowledge kept implicit by habit.",
+    "Provide a small, legal-to-share example with a repeatable flow and checks.",
+    "Explain the failure modes and limits so newcomers can learn without mistaking a toy result for production readiness."
+  ],
+  "solution": "For example, a simple RTL block with a scripted simulation and lint run exposes the workflow more clearly than a list of tool names. The example should show how to recognize failure as well as success.",
+  "verification": "Ask a newcomer to follow the material and record where they need undocumented help. Repair those gaps while retaining the real technical requirements.",
+  "limitations": "Licensing, confidentiality and safety obligations still apply. Opening the learning path does not mean exposing protected designs or claiming that chip design becomes simple once the tools are visible."
+}

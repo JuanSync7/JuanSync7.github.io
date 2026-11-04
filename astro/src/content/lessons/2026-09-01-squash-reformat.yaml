@@ -1,4 +1,16 @@
-date: 2026-09-01
-tag: git
-title: "Squash merge undoes a reformat commit."
-why: "A mechanical reformat kept as its own commit protects git blame. Squash it into the feature and blame points at the formatter again."
+{
+  "date": "2026-09-01",
+  "tag": "git",
+  "title": "Squash merge undoes a reformat commit.",
+  "why": "A mechanical reformat kept as its own commit protects git blame. Squash it into the feature and blame points at the formatter again.",
+  "problem": "A formatter can obscure the history of a feature even when its changes were carefully separated during development.",
+  "cause": "Squashing combines the mechanical sweep and functional changes into one final commit. Later blame points to that combined change instead of leaving the reformat independently identifiable.",
+  "steps": [
+    "Commit formatting separately from behavior changes.",
+    "Choose a merge method that preserves the useful commit boundary.",
+    "Inspect the resulting history before relying on it for future debugging."
+  ],
+  "solution": "Illustrative: if a patch changes one condition and reformats a hundred files, preserve the formatting commit so a reader can identify and skip that mechanical change while tracing the condition.",
+  "verification": "Check the final branch history and run blame on representative reformatted lines. The mechanical change should still have its own commit identity after integration.",
+  "limitations": "A separate commit does not automatically make blame show the older semantic change; readers may still need to skip it. Repository merge rules can constrain the available strategy."
+}

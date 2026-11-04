@@ -1,4 +1,15 @@
-date: 2026-10-11
-tag: reporting
-title: "Silence is the absence of reporting, not of problems."
-why: "A block with no regression results isn't passing. No evidence means unknown, never green."
+{
+  "date": "2026-10-11",
+  "tag": "reporting",
+  "title": "Silence is the absence of reporting, not of problems.",
+  "why": "A block with no regression results isn't passing. No evidence means unknown, never green.",
+  "problem": "A dashboard can look healthy because nothing reported a failure. That is misleading when a block never ran its regression or the reporting path stopped collecting results.",
+  "cause": "A missing report says nothing about the underlying work. Treating absence as success collapses two different states: checked and passed, and not currently known.",
+  "steps": [
+    "Define the evidence required for each passing state, including the relevant inputs and completion result. Represent missing or stale evidence explicitly instead of filling it with a green default.",
+    "Track reporting coverage beside pass and fail counts. If an expected producer goes silent, surface that gap so someone can distinguish no work, failed collection and an unfinished run."
+  ],
+  "solution": "Let a green status follow evidence that actually meets the acceptance rule. A recorded statement about outside work can remain useful while waiting for a check inside the trusted workflow.",
+  "verification": "Remove an expected result from an illustrative fixture. The summary should become unknown or incomplete rather than improve its apparent pass rate.",
+  "limitations": "Not every inactive component is faulty. A deliberate exclusion or waiver needs its own visible meaning, and a zero-item run should not satisfy a requirement that expected real checks."
+}

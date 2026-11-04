@@ -1,4 +1,15 @@
-date: 2026-10-03
-tag: art
-title: "SVG is the wrong tool for painterly looks."
-why: "Watercolour or oil textures need raster generation. Vectors suit line and low-poly diagrams, and they diff and review like code."
+{
+  "date": "2026-10-03",
+  "tag": "art",
+  "title": "SVG is the wrong tool for painterly looks.",
+  "why": "Watercolour or oil textures need raster generation. Vectors suit line and low-poly diagrams, and they diff and review like code.",
+  "problem": "A painterly brief can become a long fight with a vector drawing tool. Smooth paths and editable shapes are useful, but they do not naturally provide the texture requested by a watercolour image.",
+  "cause": "SVG represents shapes, lines and text as structured drawing instructions. Raster images store pixels, which suit irregular marks and soft texture without requiring each mark to become an editable object.",
+  "steps": [
+    "Decide which property matters most: diagram structure and editable labels, or the appearance of a painted surface. Choose the output format before refining the image prompt.",
+    "Use SVG for line diagrams and simple geometric artwork. For a painterly illustration, generate a raster image at the intended display size and keep important labels separate where possible."
+  ],
+  "solution": "Match the medium to the job so effort goes into meaning and composition. A diagram benefits from visible structure; an atmospheric image benefits from texture.",
+  "verification": "Inspect the result at its actual page size. Check that diagram labels remain legible, or that the raster texture survives without distracting from the surrounding text.",
+  "limitations": "This is a practical default rather than a hard format limit. SVG filters and mixed media can imitate texture, but they add complexity that a simple illustration may not need."
+}

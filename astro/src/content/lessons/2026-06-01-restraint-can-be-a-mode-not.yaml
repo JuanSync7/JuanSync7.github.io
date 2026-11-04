@@ -1,4 +1,16 @@
-date: 2026-06-01
-tag: design
-title: "Restraint can be a mode, not a new design."
-why: "A reading page can be the same theme turned down: same palette and fonts, fewer colours, almost no motion."
+{
+  "date": "2026-06-01",
+  "tag": "design",
+  "title": "Restraint can be a mode, not a new design.",
+  "why": "A reading page can be the same theme turned down: same palette and fonts, fewer colours, almost no motion.",
+  "problem": "A visually active site can become tiring when the same treatment surrounds a long article. Building an unrelated reading theme can then fragment the design.",
+  "cause": "The palette and type can carry the identity without every accent and animation being active. Reading needs less competing emphasis.",
+  "steps": [
+    "Keep the core palette and font roles.",
+    "Reduce the number of accent treatments on the reading page.",
+    "Remove most motion and give the prose a calmer hierarchy."
+  ],
+  "solution": "Use the article view as a quieter mode of the same system. A heading can keep its familiar type while decorative blinking, repeated colour accents and competing widgets step back.",
+  "verification": "Read a full passage at the intended viewport and check whether the next line and section are easy to follow. Compare the page with the main site to see whether the shared visual identity still holds.",
+  "limitations": "Restraint does not fix poor contrast, line length or hierarchy. Some pages need richer interaction; use the mode according to the reading task rather than removing useful feedback everywhere."
+}

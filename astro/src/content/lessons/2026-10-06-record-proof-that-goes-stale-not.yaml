@@ -1,4 +1,15 @@
-date: 2026-10-06
-tag: process
-title: "Record proof that goes stale, not status people type."
-why: "A ticket says 'done' until someone edits it. Evidence tied to a hash goes stale by itself when an input changes."
+{
+  "date": "2026-10-06",
+  "tag": "process",
+  "title": "Record proof that goes stale, not status people type.",
+  "why": "A ticket says 'done' until someone edits it. Evidence tied to a hash goes stale by itself when an input changes.",
+  "problem": "A ticket marked done can stay green after the requirement or artifact it refers to has changed. The status records someone's earlier conclusion but has no way to notice its inputs moved.",
+  "cause": "A content hash identifies particular bytes. Evidence bound to those bytes can be compared with the current inputs, so a changed dependency makes the old result stale without anyone editing the ticket.",
+  "steps": [
+    "Record the artifact, its digest, the inputs it depends on and the check that produced the verdict. Keep a path or address that lets a reviewer recover the evidence.",
+    "When an input changes, compare its digest with the recorded one and invalidate the dependent result. Preserve the earlier evidence as history rather than silently overwriting its meaning."
+  ],
+  "solution": "Make the status a view of current evidence. A previous pass is still useful, but it should not stand in for a pass on a different requirement or build.",
+  "verification": "Change one consumed input in an illustrative trial. Its dependent result should become stale, while unrelated results remain current and the earlier artifact remains inspectable.",
+  "limitations": "Hashes prove identity and help detect change; they do not prove the original check was sound. Missing dependencies and an untrusted producer can still make a precise record misleading."
+}

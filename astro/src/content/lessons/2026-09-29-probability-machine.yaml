@@ -1,4 +1,16 @@
-date: 2026-09-29
-tag: ai
-title: "An LLM is a probability machine."
-why: "Output quality follows input quality, so the real work is the grounding and orchestration around the model."
+{
+  "date": "2026-09-29",
+  "tag": "ai",
+  "title": "An LLM is a probability machine.",
+  "why": "Output quality follows input quality, so the real work is the grounding and orchestration around the model.",
+  "problem": "A model can produce a fluent result that has no dependable relationship to the task's evidence.",
+  "cause": "Statistical generation responds to its context. Missing grounding and vague handoffs leave the model to supply likely text, while repeated prose handoffs can change meaning between steps.",
+  "steps": [
+    "Give each step the evidence and contract it needs.",
+    "Use deterministic code for decisions that can be specified exactly.",
+    "Reserve model judgment for the remaining ambiguous work and check its output before the next step."
+  ],
+  "solution": "Illustrative: a source-selection step should return structured document identities and evidence, rather than a persuasive paragraph that the next agent has to reinterpret as facts.",
+  "verification": "Trace a representative answer back through its selected sources and validation steps. Missing evidence should produce a visible gap rather than an invented completion.",
+  "limitations": "Better context does not guarantee truth. Schema validity proves structure, not factual support, and judgment steps still need appropriate review or comparison against known cases."
+}

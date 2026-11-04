@@ -1,4 +1,16 @@
-date: 2026-07-18
-tag: llm
-title: "Instructions loaded early fade by decision time."
-why: "Later context dilutes early instructions. Inject the rule at the point where the decision is made, not only at the start of the prompt."
+{
+  "date": "2026-07-18",
+  "tag": "llm",
+  "title": "Instructions loaded early fade by decision time.",
+  "why": "Later context dilutes early instructions. Inject the rule at the point where the decision is made, not only at the start of the prompt.",
+  "problem": "An instruction loaded at session start may have little practical effect when the relevant decision happens much later in a long context.",
+  "cause": "The model must select useful context among many later details. A rule far from the action can be overlooked even when it technically remains in the prompt.",
+  "steps": [
+    "Identify the decisions where a particular rule must influence behavior.",
+    "Place a short, relevant reminder or retrieved rule beside that decision.",
+    "Keep authoritative rule text in one owner so reminders do not become conflicting copies."
+  ],
+  "solution": "For example, a reviewer choosing whether a claim is supported should receive the evidence-status definitions with the claims it is judging. A general opening reminder to be careful is less specific to that choice.",
+  "verification": "Test representative long-context cases with the rule only at the start and with the relevant reminder near the decision. Compare actual rule compliance rather than prompt length alone.",
+  "limitations": "Context placement is a reliability aid, not a security boundary or a guaranteed attention rule. Excessive reminders can consume budget and create their own noise."
+}

@@ -1,4 +1,16 @@
-date: 2026-07-09
-tag: linux
-title: "A running daemon keeps using its deleted binary."
-why: "Long-running processes execute the unlinked old file until they restart, so an upgrade isn't live just because the file changed."
+{
+  "date": "2026-07-09",
+  "tag": "linux",
+  "title": "A running daemon keeps using its deleted binary.",
+  "why": "Long-running processes execute the unlinked old file until they restart, so an upgrade isn't live just because the file changed.",
+  "problem": "Installing a new executable does not prove that a long-running service is executing the new version.",
+  "cause": "A running process retains its loaded code and mappings. Replacing the file used for the next launch does not generally replace code already loaded into an existing daemon.",
+  "steps": [
+    "Check the installed version and the active process separately.",
+    "Use the service’s supported restart or reload procedure after the upgrade.",
+    "Inspect the restarted process and exercise the behavior the upgrade was meant to change."
+  ],
+  "solution": "For example, a versioned launcher can point at a new build while an old background session keeps running. A fresh shell proves the launcher’s choice, but says little about that existing session.",
+  "verification": "Confirm a new process start and obtain version information from the active service when possible. Follow with a small request that reaches the running instance.",
+  "limitations": "Some services explicitly support live reload or re-exec, and interpreted programs may load files later. Use the application’s update contract rather than assuming every replaced file behaves identically."
+}

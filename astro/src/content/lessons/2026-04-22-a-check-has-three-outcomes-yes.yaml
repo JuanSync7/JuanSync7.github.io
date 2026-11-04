@@ -1,4 +1,16 @@
-date: 2026-04-22
-tag: testing
-title: "A check has three outcomes: yes, no, and couldn't run."
-why: "Callers must tell 'the answer is no' from 'I couldn't ask'. One exit code for both hides a broken check."
+{
+  "date": "2026-04-22",
+  "tag": "testing",
+  "title": "A check has three outcomes: yes, no, and couldn't run.",
+  "why": "Callers must tell 'the answer is no' from 'I couldn't ask'. One exit code for both hides a broken check.",
+  "problem": "A caller cannot act correctly if a negative answer and a failed attempt to obtain an answer look identical.",
+  "cause": "One exit status collapses two different states: the check completed and found no match, or the check could not complete at all.",
+  "steps": [
+    "Document separate results for yes, no and unable to check.",
+    "Return those results from every execution path.",
+    "Make callers branch explicitly on all three outcomes."
+  ],
+  "solution": "For example, “the file is absent” can support a normal decision, while “permission denied while reading the directory” should stop that decision. Both may look like no result unless the check preserves its error state.",
+  "verification": "Exercise a positive fixture, a valid negative fixture and an unavailable prerequisite. Expect three distinguishable outcomes and confirm that the caller does not turn the last one into an ordinary no.",
+  "limitations": "The numeric exit codes are an interface choice and need documentation. A nonzero code is not automatically an error if the tool contract uses it for a valid negative result."
+}

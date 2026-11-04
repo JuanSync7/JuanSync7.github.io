@@ -1,4 +1,16 @@
-date: 2026-07-03
-tag: lint
-title: "Put the coding standard in the lint deck, not in people's heads."
-why: "Teams wrote RTL their own way and paid for it at integration. A shared rule set that runs on every block fixed what review kept missing."
+{
+  "date": "2026-07-03",
+  "tag": "lint",
+  "title": "Put the coding standard in the lint deck, not in people's heads.",
+  "why": "Teams wrote RTL their own way and paid for it at integration. A shared rule set that runs on every block fixed what review kept missing.",
+  "problem": "RTL that looks reasonable within each team can become expensive to integrate when teams follow different coding rules.",
+  "cause": "Reviewers can catch individual mistakes, but repeated style and structural checks depend on who happens to read a change. A shared lint deck applies the same baseline to every block.",
+  "steps": [
+    "Choose a common rule set and document any project-specific additions.",
+    "Run it through one scripted entry point for each block.",
+    "Review waivers as named exceptions with a reason, rather than silently disabling noisy checks."
+  ],
+  "solution": "For example, a width-mismatch rule should produce the same result in a small unit and at subsystem integration. Sharing the deck moves that feedback to the engineer making the change, before another team inherits it.",
+  "verification": "Place a known violation in a disposable fixture and confirm that the normal flow reports it. Check that each participating block actually loads the same rule configuration.",
+  "limitations": "Lint does not prove functional correctness. The source supports the shared-methodology lesson, but this rewrite makes no new claim about integration time saved or particular customer designs."
+}

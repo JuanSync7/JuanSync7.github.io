@@ -1,4 +1,16 @@
-date: 2026-04-23
-tag: testing
-title: "Write the tests from the plan, before the code."
-why: "Tests written after the code tend to describe the code. Written from the plan, they describe the intent and can't be bent to fit."
+{
+  "date": "2026-04-23",
+  "tag": "testing",
+  "title": "Write the tests from the plan, before the code.",
+  "why": "Tests written after the code tend to describe the code. Written from the plan, they describe the intent and can't be bent to fit.",
+  "problem": "Tests written after implementation can confirm the shape of the code while missing the behavior the plan actually promised.",
+  "cause": "The implementation becomes the test author’s reference. Mistakes in the code can then be copied into the expected result.",
+  "steps": [
+    "Write the intended behavior and boundary cases in the plan.",
+    "Derive the test cases before implementation begins.",
+    "Implement against those cases, then add targeted checks for new risks discovered during the work."
+  ],
+  "solution": "For a filter, the plan should say how empty input, invalid ranges and boundary values behave. Tests can encode those decisions before the parser’s current behavior has a chance to become the accidental specification.",
+  "verification": "Compare the tests back to the plan and introduce a fault that violates one promised behavior. Expect the corresponding test to fail for the intended reason.",
+  "limitations": "A plan can also be wrong or incomplete. Independent review and integration checks still matter; writing tests first separates two artifacts, but does not make their shared assumptions true."
+}

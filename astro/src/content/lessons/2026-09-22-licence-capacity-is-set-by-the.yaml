@@ -1,4 +1,16 @@
-date: 2026-09-22
-tag: eda
-title: "Licence capacity is set by the scarcest feature."
-why: "Tools that need several licence features at once saturate together, and the rarest one caps everyone."
+{
+  "date": "2026-09-22",
+  "tag": "eda",
+  "title": "Licence capacity is set by the scarcest feature.",
+  "why": "Tools that need several licence features at once saturate together, and the rarest one caps everyone.",
+  "problem": "Buying more of one licence feature may not increase tool throughput when each job needs a bundle of features.",
+  "cause": "A job must acquire all required features together. The scarcest shared feature can cap concurrency even while other feature pools have unused seats.",
+  "steps": [
+    "Identify which features the same jobs actually hold.",
+    "Compare occupancy and wait evidence across the bundle.",
+    "Evaluate the limiting feature before adding capacity to a less constrained pool."
+  ],
+  "solution": "Illustrative: a tool needing one seat of A and one of B cannot run more than four copies if B has four seats, even when A has ten.",
+  "verification": "Inspect simultaneous checkout combinations and associated wait periods. A proposed capacity increase should address the observed bundle constraint rather than the largest isolated utilization number.",
+  "limitations": "Feature demand can vary by stage, tool version and seat multiplier. Correlated saturation suggests a bundle but does not by itself prove every job needs exactly one of each feature."
+}

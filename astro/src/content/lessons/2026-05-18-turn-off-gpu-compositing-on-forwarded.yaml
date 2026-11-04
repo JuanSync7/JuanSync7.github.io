@@ -1,4 +1,16 @@
-date: 2026-05-18
-tag: linux
-title: "Turn off GPU compositing on forwarded displays."
-why: "Chromium's GPU process can crash under ssh -X, VNC or xvfb and black out the whole X session. Disable hardware acceleration there."
+{
+  "date": "2026-05-18",
+  "tag": "linux",
+  "title": "Turn off GPU compositing on forwarded displays.",
+  "why": "Chromium's GPU process can crash under ssh -X, VNC or xvfb and black out the whole X session. Disable hardware acceleration there.",
+  "problem": "An Electron app can black out a remote desktop or hang during startup even though its UI code works on a local display.",
+  "cause": "Chromium’s GPU compositing process can fail on forwarded or virtual X displays. The rendering environment is different from a normal local GPU-backed session.",
+  "steps": [
+    "Identify whether the app is running through SSH X forwarding, VNC or a virtual display.",
+    "Disable hardware acceleration in the Electron shell before startup.",
+    "Launch again in the same remote environment and inspect both the window and the session."
+  ],
+  "solution": "Use software rendering as the safe default for the affected remote-display setup. This puts the rendering choice in the desktop shell, where it belongs, rather than changing unrelated page code.",
+  "verification": "Expect the window to render and startup to complete without taking down the X session. A local-machine launch alone does not check this failure mode.",
+  "limitations": "Software rendering may cost more CPU and reduce graphical performance. Keep the setting tied to the supported environment, and investigate separately if the same failure occurs without GPU compositing."
+}

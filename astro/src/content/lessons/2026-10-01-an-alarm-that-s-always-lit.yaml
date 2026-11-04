@@ -1,4 +1,15 @@
-date: 2026-10-01
-tag: frontend
-title: "An alarm that's always lit gets ignored."
-why: "Highlights are alarms. Keep them under a rate ceiling, or a permanently lit row trains people to look away."
+{
+  "date": "2026-10-01",
+  "tag": "frontend",
+  "title": "An alarm that's always lit gets ignored.",
+  "why": "Highlights are alarms. Keep them under a rate ceiling, or a permanently lit row trains people to look away.",
+  "problem": "A waiting-job highlight can become part of the dashboard's normal background. When it is lit most of the time, it stops helping someone decide what needs attention.",
+  "cause": "An alarm threshold defines both a severity boundary and an interruption rate. Choosing only by elapsed wait ignores how often ordinary workload crosses that boundary.",
+  "steps": [
+    "Choose a representative time window and count the observation ticks on which the highlight would be active. Keep the denominator visible rather than counting only affected jobs.",
+    "Compare candidate thresholds against an agreed rate ceiling. Separate exceptional workload classes to see whether one class explains most of the noise."
+  ],
+  "solution": "Use the measured rates to make an explicit policy decision. Keep a failed tripwire visible while the threshold is undecided instead of quietly weakening the test.",
+  "verification": "Replay the same window after a proposed change. The expected check is that ordinary periods stay below the ceiling while genuinely concerning waits remain visible.",
+  "limitations": "A low firing rate alone does not make an alarm useful. Some frequent conditions really need action, and the correct ceiling depends on the team's response capacity."
+}

@@ -1,4 +1,16 @@
-date: 2026-06-20
-tag: ops
-title: "Metrics say how much, never who."
-why: "Token metrics show trend by model but carry no caller. Per-person spend needs the invocation log or a per-key gateway."
+{
+  "date": "2026-06-20",
+  "tag": "ops",
+  "title": "Metrics say how much, never who.",
+  "why": "Token metrics show trend by model but carry no caller. Per-person spend needs the invocation log or a per-key gateway.",
+  "problem": "A model-usage chart can show the total token trend while failing to answer which person made the calls.",
+  "cause": "The Bedrock metric dimensions in this setup identify model-level usage, not the caller needed for per-person attribution. Aggregation has already discarded that distinction.",
+  "steps": [
+    "Use metrics for overall trends and operational signals.",
+    "Use invocation metadata or an identity-aware gateway for caller-level records.",
+    "Keep the attribution source and any pricing conversion visible in reports."
+  ],
+  "solution": "If a daily chart rises, it can tell an operator that usage increased. It cannot divide the increase between two people unless another record preserves their identities and relevant usage.",
+  "verification": "Trace one controlled request from the caller to its invocation record and then to the aggregate metric. Confirm which fields identify the person and which are merely client-supplied labels.",
+  "limitations": "The title refers to this metric setup, not every possible custom metric system. Assumed roles, missing identity fields and price-table assumptions can all limit a per-person cost report."
+}

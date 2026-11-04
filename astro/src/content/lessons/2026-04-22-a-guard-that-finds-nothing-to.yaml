@@ -1,4 +1,16 @@
-date: 2026-04-22
-tag: security
-title: "A guard that finds nothing to protect should fail."
-why: "'No git here, so nothing to check' let changes through. When a guard can't find its subject, that's an error, not a pass."
+{
+  "date": "2026-04-22",
+  "tag": "security",
+  "title": "A guard that finds nothing to protect should fail.",
+  "why": "'No git here, so nothing to check' let changes through. When a guard can't find its subject, that's an error, not a pass.",
+  "problem": "A repository guard can return success when it cannot find a repository. That lets changes pass precisely when the guard has no evidence to inspect.",
+  "cause": "The guard treats missing subject matter as an empty, clean result. It never distinguishes “nothing violated the rule” from “the rule was not evaluated.”",
+  "steps": [
+    "Resolve the repository root before checking changes.",
+    "Fail clearly if the root or required inputs cannot be found.",
+    "Run the actual rule only after its prerequisites are established."
+  ],
+  "solution": "A check launched from outside a repository should explain that it could not run. It should not say “no git here, nothing to check” and return the same result as a clean repository.",
+  "verification": "Run the guard on a clean tree, a deliberately violating tree and a directory without Git metadata. Expect success only for the clean tree, with a distinct explanation for the missing repository.",
+  "limitations": "Commands intended to work outside repositories can offer an explicit optional mode. A mandatory release or safety gate should not infer that mode from a missing prerequisite."
+}

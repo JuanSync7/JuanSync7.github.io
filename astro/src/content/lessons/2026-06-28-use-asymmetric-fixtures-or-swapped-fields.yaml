@@ -1,4 +1,16 @@
-date: 2026-06-28
-tag: testing
-title: "Use asymmetric fixtures, or swapped fields pass."
-why: "If test values collapse to equal numbers, a bug that swaps two fields is invisible. Use distinct values like 33.3 and 50.0."
+{
+  "date": "2026-06-28",
+  "tag": "testing",
+  "title": "Use asymmetric fixtures, or swapped fields pass.",
+  "why": "If test values collapse to equal numbers, a bug that swaps two fields is invisible. Use distinct values like 33.3 and 50.0.",
+  "problem": "A test can compare the right fields and still fail to detect that the implementation swapped them when their fixture values are equal.",
+  "cause": "Equal inputs make the correct and faulty mappings observationally identical. The test has no signal that distinguishes the two behaviors.",
+  "steps": [
+    "Identify output fields that could be confused or swapped.",
+    "Give their fixture inputs distinct values that survive rounding and transformation.",
+    "Check each output against its own independently derived expectation."
+  ],
+  "solution": "For two percentages, use values such as 33.3 and 50.0 rather than two paths that both produce 50.0. A swapped mapping then gives visibly wrong output instead of passing by coincidence.",
+  "verification": "Deliberately swap the two fields in a disposable mutation and expect the test to fail. If it still passes, inspect whether formatting or shared helper logic erased the distinction.",
+  "limitations": "Distinct values do not guarantee independence. Keep the expected calculation separate from the implementation, and include boundary cases as well as the asymmetric example."
+}

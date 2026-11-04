@@ -1,4 +1,16 @@
-date: 2026-09-10
-tag: postgres
-title: "A materialised view can carry an index. A plain view can't."
-why: "The plain view recomputed everything on every read. Its materialised twin cached the work and turned max() into an index seek: 12 s down to 21 ms."
+{
+  "date": "2026-09-10",
+  "tag": "postgres",
+  "title": "A materialised view can carry an index. A plain view can't.",
+  "why": "The plain view recomputed everything on every read. Its materialised twin cached the work and turned max() into an index seek: 12 s down to 21 ms.",
+  "problem": "A freshness query can spend seconds recomputing an expensive view just to find its latest timestamp.",
+  "cause": "A plain view stores a query definition. A materialized view stores its result and can carry an index, letting a suitable aggregate use that stored structure instead of repeating the whole computation.",
+  "steps": [
+    "Compare the query plans for the plain and materialized versions.",
+    "Choose the stored result when its refresh age fits the endpoint's needs.",
+    "Bound the probe and expose probe failure separately from stale data."
+  ],
+  "solution": "Illustrative: finding a maximum timestamp over an indexed materialized result can avoid recomputing a complex join. The original timings belong to one reported comparison, not a general speed guarantee.",
+  "verification": "Use EXPLAIN ANALYZE on representative data and inspect both the scan and elapsed work. Also check that refresh age is acceptable to the freshness contract.",
+  "limitations": "A materialized result can be stale and needs refresh ownership. A scoped live query may be faster or more current for some workloads, so measure the alternatives."
+}

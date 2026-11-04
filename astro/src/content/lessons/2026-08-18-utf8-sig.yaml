@@ -1,4 +1,15 @@
-date: 2026-08-18
-tag: python
-title: "Read text with utf-8-sig."
-why: "A byte-order mark survives a plain utf-8 read and breaks the parser on line one. One codec name saves a confusing SyntaxError."
+{
+  "date": "2026-08-18",
+  "tag": "python",
+  "title": "Read text with utf-8-sig.",
+  "why": "A byte-order mark survives a plain utf-8 read and breaks the parser on line one. One codec name saves a confusing SyntaxError.",
+  "problem": "A Python source scanner can reject a valid-looking file on its first character, then lose the file entirely if that parse error is swallowed.",
+  "cause": "A UTF-8 byte-order mark decodes as an extra leading character with the plain utf-8 codec. Passing that text directly to ast.parse can produce a SyntaxError.",
+  "steps": [
+    "When the accepted input is UTF-8 text with an optional leading BOM, read it with encoding=\"utf-8-sig\".",
+    "Pass the resulting text to the parser and report any remaining parse error with the filename rather than treating it as an empty result."
+  ],
+  "solution": "For example, `text = path.read_text(encoding=\"utf-8-sig\")` removes an optional leading BOM before `ast.parse(text)`. Apply the same input rule to every reader of that file kind.",
+  "verification": "Prepare equivalent files with and without the BOM and expect the same parsed structure. Include a genuinely invalid file and expect an explicit error, not a missing corpus entry.",
+  "limitations": "This codec handles an optional UTF-8 BOM; it does not detect every encoding or fix invalid source. Use it where the input contract is UTF-8, rather than guessing an arbitrary document’s encoding."
+}

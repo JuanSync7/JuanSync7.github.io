@@ -1,4 +1,16 @@
-date: 2026-09-27
-tag: rag
-title: "Better input means better curated, not more."
-why: "Adding a reranker made retrieval worse, and navigation chunks caused refusals. Grounding is curation."
+{
+  "date": "2026-09-27",
+  "tag": "rag",
+  "title": "Better input means better curated, not more.",
+  "why": "Adding a reranker made retrieval worse, and navigation chunks caused refusals. Grounding is curation.",
+  "problem": "Retrieval can get worse after adding a ranking stage if the corpus contains navigation text and competing versions of the same evidence.",
+  "cause": "A reranker can only reorder what it receives. It cannot turn irrelevant or misleading source chunks into a clean evidence set, and repeated navigation can dominate the available context.",
+  "steps": [
+    "Inspect retrieved chunks before changing the model.",
+    "Remove or separate navigation, obsolete versions and low-value repeated material.",
+    "Evaluate corpus changes and ranking changes independently against the same questions."
+  ],
+  "solution": "Illustrative: a top result containing only a menu and page links offers little evidence for a technical answer. Removing that chunk can be more useful than making its ranking score more precise.",
+  "verification": "Run retrieval-only cases and inspect relevance, source identity and useful answer content. Keep a ranking change only if the observed evidence improves for the intended tasks.",
+  "limitations": "Curation can also remove needed context. Preserve document provenance and test difficult queries, rather than assuming that a smaller corpus or another ranking stage is always better."
+}

@@ -1,4 +1,16 @@
-date: 2026-07-07
-tag: agents
-title: "Script 80%. Let the model judge 20%."
-why: "Agents inside a mostly scripted workflow are predictable. The boring version, deterministic steps with AI in the loop, beats the fully autonomous one."
+{
+  "date": "2026-07-07",
+  "tag": "agents",
+  "title": "Script 80%. Let the model judge 20%.",
+  "why": "Agents inside a mostly scripted workflow are predictable. The boring version, deterministic steps with AI in the loop, beats the fully autonomous one.",
+  "problem": "An open-ended agent workflow makes routine work depend on repeated model decisions, so the same task can take a different path each time.",
+  "cause": "Many steps already have a precise answer: validate a schema, find changed inputs, run a command, or compare results. Giving those decisions to a model adds variation without adding useful judgment.",
+  "steps": [
+    "Separate exact operations from decisions that need interpretation.",
+    "Script the exact operations and give the model bounded inputs and outputs.",
+    "Validate the model’s result before the next scripted step acts on it."
+  ],
+  "solution": "For example, code can collect failing tests and their logs; a model can suggest a cause; code can then run the selected check and record what happened. The workflow owns progress and failure handling.",
+  "verification": "Replay a known case and check that routing, validation and stop behavior remain predictable. Test malformed or incomplete model output as well as a plausible answer.",
+  "limitations": "The 80/20 split is a design heuristic, not a measured ratio or a requirement. Tasks differ in how much judgment they need, and deterministic scaffolding does not make an incorrect model answer true."
+}

@@ -1,4 +1,15 @@
-date: 2026-08-08
-tag: rag
-title: "A reranker only reorders what retrieval found."
-why: "It scores query and candidate together, but if the right chunk wasn't in the first-stage top-N, no amount of reranking brings it back."
+{
+  "date": "2026-08-08",
+  "tag": "rag",
+  "title": "A reranker only reorders what retrieval found.",
+  "why": "It scores query and candidate together, but if the right chunk wasn't in the first-stage top-N, no amount of reranking brings it back.",
+  "problem": "An answer can remain wrong after a better reranker is installed because the passage containing the answer never reached that model.",
+  "cause": "The first stage chooses candidates; the reranker scores only those candidates against the query. Its improved ordering cannot add a missing passage.",
+  "steps": [
+    "For a question with a known supporting passage, save the first-stage candidate list before reranking.",
+    "Check whether the passage is present. If absent, improve candidate coverage through chunking, search method or shortlist size before tuning the second stage."
+  ],
+  "solution": "Debug retrieval coverage separately from ranking quality. For example, moving the right passage from rank 30 to rank 2 helps only if the first stage returns at least 30 candidates.",
+  "verification": "Measure how often known supporting passages enter the candidate set, then how often reranking places them in the final context. Those checks locate different failures.",
+  "limitations": "A larger shortlist costs time, and better retrieval does not guarantee a faithful answer. Keep answer grounding as a separate check after ranking."
+}

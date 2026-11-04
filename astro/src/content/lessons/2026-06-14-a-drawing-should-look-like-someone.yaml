@@ -1,4 +1,16 @@
-date: 2026-06-14
-tag: art
-title: "A drawing should look like someone drew it."
-why: "Thin ink lines, visible characters and one filled accent, never a polished photo-sharp finish. Code-drawn SVG keeps how the picture was made on show."
+{
+  "date": "2026-06-14",
+  "tag": "art",
+  "title": "A drawing should look like someone drew it.",
+  "why": "Thin ink lines, visible characters and one filled accent, never a polished photo-sharp finish. Code-drawn SVG keeps how the picture was made on show.",
+  "problem": "A technical illustration can become so polished that its construction is hidden and the drawing stops feeling like part of the site’s diagram language.",
+  "cause": "A useful diagram style keeps visible lines and characters, with a small accent rather than a photo-sharp finish. The source describes this as an inferred visual preference rather than a separately confirmed personal rule.",
+  "steps": [
+    "Start with the shapes and relationships the drawing must communicate.",
+    "Draw them in SVG with thin ink lines and visible construction.",
+    "Use one small filled accent to direct attention, keeping labels readable."
+  ],
+  "solution": "For a block illustration, let the outlines and connectors explain the system. An accent can mark the active block without filling every shape or adding a new colour for each part.",
+  "verification": "View the drawing at its actual page size. Check that the lines, characters and one point of emphasis survive scaling and that the intended relationship can still be read.",
+  "limitations": "This is a design preference, not a universal quality rule. A photograph or dense data figure may serve another purpose better, and visible construction should never make the subject harder to understand."
+}

@@ -1,4 +1,16 @@
-date: 2026-06-26
-tag: testing
-title: "A gate you've never seen fail is unproven."
-why: "Several gates passed over real damage before anyone checked they could go red. Inject the fault, watch it fail, and record what you injected."
+{
+  "date": "2026-06-26",
+  "tag": "testing",
+  "title": "A gate you've never seen fail is unproven.",
+  "why": "Several gates passed over real damage before anyone checked they could go red. Inject the fault, watch it fail, and record what you injected.",
+  "problem": "A gate can stay green over real damage if its test path never exercises the condition it claims to reject.",
+  "cause": "A passing normal case shows that valid work is accepted. It does not show that the detector or final failure signal works in the opposite direction.",
+  "steps": [
+    "Choose a representative fault the gate is required to catch.",
+    "Inject it into an isolated fixture and run the gate.",
+    "Record the fault, expected rejection and actual result, then remove the fault and check recovery."
+  ],
+  "solution": "If a gate promises to reject a missing required field, delete that field in a disposable input. The gate should fail because of that omission, not because the fixture is broken in some unrelated way.",
+  "verification": "Inspect both the local diagnostic and the final caller-visible status. A message saying “failed” is insufficient if the overall command still returns success.",
+  "limitations": "One planted fault proves only that path. Select faults for distinct failure classes, and keep destructive injections away from live data and systems."
+}

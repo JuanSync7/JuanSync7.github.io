@@ -1,4 +1,15 @@
-date: 2026-10-16
-tag: css
-title: "Tailwind is styling, not a component library."
-why: "Components come from Radix, shadcn or your own set. Borrow their structure and behaviour, but colour, type and spacing should still come from your tokens."
+{
+  "date": "2026-10-16",
+  "tag": "css",
+  "title": "Tailwind is styling, not a component library.",
+  "why": "Components come from Radix, shadcn or your own set. Borrow their structure and behaviour, but colour, type and spacing should still come from your tokens.",
+  "problem": "Adding Tailwind does not supply a complete dialog, menu or form component. A styled collection of elements can still lack focus management, keyboard behaviour or a coherent visual system.",
+  "cause": "Tailwind provides styling utilities. Component libraries or local components provide structure and behaviour, while design tokens supply the project's choices for colour, type and spacing.",
+  "steps": [
+    "Choose the component source separately from the styling layer. Inspect the interaction contract, accessibility behaviour and supported states before copying a visually appealing example.",
+    "Map the borrowed component's values to the project's tokens and exercise it in the actual page. Keep its structure where useful without importing a second unrelated theme by accident."
+  ],
+  "solution": "Give each layer one responsibility: reusable behaviour in components, styling through the chosen CSS approach and visual decisions in shared tokens. This makes later changes easier to place.",
+  "verification": "For an illustrative dialog check, open it with a keyboard, move focus through it and close it. Also inspect long content, error states and each supported theme.",
+  "limitations": "A component library still needs integration testing, and copied source becomes your maintenance responsibility. The historical choice between plain CSS and Tailwind for new work tools remained open; this lesson does not settle it."
+}

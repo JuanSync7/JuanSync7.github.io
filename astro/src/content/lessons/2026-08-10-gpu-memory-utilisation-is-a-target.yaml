@@ -1,4 +1,15 @@
-date: 2026-08-10
-tag: inference
-title: "GPU memory utilisation is a target, not a cap."
-why: "The same vLLM setting gave different KV cache sizes on different starts. Pin the cache in bytes when you need a fixed footprint."
+{
+  "date": "2026-08-10",
+  "tag": "inference",
+  "title": "GPU memory utilisation is a target, not a cap.",
+  "why": "The same vLLM setting gave different KV cache sizes on different starts. Pin the cache in bytes when you need a fixed footprint.",
+  "problem": "Two starts with the same vLLM memory fraction can leave different amounts of memory available for requests, making a shared card difficult to budget.",
+  "cause": "The key/value cache holds attention data for request tokens. When its size is the remainder after startup measurements, a fixed memory fraction need not produce a fixed cache allocation.",
+  "steps": [
+    "Choose a cache budget with the other servers accounted for, and set kv-cache-memory-bytes on a version that supports it.",
+    "Keep the total budget for weights, working memory and all caches within the card’s capacity, with room for startup and other users."
+  ],
+  "solution": "Pin the cache in bytes when repeatable allocation matters. Treat the fraction as planning information once the runtime uses an explicit cache size.",
+  "verification": "After each restart, inspect the reported cache bytes and available token capacity. After an upgrade, check both again; the same byte budget may hold a different number of tokens.",
+  "limitations": "A cache pin fixes one allocation, not the whole process footprint or an operating-system-enforced GPU cap. Context length and concurrency still have to fit."
+}

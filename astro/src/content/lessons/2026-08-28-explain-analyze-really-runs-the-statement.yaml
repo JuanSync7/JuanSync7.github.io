@@ -1,4 +1,15 @@
-date: 2026-08-28
-tag: postgres
-title: "EXPLAIN ANALYZE really runs the statement."
-why: "It executes the query to time it, so wrap writes in a transaction and roll back. Add BUFFERS to see page counts, not just time."
+{
+  "date": "2026-08-28",
+  "tag": "postgres",
+  "title": "EXPLAIN ANALYZE really runs the statement.",
+  "why": "It executes the query to time it, so wrap writes in a transaction and roll back. Add BUFFERS to see page counts, not just time.",
+  "problem": "An operator inspecting a database write can accidentally perform it when asking for an execution plan with timings.",
+  "cause": "PostgreSQL EXPLAIN ANALYZE executes the statement to gather actual run information. The word “explain” does not make the operation read-only.",
+  "steps": [
+    "Prefer a representative disposable environment when analysing a write, and inspect its possible side effects first.",
+    "For transactional changes, use an explicit transaction around `EXPLAIN (ANALYZE, BUFFERS) ...` and finish with ROLLBACK instead of COMMIT."
+  ],
+  "solution": "Use ordinary EXPLAIN when an estimated plan is sufficient. Add ANALYZE deliberately when actual execution is needed, and use BUFFERS to inspect block activity alongside timing.",
+  "verification": "On test data, compare affected rows before and after rollback and inspect the reported plan. Confirm the transaction ended; a copied command sequence is not evidence that the write was undone.",
+  "limitations": "Rollback does not reverse every effect: sequence advances, external effects and some function behaviour may survive or matter during execution. Locks and load still occur, so a transaction is not a substitute for a safe test environment."
+}

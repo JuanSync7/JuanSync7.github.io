@@ -1,4 +1,16 @@
-date: 2026-07-25
-tag: inference
-title: "/health can be answered by the wrong server."
-why: "An unrelated service holding the port returns OK. Check /v1/models for the expected model name, then send a real completion."
+{
+  "date": "2026-07-25",
+  "tag": "inference",
+  "title": "/health can be answered by the wrong server.",
+  "why": "An unrelated service holding the port returns OK. Check /v1/models for the expected model name, then send a real completion.",
+  "problem": "A deployment probe can report healthy because something answers on the port, even when the intended model server never started.",
+  "cause": "A generic health endpoint identifies availability only as precisely as its response contract. Another service can own the same port and return an equally plausible OK.",
+  "steps": [
+    "Check the process and listening port, then query the service’s identity-bearing endpoint.",
+    "Confirm that the returned model list contains the expected served name.",
+    "Send a small representative inference request and inspect the returned content."
+  ],
+  "solution": "For example, /v1/models provides more evidence about a model-serving endpoint than /health alone. A completion request adds another layer by exercising actual inference rather than just metadata routing.",
+  "verification": "Test the probe against a wrong service and against a server with the wrong model alias. Both should fail before the deployment is called ready.",
+  "limitations": "An expected alias can still point to incorrect weights, and one completion proves only a narrow path. Keep checks proportional to the required deployment guarantee, and do not treat a CPU rehearsal as GPU validation."
+}

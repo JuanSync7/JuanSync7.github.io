@@ -1,4 +1,16 @@
-date: 2026-07-01
-tag: process
-title: "Imagine it already failed."
-why: "Asking 'what could go wrong' gets polite answers. Declaring that the project failed makes finding reasons the task, and makes doubt safe to say."
+{
+  "date": "2026-07-01",
+  "tag": "process",
+  "title": "Imagine it already failed.",
+  "why": "Asking 'what could go wrong' gets polite answers. Declaring that the project failed makes finding reasons the task, and makes doubt safe to say.",
+  "problem": "A plan review can produce agreement without exposing the reasons the project might fail.",
+  "cause": "People asked to find risks may defend a plan they helped create. A pre-mortem changes the task: assume failure has happened, then explain it, so raising a concern becomes part of the assignment.",
+  "steps": [
+    "Describe the plan, then state an imagined failure at a defined future milestone.",
+    "Have each person write possible reasons alone before sharing.",
+    "Turn each useful reason into a plan change, a check or an explicitly accepted risk with an owner."
+  ],
+  "solution": "Use a concrete imagined failure rather than an open invitation for concerns. For example, “the release missed its reliability target” directs attention toward dependencies and missing evidence that a general discussion may skip.",
+  "verification": "Check whether the exercise changed the plan or created owned actions. A long list with no decisions is an unfinished review.",
+  "limitations": "This is a proposed review method, not evidence that a particular project used it. It cannot find risks nobody can imagine, and the source’s research claims were not independently checked."
+}

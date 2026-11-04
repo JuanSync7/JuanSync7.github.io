@@ -1,4 +1,15 @@
-date: 2026-10-01
-tag: css
-title: "One CSS system per project."
-why: "Plain CSS on custom-property tokens, and no utility framework beside it. Two systems drift, and nothing tells a new page which one to use."
+{
+  "date": "2026-10-01",
+  "tag": "css",
+  "title": "One CSS system per project.",
+  "why": "Plain CSS on custom-property tokens, and no utility framework beside it. Two systems drift, and nothing tells a new page which one to use.",
+  "problem": "A new page can look reasonable by itself while drifting from the rest of a site. This becomes easier when two styling systems offer different answers for the same colour, gap or component.",
+  "cause": "Custom properties let many rules share one named value. A second utility or theme system creates another source of defaults, so a token change may reach only part of the interface.",
+  "steps": [
+    "Find the project's existing tokens and component rules before styling the page. Use those names for colour, type, spacing and theme changes.",
+    "Add a missing shared token in the existing system, then use it where needed. Avoid introducing another framework merely to express a few local declarations."
+  ],
+  "solution": "Give contributors one clear route from a design choice to the CSS that implements it. A shared token should change every place that represents that same choice.",
+  "verification": "Change a token in a local preview and inspect old and new pages in each supported theme. Look for raw values or alternate defaults that prevented the change from carrying through.",
+  "limitations": "This is a project convention, not a rule against utility CSS everywhere. A planned migration can use two systems temporarily if ownership and the removal path are clear."
+}

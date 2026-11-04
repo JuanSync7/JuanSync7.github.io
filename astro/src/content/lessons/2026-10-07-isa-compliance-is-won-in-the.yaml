@@ -1,4 +1,15 @@
-date: 2026-10-07
-tag: riscv
-title: "ISA compliance is won in the edge cases."
-why: "The common path rarely breaks. Compliance is judged on corner cases, so enumerate them explicitly during analysis instead of hoping tests stumble on them."
+{
+  "date": "2026-10-07",
+  "tag": "riscv",
+  "title": "ISA compliance is won in the edge cases.",
+  "why": "The common path rarely breaks. Compliance is judged on corner cases, so enumerate them explicitly during analysis instead of hoping tests stumble on them.",
+  "problem": "A processor or accelerator can pass ordinary instruction tests while violating the architecture at its boundaries. Integration failures often appear when hazards, exceptions and retirement interact.",
+  "cause": "The instruction set specifies observable state, not just the happy-path calculation. Decoupling execution between units adds moments when completion order and architectural order differ.",
+  "steps": [
+    "Enumerate the architecture's corner cases before implementing the interface. Link each case to the relevant rule for dispatch, dependency handling, exceptions or retirement.",
+    "Turn the list into directed checks alongside broader test generation. Use a reference model or explicit expected state so the test checks correctness rather than merely completing."
+  ],
+  "solution": "Treat the boundary cases as design inputs. They determine which state must be held, which operation may proceed and when a result is allowed to become visible.",
+  "verification": "For an illustrative check, delay one operation while a later one completes. Verify that the resulting architectural state still follows the specified ordering rules.",
+  "limitations": "The original work is described only at CV level. This procedure does not establish compliance for a particular design, and the exact cases depend on the ISA version and implemented extensions."
+}

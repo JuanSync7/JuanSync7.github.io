@@ -1,4 +1,15 @@
-date: 2026-08-23
-tag: networking
-title: "SSH doesn't care about your CA bundle."
-why: "SSH trusts host keys, not X.509 certificates, so git over SSH keeps working when HTTPS tools fail under TLS interception."
+{
+  "date": "2026-08-23",
+  "tag": "networking",
+  "title": "SSH doesn't care about your CA bundle.",
+  "why": "SSH trusts host keys, not X.509 certificates, so git over SSH keeps working when HTTPS tools fail under TLS interception.",
+  "problem": "Git over HTTPS can stop working under certificate inspection while an SSH remote remains usable on the same host.",
+  "cause": "The two transports use different trust systems. HTTPS verifies an X.509 certificate chain against trusted authorities; ordinary SSH verifies a server host key against a trusted key record.",
+  "steps": [
+    "Identify whether the failing remote uses HTTPS or SSH, and diagnose that transport’s actual trust failure.",
+    "If SSH is an approved available route, verify the server’s host key through a trusted channel before configuring the remote and client key."
+  ],
+  "solution": "Use the supported SSH route when its independent trust and access requirements are satisfied. Keep the HTTPS CA problem recorded, because changing the Git remote does not repair other HTTPS tools.",
+  "verification": "Check the effective remote URL and establish an authenticated SSH connection to the intended server. A changed host-key warning should remain an error to investigate, not something the workaround disables.",
+  "limitations": "SSH can still be blocked by routing, host policy or missing authorization. It avoids this particular TLS trust-store dependency; it does not bypass security controls or guarantee connectivity."
+}

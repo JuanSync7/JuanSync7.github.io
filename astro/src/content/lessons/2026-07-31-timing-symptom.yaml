@@ -1,4 +1,16 @@
-date: 2026-07-31
-tag: sta
-title: "A timing violation is a symptom."
-why: "The cause can be the RTL, the constraints, the library or the layout. Working out which is the real job."
+{
+  "date": "2026-07-31",
+  "tag": "sta",
+  "title": "A timing violation is a symptom.",
+  "why": "The cause can be the RTL, the constraints, the library or the layout. Working out which is the real job.",
+  "problem": "A timing failure names a path that missed a requirement, but does not by itself identify which design input should change.",
+  "cause": "The result depends on RTL structure, timing constraints, cell libraries and physical delay. A red path can therefore reflect slow logic, an incorrect requirement, a mismatched environment or implementation effects.",
+  "steps": [
+    "Inspect the failing path and the exact check being performed.",
+    "Confirm clocks, exceptions, library and operating conditions before editing RTL.",
+    "Compare relevant reports across design stages to locate where the margin was lost."
+  ],
+  "solution": "For example, an unexpected setup failure may come from an incorrectly constrained interface rather than a newly deep logic cone. Changing the datapath first can hide the setup mistake instead of correcting it.",
+  "verification": "Rerun the relevant analysis after the supported correction and check related paths and conditions. A local improvement should not silently trade a setup problem for a hold or coverage problem.",
+  "limitations": "The source frames cause attribution as an open design question, not a record of signoff work. This is an investigation order, not an automated rule that can identify every cause from one report."
+}

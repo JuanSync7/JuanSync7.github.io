@@ -1,4 +1,16 @@
-date: 2026-07-27
-tag: agents
-title: "If the handoff isn't enough, the handoff is the bug."
-why: "An agent should finish a task from the handoff alone. Missing context isn't the agent's failure, and it multiplies token cost."
+{
+  "date": "2026-07-27",
+  "tag": "agents",
+  "title": "If the handoff isn't enough, the handoff is the bug.",
+  "why": "An agent should finish a task from the handoff alone. Missing context isn't the agent's failure, and it multiplies token cost.",
+  "problem": "An agent handoff can appear detailed while omitting the decision or artifact needed to make the next step executable.",
+  "cause": "The receiving agent does not share the author’s unstated context. Missing input versions, acceptance criteria or stop conditions force it to search, guess or ask for work already understood elsewhere.",
+  "steps": [
+    "State the goal, current state and exact next deliverable.",
+    "Include the source locations, relevant decisions and checks needed to act.",
+    "Name unresolved questions and failure conditions rather than leaving them implicit."
+  ],
+  "solution": "For example, “finish the parser” is weaker than a handoff naming the supported grammar, changed files, remaining failing fixture and command that checks it. The latter gives the next worker a bounded problem.",
+  "verification": "Give the handoff to a fresh reader and ask them to identify their first action and definition of done. Any required hidden fact is a concrete repair to the document.",
+  "limitations": "Self-contained does not mean copying the entire project. Stable links and concise relevant context can be enough, and the source’s cost warning is not a measured universal growth formula."
+}

@@ -1,4 +1,16 @@
-date: 2026-09-15
-tag: linux
-title: "Don't keep data where the cleaner sweeps."
-why: "systemd-tmpfiles ages out files under /tmp and /var/tmp. A database kept there was deleted, starting with the tables nobody read, so it looked harmless at first."
+{
+  "date": "2026-09-15",
+  "tag": "linux",
+  "title": "Don't keep data where the cleaner sweeps.",
+  "why": "systemd-tmpfiles ages out files under /tmp and /var/tmp. A database kept there was deleted, starting with the tables nobody read, so it looked harmless at first.",
+  "problem": "A database stored under a temporary directory can lose old relation files while recently accessed tables keep working.",
+  "cause": "Temporary-file cleanup follows directory policy and file age, not the operator's idea of important data. Cold database files can meet the cleanup rule before frequently touched files do.",
+  "steps": [
+    "Inspect the cleanup policy for the actual data path.",
+    "Move durable data into a location with an explicit persistence contract.",
+    "Verify backups and recovery independently of whether the database currently answers queries."
+  ],
+  "solution": "Illustrative: a rarely read table can disappear before a busy table, making the early symptoms look isolated. A healthy query against the busy table does not establish intact storage.",
+  "verification": "Confirm the data directory is outside unintended cleanup scope, inspect required relations and rehearse restoration on a separate instance.",
+  "limitations": "A keepalive touch timer is a stopgap with its own failure modes. Persistence also depends on filesystem durability, permissions, backup retention and tested recovery, not just the directory name."
+}

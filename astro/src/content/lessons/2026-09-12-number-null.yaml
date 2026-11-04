@@ -1,4 +1,16 @@
-date: 2026-09-12
-tag: frontend
-title: "Number(null) is 0."
-why: "A missing value rendered as 0.0%. Keep null and zero apart all the way to the pixel."
+{
+  "date": "2026-09-12",
+  "tag": "frontend",
+  "title": "Number(null) is 0.",
+  "why": "A missing value rendered as 0.0%. Keep null and zero apart all the way to the pixel.",
+  "problem": "A missing percentage can look like a measured zero when the UI coerces it into a number.",
+  "cause": "JavaScript converts Number(null) to zero. Once that happens, a formatter cannot distinguish absent evidence from a real zero-percent result.",
+  "steps": [
+    "Preserve null in the response type and conversion helper.",
+    "Only format a number after confirming it exists.",
+    "Choose a clear missing-value representation for the table, chart and export."
+  ],
+  "solution": "Illustrative: null becomes a dash or an explicit unknown label, while numeric 0 becomes 0.0%. The two displays tell the reader whether a measurement exists.",
+  "verification": "Render null, zero and a positive percentage through the real formatter. Expect distinct missing and zero states, and check that CSV conversion does not merge them again.",
+  "limitations": "A dash needs a clear meaning. Missing, not applicable and failed to fetch may require different states; one fallback symbol should not hide a request failure."
+}

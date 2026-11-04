@@ -1,4 +1,16 @@
-date: 2026-05-23
-tag: data
-title: "Alert on waste, not efficiency."
-why: "A tiny job at 10% efficiency wastes nothing worth a ping. Gigabyte-hours wasted is what costs money, so alert on that."
+{
+  "date": "2026-05-23",
+  "tag": "data",
+  "title": "Alert on waste, not efficiency.",
+  "why": "A tiny job at 10% efficiency wastes nothing worth a ping. Gigabyte-hours wasted is what costs money, so alert on that.",
+  "problem": "A tiny job can have terrible memory efficiency and still waste very little capacity. Alerting on the percentage alone makes it compete with genuinely costly jobs.",
+  "cause": "Efficiency is a ratio. The cost of unused reserved memory also depends on how much memory was held and for how long.",
+  "steps": [
+    "Estimate unused held memory over the job’s duration.",
+    "Rank or gate alerts by wasted gigabyte-hours.",
+    "Use efficiency as supporting context and explain the sizing issue in a clear sentence."
+  ],
+  "solution": "For illustration, leaving 0.9 GB unused for an hour wastes 0.9 GB·h. Leaving 300 GB unused for the same hour wastes 300 GB·h. Both may look poor as percentages, but their capacity impact is very different.",
+  "verification": "Check the units and the held-memory definition, then compare representative small and large jobs. The larger resource loss should rise in priority even if its efficiency percentage looks less dramatic.",
+  "limitations": "Peak usage, grouping and shared allocations can make estimates approximate. Keep those limits visible instead of presenting a precise-looking total as an exact bill."
+}

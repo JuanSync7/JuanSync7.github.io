@@ -1,4 +1,16 @@
-date: 2026-09-07
-tag: ops
-title: "Up is not the same as working."
-why: "A collector passed every liveness check while no new data arrived. Check that fresh rows landed, not just that the process answered."
+{
+  "date": "2026-09-07",
+  "tag": "ops",
+  "title": "Up is not the same as working.",
+  "why": "A collector passed every liveness check while no new data arrived. Check that fresh rows landed, not just that the process answered.",
+  "problem": "A responsive collector can appear healthy while the dataset it owns stops advancing.",
+  "cause": "Liveness checks show that a process answers. They do not prove that polling, parsing and committing new source data still work, so a broken downstream path can remain invisible.",
+  "steps": [
+    "Keep a separate liveness signal.",
+    "Measure the most recent successfully delivered data for each source.",
+    "Compare that age with the source's expected cadence and expose a stale state."
+  ],
+  "solution": "Illustrative: an HTTP health route may return promptly while the latest stored sample is hours old. A freshness check makes the missing delivery visible instead of accepting process uptime as evidence.",
+  "verification": "Stop delivery in a disposable setup while leaving the process running. Liveness should stay healthy and freshness should move to stale after the configured allowance.",
+  "limitations": "A naturally quiet source needs a suitable heartbeat or delivery contract. Do not treat 'no new business event' as a collection failure without considering how that source behaves."
+}

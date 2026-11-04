@@ -1,4 +1,16 @@
-date: 2026-07-12
-tag: agents
-title: "Natural language is the front door, not the plumbing."
-why: "Humans talk to agents in prose. Agents should talk to each other in schemas, because prose degrades with every hop."
+{
+  "date": "2026-07-12",
+  "tag": "agents",
+  "title": "Natural language is the front door, not the plumbing.",
+  "why": "Humans talk to agents in prose. Agents should talk to each other in schemas, because prose degrades with every hop.",
+  "problem": "An agent chain can lose meaning when every stage interprets and rewrites the previous stage’s prose.",
+  "cause": "Natural language leaves room for different readings. A schema makes required fields and permitted values explicit, so a handoff can be validated before another program acts on it.",
+  "steps": [
+    "Let the human describe the goal in ordinary language.",
+    "Translate that goal into a checked contract with explicit unresolved questions.",
+    "Pass structured results between stages and reject missing or invalid fields."
+  ],
+  "solution": "For example, a task handoff can name an input artifact, required operation and acceptance check as separate fields. The next stage should not need to infer those from a paragraph that mixes instructions with background.",
+  "verification": "Replay an accepted handoff through the consumer and test one with a missing requirement or unknown status. Validation should stop it before execution, with a useful error.",
+  "limitations": "A schema checks shape, not truth or completeness. Human judgment still has a role in resolving ambiguous intent, and prose remains useful as explanation alongside the fields."
+}

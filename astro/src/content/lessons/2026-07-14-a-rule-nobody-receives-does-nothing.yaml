@@ -1,4 +1,16 @@
-date: 2026-07-14
-tag: agents
-title: "A rule nobody receives does nothing."
-why: "Distribution matters more than how good the rule is. Put it where the agent already reads, or it doesn't exist."
+{
+  "date": "2026-07-14",
+  "tag": "agents",
+  "title": "A rule nobody receives does nothing.",
+  "why": "Distribution matters more than how good the rule is. Put it where the agent already reads, or it doesn't exist.",
+  "problem": "A carefully written rule has no effect when the agent doing the work never loads it.",
+  "cause": "Authoring and delivery are separate parts of the system. A file in a vault can be correct while a fresh working session sees only its installed instructions and discoverable skills.",
+  "steps": [
+    "Package the rule where the intended agent already looks for guidance.",
+    "Give it a stable name, trigger and version that a session can inspect.",
+    "Verify loading in a fresh session instead of relying on the author’s current context."
+  ],
+  "solution": "For example, a writing deck can be distributed as a skill that points to the current rules and examples. The useful test is whether a new session can find the relevant instruction when the task requires it.",
+  "verification": "Inspect the loaded package and try a small task that exercises a specific rule. Check the baseline first: a failing baseline can make every mutation appear successfully caught.",
+  "limitations": "Distribution does not guarantee understanding or compliance. It closes the missing-context gap; enforcement and review still need evidence of their own."
+}

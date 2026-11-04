@@ -1,4 +1,16 @@
-date: 2026-07-29
-tag: eda
-title: "Wrap every tool run in a script."
-why: "An interactive synthesis or lint session can't be repeated. A script can, and a script is something an agent can run too."
+{
+  "date": "2026-07-29",
+  "tag": "eda",
+  "title": "Wrap every tool run in a script.",
+  "why": "An interactive synthesis or lint session can't be repeated. A script can, and a script is something an agent can run too.",
+  "problem": "An interactive EDA session leaves important run choices in shell history or memory, making its result difficult to reproduce or delegate.",
+  "cause": "Tool state accumulates through commands, loaded files and environment settings. A report without that sequence does not fully describe the experiment that produced it.",
+  "steps": [
+    "Put the input file list, libraries, constraints and tool commands in a versioned run script.",
+    "Record the tool build and relevant environment with each run.",
+    "Preserve native logs and reports in a predictable output location."
+  ],
+  "solution": "For example, a Tcl synthesis script can read RTL, apply constraints, compile and write reports in one declared order. A wrapper can then invoke that same flow locally or in automation.",
+  "verification": "Run the script from a clean working area and compare the expected outputs and tool warnings. Check that no required setting came only from an earlier interactive session.",
+  "limitations": "Scripting improves repeatability but does not remove hidden external inputs or tool nondeterminism. A completed script also needs its reports inspected before the design is called correct."
+}

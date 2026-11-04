@@ -1,4 +1,16 @@
-date: 2026-06-29
-tag: design
-title: "A design simulator isn't an end-to-end test."
-why: "Load-testing a diagram shows what saturates first. It never runs your code, so it can't find a wrong answer."
+{
+  "date": "2026-06-29",
+  "tag": "design",
+  "title": "A design simulator isn't an end-to-end test.",
+  "why": "Load-testing a diagram shows what saturates first. It never runs your code, so it can't find a wrong answer.",
+  "problem": "A design simulation can show a convincing capacity curve while saying nothing about whether the implementation returns the correct result.",
+  "cause": "A model executes assumptions about the system. It does not execute the application code, its database integration or its actual error handling.",
+  "steps": [
+    "Use the design model to explore queues, contention and expected bottlenecks.",
+    "Build separate tests that run the real application with real local dependencies.",
+    "Add controlled delay or failure injection where the implementation’s behavior needs checking."
+  ],
+  "solution": "A simulated database queue can reveal which service would saturate first under the chosen assumptions. A real database test asks whether the query and retry logic work when a connection is delayed or dropped.",
+  "verification": "Label the result by what ran. Inspect assumptions for the simulation and actual response correctness for the implementation test; a load curve alone does not establish either one.",
+  "limitations": "The source is a research comparison, not a recorded production validation. Real-code tests also cover only the workloads and faults exercised, so neither approach replaces the other."
+}

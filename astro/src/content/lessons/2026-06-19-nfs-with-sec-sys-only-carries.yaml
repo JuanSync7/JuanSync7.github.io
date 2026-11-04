@@ -1,4 +1,16 @@
-date: 2026-06-19
-tag: linux
-title: "NFS with sec=sys only carries 16 groups."
-why: "AUTH_SYS sends at most 16 group IDs per request, so permissions granted through any group beyond those fail silently."
+{
+  "date": "2026-06-19",
+  "tag": "linux",
+  "title": "NFS with sec=sys only carries 16 groups.",
+  "why": "AUTH_SYS sends at most 16 group IDs per request, so permissions granted through any group beyond those fail silently.",
+  "problem": "A user can belong to the right Unix group and still receive an NFS permission error. A local group listing does not prove the server received that group.",
+  "cause": "With AUTH_SYS, the request carries a limited set of group IDs, conventionally at most sixteen. A required group can be absent from the transmitted credentials.",
+  "steps": [
+    "Confirm the mount’s authentication method.",
+    "Check the groups used by the actual request and the server’s group-handling configuration.",
+    "Design and verify the required access path with the filesystem administrator rather than relying only on a long local membership list."
+  ],
+  "solution": "For a shared control file, test access as another intended team member on the real mount. A successful owner write does not establish that the group-based operating path works for colleagues.",
+  "verification": "Compare an allowed and denied user under the real NFS setup. Inspect which identity and groups the server uses before changing the file modes.",
+  "limitations": "Some servers resolve supplementary groups themselves, and stronger NFS authentication changes the picture. The source’s team access path was not verified as a second user, so no successful rollout is claimed here."
+}

@@ -1,4 +1,16 @@
-date: 2026-08-04
-tag: make
-title: "'|| exit 0' only exits its own line."
-why: "Each recipe line in a Makefile runs in its own shell, so an early exit on one line doesn't stop the next."
+{
+  "date": "2026-08-04",
+  "tag": "make",
+  "title": "'|| exit 0' only exits its own line.",
+  "why": "Each recipe line in a Makefile runs in its own shell, so an early exit on one line doesn't stop the next.",
+  "problem": "A Make target can decide to skip work on its first line and still run the next line. That is surprising if the recipe is read as one ordinary shell script.",
+  "cause": "By default, Make starts a separate shell for each recipe line. An exit ends the shell running that line; a successful exit tells Make it may continue with the next line.",
+  "steps": [
+    "Read the recipe as separate shell invocations unless it explicitly uses a single-shell mode. Mark the lines that are supposed to share a condition or variable.",
+    "Put the condition and the work it controls in one shell block, or move the procedure into a script with an explicit exit contract.",
+    "Exercise both branches. The skip path should show that the protected command never ran, not merely that the target returned success."
+  ],
+  "solution": "Keep the decision inside one shell lifetime. A single recipe line such as `@if test \"$(RUN)\" = yes; then touch marker; fi` makes the marker conditional. A later independent recipe line would not share that guard.",
+  "verification": "Use a harmless marker command in the protected position. On the skip path, expect no marker; on the normal path, expect exactly the intended work and exit status.",
+  "limitations": "Make can be configured to run an entire recipe in one shell. Check the actual configuration before applying the default-line model."
+}

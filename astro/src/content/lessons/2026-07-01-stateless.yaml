@@ -1,4 +1,16 @@
-date: 2026-07-01
-tag: rtl
-title: "Stateless logic is the easiest logic to verify."
-why: "In RTL, logic with no state is checked by its truth table. Software that keeps state at the edges and pure functions in the middle gets the same gift."
+{
+  "date": "2026-07-01",
+  "tag": "rtl",
+  "title": "Stateless logic is the easiest logic to verify.",
+  "why": "In RTL, logic with no state is checked by its truth table. Software that keeps state at the edges and pure functions in the middle gets the same gift.",
+  "problem": "A function that quietly reads or changes shared state needs its history reproduced before its output can be understood.",
+  "cause": "Combinational logic depends on current inputs. The same separation helps software: a pure calculation can be checked directly, while storage, time and network access remain explicit at the edges.",
+  "steps": [
+    "List every input the calculation actually uses, including configuration and time.",
+    "Pass those values in and return a result rather than updating hidden globals.",
+    "Keep persistence and external calls in a thin surrounding layer."
+  ],
+  "solution": "For example, calculate a charge from supplied usage and a supplied rate table, then save the result separately. A failed calculation can be replayed with those values without rebuilding a database session.",
+  "verification": "Call the calculation twice with the same inputs and compare results; then vary one input and check the expected change. Test the surrounding storage path separately.",
+  "limitations": "Hardware also contains state, and large input spaces cannot always be enumerated as a truth table. This is a design preference for isolating state, not a claim that every useful function must be pure."
+}

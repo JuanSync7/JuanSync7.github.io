@@ -1,4 +1,15 @@
-date: 2026-10-04
-tag: rtl
-title: "Parse RTL with a real front end, not regex."
-why: "Text search loses hierarchy and connectivity. A proper SystemVerilog parser that builds a syntax tree gives you the design's actual structure to reason about."
+{
+  "date": "2026-10-04",
+  "tag": "rtl",
+  "title": "Parse RTL with a real front end, not regex.",
+  "why": "Text search loses hierarchy and connectivity. A proper SystemVerilog parser that builds a syntax tree gives you the design's actual structure to reason about.",
+  "problem": "Text search can find a signal name without explaining how it connects through a design. Repeated names and nested instances make that an unsafe basis for answering a hierarchy or connectivity question.",
+  "cause": "SystemVerilog carries structure that raw text matching does not resolve. A language front end builds a syntax tree and can support analysis of modules, instances and ports in their proper context.",
+  "steps": [
+    "Parse the RTL with a real SystemVerilog front end using the build's relevant file list and options. Keep diagnostics visible instead of silently treating an incomplete parse as a complete design.",
+    "Build hierarchy and connectivity relations from that structured result, and attach source locations to the extracted facts. Use text retrieval for surrounding explanations where it helps."
+  ],
+  "solution": "Choose a structural representation for structural questions. A graph can then follow a relationship while retaining the source evidence for each step.",
+  "verification": "Use a small known design to compare extracted instances and connections against the source. Include repeated names in different scopes so a name-only approach cannot accidentally pass.",
+  "limitations": "A syntax tree alone may not resolve all elaborated behaviour. Parameters, macros and tool-specific constructs require the right analysis stage and configuration; the parser's coverage limits the graph."
+}

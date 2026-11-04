@@ -1,4 +1,16 @@
-date: 2026-04-29
-tag: testing
-title: "Fixtures shouldn't share names with real data."
-why: "A find-and-replace over real names rewrote the fixtures too, and tests failed for no real reason."
+{
+  "date": "2026-04-29",
+  "tag": "testing",
+  "title": "Fixtures shouldn't share names with real data.",
+  "why": "A find-and-replace over real names rewrote the fixtures too, and tests failed for no real reason.",
+  "problem": "A template substitution can alter the test fixtures as well as the production examples. The generated project then fails tests for an accidental naming collision.",
+  "cause": "A broad replacement does not understand which occurrence is sample data and which is a test input. Shared names make both look eligible.",
+  "steps": [
+    "Give fixtures clearly synthetic names that do not overlap the real substitution values.",
+    "Limit replacement to the intended files and fields.",
+    "Verify the generated project, including its unchanged fixture assumptions."
+  ],
+  "solution": "For example, keep a fixture’s fake account name separate from the account token that the template fills. Changing the deployment account should then leave the test’s deliberately invalid account untouched.",
+  "verification": "Render with replacement values that resemble realistic names and inspect the fixture diff. Expect only declared template fields to change, then run the generated tree’s own tests.",
+  "limitations": "Names reduce accidental overlap but do not replace a proper template boundary. If replacement can still edit arbitrary text, another collision can appear later."
+}

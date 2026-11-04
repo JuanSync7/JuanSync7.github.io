@@ -1,4 +1,16 @@
-date: 2026-07-20
-tag: ai
-title: "AI is slightly over-hyped, and mostly misused."
-why: "People ask it to do their whole job. It earns its keep as one bounded step inside a larger, mostly deterministic process."
+{
+  "date": "2026-07-20",
+  "tag": "ai",
+  "title": "AI is slightly over-hyped, and mostly misused.",
+  "why": "People ask it to do their whole job. It earns its keep as one bounded step inside a larger, mostly deterministic process.",
+  "problem": "Asking a model to own an entire job can hide which decisions need judgment and which should already have a precise answer.",
+  "cause": "An open-ended request combines planning, execution and checking in one uncertain loop. Routine steps then become fresh language-model decisions instead of repeatable operations.",
+  "steps": [
+    "Choose a bounded task where interpretation adds value.",
+    "Give it explicit input, output and acceptance rules.",
+    "Let deterministic code own the surrounding data handling, execution and result recording."
+  ],
+  "solution": "For example, a model can propose an explanation for a failed check while a script gathers the logs and a real test evaluates the proposed repair. The model’s answer is useful input to the process, not its final evidence of success.",
+  "verification": "Compare complete-task outcomes and correction effort across representative cases. Check that a wrong or incomplete model answer is caught before the workflow reports completion.",
+  "limitations": "This is a design preference, not a measured claim that AI is overvalued in every domain. Some tasks need more exploration, but they still benefit from an explicit way to judge the result."
+}

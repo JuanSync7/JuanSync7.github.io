@@ -1,4 +1,16 @@
-date: 2026-09-30
-tag: networking
-title: "TIME_WAIT sockets can fool peer matching."
-why: "Matching a local connection to a user by address alone can pick a stale closed socket. Match the full four-tuple and the ESTABLISHED state."
+{
+  "date": "2026-09-30",
+  "tag": "networking",
+  "title": "TIME_WAIT sockets can fool peer matching.",
+  "why": "Matching a local connection to a user by address alone can pick a stale closed socket. Match the full four-tuple and the ESTABLISHED state.",
+  "problem": "A local peer-identity lookup can attribute a browser request to the wrong process if it matches only part of a connection.",
+  "cause": "Closed sockets can remain in TIME_WAIT, and several connections can share an address. A partial match can select stale or unrelated state rather than the live request's peer.",
+  "steps": [
+    "Match source address, source port, destination address and destination port.",
+    "Require the live ESTABLISHED state for this lookup.",
+    "Resolve ownership only from an unambiguous supported match and refuse otherwise."
+  ],
+  "solution": "Illustrative: a stale socket with the same address should not compete with the request's full connection tuple. The ports and state identify which connection is actually being examined.",
+  "verification": "Exercise a live connection alongside stale and ambiguous recorded entries. Only the intended established tuple should resolve, while missing or conflicting evidence should fail visibly.",
+  "limitations": "This mechanism is scoped to a supported local topology and visible kernel state. Proxies, network clients and connection races can break the assumption; use an appropriate authenticated identity mechanism for those paths."
+}

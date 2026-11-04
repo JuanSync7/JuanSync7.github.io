@@ -1,4 +1,16 @@
-date: 2026-07-18
-tag: verification
-title: "Traceability is arithmetic, not testimony."
-why: "A tracker status is someone's claim. A trace computed from the repo and test markers can be checked, and fails on any requirement no test names."
+{
+  "date": "2026-07-18",
+  "tag": "verification",
+  "title": "Traceability is arithmetic, not testimony.",
+  "why": "A tracker status is someone's claim. A trace computed from the repo and test markers can be checked, and fails on any requirement no test names.",
+  "problem": "A tracker can say that every requirement is tested while the repository contains no check for one of them.",
+  "cause": "A manually edited status is testimony. A generated trace can compare the actual requirement inventory with test markers and report the exact missing or undefined links.",
+  "steps": [
+    "Give requirements stable identifiers and identify their acceptance criteria.",
+    "Mark the test functions that check those criteria.",
+    "Generate the matrix from the current repository and fail on missing or unknown links."
+  ],
+  "solution": "For example, a requirement with three numbered criteria needs evidence for those criteria, not merely one marker naming its parent. Function-level markers also stop a removed test from remaining apparently covered by a module-wide label.",
+  "verification": "Delete or rename a marked fixture test and confirm the trace becomes incomplete. Check that an empty requirement inventory cannot silently produce a perfect result.",
+  "limitations": "A marker proves a claimed link exists; it does not prove the test is relevant or correct. Review the assertion behind the marker and keep the generated matrix tied to the exact revision."
+}

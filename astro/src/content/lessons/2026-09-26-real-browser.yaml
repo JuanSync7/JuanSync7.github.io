@@ -1,4 +1,16 @@
-date: 2026-09-26
-tag: frontend
-title: "Check every width in a real browser."
-why: "Phone-width overflow only showed up in live viewport checks. Unit tests don't render anything."
+{
+  "date": "2026-09-26",
+  "tag": "frontend",
+  "title": "Check every width in a real browser.",
+  "why": "Phone-width overflow only showed up in live viewport checks. Unit tests don't render anything.",
+  "problem": "A layout can pass component tests while still overflowing the actual phone viewport.",
+  "cause": "Tests that inspect component logic do not necessarily run browser layout with real fonts and content. Long labels, minimum widths and nested containers can exceed the available space only when rendered together.",
+  "steps": [
+    "Open the built interface in a real browser.",
+    "Check representative pages at the supported widths and themes.",
+    "Inspect horizontal overflow and exercise the controls that change content width."
+  ],
+  "solution": "Illustrative: a table inside a correctly sized panel can still force the whole page wider because one nested element has a fixed minimum width. The browser exposes that relationship.",
+  "verification": "At a phone-width viewport, compare document scroll width with viewport width and inspect any offending element. Important controls and required data should remain reachable after the fix.",
+  "limitations": "Some tests do render in a browser; the original lesson's shorthand does not describe every unit-testing tool. A screenshot alone also cannot prove keyboard access or correct interactions."
+}

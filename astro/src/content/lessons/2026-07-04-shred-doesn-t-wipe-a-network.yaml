@@ -1,4 +1,16 @@
-date: 2026-07-04
-tag: security
-title: "shred doesn't wipe a network drive."
-why: "The filer may keep copies and snapshots. Revoking the secret is what actually helps."
+{
+  "date": "2026-07-04",
+  "tag": "security",
+  "title": "shred doesn't wipe a network drive.",
+  "why": "The filer may keep copies and snapshots. Revoking the secret is what actually helps.",
+  "problem": "Deleting a credential file can leave a valid secret in snapshots, replicas or other copies outside the client’s control.",
+  "cause": "Overwriting a file assumes the overwritten bytes are the only readable copy. Network storage can preserve earlier versions, so local overwrite success cannot prove that the credential disappeared everywhere.",
+  "steps": [
+    "Identify the credential and the authority that can revoke it.",
+    "Revoke or rotate it, then update the consumers that still need access.",
+    "Remove obsolete local copies and inspect known background dependencies."
+  ],
+  "solution": "Revocation changes what the secret can do, even if old bytes survive. For example, a copied token becomes much less useful once the server refuses it; overwriting one local copy does not provide that protection.",
+  "verification": "Confirm that the retired credential is rejected through an approved check and that intended replacement access works. Record any consumer whose migration remains unknown.",
+  "limitations": "Revocation does not erase previously accessed data, and storage cleanup still matters. Avoid claiming secure physical erasure from a client-side command on a managed or snapshotting filesystem."
+}

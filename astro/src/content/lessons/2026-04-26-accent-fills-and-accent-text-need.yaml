@@ -1,4 +1,16 @@
-date: 2026-04-26
-tag: design
-title: "Accent fills and accent text need separate tokens."
-why: "Bright lime works as a button fill but is unreadable as small text on white, so the text role gets a darker ink in light mode."
+{
+  "date": "2026-04-26",
+  "tag": "design",
+  "title": "Accent fills and accent text need separate tokens.",
+  "why": "Bright lime works as a button fill but is unreadable as small text on white, so the text role gets a darker ink in light mode.",
+  "problem": "A bright accent can work well as a button background while becoming unreadable when reused for small text on a light page.",
+  "cause": "Colour contrast depends on both the foreground and its background. A single accent value cannot safely serve every visual role.",
+  "steps": [
+    "Separate accent-fill and accent-text tokens.",
+    "Choose a darker text accent for light backgrounds.",
+    "Check both tokens in the actual components and themes where they appear."
+  ],
+  "solution": "Keep the bright lime for a filled control if its label has enough contrast. Use a darker green ink for a small link on white, so the visual identity stays related without sacrificing reading.",
+  "verification": "Measure contrast for the rendered foreground/background pair, including hover and disabled states. Inspect small text directly; a large coloured swatch does not reveal the reading problem.",
+  "limitations": "The right value depends on text size, weight and background. A dark-mode token may need a different value again, and colour should not be the only way a control communicates state."
+}

@@ -1,4 +1,16 @@
-date: 2026-07-05
-tag: career
-title: "Be T-shaped."
-why: "Broad enough to design the whole system, deep enough in one area that people come to you. In a fast-moving field, breadth is underrated."
+{
+  "date": "2026-07-05",
+  "tag": "career",
+  "title": "Be T-shaped.",
+  "why": "Broad enough to design the whole system, deep enough in one area that people come to you. In a fast-moving field, breadth is underrated.",
+  "problem": "Knowing one tool deeply can leave gaps at its boundaries; knowing many tools lightly can leave nobody sure where your judgment is strongest.",
+  "cause": "System design needs enough breadth to understand how parts fit, while difficult local decisions need depth built through repeated work and feedback. These are different needs, and neither replaces the other.",
+  "steps": [
+    "Choose one area where you want to own difficult decisions.",
+    "Build enough knowledge of adjacent areas to understand interfaces and trade-offs.",
+    "Use real problems to expose the next gap rather than collecting tools without applying them."
+  ],
+  "solution": "For example, a front-end hardware designer benefits from understanding verification and physical constraints, while keeping a deeper specialty in architecture or RTL. That range helps ask the right questions without claiming equal mastery of every stage.",
+  "verification": "Check whether you can explain an end-to-end design and defend a hard decision in your specialty. Ask an expert in an adjacent area where your assumptions break.",
+  "limitations": "The right balance depends on the role and project. T-shaped is a useful direction, not a score or a promise that breadth automatically creates expertise."
+}

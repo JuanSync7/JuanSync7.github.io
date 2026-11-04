@@ -1,4 +1,16 @@
-date: 2026-06-12
-tag: aws
-title: "AssumeRole needs both policies to say yes."
-why: "The caller's identity policy and the role's trust policy must both allow it. Editing a trust template does nothing until deploy updates existing roles."
+{
+  "date": "2026-06-12",
+  "tag": "aws",
+  "title": "AssumeRole needs both policies to say yes.",
+  "why": "The caller's identity policy and the role's trust policy must both allow it. Editing a trust template does nothing until deploy updates existing roles.",
+  "problem": "A role-assumption request can fail after a trust-template edit because the caller is still missing permission or the existing role never received the update.",
+  "cause": "The intended cross-role path needs caller permission and role trust. Source templates are not the live IAM policies until deployment reconciles them.",
+  "steps": [
+    "Check the caller identity and its permission for the target role.",
+    "Check the target role’s deployed trust policy.",
+    "Deploy the intended update to existing roles, then retry using the real caller."
+  ],
+  "solution": "If the application role is trusted but its caller cannot request sts:AssumeRole for that target, changing trust again will not fix the missing permission. Inspect both sides of the path.",
+  "verification": "Use a controlled assumption request and inspect the returned identity. Also read the deployed policies to confirm that the successful request used the intended role relationship.",
+  "limitations": "Other controls, such as explicit denies, boundaries and organization policies, can still block access. Same-account resource-policy grants have nuances; use the exact IAM evaluation rules for the relationship in question."
+}

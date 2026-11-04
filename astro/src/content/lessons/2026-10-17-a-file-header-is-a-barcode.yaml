@@ -1,4 +1,15 @@
-date: 2026-10-17
-tag: docs
-title: "A file header is a barcode."
-why: "A few key-value fields at the top let a person or an agent identify a file before reading the rest."
+{
+  "date": "2026-10-17",
+  "tag": "docs",
+  "title": "A file header is a barcode.",
+  "why": "A few key-value fields at the top let a person or an agent identify a file before reading the rest.",
+  "problem": "A reader can open a source file and still spend time discovering what it is for. Repeating that search across many files makes both human navigation and agent context gathering slower.",
+  "cause": "A short header can expose stable metadata before the implementation. Like the barcode in the original lesson, it identifies the item quickly; it should not try to reproduce the whole item.",
+  "steps": [
+    "Choose a small project convention for fields that help navigation, such as purpose, main inputs and outputs, or the relevant configuration owner. Use comment syntax appropriate to the file type.",
+    "Keep the header close to the code it describes and check mechanically for required keys where practical. Leave detailed explanation in the owning documentation rather than repeating it in every file."
+  ],
+  "solution": "Make the first screen answer where this file fits and what a caller needs to know. The source remains the authority for behaviour, so duplicated details need a clear upkeep cost.",
+  "verification": "Give an unfamiliar reader only the header and ask where they would use the file and what they would read next. Then compare those answers with the actual implementation.",
+  "limitations": "The source records a proposed convention; its exact field set was still open. Generated files, tiny modules and formats with strict headers may need a narrower treatment or an exception."
+}

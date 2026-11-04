@@ -1,4 +1,16 @@
-date: 2026-09-12
-tag: frontend
-title: "astro preview ignores your Vite config."
-why: "It builds Vite with configFile:false, so proxy and allowedHosts settings silently drop. Use the Astro server block, or astro dev."
+{
+  "date": "2026-09-12",
+  "tag": "frontend",
+  "title": "astro preview ignores your Vite config.",
+  "why": "It builds Vite with configFile:false, so proxy and allowedHosts settings silently drop. Use the Astro server block, or astro dev.",
+  "problem": "An Astro page can remain blocked by hostname or lose its API proxy even after the Vite preview settings look correct.",
+  "cause": "The inspected preview path constructs its own Vite configuration with configFile:false. Settings placed in vite.preview therefore did not govern that server in the reported setup.",
+  "steps": [
+    "Identify whether the app runs through Astro dev or preview.",
+    "Place host configuration in Astro's supported server block.",
+    "Use the mode that supports the needed proxy and test the full browser-to-API path."
+  ],
+  "solution": "Illustrative: a page that loads by loopback address may still fail through its actual hostname. Test the intended Host header as well as a relative API request.",
+  "verification": "Expect both the real hostname request and the proxied API request to reach their intended handlers. A listening port alone does not establish either result.",
+  "limitations": "This describes the inspected Astro behavior and configuration. Check the installed version's documented options before assuming every preview release supports the same settings."
+}

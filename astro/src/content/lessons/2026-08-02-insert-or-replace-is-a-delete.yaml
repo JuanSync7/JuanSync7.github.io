@@ -1,4 +1,16 @@
-date: 2026-08-02
-tag: sql
-title: "INSERT OR REPLACE is a delete in disguise."
-why: "SQLite deletes the clashing row and inserts a new one, so a guard that blocks UPDATE and DELETE can still be bypassed."
+{
+  "date": "2026-08-02",
+  "tag": "sql",
+  "title": "INSERT OR REPLACE is a delete in disguise.",
+  "why": "SQLite deletes the clashing row and inserts a new one, so a guard that blocks UPDATE and DELETE can still be bypassed.",
+  "problem": "An append-only table can reject ordinary updates and deletes while still allowing a caller to replace a row. The public API may look safe even though a raw database connection can change its history.",
+  "cause": "SQLite's replacement path is not an ordinary update. A conflicting insert can remove an existing row and create another one, so guards built around the obvious write statements do not cover every mutation route.",
+  "steps": [
+    "Write down what append-only means for the table: existing records survive, their values remain unchanged and new records are added without replacing them.",
+    "Test conflicting inserts and replacement forms through a raw connection, including conflicts involving the hidden row identity. Do not rely only on the application wrapper.",
+    "Make the database-level protection refuse those replacement paths, then retain the failing examples as regressions alongside ordinary update and delete tests."
+  ],
+  "solution": "Reject conflicts before insertion: use a BEFORE INSERT guard that raises ABORT when the new row collides with any existing unique key or explicitly supplied rowid. Keep UPDATE and DELETE guards too; test all conflict keys through a raw connection.",
+  "verification": "Insert an original record, attempt each forbidden mutation and read it back. The original values and row identity should remain intact, while legitimate new inserts still work.",
+  "limitations": "Replacement can be useful for a disposable cache. The problem is using it where the contract promises that earlier records cannot be changed."
+}

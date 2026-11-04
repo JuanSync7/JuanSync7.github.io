@@ -1,4 +1,16 @@
-date: 2026-07-08
-tag: testing
-title: "Random checks need a seed, a snapshot and an oracle."
-why: "The seed replays any failure, one snapshot keeps a race from looking like a bug, and a simple evaluator that shares no code says what's right."
+{
+  "date": "2026-07-08",
+  "tag": "testing",
+  "title": "Random checks need a seed, a snapshot and an oracle.",
+  "why": "The seed replays any failure, one snapshot keeps a race from looking like a bug, and a simple evaluator that shares no code says what's right.",
+  "problem": "A randomized live-data check can report a mismatch that cannot be reproduced, leaving it unclear whether the system or the check was wrong.",
+  "cause": "Three independent sources of uncertainty get mixed together: generated input, changing data and a checker that may share the system’s own bug.",
+  "steps": [
+    "Record a seed and the exact generated query.",
+    "Run the system and the reference evaluator against the same frozen data snapshot.",
+    "Use a deliberately simple evaluator that shares neither the parser nor query builder."
+  ],
+  "solution": "For an illustrative filter check, compare exact row-id sets, not only counts. Equal counts can hide one missing row and one extra row. Save the snapshot identity and mismatch so a later investigation starts with the same problem.",
+  "verification": "Replay a saved seed and snapshot and confirm the same query and result sets. Plant one known filtering defect to prove that the independent check detects it.",
+  "limitations": "The cited design is a proposal, not evidence that a periodic production checker was installed. A simple oracle can still be wrong, so give it its own examples and boundaries."
+}

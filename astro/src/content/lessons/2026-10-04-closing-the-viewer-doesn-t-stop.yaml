@@ -1,4 +1,15 @@
-date: 2026-10-04
-tag: eda
-title: "Closing the viewer doesn't stop the job."
-why: "A GUI tool in a detached session keeps its licence until a cut-off or time limit, long after the user walked away."
+{
+  "date": "2026-10-04",
+  "tag": "eda",
+  "title": "Closing the viewer doesn't stop the job.",
+  "why": "A GUI tool in a detached session keeps its licence until a cut-off or time limit, long after the user walked away.",
+  "problem": "Closing a remote desktop viewer can leave an expensive GUI tool running. The screen disappears, yet another user still cannot acquire the licence seat held by that tool.",
+  "cause": "The viewer is only a connection to the desktop. The application and its licence checkout belong to the remote process, whose lifetime continues after the connection ends.",
+  "steps": [
+    "Measure the separate states: connected viewer, detached viewer, exited tool and ended job. Use the licence server and process list rather than inferring release from a closed window.",
+    "Define an idle policy using both connection state and useful work. Warn before stopping an idle job, and retain a time limit as a final boundary."
+  ],
+  "solution": "Make session lifetime explicit. Where a tool supports releasing individual licence features, evaluate that separately from terminating the whole job.",
+  "verification": "With a test seat, detach and reconnect, then exit the tool and compare licence usage. The expected distinction is that detaching preserves work while a real exit returns the seat.",
+  "limitations": "A detached computation may be useful and busy for hours. Disconnect time alone is a poor kill condition, and tool-specific release commands may cause another licence wait later."
+}

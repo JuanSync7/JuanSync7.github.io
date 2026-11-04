@@ -1,4 +1,15 @@
-date: 2026-08-18
-tag: teams
-title: "Conventions must work for humans and LLMs alike."
-why: "With few programmers, the next reader of your code is often an agent. Written standards make its reading guaranteed rather than lucky."
+{
+  "date": "2026-08-18",
+  "tag": "teams",
+  "title": "Conventions must work for humans and LLMs alike.",
+  "why": "With few programmers, the next reader of your code is often an agent. Written standards make its reading guaranteed rather than lucky.",
+  "problem": "A module can be present in the repository yet absent from the corpus an agent uses to understand it. Human reviewers and agents then see different projects.",
+  "cause": "A written convention helps only if readers can find it and producers follow the machine-readable contract. Missing or malformed module headers can silently remove useful context.",
+  "steps": [
+    "Define the exact header and exported-symbol contract that the corpus reader accepts, alongside a short human style guide.",
+    "Gate the checkable contract and compare corpus coverage with the source scope, while leaving clarity and design judgment to review."
+  ],
+  "solution": "For a public module, require its supported summary field rather than hoping the next agent infers its role from a filename. Make invalid headers visible instead of silently skipping them.",
+  "verification": "Use a missing-header example and a malformed summary example. Expect the gate to reject them and corpus checks to expose lost modules; separately ask a reader whether the accepted summary makes sense.",
+  "limitations": "The original phrase “reading guaranteed” overstates what standards can do. A gate can establish structure and coverage, not guarantee that a person or model reads or understands it."
+}

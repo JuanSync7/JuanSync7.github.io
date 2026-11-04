@@ -1,4 +1,16 @@
-date: 2026-09-21
-tag: rtl
-title: "Decoupled units must still retire in order."
-why: "When a vector unit runs apart from the scalar core, dispatch, hazard checks and retirement must keep architectural state in program order, or software sees results out of order."
+{
+  "date": "2026-09-21",
+  "tag": "rtl",
+  "title": "Decoupled units must still retire in order.",
+  "why": "When a vector unit runs apart from the scalar core, dispatch, hazard checks and retirement must keep architectural state in program order, or software sees results out of order.",
+  "problem": "A decoupled vector engine can finish work out of order while software still expects ordered architectural results.",
+  "cause": "Dispatch lets the scalar core and vector unit progress separately. Dependencies, exceptions and visible state updates still need a shared rule for when an instruction's result becomes committed state.",
+  "steps": [
+    "Define the dispatch contract and ownership of operands.",
+    "Track hazards between in-flight instructions.",
+    "Specify the retirement condition that makes results and exceptions visible in program order."
+  ],
+  "solution": "Illustrative: a later short operation can finish before an earlier long one. Completion may be recorded internally, but retirement must preserve the architecture's required ordering.",
+  "verification": "Review directed dependency and exception cases against the architectural contract. A later completion should not expose a state change before an older instruction's required outcome is resolved.",
+  "limitations": "The source supports the interface principle, not a detailed implementation or measured verification result. Different architectures allow different internal schedules and need their own ordering specification."
+}

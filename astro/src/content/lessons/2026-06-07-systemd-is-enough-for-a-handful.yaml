@@ -1,4 +1,16 @@
-date: 2026-06-07
-tag: ops
-title: "Systemd is enough for a handful of GPU boxes."
-why: "Kubernetes pays off at fleet scale. For a few servers, one unit template and one config file per model are simpler to run and to explain."
+{
+  "date": "2026-06-07",
+  "tag": "ops",
+  "title": "Systemd is enough for a handful of GPU boxes.",
+  "why": "Kubernetes pays off at fleet scale. For a few servers, one unit template and one config file per model are simpler to run and to explain.",
+  "problem": "A small model-serving setup can acquire more orchestration machinery than the machines themselves need. That adds another system for the team to understand and maintain.",
+  "cause": "For a small fixed deployment, process lifecycle and per-model configuration may be the main requirements. systemd already provides those host-level building blocks.",
+  "steps": [
+    "Use one service template for the serving process.",
+    "Give each model its own configuration and template instance.",
+    "Group the instances under a target and validate shared GPU limits before startup."
+  ],
+  "solution": "Run two models as two instances of the same unit instead of placing several ExecStart commands in a simple service. Each instance can restart independently while the target represents the group.",
+  "verification": "Check start, stop, restart and reboot behavior for the actual host arrangement. Also check the combined memory budget; valid individual files can still overcommit one card.",
+  "limitations": "The source’s concrete judgment concerns a very small GPU setup. Multi-host scheduling, elastic placement or stronger fleet requirements may justify Kubernetes or another orchestrator."
+}

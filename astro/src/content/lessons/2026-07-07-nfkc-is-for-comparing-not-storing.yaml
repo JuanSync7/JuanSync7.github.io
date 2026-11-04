@@ -1,4 +1,16 @@
-date: 2026-07-07
-tag: unicode
-title: "NFKC is for comparing, not storing."
-why: "It folds ligatures, superscripts and full-width forms, which is great for matching extracted text and lossy for content you keep."
+{
+  "date": "2026-07-07",
+  "tag": "unicode",
+  "title": "NFKC is for comparing, not storing.",
+  "why": "It folds ligatures, superscripts and full-width forms, which is great for matching extracted text and lossy for content you keep.",
+  "problem": "A text-comparison check can reject equivalent-looking extracted text, or damage stored content while trying to avoid that false alarm.",
+  "cause": "NFKC is Unicode compatibility normalization. It folds some distinct characters into common forms, including ligatures, full-width characters and superscripts. That helps matching but loses distinctions.",
+  "steps": [
+    "Keep the original extracted and source text unchanged.",
+    "Create a separate normalized view for the comparison.",
+    "Define which differences the check is allowed to ignore, then retain raw mismatches for inspection."
+  ],
+  "solution": "For example, a ligature and its ordinary letters can compare equal after normalization. A superscript becoming an ordinary digit may be acceptable for one search index but unacceptable for preserving a technical expression.",
+  "verification": "Use paired fixtures: one with an expected compatibility difference and another where the character distinction matters. The comparison should ignore only the differences its contract permits.",
+  "limitations": "NFKC does not fix every extraction issue, such as hyphenation or whitespace. Applying the same broad fold to both sides can also hide real loss, so a normalized pass is not a losslessness proof."
+}

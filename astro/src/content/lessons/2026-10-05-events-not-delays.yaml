@@ -1,4 +1,15 @@
-date: 2026-10-05
-tag: testing
-title: "Chain tests on events, not delays."
-why: "In a simulator, time is exact. On a busy machine, a sleep before the next step is a flaky test that only passes on a quiet day."
+{
+  "date": "2026-10-05",
+  "tag": "testing",
+  "title": "Chain tests on events, not delays.",
+  "why": "In a simulator, time is exact. On a busy machine, a sleep before the next step is a flaky test that only passes on a quiet day.",
+  "problem": "A test that sleeps before checking the next stage can pass on a quiet machine and fail under load. Increasing the sleep makes the suite slower without proving that the dependency is ready.",
+  "cause": "A wall-clock delay measures elapsed time, while the next step depends on an event. Process scheduling, I/O and startup work can all change the gap between those two things.",
+  "steps": [
+    "Name the condition that makes the next step valid: a readiness response, completed task, emitted event or fully written artifact. Wait for that condition rather than a guessed delay.",
+    "Put a finite deadline around the wait and report the last observed state on timeout. If polling is necessary, bound it and preserve the underlying failure message."
+  ],
+  "solution": "Chain the test on completion evidence so fast machines move on promptly and slow machines get the time they actually need.",
+  "verification": "Exercise the test with an intentionally delayed dependency and with one that never becomes ready. It should proceed after real readiness and fail clearly at the deadline when readiness never arrives.",
+  "limitations": "Some tests deliberately study timing, and simulator time has different semantics. Even then, distinguish a required duration from a guessed pause used to hide a missing readiness signal."
+}

@@ -1,4 +1,16 @@
-date: 2026-04-06
-tag: learning
-title: "I can't maintain what I don't understand."
-why: "So I rewrite borrowed code until it fits my mental model. That costs time, and sometimes the original was fine."
+{
+  "date": "2026-04-06",
+  "tag": "learning",
+  "title": "I can't maintain what I don't understand.",
+  "why": "So I rewrite borrowed code until it fits my mental model. That costs time, and sometimes the original was fine.",
+  "problem": "Borrowed code can work while remaining difficult to change safely. If its structure does not fit the maintainer’s mental model, every edit starts with rediscovery.",
+  "cause": "Understanding the module boundaries and state flow is part of being able to maintain the system. A working black box without a clear contract leaves that work unpaid.",
+  "steps": [
+    "Trace the inputs, outputs and state before proposing a rewrite.",
+    "Draw the important boundaries and explain one real path through them.",
+    "Adapt or refactor the smallest part that prevents you from explaining the design."
+  ],
+  "solution": "Bring the code into a model you can reason about. For example, separate a transport adapter from the state changes it triggers, so a future change has an obvious owner.",
+  "verification": "Explain where a new feature would go and which existing behavior must remain true. If that explanation still requires reading every file, the boundary may not yet be clear.",
+  "limitations": "The source also names over-refactoring as a weakness. An unfamiliar design can be sound; understanding and a small adaptation may cost less than replacing it."
+}

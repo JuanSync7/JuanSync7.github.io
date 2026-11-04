@@ -1,4 +1,16 @@
-date: 2026-07-12
-tag: frontend
-title: "Deploy the server before the client."
-why: "A new client sending requests the old server rejects breaks for everyone during the rollout. Server first, then client."
+{
+  "date": "2026-07-12",
+  "tag": "frontend",
+  "title": "Deploy the server before the client.",
+  "why": "A new client sending requests the old server rejects breaks for everyone during the rollout. Server first, then client.",
+  "problem": "A client update can break working users when it begins sending a request format the still-running server does not accept.",
+  "cause": "A rollout has an interval in which old and new versions coexist. If the new client requires new server behavior immediately, deploying it first creates an avoidable incompatible pair.",
+  "steps": [
+    "Make the server accept both the old and new request forms during transition.",
+    "Deploy and restart every server process that consumes the changed contract.",
+    "Verify the new server before releasing the client that depends on it."
+  ],
+  "solution": "For example, a richer filter grammar should be accepted by the API and any background consumer before the interface starts sending it. Updating files alone does not update a process that imported the old parser.",
+  "verification": "Exercise an old-client request and a new-client request against the deployed server, then check the client path end to end. Include a rollback rehearsal when the change is significant.",
+  "limitations": "Server-first works when the server change is backward compatible. Removing fields or changing their meaning needs a wider migration plan rather than relying on rollout order alone."
+}

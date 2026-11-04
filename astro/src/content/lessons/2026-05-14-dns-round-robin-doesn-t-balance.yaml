@@ -1,4 +1,16 @@
-date: 2026-05-14
-tag: networking
-title: "DNS round-robin doesn't balance clients that cache."
-why: "Python clients resolved the name once and stuck to one replica. A real load balancer in front spread the load."
+{
+  "date": "2026-05-14",
+  "tag": "networking",
+  "title": "DNS round-robin doesn't balance clients that cache.",
+  "why": "Python clients resolved the name once and stuck to one replica. A real load balancer in front spread the load.",
+  "problem": "Adding embedding replicas does not help if most requests still reach the same server. A shared DNS name can make this look balanced when it is not.",
+  "cause": "The clients in the source resolved the name and reused the chosen address. DNS round-robin affected resolution, not the distribution of later requests.",
+  "steps": [
+    "Inspect per-replica request counts under the actual client workload.",
+    "Put a request load balancer in front of the replicas.",
+    "Point clients at that stable entry point and check distribution again."
+  ],
+  "solution": "A long-lived Python client can stay attached to one resolved replica while others sit idle. A proxy such as nginx moves the balancing decision to a component that sees the requests instead of relying on repeated DNS lookups.",
+  "verification": "Use the same client lifetime and connection-reuse pattern as production. Expect healthy replicas to receive work; a test that creates a fresh client for every request can hide the original problem.",
+  "limitations": "The exact distribution depends on the balancing policy, keep-alive behavior and request duration. Equal replica counts alone do not prove equal work or latency."
+}

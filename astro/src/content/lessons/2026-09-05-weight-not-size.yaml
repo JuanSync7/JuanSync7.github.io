@@ -1,4 +1,16 @@
-date: 2026-09-05
-tag: typography
-title: "Rank with weight and space, not size."
-why: "Small, dense type reads calmer. Weight, case and spacing do the ranking without shouting."
+{
+  "date": "2026-09-05",
+  "tag": "typography",
+  "title": "Rank with weight and space, not size.",
+  "why": "Small, dense type reads calmer. Weight, case and spacing do the ranking without shouting.",
+  "problem": "A dashboard can become harder to scan when every level of importance is expressed by larger text.",
+  "cause": "Large headings consume space and compete with the figures. Weight, spacing and case can establish structure while keeping the page dense enough to compare related information.",
+  "steps": [
+    "Define a small shared type scale.",
+    "Use weight and spacing to separate titles, sections and labels.",
+    "Review the result with realistic data rather than an empty mockup."
+  ],
+  "solution": "Illustrative: a modest semibold section title followed by a clear gap can distinguish a group without pushing its key values below the fold. Keep the main finding visually distinct from routine labels.",
+  "verification": "Scan the page at normal viewing size and browser zoom. The reader should identify the main finding and section boundaries without losing access to small text.",
+  "limitations": "Density is not permission to reduce legibility. Low contrast, tiny labels or a reader's accessibility needs can justify larger text even when the preferred visual style is compact."
+}

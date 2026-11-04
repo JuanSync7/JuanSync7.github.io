@@ -1,4 +1,16 @@
-date: 2026-09-24
-tag: eda
-title: "A licence server can be up while its daemons are down."
-why: "An lmgrd up/down check stays green while the vendor daemons that actually serve the features have failed. Check health at daemon level."
+{
+  "date": "2026-09-24",
+  "tag": "eda",
+  "title": "A licence server can be up while its daemons are down.",
+  "why": "An lmgrd up/down check stays green while the vendor daemons that actually serve the features have failed. Check health at daemon level.",
+  "problem": "A licence service can appear online while the features users need are unavailable.",
+  "cause": "The top-level manager and the vendor daemons have different roles. A running lmgrd does not prove that each daemon responsible for feature checkout is healthy.",
+  "steps": [
+    "Inventory the expected vendor daemons for each server.",
+    "Probe and report their individual states.",
+    "Keep server reachability, manager health, daemon health and data freshness as separate signals."
+  ],
+  "solution": "Illustrative: a green manager status alongside one failed vendor daemon should produce a degraded service verdict, with the unavailable feature group visible to the operator.",
+  "verification": "Exercise a disposable or recorded response with the manager up and one expected daemon down. The aggregate status should reveal the partial failure rather than report full health.",
+  "limitations": "A daemon answering does not prove every feature has available capacity. Checkout denials, expiry and collector outages require additional evidence, and unknown probe results should remain unknown."
+}

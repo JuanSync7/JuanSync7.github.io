@@ -1,4 +1,16 @@
-date: 2026-07-06
-tag: building
-title: "Don't buy a gateway that skips the hard part."
-why: "A gateway that moves requests but not identity leaves the real problem where it was. A thin wrapper you own can do the one thing that matters."
+{
+  "date": "2026-07-06",
+  "tag": "building",
+  "title": "Don't buy a gateway that skips the hard part.",
+  "why": "A gateway that moves requests but not identity leaves the real problem where it was. A thin wrapper you own can do the one thing that matters.",
+  "problem": "A request gateway can add another hop without solving the access-control problem that justified introducing it.",
+  "cause": "Forwarding a shared service key authenticates the service to the destination. It does not tell the destination which person asked, or restrict that person to their permitted records.",
+  "steps": [
+    "Trace caller identity from the entry point to each protected operation.",
+    "Check whether the destination enforces per-user scope or expects the gateway to do so.",
+    "Choose the smallest maintained layer that can authenticate callers, authorize arguments and protect the shared credential."
+  ],
+  "solution": "In an illustrative ticket assistant, the wrapper must bind a request to the authenticated caller and verify record ownership before using a broad key. Routing alone adds no such check.",
+  "verification": "Try an allowed request and a cross-user request through the real entry point. The latter should fail before protected data is returned, including when a caller changes supplied identifiers.",
+  "limitations": "A thin wrapper still needs review, maintenance and secure key handling. A managed gateway may be appropriate if it provides the actual identity and policy features required."
+}

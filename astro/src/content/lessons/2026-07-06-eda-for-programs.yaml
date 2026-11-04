@@ -1,4 +1,16 @@
-date: 2026-07-06
-tag: eda
-title: "EDA tools were built for people, not programs."
-why: "Before an agent can help with chip design, the tools need clean CLIs and structured output. Making the flow scriptable is step one, not a nice-to-have."
+{
+  "date": "2026-07-06",
+  "tag": "eda",
+  "title": "EDA tools were built for people, not programs.",
+  "why": "Before an agent can help with chip design, the tools need clean CLIs and structured output. Making the flow scriptable is step one, not a nice-to-have.",
+  "problem": "An agent cannot reliably operate a hardware flow when every stage depends on an interactive session and a human reading an unstructured screen.",
+  "cause": "Automation needs stable inputs, an explicit invocation and a result that another program can interpret. Without these, the agent must guess both what to run and whether it worked.",
+  "steps": [
+    "Wrap one tool stage in a script with declared inputs and output locations.",
+    "Preserve the native log and emit a small structured summary of status and reports.",
+    "Make failure visible through a nonzero exit or an explicit failed result."
+  ],
+  "solution": "For example, a lint wrapper can accept an RTL file list and rule deck, run the tool, and return report paths plus violation counts. The wrapper supplies a repeatable interface around the existing EDA tool.",
+  "verification": "Run the wrapper on a small valid design and a deliberately invalid fixture. Check both the summary and the native tool log, including missing-license and missing-input cases.",
+  "limitations": "Scriptability is a prerequisite for useful automation, not proof that an agent understands the design or that a successful tool run establishes silicon correctness."
+}

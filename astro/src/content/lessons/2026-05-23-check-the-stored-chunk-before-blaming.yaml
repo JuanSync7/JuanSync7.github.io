@@ -1,4 +1,16 @@
-date: 2026-05-23
-tag: rag
-title: "Check the stored chunk before blaming the model."
-why: "A wrong answer about a PDF table came from corruption at parse time. Swapping the LLM would never have fixed it."
+{
+  "date": "2026-05-23",
+  "tag": "rag",
+  "title": "Check the stored chunk before blaming the model.",
+  "why": "A wrong answer about a PDF table came from corruption at parse time. Swapping the LLM would never have fixed it.",
+  "problem": "A wrong answer about a PDF table can send debugging toward the language model even when the wrong numbers were already stored in retrieval.",
+  "cause": "An index faithfully returns the chunks it receives. If parsing corrupted the table, retrieval and generation can both behave as designed while propagating that error.",
+  "steps": [
+    "Read the retrieved chunk exactly as stored.",
+    "Compare its table values and relationships with the source page.",
+    "Fix extraction and rebuild the affected content before changing the answer model."
+  ],
+  "solution": "If a source table says 24 nodes and 9.6 kW but the stored chunk says 12 and 4.8, a more capable model still receives the wrong evidence. The repair belongs upstream at parsing.",
+  "verification": "After reprocessing, inspect the stored chunk again and repeat the same question. Check both that the values survived extraction and that retrieval supplied the corrected evidence.",
+  "limitations": "Clean chunks do not prove the model is innocent. Once the evidence is correct, continue through ranking, context assembly and answer generation to find any remaining fault."
+}

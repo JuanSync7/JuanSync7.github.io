@@ -1,4 +1,15 @@
-date: 2026-08-06
-tag: testing
-title: "Tests can be complicit in the bug."
-why: "If the test was written from the same wrong reading of the spec, it passes with the code. Check what a test assumes, not just that it's green."
+{
+  "date": "2026-08-06",
+  "tag": "testing",
+  "title": "Tests can be complicit in the bug.",
+  "why": "If the test was written from the same wrong reading of the spec, it passes with the code. Check what a test assumes, not just that it's green.",
+  "problem": "A passing test can agree with the implementation and still disagree with the requirement. That makes a green suite a weak answer to a disputed interpretation.",
+  "cause": "The expected result may have been copied from the same assumption that shaped the code. Reusing its helper in the test can make the same fault cancel on both sides.",
+  "steps": [
+    "Start with the requirement and write one small input whose correct output can be worked out without the implementation.",
+    "Compare that result with the test oracle, then deliberately break the disputed rule and see whether the test notices."
+  ],
+  "solution": "Give the test an independent basis for its answer. For a boundary rule, include values just below, at and above the boundary.",
+  "verification": "The deliberately wrong implementation should fail for the intended reason. A passing mutation means the test has not established that rule.",
+  "limitations": "Independence reduces shared assumptions; it does not prove the requirement itself is right. Keep ambiguous wording open for review."
+}

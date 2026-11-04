@@ -1,4 +1,16 @@
-date: 2026-09-20
-tag: postgres
-title: "Autovacuum never analyzes partitioned parents."
-why: "The parent's statistics stay empty until an explicit ANALYZE, which can hide planner and counting bugs for weeks."
+{
+  "date": "2026-09-20",
+  "tag": "postgres",
+  "title": "Autovacuum never analyzes partitioned parents.",
+  "why": "The parent's statistics stay empty until an explicit ANALYZE, which can hide planner and counting bugs for weeks.",
+  "problem": "A partitioned database can have incomplete parent statistics even while its leaf tables receive routine maintenance.",
+  "cause": "Autovacuum's analysis of changed leaf tables does not automatically establish up-to-date statistics for a partitioned parent. Separate counting logic can then accidentally depend on absent parent estimates.",
+  "steps": [
+    "Inspect parent and leaf statistics separately.",
+    "Schedule an explicit ANALYZE for partitioned parents where needed.",
+    "Exclude partitioned parent estimates when summing leaf relation counts."
+  ],
+  "solution": "Illustrative: an unknown parent row estimate can hide a double-counting bug until manual analysis populates it. Adding maintenance without checking the aggregate may suddenly change a dashboard total.",
+  "verification": "Compare the aggregate's relation-kind filter and representative parent statistics before and after analysis. The total should count stored rows once, not both parent and leaf estimates.",
+  "limitations": "Planner estimates are not exact row counts. ANALYZE improves statistics but does not fix an aggregate that sums the wrong relations; those are separate corrections."
+}

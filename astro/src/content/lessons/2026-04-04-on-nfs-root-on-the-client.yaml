@@ -1,4 +1,16 @@
-date: 2026-04-04
-tag: linux
-title: "On NFS, root on the client is nobody on the server."
-why: "root_squash maps root to an anonymous user, so even uid 0 or CAP_DAC_READ_SEARCH can't read other users' private NFS homes. The server decides."
+{
+  "date": "2026-04-04",
+  "tag": "linux",
+  "title": "On NFS, root on the client is nobody on the server.",
+  "why": "root_squash maps root to an anonymous user, so even uid 0 or CAP_DAC_READ_SEARCH can't read other users' private NFS homes. The server decides.",
+  "problem": "A privileged process can read local files yet receive permission errors when it reaches a private home on an NFS mount.",
+  "cause": "NFS permissions are decided by the server. With root_squash, a request from client uid 0 becomes an anonymous user; local read capabilities do not override that decision.",
+  "steps": [
+    "Identify whether the failing path is local storage or an NFS export.",
+    "Check the export’s identity and permission rules with its administrator.",
+    "Choose an authorized shared location or a push-based collection path instead of assuming client root can read every home."
+  ],
+  "solution": "For usage collection, have each user write the allowed records to a shared spool that the service can read. This removes the need for the collector to traverse private homes.",
+  "verification": "Check access using the actual service identity on the actual mount. A successful local-file read is not a check of server-side access.",
+  "limitations": "Absolute paths fix path resolution, not server permissions. Changing export policy is a separate access-control decision; this lesson does not require weakening root_squash."
+}

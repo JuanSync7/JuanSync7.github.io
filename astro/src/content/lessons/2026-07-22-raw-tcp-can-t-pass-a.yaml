@@ -1,4 +1,16 @@
-date: 2026-07-22
-tag: networking
-title: "Raw TCP can't pass a domain allowlist."
-why: "Domain filtering works through an HTTP proxy. Licence servers, schedulers and SSH speak raw TCP, so they get blocked."
+{
+  "date": "2026-07-22",
+  "tag": "networking",
+  "title": "Raw TCP can't pass a domain allowlist.",
+  "why": "Domain filtering works through an HTTP proxy. Licence servers, schedulers and SSH speak raw TCP, so they get blocked.",
+  "problem": "A network policy that works for HTTPS tools can block a hardware workflow that needs a license server or scheduler connection.",
+  "cause": "An HTTP proxy understands HTTP requests and hostnames carried through that protocol. A client speaking a different raw TCP protocol cannot automatically use the same domain-filtering path.",
+  "steps": [
+    "Inventory each required connection by protocol as well as destination.",
+    "Check which connections the sandbox’s proxy can actually transport.",
+    "Use an approved network-level path for required non-HTTP traffic with explicit destination limits."
+  ],
+  "solution": "For example, a license checkout is not a web request merely because its server has a DNS name. The design must account for the protocol and any additional ports the service requires.",
+  "verification": "Test a minimal real operation for each protocol through the intended restricted environment. Empty output or an unstarted wrapper should be recorded as inconclusive, not a network-policy pass.",
+  "limitations": "Some proxies support CONNECT or other tunneling, and some products offer protocol-specific gateways. The limitation concerns the configured HTTP-only filter, not a claim that raw TCP can never be controlled."
+}

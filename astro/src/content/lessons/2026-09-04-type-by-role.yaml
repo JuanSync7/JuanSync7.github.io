@@ -1,4 +1,16 @@
-date: 2026-09-04
-tag: typography
-title: "Monospace for machines, a reading face for prose."
-why: "Mono for labels, ids and code. A proportional face for long text. Pick type by role, not by mood."
+{
+  "date": "2026-09-04",
+  "tag": "typography",
+  "title": "Monospace for machines, a reading face for prose.",
+  "why": "Mono for labels, ids and code. A proportional face for long text. Pick type by role, not by mood.",
+  "problem": "A page can look consistent while making long explanations tiring to read and identifiers awkward to compare.",
+  "cause": "Monospace gives every character the same width, which helps machine strings line up. Proportional type gives prose a more natural reading rhythm; using either everywhere ignores its role.",
+  "steps": [
+    "Classify text as prose, labels, identifiers or code.",
+    "Assign a small font set through shared tokens.",
+    "Read a realistic long passage and scan representative machine values before finalizing the roles."
+  ],
+  "solution": "Illustrative: keep a table's job identifiers in mono while using a proportional face for the explanation above it. The contrast communicates what to scan and what to read without adding another colour.",
+  "verification": "Inspect the page with real content, long identifiers and fallback fonts. Prose should remain comfortable, and machine values should remain distinguishable without clipping.",
+  "limitations": "This is a design choice tied to purpose, not a universal ban on monospace prose. Size, contrast, line length and font loading still matter whichever family is chosen."
+}

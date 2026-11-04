@@ -1,4 +1,16 @@
-date: 2026-09-15
-tag: rag
-title: "Old versions can outrank the current doc."
-why: "With several versions in one index, the top hits were drafts 0.5, 0.4 and 0.2 instead of 1.1. Clean out old versions before loading."
+{
+  "date": "2026-09-15",
+  "tag": "rag",
+  "title": "Old versions can outrank the current doc.",
+  "why": "With several versions in one index, the top hits were drafts 0.5, 0.4 and 0.2 instead of 1.1. Clean out old versions before loading.",
+  "problem": "Retrieval can confidently cite an obsolete draft when several versions of the same document share one index.",
+  "cause": "Similarity ranking does not inherently prefer the current revision. Repeated old text can occupy several top results and crowd out the document that now owns the answer.",
+  "steps": [
+    "Choose an authoritative version before ingestion.",
+    "Remove superseded copies from the searchable current corpus or place them behind an explicit history filter.",
+    "Inspect returned document identities and versions before judging the generated answer."
+  ],
+  "solution": "Illustrative: three similar drafts can fill the top matches while a current version ranks below them. Cleaning the corpus addresses the evidence selection before changing the model prompt.",
+  "verification": "Run a retrieval-only question set and inspect the versions of the returned documents. Current-answer queries should resolve to the intended current source.",
+  "limitations": "Historical research may need old versions. Retain them with explicit version metadata and scope rather than deleting the only record of past decisions."
+}

@@ -1,4 +1,16 @@
-date: 2026-09-06
-tag: design
-title: "Safe to change depends on who reads it, not who owns it."
-why: "Owning a file doesn't make editing it safe. Count its consumers; a file with many readers needs care whoever owns it."
+{
+  "date": "2026-09-06",
+  "tag": "design",
+  "title": "Safe to change depends on who reads it, not who owns it.",
+  "why": "Owning a file doesn't make editing it safe. Count its consumers; a file with many readers needs care whoever owns it.",
+  "problem": "Editing a file can affect more people than its ownership suggests.",
+  "cause": "A file's owner controls its permissions, but its readers determine the effect of a change. Shared constraints can influence several flows even when the file lives in one user's area.",
+  "steps": [
+    "Identify the actual consumers and the role of the file.",
+    "Separate provenance questions from assumptions based on its name or directory.",
+    "Review downstream effects before changing an input used by several flows."
+  ],
+  "solution": "Illustrative: changing one timing constraint may alter several analyses that consume it. The useful question is which analyses read that value, rather than whether the editor owns the file.",
+  "verification": "Trace representative consumers to the exact input they load. Review the proposed change against those consumers and keep an unconfirmed classification marked as unconfirmed.",
+  "limitations": "A suggestive filename does not establish that a file is a signoff input. If consumers are unknown, record the gap rather than claiming either a safe edit or a confirmed unsafe dependency."
+}

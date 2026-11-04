@@ -1,4 +1,15 @@
-date: 2026-10-05
-tag: interfaces
-title: "Ports freeze at tape-out. Software interfaces don't."
-why: "So version them, and let both sides cope with the old shape for a while."
+{
+  "date": "2026-10-05",
+  "tag": "interfaces",
+  "title": "Ports freeze at tape-out. Software interfaces don't.",
+  "why": "So version them, and let both sides cope with the old shape for a while.",
+  "problem": "A software interface can change while an older client is still in use. Renaming or removing a field in one deployment can therefore break a caller that was correct when it was released.",
+  "cause": "Unlike a port frozen at chip tape-out, a software contract evolves across independently deployed parts. Without a version or compatibility period, both sides must change at exactly the same time.",
+  "steps": [
+    "Describe the old and new shapes and identify which deployed consumers still depend on the old one. Decide whether the change can be additive or needs an explicit new contract version.",
+    "Let the producer accept or serve the older shape during a defined transition, and update consumers in an order that preserves a working path. Record when support for the old shape can end."
+  ],
+  "solution": "Make interface change a migration with a compatibility window. This keeps a small internal refactor from becoming an unplanned coordinated release.",
+  "verification": "Exercise old and new clients against the transition version. Each supported combination should behave as documented, and an unsupported version should fail with a clear explanation.",
+  "limitations": "Compatibility costs code and tests, so retire old paths deliberately. In a single process with an atomic release, a long public versioning scheme may add little value."
+}

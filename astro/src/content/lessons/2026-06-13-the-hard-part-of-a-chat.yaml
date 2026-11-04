@@ -1,4 +1,16 @@
-date: 2026-06-13
-tag: frontend
-title: "The hard part of a chat UI isn't the screen."
-why: "Drawing a chat window is easy. Owning sign-in and conversation storage is the real work, and the real risk, of a custom front end."
+{
+  "date": "2026-06-13",
+  "tag": "frontend",
+  "title": "The hard part of a chat UI isn't the screen.",
+  "why": "Drawing a chat window is easy. Owning sign-in and conversation storage is the real work, and the real risk, of a custom front end.",
+  "problem": "A chat screen can be built quickly while the shared product remains unready. Sign-in, conversation access and retained history carry most of the responsibility.",
+  "cause": "A custom frontend becomes an owner of identity and stored conversations, not merely a renderer for model replies.",
+  "steps": [
+    "Decide who authenticates the user.",
+    "Define who may read, retain and delete each conversation.",
+    "Keep the model-facing adapter narrow so the screen can be replaced without moving the security boundary."
+  ],
+  "solution": "For a local single-user prototype, a lightweight UI may be enough. Before sharing it, decide how one user’s saved chat is prevented from appearing in another user’s session and which service owns that check.",
+  "verification": "Test two separate identities and their conversation histories through the actual sign-in path. A working model reply does not establish that history storage and access controls are correct.",
+  "limitations": "Managed frontends can reduce the work but bring their own integration and data-handling contracts. Compare those responsibilities before choosing on screen-building effort alone."
+}

@@ -1,4 +1,16 @@
-date: 2026-09-24
-tag: postgres
-title: "A green SQLite suite says nothing about Postgres."
-why: "Types, upserts and time zones differ. A test on the real engine found migrations that couldn't rebuild the live database."
+{
+  "date": "2026-09-24",
+  "tag": "postgres",
+  "title": "A green SQLite suite says nothing about Postgres.",
+  "why": "Types, upserts and time zones differ. A test on the real engine found migrations that couldn't rebuild the live database.",
+  "problem": "A migration suite can pass on a substitute database while failing to rebuild the production engine from scratch.",
+  "cause": "SQL engines differ in types, upsert syntax and timezone behavior. Tests that emulate the interface can miss engine-specific DDL and migration ordering failures.",
+  "steps": [
+    "Keep fast unit checks for isolated logic.",
+    "Create a disposable instance of the real database engine.",
+    "Apply the full migration chain to an empty database and exercise representative reads and writes."
+  ],
+  "solution": "Illustrative: a migration accepted by SQLite may not create the intended PostgreSQL type or conflict behavior. A fresh PostgreSQL instance tests that contract directly without touching production data.",
+  "verification": "Expect the migrations to reach the current schema from an empty real-engine instance, then verify key constraints and application operations. Record the engine version used.",
+  "limitations": "A clean rebuild does not test every upgrade path from existing data. Add representative populated-version upgrades where transformation risk exists, and keep the disposable target distinct from the live database."
+}

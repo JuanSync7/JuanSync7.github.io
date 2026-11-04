@@ -1,4 +1,16 @@
-date: 2026-07-15
-tag: config
-title: "A hardcoded value is a question nobody asked."
-why: "It means no one thought about what might change. Put it in config, and let the code and the docs both read it from there."
+{
+  "date": "2026-07-15",
+  "tag": "config",
+  "title": "A hardcoded value is a question nobody asked.",
+  "why": "It means no one thought about what might change. Put it in config, and let the code and the docs both read it from there.",
+  "problem": "A value copied into code and documentation can require a release and several synchronized edits whenever the operating environment changes.",
+  "cause": "The same policy now has multiple owners. One copy can change while another stays plausible, leaving behavior and instructions in disagreement.",
+  "steps": [
+    "Identify values expected to vary across deployments or over time.",
+    "Give each value one configuration owner with validation and a documented default.",
+    "Have code and generated documentation read that owner rather than copying the value."
+  ],
+  "solution": "For example, a retry limit that differs by environment belongs in validated settings. A mathematical constant inside an algorithm usually does not. The distinction is whether the value represents a changeable decision.",
+  "verification": "Change the setting in a fixture and confirm the behavior and displayed documentation agree. Reject invalid values at startup instead of accepting a configuration that cannot work.",
+  "limitations": "Configuration adds another interface to maintain. Keep true invariants in code, avoid exposing internal details without a use case, and record which changes require a restart."
+}

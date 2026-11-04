@@ -1,4 +1,15 @@
-date: 2026-10-14
-tag: process
-title: "Capture the mistake when it happens."
-why: "A lessons-learnt review at the end is short and tidied by hindsight. Record the fix or the slip while the detail is still there."
+{
+  "date": "2026-10-14",
+  "tag": "process",
+  "title": "Capture the mistake when it happens.",
+  "why": "A lessons-learnt review at the end is short and tidied by hindsight. Record the fix or the slip while the detail is still there.",
+  "problem": "An end-of-project review can preserve the conclusion while losing the details that made a fix useful. By then, the failed assumption and the evidence that changed someone's mind are harder to reconstruct.",
+  "cause": "Hindsight compresses a messy sequence into a tidy story. Capturing near the event preserves the symptom, context and attempted correction before memory turns them into an apparent straight line.",
+  "steps": [
+    "Record the problem and the smallest evidence that explains it while the work is fresh. Keep the source, relevant versions, change made and what was actually checked.",
+    "Separate a tested result from a hypothesis or a proposed fix. Later, turn the capture into a reusable explanation and link it to any rule or check it changes."
+  ],
+  "solution": "Make capture part of the existing workflow so it does not depend on a large retrospective meeting. A short accurate record is a better starting point than a polished account written from memory.",
+  "verification": "Ask someone outside the original task to explain when the lesson applies and how to check the correction. Missing steps or unclear limits show what the capture still needs.",
+  "limitations": "Immediate notes can be incomplete and sensitive. Review them before reuse, respect contractual limits on design details, and do not turn a mistake record into an individual's performance file."
+}

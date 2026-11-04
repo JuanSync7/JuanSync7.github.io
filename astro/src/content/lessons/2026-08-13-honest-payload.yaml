@@ -1,4 +1,15 @@
-date: 2026-08-13
-tag: agents
-title: "Caveats only work if the model reads them."
-why: "'Sample too small' flags do nothing if the agent stops at the headline number. Sometimes you have to force a second step."
+{
+  "date": "2026-08-13",
+  "tag": "agents",
+  "title": "Caveats only work if the model reads them.",
+  "why": "'Sample too small' flags do nothing if the agent stops at the headline number. Sometimes you have to force a second step.",
+  "problem": "A report can carry a warning about incomplete data and still be summarised as a confident headline number.",
+  "cause": "The caveat is only information until the consuming step acts on it. A model can overlook a flag or quote the statistic without carrying its conditions into the answer.",
+  "steps": [
+    "Make the tool calculate coverage and sample validity itself, and return explicit reasons when a statistic is not supported.",
+    "Require the reporting step to inspect that status before it can use the number; for stronger guarantees, withhold invalid statistics in deterministic code."
+  ],
+  "solution": "For a small contaminated sample, return “not enough data” with the count and reason rather than a median plus a warning the next step may drop.",
+  "verification": "Feed a report with a tempting headline and an invalid-sample flag through the consumer. Expect it to refuse the statistic and preserve the reason in the user-facing explanation.",
+  "limitations": "A second model step can improve attention but cannot guarantee compliance. A code-enforced validity boundary is stronger when the rule can be decided mechanically."
+}

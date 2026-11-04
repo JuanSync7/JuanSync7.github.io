@@ -1,4 +1,15 @@
-date: 2026-08-26
-tag: data
-title: "Split the schema before you have data."
-why: "A storage layout is cheapest to change while nothing is committed and no corpus exists. After that, every split is a migration."
+{
+  "date": "2026-08-26",
+  "tag": "data",
+  "title": "Split the schema before you have data.",
+  "why": "A storage layout is cheapest to change while nothing is committed and no corpus exists. After that, every split is a migration.",
+  "problem": "A document record can become awkward when simple descriptors and large nested knowledge payloads are forced into the same storage format.",
+  "cause": "Different data has different ownership and update needs. After a corpus exists, separating those concerns requires migrating old records and preserving every existing reference.",
+  "steps": [
+    "Before committing a corpus, separate document descriptors from derived knowledge and define the identity linking them.",
+    "Specify how a payload binds to the exact source bytes, then update writers and readers together before data depends on the layout."
+  ],
+  "solution": "For example, keep descriptors with the document and a structured knowledge payload separately, joined by a document id and Markdown digest. The digest exposes a payload built from an older document version.",
+  "verification": "Use one sample document to test both records, their join and a source edit that must mark the old payload stale. Check that readers reject mismatched identity or content versions.",
+  "limitations": "Early change is cheaper, not free. Do not split storage without a real ownership or format need; once data exists, plan an explicit migration rather than assuming it can be regenerated safely."
+}
