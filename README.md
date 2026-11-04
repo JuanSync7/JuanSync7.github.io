@@ -130,6 +130,9 @@ into topics, tools and languages, and practices. The selection is kept in the UR
 restored by browser navigation. Without JavaScript all lessons remain readable by category.
 `npm run lessons:check` validates every public file against the registry during `npm run check`.
 
+Repository documentation starts at [docs/README.md](docs/README.md); user-visible change
+history lives in [docs/internals/CHANGELOG.md](docs/internals/CHANGELOG.md).
+
 ## License
 
 See `LICENSE`.
