@@ -11,5 +11,10 @@
   ],
   "solution": "For example, initialise tpid before installing a trap and only signal it when it contains the tunnel process id. Make partial setup a normal case the cleanup code handles.",
   "verification": "Force an exit before resource creation and another after it in a disposable run. Both should preserve the original failure while avoiding an unbound-variable error; the later case should remove the created resource.",
-  "limitations": "Initialisation prevents this failure, but cleanup can still fail for other reasons. Avoid signalling an unrelated process and preserve useful diagnostics from the original error."
+  "limitations": "Initialisation prevents this failure, but cleanup can still fail for other reasons. Avoid signalling an unrelated process and preserve useful diagnostics from the original error.",
+  "category": "systems-and-operations",
+  "tags": [
+    "shell",
+    "error-handling"
+  ]
 }

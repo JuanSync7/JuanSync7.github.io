@@ -11,5 +11,11 @@
   ],
   "solution": "Use CI to rehearse the path a new contributor follows. Fixing one bootstrap then repairs both environments and makes the documentation easier to trust.",
   "verification": "Try the documented command in a clean supported environment and inspect failures for missing prerequisites. A successful check should require only the prerequisites the documentation actually names.",
-  "limitations": "Hosted CI covers its own operating system and network conditions. It cannot prove every developer platform works, and caches or preinstalled tools can still mask a missing setup step."
+  "limitations": "Hosted CI covers its own operating system and network conditions. It cannot prove every developer platform works, and caches or preinstalled tools can still mask a missing setup step.",
+  "category": "software-engineering",
+  "tags": [
+    "build",
+    "ci",
+    "testing"
+  ]
 }

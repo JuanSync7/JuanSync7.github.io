@@ -11,5 +11,11 @@
   ],
   "solution": "Keep reasoning and the final reply in separate response fields. Budget for both phases rather than setting the token limit to the desired answer length alone.",
   "verification": "The expected response has answer text in message.content and reasoning in its separate field. A length finish reason with empty content calls for a budget check before blaming the client renderer.",
-  "limitations": "Parser names and response shapes depend on the model and server version. Do not apply one model’s parser setting to every model."
+  "limitations": "Parser names and response shapes depend on the model and server version. Do not apply one model’s parser setting to every model.",
+  "category": "ai-and-agents",
+  "tags": [
+    "inference",
+    "contracts",
+    "llm"
+  ]
 }

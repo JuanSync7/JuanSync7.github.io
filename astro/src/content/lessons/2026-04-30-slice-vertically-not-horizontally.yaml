@@ -12,5 +12,11 @@
   ],
   "solution": "A slice might handle validation errors and logging for one import path. It can be exercised from bad input to the final response, so missing behavior has a clear owner.",
   "verification": "Check that each promised behavior has a test within the slice and that the slice agrees with the shared contract. Then inspect the seam where it hands work to the next part.",
-  "limitations": "Vertical slices do not remove cross-cutting work. Without a common contract and an integration pass, several small slices can still produce inconsistent error behavior."
+  "limitations": "Vertical slices do not remove cross-cutting work. Without a common contract and an integration pass, several small slices can still produce inconsistent error behavior.",
+  "category": "work-and-delivery",
+  "tags": [
+    "process",
+    "delivery",
+    "testing"
+  ]
 }

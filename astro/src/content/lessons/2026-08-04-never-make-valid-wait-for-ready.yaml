@@ -12,5 +12,10 @@
   ],
   "solution": "Let availability and acceptance be separate facts. The source can promise a stable value while waiting for the receiver to accept it.",
   "verification": "In the delayed-ready example, VALID must appear without a prior READY and the value must remain stable until the transfer. A scoreboard can check that the value is accepted once.",
-  "limitations": "This explanation concerns an AXI-style channel contract. Do not transfer its signal rules to a different interface without reading that protocol."
+  "limitations": "This explanation concerns an AXI-style channel contract. Do not transfer its signal rules to a different interface without reading that protocol.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "protocols",
+    "rtl"
+  ]
 }

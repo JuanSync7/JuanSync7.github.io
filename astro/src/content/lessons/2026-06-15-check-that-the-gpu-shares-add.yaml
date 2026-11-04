@@ -12,5 +12,11 @@
   ],
   "solution": "If three files request fractions that add to 1.67, each fraction can be individually below one while the fleet still asks for more than one card. The validator needs the whole set.",
   "verification": "Use a fixture whose individual files are valid but whose total exceeds the allowed budget. Expect the fleet check to reject it, then check a valid combined allocation.",
-  "limitations": "A fraction sum is only one invariant. Model weights, caches, runtime overhead and other processes still need headroom; a valid configuration total does not prove the device is currently free."
+  "limitations": "A fraction sum is only one invariant. Model weights, caches, runtime overhead and other processes still need headroom; a valid configuration total does not prove the device is currently free.",
+  "category": "ai-and-agents",
+  "tags": [
+    "inference",
+    "resource-limits",
+    "validation"
+  ]
 }

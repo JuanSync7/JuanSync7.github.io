@@ -11,5 +11,11 @@
   ],
   "solution": "Give contributors one clear route from a design choice to the CSS that implements it. A shared token should change every place that represents that same choice.",
   "verification": "Change a token in a local preview and inspect old and new pages in each supported theme. Look for raw values or alternate defaults that prevented the change from carrying through.",
-  "limitations": "This is a project convention, not a rule against utility CSS everywhere. A planned migration can use two systems temporarily if ownership and the removal path are clear."
+  "limitations": "This is a project convention, not a rule against utility CSS everywhere. A planned migration can use two systems temporarily if ownership and the removal path are clear.",
+  "category": "frontend-and-design",
+  "tags": [
+    "css",
+    "design",
+    "maintainability"
+  ]
 }

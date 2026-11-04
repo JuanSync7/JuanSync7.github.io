@@ -11,5 +11,11 @@
   ],
   "solution": "Treat the image as a versioned release. When a pin changes, decide whether existing machines are replaced or updated and keep that choice observable.",
   "verification": "Compare a newly launched instance with an older one against the desired release. Check the actual binary versions as well as image labels, because later in-place changes can separate the two.",
-  "limitations": "Instance age is a warning signal, not a version identifier. Patching or replacement can break the age/version relationship, and rollout timing depends on service availability needs."
+  "limitations": "Instance age is a warning signal, not a version identifier. Patching or replacement can break the age/version relationship, and rollout timing depends on service availability needs.",
+  "category": "systems-and-operations",
+  "tags": [
+    "ops",
+    "configuration",
+    "delivery"
+  ]
 }

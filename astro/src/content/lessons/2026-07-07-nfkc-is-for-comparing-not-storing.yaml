@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a ligature and its ordinary letters can compare equal after normalization. A superscript becoming an ordinary digit may be acceptable for one search index but unacceptable for preserving a technical expression.",
   "verification": "Use paired fixtures: one with an expected compatibility difference and another where the character distinction matters. The comparison should ignore only the differences its contract permits.",
-  "limitations": "NFKC does not fix every extraction issue, such as hyphenation or whitespace. Applying the same broad fold to both sides can also hide real loss, so a normalized pass is not a losslessness proof."
+  "limitations": "NFKC does not fix every extraction issue, such as hyphenation or whitespace. Applying the same broad fold to both sides can also hide real loss, so a normalized pass is not a losslessness proof.",
+  "category": "frontend-and-design",
+  "tags": [
+    "unicode",
+    "data",
+    "integrity"
+  ]
 }

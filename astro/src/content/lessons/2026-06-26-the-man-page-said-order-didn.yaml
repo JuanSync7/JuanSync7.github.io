@@ -12,5 +12,11 @@
   ],
   "solution": "For an illustrative pair, submit to interactive,standard and then standard,interactive under comparable availability. Changing only the list order makes the routing result easier to interpret.",
   "verification": "Check the recorded partition and resource conditions for each job. Repeat enough to separate list-order behavior from one partition simply lacking capacity at the time.",
-  "limitations": "This is evidence about the tested environment, not a universal Slurm scheduling guarantee. Recheck after priority, configuration or version changes before relying on the same routing rule."
+  "limitations": "This is evidence about the tested environment, not a universal Slurm scheduling guarantee. Recheck after priority, configuration or version changes before relying on the same routing rule.",
+  "category": "systems-and-operations",
+  "tags": [
+    "slurm",
+    "testing",
+    "configuration"
+  ]
 }

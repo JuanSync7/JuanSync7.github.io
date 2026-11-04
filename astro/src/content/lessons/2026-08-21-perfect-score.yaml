@@ -11,5 +11,11 @@
   ],
   "solution": "For a nested list, compare which item owns each child, not merely whether all words appear. Give unsupported formatting an explicit receipt instead of counting silent flattening as faithful conversion.",
   "verification": "Use a fixture with identical words in two different nesting structures. The word score may match, but the structure check should distinguish them and identify the changed relationship.",
-  "limitations": "A structure score is only as good as the facts and reference it checks. Independent extraction reduces shared mistakes but still needs review for omitted source semantics."
+  "limitations": "A structure score is only as good as the facts and reference it checks. Independent extraction reduces shared mistakes but still needs review for omitted source semantics.",
+  "category": "ai-and-agents",
+  "tags": [
+    "evals",
+    "docs",
+    "measurement"
+  ]
 }

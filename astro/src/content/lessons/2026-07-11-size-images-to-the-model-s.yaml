@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a high-resolution scan can remain the archival original while a smaller derived image feeds retrieval. Keep the two roles separate so reducing inference cost does not destroy the source.",
   "verification": "Compare retrieval on small text, tables and diagrams at the selected size, then measure peak memory for the intended batch. Check the hardest pages rather than only an average page.",
-  "limitations": "There is no universal DPI or pixel limit. The model, preprocessing and page content determine the trade-off, so a smaller image must earn its quality as well as its memory saving."
+  "limitations": "There is no universal DPI or pixel limit. The model, preprocessing and page content determine the trade-off, so a smaller image must earn its quality as well as its memory saving.",
+  "category": "ai-and-agents",
+  "tags": [
+    "rag",
+    "performance",
+    "resource-limits"
+  ]
 }

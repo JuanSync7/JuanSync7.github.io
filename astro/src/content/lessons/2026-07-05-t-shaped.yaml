@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a front-end hardware designer benefits from understanding verification and physical constraints, while keeping a deeper specialty in architecture or RTL. That range helps ask the right questions without claiming equal mastery of every stage.",
   "verification": "Check whether you can explain an end-to-end design and defend a hard decision in your specialty. Ask an expert in an adjacent area where your assumptions break.",
-  "limitations": "The right balance depends on the role and project. T-shaped is a useful direction, not a score or a promise that breadth automatically creates expertise."
+  "limitations": "The right balance depends on the role and project. T-shaped is a useful direction, not a score or a promise that breadth automatically creates expertise.",
+  "category": "personal-learning",
+  "tags": [
+    "career",
+    "learning",
+    "design"
+  ]
 }

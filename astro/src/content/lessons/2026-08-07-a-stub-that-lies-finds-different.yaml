@@ -11,5 +11,11 @@
   ],
   "solution": "Check the postcondition that matters. For a file writer, require the expected new content before reporting completion, rather than trusting a successful process exit.",
   "verification": "The first stub should trigger failure handling. The lying stub should fail the state check and must not produce a success report.",
-  "limitations": "Choose an observable postcondition within the caller’s authority. Eventual consistency may require bounded retries, so an immediate read is not always the right oracle."
+  "limitations": "Choose an observable postcondition within the caller’s authority. Eventual consistency may require bounded retries, so an immediate read is not always the right oracle.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "evidence",
+    "error-handling"
+  ]
 }

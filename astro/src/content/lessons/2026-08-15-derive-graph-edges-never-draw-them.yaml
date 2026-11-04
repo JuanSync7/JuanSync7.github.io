@@ -11,5 +11,11 @@
   ],
   "solution": "For a dependency view, changing a stored dependency should change the next rendered graph without someone manually redrawing a line. Different zoom levels can summarize the same relationships.",
   "verification": "Compare rendered edge identities with a small known store and test an added, removed and broken relationship. Check propagation behaviour separately if those edges also drive stale-state calculation.",
-  "limitations": "Derived views can still be stale when caches, queries or source records are wrong. The original card’s “can’t” is too absolute; derivation removes manual duplication, not every failure mode."
+  "limitations": "Derived views can still be stale when caches, queries or source records are wrong. The original card’s “can’t” is too absolute; derivation removes manual duplication, not every failure mode.",
+  "category": "frontend-and-design",
+  "tags": [
+    "design",
+    "data",
+    "maintainability"
+  ]
 }

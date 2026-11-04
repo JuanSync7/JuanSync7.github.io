@@ -12,5 +12,12 @@
   ],
   "solution": "Illustrative: a migration accepted by SQLite may not create the intended PostgreSQL type or conflict behavior. A fresh PostgreSQL instance tests that contract directly without touching production data.",
   "verification": "Expect the migrations to reach the current schema from an empty real-engine instance, then verify key constraints and application operations. Record the engine version used.",
-  "limitations": "A clean rebuild does not test every upgrade path from existing data. Add representative populated-version upgrades where transformation risk exists, and keep the disposable target distinct from the live database."
+  "limitations": "A clean rebuild does not test every upgrade path from existing data. Add representative populated-version upgrades where transformation risk exists, and keep the disposable target distinct from the live database.",
+  "category": "data-and-databases",
+  "tags": [
+    "postgres",
+    "sqlite",
+    "migration",
+    "testing"
+  ]
 }

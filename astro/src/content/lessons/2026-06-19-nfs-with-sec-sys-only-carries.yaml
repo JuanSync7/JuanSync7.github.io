@@ -12,5 +12,11 @@
   ],
   "solution": "For a shared control file, test access as another intended team member on the real mount. A successful owner write does not establish that the group-based operating path works for colleagues.",
   "verification": "Compare an allowed and denied user under the real NFS setup. Inspect which identity and groups the server uses before changing the file modes.",
-  "limitations": "Some servers resolve supplementary groups themselves, and stronger NFS authentication changes the picture. The source’s team access path was not verified as a second user, so no successful rollout is claimed here."
+  "limitations": "Some servers resolve supplementary groups themselves, and stronger NFS authentication changes the picture. The source’s team access path was not verified as a second user, so no successful rollout is claimed here.",
+  "category": "security-and-networking",
+  "tags": [
+    "linux",
+    "security",
+    "resource-limits"
+  ]
 }

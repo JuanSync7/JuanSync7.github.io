@@ -12,5 +12,11 @@
   ],
   "solution": "Keep command navigation in a checked graph and let the command print the relevant part. Retry advice should carry values the operator typed, while asking for confirmation again when the action needs it.",
   "verification": "The work began on October 22 with a spec, plan and graph checker. Final review fixes merged on October 23, including cancellation handling and argument-carry checks.",
-  "limitations": "The final changes were checked on the host, but the container walk was not rerun for that final PR. A checked command graph does not prove every live operating environment."
+  "limitations": "The final changes were checked on the host, but the container walk was not rerun for that final PR. A checked command graph does not prove every live operating environment.",
+  "category": "software-engineering",
+  "tags": [
+    "tooling",
+    "docs",
+    "error-handling"
+  ]
 }

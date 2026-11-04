@@ -11,5 +11,10 @@
   ],
   "solution": "Use events for speed and polling for eventual detection across hosts. Record the maximum expected delay so a quiet watcher is not mistaken for proof that nothing changed.",
   "verification": "On a disposable shared file, edit from a second client and expect detection within the polling bound. Also check that an unchanged poll does not reapply the configuration.",
-  "limitations": "Polling adds delay and filesystem work. NFS caching may affect visibility, so measure the supported arrangement rather than promising instant cross-host notification."
+  "limitations": "Polling adds delay and filesystem work. NFS caching may affect visibility, so measure the supported arrangement rather than promising instant cross-host notification.",
+  "category": "systems-and-operations",
+  "tags": [
+    "linux",
+    "observability"
+  ]
 }

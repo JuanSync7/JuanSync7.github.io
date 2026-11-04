@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-01",
+  "tag": "Deployment",
+  "title": "Evaluate the installed path, including its managed policy.",
+  "why": "A test harness that injects its own tools may bypass the installation users actually run—or fail before it starts. Read the host policy and make the test exercise the supported entry point.",
+  "problem": "A command-line evaluation can work in a developer checkout and fail on a managed host. The harness supplies its own tool configuration, while the host already has an exclusive managed configuration that controls which servers may start.",
+  "cause": "The harness assumes it owns tool setup. The managed policy assigns that ownership elsewhere. Adding more per-run flags does not resolve the conflict, and a test against a separate checkout may miss faults in the installed revision.",
+  "steps": [
+    "Inspect the supported managed configuration and determine who owns server selection. Check the installed revision and entry point before starting a paid evaluation.",
+    "When managed configuration is authoritative, exercise that installed route. Refuse a missing or mismatched installation before making model calls.",
+    "Keep each user’s identity on the supported server path and verify an idempotent installation check. Record the tested revision so later results name the code that actually ran."
+  ],
+  "solution": "Let deployment policy determine the evaluation entry point. The test should verify the same installation boundary users rely on, while keeping its own data and expected results separate.",
+  "verification": "The source reports that the managed-install check was repeated without changing the installation. For another host, deliberately supply a missing or wrong revision and confirm the preflight stops before evaluation spend.",
+  "limitations": "This concerns the recorded exclusive managed setup, not every tool server or managed policy. A successful installation check is not proof of answer quality, complete isolation or a successful evaluation run.",
+  "category": "systems-and-operations",
+  "tags": [
+    "evals",
+    "mcp",
+    "delivery"
+  ]
+}

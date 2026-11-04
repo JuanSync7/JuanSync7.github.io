@@ -11,5 +11,11 @@
   ],
   "solution": "Review what the process can actually use, rather than only the permissions described in the agent interface. Keep the inventory current when account setup or execution hosts change.",
   "verification": "Use harmless test identities to verify an allowed operation and a denied one. The expected boundary is that the task works with its intended access while unrelated service authority remains unavailable.",
-  "limitations": "An environment allowlist alone does not remove readable credential files or live agent sockets. Encryption at rest also offers limited separation when an authenticated session has already unlocked the credential."
+  "limitations": "An environment allowlist alone does not remove readable credential files or live agent sockets. Encryption at rest also offers limited separation when an authenticated session has already unlocked the credential.",
+  "category": "security-and-networking",
+  "tags": [
+    "security",
+    "agents",
+    "privacy"
+  ]
 }

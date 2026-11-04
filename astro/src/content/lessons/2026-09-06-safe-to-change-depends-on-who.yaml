@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: changing one timing constraint may alter several analyses that consume it. The useful question is which analyses read that value, rather than whether the editor owns the file.",
   "verification": "Trace representative consumers to the exact input they load. Review the proposed change against those consumers and keep an unconfirmed classification marked as unconfirmed.",
-  "limitations": "A suggestive filename does not establish that a file is a signoff input. If consumers are unknown, record the gap rather than claiming either a safe edit or a confirmed unsafe dependency."
+  "limitations": "A suggestive filename does not establish that a file is a signoff input. If consumers are unknown, record the gap rather than claiming either a safe edit or a confirmed unsafe dependency.",
+  "category": "frontend-and-design",
+  "tags": [
+    "eda",
+    "ownership",
+    "maintainability"
+  ]
 }

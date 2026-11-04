@@ -11,5 +11,11 @@
   ],
   "solution": "Keep sensitive launch data separate from the command that identifies the program. This makes process listings useful without turning them into a credential directory.",
   "verification": "Inspect the running canary process and its captured launch arguments. The canary should reach the receiver while remaining absent from process arguments and diagnostic output.",
-  "limitations": "Process visibility varies by host. Standard input is not a full sandbox, and another process running as the same user may have broader access."
+  "limitations": "Process visibility varies by host. Standard input is not a full sandbox, and another process running as the same user may have broader access.",
+  "category": "security-and-networking",
+  "tags": [
+    "security",
+    "privacy",
+    "shell"
+  ]
 }

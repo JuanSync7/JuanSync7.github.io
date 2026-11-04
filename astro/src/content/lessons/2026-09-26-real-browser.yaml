@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: a table inside a correctly sized panel can still force the whole page wider because one nested element has a fixed minimum width. The browser exposes that relationship.",
   "verification": "At a phone-width viewport, compare document scroll width with viewport width and inspect any offending element. Important controls and required data should remain reachable after the fix.",
-  "limitations": "Some tests do render in a browser; the original lesson's shorthand does not describe every unit-testing tool. A screenshot alone also cannot prove keyboard access or correct interactions."
+  "limitations": "Some tests do render in a browser; the original lesson's shorthand does not describe every unit-testing tool. A screenshot alone also cannot prove keyboard access or correct interactions.",
+  "category": "frontend-and-design",
+  "tags": [
+    "frontend",
+    "testing",
+    "accessibility"
+  ]
 }

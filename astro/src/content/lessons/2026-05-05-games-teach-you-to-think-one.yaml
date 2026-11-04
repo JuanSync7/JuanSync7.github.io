@@ -12,5 +12,10 @@
   ],
   "solution": "For example, if a failure is blamed on cached state, predict what a clean state should change. Then reset only that state and inspect the result, rather than changing the cache and several settings together.",
   "verification": "Write the expected result before running the experiment. A useful result distinguishes competing explanations, even when it disproves the preferred one.",
-  "limitations": "This is a practical reasoning pattern inspired by the source’s account. It does not establish that time spent gaming causes debugging skill, or replace knowledge of the system being tested."
+  "limitations": "This is a practical reasoning pattern inspired by the source’s account. It does not establish that time spent gaming causes debugging skill, or replace knowledge of the system being tested.",
+  "category": "personal-learning",
+  "tags": [
+    "games",
+    "debugging"
+  ]
 }

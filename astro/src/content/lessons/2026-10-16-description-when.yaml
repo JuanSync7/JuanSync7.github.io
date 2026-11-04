@@ -11,5 +11,10 @@
   ],
   "solution": "Separate finding the right instructions from following them. A good trigger gets the agent to the full procedure rather than trying to replace that procedure with a sentence.",
   "verification": "Test should-trigger and should-not-trigger prompts, then inspect a selected run to see whether the body was actually read and followed. Routing success and process compliance are separate results.",
-  "limitations": "A clearer description cannot guarantee obedience, and overlapping skills may still compete. Report the scope and sample of any routing evaluation instead of treating a few successes as a universal firing rate."
+  "limitations": "A clearer description cannot guarantee obedience, and overlapping skills may still compete. Report the scope and sample of any routing evaluation instead of treating a few successes as a universal firing rate.",
+  "category": "ai-and-agents",
+  "tags": [
+    "agents",
+    "contracts"
+  ]
 }

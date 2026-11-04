@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a license checkout is not a web request merely because its server has a DNS name. The design must account for the protocol and any additional ports the service requires.",
   "verification": "Test a minimal real operation for each protocol through the intended restricted environment. Empty output or an unstarted wrapper should be recorded as inconclusive, not a network-policy pass.",
-  "limitations": "Some proxies support CONNECT or other tunneling, and some products offer protocol-specific gateways. The limitation concerns the configured HTTP-only filter, not a claim that raw TCP can never be controlled."
+  "limitations": "Some proxies support CONNECT or other tunneling, and some products offer protocol-specific gateways. The limitation concerns the configured HTTP-only filter, not a claim that raw TCP can never be controlled.",
+  "category": "security-and-networking",
+  "tags": [
+    "networking",
+    "protocols",
+    "eda"
+  ]
 }

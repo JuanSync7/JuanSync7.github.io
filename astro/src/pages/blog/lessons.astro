@@ -3,52 +3,96 @@ import { getCollection } from 'astro:content';
 import NightPage from '../../layouts/NightPage.astro';
 import NightNav from '../../components/layout/NightNav.astro';
 import NightFooter from '../../components/layout/NightFooter.astro';
+import taxonomy from '../../config/lesson-taxonomy.json';
+import '../../components/writing/lesson-browser.css';
 
-// Every lesson, newest first, grouped by month: the writing page shows a slider of them;
-// this is the whole log, set as plain type to read straight down.
 const lessons = (await getCollection('lessons'))
-  .map((l) => ({ ...l.data, iso: l.data.date.toISOString().slice(0, 10) }))
-  .sort((a, b) => b.iso.localeCompare(a.iso));
-const month = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' });
-const day = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
-const groups: { label: string; items: typeof lessons }[] = [];
-for (const l of lessons) {
-  const label = month.format(new Date(`${l.iso}T00:00:00Z`));
-  const last = groups[groups.length - 1];
-  if (last && last.label === label) last.items.push(l);
-  else groups.push({ label, items: [l] });
-}
+  .map((l) => ({ ...l.data, id: l.id, iso: l.data.date.toISOString().slice(0, 10) }))
+  .sort((a, b) => b.iso.localeCompare(a.iso) || a.id.localeCompare(b.id));
+const categories = taxonomy.categories.map((category) => ({
+  ...category, items: lessons.filter((lesson) => lesson.category === category.id),
+}));
+const tags = taxonomy.tags.map((tag) => ({
+  ...tag, count: lessons.filter((lesson) => lesson.tags.includes(tag.id)).length,
+})).filter((tag) => tag.count > 0);
+const tagLabels = new Map(taxonomy.tags.map((tag) => [tag.id, tag.label]));
+const categoryLabels = new Map(taxonomy.categories.map((category) => [category.id, category.label]));
+const day = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 ---
 
-<NightPage title="Lessons · Juan Kok" description="One thing I learned, most days: every lesson in the log, newest first.">
+<NightPage title="Lessons · Juan Kok" description="Browse every lesson by category, date and tags.">
   <NightNav current="writing" />
-  <main class="nt-wrap nt-section page">
-    <a class="back" href="/blog/#lessons">← Writing</a>
-    <header class="head">
-      <span class="label">// lessons</span>
+  <main class="nt-wrap nt-section lesson-browser" data-lesson-browser>
+    <a class="lesson-back" href="/blog/#lessons">← Writing</a>
+    <header class="lesson-head">
+      <span class="lesson-label">// lessons</span>
       <h1>Every lesson</h1>
-      <p>{lessons.length} lessons, newest first. One thing I learned, most days.</p>
+      <p>{lessons.length} lessons. Find a subject, or follow the days.</p>
     </header>
-    {
-      groups.map((g) => (
-        <section class="month" aria-label={g.label}>
-          <h2>{g.label}</h2>
-          <ol>
-            {g.items.map((l) => (
-              <li>
-                <p class="meta">
-                  <time datetime={l.iso}>{day.format(new Date(`${l.iso}T00:00:00Z`))}</time>
-                  <span class="tag">{l.tag}</span>
-                </p>
+    <form class="lesson-controls" data-lesson-controls hidden aria-label="Browse lessons">
+      <div class="lesson-selects">
+        <label>Group by
+          <select name="view"><option value="category">Category</option><option value="date">Date</option></select>
+        </label>
+        <label>Category
+          <select name="category">
+            <option value="">All categories ({lessons.length})</option>
+            {categories.filter((category) => category.items.length).map((category) => (
+              <option value={category.id}>{category.label} ({category.items.length})</option>
+            ))}
+          </select>
+        </label>
+        <button type="reset">Clear filters</button>
+      </div>
+      <details class="lesson-tag-picker">
+        <summary>Filter by tags <span data-tag-selected></span></summary>
+        <p id="lesson-tag-help">Choose one or more. Lessons must match every selected tag and the category.</p>
+        <label class="lesson-tag-search">Find a tag
+          <input type="search" name="tag-search" placeholder="For example, Python or testing" autocomplete="off" />
+        </label>
+        <div class="lesson-tag-types">
+          {taxonomy.tagTypes.map((type) => (
+            <fieldset data-tag-type>
+              <legend>{type.label}</legend>
+              <div class="lesson-tag-options">
+                {tags.filter((tag) => tag.type === type.id).map((tag) => (
+                  <label data-tag-option data-tag-label={tag.label.toLowerCase()}>
+                    <input type="checkbox" name="tag" value={tag.id} aria-describedby="lesson-tag-help" />
+                    <span>{tag.label} <span class="lesson-tag-count">({tag.count})</span></span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          ))}
+        </div>
+        <p data-tag-search-empty hidden>No tags match that search.</p>
+      </details>
+    </form>
+    <p class="lesson-result" data-lesson-result role="status" aria-live="polite" aria-atomic="true">
+      {lessons.length} lessons · grouped by category · newest first in each category
+    </p>
+    <noscript><p>All lessons are shown by category. Turn on JavaScript to filter or group by date.</p></noscript>
+    <p class="lesson-empty" data-lesson-empty hidden>No lessons match these filters. Try fewer tags or another category.</p>
+    <div class="lesson-groups" data-lesson-groups>
+      {categories.filter((category) => category.items.length).map((category) => (
+        <section class="lesson-group" data-lesson-group aria-label={category.label}>
+          <header><h2>{category.label}</h2><p>{category.items.length} lessons</p></header>
+          <ol class="lesson-items">
+            {category.items.map((l) => (
+              <li class="lesson-entry" id={l.id} data-lesson data-category={l.category} data-tags={l.tags.join(' ')} data-date={l.iso}>
+                <p class="lesson-meta"><time datetime={l.iso}>{day.format(l.date)}</time><span>{categoryLabels.get(l.category)}</span></p>
                 <h3>{l.title}</h3>
-                <p class="why">{l.why}</p>
+                <p class="lesson-why">{l.why}</p>
+                <ul class="lesson-entry-tags" aria-label="Tags">
+                  {l.tags.map((tag) => <li>{tagLabels.get(tag) ?? tag}</li>)}
+                </ul>
                 {(l.problem || l.cause || l.steps || l.solution || l.verification || l.limitations) && (
-                  <details>
+                  <details class="lesson-explanation">
                     <summary>How it works</summary>
-                    <div class="explanation">
+                    <div>
                       {l.problem && <section><h4>The problem</h4><p>{l.problem}</p></section>}
                       {l.cause && <section><h4>Why it happens</h4><p>{l.cause}</p></section>}
-                      {l.steps && <section><h4>How to work through it</h4><ol class="steps">{l.steps.map((step) => <li>{step}</li>)}</ol></section>}
+                      {l.steps && <section><h4>How to work through it</h4><ol class="lesson-steps">{l.steps.map((step) => <li>{step}</li>)}</ol></section>}
                       {l.solution && <section><h4>The solution</h4><p>{l.solution}</p></section>}
                       {l.verification && <section><h4>How to check it</h4><p>{l.verification}</p></section>}
                       {l.limitations && <section><h4>Where this stops</h4><p>{l.limitations}</p></section>}
@@ -59,127 +103,20 @@ for (const l of lessons) {
             ))}
           </ol>
         </section>
-      ))
-    }
+      ))}
+    </div>
   </main>
   <NightFooter />
 </NightPage>
 
-<style>
-  .page {
-    display: flex;
-    flex-direction: column;
-    gap: var(--hf-space-12);
-  }
-
-  .back {
-    font-family: var(--nt-mono);
-    font-size: var(--nt-fs-meta);
-    color: var(--nt-ink-muted);
-  }
-
-  .head {
-    display: flex;
-    flex-direction: column;
-    gap: var(--hf-space-4);
-    max-width: var(--nt-measure);
-  }
-
-  .label,
-  .tag {
-    font-family: var(--nt-mono);
-    font-size: var(--nt-fs-meta);
-    color: var(--nt-signal);
-  }
-
-  .head p {
-    color: var(--nt-ink-soft);
-  }
-
-  .month {
-    display: grid;
-    grid-template-columns: minmax(0, var(--nt-thumb-min)) minmax(0, 1fr);
-    gap: var(--hf-space-6);
-    padding-top: var(--hf-space-8);
-    border-top: 1px solid var(--nt-rule);
-  }
-
-  .month h2 {
-    font-size: var(--nt-fs-h4);
-  }
-
-  ol {
-    display: flex;
-    flex-direction: column;
-    gap: var(--hf-space-8);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    max-width: var(--nt-measure);
-  }
-
-  .meta {
-    display: flex;
-    gap: var(--hf-space-3);
-    margin-bottom: var(--hf-space-2);
-    font-family: var(--nt-mono);
-    font-size: var(--nt-fs-meta);
-    color: var(--nt-ink-muted);
-  }
-
-  h3 {
-    margin-bottom: var(--hf-space-2);
-    font-size: var(--nt-fs-intro);
-  }
-
-  .why {
-    font-size: var(--nt-fs-small);
-    color: var(--nt-ink-2);
-  }
-
-  details {
-    margin-top: var(--hf-space-3);
-    color: var(--nt-ink-2);
-    font-size: var(--nt-fs-small);
-  }
-
-  summary {
-    cursor: pointer;
-    color: var(--nt-signal);
-  }
-
-  summary:focus-visible {
-    outline: 2px solid var(--nt-signal);
-    outline-offset: var(--hf-space-1);
-  }
-
-  .explanation {
-    display: flex;
-    flex-direction: column;
-    gap: var(--hf-space-4);
-    margin-top: var(--hf-space-4);
-  }
-
-  h4 {
-    color: var(--nt-ink-soft);
-    margin-bottom: var(--hf-space-2);
-    font-size: inherit;
-  }
-
-  .steps {
-    display: block;
-    padding-left: var(--hf-space-6);
-    list-style: decimal;
-  }
-
-  .steps li + li {
-    margin-top: var(--hf-space-2);
-  }
-
-  @media (max-width: 720px) {
-    .month {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
-</style>
-
+<script>
+  import { mountLessonBrowser } from '../../components/writing/lessonBrowser';
+  let cleanup: (() => void) | undefined;
+  const mount = () => {
+    cleanup?.();
+    const root = document.querySelector<HTMLElement>('[data-lesson-browser]');
+    cleanup = root ? mountLessonBrowser(root) : undefined;
+  };
+  document.addEventListener('astro:page-load', mount);
+  document.addEventListener('astro:before-swap', () => cleanup?.());
+</script>

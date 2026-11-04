@@ -12,5 +12,10 @@
   ],
   "solution": "For a block illustration, let the outlines and connectors explain the system. An accent can mark the active block without filling every shape or adding a new colour for each part.",
   "verification": "View the drawing at its actual page size. Check that the lines, characters and one point of emphasis survive scaling and that the intended relationship can still be read.",
-  "limitations": "This is a design preference, not a universal quality rule. A photograph or dense data figure may serve another purpose better, and visible construction should never make the subject harder to understand."
+  "limitations": "This is a design preference, not a universal quality rule. A photograph or dense data figure may serve another purpose better, and visible construction should never make the subject harder to understand.",
+  "category": "frontend-and-design",
+  "tags": [
+    "art",
+    "design"
+  ]
 }

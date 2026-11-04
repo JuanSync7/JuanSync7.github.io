@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: a user-local native binary may run ahead of the managed package. Record that evaluation path explicitly rather than reporting the installed package version as proof of the running version.",
   "verification": "Launch each supported entry point and inspect its resolved executable and version. Compare those results with the intended fleet and evaluation policies.",
-  "limitations": "A private binary is not proof that all security controls disappear. Managed configuration may still apply across installation methods; the gap must be described at the control it actually bypasses."
+  "limitations": "A private binary is not proof that all security controls disappear. Managed configuration may still apply across installation methods; the gap must be described at the control it actually bypasses.",
+  "category": "security-and-networking",
+  "tags": [
+    "security",
+    "configuration",
+    "delivery"
+  ]
 }

@@ -11,5 +11,11 @@
   ],
   "solution": "For two modules, let each worker own its implementation while agreeing on the interface first. A handoff should name the exact files, checks and unresolved questions instead of assuming the next agent remembers the conversation.",
   "verification": "Ask whether a fresh agent can complete one assigned task from its handoff alone. At integration, check conflicting edits and interface assumptions before treating the outputs as one working feature.",
-  "limitations": "Isolation still needs coordination at shared boundaries. Some tasks are too coupled to split economically; one well-contextualised agent can be the simpler choice."
+  "limitations": "Isolation still needs coordination at shared boundaries. Some tasks are too coupled to split economically; one well-contextualised agent can be the simpler choice.",
+  "category": "ai-and-agents",
+  "tags": [
+    "agents",
+    "isolation",
+    "delivery"
+  ]
 }

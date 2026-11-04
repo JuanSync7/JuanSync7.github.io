@@ -11,5 +11,11 @@
   ],
   "solution": "For a public module, require its supported summary field rather than hoping the next agent infers its role from a filename. Make invalid headers visible instead of silently skipping them.",
   "verification": "Use a missing-header example and a malformed summary example. Expect the gate to reject them and corpus checks to expose lost modules; separately ask a reader whether the accepted summary makes sense.",
-  "limitations": "The original phrase “reading guaranteed” overstates what standards can do. A gate can establish structure and coverage, not guarantee that a person or model reads or understands it."
+  "limitations": "The original phrase “reading guaranteed” overstates what standards can do. A gate can establish structure and coverage, not guarantee that a person or model reads or understands it.",
+  "category": "software-engineering",
+  "tags": [
+    "teams",
+    "agents",
+    "docs"
+  ]
 }

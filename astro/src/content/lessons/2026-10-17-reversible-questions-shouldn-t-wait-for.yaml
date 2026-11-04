@@ -11,5 +11,11 @@
   ],
   "solution": "Use the record to support momentum without hiding judgement. It gives the owner a concrete result to review and makes a mistaken assumption cheaper to find and correct.",
   "verification": "Review the next handoff for silent waits and undocumented choices. A reader should be able to identify the decision, its effect and the recovery path without reconstructing the chat.",
-  "limitations": "Irreversible, external or tightly coupled actions still need the relevant authority. Reversibility is not permission to expand scope, and a cheap local edit can still create expensive downstream obligations."
+  "limitations": "Irreversible, external or tightly coupled actions still need the relevant authority. Reversibility is not permission to expand scope, and a cheap local edit can still create expensive downstream obligations.",
+  "category": "work-and-delivery",
+  "tags": [
+    "process",
+    "ownership",
+    "delivery"
+  ]
 }

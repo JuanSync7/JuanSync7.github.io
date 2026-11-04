@@ -11,5 +11,11 @@
   ],
   "solution": "Use the defence record to turn broad confidence into specific claims that can be challenged. Repeat the exercise when a new feature changes what the design must support.",
   "verification": "Give the record to a reader who did not write the document. They should be able to follow the mechanism and find a concrete answer without relying on the author's spoken explanation.",
-  "limitations": "The quality of the questions still needs judgement. A complete table is useful coverage evidence, but it cannot prove that all important failure modes have been imagined."
+  "limitations": "The quality of the questions still needs judgement. A complete table is useful coverage evidence, but it cannot prove that all important failure modes have been imagined.",
+  "category": "software-engineering",
+  "tags": [
+    "design",
+    "review",
+    "testing"
+  ]
 }

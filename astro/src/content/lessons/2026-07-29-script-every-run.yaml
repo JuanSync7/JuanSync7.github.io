@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a Tcl synthesis script can read RTL, apply constraints, compile and write reports in one declared order. A wrapper can then invoke that same flow locally or in automation.",
   "verification": "Run the script from a clean working area and compare the expected outputs and tool warnings. Check that no required setting came only from an earlier interactive session.",
-  "limitations": "Scripting improves repeatability but does not remove hidden external inputs or tool nondeterminism. A completed script also needs its reports inspected before the design is called correct."
+  "limitations": "Scripting improves repeatability but does not remove hidden external inputs or tool nondeterminism. A completed script also needs its reports inspected before the design is called correct.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "eda",
+    "reproducibility",
+    "agents"
+  ]
 }

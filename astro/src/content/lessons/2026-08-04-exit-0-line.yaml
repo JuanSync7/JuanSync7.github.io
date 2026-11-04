@@ -12,5 +12,11 @@
   ],
   "solution": "Keep the decision inside one shell lifetime. A single recipe line such as `@if test \"$(RUN)\" = yes; then touch marker; fi` makes the marker conditional. A later independent recipe line would not share that guard.",
   "verification": "Use a harmless marker command in the protected position. On the skip path, expect no marker; on the normal path, expect exactly the intended work and exit status.",
-  "limitations": "Make can be configured to run an entire recipe in one shell. Check the actual configuration before applying the default-line model."
+  "limitations": "Make can be configured to run an entire recipe in one shell. Check the actual configuration before applying the default-line model.",
+  "category": "software-engineering",
+  "tags": [
+    "make",
+    "shell",
+    "error-handling"
+  ]
 }

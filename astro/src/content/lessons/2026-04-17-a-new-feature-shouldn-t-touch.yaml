@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a new model provider should implement the provider interface and register itself. The pipeline should not need a new provider-name conditional at every stage.",
   "verification": "Compare the next feature addition against the boundary. It should be possible to explain its integration through one contract and test that contract without rebuilding the whole pipeline.",
-  "limitations": "Some features change the system’s actual responsibilities. In that case the core contract may need a deliberate redesign. The warning is repeated feature-specific edits, not a rule that the core can never change."
+  "limitations": "Some features change the system’s actual responsibilities. In that case the core contract may need a deliberate redesign. The warning is repeated feature-specific edits, not a rule that the core can never change.",
+  "category": "software-engineering",
+  "tags": [
+    "design",
+    "contracts",
+    "maintainability"
+  ]
 }

@@ -11,5 +11,11 @@
   ],
   "solution": "Reduce the shared failure domain by placing an interactive tool in its own job desktop and viewing that desktop remotely. This removes the forwarding chain from the main session.",
   "verification": "The diagnostic expectation is that removing the suspect client clears the freeze. If it does not, keep the cause open and investigate other display or session failures.",
-  "limitations": "The original grab explanation is unproven. Per-job desktops still need working node software, access controls and an idle policy; changing login hosts alone does not test the relay hypothesis."
+  "limitations": "The original grab explanation is unproven. Per-job desktops still need working node software, access controls and an idle policy; changing login hosts alone does not test the relay hypothesis.",
+  "category": "systems-and-operations",
+  "tags": [
+    "linux",
+    "networking",
+    "debugging"
+  ]
 }

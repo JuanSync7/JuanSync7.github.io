@@ -12,5 +12,11 @@
   ],
   "solution": "Treat bytes as the reservation and tokens as the runtime’s interpretation of it. If an upgrade reports fewer tokens for the same byte budget, update the concurrency expectation rather than assuming the old capacity still holds.",
   "verification": "Inspect startup output and the combined GPU footprint. Confirm that at least one maximum-length request fits and size simultaneous requests from the pinned configuration’s report.",
-  "limitations": "Re-derive the budget when the model, context limit, memory share or card changes. A byte pin makes one allocation repeatable; it does not freeze every other source of GPU memory use."
+  "limitations": "Re-derive the budget when the model, context limit, memory share or card changes. A byte pin makes one allocation repeatable; it does not freeze every other source of GPU memory use.",
+  "category": "ai-and-agents",
+  "tags": [
+    "inference",
+    "resource-limits",
+    "reproducibility"
+  ]
 }

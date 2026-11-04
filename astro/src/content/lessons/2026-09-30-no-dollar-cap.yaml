@@ -12,5 +12,10 @@
   ],
   "solution": "Illustrative: a harness behind a gateway can be stopped while a separate direct client continues spending. Calling the gateway limit a whole-account cap would overstate its reach.",
   "verification": "Use a controlled allowance to test admitted and denied gateway requests, then verify that the report states which routes were covered. Record reporting lag separately from enforcement behavior.",
-  "limitations": "Concurrent in-flight calls, price estimation and billing adjustments can affect exact totals. Current provider features and gateway settings must be checked before making a hard-dollar guarantee."
+  "limitations": "Concurrent in-flight calls, price estimation and billing adjustments can affect exact totals. Current provider features and gateway settings must be checked before making a hard-dollar guarantee.",
+  "category": "security-and-networking",
+  "tags": [
+    "aws",
+    "cost-control"
+  ]
 }

@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-28",
+  "tag": "Quality gates",
+  "title": "Pin who owns the check, not just its passing threshold.",
+  "why": "A passing number is weak evidence when the person producing the result can replace the script that measures it. The measuring rule needs an owner as well as a threshold.",
+  "problem": "A workflow may faithfully record a script, its inputs and a passing measurement. That still leaves a gap if the same worker can swap the real check for a script that prints the expected number.",
+  "cause": "The workflow proves which script produced the number, but it has not established that this script was authorised to judge the work. Recording evidence and choosing the acceptance instrument are separate responsibilities.",
+  "steps": [
+    "Name the check owner when agreeing the acceptance criteria. Let that owner choose the script and the inputs it must inspect.",
+    "Bind the accepted script version to the work record, for example by its content hash, and reject results from a different version.",
+    "Review whether the script actually measures the promised behaviour. Keep quality review and any required human sign-off explicit alongside the deterministic result."
+  ],
+  "solution": "Move control of the acceptance instrument out of the unchecked worker path. A pinned script gives review a stable object; review still has to decide whether that object is a useful check.",
+  "verification": "A useful proposed regression replaces the script with one that prints a passing value. Submission should refuse that result before considering its number. Then run the authorised check against both correct and deliberately broken work.",
+  "limitations": "The source identifies this ownership gap and proposes hash-pinning the check; it does not establish that this correction was implemented. Pinning alone cannot make a vacuous or incomplete check meaningful.",
+  "category": "work-and-delivery",
+  "tags": [
+    "ownership",
+    "validation",
+    "integrity"
+  ]
+}

@@ -12,5 +12,11 @@
   ],
   "solution": "Make keeping the record current a side effect of doing the job. A familiar dashboard can remain a view without becoming a second place where the same truth must be retyped.",
   "verification": "Follow one completed task from its actual evidence to the displayed status. Then change the work and check whether the view updates or visibly becomes stale.",
-  "limitations": "Automatic collection does not make an interpretation correct. Decisions, exceptions and human judgment still need clear ownership and a way to be corrected."
+  "limitations": "Automatic collection does not make an interpretation correct. Decisions, exceptions and human judgment still need clear ownership and a way to be corrected.",
+  "category": "work-and-delivery",
+  "tags": [
+    "tooling",
+    "ownership",
+    "maintainability"
+  ]
 }

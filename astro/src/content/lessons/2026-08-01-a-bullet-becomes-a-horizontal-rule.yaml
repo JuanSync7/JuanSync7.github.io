@@ -12,5 +12,11 @@
   ],
   "solution": "Make escaping aware of position. For a literal three-hyphen bullet, emit `- \\- \\- \\-`: the first hyphen marks the list item and the escaped hyphens are its visible text. Apply the rule in every emission lane.",
   "verification": "The regression should show a visible bullet with the intended hyphens. Removing the escape should make that assertion fail, even if a token-recall score stays perfect.",
-  "limitations": "Intentional Markdown rules and literal source text need different treatment. Do not escape real formatting simply because its characters can also appear in ordinary text."
+  "limitations": "Intentional Markdown rules and literal source text need different treatment. Do not escape real formatting simply because its characters can also appear in ordinary text.",
+  "category": "writing-and-knowledge",
+  "tags": [
+    "docs",
+    "data",
+    "integrity"
+  ]
 }

@@ -12,5 +12,10 @@
   ],
   "solution": "Illustrative: adding a computed waste measure to SQL is incomplete if neither the page nor its CSV includes it. Surfacing the existing field may solve the need without another query.",
   "verification": "Compare the actual API response with the displayed and exported field sets. Required metrics should appear with units and scope, and obsolete fields should not linger silently.",
-  "limitations": "Not every internal field belongs in the UI. Select fields by the user's task and privacy needs; coverage should guard the agreed public contract rather than expose the database wholesale."
+  "limitations": "Not every internal field belongs in the UI. Select fields by the user's task and privacy needs; coverage should guard the agreed public contract rather than expose the database wholesale.",
+  "category": "frontend-and-design",
+  "tags": [
+    "frontend",
+    "data"
+  ]
 }

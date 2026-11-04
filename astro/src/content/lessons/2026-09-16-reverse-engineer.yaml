@@ -12,5 +12,10 @@
   ],
   "solution": "Illustrative: remove one configuration value and predict what should fail. The difference between the prediction and the result identifies the next piece of the mental model to learn.",
   "verification": "Explain the example without reciting its code, then rebuild the smallest useful version from that explanation. Note the setup assumptions that were initially invisible.",
-  "limitations": "This is a learning preference from the source, not a proven universal method. It can skip foundations, so check prerequisites explicitly before applying the example to a larger system."
+  "limitations": "This is a learning preference from the source, not a proven universal method. It can skip foundations, so check prerequisites explicitly before applying the example to a larger system.",
+  "category": "personal-learning",
+  "tags": [
+    "learning",
+    "debugging"
+  ]
 }

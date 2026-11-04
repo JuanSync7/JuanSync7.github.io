@@ -11,5 +11,11 @@
   ],
   "solution": "Make session lifetime explicit. Where a tool supports releasing individual licence features, evaluate that separately from terminating the whole job.",
   "verification": "With a test seat, detach and reconnect, then exit the tool and compare licence usage. The expected distinction is that detaching preserves work while a real exit returns the seat.",
-  "limitations": "A detached computation may be useful and busy for hours. Disconnect time alone is a poor kill condition, and tool-specific release commands may cause another licence wait later."
+  "limitations": "A detached computation may be useful and busy for hours. Disconnect time alone is a poor kill condition, and tool-specific release commands may cause another licence wait later.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "eda",
+    "resource-limits",
+    "cost-control"
+  ]
 }

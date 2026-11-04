@@ -11,5 +11,11 @@
   ],
   "solution": "For a report about typical completion, consider a median and useful percentiles alongside the count, rather than presenting a bare mean as the whole story. State how unresolved cases were treated.",
   "verification": "Check a small dataset with one extreme duration and compare the summaries. Then remove records deliberately and confirm the report exposes reduced coverage instead of presenting the result as complete.",
-  "limitations": "The original “never” is a reporting rule for this use, not a mathematical ban on means. Mean duration can matter for total workload when the data and question support it."
+  "limitations": "The original “never” is a reporting rule for this use, not a mathematical ban on means. Mean duration can matter for total workload when the data and question support it.",
+  "category": "data-and-databases",
+  "tags": [
+    "data",
+    "measurement",
+    "evidence"
+  ]
 }

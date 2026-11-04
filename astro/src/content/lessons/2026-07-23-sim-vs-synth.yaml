@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a delay used to coordinate a testbench describes simulation scheduling rather than a physical delay element suitable for an ordinary RTL flow. Its usefulness in verification does not make it hardware.",
   "verification": "Elaborate and synthesize a representative design with the real constraints and libraries. Inspect warnings, inferred structures and reports instead of accepting a simulation pass as a substitute.",
-  "limitations": "Tool support changes, and some verification constructs are accepted for analysis without becoming gates. This is general language guidance; the inspected topic note does not establish a specific simulation-versus-synthesis incident."
+  "limitations": "Tool support changes, and some verification constructs are accepted for analysis without becoming gates. This is general language guidance; the inspected topic note does not establish a specific simulation-versus-synthesis incident.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "systemverilog",
+    "synthesis",
+    "verification"
+  ]
 }

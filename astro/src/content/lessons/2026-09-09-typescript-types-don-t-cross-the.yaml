@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: a perfectly typed function calling a nonexistent summary route still compiles. A route-contract check fails before the user reaches that page.",
   "verification": "Deliberately change a client path in a disposable check. The contract test should fail, and the unchanged deployed client should reach its real server route.",
-  "limitations": "Route existence does not prove response shape, filter behavior or correct values. Generated schemas and runtime integration checks cover different parts of the contract."
+  "limitations": "Route existence does not prove response shape, filter behavior or correct values. Generated schemas and runtime integration checks cover different parts of the contract.",
+  "category": "frontend-and-design",
+  "tags": [
+    "frontend",
+    "contracts",
+    "testing"
+  ]
 }

@@ -12,5 +12,11 @@
   ],
   "solution": "Separate authorship from the execution trail. I can own the work and explain what I found through it, while preserving the agent's contribution in the source. That keeps the account readable without rewriting how the work happened.",
   "verification": "The maintained writing rule records the October 24 ownership decision and explicitly says the source names the run. This entry explains that decision; it does not claim a new experiment was performed that day.",
-  "limitations": "Delegation supports ownership of recorded work. It does not supply personal feelings, manual actions or future plans that the record never states."
+  "limitations": "Delegation supports ownership of recorded work. It does not supply personal feelings, manual actions or future plans that the record never states.",
+  "category": "writing-and-knowledge",
+  "tags": [
+    "writing",
+    "provenance",
+    "agents"
+  ]
 }

@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: a tunnel intended for one home host can start again on a farm node simply because both hosts read the same enabled unit tree. Host conditions express where that service belongs.",
   "verification": "Check the effective units on an allowed host and a disallowed host. The intended host should run them; the other should skip them without launching duplicate work.",
-  "limitations": "This is host placement, not an authorization barrier. A skipped condition is appropriate for optional placement but should not be mistaken for a failed prerequisite guard on a protected service."
+  "limitations": "This is host placement, not an authorization barrier. A skipped condition is appropriate for optional placement but should not be mistaken for a failed prerequisite guard on a protected service.",
+  "category": "systems-and-operations",
+  "tags": [
+    "linux",
+    "systemd",
+    "slurm"
+  ]
 }

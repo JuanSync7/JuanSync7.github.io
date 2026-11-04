@@ -12,5 +12,10 @@
   ],
   "solution": "For example, an invalid range can return an INVALID_RANGE code plus a helpful sentence. The behavior test should check the code and rejected operation, so improving the sentence does not rewrite the suite.",
   "verification": "Change only the human wording and expect behavior tests to stay green. Then change the error code or allow the invalid operation and expect a relevant test to fail.",
-  "limitations": "User-facing copy can deserve dedicated checks, and some command-line interfaces promise exact text. Keep those expectations explicit rather than using message matching as a substitute for a missing structured result."
+  "limitations": "User-facing copy can deserve dedicated checks, and some command-line interfaces promise exact text. Keep those expectations explicit rather than using message matching as a substitute for a missing structured result.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "contracts"
+  ]
 }

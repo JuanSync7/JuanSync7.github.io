@@ -12,5 +12,10 @@
   ],
   "solution": "For example, a long EDA flow can save a stage-boundary database and resume a later stage in a newly sized allocation. A mid-stage memory peak without a checkpoint may require repeating that stage.",
   "verification": "On an authorized test job, compare the submitted request with the effective cgroup limit. Verify that the chosen restart path restores the expected state before relying on it.",
-  "limitations": "This reflects the cited cluster behavior, not every scheduler version or administrative configuration. Accounting samples can miss short memory peaks, and a pending request change is not proof of effective enforcement."
+  "limitations": "This reflects the cited cluster behavior, not every scheduler version or administrative configuration. Accounting samples can miss short memory peaks, and a pending request change is not proof of effective enforcement.",
+  "category": "systems-and-operations",
+  "tags": [
+    "slurm",
+    "resource-limits"
+  ]
 }

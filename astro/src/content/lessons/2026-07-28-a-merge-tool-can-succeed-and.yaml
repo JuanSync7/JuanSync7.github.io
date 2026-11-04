@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a local authentication customization moved into a .rej file is no longer active just because the update returned zero. Compare the resulting code and contract, not only the command status.",
   "verification": "Use a fixture with an intentional project/template conflict and confirm the review procedure discovers it. Exercise the preserved project behavior after resolution.",
-  "limitations": "Conflict handling varies by tool version and options. Follow the actual migration procedure; restarting an interrupted update incorrectly can skip required migrations even when the files look plausible."
+  "limitations": "Conflict handling varies by tool version and options. Follow the actual migration procedure; restarting an interrupted update incorrectly can skip required migrations even when the files look plausible.",
+  "category": "software-engineering",
+  "tags": [
+    "git",
+    "testing",
+    "delivery"
+  ]
 }

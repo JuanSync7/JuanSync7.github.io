@@ -11,5 +11,11 @@
   ],
   "solution": "Keep automatic rewriting as a separate convenience command. For example, use a format-check dependency in verify so CI reports the violation rather than silently changing the submitted files.",
   "verification": "The deliberate violation should make the normal gate exit non-zero. After formatting it, the same gate should pass that check and continue to the other required checks.",
-  "limitations": "A formatting gate establishes layout consistency, not readable design or correct behaviour. Large mechanical reformats also deserve a separate change so functional edits remain reviewable."
+  "limitations": "A formatting gate establishes layout consistency, not readable design or correct behaviour. Large mechanical reformats also deserve a separate change so functional edits remain reviewable.",
+  "category": "software-engineering",
+  "tags": [
+    "tooling",
+    "lint",
+    "ci"
+  ]
 }

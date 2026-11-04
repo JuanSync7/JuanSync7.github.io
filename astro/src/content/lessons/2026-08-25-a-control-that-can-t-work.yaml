@@ -11,5 +11,11 @@
   ],
   "solution": "For a legacy I/O weight setting, inspect the scheduler it depends on instead of treating `systemctl show` as proof of protection. Remove or replace a control that cannot take effect on the supported host.",
   "verification": "Read-back should match the intended configuration, and the behavioural check should demonstrate the specific resource effect. Record those as separate observations.",
-  "limitations": "The source’s RHEL 8/cgroup v1 finding is version-specific. It does not establish that every CPU or I/O controller is ineffective everywhere, and a behavioural test needs a safe scope on shared machines."
+  "limitations": "The source’s RHEL 8/cgroup v1 finding is version-specific. It does not establish that every CPU or I/O controller is ineffective everywhere, and a behavioural test needs a safe scope on shared machines.",
+  "category": "systems-and-operations",
+  "tags": [
+    "linux",
+    "resource-limits",
+    "testing"
+  ]
 }

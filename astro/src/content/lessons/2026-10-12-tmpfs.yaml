@@ -11,5 +11,10 @@
   ],
   "solution": "Treat RAM-backed scratch as a budgeted shared resource. Fast temporary I/O is useful only while its memory cost leaves room for the rest of the machine.",
   "verification": "Compare scratch usage before a representative run and after cleanup. Expected temporary growth should return near the starting level, with required outputs preserved elsewhere.",
-  "limitations": "Hosts differ: /tmp can be disk-backed on one machine and tmpfs on another. RAM scratch also changes persistence and timing behaviour, so disk-specific correctness checks still need a disk path."
+  "limitations": "Hosts differ: /tmp can be disk-backed on one machine and tmpfs on another. RAM scratch also changes persistence and timing behaviour, so disk-specific correctness checks still need a disk path.",
+  "category": "systems-and-operations",
+  "tags": [
+    "linux",
+    "resource-limits"
+  ]
 }

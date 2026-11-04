@@ -11,5 +11,10 @@
   ],
   "solution": "For a two-command example, keep the commands copyable and distinguish any illustrative prompt marker from the command itself. The decorative frame should support that reading, not add work to copying.",
   "verification": "Inspect a long line, a short snippet and a command/output pair in both themes and at narrow widths. Confirm the text remains readable, selectable and correctly ordered.",
-  "limitations": "This is a personal page convention, not a rule for all technical writing. A terminal appearance must not imply that an illustrative command was actually run or that all framed code is shell syntax."
+  "limitations": "This is a personal page convention, not a rule for all technical writing. A terminal appearance must not imply that an illustrative command was actually run or that all framed code is shell syntax.",
+  "category": "frontend-and-design",
+  "tags": [
+    "design",
+    "docs"
+  ]
 }

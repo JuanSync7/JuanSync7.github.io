@@ -12,5 +12,10 @@
   ],
   "solution": "For example, --as $(AS) can become --as as. Renaming the configuration avoids a collision with Make’s toolchain namespace and makes the argument’s meaning clearer to callers.",
   "verification": "Use a dry-run recipe inspection with no override, then with an explicit WHO value. Confirm the default behavior and the expanded argument list before exercising a real privileged operation.",
-  "limitations": "Built-in variables vary with Make settings and platforms, and environment overrides can add more collisions. Namespacing avoids the immediate trap; validation is still needed at the command boundary."
+  "limitations": "Built-in variables vary with Make settings and platforms, and environment overrides can add more collisions. Namespacing avoids the immediate trap; validation is still needed at the command boundary.",
+  "category": "software-engineering",
+  "tags": [
+    "make",
+    "configuration"
+  ]
 }

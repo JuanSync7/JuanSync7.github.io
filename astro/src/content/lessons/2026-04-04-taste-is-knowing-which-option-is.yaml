@@ -12,5 +12,10 @@
   ],
   "solution": "Keep human judgment at the point where options are selected. For example, compare two page layouts for reading order and emphasis, then give the chosen layout and reasons back to the implementation process.",
   "verification": "Check whether a later revision preserves the qualities behind the choice. Merely matching the chosen colours or spacing is weaker evidence than preserving the intended reading experience.",
-  "limitations": "This is a personal view of how human judgment and AI fit together. Taste still needs correction from users, requirements and evidence; confidence alone does not make a choice right."
+  "limitations": "This is a personal view of how human judgment and AI fit together. Taste still needs correction from users, requirements and evidence; confidence alone does not make a choice right.",
+  "category": "frontend-and-design",
+  "tags": [
+    "design",
+    "ai"
+  ]
 }

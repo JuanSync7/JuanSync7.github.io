@@ -11,5 +11,11 @@
   ],
   "solution": "For a small feature, define its input, output and end-to-end acceptance path. Let tools check syntax and contracts while a reviewer asks whether the result actually serves the user.",
   "verification": "Try one representative change through the full path. Inspect whether a broken contract is rejected and whether a reviewer can understand the outcome without reconstructing the whole session.",
-  "limitations": "This is a working preference, not a measured claim that every small team beats every large one. Team size, domain knowledge and coordination costs still affect what the workflow can support."
+  "limitations": "This is a working preference, not a measured claim that every small team beats every large one. Team size, domain knowledge and coordination costs still affect what the workflow can support.",
+  "category": "work-and-delivery",
+  "tags": [
+    "teams",
+    "agents",
+    "contracts"
+  ]
 }

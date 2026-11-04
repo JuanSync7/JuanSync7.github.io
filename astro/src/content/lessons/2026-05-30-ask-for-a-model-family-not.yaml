@@ -12,5 +12,11 @@
   ],
   "solution": "A caller can ask for an “opus” family while the registry maps it to the newest working member found by the platform sweep. The caller’s intent stays stable and the upgrade rule changes in one place.",
   "verification": "Check that all consumers resolve through the same mapping and that an unknown family fails visibly. Record the concrete model used so a past run can still be explained after the mapping moves.",
-  "limitations": "A family alias favors maintained behavior over exact replay. Use a recorded concrete version where reproducibility requires it, and do not promote an untested release merely because it is newer."
+  "limitations": "A family alias favors maintained behavior over exact replay. Use a recorded concrete version where reproducibility requires it, and do not promote an untested release merely because it is newer.",
+  "category": "security-and-networking",
+  "tags": [
+    "llm",
+    "configuration",
+    "maintainability"
+  ]
 }

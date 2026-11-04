@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: a rarely read table can disappear before a busy table, making the early symptoms look isolated. A healthy query against the busy table does not establish intact storage.",
   "verification": "Confirm the data directory is outside unintended cleanup scope, inspect required relations and rehearse restoration on a separate instance.",
-  "limitations": "A keepalive touch timer is a stopgap with its own failure modes. Persistence also depends on filesystem durability, permissions, backup retention and tested recovery, not just the directory name."
+  "limitations": "A keepalive touch timer is a stopgap with its own failure modes. Persistence also depends on filesystem durability, permissions, backup retention and tested recovery, not just the directory name.",
+  "category": "systems-and-operations",
+  "tags": [
+    "linux",
+    "data",
+    "maintainability"
+  ]
 }

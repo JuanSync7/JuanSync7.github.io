@@ -12,5 +12,11 @@
   ],
   "solution": "If a source table says 24 nodes and 9.6 kW but the stored chunk says 12 and 4.8, a more capable model still receives the wrong evidence. The repair belongs upstream at parsing.",
   "verification": "After reprocessing, inspect the stored chunk again and repeat the same question. Check both that the values survived extraction and that retrieval supplied the corrected evidence.",
-  "limitations": "Clean chunks do not prove the model is innocent. Once the evidence is correct, continue through ranking, context assembly and answer generation to find any remaining fault."
+  "limitations": "Clean chunks do not prove the model is innocent. Once the evidence is correct, continue through ranking, context assembly and answer generation to find any remaining fault.",
+  "category": "ai-and-agents",
+  "tags": [
+    "rag",
+    "debugging",
+    "data"
+  ]
 }

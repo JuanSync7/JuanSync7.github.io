@@ -12,5 +12,10 @@
   ],
   "solution": "For example, a simple RTL block with a scripted simulation and lint run exposes the workflow more clearly than a list of tool names. The example should show how to recognize failure as well as success.",
   "verification": "Ask a newcomer to follow the material and record where they need undocumented help. Repair those gaps while retaining the real technical requirements.",
-  "limitations": "Licensing, confidentiality and safety obligations still apply. Opening the learning path does not mean exposing protected designs or claiming that chip design becomes simple once the tools are visible."
+  "limitations": "Licensing, confidentiality and safety obligations still apply. Opening the learning path does not mean exposing protected designs or claiming that chip design becomes simple once the tools are visible.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "thoughts",
+    "career"
+  ]
 }

@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: a reason value repeated on a running job should not add another poll interval to pending time simply because the string still exists.",
   "verification": "Inspect a sample job's state timeline alongside the calculated wait. The measured intervals should lie inside its actual pending periods and reconcile with the chosen time window.",
-  "limitations": "Periodic observations cannot always locate transition instants exactly. Report the sampling boundary and do not mix scheduler wait with a tool's later runtime licence wait."
+  "limitations": "Periodic observations cannot always locate transition instants exactly. Report the sampling boundary and do not mix scheduler wait with a tool's later runtime licence wait.",
+  "category": "systems-and-operations",
+  "tags": [
+    "slurm",
+    "data",
+    "contracts"
+  ]
 }

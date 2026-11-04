@@ -11,5 +11,10 @@
   ],
   "solution": "Keep one supported host policy and a minimum-version rule where needed. Record which clients actually consume it rather than assuming a shared filename makes all binaries compliant.",
   "verification": "For each supported client, inspect effective settings and attempt a harmless denied action in a test environment. Expect the same denial and useful diagnostics across installation methods.",
-  "limitations": "This is governance for clients that honour the policy. Unsupported versions, bypass modes or users who can alter the enforcement layer need separate controls; a configuration file alone is not a hostile-user boundary."
+  "limitations": "This is governance for clients that honour the policy. Unsupported versions, bypass modes or users who can alter the enforcement layer need separate controls; a configuration file alone is not a hostile-user boundary.",
+  "category": "systems-and-operations",
+  "tags": [
+    "security",
+    "configuration"
+  ]
 }

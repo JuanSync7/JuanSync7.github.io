@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: CASE WHEN requested IS NULL OR used IS NULL THEN NULL ELSE GREATEST(requested - used, 0) END preserves uncertainty before applying the lower bound.",
   "verification": "Evaluate missing inputs, genuine zero waste and positive waste as separate cases. The missing case should remain visibly unknown rather than producing a numeric zero.",
-  "limitations": "Other database engines can handle GREATEST differently. A null-safe calculation also needs a clear policy for failed runs whose measured use may only be a lower bound."
+  "limitations": "Other database engines can handle GREATEST differently. A null-safe calculation also needs a clear policy for failed runs whose measured use may only be a lower bound.",
+  "category": "data-and-databases",
+  "tags": [
+    "postgres",
+    "data",
+    "evidence"
+  ]
 }

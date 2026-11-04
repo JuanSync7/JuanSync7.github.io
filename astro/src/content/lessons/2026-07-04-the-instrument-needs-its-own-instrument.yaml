@@ -12,5 +12,11 @@
   ],
   "solution": "Treat the grader as another system under test. An illustrative table with its columns swapped should fail a structural check even when its text score stays unchanged. The two checks answer different questions.",
   "verification": "Keep a clean control beside each damaged fixture. The checker should accept the clean case and reject the damaged one for the intended reason.",
-  "limitations": "A mutation proves sensitivity to that mutation, not complete coverage. Independent implementations can still share assumptions, so agreement alone should not be presented as a correctness proof."
+  "limitations": "A mutation proves sensitivity to that mutation, not complete coverage. Independent implementations can still share assumptions, so agreement alone should not be presented as a correctness proof.",
+  "category": "ai-and-agents",
+  "tags": [
+    "evals",
+    "testing",
+    "measurement"
+  ]
 }

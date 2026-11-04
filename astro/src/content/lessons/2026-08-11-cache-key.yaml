@@ -11,5 +11,11 @@
   ],
   "solution": "For a source that includes a header, changing only that header must change the computation’s key. Treat the include path as a search rule, not a substitute for the files selected through it.",
   "verification": "Populate a disposable cache, change an included header and request the result again. Expect a miss and recomputation. An unchanged input set should still be eligible for a hit.",
-  "limitations": "A sound key depends on discovering every meaningful input. Hidden environment or tool-version dependencies can create the same stale-result problem even after headers are included."
+  "limitations": "A sound key depends on discovering every meaningful input. Hidden environment or tool-version dependencies can create the same stale-result problem even after headers are included.",
+  "category": "software-engineering",
+  "tags": [
+    "build",
+    "caching",
+    "integrity"
+  ]
 }

@@ -1,4 +1,5 @@
 import { defineCollection, z } from 'astro:content';
+import lessonTaxonomy from '../config/lesson-taxonomy.json';
 
 // Shared art tokens — one definition for the ArticleArt motif/background, used by
 // both `learn` (the canonical hero art) and `blog` (so a post can match its article).
@@ -65,6 +66,8 @@ const lessons = defineCollection({
   schema: z.object({
     date: z.coerce.date(),
     tag: z.string(),
+    category: z.string().refine((id) => lessonTaxonomy.categories.some((category) => category.id === id), 'Unknown lesson category'),
+    tags: z.array(z.string().refine((id) => lessonTaxonomy.tags.some((tag) => tag.id === id), 'Unknown lesson tag')).min(1).max(5).refine((tags) => new Set(tags).size === tags.length, 'Duplicate lesson tags'),
     title: z.string(),
     why: z.string(),
     problem: z.string().min(1).optional(),

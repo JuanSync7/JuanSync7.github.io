@@ -12,5 +12,10 @@
   ],
   "solution": "For example, a newly opened login may read a group-protected file while an old terminal cannot. Changing file permissions again would treat the symptom without addressing the stale process credentials.",
   "verification": "Compare the effective group list in the old and new sessions, then perform the actual allowed operation. Check the GID rather than trusting a similar group name.",
-  "limitations": "Directory-service caches and host-local group configuration can add delays or differences. newgrp starts a changed shell context; it does not retroactively update every existing application or service."
+  "limitations": "Directory-service caches and host-local group configuration can add delays or differences. newgrp starts a changed shell context; it does not retroactively update every existing application or service.",
+  "category": "systems-and-operations",
+  "tags": [
+    "linux",
+    "security"
+  ]
 }

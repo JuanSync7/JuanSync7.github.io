@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: reaching ten seats for one sample is different from staying at ten for hours, even though both windows have a peak of ten. Duration preserves the distinction that the purchase decision needs.",
   "verification": "Compare a brief-spike fixture with a sustained-full fixture. Their peaks should match while their full-capacity durations differ, and missing samples should not count as known spare capacity.",
-  "limitations": "Polling can miss short bursts and cannot prove demand from occupancy alone. A full pool may have no waiting users, so include queue or denial evidence where available."
+  "limitations": "Polling can miss short bursts and cannot prove demand from occupancy alone. A full pool may have no waiting users, so include queue or denial evidence where available.",
+  "category": "data-and-databases",
+  "tags": [
+    "eda",
+    "measurement",
+    "resource-limits"
+  ]
 }

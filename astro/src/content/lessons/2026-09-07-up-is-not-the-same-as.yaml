@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: an HTTP health route may return promptly while the latest stored sample is hours old. A freshness check makes the missing delivery visible instead of accepting process uptime as evidence.",
   "verification": "Stop delivery in a disposable setup while leaving the process running. Liveness should stay healthy and freshness should move to stale after the configured allowance.",
-  "limitations": "A naturally quiet source needs a suitable heartbeat or delivery contract. Do not treat 'no new business event' as a collection failure without considering how that source behaves."
+  "limitations": "A naturally quiet source needs a suitable heartbeat or delivery contract. Do not treat 'no new business event' as a collection failure without considering how that source behaves.",
+  "category": "systems-and-operations",
+  "tags": [
+    "ops",
+    "observability",
+    "data"
+  ]
 }

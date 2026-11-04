@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: 'use the version in the managed settings file' survives a release bump, whereas a hardcoded number in three guides needs three independent edits and can silently diverge.",
   "verification": "Move the pin in a disposable change and inspect the instructions. Current guidance should still resolve to the new value, while historical release records should remain unchanged.",
-  "limitations": "A pointer is useful only if the reader can access and understand the owner. An intentionally frozen example or historical release note may need an explicit number and date."
+  "limitations": "A pointer is useful only if the reader can access and understand the owner. An intentionally frozen example or historical release note may need an explicit number and date.",
+  "category": "writing-and-knowledge",
+  "tags": [
+    "docs",
+    "configuration",
+    "maintainability"
+  ]
 }

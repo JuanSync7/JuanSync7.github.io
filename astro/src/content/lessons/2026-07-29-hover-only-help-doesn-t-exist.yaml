@@ -12,5 +12,10 @@
   ],
   "solution": "For example, a filter box can show a short help line explaining AND, OR and NOT. A longer guide can provide examples without making the user discover an invisible hover target first.",
   "verification": "Try the task without a mouse and on a narrow touch layout. Confirm that the user can find the rule before submitting an invalid query, and that help remains associated with its control.",
-  "limitations": "Placeholder text disappears during entry and should not replace a persistent label or essential instructions. Tooltips remain useful for supplementary detail when the core path is already understandable."
+  "limitations": "Placeholder text disappears during entry and should not replace a persistent label or essential instructions. Tooltips remain useful for supplementary detail when the core path is already understandable.",
+  "category": "frontend-and-design",
+  "tags": [
+    "frontend",
+    "accessibility"
+  ]
 }

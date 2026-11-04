@@ -12,5 +12,10 @@
   ],
   "solution": "Illustrative: a long package listing piped to grep -q can fail only when the match appears early. Consuming the whole listing removes that timing-dependent broken pipe without hiding real errors.",
   "verification": "Exercise a matching input, a nonmatching input and a producer failure. Expect three correctly interpreted results, including success for the first case.",
-  "limitations": "The failure depends on output size and timing, so a small local example may not reproduce it. Do not fix it by ignoring every nonzero pipeline status."
+  "limitations": "The failure depends on output size and timing, so a small local example may not reproduce it. Do not fix it by ignoring every nonzero pipeline status.",
+  "category": "systems-and-operations",
+  "tags": [
+    "shell",
+    "error-handling"
+  ]
 }

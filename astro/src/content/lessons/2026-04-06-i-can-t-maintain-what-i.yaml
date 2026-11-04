@@ -12,5 +12,10 @@
   ],
   "solution": "Bring the code into a model you can reason about. For example, separate a transport adapter from the state changes it triggers, so a future change has an obvious owner.",
   "verification": "Explain where a new feature would go and which existing behavior must remain true. If that explanation still requires reading every file, the boundary may not yet be clear.",
-  "limitations": "The source also names over-refactoring as a weakness. An unfamiliar design can be sound; understanding and a small adaptation may cost less than replacing it."
+  "limitations": "The source also names over-refactoring as a weakness. An unfamiliar design can be sound; understanding and a small adaptation may cost less than replacing it.",
+  "category": "personal-learning",
+  "tags": [
+    "learning",
+    "maintainability"
+  ]
 }

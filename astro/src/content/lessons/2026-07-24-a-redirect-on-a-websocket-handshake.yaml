@@ -12,5 +12,11 @@
   ],
   "solution": "For example, branded filtering HTML is evidence to investigate the proxy path. It explains why the client did not establish a WebSocket even if an ordinary HTTPS request works.",
   "verification": "Confirm that the intended path returns a valid upgrade and sustains a small connection. Record fallback separately from success on the preferred transport.",
-  "limitations": "A redirect alone does not prove interception; an application or login service can also redirect. Attribute the cause using the response and network evidence, and distinguish HTTP/1.1 upgrade from other WebSocket transports."
+  "limitations": "A redirect alone does not prove interception; an application or login service can also redirect. Attribute the cause using the response and network evidence, and distinguish HTTP/1.1 upgrade from other WebSocket transports.",
+  "category": "security-and-networking",
+  "tags": [
+    "networking",
+    "protocols",
+    "debugging"
+  ]
 }

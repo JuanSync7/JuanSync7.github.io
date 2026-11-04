@@ -12,5 +12,10 @@
   ],
   "solution": "Ship a smaller complete slice. Reducing scope preserves a usable outcome; leaving a hidden stub inside the promised outcome does not.",
   "verification": "A new reader should be able to start from the documented entry point and obtain the stated result without the author filling in a missing step.",
-  "limitations": "This is a shipping standard, not a ban on prototypes. A prototype can contain stubs when its limits are visible and nobody mistakes it for the finished feature."
+  "limitations": "This is a shipping standard, not a ban on prototypes. A prototype can contain stubs when its limits are visible and nobody mistakes it for the finished feature.",
+  "category": "work-and-delivery",
+  "tags": [
+    "delivery",
+    "testing"
+  ]
 }

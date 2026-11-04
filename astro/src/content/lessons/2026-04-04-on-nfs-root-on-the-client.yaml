@@ -12,5 +12,10 @@
   ],
   "solution": "For usage collection, have each user write the allowed records to a shared spool that the service can read. This removes the need for the collector to traverse private homes.",
   "verification": "Check access using the actual service identity on the actual mount. A successful local-file read is not a check of server-side access.",
-  "limitations": "Absolute paths fix path resolution, not server permissions. Changing export policy is a separate access-control decision; this lesson does not require weakening root_squash."
+  "limitations": "Absolute paths fix path resolution, not server permissions. Changing export policy is a separate access-control decision; this lesson does not require weakening root_squash.",
+  "category": "security-and-networking",
+  "tags": [
+    "linux",
+    "security"
+  ]
 }

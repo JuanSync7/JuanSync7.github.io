@@ -12,5 +12,10 @@
   ],
   "solution": "Illustrative: if a patch changes one condition and reformats a hundred files, preserve the formatting commit so a reader can identify and skip that mechanical change while tracing the condition.",
   "verification": "Check the final branch history and run blame on representative reformatted lines. The mechanical change should still have its own commit identity after integration.",
-  "limitations": "A separate commit does not automatically make blame show the older semantic change; readers may still need to skip it. Repository merge rules can constrain the available strategy."
+  "limitations": "A separate commit does not automatically make blame show the older semantic change; readers may still need to skip it. Repository merge rules can constrain the available strategy.",
+  "category": "software-engineering",
+  "tags": [
+    "git",
+    "provenance"
+  ]
 }

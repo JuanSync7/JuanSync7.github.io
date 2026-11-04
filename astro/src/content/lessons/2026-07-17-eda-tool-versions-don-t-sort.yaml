@@ -12,5 +12,11 @@
   ],
   "solution": "For example, V-2023.12 and T-2022.03-SP1 should not be ordered by a generic string comparison to decide support. A named accepted build makes the decision inspectable and repeatable.",
   "verification": "Test known accepted and rejected identifiers, including service packs and an unknown prefix. Unknown forms should produce an actionable error rather than quietly passing a guessed ordering.",
-  "limitations": "The headline’s “never” is scoped to unmodelled vendor versions. A documented vendor release scheme can support meaningful ranges; implement that scheme explicitly rather than assuming all versions are incomparable."
+  "limitations": "The headline’s “never” is scoped to unmodelled vendor versions. A documented vendor release scheme can support meaningful ranges; implement that scheme explicitly rather than assuming all versions are incomparable.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "eda",
+    "validation",
+    "configuration"
+  ]
 }

@@ -2,5 +2,11 @@
   "date": "2026-08-22",
   "tag": "linux",
   "title": "Your shell expands the glob before sudo runs.",
-  "why": "`sudo cat /root-only/*.log` fails because your own user can't list that directory. Wrap the command in `sudo sh -c`."
+  "why": "`sudo cat /root-only/*.log` fails because your own user can't list that directory. Wrap the command in `sudo sh -c`.",
+  "category": "systems-and-operations",
+  "tags": [
+    "linux",
+    "shell",
+    "security"
+  ]
 }

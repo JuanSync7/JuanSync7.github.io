@@ -12,5 +12,10 @@
   ],
   "solution": "For example, an architecture explanation can introduce one request, follow how each module changes it, and finish with the resulting response. The repeated request gives the reader a thread through the design.",
   "verification": "Try removing or moving one section. If the explanation still works exactly the same way, that section may not be advancing the structure.",
-  "limitations": "This is a way to organise thought, not a proof of technical correctness. Interface checks and real requirements still decide whether the system works."
+  "limitations": "This is a way to organise thought, not a proof of technical correctness. Interface checks and real requirements still decide whether the system works.",
+  "category": "personal-learning",
+  "tags": [
+    "music",
+    "design"
+  ]
 }

@@ -11,5 +11,11 @@
   ],
   "solution": "Give each layer one responsibility: reusable behaviour in components, styling through the chosen CSS approach and visual decisions in shared tokens. This makes later changes easier to place.",
   "verification": "For an illustrative dialog check, open it with a keyboard, move focus through it and close it. Also inspect long content, error states and each supported theme.",
-  "limitations": "A component library still needs integration testing, and copied source becomes your maintenance responsibility. The historical choice between plain CSS and Tailwind for new work tools remained open; this lesson does not settle it."
+  "limitations": "A component library still needs integration testing, and copied source becomes your maintenance responsibility. The historical choice between plain CSS and Tailwind for new work tools remained open; this lesson does not settle it.",
+  "category": "frontend-and-design",
+  "tags": [
+    "css",
+    "frontend",
+    "accessibility"
+  ]
 }

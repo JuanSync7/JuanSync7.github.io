@@ -12,5 +12,11 @@
   ],
   "solution": "For example, run a known recipe to produce a timing report, then ask an assistant to explain the failing paths. Keep the execution and report identity independent of the explanation so the result can be reproduced and checked.",
   "verification": "Follow one handoff from input revision to output evidence. Confirm that a missing prerequisite prevents the downstream claim of completion rather than being hidden by a plausible summary.",
-  "limitations": "This is an architectural direction from the source. Deterministic orchestration does not remove tool defects, incomplete requirements or the need for engineering judgment."
+  "limitations": "This is an architectural direction from the source. Deterministic orchestration does not remove tool defects, incomplete requirements or the need for engineering judgment.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "eda",
+    "delivery",
+    "reproducibility"
+  ]
 }

@@ -12,5 +12,12 @@
   ],
   "solution": "Make the test environment explicit at the suite boundary. A fake on PATH only covers callers that use PATH, so test the launch environment that can override it too. A harmless worked example can use two toy executables that print different sentinel words: set the override to one and PATH to the other, then check which word appears.",
   "verification": "The source reports a nested-test regression that failed without the fixture and passing CI after the fix. The toy sentinel example is a suggested reproduction, not a run performed for this post.",
-  "limitations": "This closes the recorded AWS_CLI_BIN leak. Clearing one variable does not make live cloud access impossible; other credential or executable-selection routes need their own isolation."
+  "limitations": "This closes the recorded AWS_CLI_BIN leak. Clearing one variable does not make live cloud access impossible; other credential or executable-selection routes need their own isolation.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "isolation",
+    "configuration",
+    "aws"
+  ]
 }

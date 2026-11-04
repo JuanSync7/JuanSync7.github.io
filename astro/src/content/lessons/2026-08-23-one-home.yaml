@@ -11,5 +11,10 @@
   ],
   "solution": "For a default timeout, let the configuration own the value and keep a conceptual guide focused on what the timeout means. Link to the reference instead of maintaining another number in the guide.",
   "verification": "Change the value in a disposable example and trace every place a reader can encounter it. Expect linked or generated views to agree, with no independent copy requiring a remembered edit.",
-  "limitations": "One home does not mean one enormous document. Keep ownership at the smallest useful boundary, and allow intentional snapshots when they clearly name their version."
+  "limitations": "One home does not mean one enormous document. Keep ownership at the smallest useful boundary, and allow intentional snapshots when they clearly name their version.",
+  "category": "writing-and-knowledge",
+  "tags": [
+    "docs",
+    "maintainability"
+  ]
 }

@@ -12,5 +12,10 @@
   ],
   "solution": "For example, a versioned launcher can point at a new build while an old background session keeps running. A fresh shell proves the launcher’s choice, but says little about that existing session.",
   "verification": "Confirm a new process start and obtain version information from the active service when possible. Follow with a small request that reaches the running instance.",
-  "limitations": "Some services explicitly support live reload or re-exec, and interpreted programs may load files later. Use the application’s update contract rather than assuming every replaced file behaves identically."
+  "limitations": "Some services explicitly support live reload or re-exec, and interpreted programs may load files later. Use the application’s update contract rather than assuming every replaced file behaves identically.",
+  "category": "systems-and-operations",
+  "tags": [
+    "linux",
+    "delivery"
+  ]
 }

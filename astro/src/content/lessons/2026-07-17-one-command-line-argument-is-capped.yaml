@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a prompt assembled from several documents can cross the limit even though the model accepts a much larger context. Moving the bytes to stdin addresses the launch boundary, not the model’s own input limit.",
   "verification": "Try a controlled fixture around the expected boundary, then confirm the program receives the complete stdin or file content. Report launch failure separately from model rejection.",
-  "limitations": "The exact per-string limit depends on platform and page size; 131,072 bytes is not universal. File permissions and retention also matter when prompts contain sensitive content."
+  "limitations": "The exact per-string limit depends on platform and page size; 131,072 bytes is not universal. File permissions and retention also matter when prompts contain sensitive content.",
+  "category": "systems-and-operations",
+  "tags": [
+    "linux",
+    "shell",
+    "resource-limits"
+  ]
 }

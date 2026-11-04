@@ -59,6 +59,13 @@ receives only its `json lesson-public` payload through `npm run lessons:sync`.
 Keep source trails and review evidence private. Run the drift check with both
 checkouts, then the site checks and build. A local copy is not publication approval.
 
+Read `Notes/Protocols/Lesson categories and tags.md` too. Each lesson has one registered
+`category` and one to five distinct registered `tags`; the historical singular `tag`
+is preserved separately. `Site/lesson-taxonomy.json` in the vault owns the vocabulary;
+sync copies it to `astro/src/config/lesson-taxonomy.json`. Reuse existing meanings.
+A meaningful new subject requires an explicit registry change and reviewed rationale,
+not a free-text category in one file. `npm run lessons:check` checks the whole collection.
+
 ## React rules
 
 1. **No globals.** No `window.Foo = Foo`, no implicit reliance on script-tag load order. Use ESM imports.

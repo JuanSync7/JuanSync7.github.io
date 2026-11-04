@@ -12,5 +12,11 @@
   ],
   "solution": "Reject conflicts before insertion: use a BEFORE INSERT guard that raises ABORT when the new row collides with any existing unique key or explicitly supplied rowid. Keep UPDATE and DELETE guards too; test all conflict keys through a raw connection.",
   "verification": "Insert an original record, attempt each forbidden mutation and read it back. The original values and row identity should remain intact, while legitimate new inserts still work.",
-  "limitations": "Replacement can be useful for a disposable cache. The problem is using it where the contract promises that earlier records cannot be changed."
+  "limitations": "Replacement can be useful for a disposable cache. The problem is using it where the contract promises that earlier records cannot be changed.",
+  "category": "security-and-networking",
+  "tags": [
+    "sqlite",
+    "security",
+    "integrity"
+  ]
 }

@@ -11,5 +11,11 @@
   ],
   "solution": "Make the program's outcome usable by both a person and another program. The status selects the caller's next action; the message explains what the caller can do about it.",
   "verification": "Exercise one isolated input for each outcome. Check the structured result or exit status, and check wording only where the message itself is a public contract.",
-  "limitations": "A library usually returns a value or raises a typed exception rather than exiting the process. The same principle applies, but the boundary decides which mechanism is appropriate."
+  "limitations": "A library usually returns a value or raises a typed exception rather than exiting the process. The same principle applies, but the boundary decides which mechanism is appropriate.",
+  "category": "software-engineering",
+  "tags": [
+    "code",
+    "error-handling",
+    "contracts"
+  ]
 }

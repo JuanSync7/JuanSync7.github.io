@@ -11,5 +11,11 @@
   ],
   "solution": "Test the path users take. Use curl to isolate transport or server behaviour, then use the browser to establish whether the intended origin can read the result.",
   "verification": "Expect a permitted page request to expose its response to page code. Also trigger a controlled server error and confirm it remains diagnosable through the intended CORS policy.",
-  "limitations": "A browser failure may also involve authentication, mixed content or networking. CORS headers do not grant server-side authorization and should not replace it."
+  "limitations": "A browser failure may also involve authentication, mixed content or networking. CORS headers do not grant server-side authorization and should not replace it.",
+  "category": "frontend-and-design",
+  "tags": [
+    "frontend",
+    "networking",
+    "debugging"
+  ]
 }

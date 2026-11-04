@@ -12,5 +12,10 @@
   ],
   "solution": "Illustrative: insert three wait cycles before the peripheral raises PREADY. The controller should remain in access through those cycles rather than advance to the next request.",
   "verification": "Simulate immediate completion and several wait lengths. Check stable request signals during the wait and exactly one completion when PSEL, PENABLE and PREADY are high.",
-  "limitations": "Signal availability and error handling depend on the APB revision. Reset, back-to-back transfers and PSLVERR timing need separate cases beyond this basic wait-state check."
+  "limitations": "Signal availability and error handling depend on the APB revision. Reset, back-to-back transfers and PSLVERR timing need separate cases beyond this basic wait-state check.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "protocols",
+    "rtl"
+  ]
 }

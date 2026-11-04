@@ -12,5 +12,10 @@
   ],
   "solution": "For example, a read-only reporting playbook can explain how to collect and summarise data while directing configuration changes to another procedure. That keeps a request for a report from quietly becoming permission to alter the system.",
   "verification": "Try a clear in-scope case, a nearby out-of-scope case and a case missing a prerequisite. Expect useful execution for the first and a clear boundary or handoff for the others.",
-  "limitations": "Boundaries need maintenance as tools change. A rejection should explain the missing condition or next route; “out of scope” by itself does not help someone finish the work."
+  "limitations": "Boundaries need maintenance as tools change. A rejection should explain the missing condition or next route; “out of scope” by itself does not help someone finish the work.",
+  "category": "ai-and-agents",
+  "tags": [
+    "agents",
+    "contracts"
+  ]
 }

@@ -12,5 +12,10 @@
   ],
   "solution": "Illustrative: a dense interface can use the chosen Inter letterforms and generous leading while keeping a practical screen size. Document that interpretation instead of silently claiming numerical equivalence.",
   "verification": "Inspect actual loaded font settings, line breaks and reading comfort at normal zoom. Confirm that the result matches the agreed interpretation of the spec.",
-  "limitations": "Optical size does not make small text physically 18 points. If the requirement is a literal size or an accessibility minimum, follow it rather than substituting a different axis."
+  "limitations": "Optical size does not make small text physically 18 points. If the requirement is a literal size or an accessibility minimum, follow it rather than substituting a different axis.",
+  "category": "frontend-and-design",
+  "tags": [
+    "typography",
+    "design"
+  ]
 }

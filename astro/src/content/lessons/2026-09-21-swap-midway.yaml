@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: 'retrieve evidence, rank it, compose an answer' can survive a search-backend change if each stage has an explicit input and output. Backend-specific response objects crossing every boundary make that swap harder.",
   "verification": "Replace one component with a small alternative in a disposable example. The surrounding stages should continue to satisfy the agreed contract with limited local changes.",
-  "limitations": "A clean diagram does not prove that a migration is cheap. Data format changes, performance assumptions and operational dependencies can still require careful transition work."
+  "limitations": "A clean diagram does not prove that a migration is cheap. Data format changes, performance assumptions and operational dependencies can still require careful transition work.",
+  "category": "software-engineering",
+  "tags": [
+    "design",
+    "interfaces",
+    "maintainability"
+  ]
 }

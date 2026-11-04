@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a user may choose local display settings, but the run should resolve its SDC timing constraints and netlist from a traceable revision. Another person can then obtain the same inputs without copying an entire home directory.",
   "verification": "Inspect the run record and resolve each design input to exact bytes and a responsible owner. A personal checkout can be acceptable when its revision and ownership are traceable; inspect the actual control rule before accepting a path-based warning.",
-  "limitations": "Location alone does not establish control. Exploration can start with local files, but comparisons and handoffs need traceable inputs. A shared pathname that can be overwritten is not enough either."
+  "limitations": "Location alone does not establish control. Exploration can start with local files, but comparisons and handoffs need traceable inputs. A shared pathname that can be overwritten is not enough either.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "eda",
+    "provenance",
+    "reproducibility"
+  ]
 }

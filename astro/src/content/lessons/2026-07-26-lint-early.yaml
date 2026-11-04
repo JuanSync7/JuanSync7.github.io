@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a width mismatch can be caught at a module interface before it turns into unexpected data several blocks downstream. The earlier report gives a smaller search area than a late behavioral symptom.",
   "verification": "Use a known-bad fixture to confirm the normal flow runs the intended rule. Check tool logs and loaded configuration, not just the wrapper’s exit status.",
-  "limitations": "Early analysis complements simulation and later implementation checks. It does not prove that the requirements are right or that every functional path works, and no new estimate of days saved is claimed."
+  "limitations": "Early analysis complements simulation and later implementation checks. It does not prove that the requirements are right or that every functional path works, and no new estimate of days saved is claimed.",
+  "category": "software-engineering",
+  "tags": [
+    "rtl",
+    "lint",
+    "verification"
+  ]
 }

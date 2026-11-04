@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: a source-selection step should return structured document identities and evidence, rather than a persuasive paragraph that the next agent has to reinterpret as facts.",
   "verification": "Trace a representative answer back through its selected sources and validation steps. Missing evidence should produce a visible gap rather than an invented completion.",
-  "limitations": "Better context does not guarantee truth. Schema validity proves structure, not factual support, and judgment steps still need appropriate review or comparison against known cases."
+  "limitations": "Better context does not guarantee truth. Schema validity proves structure, not factual support, and judgment steps still need appropriate review or comparison against known cases.",
+  "category": "ai-and-agents",
+  "tags": [
+    "ai",
+    "rag",
+    "contracts"
+  ]
 }

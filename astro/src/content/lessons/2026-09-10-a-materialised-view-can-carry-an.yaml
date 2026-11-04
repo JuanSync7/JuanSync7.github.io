@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: finding a maximum timestamp over an indexed materialized result can avoid recomputing a complex join. The original timings belong to one reported comparison, not a general speed guarantee.",
   "verification": "Use EXPLAIN ANALYZE on representative data and inspect both the scan and elapsed work. Also check that refresh age is acceptable to the freshness contract.",
-  "limitations": "A materialized result can be stale and needs refresh ownership. A scoped live query may be faster or more current for some workloads, so measure the alternatives."
+  "limitations": "A materialized result can be stale and needs refresh ownership. A scoped live query may be faster or more current for some workloads, so measure the alternatives.",
+  "category": "data-and-databases",
+  "tags": [
+    "postgres",
+    "caching",
+    "performance"
+  ]
 }

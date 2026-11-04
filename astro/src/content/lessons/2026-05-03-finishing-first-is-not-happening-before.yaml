@@ -12,5 +12,10 @@
   ],
   "solution": "For example, write a payload, publish readiness with release semantics, and have the reader acquire that readiness before using the payload. A delay or an observed completion time does not replace that relationship.",
   "verification": "Trace the actual synchronization edge between the conflicting accesses. A run that happens to return the expected value only shows one execution; it does not establish the memory-order guarantee.",
-  "limitations": "The exact operations and scopes depend on the language and hardware memory model. Use its specified primitives rather than assuming every flag or barrier has the needed semantics."
+  "limitations": "The exact operations and scopes depend on the language and hardware memory model. Use its specified primitives rather than assuming every flag or barrier has the needed semantics.",
+  "category": "software-engineering",
+  "tags": [
+    "gpu",
+    "contracts"
+  ]
 }

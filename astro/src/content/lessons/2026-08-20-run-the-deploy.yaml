@@ -11,5 +11,11 @@
   ],
   "solution": "Include a directory-backed account in the acceptance case. A script that audits local accounts successfully still needs to demonstrate that the real identity source reaches the audit.",
   "verification": "Check which accounts were examined, not only the exit code. Exercise a known bad setup for an in-scope directory account and expect the health check to report it.",
-  "limitations": "A live run covers that host and version, not an entire fleet. Keep differences such as directory services, home-directory links and security policy explicit when expanding deployment."
+  "limitations": "A live run covers that host and version, not an entire fleet. Keep differences such as directory services, home-directory links and security policy explicit when expanding deployment.",
+  "category": "systems-and-operations",
+  "tags": [
+    "ops",
+    "testing",
+    "security"
+  ]
 }

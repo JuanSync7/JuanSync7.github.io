@@ -11,5 +11,11 @@
   ],
   "solution": "Keep strictness in the underlying mechanism and make the interface explain meaningful choices. A simple action can still create a complete audit record.",
   "verification": "Walk an ordinary change through the interface, then inspect its record. The user should complete the task while the owner, reason and affected work remain recoverable.",
-  "limitations": "Some regulated or high-risk actions need explicit acknowledgement. Hiding implementation detail must never hide a consequence or turn a proposal into an automatic expensive rerun."
+  "limitations": "Some regulated or high-risk actions need explicit acknowledgement. Hiding implementation detail must never hide a consequence or turn a proposal into an automatic expensive rerun.",
+  "category": "frontend-and-design",
+  "tags": [
+    "design",
+    "ledgers",
+    "maintainability"
+  ]
 }

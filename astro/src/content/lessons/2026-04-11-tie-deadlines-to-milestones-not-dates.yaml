@@ -12,5 +12,10 @@
   ],
   "solution": "For example, attach a required review to “integration passed.” If integration moves, the review still has the same trigger; no date needs to be edited just to make the dashboard quiet.",
   "verification": "Change the milestone from pending to passed and expect the unresolved deferral to become overdue. Moving an unrelated calendar date should not discharge it.",
-  "limitations": "Use calendar deadlines where time itself is the obligation, such as a contract or certificate expiry. Milestone-based expiry is useful for delivery dependencies, not every kind of deadline."
+  "limitations": "Use calendar deadlines where time itself is the obligation, such as a contract or certificate expiry. Milestone-based expiry is useful for delivery dependencies, not every kind of deadline.",
+  "category": "work-and-delivery",
+  "tags": [
+    "planning",
+    "delivery"
+  ]
 }

@@ -11,5 +11,11 @@
   ],
   "solution": "For a job record, the wrapper can attach submission identity and timing consistently while the job supplies only task-specific fields. Define which fields callers may override instead of silently accepting conflicting copies.",
   "verification": "Submit a minimal job through the wrapper and expect a complete standard record. Test a missing required input and an attempted protected-field override; both should produce a clear decision.",
-  "limitations": "This works only for paths that cross the boundary. Direct execution needs to be disallowed or explicitly outside the contract, and centrally added metadata still needs a trustworthy source."
+  "limitations": "This works only for paths that cross the boundary. Direct execution needs to be disallowed or explicitly outside the contract, and centrally added metadata still needs a trustworthy source.",
+  "category": "software-engineering",
+  "tags": [
+    "contracts",
+    "validation",
+    "maintainability"
+  ]
 }

@@ -12,5 +12,10 @@
   ],
   "solution": "If a request means a UTC instant, send an aware UTC value rather than a bare local-looking timestamp. The query then carries the intended instant instead of asking the session to supply its missing meaning.",
   "verification": "Use records around a summer-time transition and compare results under different session time zones. Expect the same intended instants to remain inside the requested window.",
-  "limitations": "Column type and driver behavior still matter. SQLite-only tests can miss PostgreSQL binding differences, and a timestamp intended as local civil time needs an explicit, different contract."
+  "limitations": "Column type and driver behavior still matter. SQLite-only tests can miss PostgreSQL binding differences, and a timestamp intended as local civil time needs an explicit, different contract.",
+  "category": "data-and-databases",
+  "tags": [
+    "postgres",
+    "data"
+  ]
 }

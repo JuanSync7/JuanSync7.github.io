@@ -11,5 +11,10 @@
   ],
   "solution": "Build the brief from the range of examples. Keep the common type, colour and spacing rules together, then describe the deliberate exceptions in the context where they apply.",
   "verification": "Try the brief on a page outside the original sample. A useful brief should explain its structure without forcing every screen into the landing page's appearance.",
-  "limitations": "The sample still represents one point in the site's history. A redesign, an unfinished page or an experiment may change the pattern, so keep the examples and their dates."
+  "limitations": "The sample still represents one point in the site's history. A redesign, an unfinished page or an experiment may change the pattern, so keep the examples and their dates.",
+  "category": "frontend-and-design",
+  "tags": [
+    "design",
+    "evidence"
+  ]
 }

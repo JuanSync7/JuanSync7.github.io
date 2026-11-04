@@ -12,5 +12,12 @@
   ],
   "solution": "Run two models as two instances of the same unit instead of placing several ExecStart commands in a simple service. Each instance can restart independently while the target represents the group.",
   "verification": "Check start, stop, restart and reboot behavior for the actual host arrangement. Also check the combined memory budget; valid individual files can still overcommit one card.",
-  "limitations": "The source’s concrete judgment concerns a very small GPU setup. Multi-host scheduling, elastic placement or stronger fleet requirements may justify Kubernetes or another orchestrator."
+  "limitations": "The source’s concrete judgment concerns a very small GPU setup. Multi-host scheduling, elastic placement or stronger fleet requirements may justify Kubernetes or another orchestrator.",
+  "category": "systems-and-operations",
+  "tags": [
+    "ops",
+    "systemd",
+    "maintainability",
+    "inference"
+  ]
 }

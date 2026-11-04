@@ -11,5 +11,11 @@
   ],
   "solution": "Make the first screen answer where this file fits and what a caller needs to know. The source remains the authority for behaviour, so duplicated details need a clear upkeep cost.",
   "verification": "Give an unfamiliar reader only the header and ask where they would use the file and what they would read next. Then compare those answers with the actual implementation.",
-  "limitations": "The source records a proposed convention; its exact field set was still open. Generated files, tiny modules and formats with strict headers may need a narrower treatment or an exception."
+  "limitations": "The source records a proposed convention; its exact field set was still open. Generated files, tiny modules and formats with strict headers may need a narrower treatment or an exception.",
+  "category": "writing-and-knowledge",
+  "tags": [
+    "docs",
+    "code",
+    "maintainability"
+  ]
 }

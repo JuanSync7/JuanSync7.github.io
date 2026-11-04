@@ -12,5 +12,11 @@
   ],
   "solution": "Test the edge of the system's knowledge as deliberately as its happy path. A grounded refusal can be the correct output even when the model could write a longer answer.",
   "verification": "For an illustrative absent-fact question, expect the system to say it cannot establish the answer from the corpus. It should not turn a loosely related passage into a citation for the missing fact.",
-  "limitations": "A refusal alone is not enough: retrieval may have missed a real answer. Grade retrieval and answer faithfulness separately before calling the result correct."
+  "limitations": "A refusal alone is not enough: retrieval may have missed a real answer. Grade retrieval and answer faithfulness separately before calling the result correct.",
+  "category": "ai-and-agents",
+  "tags": [
+    "rag",
+    "testing",
+    "evidence"
+  ]
 }

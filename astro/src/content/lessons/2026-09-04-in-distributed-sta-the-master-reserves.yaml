@@ -12,5 +12,12 @@
   ],
   "solution": "Illustrative: a small coordinator and several large workers should form separate sizing groups. Reducing every job to the coordinator's observed memory would undersize the workers; treating every request as worker demand hides coordinator waste.",
   "verification": "Trace a sample launch from parent to child jobs, then inspect measured peaks by role. The reported distributed footprint should include the actual workers without counting unrelated lookalikes.",
-  "limitations": "Job shape is only a clue. If launch evidence is absent, keep lineage unknown rather than deriving a confident parent-child relationship from names alone."
+  "limitations": "Job shape is only a clue. If launch evidence is absent, keep lineage unknown rather than deriving a confident parent-child relationship from names alone.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "eda",
+    "sta",
+    "slurm",
+    "resource-limits"
+  ]
 }

@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: a sentence naming the affected job population gives a waste figure context before the reader reaches the per-job table. The detail then supports the answer instead of competing to define it.",
   "verification": "Ask a reader to state the page's answer, time window and population after a brief scan. Their statement should match the figures and the table's filters.",
-  "limitations": "The opening sentence must be generated from the same current data and filters. A confident summary that ignores stale or incomplete data is more misleading than a dense table."
+  "limitations": "The opening sentence must be generated from the same current data and filters. A confident summary that ignores stale or incomplete data is more misleading than a dense table.",
+  "category": "frontend-and-design",
+  "tags": [
+    "frontend",
+    "data",
+    "reporting"
+  ]
 }

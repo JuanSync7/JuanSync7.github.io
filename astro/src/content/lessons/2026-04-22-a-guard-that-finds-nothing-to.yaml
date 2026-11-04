@@ -12,5 +12,11 @@
   ],
   "solution": "A check launched from outside a repository should explain that it could not run. It should not say “no git here, nothing to check” and return the same result as a clean repository.",
   "verification": "Run the guard on a clean tree, a deliberately violating tree and a directory without Git metadata. Expect success only for the clean tree, with a distinct explanation for the missing repository.",
-  "limitations": "Commands intended to work outside repositories can offer an explicit optional mode. A mandatory release or safety gate should not infer that mode from a missing prerequisite."
+  "limitations": "Commands intended to work outside repositories can offer an explicit optional mode. A mandatory release or safety gate should not infer that mode from a missing prerequisite.",
+  "category": "security-and-networking",
+  "tags": [
+    "git",
+    "testing",
+    "error-handling"
+  ]
 }

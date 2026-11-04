@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: an inherited parent-job identifier lets a worker report its origin directly. A matching name prefix can remain a fallback, clearly labelled as inference rather than equivalent proof.",
   "verification": "Trace a known parent and worker through the recorded fields. Their relationship should be recoverable without guessing from similar names, and missing metadata should remain visible.",
-  "limitations": "Adding a field does not backfill historical runs that never captured it. Instrumentation also needs owner approval and a defined scope so unrelated jobs are not accidentally linked."
+  "limitations": "Adding a field does not backfill historical runs that never captured it. Instrumentation also needs owner approval and a defined scope so unrelated jobs are not accidentally linked.",
+  "category": "data-and-databases",
+  "tags": [
+    "eda",
+    "provenance",
+    "measurement"
+  ]
 }

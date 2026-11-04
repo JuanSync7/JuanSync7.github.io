@@ -12,5 +12,11 @@
   ],
   "solution": "If one byte changes, the content identifier should change even when the filename and modification time are restored. A cache can reuse the object only when its declared content identity agrees.",
   "verification": "Recompute the digest after reading and compare the full identifier. In a disposable fixture, change a byte and expect the old identifier to fail verification.",
-  "limitations": "Byte identity is not semantic identity: two visually equal documents can have different bytes. Hashes also do not prove authorship or permission to use content; they establish integrity under the chosen hash assumptions."
+  "limitations": "Byte identity is not semantic identity: two visually equal documents can have different bytes. Hashes also do not prove authorship or permission to use content; they establish integrity under the chosen hash assumptions.",
+  "category": "data-and-databases",
+  "tags": [
+    "integrity",
+    "provenance",
+    "caching"
+  ]
 }

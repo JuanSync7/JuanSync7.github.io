@@ -12,5 +12,11 @@
   ],
   "solution": "Define build in terms of the runtime contract. The useful question is whether the delivered module can be loaded where it is meant to run.",
   "verification": "An illustrative regression removes an exported name that another module imports. Syntax checks can stay green, while the import gate must fail and name the affected module.",
-  "limitations": "Importing modules can execute code. Run the gate in an isolated test environment, and keep external effects out of module initialization."
+  "limitations": "Importing modules can execute code. Run the gate in an isolated test environment, and keep external effects out of module initialization.",
+  "category": "software-engineering",
+  "tags": [
+    "python",
+    "build",
+    "testing"
+  ]
 }

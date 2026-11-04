@@ -12,5 +12,11 @@
   ],
   "solution": "Keep the queue id and inspect receiver headers when available. SPF lists permitted senders; DKIM signs the message; DMARC checks alignment with the visible From domain. These checks happen beyond the local command’s exit status.",
   "verification": "Treat an observed test message and its headers as end-to-end evidence. If only local queue acceptance is known, report delivery as unconfirmed.",
-  "limitations": "Quarantine was a likely diagnosis in the source, not a verified receiver finding. Removing a domain’s protection is not a durable delivery fix, and no test mail was sent for this rewrite."
+  "limitations": "Quarantine was a likely diagnosis in the source, not a verified receiver finding. Removing a domain’s protection is not a durable delivery fix, and no test mail was sent for this rewrite.",
+  "category": "security-and-networking",
+  "tags": [
+    "email",
+    "delivery",
+    "error-handling"
+  ]
 }

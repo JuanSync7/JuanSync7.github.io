@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: await asyncio.to_thread(blocking_probe) lets the event loop serve another request while the probe waits. An async subprocess API can provide more direct process lifecycle control.",
   "verification": "Run a deliberately slow operation beside a simple health request in a disposable service. The health request should remain responsive while the slow task is still in progress.",
-  "limitations": "Thread offloading does not stop the underlying function automatically when its awaiting request is cancelled. CPU-heavy work, thread safety and pool exhaustion need their own design."
+  "limitations": "Thread offloading does not stop the underlying function automatically when its awaiting request is cancelled. CPU-heavy work, thread safety and pool exhaustion need their own design.",
+  "category": "software-engineering",
+  "tags": [
+    "python",
+    "performance",
+    "observability"
+  ]
 }

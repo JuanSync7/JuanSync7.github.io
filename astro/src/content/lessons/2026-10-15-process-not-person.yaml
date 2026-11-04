@@ -11,5 +11,11 @@
   ],
   "solution": "Make the response to a captured mistake produce a safer process. Follow through on the agreed limits so the system's behaviour supports its promise of learning.",
   "verification": "Review a sample of records for actionable causes and corrections. Ask contributors whether they can report uncertainty and slips without the record becoming a search tool for personal blame.",
-  "limitations": "Anonymity is weak in a small team because context can identify someone. Serious conduct concerns and repeated patterns need a clearly governed route; they should not be smuggled into a learning archive."
+  "limitations": "Anonymity is weak in a small team because context can identify someone. Serious conduct concerns and repeated patterns need a clearly governed route; they should not be smuggled into a learning archive.",
+  "category": "work-and-delivery",
+  "tags": [
+    "process",
+    "teams",
+    "learning"
+  ]
 }

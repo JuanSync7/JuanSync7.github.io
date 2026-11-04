@@ -11,5 +11,11 @@
   ],
   "solution": "Use permissions to restrict writes and hashes to check identity. For example, a same-named replacement with a preserved timestamp should still be rejected when its digest differs.",
   "verification": "On disposable copies, change a byte without changing the filename, then restore the timestamp. The content check should still report a mismatch; a path or timestamp check alone is insufficient.",
-  "limitations": "A matching digest proves agreement with the recorded bytes, not that those bytes are correct or trusted. The reference digest and all declared inputs need protection too."
+  "limitations": "A matching digest proves agreement with the recorded bytes, not that those bytes are correct or trusted. The reference digest and all declared inputs need protection too.",
+  "category": "data-and-databases",
+  "tags": [
+    "integrity",
+    "provenance",
+    "security"
+  ]
 }

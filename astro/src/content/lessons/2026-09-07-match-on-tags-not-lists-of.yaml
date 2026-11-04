@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: adding another model to a tier should require correctly tagging its application profile, rather than adding another resource string to every caller's policy.",
   "verification": "Probe a permitted tier resource, another tier and an untagged resource. Expect only the intended tier to be available through the tested role.",
-  "limitations": "Tag conditions depend on service and action support. Constant policy size does not mean unlimited service capacity, and another unrestricted invocation path can defeat the intended isolation."
+  "limitations": "Tag conditions depend on service and action support. Constant policy size does not mean unlimited service capacity, and another unrestricted invocation path can defeat the intended isolation.",
+  "category": "security-and-networking",
+  "tags": [
+    "aws",
+    "security",
+    "resource-limits"
+  ]
 }

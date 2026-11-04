@@ -32,6 +32,8 @@ jobs:
         run: npm run build
       - name: Install Chromium for the figure look
         run: npx playwright install --with-deps chromium
+      - name: Lesson browsing (grouping, filters, history, mobile and no JavaScript)
+        run: npm run lessons:browser
       - name: Figure audit selftest (every check still catches its fixture)
         run: npm run figures:selftest
       - name: Figure look

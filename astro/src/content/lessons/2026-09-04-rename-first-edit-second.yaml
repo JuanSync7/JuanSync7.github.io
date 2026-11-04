@@ -12,5 +12,10 @@
   ],
   "solution": "Illustrative: move a script first, then change how it locates its configuration. The intermediate commit gives history tools an unchanged file to match while keeping the functional edit easy to review.",
   "verification": "Run git log --follow on a moved file and check that it reaches the old path. Then exercise path resolution so a clean historical move does not conceal broken runtime wiring.",
-  "limitations": "A pure move improves rename detection but does not guarantee every history tool follows every migration. Cross-repository moves require their own history and provenance plan."
+  "limitations": "A pure move improves rename detection but does not guarantee every history tool follows every migration. Cross-repository moves require their own history and provenance plan.",
+  "category": "software-engineering",
+  "tags": [
+    "git",
+    "provenance"
+  ]
 }

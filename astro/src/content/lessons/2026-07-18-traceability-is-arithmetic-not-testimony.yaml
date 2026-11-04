@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a requirement with three numbered criteria needs evidence for those criteria, not merely one marker naming its parent. Function-level markers also stop a removed test from remaining apparently covered by a module-wide label.",
   "verification": "Delete or rename a marked fixture test and confirm the trace becomes incomplete. Check that an empty requirement inventory cannot silently produce a perfect result.",
-  "limitations": "A marker proves a claimed link exists; it does not prove the test is relevant or correct. Review the assertion behind the marker and keep the generated matrix tied to the exact revision."
+  "limitations": "A marker proves a claimed link exists; it does not prove the test is relevant or correct. Review the assertion behind the marker and keep the generated matrix tied to the exact revision.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "evidence",
+    "contracts"
+  ]
 }

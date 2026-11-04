@@ -11,5 +11,11 @@
   ],
   "solution": "Preserve the common adapter while testing the differences behind it. The reported probe needed an output allowance of 16 tokens for the model family that rejected 1.",
   "verification": "Repeat the compatibility sweep when adding models or changing parameters. Every configured model should accept the supported minimal request, or be clearly excluded with its reason.",
-  "limitations": "A minimal successful response proves invocability, not quality or complete feature parity. The reported floor is historical; new models and API changes can introduce different constraints."
+  "limitations": "A minimal successful response proves invocability, not quality or complete feature parity. The reported floor is historical; new models and API changes can introduce different constraints.",
+  "category": "ai-and-agents",
+  "tags": [
+    "inference",
+    "contracts",
+    "testing"
+  ]
 }

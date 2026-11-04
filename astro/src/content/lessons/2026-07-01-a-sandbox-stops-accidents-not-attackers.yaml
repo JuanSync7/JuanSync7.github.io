@@ -12,5 +12,11 @@
   ],
   "solution": "Use agent sandboxing to reduce accidental reach, and enforce the required boundary at the layer the caller cannot edit. For example, blocking a file-reading tool does not by itself stop another program from using an accessible credential.",
   "verification": "A useful check attempts the prohibited action through both allowed and alternate clients, and confirms that the enforcing layer records a refusal.",
-  "limitations": "The headline is shorthand: hardened sandboxes can resist hostile code too. The warning concerns editable tool policy and incomplete sandbox coverage, not every sandbox design."
+  "limitations": "The headline is shorthand: hardened sandboxes can resist hostile code too. The warning concerns editable tool policy and incomplete sandbox coverage, not every sandbox design.",
+  "category": "security-and-networking",
+  "tags": [
+    "security",
+    "isolation",
+    "agents"
+  ]
 }

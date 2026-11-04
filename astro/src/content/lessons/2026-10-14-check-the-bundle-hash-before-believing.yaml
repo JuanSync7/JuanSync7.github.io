@@ -2,5 +2,11 @@
   "date": "2026-10-14",
   "tag": "frontend",
   "title": "Check the bundle hash before believing the browser.",
-  "why": "The old design on screen was a cached bundle. Compare the served file to the build before debugging the code."
+  "why": "The old design on screen was a cached bundle. Compare the served file to the build before debugging the code.",
+  "category": "frontend-and-design",
+  "tags": [
+    "frontend",
+    "caching",
+    "debugging"
+  ]
 }

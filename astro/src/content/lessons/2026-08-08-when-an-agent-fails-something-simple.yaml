@@ -11,5 +11,11 @@
   ],
   "solution": "For a 30-day total, make the date field, timezone and treatment of missing values explicit. Feed query errors back into the same bounded task instead of restarting without them.",
   "verification": "Compare a small, hand-checkable subset with the query result. Then inspect the complete query’s filters before trusting the larger total.",
-  "limitations": "Context is a useful first diagnosis, not proof that model capability never matters. Reassess after the task, permissions and feedback path are complete."
+  "limitations": "Context is a useful first diagnosis, not proof that model capability never matters. Reassess after the task, permissions and feedback path are complete.",
+  "category": "ai-and-agents",
+  "tags": [
+    "agents",
+    "sql",
+    "debugging"
+  ]
 }

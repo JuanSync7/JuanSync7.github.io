@@ -12,5 +12,11 @@
   ],
   "solution": "Make placement part of starting the job. A short note saying where it will run and why is easier to review than a slow host after the fact.",
   "verification": "Check the actual job allocation and peak use after the run. Use that evidence to size the next run instead of repeating the original guess.",
-  "limitations": "A lower process priority does not limit memory, and an idle-looking host may still be shared. Local convenience is not evidence that a heavy job belongs there."
+  "limitations": "A lower process priority does not limit memory, and an idle-looking host may still be shared. Local convenience is not evidence that a heavy job belongs there.",
+  "category": "systems-and-operations",
+  "tags": [
+    "ops",
+    "slurm",
+    "resource-limits"
+  ]
 }

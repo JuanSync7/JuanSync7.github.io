@@ -11,5 +11,11 @@
   ],
   "solution": "Treat the export format as a new trust boundary. Model output, user text and retrieved content all need the same handling when they become cells.",
   "verification": "Open a harmless test export containing each trigger character in the supported spreadsheet application. The values should display as text, while ordinary text and multiline cells remain usable.",
-  "limitations": "Different spreadsheet applications and import modes handle escaping differently. Consider whitespace and control characters in the policy, and test numeric fields separately rather than changing legitimate numbers blindly."
+  "limitations": "Different spreadsheet applications and import modes handle escaping differently. Consider whitespace and control characters in the policy, and test numeric fields separately rather than changing legitimate numbers blindly.",
+  "category": "security-and-networking",
+  "tags": [
+    "security",
+    "data",
+    "validation"
+  ]
 }

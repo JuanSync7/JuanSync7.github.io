@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a richer filter grammar should be accepted by the API and any background consumer before the interface starts sending it. Updating files alone does not update a process that imported the old parser.",
   "verification": "Exercise an old-client request and a new-client request against the deployed server, then check the client path end to end. Include a rollback rehearsal when the change is significant.",
-  "limitations": "Server-first works when the server change is backward compatible. Removing fields or changing their meaning needs a wider migration plan rather than relying on rollout order alone."
+  "limitations": "Server-first works when the server change is backward compatible. Removing fields or changing their meaning needs a wider migration plan rather than relying on rollout order alone.",
+  "category": "frontend-and-design",
+  "tags": [
+    "frontend",
+    "delivery",
+    "contracts"
+  ]
 }

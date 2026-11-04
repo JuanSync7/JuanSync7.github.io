@@ -11,5 +11,11 @@
   ],
   "solution": "Use hashes for change detection and independent checks for trust. Each control answers a different question, so none should be described as proving the whole ledger true.",
   "verification": "In an isolated trial, alter a past entry and attempt to rebuild the chain. The protected reference should expose the difference, and a false underlying claim should still need an evidence check.",
-  "limitations": "These are design requirements, not a claim that the historical mirror or independent trust boundary was built. Independence fails if all checkers share the writer's credentials and mutable evidence."
+  "limitations": "These are design requirements, not a claim that the historical mirror or independent trust boundary was built. Independence fails if all checkers share the writer's credentials and mutable evidence.",
+  "category": "data-and-databases",
+  "tags": [
+    "ledgers",
+    "integrity",
+    "review"
+  ]
 }

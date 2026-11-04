@@ -11,5 +11,11 @@
   ],
   "solution": "If three launch methods were tried and one remains supported, teach that method first. Keep rejected methods in their historical home rather than making the reader reconstruct the answer.",
   "verification": "Ask a new reader to identify the supported start command, configuration owner and first diagnostic step without reading the project’s chat history. Any missing answer belongs in the current document.",
-  "limitations": "History remains useful for understanding trade-offs and reversions. The correction is to give it a clear place, not erase the evidence behind the current design."
+  "limitations": "History remains useful for understanding trade-offs and reversions. The correction is to give it a clear place, not erase the evidence behind the current design.",
+  "category": "writing-and-knowledge",
+  "tags": [
+    "docs",
+    "delivery",
+    "maintainability"
+  ]
 }

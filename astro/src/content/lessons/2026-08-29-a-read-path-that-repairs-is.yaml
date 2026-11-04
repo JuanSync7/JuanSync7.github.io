@@ -11,5 +11,11 @@
   ],
   "solution": "If a reader encounters an unfinished transaction, return a clear unavailable result or use a supported consistent read view. Do not silently promote that reader into a repair process.",
   "verification": "In a disposable concurrency test, hold the writer active and open a reader. Expect the reader to leave journal and data bytes untouched. Separately test writer startup recovery after a simulated crash.",
-  "limitations": "This advice concerns a store whose reader cannot establish safe recovery ownership. Database engines have their own documented recovery protocols; do not replace them with a hand-written lock guess."
+  "limitations": "This advice concerns a store whose reader cannot establish safe recovery ownership. Database engines have their own documented recovery protocols; do not replace them with a hand-written lock guess.",
+  "category": "data-and-databases",
+  "tags": [
+    "data",
+    "integrity",
+    "isolation"
+  ]
 }

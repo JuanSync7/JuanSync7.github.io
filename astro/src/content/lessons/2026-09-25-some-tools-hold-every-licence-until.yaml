@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: if a three-day shell needs one feature for only its first two hours, retaining it to exit creates a large idle holding interval. A real release boundary can shorten that interval.",
   "verification": "Observe the checkout after the proposed boundary and confirm later stages still run correctly. Measure reacquisition delay as well as freed seat time.",
-  "limitations": "Release behavior varies by tool and feature. A repeatedly needed feature may be better retained, and releasing it early can make the same job queue again later."
+  "limitations": "Release behavior varies by tool and feature. A repeatedly needed feature may be better retained, and releasing it early can make the same job queue again later.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "eda",
+    "resource-limits",
+    "performance"
+  ]
 }

@@ -11,5 +11,11 @@
   ],
   "solution": "Fix trust at the client’s real boundary. A host trust-store update does not necessarily reach a Python package bundle or a container image, so trace each failing path.",
   "verification": "Retry the original verified HTTPS operation for each affected tool. Check that it succeeds with verification enabled and that the chain still terminates at the intended trusted authority.",
-  "limitations": "One missing root is a useful shared explanation, not a diagnosis for every TLS failure. Expired certificates, hostname mismatches and blocked protocol upgrades require different fixes."
+  "limitations": "One missing root is a useful shared explanation, not a diagnosis for every TLS failure. Expired certificates, hostname mismatches and blocked protocol upgrades require different fixes.",
+  "category": "security-and-networking",
+  "tags": [
+    "tls",
+    "networking",
+    "configuration"
+  ]
 }

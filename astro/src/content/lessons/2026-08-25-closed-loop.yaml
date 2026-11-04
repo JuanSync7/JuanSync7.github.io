@@ -11,5 +11,11 @@
   ],
   "solution": "For a generated configuration, parse and validate the actual file before asking the agent to fix any reported field. Keep the validator independent of the prose claim that the file is valid.",
   "verification": "Deliberately include one invalid value in a disposable example. Expect the check to reject it and identify the field; completion should require a fresh check of the corrected bytes.",
-  "limitations": "A faulty sensor drives a faulty loop. Human judgment still matters for goals and uncheckable quality, and retry limits must surface unresolved failure rather than looping indefinitely."
+  "limitations": "A faulty sensor drives a faulty loop. Human judgment still matters for goals and uncheckable quality, and retry limits must surface unresolved failure rather than looping indefinitely.",
+  "category": "ai-and-agents",
+  "tags": [
+    "agents",
+    "testing",
+    "validation"
+  ]
 }

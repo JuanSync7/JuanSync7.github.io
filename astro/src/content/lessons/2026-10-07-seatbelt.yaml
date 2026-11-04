@@ -11,5 +11,11 @@
   ],
   "solution": "Use the allowlist to reduce accidental exposure and make inheritance reviewable. It is a useful default even for helpers that are otherwise trusted.",
   "verification": "Launch a test helper with canary secrets in the parent environment. Required variables should arrive, and the unlisted canaries should be absent from the child's environment.",
-  "limitations": "This is not process isolation. A same-user child may still read credential files or process metadata, and it may have network access; stronger threats require controls beyond environment filtering."
+  "limitations": "This is not process isolation. A same-user child may still read credential files or process metadata, and it may have network access; stronger threats require controls beyond environment filtering.",
+  "category": "security-and-networking",
+  "tags": [
+    "security",
+    "isolation",
+    "privacy"
+  ]
 }

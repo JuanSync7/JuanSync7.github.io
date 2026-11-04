@@ -12,5 +12,10 @@
   ],
   "solution": "For example, a caller asking for a ticket id does not establish ownership of that ticket. A service using a broad key must check the relationship rather than trusting a user-supplied email or the model’s description.",
   "verification": "Test the same operation with an owned and an unowned record, then alter identity-like request fields. Only the authenticated identity should control authorization.",
-  "limitations": "An input hook cannot remove sensitive fields from a response it never inspects. Some broad API operations may need to be excluded or placed behind a stronger filtering service."
+  "limitations": "An input hook cannot remove sensitive fields from a response it never inspects. Some broad API operations may need to be excluded or placed behind a stronger filtering service.",
+  "category": "security-and-networking",
+  "tags": [
+    "security",
+    "ownership"
+  ]
 }

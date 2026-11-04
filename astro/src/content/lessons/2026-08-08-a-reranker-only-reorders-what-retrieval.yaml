@@ -11,5 +11,10 @@
   ],
   "solution": "Debug retrieval coverage separately from ranking quality. For example, moving the right passage from rank 30 to rank 2 helps only if the first stage returns at least 30 candidates.",
   "verification": "Measure how often known supporting passages enter the candidate set, then how often reranking places them in the final context. Those checks locate different failures.",
-  "limitations": "A larger shortlist costs time, and better retrieval does not guarantee a faithful answer. Keep answer grounding as a separate check after ranking."
+  "limitations": "A larger shortlist costs time, and better retrieval does not guarantee a faithful answer. Keep answer grounding as a separate check after ranking.",
+  "category": "ai-and-agents",
+  "tags": [
+    "rag",
+    "performance"
+  ]
 }

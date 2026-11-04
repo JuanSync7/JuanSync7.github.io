@@ -11,5 +11,11 @@
   ],
   "solution": "Use one contract to connect server output, tests and client expectations. This avoids maintaining a second handwritten shape that can drift in exactly the same way as the application.",
   "verification": "As an illustrative check, rename a required response field in a scratch change. The contract or client check should fail even though the endpoint still returns 200.",
-  "limitations": "Shape checks do not prove that a value is correct or that the live service returns the expected data. They complement semantic assertions and a few real integration checks."
+  "limitations": "Shape checks do not prove that a value is correct or that the live service returns the expected data. They complement semantic assertions and a few real integration checks.",
+  "category": "frontend-and-design",
+  "tags": [
+    "frontend",
+    "contracts",
+    "testing"
+  ]
 }

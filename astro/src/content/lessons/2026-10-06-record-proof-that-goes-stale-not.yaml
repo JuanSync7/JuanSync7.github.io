@@ -11,5 +11,11 @@
   ],
   "solution": "Make the status a view of current evidence. A previous pass is still useful, but it should not stand in for a pass on a different requirement or build.",
   "verification": "Change one consumed input in an illustrative trial. Its dependent result should become stale, while unrelated results remain current and the earlier artifact remains inspectable.",
-  "limitations": "Hashes prove identity and help detect change; they do not prove the original check was sound. Missing dependencies and an untrusted producer can still make a precise record misleading."
+  "limitations": "Hashes prove identity and help detect change; they do not prove the original check was sound. Missing dependencies and an untrusted producer can still make a precise record misleading.",
+  "category": "work-and-delivery",
+  "tags": [
+    "process",
+    "evidence",
+    "provenance"
+  ]
 }

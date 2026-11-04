@@ -12,5 +12,10 @@
   ],
   "solution": "Illustrative: keep a table's job identifiers in mono while using a proportional face for the explanation above it. The contrast communicates what to scan and what to read without adding another colour.",
   "verification": "Inspect the page with real content, long identifiers and fallback fonts. Prose should remain comfortable, and machine values should remain distinguishable without clipping.",
-  "limitations": "This is a design choice tied to purpose, not a universal ban on monospace prose. Size, contrast, line length and font loading still matter whichever family is chosen."
+  "limitations": "This is a design choice tied to purpose, not a universal ban on monospace prose. Size, contrast, line length and font loading still matter whichever family is chosen.",
+  "category": "frontend-and-design",
+  "tags": [
+    "typography",
+    "design"
+  ]
 }

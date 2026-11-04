@@ -11,5 +11,11 @@
   ],
   "solution": "Keep the choice reversible. A narrow service or library boundary is easier to compare and replace than a rewrite justified only by a language’s reputation.",
   "verification": "Compare representative workload latency, memory use, build effort and operational complexity. Include the cost of crossing the language boundary rather than timing only the inner loop.",
-  "limitations": "This is a stated direction of interest, not a reported benchmark or a decision to rewrite a project. A mature Python implementation may remain the best choice when it already meets the requirements."
+  "limitations": "This is a stated direction of interest, not a reported benchmark or a decision to rewrite a project. A mature Python implementation may remain the best choice when it already meets the requirements.",
+  "category": "software-engineering",
+  "tags": [
+    "thoughts",
+    "python",
+    "performance"
+  ]
 }

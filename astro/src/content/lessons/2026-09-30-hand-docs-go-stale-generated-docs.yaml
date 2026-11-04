@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: a generated paragraph naming the correct source file can still misunderstand which service owns a table. Check the claimed relationship, not merely whether the link opens.",
   "verification": "Change a representative configuration fact in a disposable revision. The drift check or review should identify the stale claim, and a source inspection should confirm the corrected statement.",
-  "limitations": "Mechanical checks cover only claims they can evaluate. Intent, omitted topics and data semantics still need informed review, and an evaluated generator is not automatically an adopted documentation workflow."
+  "limitations": "Mechanical checks cover only claims they can evaluate. Intent, omitted topics and data semantics still need informed review, and an evaluated generator is not automatically an adopted documentation workflow.",
+  "category": "writing-and-knowledge",
+  "tags": [
+    "docs",
+    "testing",
+    "evidence"
+  ]
 }

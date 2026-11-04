@@ -12,5 +12,11 @@
   ],
   "solution": "If content is null while the reasoning field contains text and generation hit its limit, increasing the answer budget may be the relevant correction. Do not discard the distinction by converting every 200 response into success.",
   "verification": "Use a representative reasoning request and check that it produces meaningful final content within the chosen limits. Also exercise the capped case so the caller reports it honestly.",
-  "limitations": "Response fields and token accounting vary by provider and model. A larger budget can cost more and does not fix every empty response; inspect the actual completion reason."
+  "limitations": "Response fields and token accounting vary by provider and model. A larger budget can cost more and does not fix every empty response; inspect the actual completion reason.",
+  "category": "ai-and-agents",
+  "tags": [
+    "llm",
+    "resource-limits",
+    "error-handling"
+  ]
 }

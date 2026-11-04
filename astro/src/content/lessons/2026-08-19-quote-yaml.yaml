@@ -11,5 +11,11 @@
   ],
   "solution": "Treat quoting as part of the serialized contract. A textual id must remain the same type through parsing, validation and export, even if its characters happen to be digits.",
   "verification": "Load a small fixture with the actual application loader and inspect both value and type. Expect the quoted examples to remain strings, and reject an inferred integer where the schema requires a string.",
-  "limitations": "Boolean inference differs across YAML versions and loaders. Test the one you ship; quoting text is useful even when a newer loader no longer treats “on” as a boolean."
+  "limitations": "Boolean inference differs across YAML versions and loaders. Test the one you ship; quoting text is useful even when a newer loader no longer treats “on” as a boolean.",
+  "category": "software-engineering",
+  "tags": [
+    "yaml",
+    "data",
+    "contracts"
+  ]
 }

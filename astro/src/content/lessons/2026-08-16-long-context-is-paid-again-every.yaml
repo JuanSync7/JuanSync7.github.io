@@ -11,5 +11,11 @@
   ],
   "solution": "Keep a short preamble and record what was included. If required evidence does not fit, split the task or refuse the incomplete review instead of silently clipping the source.",
   "verification": "Inspect request token counts and actual retained evidence over several turns. For a known question, check whether the bounded context still contains its supporting facts before comparing answer quality.",
-  "limitations": "Resent context may receive provider caching discounts, so cost is not always full-price each turn. Large windows do not invariably degrade answers, and summaries can lose essential detail."
+  "limitations": "Resent context may receive provider caching discounts, so cost is not always full-price each turn. Large windows do not invariably degrade answers, and summaries can lose essential detail.",
+  "category": "ai-and-agents",
+  "tags": [
+    "llm",
+    "resource-limits",
+    "cost-control"
+  ]
 }

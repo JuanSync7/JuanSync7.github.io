@@ -12,5 +12,10 @@
   ],
   "solution": "For example, a validation stage before storage is easier to reason about than several storage callers each applying a different part of the same rule. The diagram makes the duplicated ownership visible.",
   "verification": "Walk a normal request, a failure and a likely future change through the chosen diagram. Check whether a reader can locate the responsible module in the code.",
-  "limitations": "A tidy picture can hide complexity by omitting details. Treat ease of drawing as a design test, not proof that the system is correct or that the fewest boxes always win."
+  "limitations": "A tidy picture can hide complexity by omitting details. Treat ease of drawing as a design test, not proof that the system is correct or that the fewest boxes always win.",
+  "category": "software-engineering",
+  "tags": [
+    "design",
+    "maintainability"
+  ]
 }

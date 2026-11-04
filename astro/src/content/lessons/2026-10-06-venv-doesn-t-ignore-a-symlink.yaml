@@ -11,5 +11,10 @@
   ],
   "solution": "Write ignore rules for the entry Git records, rather than the type of its target. This keeps local environment layout out of the repository across different developer setups.",
   "verification": "Use git check-ignore -v .venv to identify the matching rule, then inspect the staged names. A local symlink should remain untracked after the normal add command.",
-  "limitations": "Ignore patterns are not protection for secrets already committed. A tracked environment entry needs separate cleanup, and other ignore files can affect which pattern wins."
+  "limitations": "Ignore patterns are not protection for secrets already committed. A tracked environment entry needs separate cleanup, and other ignore files can affect which pattern wins.",
+  "category": "software-engineering",
+  "tags": [
+    "git",
+    "python"
+  ]
 }

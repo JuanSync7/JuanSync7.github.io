@@ -11,5 +11,11 @@
   ],
   "solution": "Keep the rule, its reason and the case connected. This lets a future reviewer narrow or retire the rule when the workflow changes.",
   "verification": "Replay the original failure as a fixture where practical. The new check should reject it while accepting a nearby valid case, so a broad prohibition does not quietly replace the real correction.",
-  "limitations": "Some preventative controls are justified by external requirements or known hazards before a local failure occurs. Name that basis explicitly instead of inventing an observed incident."
+  "limitations": "Some preventative controls are justified by external requirements or known hazards before a local failure occurs. Name that basis explicitly instead of inventing an observed incident.",
+  "category": "ai-and-agents",
+  "tags": [
+    "agents",
+    "evidence",
+    "maintainability"
+  ]
 }

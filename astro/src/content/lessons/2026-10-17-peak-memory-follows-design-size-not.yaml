@@ -11,5 +11,11 @@
   ],
   "solution": "Choose predictors from measured usefulness rather than convenience. In the reported study, recorded input size did not help, while tool-reported design size was the promising signal to investigate.",
   "verification": "Compare prediction errors and the share of underestimates on the same held-out jobs. A new feature should improve the intended decision, not merely fit the training data more closely.",
-  "limitations": "A log produced during execution may arrive too late for a pre-submit forecast. The source does not establish a finished design-size predictor, and missing effort data or uncertain job attribution can still limit accuracy."
+  "limitations": "A log produced during execution may arrive too late for a pre-submit forecast. The source does not establish a finished design-size predictor, and missing effort data or uncertain job attribution can still limit accuracy.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "eda",
+    "measurement",
+    "resource-limits"
+  ]
 }

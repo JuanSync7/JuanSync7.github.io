@@ -12,5 +12,11 @@
   ],
   "solution": "If an input handoff fails, capture which contract was missing and how to detect that condition next time. That gives the next team a correction they can apply, rather than only a story that the project was difficult.",
   "verification": "Ask a fresh reader whether the record tells them when the problem applies and how to check the correction. A lesson has transferred when it supports a usable change.",
-  "limitations": "This is the source’s organizational argument, not a measured company outcome. Capture should improve the process and avoid assigning blame to an employee."
+  "limitations": "This is the source’s organizational argument, not a measured company outcome. Capture should improve the process and avoid assigning blame to an employee.",
+  "category": "work-and-delivery",
+  "tags": [
+    "process",
+    "knowledge",
+    "delivery"
+  ]
 }

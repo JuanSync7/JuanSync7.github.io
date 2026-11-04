@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-29",
+  "tag": "Debugging",
+  "title": "A fix brief sets the width of the fix.",
+  "why": "Brief a worker on one failing value and it may repair only that value. Brief it on the broken rule and its input dimensions so the next sibling failure is part of the same job.",
+  "problem": "A review finds a defect, the patch passes, and the next review finds a neighbouring input that reaches the same cause. The work keeps returning because each brief names only the latest example.",
+  "cause": "An example establishes that a rule is broken. It does not define the full boundary of that rule. A worker asked to make one example pass can reasonably stop before inspecting the other callers, formats or input states that share the mechanism.",
+  "steps": [
+    "Reproduce the finding, then write the broken rule in one sentence. Describe the mechanism rather than repeating the failing value.",
+    "List the relevant input dimensions: for a parser, empty, malformed and valid input are different cases. Search the shared code and its callers, and bound the repair by the behaviour this change promises.",
+    "Brief the repair around that class, with the original example as one row in a test table. Ask the reviewer to derive a sibling case independently."
+  ],
+  "solution": "Give the worker a cause, a bounded class and a check for that class. One shared repair may cover several findings; unrelated old defects still need a recorded disposition.",
+  "verification": "For a future fix, confirm that the original case fails before the patch and passes after it, then test another combination that was not named in the report. A sibling failure means the claimed boundary needs another look.",
+  "limitations": "The source reports repeated narrow rounds and supplies the wider briefing method. It does not prove that every bug needs a broad rewrite: a genuinely isolated wrong value can justify a one-off correction.",
+  "category": "software-engineering",
+  "tags": [
+    "debugging",
+    "contracts",
+    "review"
+  ]
+}

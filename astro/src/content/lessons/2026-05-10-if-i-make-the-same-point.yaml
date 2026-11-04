@@ -12,5 +12,10 @@
   ],
   "solution": "For example, if a preferred design is defended a third time with the same performance claim, return to the measurement behind that claim. If no measurement exists, mark the claim as an assumption and decide how to check it.",
   "verification": "Look for a change in the evidence or a clear next experiment. Agreement caused only by pressure does not settle the technical question.",
-  "limitations": "This is a personal collaboration preference, not a rule to cut off discussion after a fixed count. A repeated warning may still matter if it was never answered."
+  "limitations": "This is a personal collaboration preference, not a rule to cut off discussion after a fixed count. A repeated warning may still matter if it was never answered.",
+  "category": "personal-learning",
+  "tags": [
+    "growth",
+    "evidence"
+  ]
 }

@@ -11,5 +11,11 @@
   ],
   "solution": "Give every actionable decision a route to work, and give each piece of work a current decision basis. A chat link can supply context, but it should point to a maintained row rather than substitute for one.",
   "verification": "Sample recent decisions and trace each to its queue item, then trace queued items back to their latest checked ruling. An unqueued commitment or obsolete draft should become a visible finding.",
-  "limitations": "Preferences already maintained elsewhere do not all need new tasks. The record must also distinguish an owner's decision from an agent's proposal so a summary cannot silently grant authority."
+  "limitations": "Preferences already maintained elsewhere do not all need new tasks. The record must also distinguish an owner's decision from an agent's proposal so a summary cannot silently grant authority.",
+  "category": "work-and-delivery",
+  "tags": [
+    "process",
+    "planning",
+    "provenance"
+  ]
 }

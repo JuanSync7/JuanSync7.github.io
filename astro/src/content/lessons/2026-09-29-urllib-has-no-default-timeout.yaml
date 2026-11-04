@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: a 503 response is different from a DNS failure or a socket that never responds. A useful probe records those states instead of crashing or waiting indefinitely.",
   "verification": "Use disposable endpoints for success, HTTP failure and delayed response. Expect a classified result within the intended allowance, including a non-success status when the server answers with an error.",
-  "limitations": "Some redirects are followed automatically, so the original non-2xx shorthand is too broad. Catch HTTPError for responses that reach the error handler. The timeout is not necessarily a strict total wall-clock deadline across DNS, redirects and reads; a hard deadline needs a surrounding execution and cancellation strategy."
+  "limitations": "Some redirects are followed automatically, so the original non-2xx shorthand is too broad. Catch HTTPError for responses that reach the error handler. The timeout is not necessarily a strict total wall-clock deadline across DNS, redirects and reads; a hard deadline needs a surrounding execution and cancellation strategy.",
+  "category": "software-engineering",
+  "tags": [
+    "python",
+    "networking",
+    "error-handling"
+  ]
 }

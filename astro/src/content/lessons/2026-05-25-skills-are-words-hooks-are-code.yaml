@@ -12,5 +12,10 @@
   ],
   "solution": "A tool server can be absent from the exposed tool list yet still be launched by the host. Treat “the agent cannot call this tool” and “this process cannot start” as separate claims.",
   "verification": "Inspect launch records in a controlled setup and compare them with the intended policy. Verify the specific boundary being claimed instead of inferring it from a configuration label.",
-  "limitations": "Instruction text can still influence decisions and trigger allowed actions. The distinction is about enforcement mechanisms, not a claim that words are harmless or that every plugin has the same capabilities."
+  "limitations": "Instruction text can still influence decisions and trigger allowed actions. The distinction is about enforcement mechanisms, not a claim that words are harmless or that every plugin has the same capabilities.",
+  "category": "security-and-networking",
+  "tags": [
+    "security",
+    "agents"
+  ]
 }

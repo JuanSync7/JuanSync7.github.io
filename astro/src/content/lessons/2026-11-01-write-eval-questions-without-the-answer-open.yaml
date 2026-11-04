@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-01",
+  "tag": "Evaluation",
+  "title": "Write eval questions without borrowing the source wording.",
+  "why": "A search test is easier when its questions repeat the documents it searches. Ask in the reader’s words and score the facts a useful answer must contain.",
+  "problem": "An answer key can look thorough while covering only familiar documents. If its author reads each source and turns a sentence into a question, the search system gets vocabulary clues that an ordinary reader may never supply.",
+  "cause": "The test is then partly measuring phrase matching. It can hide weak retrieval across several documents, and a fluent answer may pass even when it omits the facts the question actually needs.",
+  "steps": [
+    "Draft questions as someone with the problem would ask them. Keep the expected answer separate, with the source documents and a small list of facts that must be present.",
+    "Include questions answered by one document, questions that need several documents, and questions the indexed material cannot answer. Score those groups separately.",
+    "Check repeated wording and document reuse, then inspect the questions yourself. Treat phrase-overlap checks as prompts for review, because necessary technical terms may be shared."
+  ],
+  "solution": "Make the question natural and the answer key precise. Judge whether the key facts are supported, rather than whether the answer copies one preferred sentence.",
+  "verification": "Before trusting the score, count the indexed documents and check which ones the answer set covers. For retrieval, report whether all required documents were found; a result depth the system did not return is not measured, rather than a measured zero.",
+  "limitations": "The source records a prepared evaluation set; it leaves the owner’s first run and edits open. A no-answer question needs readable source text: an unprocessed scan cannot establish that the documents say nothing.",
+  "category": "ai-and-agents",
+  "tags": [
+    "evals",
+    "rag",
+    "measurement"
+  ]
+}

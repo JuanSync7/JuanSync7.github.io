@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a register name followed by [7:0] should retain the range exactly, while [guide](target) should remain a link. Test both together so fixing one form does not disable the other.",
   "verification": "Inspect converted table cells and extracted link targets separately. A text-presence check alone can miss a range that survived in the wrong structure.",
-  "limitations": "This is a syntax distinction, not a reason to disable all bracket handling. Richer Markdown constructs may require a proper parser rather than increasingly broad regular expressions."
+  "limitations": "This is a syntax distinction, not a reason to disable all bracket handling. Richer Markdown constructs may require a proper parser rather than increasingly broad regular expressions.",
+  "category": "writing-and-knowledge",
+  "tags": [
+    "docs",
+    "data",
+    "rtl"
+  ]
 }

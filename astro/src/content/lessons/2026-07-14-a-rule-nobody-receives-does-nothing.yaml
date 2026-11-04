@@ -12,5 +12,10 @@
   ],
   "solution": "For example, a writing deck can be distributed as a skill that points to the current rules and examples. The useful test is whether a new session can find the relevant instruction when the task requires it.",
   "verification": "Inspect the loaded package and try a small task that exercises a specific rule. Check the baseline first: a failing baseline can make every mutation appear successfully caught.",
-  "limitations": "Distribution does not guarantee understanding or compliance. It closes the missing-context gap; enforcement and review still need evidence of their own."
+  "limitations": "Distribution does not guarantee understanding or compliance. It closes the missing-context gap; enforcement and review still need evidence of their own.",
+  "category": "ai-and-agents",
+  "tags": [
+    "agents",
+    "delivery"
+  ]
 }

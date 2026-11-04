@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: a launcher that starts a long copy with & may exit successfully before the copy finishes. Running the copy as the unit's tracked work makes completion and failure observable.",
   "verification": "Rehearse with a disposable delayed task. Expect the service to remain responsible until completion and to report a failing task as a failure.",
-  "limitations": "Unit type, KillMode and lifecycle settings affect cleanup. Changing those settings to detach work can create orphan-management problems; model ownership deliberately rather than relying on shell backgrounding."
+  "limitations": "Unit type, KillMode and lifecycle settings affect cleanup. Changing those settings to detach work can create orphan-management problems; model ownership deliberately rather than relying on shell backgrounding.",
+  "category": "systems-and-operations",
+  "tags": [
+    "linux",
+    "systemd",
+    "shell"
+  ]
 }

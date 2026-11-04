@@ -12,5 +12,12 @@
   ],
   "solution": "Put the state a test needs in its fixture. Keep an independent clean-checkout run in the verification flow so my working directory cannot quietly supply missing setup.",
   "verification": "The investigation reproduced the failure on clean origin. Adding one untracked file made that test pass. Clearing inherited make settings also made the output test pass.",
-  "limitations": "The record opened a fix slice for the fixture, the underlying bug and the output test. It does not establish that the complete fix had landed that day."
+  "limitations": "The record opened a fix slice for the fixture, the underlying bug and the output test. It does not establish that the complete fix had landed that day.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "git",
+    "isolation",
+    "reproducibility"
+  ]
 }

@@ -11,5 +11,11 @@
   ],
   "solution": "For a small contaminated sample, return “not enough data” with the count and reason rather than a median plus a warning the next step may drop.",
   "verification": "Feed a report with a tempting headline and an invalid-sample flag through the consumer. Expect it to refuse the statistic and preserve the reason in the user-facing explanation.",
-  "limitations": "A second model step can improve attention but cannot guarantee compliance. A code-enforced validity boundary is stronger when the rule can be decided mechanically."
+  "limitations": "A second model step can improve attention but cannot guarantee compliance. A code-enforced validity boundary is stronger when the rule can be decided mechanically.",
+  "category": "ai-and-agents",
+  "tags": [
+    "agents",
+    "evidence",
+    "contracts"
+  ]
 }

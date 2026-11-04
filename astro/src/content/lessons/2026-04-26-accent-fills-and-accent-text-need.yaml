@@ -12,5 +12,10 @@
   ],
   "solution": "Keep the bright lime for a filled control if its label has enough contrast. Use a darker green ink for a small link on white, so the visual identity stays related without sacrificing reading.",
   "verification": "Measure contrast for the rendered foreground/background pair, including hover and disabled states. Inspect small text directly; a large coloured swatch does not reveal the reading problem.",
-  "limitations": "The right value depends on text size, weight and background. A dark-mode token may need a different value again, and colour should not be the only way a control communicates state."
+  "limitations": "The right value depends on text size, weight and background. A dark-mode token may need a different value again, and colour should not be the only way a control communicates state.",
+  "category": "frontend-and-design",
+  "tags": [
+    "design",
+    "accessibility"
+  ]
 }

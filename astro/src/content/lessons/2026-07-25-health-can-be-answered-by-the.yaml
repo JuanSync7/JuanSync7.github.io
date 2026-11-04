@@ -12,5 +12,11 @@
   ],
   "solution": "For example, /v1/models provides more evidence about a model-serving endpoint than /health alone. A completion request adds another layer by exercising actual inference rather than just metadata routing.",
   "verification": "Test the probe against a wrong service and against a server with the wrong model alias. Both should fail before the deployment is called ready.",
-  "limitations": "An expected alias can still point to incorrect weights, and one completion proves only a narrow path. Keep checks proportional to the required deployment guarantee, and do not treat a CPU rehearsal as GPU validation."
+  "limitations": "An expected alias can still point to incorrect weights, and one completion proves only a narrow path. Keep checks proportional to the required deployment guarantee, and do not treat a CPU rehearsal as GPU validation.",
+  "category": "systems-and-operations",
+  "tags": [
+    "inference",
+    "testing",
+    "observability"
+  ]
 }

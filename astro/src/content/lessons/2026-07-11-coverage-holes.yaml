@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a group of faults behind an incorrectly constrained control should be investigated as a group. Adding patterns blindly may not help when the setup prevents the tool from exercising that logic.",
   "verification": "Compare fault identities and classifications before and after the change, alongside the percentage. Confirm that improvement came from meaningful coverage rather than quietly excluding difficult faults.",
-  "limitations": "The fault model and coverage denominator matter. A higher ATPG percentage does not prove every possible silicon defect is detectable, and no new coverage result is claimed here."
+  "limitations": "The fault model and coverage denominator matter. A higher ATPG percentage does not prove every possible silicon defect is detectable, and no new coverage result is claimed here.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "dft",
+    "verification",
+    "measurement"
+  ]
 }

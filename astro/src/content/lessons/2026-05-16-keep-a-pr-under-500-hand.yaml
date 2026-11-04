@@ -12,5 +12,10 @@
   ],
   "solution": "A small API behavior change should carry its implementation, tests and needed documentation together. Splitting by behavior gives the reviewer one claim to follow from input to result, rather than several unrelated partial changes.",
   "verification": "Inspect the actual hand-written diff and ask whether each line can be tied to the PR’s stated intent. If several independent intents appear, split the review before asking someone to skim the whole batch.",
-  "limitations": "The 500-line bar is a review policy, not a measured human limit. A smaller diff can still be complex, and generated changes still need appropriate validation."
+  "limitations": "The 500-line bar is a review policy, not a measured human limit. A smaller diff can still be complex, and generated changes still need appropriate validation.",
+  "category": "work-and-delivery",
+  "tags": [
+    "review",
+    "git"
+  ]
 }

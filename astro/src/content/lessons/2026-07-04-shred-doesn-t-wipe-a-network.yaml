@@ -12,5 +12,10 @@
   ],
   "solution": "Revocation changes what the secret can do, even if old bytes survive. For example, a copied token becomes much less useful once the server refuses it; overwriting one local copy does not provide that protection.",
   "verification": "Confirm that the retired credential is rejected through an approved check and that intended replacement access works. Record any consumer whose migration remains unknown.",
-  "limitations": "Revocation does not erase previously accessed data, and storage cleanup still matters. Avoid claiming secure physical erasure from a client-side command on a managed or snapshotting filesystem."
+  "limitations": "Revocation does not erase previously accessed data, and storage cleanup still matters. Avoid claiming secure physical erasure from a client-side command on a managed or snapshotting filesystem.",
+  "category": "security-and-networking",
+  "tags": [
+    "security",
+    "privacy"
+  ]
 }

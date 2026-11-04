@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: a compact view may combine requested and used memory in one cell while an all-columns view keeps both separately available. The relationship stays visible without deleting either measurement.",
   "verification": "Compare the redesigned table against the original field inventory. Every required value should be accessible, correctly labelled and usable at a phone-width viewport.",
-  "limitations": "Not every field belongs in the default view. Progressive disclosure is useful when access is clear; silently removing required information is the failure this lesson addresses."
+  "limitations": "Not every field belongs in the default view. Progressive disclosure is useful when access is clear; silently removing required information is the failure this lesson addresses.",
+  "category": "frontend-and-design",
+  "tags": [
+    "frontend",
+    "data",
+    "integrity"
+  ]
 }

@@ -11,5 +11,11 @@
   ],
   "solution": "Give one network control responsibility for outbound access. This reduces the chance that several partial domain lists drift while each appears to cover the whole system.",
   "verification": "From a controlled test workload, try an allowed destination and a harmless disallowed one through more than one client. The policy should hold across those execution paths.",
-  "limitations": "A proxy controls only traffic forced through it, and domain rules can be difficult for raw TCP services. The historical egress control was still a prerequisite, not a completed protection."
+  "limitations": "A proxy controls only traffic forced through it, and domain rules can be difficult for raw TCP services. The historical egress control was still a prerequisite, not a completed protection.",
+  "category": "security-and-networking",
+  "tags": [
+    "security",
+    "networking",
+    "isolation"
+  ]
 }

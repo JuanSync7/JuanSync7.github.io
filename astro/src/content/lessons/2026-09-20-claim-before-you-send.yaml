@@ -12,5 +12,11 @@
   ],
   "solution": "Illustrative: two workers may discover the same ten items, but only one should acquire each claim. Both must compose from their acquired ids rather than the original candidate list.",
   "verification": "Rehearse competing claims and crashes before and after delivery handoff. Check for duplicate attempts and make unresolved delivery states visible.",
-  "limitations": "Claim-before-send alone cannot guarantee exactly-once external delivery. A crash after claiming can lose a send, while an uncertain delivery acknowledgement needs an explicit retry or reconciliation policy."
+  "limitations": "Claim-before-send alone cannot guarantee exactly-once external delivery. A crash after claiming can lose a send, while an uncertain delivery acknowledgement needs an explicit retry or reconciliation policy.",
+  "category": "data-and-databases",
+  "tags": [
+    "data",
+    "idempotency",
+    "ledgers"
+  ]
 }

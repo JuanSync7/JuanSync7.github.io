@@ -12,5 +12,10 @@
   ],
   "solution": "For example, matching .oasis must not emit .oa. A boundary or full-token check protects the intended token more clearly than relying on branch order alone.",
   "verification": "Compare extracted full paths against expected paths, then check any derived records that the old extractor populated. A corrected parser does not automatically repair rows already saved.",
-  "limitations": "Regex is often too weak for a complete command language. Prefer a parser, tool-reported inputs or observed file access when the surrounding syntax matters."
+  "limitations": "Regex is often too weak for a complete command language. Prefer a parser, tool-reported inputs or observed file access when the surrounding syntax matters.",
+  "category": "software-engineering",
+  "tags": [
+    "python",
+    "validation"
+  ]
 }

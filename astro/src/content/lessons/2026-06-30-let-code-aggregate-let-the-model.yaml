@@ -12,5 +12,11 @@
   ],
   "solution": "For a monthly ticket summary, return counts and a bounded set of themes rather than asking the model to read every ticket and calculate totals. Keep drill-down available for the records behind a claim.",
   "verification": "Compare the aggregate with a checked small dataset and confirm the report’s window, filters and completeness. The model should not describe a partial page as the whole population.",
-  "limitations": "The source does not establish a particular time-bucketing implementation. Aggregation still depends on correct queries and access rules, and a compact summary can hide outliers unless the reporting design preserves them."
+  "limitations": "The source does not establish a particular time-bucketing implementation. Aggregation still depends on correct queries and access rules, and a compact summary can hide outliers unless the reporting design preserves them.",
+  "category": "ai-and-agents",
+  "tags": [
+    "llm",
+    "data",
+    "performance"
+  ]
 }

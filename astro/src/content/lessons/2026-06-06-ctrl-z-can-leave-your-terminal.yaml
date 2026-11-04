@@ -12,5 +12,11 @@
   ],
   "solution": "Repair the terminal state before assuming the shell or remote session is corrupt. The important distinction is between the program’s process state and the input modes it left behind.",
   "verification": "After resetting, click and move the mouse in the same terminal and check that no mouse-reporting codes reach the prompt. This is an expected check, not a confirmed outcome of the historical diagnosis.",
-  "limitations": "The source records a hypothesis and a reset attempt without confirmation. Mouse-mode leakage is one explanation; a persistent problem still needs investigation of the terminal and running programs."
+  "limitations": "The source records a hypothesis and a reset attempt without confirmation. Mouse-mode leakage is one explanation; a persistent problem still needs investigation of the terminal and running programs.",
+  "category": "systems-and-operations",
+  "tags": [
+    "linux",
+    "shell",
+    "error-handling"
+  ]
 }

@@ -12,5 +12,11 @@
   ],
   "solution": "If a migration change is absent from the cloned fixture, rerunning the migration test only repeats the wrong experiment. Confirm that the expected bytes reached the fixture before concluding that the template tool ignores them.",
   "verification": "Add a temporary observable marker in a disposable test input and check its presence at the tool boundary. Then remove the marker and rerun the real behavior check on the corrected fixture.",
-  "limitations": "Instrumenting the harness establishes what was tested, not that the tool is correct. Once the right input is confirmed, continue investigating any remaining tool or configuration issue."
+  "limitations": "Instrumenting the harness establishes what was tested, not that the tool is correct. Once the right input is confirmed, continue investigating any remaining tool or configuration issue.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "debugging",
+    "git"
+  ]
 }

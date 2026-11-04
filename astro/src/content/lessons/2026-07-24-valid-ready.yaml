@@ -12,5 +12,11 @@
   ],
   "solution": "For example, a source holding one data beat must not replace it after an arbitrary delay if READY is still low. A slower receiver remains entitled to accept that same beat later.",
   "verification": "Use a scoreboard to compare sent and accepted beats under randomized backpressure. Add directed cases for a long stall and for readiness changing around a transfer.",
-  "limitations": "AXI has several independent channels and additional ordering rules; a correct local handshake does not prove the whole protocol. This is general protocol teaching, not a claim that the cited owner’s chats record this particular bug."
+  "limitations": "AXI has several independent channels and additional ordering rules; a correct local handshake does not prove the whole protocol. This is general protocol teaching, not a claim that the cited owner’s chats record this particular bug.",
+  "category": "hardware-and-eda",
+  "tags": [
+    "protocols",
+    "rtl",
+    "contracts"
+  ]
 }

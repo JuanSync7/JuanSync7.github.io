@@ -12,5 +12,10 @@
   ],
   "solution": "For example, a reviewer choosing whether a claim is supported should receive the evidence-status definitions with the claims it is judging. A general opening reminder to be careful is less specific to that choice.",
   "verification": "Test representative long-context cases with the rule only at the start and with the relevant reminder near the decision. Compare actual rule compliance rather than prompt length alone.",
-  "limitations": "Context placement is a reliability aid, not a security boundary or a guaranteed attention rule. Excessive reminders can consume budget and create their own noise."
+  "limitations": "Context placement is a reliability aid, not a security boundary or a guaranteed attention rule. Excessive reminders can consume budget and create their own noise.",
+  "category": "ai-and-agents",
+  "tags": [
+    "llm",
+    "agents"
+  ]
 }
