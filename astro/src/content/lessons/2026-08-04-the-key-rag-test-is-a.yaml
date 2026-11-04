@@ -1,4 +1,16 @@
-date: 2026-08-04
-tag: rag
-title: "The key RAG test is a question it can't answer."
-why: "Ask something outside the corpus. The system must say 'not found' rather than invent, because the grounding layer is where quality is won."
+{
+  "date": "2026-08-04",
+  "tag": "rag",
+  "title": "The key RAG test is a question it can't answer.",
+  "why": "Ask something outside the corpus. The system must say 'not found' rather than invent, because the grounding layer is where quality is won.",
+  "problem": "A document-answering system can look impressive when every question has an easy answer in its documents. That test set does not show whether the system knows when its evidence is missing.",
+  "cause": "Retrieval and answer writing are separate stages. A language model can produce a plausible answer from weak or unrelated passages, so fluent output is not a reliable signal that the documents support it.",
+  "steps": [
+    "Build a small evaluation set with questions whose answers are in the corpus and questions whose needed facts are absent. Keep the expected support separate from the generated answer.",
+    "Inspect the retrieved passages for each question before grading the response. Decide whether retrieval found the evidence and whether the response stayed within it.",
+    "Require an explicit insufficient-evidence result for the unsupported questions. Repeat the same set when changing the retriever, chunking or model."
+  ],
+  "solution": "Test the edge of the system's knowledge as deliberately as its happy path. A grounded refusal can be the correct output even when the model could write a longer answer.",
+  "verification": "For an illustrative absent-fact question, expect the system to say it cannot establish the answer from the corpus. It should not turn a loosely related passage into a citation for the missing fact.",
+  "limitations": "A refusal alone is not enough: retrieval may have missed a real answer. Grade retrieval and answer faithfulness separately before calling the result correct."
+}

@@ -1,4 +1,16 @@
-date: 2026-06-28
-tag: testing
-title: "Instrument the harness before blaming the tool."
-why: "A 'my change does nothing' result was the test harness cloning the wrong tree. Harness faults look exactly like tool limits."
+{
+  "date": "2026-06-28",
+  "tag": "testing",
+  "title": "Instrument the harness before blaming the tool.",
+  "why": "A 'my change does nothing' result was the test harness cloning the wrong tree. Harness faults look exactly like tool limits.",
+  "problem": "A template change can appear to have no effect because the test harness never included the edited files.",
+  "cause": "A fixture that clones committed content can omit uncommitted changes. The test then exercises an older tree while its author thinks it is testing the current one.",
+  "steps": [
+    "Record the source tree or revision used by the harness.",
+    "Inspect the relevant file inside the actual fixture.",
+    "Repair the fixture input before investigating the tool’s behavior."
+  ],
+  "solution": "If a migration change is absent from the cloned fixture, rerunning the migration test only repeats the wrong experiment. Confirm that the expected bytes reached the fixture before concluding that the template tool ignores them.",
+  "verification": "Add a temporary observable marker in a disposable test input and check its presence at the tool boundary. Then remove the marker and rerun the real behavior check on the corrected fixture.",
+  "limitations": "Instrumenting the harness establishes what was tested, not that the tool is correct. Once the right input is confirmed, continue investigating any remaining tool or configuration issue."
+}

@@ -1,4 +1,16 @@
-date: 2026-07-13
-tag: rtl
-title: "Design for the safety standard from the first line."
-why: "Parity and duplicated logic for functional safety shape the whole block. They are hard to bolt on later, so they belong in the first draft."
+{
+  "date": "2026-07-13",
+  "tag": "rtl",
+  "title": "Design for the safety standard from the first line.",
+  "why": "Parity and duplicated logic for functional safety shape the whole block. They are hard to bolt on later, so they belong in the first draft.",
+  "problem": "A hardware block can become difficult to adapt for safety when its detection and recovery paths are left until after the ordinary datapath is settled.",
+  "cause": "Parity and duplicated logic add state, comparisons, timing paths and responses to faults. Those requirements affect interfaces and architecture, so they need design space from the start.",
+  "steps": [
+    "Identify the faults the block must detect and its required response.",
+    "Include detection, status and recovery behavior in the first interface and state design.",
+    "Plan checks that inject relevant faults and observe the specified response."
+  ],
+  "solution": "For example, adding parity to stored control data also requires deciding when to check it and what happens on a mismatch. A parity bit without a defined reaction is only part of the safety mechanism.",
+  "verification": "Use an explicit fault model and inspect whether representative injected faults reach the detector and required response within the design’s timing assumptions.",
+  "limitations": "The source records parity and an out-of-phase dual-copy design, but does not prove when those choices were made. This is architectural guidance, not a complete functional-safety argument or certification claim."
+}

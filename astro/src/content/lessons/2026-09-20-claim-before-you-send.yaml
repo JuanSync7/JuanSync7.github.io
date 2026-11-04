@@ -1,4 +1,16 @@
-date: 2026-09-20
-tag: data
-title: "Claim before you send."
-why: "Mark the items in the ledger first, then build the message from exactly those, so a retry can't send twice."
+{
+  "date": "2026-09-20",
+  "tag": "data",
+  "title": "Claim before you send.",
+  "why": "Mark the items in the ledger first, then build the message from exactly those, so a retry can't send twice.",
+  "problem": "A retrying digest worker can send overlapping messages if it selects candidates independently on each attempt.",
+  "cause": "The candidate query can change between attempts, and parallel workers can select the same items. A ledger claim gives one attempt a fixed set of work before the message is built.",
+  "steps": [
+    "Atomically claim the eligible items in the ledger.",
+    "Build the message only from the items that attempt actually claimed.",
+    "Record the send state and define how interrupted claims are reconciled."
+  ],
+  "solution": "Illustrative: two workers may discover the same ten items, but only one should acquire each claim. Both must compose from their acquired ids rather than the original candidate list.",
+  "verification": "Rehearse competing claims and crashes before and after delivery handoff. Check for duplicate attempts and make unresolved delivery states visible.",
+  "limitations": "Claim-before-send alone cannot guarantee exactly-once external delivery. A crash after claiming can lose a send, while an uncertain delivery acknowledgement needs an explicit retry or reconciliation policy."
+}

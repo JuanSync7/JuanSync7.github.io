@@ -1,4 +1,16 @@
-date: 2026-06-07
-tag: aws
-title: "One role per budget, or one cap stops everyone."
-why: "A budget deny attaches to a principal. Two tiers sharing a role means the first to overspend blocks the other."
+{
+  "date": "2026-06-07",
+  "tag": "aws",
+  "title": "One role per budget, or one cap stops everyone.",
+  "why": "A budget deny attaches to a principal. Two tiers sharing a role means the first to overspend blocks the other.",
+  "problem": "Two budget tiers can appear separate in configuration while the first tier to hit its cap blocks both.",
+  "cause": "The deny policy attaches to an IAM principal. If both workloads assume the same role, they share the permission change regardless of which budget triggered it.",
+  "steps": [
+    "Map each workload to the role it actually assumes.",
+    "Give independently controlled tiers separate roles.",
+    "Align budget scope and action targets with those roles, then test isolation."
+  ],
+  "solution": "A personal assistant and a central application harness need separate role targets if one must remain available when the other is capped. Separate budget names alone do not create that boundary.",
+  "verification": "In a controlled drill, deny one tier and confirm that the other role can still perform its allowed request. Check the actual assumed identities, since a guardrail on an unused role protects nothing.",
+  "limitations": "Separate roles isolate the deny action, not automatically the cost calculation. A broadly filtered budget can still count both tiers, so attribution and budget filtering need their own checks."
+}

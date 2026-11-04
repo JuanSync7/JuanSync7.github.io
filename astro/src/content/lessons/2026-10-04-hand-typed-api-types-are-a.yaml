@@ -1,4 +1,15 @@
-date: 2026-10-04
-tag: frontend
-title: "Hand-typed API types are a silent contract."
-why: "Rename a backend field and the frontend still compiles. Generate types from one schema so a mismatch goes red."
+{
+  "date": "2026-10-04",
+  "tag": "frontend",
+  "title": "Hand-typed API types are a silent contract.",
+  "why": "Rename a backend field and the frontend still compiles. Generate types from one schema so a mismatch goes red.",
+  "problem": "A backend field can be renamed while a frontend with handwritten interfaces still compiles. Each side agrees with its own definition, so the mismatch appears only when real data reaches the page.",
+  "cause": "Types catch inconsistencies inside the contract they are given. A generator cannot repair an API whose published schema says that any response is allowed.",
+  "steps": [
+    "Declare concrete response models on the backend routes first. Include nested objects, optional values and list items, then inspect the resulting API schema.",
+    "Generate the client types from that schema and replace duplicate handwritten interfaces. Add a drift check so changed routes require regenerated artifacts before the build passes."
+  ],
+  "solution": "Move from two manually maintained descriptions to one source of truth in small route groups. Keep any runtime validation needed for responses outside your control.",
+  "verification": "For an illustrative trial, rename a field in one typed route and regenerate. A client that still reads the old name should fail its type check.",
+  "limitations": "This is a proposed correction where routes lack response models, not proof a migration already happened. Generated types also cannot catch a wrong URL or an incorrect value with the right type."
+}

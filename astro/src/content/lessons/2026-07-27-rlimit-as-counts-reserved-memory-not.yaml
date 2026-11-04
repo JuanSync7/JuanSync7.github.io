@@ -1,4 +1,16 @@
-date: 2026-07-27
-tag: linux
-title: "RLIMIT_AS counts reserved memory, not used memory."
-why: "Node, Java and PyTorch reserve big address ranges up front, so a tight cap kills them before they use anything."
+{
+  "date": "2026-07-27",
+  "tag": "linux",
+  "title": "RLIMIT_AS counts reserved memory, not used memory.",
+  "why": "Node, Java and PyTorch reserve big address ranges up front, so a tight cap kills them before they use anything.",
+  "problem": "A program can fail under a memory limit before its resident memory becomes large.",
+  "cause": "RLIMIT_AS constrains virtual address space, including reserved mappings. Runtimes such as Node, Java and PyTorch may reserve large ranges that do not yet occupy equivalent physical memory.",
+  "steps": [
+    "Distinguish virtual size, resident memory and the limit being applied.",
+    "Check the runtime’s allocation strategy before selecting a cap.",
+    "Prefer a supported process-group or cgroup policy when the goal is to bound actual memory consumption across workers."
+  ],
+  "solution": "For example, a large reserved heap can exceed an address-space cap while resident use remains modest. Raising or lowering that cap without inspecting the mapping confuses reservation with consumption.",
+  "verification": "Run a representative bounded fixture and inspect both virtual and resident measurements. Confirm what happens to child processes and any memory-backed temporary storage under the chosen enforcement.",
+  "limitations": "Cgroup accounting and runtime heap settings also have specific semantics. The cited source leaves cluster enforcement unverified, so this draft does not claim a tested alternative cap on that environment."
+}

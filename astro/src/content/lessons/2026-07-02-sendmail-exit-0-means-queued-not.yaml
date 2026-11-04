@@ -1,4 +1,16 @@
-date: 2026-07-02
-tag: email
-title: "sendmail exit 0 means queued, not delivered."
-why: "The local mail server accepted it. SPF or DMARC checks at the receiver can still quarantine it silently, with no bounce."
+{
+  "date": "2026-07-02",
+  "tag": "email",
+  "title": "sendmail exit 0 means queued, not delivered.",
+  "why": "The local mail server accepted it. SPF or DMARC checks at the receiver can still quarantine it silently, with no bounce.",
+  "problem": "A successful local send can be mistaken for a delivered message, leaving an alert path unproven.",
+  "cause": "The sendmail command hands mail to a local transfer agent. A receiver later evaluates sender authorization and domain policy, and can quarantine a message after that local handoff succeeds.",
+  "steps": [
+    "Separate local acceptance, remote acceptance and inbox arrival in the status report.",
+    "Use an authorized sender domain and inspect its SPF, DKIM and DMARC setup.",
+    "Send a controlled test to an inbox you can inspect, including its spam folder."
+  ],
+  "solution": "Keep the queue id and inspect receiver headers when available. SPF lists permitted senders; DKIM signs the message; DMARC checks alignment with the visible From domain. These checks happen beyond the local command’s exit status.",
+  "verification": "Treat an observed test message and its headers as end-to-end evidence. If only local queue acceptance is known, report delivery as unconfirmed.",
+  "limitations": "Quarantine was a likely diagnosis in the source, not a verified receiver finding. Removing a domain’s protection is not a durable delivery fix, and no test mail was sent for this rewrite."
+}

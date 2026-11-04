@@ -1,4 +1,16 @@
-date: 2026-07-26
-tag: design
-title: "Motion should scale with the page's purpose."
-why: "A showcase page can have theatre. A page someone works in for hours gets one short ease and nothing else. Every page needs a reduced-motion fallback."
+{
+  "date": "2026-07-26",
+  "tag": "design",
+  "title": "Motion should scale with the page's purpose.",
+  "why": "A showcase page can have theatre. A page someone works in for hours gets one short ease and nothing else. Every page needs a reduced-motion fallback.",
+  "problem": "Motion that helps introduce a portfolio can become distracting when repeated throughout a page someone uses for hours.",
+  "cause": "The purpose and duration of use change the cost of animation. A working interface needs stable reading and interaction targets, while a short showcase may reasonably spend more attention on presentation.",
+  "steps": [
+    "Classify the page by how people use it and for how long.",
+    "Keep work-page motion brief and tied to a useful state change.",
+    "Provide a reduced-motion path for every animated experience."
+  ],
+  "solution": "For example, a short easing transition can make a control’s state change clear without keeping the rest of the dashboard in motion. A continuously moving backdrop adds no information to that task.",
+  "verification": "Use the page for a representative work session, then enable the system’s reduced-motion setting and check every animated element. Inspect whether content remains visible and interactions still make sense.",
+  "limitations": "These are recorded design preferences, not universal duration limits. Accessibility, performance and user feedback still determine whether a particular animation earns its place."
+}

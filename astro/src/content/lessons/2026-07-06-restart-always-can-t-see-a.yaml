@@ -1,4 +1,16 @@
-date: 2026-07-06
-tag: inference
-title: "Restart=always can't see a wedged model."
-why: "systemd only reacts to process exit, so a hung server needs a probe. A model that runs out of GPU memory minutes after start never trips the start limit and restarts forever."
+{
+  "date": "2026-07-06",
+  "tag": "inference",
+  "title": "Restart=always can't see a wedged model.",
+  "why": "systemd only reacts to process exit, so a hung server needs a probe. A model that runs out of GPU memory minutes after start never trips the start limit and restarts forever.",
+  "problem": "A supervisor can keep reporting a live process while the server no longer answers useful requests.",
+  "cause": "Restart policies react to exits. A hung process has not exited, and a process that fails only after the start-limit window may restart indefinitely without crossing that short-window threshold.",
+  "steps": [
+    "Probe useful service behavior with a timeout, not just process existence.",
+    "Choose a restart budget and observation window that cover delayed failures.",
+    "Record repeated failure reasons so memory exhaustion is not hidden by automatic recovery."
+  ],
+  "solution": "For example, a model server may start successfully and run out of GPU memory later. A bounded request probe can expose that failure; a startup-only check cannot. Recovery should include a limit or escalation path.",
+  "verification": "Rehearse a nonresponsive fixture and a delayed-exit fixture. Confirm that each becomes unhealthy and that the recovery policy eventually stops or escalates repeated failures.",
+  "limitations": "Probe failure can also reflect network or dependency problems, so avoid restarting blindly on every timeout. CPU-only control tests do not verify real GPU memory behavior."
+}

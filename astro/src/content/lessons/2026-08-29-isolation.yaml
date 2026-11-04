@@ -1,4 +1,15 @@
-date: 2026-08-29
-tag: agents
-title: "Isolation beats a shared soup of state."
-why: "Multi-agent works when each agent gets a bounded context and a clean handoff. Without that discipline, one agent does better."
+{
+  "date": "2026-08-29",
+  "tag": "agents",
+  "title": "Isolation beats a shared soup of state.",
+  "why": "Multi-agent works when each agent gets a bounded context and a clean handoff. Without that discipline, one agent does better.",
+  "problem": "Parallel agents can produce conflicting work when they share mutable notes and assumptions without clear task boundaries.",
+  "cause": "More workers do not automatically create more independent progress. If every agent must infer which state is current, coordination can consume the benefit of parallel execution.",
+  "steps": [
+    "Give each agent a bounded task, the evidence it needs and an explicit output contract.",
+    "Define ownership of shared artifacts and a handoff point where results are reconciled before dependent work continues."
+  ],
+  "solution": "For two modules, let each worker own its implementation while agreeing on the interface first. A handoff should name the exact files, checks and unresolved questions instead of assuming the next agent remembers the conversation.",
+  "verification": "Ask whether a fresh agent can complete one assigned task from its handoff alone. At integration, check conflicting edits and interface assumptions before treating the outputs as one working feature.",
+  "limitations": "Isolation still needs coordination at shared boundaries. Some tasks are too coupled to split economically; one well-contextualised agent can be the simpler choice."
+}

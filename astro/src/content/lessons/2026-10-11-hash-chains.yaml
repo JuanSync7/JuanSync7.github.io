@@ -1,4 +1,15 @@
-date: 2026-10-11
-tag: ledgers
-title: "A hash chain proves a record wasn't changed. Not that it was true."
-why: "One writer checking itself is the opposite of what makes a blockchain trustworthy. The writer needs independent checkers, and a mirror it can't rewrite."
+{
+  "date": "2026-10-11",
+  "tag": "ledgers",
+  "title": "A hash chain proves a record wasn't changed. Not that it was true.",
+  "why": "One writer checking itself is the opposite of what makes a blockchain trustworthy. The writer needs independent checkers, and a mirror it can't rewrite.",
+  "problem": "A ledger can have a valid hash chain and still contain a false statement. If the same writer controls the records, the checker and the only saved copy, internal consistency gives limited assurance.",
+  "cause": "Hash links show how records depend on earlier bytes. They do not establish who supplied those bytes, whether an event happened or whether the writer replaced the entire chain.",
+  "steps": [
+    "Keep one controlled writing path, but separate its authority from the checking path. Give checkers access to the evidence needed to replay the recorded rules independently.",
+    "Anchor a chain head or mirror outside the writer's control and protect the writer's identity. Compare later history against that external reference instead of relying only on the writer's latest account."
+  ],
+  "solution": "Use hashes for change detection and independent checks for trust. Each control answers a different question, so none should be described as proving the whole ledger true.",
+  "verification": "In an isolated trial, alter a past entry and attempt to rebuild the chain. The protected reference should expose the difference, and a false underlying claim should still need an evidence check.",
+  "limitations": "These are design requirements, not a claim that the historical mirror or independent trust boundary was built. Independence fails if all checkers share the writer's credentials and mutable evidence."
+}

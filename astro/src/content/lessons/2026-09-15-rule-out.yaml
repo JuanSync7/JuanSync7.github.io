@@ -1,4 +1,16 @@
-date: 2026-09-15
-tag: debugging
-title: "You can rule something out without knowing the cause."
-why: "I couldn't prove why a host wedged, but I could prove my service wasn't the reason. Label what you measured apart from what you inferred."
+{
+  "date": "2026-09-15",
+  "tag": "debugging",
+  "title": "You can rule something out without knowing the cause.",
+  "why": "I couldn't prove why a host wedged, but I could prove my service wasn't the reason. Label what you measured apart from what you inferred.",
+  "problem": "A diagnosis can overstate its evidence when ruling out one suspect becomes a claim to know the real cause.",
+  "cause": "Measurements support particular exclusions within a time window. They do not automatically establish why the whole host failed, especially when the decisive display or process state was inaccessible.",
+  "steps": [
+    "Write down the observed symptom and measurement window.",
+    "List what each observation can exclude.",
+    "Keep the remaining explanation labelled as a hypothesis and name the evidence needed to test it."
+  ],
+  "solution": "Illustrative: low service resource use during the observed window can weaken a resource-exhaustion theory, while an unrelated GUI-lock theory remains unproven.",
+  "verification": "Ask whether another reader can trace every exclusion to an observation and every proposed cause to its test. The report should distinguish measured facts from plausible explanations.",
+  "limitations": "Negative evidence is bounded by sampling and access. Do not turn 'not observed here' into a claim that a service could never contribute under different conditions."
+}

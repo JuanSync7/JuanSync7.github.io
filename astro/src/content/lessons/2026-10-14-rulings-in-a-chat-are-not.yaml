@@ -1,4 +1,15 @@
-date: 2026-10-14
-tag: process
-title: "Rulings in a chat are not a backlog."
-why: "Decisions made in conversation get lost or overruled by older drafts. Write each one where the work queue lives."
+{
+  "date": "2026-10-14",
+  "tag": "process",
+  "title": "Rulings in a chat are not a backlog.",
+  "why": "Decisions made in conversation get lost or overruled by older drafts. Write each one where the work queue lives.",
+  "problem": "A decision made in chat can disappear from the build plan. An older queued draft may then be implemented faithfully even though it contradicts the direction the owner most recently chose.",
+  "cause": "Conversation records intent, but the work queue determines what someone picks up next. If the two are not connected, memory and handoffs become competing sources of authority.",
+  "steps": [
+    "Write an actionable ruling into the project's durable work record in the same session, including its date, reason and the item or requirement it changes.",
+    "Before starting a queued item, compare it with rulings made since the draft was written. Rewrite or drop a conflicting item and record the reconciliation before building from it."
+  ],
+  "solution": "Give every actionable decision a route to work, and give each piece of work a current decision basis. A chat link can supply context, but it should point to a maintained row rather than substitute for one.",
+  "verification": "Sample recent decisions and trace each to its queue item, then trace queued items back to their latest checked ruling. An unqueued commitment or obsolete draft should become a visible finding.",
+  "limitations": "Preferences already maintained elsewhere do not all need new tasks. The record must also distinguish an owner's decision from an agent's proposal so a summary cannot silently grant authority."
+}

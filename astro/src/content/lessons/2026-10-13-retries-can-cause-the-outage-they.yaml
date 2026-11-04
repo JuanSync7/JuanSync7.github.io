@@ -1,4 +1,15 @@
-date: 2026-10-13
-tag: systems
-title: "Retries can cause the outage they're meant to survive."
-why: "A timed-out request is retried while the first attempt is still running downstream. Under load, that doubles traffic exactly when it hurts."
+{
+  "date": "2026-10-13",
+  "tag": "systems",
+  "title": "Retries can cause the outage they're meant to survive.",
+  "why": "A timed-out request is retried while the first attempt is still running downstream. Under load, that doubles traffic exactly when it hurts.",
+  "problem": "A client can time out and retry while the first attempt is still consuming downstream capacity. During overload, the extra attempt adds work precisely when the service has the least room for it.",
+  "cause": "A timeout ends the caller's wait; it does not necessarily cancel the remote operation. Several layers retrying independently can multiply one original request into many overlapping attempts.",
+  "steps": [
+    "Map where retries occur and set one overall deadline and attempt budget. Retry only transient failures and ensure repeated operations are safe, using an idempotency key where the service supports it.",
+    "Add bounded backoff and jitter, and propagate cancellation where it actually works. Limit concurrent attempts so a failing dependency cannot create an unbounded queue of replacement work."
+  ],
+  "solution": "Treat retries as extra load that needs a budget. A visible final failure can be healthier than silently keeping every timed-out operation alive.",
+  "verification": "In a controlled delay test, inspect downstream attempts as well as client errors. The number of active operations should remain bounded, and a timeout should not cause repeated side effects.",
+  "limitations": "Backoff cannot create capacity, and some servers ignore cancellation. Simulations can expose a risky mechanism but do not establish that production code has survived it; a real integration test is a separate check."
+}

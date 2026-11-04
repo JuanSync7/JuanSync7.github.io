@@ -1,4 +1,15 @@
-date: 2026-08-22
-tag: docs
-title: "Write the doc for a junior or an outsider."
-why: "The five Ws, the exact commands, the steps in order. The reader who needs a doc most has the least context."
+{
+  "date": "2026-08-22",
+  "tag": "docs",
+  "title": "Write the doc for a junior or an outsider.",
+  "why": "The five Ws, the exact commands, the steps in order. The reader who needs a doc most has the least context.",
+  "problem": "A runbook can make sense to its author and still leave a new engineer unable to carry out the first step.",
+  "cause": "The author silently supplies context: where a command runs, which identity it uses, what must exist already and what output means success. The reader who needs the document may have none of that.",
+  "steps": [
+    "Open with the purpose, scope, responsible role and prerequisites, then put commands in the order they are needed.",
+    "For each important step, show where to run it, what it changes and the expected result, including what to do when the check fails."
+  ],
+  "solution": "For a deployment command, name the target host and required access before asking the reader to execute it. Put a verification command after the action rather than leaving “check it works” unexplained.",
+  "verification": "Have a reader with no session history walk the procedure in a suitable test environment. Record where they need an unstated fact and revise that exact step.",
+  "limitations": "A junior-friendly runbook still needs a defined audience. Do not bury the procedure under explanations of every tool, and do not imply a reader walkthrough has occurred until it has."
+}

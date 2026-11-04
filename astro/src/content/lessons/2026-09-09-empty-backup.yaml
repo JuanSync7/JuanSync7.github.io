@@ -1,4 +1,16 @@
-date: 2026-09-09
-tag: postgres
-title: "A backup that exits 0 can be empty."
-why: "Check a dump by listing what's inside it, not by its exit code."
+{
+  "date": "2026-09-09",
+  "tag": "postgres",
+  "title": "A backup that exits 0 can be empty.",
+  "why": "Check a dump by listing what's inside it, not by its exit code.",
+  "problem": "A backup job can finish without producing an archive that contains recoverable table data.",
+  "cause": "Exit status and file presence describe the backup process, not the contents needed for recovery. An empty or incomplete artifact can pass a shallow existence check.",
+  "steps": [
+    "Check the backup command and service result.",
+    "List the archive contents with the appropriate restore tool.",
+    "Compare the listed schemas and table-data entries with the expected database inventory."
+  ],
+  "solution": "Illustrative: a custom-format PostgreSQL dump should list the expected TABLE DATA entries through pg_restore -l. A file that exists but lists no required data is not a usable backup.",
+  "verification": "Alert on an unreadable archive or missing required entries, and perform a restore rehearsal on a separate instance when validating recovery readiness.",
+  "limitations": "A contents list is a necessary structural check, not proof that restoration succeeds or that every row is intact. Partition growth can legitimately change the expected entry count."
+}

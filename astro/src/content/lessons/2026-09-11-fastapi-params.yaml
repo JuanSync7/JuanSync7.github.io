@@ -1,4 +1,16 @@
-date: 2026-09-11
-tag: python
-title: "FastAPI ignores parameters you didn't declare."
-why: "An unknown query parameter is dropped and the call still returns 200, so one table quietly ignored a filter its sibling honoured."
+{
+  "date": "2026-09-11",
+  "tag": "python",
+  "title": "FastAPI ignores parameters you didn't declare.",
+  "why": "An unknown query parameter is dropped and the call still returns 200, so one table quietly ignored a filter its sibling honoured.",
+  "problem": "A filter control can appear to work because its request returns 200 while the server ignores the requested restriction.",
+  "cause": "An undeclared query parameter can be discarded rather than rejected. The route exists and answers successfully, but its result describes a broader population than the interface promises.",
+  "steps": [
+    "Compare each client filter with the handler's declared parameters.",
+    "Use a dataset where applying the filter must change the result.",
+    "Check both returned rows and any summary totals against that same population."
+  ],
+  "solution": "Illustrative: a days=30 request should exclude older fixture records. A successful response containing those records reveals that route existence and filter semantics are separate checks.",
+  "verification": "Send the same request with two deliberately different filter values. Expect the population to change as specified, and verify that companion tables use the same scope.",
+  "limitations": "Some APIs intentionally tolerate unknown parameters. That convention still requires explicit tests for supported filters; a status-only smoke check cannot establish their behavior."
+}

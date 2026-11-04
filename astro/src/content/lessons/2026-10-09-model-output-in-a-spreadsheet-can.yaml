@@ -1,4 +1,15 @@
-date: 2026-10-09
-tag: security
-title: "Model output in a spreadsheet can run as a formula."
-why: "Cells starting with = + - or @ execute in Excel. Prefix them with an apostrophe, on the export path only."
+{
+  "date": "2026-10-09",
+  "tag": "security",
+  "title": "Model output in a spreadsheet can run as a formula.",
+  "why": "Cells starting with = + - or @ execute in Excel. Prefix them with an apostrophe, on the export path only.",
+  "problem": "Text exported from a model can become executable spreadsheet syntax when a person opens the file. An answer that was harmless in a chat window may be interpreted differently in a CSV cell.",
+  "cause": "Spreadsheet applications recognise leading characters such as =, +, - and @ as formula starts. CSV quoting handles delimiters; it does not reliably tell the spreadsheet to treat those contents as plain text.",
+  "steps": [
+    "Apply a spreadsheet-safe transformation at the export boundary to every untrusted text cell. Prefix formula-shaped values with an apostrophe using the policy tested for the target application.",
+    "Use the same protection for CSV downloads and copy-to-spreadsheet features. Leave stored source text unchanged so display and other exports do not accumulate spreadsheet-specific escaping."
+  ],
+  "solution": "Treat the export format as a new trust boundary. Model output, user text and retrieved content all need the same handling when they become cells.",
+  "verification": "Open a harmless test export containing each trigger character in the supported spreadsheet application. The values should display as text, while ordinary text and multiline cells remain usable.",
+  "limitations": "Different spreadsheet applications and import modes handle escaping differently. Consider whitespace and control characters in the policy, and test numeric fields separately rather than changing legitimate numbers blindly."
+}

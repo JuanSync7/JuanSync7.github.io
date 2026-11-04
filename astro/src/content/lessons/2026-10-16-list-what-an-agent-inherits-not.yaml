@@ -1,4 +1,15 @@
-date: 2026-10-16
-tag: security
-title: "List what an agent inherits, not just what it may do."
-why: "Passphraseless SSH keys, plaintext git credentials, cloud profiles and tokens left in settings files all come along with the user's session."
+{
+  "date": "2026-10-16",
+  "tag": "security",
+  "title": "List what an agent inherits, not just what it may do.",
+  "why": "Passphraseless SSH keys, plaintext git credentials, cloud profiles and tokens left in settings files all come along with the user's session.",
+  "problem": "An agent run under a user's account can reach more authority than the task prompt mentions. Existing credentials may let a routine helper authenticate to services without any new key being supplied.",
+  "cause": "The operating-system identity carries access to files, sockets, agent sessions and configured credential providers. A passphraseless key or plaintext token can therefore become an available capability by inheritance.",
+  "steps": [
+    "Inventory credential channels by type and scope without printing their values. Include SSH access, Git credential helpers, cloud profiles, active sessions and tokens embedded in settings files.",
+    "Decide which capabilities the task needs and restrict the execution identity or credential delivery accordingly. Remove secrets from broad configuration and rotate any credential whose exposure is established."
+  ],
+  "solution": "Review what the process can actually use, rather than only the permissions described in the agent interface. Keep the inventory current when account setup or execution hosts change.",
+  "verification": "Use harmless test identities to verify an allowed operation and a denied one. The expected boundary is that the task works with its intended access while unrelated service authority remains unavailable.",
+  "limitations": "An environment allowlist alone does not remove readable credential files or live agent sockets. Encryption at rest also offers limited separation when an authenticated session has already unlocked the credential."
+}

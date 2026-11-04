@@ -1,4 +1,15 @@
-date: 2026-10-05
-tag: evals
-title: "Random inputs need a golden model."
-why: "Constrained random works in verification because a reference model knows the right answer. For LLM output, that means an eval set with known answers, or a judge."
+{
+  "date": "2026-10-05",
+  "tag": "evals",
+  "title": "Random inputs need a golden model.",
+  "why": "Constrained random works in verification because a reference model knows the right answer. For LLM output, that means an eval set with known answers, or a judge.",
+  "problem": "Generating many varied inputs does not tell you whether a language model answered correctly. A large test run can produce plenty of output while offering no basis for accepting any of it.",
+  "cause": "Constrained random testing works in hardware because a reference model supplies the expected answer. Open-ended model output needs an equivalent judgement rule before variation becomes useful evidence.",
+  "steps": [
+    "Start with a small evaluation set whose expected answers or acceptance criteria are known. Include failures that matter to the task, such as a missed confidential term or an incorrect refusal.",
+    "Where exact answers are unsuitable, define a judge rubric and check it against examples a person has labelled. Keep disagreements visible rather than treating the judge as unquestionable truth."
+  ],
+  "solution": "Use varied inputs to explore a defined correctness boundary. Preserve failing examples so the next change can be checked against the same cases.",
+  "verification": "Plant a clearly wrong output and confirm the evaluation rejects it. Then inspect borderline cases to see whether the scoring rule matches the intended task.",
+  "limitations": "A judge can share the model's blind spots, and a fixed set can be overfit. Keep some examples aside and report what the evaluation covers rather than calling the model generally correct."
+}

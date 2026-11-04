@@ -1,4 +1,16 @@
-date: 2026-05-05
-tag: inference
-title: "Pin KV cache in bytes. Let the runtime count tokens."
-why: "A fixed byte budget skips memory profiling and makes the footprint repeatable. How many tokens those bytes hold changes between versions, so re-read it after upgrades."
+{
+  "date": "2026-05-05",
+  "tag": "inference",
+  "title": "Pin KV cache in bytes. Let the runtime count tokens.",
+  "why": "A fixed byte budget skips memory profiling and makes the footprint repeatable. How many tokens those bytes hold changes between versions, so re-read it after upgrades.",
+  "problem": "A model server’s memory footprint can change when startup profiling sees a different amount of free GPU memory.",
+  "cause": "A fixed key/value cache budget reserves a stated number of bytes and skips that profiling choice. The token capacity those bytes provide still depends on the runtime and model.",
+  "steps": [
+    "Derive a safe cache budget with other instances paused.",
+    "Pin the cache in bytes and keep the model and context configuration recorded.",
+    "After an upgrade, read the runtime’s new token-capacity report before setting concurrency."
+  ],
+  "solution": "Treat bytes as the reservation and tokens as the runtime’s interpretation of it. If an upgrade reports fewer tokens for the same byte budget, update the concurrency expectation rather than assuming the old capacity still holds.",
+  "verification": "Inspect startup output and the combined GPU footprint. Confirm that at least one maximum-length request fits and size simultaneous requests from the pinned configuration’s report.",
+  "limitations": "Re-derive the budget when the model, context limit, memory share or card changes. A byte pin makes one allocation repeatable; it does not freeze every other source of GPU memory use."
+}

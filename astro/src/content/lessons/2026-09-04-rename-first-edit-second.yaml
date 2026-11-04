@@ -1,4 +1,16 @@
-date: 2026-09-04
-tag: git
-title: "Rename first, edit second."
-why: "A pure `git mv` commit keeps `git log --follow` working. Mixing content edits into the move can break rename detection."
+{
+  "date": "2026-09-04",
+  "tag": "git",
+  "title": "Rename first, edit second.",
+  "why": "A pure `git mv` commit keeps `git log --follow` working. Mixing content edits into the move can break rename detection.",
+  "problem": "A file move can make useful history harder to follow when the same patch also rewrites its contents.",
+  "cause": "Git detects renames from content similarity rather than storing a permanent move record. A large simultaneous edit can make the old and new files look unrelated.",
+  "steps": [
+    "Write a move map before reorganizing paths.",
+    "Commit the path-only moves with unchanged contents.",
+    "Update imports, scripts and documentation in the next change and check their references."
+  ],
+  "solution": "Illustrative: move a script first, then change how it locates its configuration. The intermediate commit gives history tools an unchanged file to match while keeping the functional edit easy to review.",
+  "verification": "Run git log --follow on a moved file and check that it reaches the old path. Then exercise path resolution so a clean historical move does not conceal broken runtime wiring.",
+  "limitations": "A pure move improves rename detection but does not guarantee every history tool follows every migration. Cross-repository moves require their own history and provenance plan."
+}

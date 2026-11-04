@@ -1,4 +1,15 @@
-date: 2026-10-15
-tag: process
-title: "Blame the process, not the person."
-why: "People only record mistakes if the record can't be used against them. A captured mistake should make the team ask why, not who."
+{
+  "date": "2026-10-15",
+  "tag": "process",
+  "title": "Blame the process, not the person.",
+  "why": "People only record mistakes if the record can't be used against them. A captured mistake should make the team ask why, not who.",
+  "problem": "People are less likely to record a mistake when the record can later be used against them. A lessons system can therefore lose the evidence it needs precisely where the work was most difficult.",
+  "cause": "Useful capture depends on trust. If the expected consequence is blame, a person has a reason to write a safe summary instead of the real conditions that allowed the error.",
+  "steps": [
+    "Agree how mistake records may be used before asking for detailed capture. Focus the record on the workflow, missing information, failed control and the change that could prevent a repeat.",
+    "Separate improvement work from individual performance decisions, with clear access and retention rules. Ask why the process allowed the outcome before asking which person to hold responsible."
+  ],
+  "solution": "Make the response to a captured mistake produce a safer process. Follow through on the agreed limits so the system's behaviour supports its promise of learning.",
+  "verification": "Review a sample of records for actionable causes and corrections. Ask contributors whether they can report uncertainty and slips without the record becoming a search tool for personal blame.",
+  "limitations": "Anonymity is weak in a small team because context can identify someone. Serious conduct concerns and repeated patterns need a clearly governed route; they should not be smuggled into a learning archive."
+}

@@ -1,4 +1,15 @@
-date: 2026-10-09
-tag: linux
-title: "O_NOFOLLOW only guards the last path component."
-why: "A symlink earlier in the path is still followed. Safe walks open each directory relative to its parent's descriptor, then fstat the final file."
+{
+  "date": "2026-10-09",
+  "tag": "linux",
+  "title": "O_NOFOLLOW only guards the last path component.",
+  "why": "A symlink earlier in the path is still followed. Safe walks open each directory relative to its parent's descriptor, then fstat the final file.",
+  "problem": "Rejecting a symlink at the final filename does not stop a path from passing through a symlinked parent directory. A check on the string path can also become stale before the file is opened.",
+  "cause": "O_NOFOLLOW applies to the component being opened. Earlier components may already have redirected the lookup, so a safe boundary needs control over the whole walk from a trusted directory.",
+  "steps": [
+    "Open the trusted root and walk each child directory relative to its parent's file descriptor, refusing symlinks at each step. Reject unsupported names and keep descriptors scoped for cleanup.",
+    "Open the final entry relative to the held parent, then use fstat to verify the opened object is a regular file. Avoid blocking on pipes or devices while performing the check."
+  ],
+  "solution": "Bind validation to the object actually opened rather than a path checked earlier. The directory descriptors keep the traversal anchored as names change elsewhere.",
+  "verification": "In an isolated fixture, replace a parent with a symlink and try a special-file leaf. Both should be refused, ordinary files should remain readable, and repeated failures should not leak descriptors.",
+  "limitations": "Platform flags differ, and trusted-root selection is part of the security design. A descriptor walk does not by itself establish file ownership, acceptable permissions or content safety."
+}

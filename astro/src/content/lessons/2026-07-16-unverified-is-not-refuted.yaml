@@ -1,4 +1,16 @@
-date: 2026-07-16
-tag: testing
-title: "Unverified is not refuted."
-why: "When a checker dies before finishing, its findings are a third state. Scoring them as false quietly drops real bugs."
+{
+  "date": "2026-07-16",
+  "tag": "testing",
+  "title": "Unverified is not refuted.",
+  "why": "When a checker dies before finishing, its findings are a third state. Scoring them as false quietly drops real bugs.",
+  "problem": "A review result can become misleading when a checker that never finished is scored as though it disproved the finding.",
+  "cause": "There are two questions: did the check complete, and what did it conclude? A crash, timeout or missing dependency answers neither true nor false about the proposed bug.",
+  "steps": [
+    "Record execution status separately from the finding verdict.",
+    "Use an explicit unverified state for interrupted or incomplete checks.",
+    "Retry or investigate that state before treating the finding as resolved."
+  ],
+  "solution": "For example, a reproducer that times out should retain its evidence and timeout reason. Calling it a false positive would erase a potentially real issue merely because the checking path failed.",
+  "verification": "Feed the review pipeline one confirmed issue, one refuted issue and one deliberately interrupted check. Confirm that all three remain distinct in the report and any aggregate score.",
+  "limitations": "Unverified does not mean the finding is probably correct. It means the evidence is unfinished. A later completed check may support or refute it, and the report should preserve that transition."
+}

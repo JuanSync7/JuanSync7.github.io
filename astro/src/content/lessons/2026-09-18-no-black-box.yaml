@@ -1,4 +1,16 @@
-date: 2026-09-18
-tag: thoughts
-title: "Understanding beats acceptance."
-why: "I don't need every detail, but I need the mental model before I trust a system. A true black box is a liability."
+{
+  "date": "2026-09-18",
+  "tag": "thoughts",
+  "title": "Understanding beats acceptance.",
+  "why": "I don't need every detail, but I need the mental model before I trust a system. A true black box is a liability.",
+  "problem": "A component can be easy to call while remaining too poorly understood to maintain or trust.",
+  "cause": "An interface hides implementation detail, but it does not remove assumptions about inputs, state and failure. Without that rough model, a caller cannot tell when the abstraction's promises stop applying.",
+  "steps": [
+    "Draw the component's inputs, outputs and state boundary.",
+    "Explain its normal path and its important failure modes.",
+    "Check its contract independently before depending on hidden internals."
+  ],
+  "solution": "Illustrative: a storage adapter may hide its database implementation, while the caller still needs to know whether a write is atomic and how failure is reported. That is enough model to reason about the boundary.",
+  "verification": "Ask another reader to predict the outcome of a normal call, a missing input and a failure using the contract alone. Unanswerable cases identify gaps in understanding.",
+  "limitations": "Understanding every internal line is unnecessary. The goal is a usable model and an earned contract, not a requirement to reimplement each dependency before using it."
+}

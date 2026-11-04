@@ -1,4 +1,16 @@
-date: 2026-09-10
-tag: postgres
-title: "GREATEST ignores NULL in Postgres."
-why: "GREATEST(NULL - x, 0) returns 0, so a missing value reported a confident zero waste. Handle NULL before you compare."
+{
+  "date": "2026-09-10",
+  "tag": "postgres",
+  "title": "GREATEST ignores NULL in Postgres.",
+  "why": "GREATEST(NULL - x, 0) returns 0, so a missing value reported a confident zero waste. Handle NULL before you compare.",
+  "problem": "A missing requested-memory value can turn into a convincing zero-waste result.",
+  "cause": "In PostgreSQL, GREATEST ignores null inputs when another argument is nonnull. Subtracting from a missing value yields null, but comparing that result with zero can still return zero.",
+  "steps": [
+    "Check required inputs for null before calculating waste.",
+    "Return null when the inputs do not establish a value.",
+    "Keep that missing state distinct through the API, chart and export."
+  ],
+  "solution": "Illustrative: CASE WHEN requested IS NULL OR used IS NULL THEN NULL ELSE GREATEST(requested - used, 0) END preserves uncertainty before applying the lower bound.",
+  "verification": "Evaluate missing inputs, genuine zero waste and positive waste as separate cases. The missing case should remain visibly unknown rather than producing a numeric zero.",
+  "limitations": "Other database engines can handle GREATEST differently. A null-safe calculation also needs a clear policy for failed runs whose measured use may only be a lower bound."
+}

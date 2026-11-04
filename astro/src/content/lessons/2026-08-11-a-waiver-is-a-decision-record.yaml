@@ -1,4 +1,15 @@
-date: 2026-08-11
-tag: process
-title: "A waiver is a decision. Record it like one."
-why: "Tool-specific waiver files scattered around hide who accepted which risk and why. A real waiver has an owner, a reason and a date."
+{
+  "date": "2026-08-11",
+  "tag": "process",
+  "title": "A waiver is a decision. Record it like one.",
+  "why": "Tool-specific waiver files scattered around hide who accepted which risk and why. A real waiver has an owner, a reason and a date.",
+  "problem": "A tool can suppress a warning long after the reason for accepting it has been forgotten. The next maintainer sees silence without knowing which risk remains.",
+  "cause": "A local suppression file records a machine instruction, but may omit the person accountable for accepting the exception, its scope and its expiry.",
+  "steps": [
+    "Record the failing check, the exact case covered, the accountable owner and the reason for acceptance.",
+    "Define the ending condition required by the waiver contract, then link the tool-specific suppression to that decision. For a milestone-based contract, expiry is a downstream milestone passing, not a calendar date."
+  ],
+  "solution": "For example, waive one named violation in one bounded configuration. Keep the same check active elsewhere, so the exception cannot quietly become a project-wide opt-out.",
+  "verification": "Ask a reader what is still failing, who accepted it and what ends the exception. Check that an out-of-scope violation still fails and the waiver expires when its specified milestone passes.",
+  "limitations": "A record makes risk visible, not automatically acceptable. The original card’s date does not define expiry: a milestone-based contract binds acceptance to scoped evidence and a structural milestone, and rejects calendar expiry."
+}

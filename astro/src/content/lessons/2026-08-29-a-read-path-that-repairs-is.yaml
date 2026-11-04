@@ -1,4 +1,15 @@
-date: 2026-08-29
-tag: data
-title: "A read path that repairs is a write path."
-why: "A reader can't tell a live writer from a dead one, so only the writer should recover a crashed store."
+{
+  "date": "2026-08-29",
+  "tag": "data",
+  "title": "A read path that repairs is a write path.",
+  "why": "A reader can't tell a live writer from a dead one, so only the writer should recover a crashed store.",
+  "problem": "A consumer opening a supposedly read-only store can interfere with a live writer if it decides an unfinished journal means a crash.",
+  "cause": "The reader may not be able to observe the writer’s lock across the deployment boundary. Absence of visible lock evidence is not proof that the writer is dead.",
+  "steps": [
+    "Keep recovery in the single writer’s controlled open or startup path, where exclusive ownership can be established.",
+    "Make readers validate and report incomplete or unavailable state without modifying it; route repair requests to the writer-owned recovery mechanism."
+  ],
+  "solution": "If a reader encounters an unfinished transaction, return a clear unavailable result or use a supported consistent read view. Do not silently promote that reader into a repair process.",
+  "verification": "In a disposable concurrency test, hold the writer active and open a reader. Expect the reader to leave journal and data bytes untouched. Separately test writer startup recovery after a simulated crash.",
+  "limitations": "This advice concerns a store whose reader cannot establish safe recovery ownership. Database engines have their own documented recovery protocols; do not replace them with a hand-written lock guess."
+}

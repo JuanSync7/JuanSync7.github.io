@@ -1,4 +1,16 @@
-date: 2026-04-04
-tag: thoughts
-title: "Taste is knowing which option is right before you can say why."
-why: "It comes from having seen enough good and bad work. AI can copy preferences; it doesn't build taste."
+{
+  "date": "2026-04-04",
+  "tag": "thoughts",
+  "title": "Taste is knowing which option is right before you can say why.",
+  "why": "It comes from having seen enough good and bad work. AI can copy preferences; it doesn't build taste.",
+  "problem": "Several designs can satisfy the same requirements. An automated system can produce all of them without knowing which one fits the product best.",
+  "cause": "Taste comes from comparing enough good and bad work to recognise patterns before the full reason is easy to state. A list of preferences captures only part of that judgment.",
+  "steps": [
+    "Ask for a few concrete options with the same constraints.",
+    "Compare the options against work you already consider strong.",
+    "Choose a direction, then explain the specific differences that drove the choice."
+  ],
+  "solution": "Keep human judgment at the point where options are selected. For example, compare two page layouts for reading order and emphasis, then give the chosen layout and reasons back to the implementation process.",
+  "verification": "Check whether a later revision preserves the qualities behind the choice. Merely matching the chosen colours or spacing is weaker evidence than preserving the intended reading experience.",
+  "limitations": "This is a personal view of how human judgment and AI fit together. Taste still needs correction from users, requirements and evidence; confidence alone does not make a choice right."
+}

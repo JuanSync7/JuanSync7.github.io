@@ -1,4 +1,16 @@
-date: 2026-09-03
-tag: agents
-title: "Back off in the tool, not in the model."
-why: "Show an LLM a raw 429 and it invents its own retry plan and narrates it. Rate limits are a platform job."
+{
+  "date": "2026-09-03",
+  "tag": "agents",
+  "title": "Back off in the tool, not in the model.",
+  "why": "Show an LLM a raw 429 and it invents its own retry plan and narrates it. Rate limits are a platform job.",
+  "problem": "A large API summary can spend its time recovering from rate limits instead of answering the question.",
+  "cause": "If raw 429 responses reach the model, it may improvise retries. The request budget is shared across sessions, so one conversation cannot reliably manage that platform constraint.",
+  "steps": [
+    "Put bounded retries and backoff inside the API tool.",
+    "Use the endpoint's supported page size to reduce requests.",
+    "Stop at a defined budget floor and return an honest partial sample when necessary."
+  ],
+  "solution": "Illustrative: increasing a supported page size can turn many small page requests into fewer large ones. The tool can then return the actual sample size instead of letting the model imply complete coverage.",
+  "verification": "Inject a rate-limit response and a dropped connection. Expect bounded recovery, no duplicate page accumulation and an explicit partial-result signal when the budget is exhausted.",
+  "limitations": "Retries do not create more capacity. Respect endpoint semantics and avoid replaying non-idempotent writes without a separate duplicate-protection design."
+}

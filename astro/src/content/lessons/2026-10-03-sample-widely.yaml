@@ -1,4 +1,15 @@
-date: 2026-10-03
-tag: design
-title: "Judge a style from more than one page."
-why: "One screenshot gave the wrong read on my own site's style. Sample widely before calling a pattern a pattern."
+{
+  "date": "2026-10-03",
+  "tag": "design",
+  "title": "Judge a style from more than one page.",
+  "why": "One screenshot gave the wrong read on my own site's style. Sample widely before calling a pattern a pattern.",
+  "problem": "One screenshot is a weak basis for describing a whole site's style. A landing page may be playful while a learning article uses a much quieter layout.",
+  "cause": "Different page types solve different reading problems. Sampling only the most striking page confuses a local design choice with the rules that hold across the site.",
+  "steps": [
+    "Inspect several page types, including a dense article, an index and a page with data. Compare their live tokens as well as screenshots so repeated values are visible.",
+    "Write down which choices recur and which belong only to a particular page type. Ask the owner to correct the pattern before using it as a design brief."
+  ],
+  "solution": "Build the brief from the range of examples. Keep the common type, colour and spacing rules together, then describe the deliberate exceptions in the context where they apply.",
+  "verification": "Try the brief on a page outside the original sample. A useful brief should explain its structure without forcing every screen into the landing page's appearance.",
+  "limitations": "The sample still represents one point in the site's history. A redesign, an unfinished page or an experiment may change the pattern, so keep the examples and their dates."
+}

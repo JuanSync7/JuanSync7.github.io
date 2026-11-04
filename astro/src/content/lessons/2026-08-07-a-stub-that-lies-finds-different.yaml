@@ -1,4 +1,15 @@
-date: 2026-08-07
-tag: testing
-title: "A stub that lies finds different bugs than one that fails."
-why: "Exit non-zero catches ignored errors. Exit zero while doing nothing catches code that treats an exit status as proof of state."
+{
+  "date": "2026-08-07",
+  "tag": "testing",
+  "title": "A stub that lies finds different bugs than one that fails.",
+  "why": "Exit non-zero catches ignored errors. Exit zero while doing nothing catches code that treats an exit status as proof of state.",
+  "problem": "A caller can handle an explicit command failure correctly while still accepting a command that reports success without doing its work.",
+  "cause": "An exit status describes what the process reported. It is not an independent observation that a file, service or database reached the requested state.",
+  "steps": [
+    "Replace the dependency with a stub that exits non-zero and check that the caller surfaces the error.",
+    "Use a second stub that exits zero but changes nothing. Ask the caller to perform the same operation and inspect its next decision."
+  ],
+  "solution": "Check the postcondition that matters. For a file writer, require the expected new content before reporting completion, rather than trusting a successful process exit.",
+  "verification": "The first stub should trigger failure handling. The lying stub should fail the state check and must not produce a success report.",
+  "limitations": "Choose an observable postcondition within the caller’s authority. Eventual consistency may require bounded retries, so an immediate read is not always the right oracle."
+}

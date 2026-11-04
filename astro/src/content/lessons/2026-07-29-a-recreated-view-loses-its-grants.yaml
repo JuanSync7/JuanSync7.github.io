@@ -1,4 +1,16 @@
-date: 2026-07-29
-tag: postgres
-title: "A recreated view loses its grants."
-why: "DROP and CREATE make a new object with default privileges. Re-grant in the same script, and test reads, not just denials."
+{
+  "date": "2026-07-29",
+  "tag": "postgres",
+  "title": "A recreated view loses its grants.",
+  "why": "DROP and CREATE make a new object with default privileges. Re-grant in the same script, and test reads, not just denials.",
+  "problem": "A migration can recreate a view successfully while breaking the readers who were allowed to use it before.",
+  "cause": "DROP followed by CREATE makes a new database object with new privileges. Previous grants belong to the dropped object; default privileges may not cover the new creator or the desired access.",
+  "steps": [
+    "Prefer CREATE OR REPLACE when its supported changes preserve the intended object.",
+    "When recreation is necessary, apply explicit grants in the same migration plan.",
+    "Test the permitted role as well as a role that should remain denied."
+  ],
+  "solution": "For example, a reporting view can return correct data to its owner while an analyst gets permission denied. An owner-only smoke test misses the permission regression.",
+  "verification": "Run the migration on a fixture database, including a repeated run, and query as the intended reader. Check schema access, view grants and the negative boundary separately.",
+  "limitations": "Changing ownership or using security-sensitive view options can alter access semantics too. Successful reads must not come from granting a broader role than the design intended."
+}

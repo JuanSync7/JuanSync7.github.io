@@ -1,4 +1,16 @@
-date: 2026-05-04
-tag: ops
-title: "A late cap costs money. A wrong cap takes production down."
-why: "Lateness is bounded, visible and recoverable. A misconfigured automatic stop cuts people off with no human in the loop and no explanation."
+{
+  "date": "2026-05-04",
+  "tag": "ops",
+  "title": "A late cap costs money. A wrong cap takes production down.",
+  "why": "Lateness is bounded, visible and recoverable. A misconfigured automatic stop cuts people off with no human in the loop and no explanation.",
+  "problem": "A budget action can stop production because a filter or threshold is wrong. The affected users may only see access disappear.",
+  "cause": "The failure costs are uneven: a late cap permits extra spend, while a wrong automatic deny interrupts service. Delayed cost data makes an automatic decision less current than it appears.",
+  "steps": [
+    "Identify the cost of a late action and the cost of a false stop.",
+    "Check the budget scope and the principal that an action would deny.",
+    "For this risk balance, notify an operator and require review before attaching the deny."
+  ],
+  "solution": "Use the alert as a decision point. The operator can inspect whether the right tier actually exceeded its budget before changing access, rather than letting a mis-scoped total stop unrelated work.",
+  "verification": "Check the proposed target and budget filter with a safe, controlled case. Verify that an alert alone does not attach a production deny and that an approved action has a documented reversal.",
+  "limitations": "Manual review can be too slow for a strict financial ceiling. This is a trade-off for the stated service risk, not a universal ban on automatic caps."
+}

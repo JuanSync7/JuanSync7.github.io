@@ -1,4 +1,16 @@
-date: 2026-05-21
-tag: rag
-title: "Synthetic test documents lie about real ones."
-why: "Two changes passed synthetic tests and broke on a real datasheet, whose PDF outline was flattened to one level. Keep a real-document soak test."
+{
+  "date": "2026-05-21",
+  "tag": "rag",
+  "title": "Synthetic test documents lie about real ones.",
+  "why": "Two changes passed synthetic tests and broke on a real datasheet, whose PDF outline was flattened to one level. Keep a real-document soak test.",
+  "problem": "A document pipeline can pass tidy synthetic fixtures and still break on an ordinary real document. The missing complexity never entered the test.",
+  "cause": "Real PDFs carry layout and outline structures that small hand-made examples often omit. In the source account, a real datasheet’s outline was flattened to one level.",
+  "steps": [
+    "Keep fast synthetic cases for isolated behavior.",
+    "Add an authorized representative real document to a longer-running check.",
+    "Verify the structure that matters, such as nested sections, rather than merely checking that parsing finishes."
+  ],
+  "solution": "For a document pipeline, include a real PDF whose outline is flattened to one level. Check whether the downstream section and table handling still produces useful chunks instead of assuming that the input outline supplies a clean hierarchy.",
+  "verification": "Compare the extracted sections and table chunks with a checked reference for that document and rerun after parser or chunker changes. A green extraction command alone does not establish that useful document structure survived.",
+  "limitations": "One real document does not represent every format. Choose samples for known risks, keep their use and privacy appropriate, and retain focused fixtures so failures remain easy to diagnose."
+}

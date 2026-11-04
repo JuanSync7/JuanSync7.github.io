@@ -1,4 +1,16 @@
-date: 2026-06-17
-tag: protocols
-title: "AXI bursts must not cross a 4KB boundary."
-why: "The spec forbids it, so an address generator has to split any burst that would run past a 4KB line."
+{
+  "date": "2026-06-17",
+  "tag": "protocols",
+  "title": "AXI bursts must not cross a 4KB boundary.",
+  "why": "The spec forbids it, so an address generator has to split any burst that would run past a 4KB line.",
+  "problem": "An address generator can create a burst that looks contiguous but violates the AXI4 rule against crossing a 4KB boundary.",
+  "cause": "The protocol constrains each addressed burst. A transfer spanning the boundary must be represented by separate legal bursts.",
+  "steps": [
+    "Compute the remaining bytes before the next 4KB boundary.",
+    "Limit the next legal burst to that space and the protocol’s other burst limits.",
+    "Continue the remaining transfer in a new burst from the next boundary."
+  ],
+  "solution": "For an aligned illustrative transfer starting at 0x0FF0, only 16 bytes remain before 0x1000. A longer incrementing transfer must finish that burst at the boundary and start another afterward.",
+  "verification": "Check addresses just below, exactly at and well away from a 4KB boundary. For each generated burst, verify that its addressed range stays within one permitted region.",
+  "limitations": "The example assumes aligned incrementing transfers. Beat size, alignment, burst type and maximum length also affect legal address generation; splitting at 4KB alone is not a complete AXI checker."
+}

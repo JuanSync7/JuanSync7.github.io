@@ -1,4 +1,16 @@
-date: 2026-07-24
-tag: protocols
-title: "Handshake on valid and ready, never on timing."
-why: "On AXI, data moves only when both are high. Assuming the other side is ready 'by now' is a bug waiting for a slower clock."
+{
+  "date": "2026-07-24",
+  "tag": "protocols",
+  "title": "Handshake on valid and ready, never on timing.",
+  "why": "On AXI, data moves only when both are high. Assuming the other side is ready 'by now' is a bug waiting for a slower clock.",
+  "problem": "A producer or consumer can silently lose a transaction when it assumes that enough time has passed for the other side to be ready.",
+  "cause": "On an AXI channel, a transfer occurs only at a clock edge where VALID and READY are both asserted. The handshake, rather than elapsed cycles, establishes acceptance.",
+  "steps": [
+    "Advance transaction state only on the channel’s VALID-and-READY handshake.",
+    "Keep payload and VALID stable while the receiver applies backpressure.",
+    "Exercise variable stalls on each relevant channel in verification."
+  ],
+  "solution": "For example, a source holding one data beat must not replace it after an arbitrary delay if READY is still low. A slower receiver remains entitled to accept that same beat later.",
+  "verification": "Use a scoreboard to compare sent and accepted beats under randomized backpressure. Add directed cases for a long stall and for readiness changing around a transfer.",
+  "limitations": "AXI has several independent channels and additional ordering rules; a correct local handshake does not prove the whole protocol. This is general protocol teaching, not a claim that the cited owner’s chats record this particular bug."
+}

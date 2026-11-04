@@ -1,4 +1,16 @@
-date: 2026-08-01
-tag: building
-title: "Ship it end to end, or don't ship it."
-why: "A stub 'for later' is a ghost: it looks like a feature and does nothing. Half-built is worse than missing."
+{
+  "date": "2026-08-01",
+  "tag": "building",
+  "title": "Ship it end to end, or don't ship it.",
+  "why": "A stub 'for later' is a ghost: it looks like a feature and does nothing. Half-built is worse than missing.",
+  "problem": "A feature can look finished because its button, route and data shape exist. The user only discovers the missing part when they try to complete the job the feature promised to do.",
+  "cause": "A stub satisfies the structure of an implementation without satisfying its purpose. Once it looks like a real feature, other work starts depending on behaviour that has never existed.",
+  "steps": [
+    "Describe one complete user outcome, including the input, the visible result and the way a failure is reported.",
+    "Follow that path through the interface, processing and storage. Name each handoff rather than treating a working screen as the end.",
+    "Test the path with a real input and a representative failure. Keep unfinished work out of the shipped promise until that path works."
+  ],
+  "solution": "Ship a smaller complete slice. Reducing scope preserves a usable outcome; leaving a hidden stub inside the promised outcome does not.",
+  "verification": "A new reader should be able to start from the documented entry point and obtain the stated result without the author filling in a missing step.",
+  "limitations": "This is a shipping standard, not a ban on prototypes. A prototype can contain stubs when its limits are visible and nobody mistakes it for the finished feature."
+}

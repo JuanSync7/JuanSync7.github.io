@@ -1,4 +1,16 @@
-date: 2026-07-19
-tag: tooling
-title: "A desktop build is the wrong artifact for a headless host."
-why: "Remote editing needs only a small server on the host; the UI stays on your own machine."
+{
+  "date": "2026-07-19",
+  "tag": "tooling",
+  "title": "A desktop build is the wrong artifact for a headless host.",
+  "why": "Remote editing needs only a small server on the host; the UI stays on your own machine.",
+  "problem": "Installing a full desktop editor on a headless host can fail on graphical libraries the remote editing workflow never needed.",
+  "cause": "A remote development setup separates the interface from the execution host. The local machine runs the UI, while a smaller server on the remote host provides files, terminals and language services.",
+  "steps": [
+    "Identify whether the task needs a remote server, a browser service or a full desktop application.",
+    "Choose the supported server package for the host’s architecture and runtime libraries.",
+    "Keep the UI on the client machine and connect through the approved transport."
+  ],
+  "solution": "For example, a headless build host can run an editor’s remote server without opening a graphical session. That avoids introducing a desktop stack just to edit files and run tools near the source.",
+  "verification": "Connect from the intended client, open a fixture file and run a small remote command. Verify where extensions and processes execute rather than assuming everything stays local.",
+  "limitations": "Remote servers still have operating-system and library requirements. This is deployment guidance, not a claim that every desktop package is wrong or that the legacy installation was reproduced."
+}

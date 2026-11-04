@@ -1,4 +1,15 @@
-date: 2026-10-01
-tag: git
-title: "A force-push doesn't erase old commits from the host."
-why: "They stay reachable by ID until the host garbage-collects. Rotate the leaked secret; rewriting history is cleanup, not the fix."
+{
+  "date": "2026-10-01",
+  "tag": "git",
+  "title": "A force-push doesn't erase old commits from the host.",
+  "why": "They stay reachable by ID until the host garbage-collects. Rotate the leaked secret; rewriting history is cleanup, not the fix.",
+  "problem": "A secret removed from the current branch can still be read from an older commit. A clean checkout therefore gives a misleading sense that the exposure has ended.",
+  "cause": "A force-push moves references. It does not make every copy of the old Git objects disappear, and the hosting service may still serve an object by its identifier.",
+  "steps": [
+    "Revoke or rotate the exposed credential first, then check which services and users need the replacement. Keep secret values out of the incident notes.",
+    "Rehearse the history cleanup in a scratch copy, retain a protected backup and coordinate other clones so they cannot merge the old history back."
+  ],
+  "solution": "Treat revocation as the control that stops use of the credential, and history cleanup as a separate task that reduces further disclosure.",
+  "verification": "Check that the old credential is rejected and the replacement works only where intended. Scan the rewritten history and ask the host about retained objects when needed.",
+  "limitations": "A rewritten repository cannot recall forks, clones or downloaded copies. Rotation addresses credentials; a leaked name or document needs a separate response."
+}

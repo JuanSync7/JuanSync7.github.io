@@ -1,4 +1,15 @@
-date: 2026-10-12
-tag: design
-title: "Ask why until you hit a decision."
-why: "A feature is robust when repeated whys end at a recorded decision or policy. If they don't, you've found a decision nobody made."
+{
+  "date": "2026-10-12",
+  "tag": "design",
+  "title": "Ask why until you hit a decision.",
+  "why": "A feature is robust when repeated whys end at a recorded decision or policy. If they don't, you've found a decision nobody made.",
+  "problem": "A feature can have detailed implementation notes without a clear reason to exist. When challenged, the explanation may loop through other features instead of reaching a decision someone actually made.",
+  "cause": "An upward why-chain tests justification. Each answer should connect the feature to a requirement, goal or policy, with evidence for that link rather than a plausible story supplied after the fact.",
+  "steps": [
+    "Choose one feature and ask what need it serves. Follow each answer upward, citing the record that establishes the relationship until you reach an explicit goal, requirement or ruling.",
+    "Mark a missing link as a decision gap. Decide whether to remove the feature, narrow it or make the missing policy choice before treating its design as settled."
+  ],
+  "solution": "Use the chain to expose assumptions while they are still cheap to discuss. The useful result is a traceable reason or a named question, not exactly five answers.",
+  "verification": "Ask a fresh reader to follow the citations without the author present. They should reach the stated decision and distinguish recorded intent from interpretation.",
+  "limitations": "A justified feature can still fail under load or at a trust boundary. This audit checks why it exists; it does not replace tests of whether the implementation works."
+}

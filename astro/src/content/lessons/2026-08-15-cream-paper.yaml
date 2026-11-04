@@ -1,4 +1,15 @@
-date: 2026-08-15
-tag: design
-title: "Light themes should be paper, not white."
-why: "Pure white on a screen glares. A cream background with dark ink reads like a page."
+{
+  "date": "2026-08-15",
+  "tag": "design",
+  "title": "Light themes should be paper, not white.",
+  "why": "Pure white on a screen glares. A cream background with dark ink reads like a page.",
+  "problem": "A light reading page can feel harsh when its largest surface is pure white, especially beside strong dark text and bright accents.",
+  "cause": "The background is part of the reading experience, not unused space. On a long page, its colour is present behind almost every line.",
+  "steps": [
+    "Set a shared light-theme paper token to a restrained cream tone and pair it with a dark ink token.",
+    "Apply those tokens consistently to the page and reading surfaces, then check text, links and code frames against the actual backgrounds."
+  ],
+  "solution": "Use the paper-and-ink palette for long reading in this design system. Keep one accent for emphasis rather than adding several saturated surfaces that compete with the prose.",
+  "verification": "Inspect a full article, not just a colour swatch. Check contrast, long paragraphs and embedded figures in both themes, and ask whether any component still introduces an unintended white panel.",
+  "limitations": "This is a stated visual preference, not a universal claim that cream is more accessible for everyone. The chosen colours still need contrast checks and support for reader preferences."
+}

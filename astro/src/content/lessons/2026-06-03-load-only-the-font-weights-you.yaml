@@ -1,4 +1,16 @@
-date: 2026-06-03
-tag: typography
-title: "Load only the font weights you use."
-why: "Each weight is another file on every page load. Fonts from a CDN also fail on locked-down networks, so self-host when needed."
+{
+  "date": "2026-06-03",
+  "tag": "typography",
+  "title": "Load only the font weights you use.",
+  "why": "Each weight is another file on every page load. Fonts from a CDN also fail on locked-down networks, so self-host when needed.",
+  "problem": "A page can download font files for weights it never uses, or rely on a font CDN that the intended network cannot reach.",
+  "cause": "Font declarations create resource dependencies. Static weight files add requests and bytes, while external hosting adds a network assumption to rendering.",
+  "steps": [
+    "Inventory the font families and weights actually used by the design.",
+    "Remove unused font resources and keep sensible fallbacks.",
+    "Self-host the required files when the deployment must work without the external font service."
+  ],
+  "solution": "If body copy uses regular and headings use medium, loading every available static weight adds no reading benefit. A variable font may cover the needed range in one resource, so inspect the actual files rather than counting CSS weight values alone.",
+  "verification": "Check the browser’s network panel on a cold load and in the intended network environment. Expect only required font resources, readable fallback text and no dependency on an unreachable CDN.",
+  "limitations": "Licensing, character coverage and subset choices still matter. Fewer files are useful only if the page keeps the glyphs and styles its readers need."
+}

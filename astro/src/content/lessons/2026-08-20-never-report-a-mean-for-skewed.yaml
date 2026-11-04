@@ -1,4 +1,15 @@
-date: 2026-08-20
-tag: data
-title: "Never report a mean for skewed durations."
-why: "Resolution times have long tails, so the mean misleads. Give n, coverage and method alongside any figure you report."
+{
+  "date": "2026-08-20",
+  "tag": "data",
+  "title": "Never report a mean for skewed durations.",
+  "why": "Resolution times have long tails, so the mean misleads. Give n, coverage and method alongside any figure you report.",
+  "problem": "A single average resolution time can conceal a queue where most work finishes quickly and a few cases remain open much longer.",
+  "cause": "A long tail can pull the arithmetic mean away from the typical case. Missing, contaminated or selectively collected durations can make even a median untrustworthy.",
+  "steps": [
+    "Inspect the duration distribution and define which records qualify before choosing a summary.",
+    "Return the sample count, coverage and calculation method with any statistic; refuse the figure when the sample cannot support the requested interpretation."
+  ],
+  "solution": "For a report about typical completion, consider a median and useful percentiles alongside the count, rather than presenting a bare mean as the whole story. State how unresolved cases were treated.",
+  "verification": "Check a small dataset with one extreme duration and compare the summaries. Then remove records deliberately and confirm the report exposes reduced coverage instead of presenting the result as complete.",
+  "limitations": "The original “never” is a reporting rule for this use, not a mathematical ban on means. Mean duration can matter for total workload when the data and question support it."
+}

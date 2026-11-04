@@ -1,4 +1,15 @@
-date: 2026-08-24
-tag: docs
-title: "A new owner should inherit a system, not a story."
-why: "A handover full of 'then we tried' is history. The next maintainer needs the current design and how to run it."
+{
+  "date": "2026-08-24",
+  "tag": "docs",
+  "title": "A new owner should inherit a system, not a story.",
+  "why": "A handover full of 'then we tried' is history. The next maintainer needs the current design and how to run it.",
+  "problem": "A handover can explain every past experiment while leaving the next maintainer unsure which configuration is current or how to start the service.",
+  "cause": "Chronology organizes decisions by when they happened. Operating a system requires a different order: current purpose, boundaries, setup, normal operation and failure handling.",
+  "steps": [
+    "Write the handover from the current working design, with prerequisites, commands and checks in execution order.",
+    "Move the sequence of old changes into the changelog or decision records, linking only where a past decision explains a present constraint."
+  ],
+  "solution": "If three launch methods were tried and one remains supported, teach that method first. Keep rejected methods in their historical home rather than making the reader reconstruct the answer.",
+  "verification": "Ask a new reader to identify the supported start command, configuration owner and first diagnostic step without reading the project’s chat history. Any missing answer belongs in the current document.",
+  "limitations": "History remains useful for understanding trade-offs and reversions. The correction is to give it a clear place, not erase the evidence behind the current design."
+}

@@ -1,4 +1,16 @@
-date: 2026-05-23
-tag: testing
-title: "Climb the test ladder: mock, fake, real-local, real."
-why: "Each rung catches what the one below can't. A green mock says the logic holds; only the top rung says the world agrees."
+{
+  "date": "2026-05-23",
+  "tag": "testing",
+  "title": "Climb the test ladder: mock, fake, real-local, real.",
+  "why": "Each rung catches what the one below can't. A green mock says the logic holds; only the top rung says the world agrees.",
+  "problem": "A green mock-based suite can confirm the intended logic while missing a wrong assumption about the external system.",
+  "cause": "A mock behaves as its author says it should. It cannot reveal a disagreement between that assumption and a real API, filesystem, identity or timing boundary.",
+  "steps": [
+    "Use mocks for fast checks of logic and contracts.",
+    "Add a fake with meaningful state, then real components in a local setup.",
+    "Use a small live smoke check for the critical external assumptions that lower rungs cannot establish."
+  ],
+  "solution": "For persistence, a mock can confirm that a write was requested. A real store check asks whether the data survives and is readable through the actual integration. Those are different claims and need different evidence.",
+  "verification": "Record which rung ran and what it established. Confirm that the live check really reached the intended system rather than silently falling back to a mock.",
+  "limitations": "Live checks need controlled inputs and appropriate authorization. More rungs do not justify unsafe production tests, and identical green results are useful only if each rung checks something distinct."
+}

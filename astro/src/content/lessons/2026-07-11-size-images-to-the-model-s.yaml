@@ -1,4 +1,16 @@
-date: 2026-07-11
-tag: inference
-title: "Size images to the model's training geometry."
-why: "Feeding 300 DPI pages to a vision retriever trained on small fixed-size images explodes patch count, time and VRAM. Resize first and batch to bound memory."
+{
+  "date": "2026-07-11",
+  "tag": "inference",
+  "title": "Size images to the model's training geometry.",
+  "why": "Feeding 300 DPI pages to a vision retriever trained on small fixed-size images explodes patch count, time and VRAM. Resize first and batch to bound memory.",
+  "problem": "A page-image retrieval job can exhaust memory because its input resolution is far larger than the model’s useful working scale.",
+  "cause": "Vision models divide images into patches or similar units. More pixels can mean many more units per page, and batching multiplies their memory cost without guaranteeing a better retrieval result.",
+  "steps": [
+    "Read the model’s supported preprocessing and resolution guidance.",
+    "Resize pages while preserving aspect ratio and enough detail for the task.",
+    "Use an explicit batch bound and measure memory on representative pages."
+  ],
+  "solution": "For example, a high-resolution scan can remain the archival original while a smaller derived image feeds retrieval. Keep the two roles separate so reducing inference cost does not destroy the source.",
+  "verification": "Compare retrieval on small text, tables and diagrams at the selected size, then measure peak memory for the intended batch. Check the hardest pages rather than only an average page.",
+  "limitations": "There is no universal DPI or pixel limit. The model, preprocessing and page content determine the trade-off, so a smaller image must earn its quality as well as its memory saving."
+}

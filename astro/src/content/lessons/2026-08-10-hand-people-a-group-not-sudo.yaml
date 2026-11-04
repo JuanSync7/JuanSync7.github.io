@@ -1,4 +1,15 @@
-date: 2026-08-10
-tag: security
-title: "Hand people a group, not sudo."
-why: "A service account runs the process. A purpose-made group may start, stop and edit its config, and nothing else. People join and leave the group."
+{
+  "date": "2026-08-10",
+  "tag": "security",
+  "title": "Hand people a group, not sudo.",
+  "why": "A service account runs the process. A purpose-made group may start, stop and edit its config, and nothing else. People join and leave the group.",
+  "problem": "Giving each maintainer a broad personal privilege makes service access hard to review and harder to remove when responsibilities change.",
+  "cause": "The process identity and the right to manage it are separate concerns. Mixing both with a person’s account ties the service’s lifetime and authority to that person.",
+  "steps": [
+    "Run the service under a dedicated service account and list the exact management actions its maintainers need.",
+    "Grant those actions to a purpose-made group, then manage access through membership and review the writable configuration that group controls."
+  ],
+  "solution": "A maintainer role might need to restart one service and edit its validated configuration. It does not automatically need permission to manage every service or launch an arbitrary privileged command.",
+  "verification": "Test an allowed action as a group member and an unrelated action that must be denied. Remove a test member and confirm how revocation takes effect for new and existing sessions.",
+  "limitations": "Some policy tools cannot distinguish every verb. Writable service configuration can itself grant substantial power, so the allowed settings need careful review."
+}

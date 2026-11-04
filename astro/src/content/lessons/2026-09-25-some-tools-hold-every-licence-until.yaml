@@ -1,4 +1,16 @@
-date: 2026-09-25
-tag: eda
-title: "Some tools hold every licence until they exit."
-why: "A step that combines several stages keeps each earlier stage's licence to the end. Splitting the step frees them sooner."
+{
+  "date": "2026-09-25",
+  "tag": "eda",
+  "title": "Some tools hold every licence until they exit.",
+  "why": "A step that combines several stages keeps each earlier stage's licence to the end. Splitting the step frees them sooner.",
+  "problem": "A long-lived tool shell can hold a licence long after the stage that needed it has finished.",
+  "cause": "Some tools retain checked-out features until the process exits or explicitly releases them. Combining stages in one process can therefore extend the holding time of an early-stage feature across later work.",
+  "steps": [
+    "Measure checkout and stage boundaries from timestamped evidence.",
+    "Identify features no longer needed after a stage.",
+    "Use supported release points or split the flow into restartable stage processes where appropriate."
+  ],
+  "solution": "Illustrative: if a three-day shell needs one feature for only its first two hours, retaining it to exit creates a large idle holding interval. A real release boundary can shorten that interval.",
+  "verification": "Observe the checkout after the proposed boundary and confirm later stages still run correctly. Measure reacquisition delay as well as freed seat time.",
+  "limitations": "Release behavior varies by tool and feature. A repeatedly needed feature may be better retained, and releasing it early can make the same job queue again later."
+}

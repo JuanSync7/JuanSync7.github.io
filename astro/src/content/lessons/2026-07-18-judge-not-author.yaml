@@ -1,4 +1,16 @@
-date: 2026-07-18
-tag: reviews
-title: "The judge should not be the author."
-why: "For a merge, use reviewers who didn't write the code and ask for zero blockers. Self-review only finds what you already looked for."
+{
+  "date": "2026-07-18",
+  "tag": "reviews",
+  "title": "The judge should not be the author.",
+  "why": "For a merge, use reviewers who didn't write the code and ask for zero blockers. Self-review only finds what you already looked for.",
+  "problem": "An author reviewing their own change can confirm the intended design while missing the assumptions that made the bug possible.",
+  "cause": "The author already knows the expected path and may unconsciously supply missing context. A fresh reviewer is better placed to challenge that path and inspect whether the tests defend the actual contract.",
+  "steps": [
+    "Give a reviewer who did not write the change its requirements and exact diff.",
+    "Ask for concrete blocking findings with evidence, rather than a general approval score.",
+    "Resolve those findings and run the required checks on the integrated result."
+  ],
+  "solution": "For example, a reviewer can ask what happens when a dependency fails even if the author tested the successful response thoroughly. The finding should name the broken behavior and a way to reproduce it.",
+  "verification": "Confirm that the reviewed revision matches the candidate being merged and that each blocker has an explicit resolution. Separate individual branch checks do not prove the merged tree.",
+  "limitations": "Fresh review is another source of evidence, not proof of perfection. Match its depth to risk, and keep reviewer uncertainty visible instead of forcing every comment into approve or reject."
+}

@@ -1,4 +1,15 @@
-date: 2026-10-04
-tag: linux
-title: "X has no timeouts."
-why: "One stalled hop in a forwarded display chain can freeze a whole shared desktop. Remove the forwarding; moving users doesn't help."
+{
+  "date": "2026-10-04",
+  "tag": "linux",
+  "title": "X has no timeouts.",
+  "why": "One stalled hop in a forwarded display chain can freeze a whole shared desktop. Remove the forwarding; moving users doesn't help.",
+  "problem": "A shared remote desktop can appear frozen even while its server is alive. Restarting that server may destroy unrelated long-running work without identifying what blocked the display.",
+  "cause": "A forwarded GUI depends on a relay chain between the tool and display. A stalled client holding an input grab is a plausible cause of a wider freeze, but that explanation needs a test.",
+  "steps": [
+    "Inspect the display server, forwarded jobs and resource pressure before restarting anything. A normal display query answering does not by itself rule out an input grab.",
+    "Identify the suspect client and arrange a controlled way to disconnect or stop that job. Compare the desktop before and after, keeping other running work intact."
+  ],
+  "solution": "Reduce the shared failure domain by placing an interactive tool in its own job desktop and viewing that desktop remotely. This removes the forwarding chain from the main session.",
+  "verification": "The diagnostic expectation is that removing the suspect client clears the freeze. If it does not, keep the cause open and investigate other display or session failures.",
+  "limitations": "The original grab explanation is unproven. Per-job desktops still need working node software, access controls and an idle policy; changing login hosts alone does not test the relay hypothesis."
+}

@@ -1,4 +1,16 @@
-date: 2026-06-18
-tag: postgres
-title: "CREATE SCHEMA IF NOT EXISTS checks privileges first."
-why: "Postgres checks the CREATE permission before existence, so the 'safe' statement fails for a role without it, even when the schema is already there."
+{
+  "date": "2026-06-18",
+  "tag": "postgres",
+  "title": "CREATE SCHEMA IF NOT EXISTS checks privileges first.",
+  "why": "Postgres checks the CREATE permission before existence, so the 'safe' statement fails for a role without it, even when the schema is already there.",
+  "problem": "A startup statement intended to be harmless can fail for a least-privilege database role even when the target schema already exists.",
+  "cause": "PostgreSQL checks CREATE permission before treating CREATE SCHEMA IF NOT EXISTS as a no-op. Existence does not bypass the privilege requirement.",
+  "steps": [
+    "Separate schema creation and migration from normal application startup.",
+    "Run creation with the authorized deployment identity.",
+    "Let the runtime role check the expected schema and use only its required permissions."
+  ],
+  "solution": "A read-only dashboard should not need database-wide CREATE merely to start against a prepared schema. Prepare the schema in deployment and make runtime absence a clear setup error.",
+  "verification": "Test on real PostgreSQL with the actual restricted role. Confirm it can use the existing schema as intended and that the startup path no longer issues an unauthorized creation statement.",
+  "limitations": "This behavior is engine-specific and can be hidden by SQLite tests. Do not solve it by granting broad CREATE unless runtime schema creation is an intentional, justified responsibility."
+}

@@ -1,4 +1,16 @@
-date: 2026-09-22
-tag: thoughts
-title: "The future engineer orchestrates."
-why: "AI is the hands: fast, tireless, good at patterns. The human is the slower brain that holds the taste and makes the call."
+{
+  "date": "2026-09-22",
+  "tag": "thoughts",
+  "title": "The future engineer orchestrates.",
+  "why": "AI is the hands: fast, tireless, good at patterns. The human is the slower brain that holds the taste and makes the call.",
+  "problem": "Fast generation can leave a project with many changes but no clear decision about which result is right.",
+  "cause": "Execution speed does not supply the human preferences, trade-offs and purpose that define success. Agents need bounded tasks and observable checks, while the owner still decides direction and judges the result.",
+  "steps": [
+    "State the goal and the choices that require human judgment.",
+    "Give the agent a clear contract and the evidence it needs.",
+    "Review concrete output against that contract before expanding the work."
+  ],
+  "solution": "Illustrative: an agent can produce several layout variants quickly. Choosing which best serves the intended reader still needs a stated task and a person's judgment about the trade-off.",
+  "verification": "Ask whether the handoff lets the agent act independently and whether the reviewer can explain why the chosen output fits the goal. Speed alone should not be the acceptance condition.",
+  "limitations": "This describes a working philosophy, not a measured claim that a fixed human-agent split suits every task. Some choices need specialist review or deterministic checks as well as taste."
+}

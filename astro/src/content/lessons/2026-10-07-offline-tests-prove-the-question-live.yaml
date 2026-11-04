@@ -1,4 +1,15 @@
-date: 2026-10-07
-tag: testing
-title: "Offline tests prove the question. Live data proves the answer."
-why: "A mocked page test shows the UI asks the server the right thing. Only live data shows the server answers it correctly."
+{
+  "date": "2026-10-07",
+  "tag": "testing",
+  "title": "Offline tests prove the question. Live data proves the answer.",
+  "why": "A mocked page test shows the UI asks the server the right thing. Only live data shows the server answers it correctly.",
+  "problem": "A page test can prove that selecting a filter sends the intended request and still miss a server that returns the wrong rows. The mocked answer only repeats what the test author expected.",
+  "cause": "The browser and server are two halves of one interaction. An offline fixture can check the question the browser asks; it cannot establish how the real query behaves against real data.",
+  "steps": [
+    "Keep fast offline tests for control state and outgoing request parameters. Cover empty selections, combined filters and categories that must not disappear.",
+    "Replay representative requests against a controlled real API and database, using a copy or safe fixture environment. Check returned rows and counts against independently known cases."
+  ],
+  "solution": "Use both layers to locate errors. A bad outgoing parameter points to the page; a correct request with a bad result points to the server or data interpretation.",
+  "verification": "Choose a case with included and excluded rows. The live-path check should return the intended set and matching total, not merely a successful status code.",
+  "limitations": "Live data changes and can contain sensitive information. Record the dataset boundary, avoid modifying live stores, and do not call an offline replay proof of current server behaviour."
+}

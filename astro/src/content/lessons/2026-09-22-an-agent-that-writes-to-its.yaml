@@ -1,4 +1,16 @@
-date: 2026-09-22
-tag: rag
-title: "An agent that writes to its own knowledge base can poison it."
-why: "Route its writes through an inbox and a review gate, with provenance tags, before they become things it answers from."
+{
+  "date": "2026-09-22",
+  "tag": "rag",
+  "title": "An agent that writes to its own knowledge base can poison it.",
+  "why": "Route its writes through an inbox and a review gate, with provenance tags, before they become things it answers from.",
+  "problem": "An answering agent can make its own unsupported statements look authoritative by writing them into the corpus it later searches.",
+  "cause": "Retrieval provides provenance only if the underlying content has earned its place. Direct write-back can turn generated guesses into future evidence and create a feedback loop.",
+  "steps": [
+    "Route proposed additions to an inbox outside the trusted corpus.",
+    "Attach source provenance and distinguish generated interpretation.",
+    "Review the proposal before promotion and ingestion."
+  ],
+  "solution": "Illustrative: a meeting summary can be staged as a proposed note with timestamped source references. Until reviewed, it should not become a fact the answering agent cites as company knowledge.",
+  "verification": "Trace a proposed write through staging, review and ingestion. An unreviewed statement should remain unavailable to the trusted-answer path, while approved material retains its provenance.",
+  "limitations": "This is a design safeguard in the source, not evidence that the complete agent was deployed. Review also needs access controls and a way to correct or withdraw already ingested material."
+}

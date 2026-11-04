@@ -1,4 +1,16 @@
-date: 2026-04-18
-tag: inference
-title: "Embedding models need KV cache too."
-why: "They generate nothing, but the model still stores keys and values for every input token, so an embedder with too little cache won't start."
+{
+  "date": "2026-04-18",
+  "tag": "inference",
+  "title": "Embedding models need KV cache too.",
+  "why": "They generate nothing, but the model still stores keys and values for every input token, so an embedder with too little cache won't start.",
+  "problem": "An embedding server can refuse to start even though it will never generate an output token. Budgeting only for model weights leaves out working memory required by the serving runtime.",
+  "cause": "In vLLM, the embedding deployment still reserves key and value cache for input tokens. Its configured input length must fit the available cache.",
+  "steps": [
+    "Read the runtime’s startup memory and cache report.",
+    "Check the maximum embedding input length against the reported capacity.",
+    "Adjust the cache budget or supported input length, then restart and inspect the new report."
+  ],
+  "solution": "Treat the embedder as a separate memory consumer. A small model sharing a card with a chat server can still need enough reserved cache for its longest accepted input.",
+  "verification": "Expect startup to succeed with capacity for at least one maximum-length request. Then check an input at the supported length rather than relying only on a short test sentence.",
+  "limitations": "This is a serving-runtime requirement, not a claim that every embedding architecture uses persistent generation-style cache. Check the actual backend and version before copying a memory budget."
+}

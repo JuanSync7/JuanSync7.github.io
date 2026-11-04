@@ -1,4 +1,16 @@
-date: 2026-09-03
-tag: docs
-title: "A version number in prose has no owner."
-why: "It goes stale the day the pin moves and nothing fails. Point to the file that owns the version instead."
+{
+  "date": "2026-09-03",
+  "tag": "docs",
+  "title": "A version number in prose has no owner.",
+  "why": "It goes stale the day the pin moves and nothing fails. Point to the file that owns the version instead.",
+  "problem": "A setup guide can recommend yesterday's version even while the release configuration is correct.",
+  "cause": "A copied version number has no enforced link to the pin that owns it. Moving the pin leaves the prose untouched, so both can look authoritative.",
+  "steps": [
+    "Identify the configuration field that owns the version.",
+    "Replace routine prose copies with a pointer to that owner.",
+    "Keep dated release history separately from instructions about the current version."
+  ],
+  "solution": "Illustrative: 'use the version in the managed settings file' survives a release bump, whereas a hardcoded number in three guides needs three independent edits and can silently diverge.",
+  "verification": "Move the pin in a disposable change and inspect the instructions. Current guidance should still resolve to the new value, while historical release records should remain unchanged.",
+  "limitations": "A pointer is useful only if the reader can access and understand the owner. An intentionally frozen example or historical release note may need an explicit number and date."
+}

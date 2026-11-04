@@ -1,4 +1,16 @@
-date: 2026-06-26
-tag: slurm
-title: "The man page said order didn't matter. It did."
-why: "An experiment showed the first listed partition wins when both have room. Test scheduler behaviour; don't just read it."
+{
+  "date": "2026-06-26",
+  "tag": "slurm",
+  "title": "The man page said order didn't matter. It did.",
+  "why": "An experiment showed the first listed partition wins when both have room. Test scheduler behaviour; don't just read it.",
+  "problem": "A scheduler’s documented behavior can differ from what an installed configuration actually does. Routing work based only on the manual can put jobs in the wrong partition.",
+  "cause": "The source records a controlled case where the first listed eligible partition won when both had room, despite the manual’s statement that order was ignored.",
+  "steps": [
+    "Inspect the live scheduler configuration and submission wrapper.",
+    "Submit small equivalent jobs with the partition list in each order.",
+    "Use accounting records to compare the partition actually chosen."
+  ],
+  "solution": "For an illustrative pair, submit to interactive,standard and then standard,interactive under comparable availability. Changing only the list order makes the routing result easier to interpret.",
+  "verification": "Check the recorded partition and resource conditions for each job. Repeat enough to separate list-order behavior from one partition simply lacking capacity at the time.",
+  "limitations": "This is evidence about the tested environment, not a universal Slurm scheduling guarantee. Recheck after priority, configuration or version changes before relying on the same routing rule."
+}

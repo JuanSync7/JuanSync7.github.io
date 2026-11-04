@@ -1,4 +1,15 @@
-date: 2026-08-23
-tag: docs
-title: "A fact stated twice will disagree."
-why: "The doc bugs I traced came from one fact living in two places and ageing at different speeds. Give each fact one home and link to it."
+{
+  "date": "2026-08-23",
+  "tag": "docs",
+  "title": "A fact stated twice will disagree.",
+  "why": "The doc bugs I traced came from one fact living in two places and ageing at different speeds. Give each fact one home and link to it.",
+  "problem": "A reader can follow two valid-looking documents to different answers about the same setting or procedure.",
+  "cause": "Copied facts age at different speeds. Updating the implementation or one document does not notify every other paragraph where the same value was pasted.",
+  "steps": [
+    "Choose the authoritative home for the fact and make the other documents point to it.",
+    "Where a value must appear in several outputs, derive those copies from the same source and check that the generation remains current."
+  ],
+  "solution": "For a default timeout, let the configuration own the value and keep a conceptual guide focused on what the timeout means. Link to the reference instead of maintaining another number in the guide.",
+  "verification": "Change the value in a disposable example and trace every place a reader can encounter it. Expect linked or generated views to agree, with no independent copy requiring a remembered edit.",
+  "limitations": "One home does not mean one enormous document. Keep ownership at the smallest useful boundary, and allow intentional snapshots when they clearly name their version."
+}

@@ -1,4 +1,16 @@
-date: 2026-05-10
-tag: growth
-title: "If I make the same point a third time, stop me."
-why: "Holding a position is a strength until it outlasts the evidence. Repeating without new support is the tell."
+{
+  "date": "2026-05-10",
+  "tag": "growth",
+  "title": "If I make the same point a third time, stop me.",
+  "why": "Holding a position is a strength until it outlasts the evidence. Repeating without new support is the tell.",
+  "problem": "A technical discussion can stall when the same argument is repeated after the evidence has shifted. Repetition can sound like stronger support without adding any.",
+  "cause": "The source describes a tendency to hold a position too long. The useful trigger is a repeated claim with no new evidence, rather than disagreement itself.",
+  "steps": [
+    "State the decision and the evidence currently supporting it.",
+    "When the same point returns, ask what new fact it adds.",
+    "Compare the strongest contrary evidence and name what would change the decision."
+  ],
+  "solution": "For example, if a preferred design is defended a third time with the same performance claim, return to the measurement behind that claim. If no measurement exists, mark the claim as an assumption and decide how to check it.",
+  "verification": "Look for a change in the evidence or a clear next experiment. Agreement caused only by pressure does not settle the technical question.",
+  "limitations": "This is a personal collaboration preference, not a rule to cut off discussion after a fixed count. A repeated warning may still matter if it was never answered."
+}

@@ -1,4 +1,16 @@
-date: 2026-08-04
-tag: protocols
-title: "Never make VALID wait for READY."
-why: "If the sender waits for ready and the receiver waits for valid, both stall forever. The source must raise valid on its own and hold it steady."
+{
+  "date": "2026-08-04",
+  "tag": "protocols",
+  "title": "Never make VALID wait for READY.",
+  "why": "If the sender waits for ready and the receiver waits for valid, both stall forever. The source must raise valid on its own and hold it steady.",
+  "problem": "A producer and a consumer can both be waiting while the interface looks quiet. If neither side raises its signal first, there is no transfer and no event to move the system forward.",
+  "cause": "In a VALID/READY handshake, the source announces that data is available and the receiver announces that it can take it. Making the source wait for READY can create a circular dependency when the receiver waits to see VALID.",
+  "steps": [
+    "When the source has a value to send, assert VALID independently of READY. Keep that value stable while the receiver applies backpressure.",
+    "Treat a cycle with both signals asserted as the transfer. Advance to the next value only after that handshake, following the protocol's reset and channel rules.",
+    "Test a receiver that holds READY low before and after VALID appears, then releases it. Include this delay in verification rather than testing only an always-ready receiver."
+  ],
+  "solution": "Let availability and acceptance be separate facts. The source can promise a stable value while waiting for the receiver to accept it.",
+  "verification": "In the delayed-ready example, VALID must appear without a prior READY and the value must remain stable until the transfer. A scoreboard can check that the value is accepted once.",
+  "limitations": "This explanation concerns an AXI-style channel contract. Do not transfer its signal rules to a different interface without reading that protocol."
+}

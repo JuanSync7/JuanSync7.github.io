@@ -1,4 +1,16 @@
-date: 2026-06-26
-tag: gpu
-title: "No answer from nvidia-smi means unknown, not free."
-why: "A hung driver or a missing tool says nothing about the card. Treating silence as free lets you start work on a busy GPU."
+{
+  "date": "2026-06-26",
+  "tag": "gpu",
+  "title": "No answer from nvidia-smi means unknown, not free.",
+  "why": "A hung driver or a missing tool says nothing about the card. Treating silence as free lets you start work on a busy GPU.",
+  "problem": "A launcher can overcommit a GPU if it treats a failed utilization query as an empty card.",
+  "cause": "A missing tool, hung driver or timed-out command provides no measurement. Converting that absence to zero turns an observation failure into permission to start work.",
+  "steps": [
+    "Give the device query a bounded execution time.",
+    "Represent valid readings and unavailable readings separately.",
+    "Start new work only after the required resource checks return usable evidence."
+  ],
+  "solution": "If nvidia-smi times out, report GPU state as unknown and stop the admission decision. Do not fill in zero used memory simply because no number was parsed.",
+  "verification": "In a safe fixture, simulate a missing executable, timeout and malformed response. Expect each to remain unknown, while a valid idle reading follows the normal admission path.",
+  "limitations": "A fresh reading still is not a reservation. Another process can allocate memory after the check, so concurrent launchers need coordination in addition to honest state reporting."
+}

@@ -1,4 +1,16 @@
-date: 2026-06-12
-tag: git
-title: "Git only stores the exec bit."
-why: "Group, setgid and other mode intent is lost on clone, so it has to live in a package or install script."
+{
+  "date": "2026-06-12",
+  "tag": "git",
+  "title": "Git only stores the exec bit.",
+  "why": "Group, setgid and other mode intent is lost on clone, so it has to live in a package or install script.",
+  "problem": "A fresh clone can contain the right files while losing the ownership and permission layout needed for a shared installation.",
+  "cause": "Git tracks a file’s executable distinction, not the full Unix mode, owner or group. Group-write and setgid intent therefore cannot live only in the working tree’s current permissions.",
+  "steps": [
+    "Keep content and executable intent in Git.",
+    "Express ownership and additional modes in the package or installation procedure.",
+    "Reapply and validate those settings when the deployment changes."
+  ],
+  "solution": "A shared directory may need a group owner and setgid so new files inherit the group. Record that rule in setup rather than assuming a clone will preserve the source directory’s mode.",
+  "verification": "Inspect a clean installation as the intended service and team identities. Check effective access and group inheritance, not just whether the tracked scripts retained their executable bit.",
+  "limitations": "Hooks can help restore local state but are not automatically installed by every clone. The deployment process must own their installation or enforce the permissions through another reliable mechanism."
+}

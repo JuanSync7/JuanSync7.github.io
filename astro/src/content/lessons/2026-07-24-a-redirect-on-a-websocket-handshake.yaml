@@ -1,4 +1,16 @@
-date: 2026-07-24
-tag: networking
-title: "A redirect on a WebSocket handshake means a proxy answered."
-why: "Upgrades only accept 101. A 303 with a branded HTML page came from an inspecting proxy, not the server."
+{
+  "date": "2026-07-24",
+  "tag": "networking",
+  "title": "A redirect on a WebSocket handshake means a proxy answered.",
+  "why": "Upgrades only accept 101. A 303 with a branded HTML page came from an inspecting proxy, not the server.",
+  "problem": "A WebSocket client can fall back to another transport because the upgrade request received a redirect rather than the expected protocol switch.",
+  "cause": "A successful HTTP/1.1 WebSocket upgrade requires status 101 and the appropriate handshake headers. A 303 carrying a gateway’s HTML page indicates that some HTTP intermediary or endpoint answered instead.",
+  "steps": [
+    "Capture the handshake status, headers and a safe description of the response body.",
+    "Compare the response with the intended application and known network intermediaries.",
+    "Check an approved alternate path or transport before changing application code."
+  ],
+  "solution": "For example, branded filtering HTML is evidence to investigate the proxy path. It explains why the client did not establish a WebSocket even if an ordinary HTTPS request works.",
+  "verification": "Confirm that the intended path returns a valid upgrade and sustains a small connection. Record fallback separately from success on the preferred transport.",
+  "limitations": "A redirect alone does not prove interception; an application or login service can also redirect. Attribute the cause using the response and network evidence, and distinguish HTTP/1.1 upgrade from other WebSocket transports."
+}

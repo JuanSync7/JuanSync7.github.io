@@ -1,4 +1,16 @@
-date: 2026-08-02
-tag: agents
-title: "Agents should cite what they worked from."
-why: "Work that can't be traced to a spec or a requirement can't be trusted, however good it looks."
+{
+  "date": "2026-08-02",
+  "tag": "agents",
+  "title": "Agents should cite what they worked from.",
+  "why": "Work that can't be traced to a spec or a requirement can't be trusted, however good it looks.",
+  "problem": "An agent can produce a convincing implementation while solving the wrong version of the problem. A reviewer needs to know which requirement or decision the work was actually based on.",
+  "cause": "A polished explanation hides its assumptions unless the source is named. Without that connection, the reviewer must reconstruct the brief before deciding whether the result meets it.",
+  "steps": [
+    "Give the agent the relevant requirement, specification or decision before it starts. Include the exact revision when the source can change.",
+    "Ask the handover to connect the important outputs to the source passages that require them. A list of document names is less useful than a clear claim-to-source connection.",
+    "Open each cited passage during review and check that it supports the actual behaviour being claimed, including any limit or exception."
+  ],
+  "solution": "Keep the source trail with the work. The citation should help the next engineer answer both why this exists and what would need rechecking if the requirement changed.",
+  "verification": "Take one implemented behaviour and follow its citation back to the brief. If the passage does not require or explain it, the work still needs a reason.",
+  "limitations": "A citation is a route to evidence, not proof on its own. A wrong or stale citation can make unsupported work look more credible."
+}

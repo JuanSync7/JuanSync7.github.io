@@ -1,4 +1,16 @@
-date: 2026-09-13
-tag: slurm
-title: "MaxRSS misses spikes and double-counts shared pages."
-why: "It is sampled every 30 seconds, so short peaks vanish, and multi-process jobs can read up to 2x high. The cgroup high-water mark is the true peak."
+{
+  "date": "2026-09-13",
+  "tag": "slurm",
+  "title": "MaxRSS misses spikes and double-counts shared pages.",
+  "why": "It is sampled every 30 seconds, so short peaks vanish, and multi-process jobs can read up to 2x high. The cgroup high-water mark is the true peak.",
+  "problem": "A memory history can suggest generous headroom while missing the short peak that actually determines whether a job survives.",
+  "cause": "A periodic sampler sees only its sampling instants. Shared-page accounting can also inflate summed process memory, so the reported peak can err in either direction.",
+  "steps": [
+    "Record the source and interval of each memory metric.",
+    "Capture the job's cgroup high-water mark where available.",
+    "Keep sampled curves for timing and shape, while using the appropriate peak for sizing."
+  ],
+  "solution": "Illustrative: a ten-second burst between two thirty-second samples can disappear from the curve. A continuous high-water counter can retain that maximum after the burst ends.",
+  "verification": "Compare sampled values and the cgroup peak for a representative multiprocess job. Preserve disagreements as different measurement semantics rather than silently overwriting one with the other.",
+  "limitations": "A cgroup peak is only as useful as its scope and collection lifetime. A missing capture is unknown; it cannot be reconstructed exactly from a flat sampled curve."
+}

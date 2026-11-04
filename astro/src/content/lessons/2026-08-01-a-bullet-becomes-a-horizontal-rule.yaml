@@ -1,4 +1,16 @@
-date: 2026-08-01
-tag: docs
-title: "A '- - -' bullet becomes a horizontal rule."
-why: "Content inside a list item can start a new block, so the text '- - -' turns into a thematic break and the bullet deletes itself."
+{
+  "date": "2026-08-01",
+  "tag": "docs",
+  "title": "A '- - -' bullet becomes a horizontal rule.",
+  "why": "Content inside a list item can start a new block, so the text '- - -' turns into a thematic break and the bullet deletes itself.",
+  "problem": "A converter can preserve every word and still lose what the reader sees. A bullet containing three separated hyphens is a useful example: the output text exists, but the rendered bullet disappears.",
+  "cause": "Markdown interprets text by position. The content column of a list item can begin another block, so punctuation that looks harmless inside a bullet can become a thematic break instead of literal text.",
+  "steps": [
+    "Create a tiny input whose bullet contains the literal characters you need to preserve. Keep that expected text separate from the converter.",
+    "Render the emitted Markdown with the reader the product supports, then compare the visible result with the input. Token counts alone do not answer this question.",
+    "Escape literal punctuation where a block can begin, and test each document format that can emit the same pattern."
+  ],
+  "solution": "Make escaping aware of position. For a literal three-hyphen bullet, emit `- \\- \\- \\-`: the first hyphen marks the list item and the escaped hyphens are its visible text. Apply the rule in every emission lane.",
+  "verification": "The regression should show a visible bullet with the intended hyphens. Removing the escape should make that assertion fail, even if a token-recall score stays perfect.",
+  "limitations": "Intentional Markdown rules and literal source text need different treatment. Do not escape real formatting simply because its characters can also appear in ordinary text."
+}

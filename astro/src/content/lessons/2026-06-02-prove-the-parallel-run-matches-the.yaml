@@ -1,4 +1,16 @@
-date: 2026-06-02
-tag: testing
-title: "Prove the parallel run matches the serial one."
-why: "Run the suite serially, with four and sixteen workers, and shuffled. Hidden order dependence only shows when the order changes."
+{
+  "date": "2026-06-02",
+  "tag": "testing",
+  "title": "Prove the parallel run matches the serial one.",
+  "why": "Run the suite serially, with four and sixteen workers, and shuffled. Hidden order dependence only shows when the order changes.",
+  "problem": "A suite that passes in one parallel run may still depend on test order or shared state. Speed alone does not establish that parallel execution is equivalent.",
+  "cause": "Workers change execution order and overlap. Tests that share files, environment or mutable fixtures can interfere in ways a serial run hides.",
+  "steps": [
+    "Run the same selected suite serially.",
+    "Compare runs with four and sixteen workers.",
+    "Add a shuffled-order run and investigate differences in both outcomes and collected cases."
+  ],
+  "solution": "Treat a parallel-only failure as evidence about isolation. If one test changes a shared setting and another assumes its original value, a scheduling change can expose a real weakness in the suite.",
+  "verification": "Compare collected, passed, failed and skipped cases, not just the final exit status. Expect the same intended coverage and outcomes across the selected execution modes.",
+  "limitations": "These runs sample possible schedules; they do not prove every interleaving safe. Use isolated fixtures and separate checks for truly concurrent behavior, and run heavy suites on appropriate compute resources."
+}

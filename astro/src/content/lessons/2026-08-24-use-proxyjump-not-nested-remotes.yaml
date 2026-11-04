@@ -1,4 +1,15 @@
-date: 2026-08-24
-tag: tooling
-title: "Use ProxyJump, not nested remotes."
-why: "Remote editors open one remote per window. To reach a host behind a jump box, put ProxyJump in your SSH config."
+{
+  "date": "2026-08-24",
+  "tag": "tooling",
+  "title": "Use ProxyJump, not nested remotes.",
+  "why": "Remote editors open one remote per window. To reach a host behind a jump box, put ProxyJump in your SSH config.",
+  "problem": "A remote editor connected to a jump host may not support opening a second remote session inside the same window to reach the final machine.",
+  "cause": "The editor’s remote environment is attached to one target. Nesting another editor transport inside it confuses that model, while SSH already has a way to route through an intermediate host.",
+  "steps": [
+    "Create an SSH host entry for the destination with its real HostName and a ProxyJump pointing to the approved jump-host entry.",
+    "Test the destination alias with SSH locally, then ask the editor’s remote extension to open that same alias."
+  ],
+  "solution": "For example, a destination entry can contain `HostName target.example` and `ProxyJump jump`. The editor connects to the destination, while SSH handles the intermediate hop.",
+  "verification": "On connection, confirm the terminal hostname and opened filesystem belong to the final target. Verify host keys for both hops and test file access needed by the project.",
+  "limitations": "The example names are placeholders. ProxyJump still requires network reachability, credentials and server policy at both hops; it does not make files mounted only on another host appear on the target."
+}

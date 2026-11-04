@@ -1,4 +1,16 @@
-date: 2026-06-30
-tag: llm
-title: "A reasoning model with a low token limit returns nothing."
-why: "It spends the budget thinking and has no answer left. The empty content looks like success; the reasoning sits in a separate field."
+{
+  "date": "2026-06-30",
+  "tag": "llm",
+  "title": "A reasoning model with a low token limit returns nothing.",
+  "why": "It spends the budget thinking and has no answer left. The empty content looks like success; the reasoning sits in a separate field.",
+  "problem": "A reasoning-model request can return a successful transport response with no user-facing answer when the output budget is too small.",
+  "cause": "The model can spend the allowed tokens on reasoning before reaching answer content. In the described API path, reasoning and content are separate response fields.",
+  "steps": [
+    "Inspect content, reasoning and the completion status separately.",
+    "Set a budget that leaves room for a final answer on the intended workload.",
+    "Treat missing answer content as an incomplete result rather than presenting transport success as an answer."
+  ],
+  "solution": "If content is null while the reasoning field contains text and generation hit its limit, increasing the answer budget may be the relevant correction. Do not discard the distinction by converting every 200 response into success.",
+  "verification": "Use a representative reasoning request and check that it produces meaningful final content within the chosen limits. Also exercise the capped case so the caller reports it honestly.",
+  "limitations": "Response fields and token accounting vary by provider and model. A larger budget can cost more and does not fix every empty response; inspect the actual completion reason."
+}

@@ -1,4 +1,15 @@
-date: 2026-08-17
-tag: data
-title: "A mapping should be a join, never a hand-kept list."
-why: "Two lists kept by hand drift apart. Derive one from the other and the question goes away."
+{
+  "date": "2026-08-17",
+  "tag": "data",
+  "title": "A mapping should be a join, never a hand-kept list.",
+  "why": "Two lists kept by hand drift apart. Derive one from the other and the question goes away.",
+  "problem": "A hand-maintained mapping from requirements to execution records can disagree with the records it is meant to explain.",
+  "cause": "Two lists age independently. Once the identities and relationships already exist in the data, copying them into another list creates a second maintenance task without adding evidence.",
+  "steps": [
+    "Choose stable identifiers at each handoff and record the relation where it is created.",
+    "Generate the mapping by joining those identifiers, and report missing or ambiguous matches instead of silently dropping them."
+  ],
+  "solution": "For a requirement-to-test view, derive the display from the requirement id carried by the test and the execution record carrying the test id. Keep display labels separate from join keys.",
+  "verification": "Use a small fixture with a complete chain, a missing test and an unmatched execution. The generated mapping should show the valid connection and expose both gaps.",
+  "limitations": "A join can faithfully reproduce bad source data. Identifier uniqueness, relation meaning and coverage still need checks; the query does not establish that a test truly verifies its requirement."
+}

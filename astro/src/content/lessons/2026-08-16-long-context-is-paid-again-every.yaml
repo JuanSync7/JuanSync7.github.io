@@ -1,4 +1,15 @@
-date: 2026-08-16
-tag: llm
-title: "Long context is paid again every turn."
-why: "The whole context is re-sent on each turn, which raises cost and degrades answers. Default to a modest window and opt in to the huge one."
+{
+  "date": "2026-08-16",
+  "tag": "llm",
+  "title": "Long context is paid again every turn.",
+  "why": "The whole context is re-sent on each turn, which raises cost and degrades answers. Default to a modest window and opt in to the huge one.",
+  "problem": "A growing conversation can make a short follow-up expensive because the next model call also carries material from earlier turns.",
+  "cause": "Stateless agents need context supplied on each call. A larger allowed window gives the caller room to send more; it does not make every old detail useful to the current question.",
+  "steps": [
+    "Set a routine context budget and assemble the current task, relevant evidence and recent turns deliberately.",
+    "Use retrieval or a labelled summary for older material, and expand the budget explicitly when the task needs the complete source."
+  ],
+  "solution": "Keep a short preamble and record what was included. If required evidence does not fit, split the task or refuse the incomplete review instead of silently clipping the source.",
+  "verification": "Inspect request token counts and actual retained evidence over several turns. For a known question, check whether the bounded context still contains its supporting facts before comparing answer quality.",
+  "limitations": "Resent context may receive provider caching discounts, so cost is not always full-price each turn. Large windows do not invariably degrade answers, and summaries can lose essential detail."
+}

@@ -1,4 +1,15 @@
-date: 2026-08-11
-tag: eda
-title: "Broken DFT flows are ownership problems, not tool problems."
-why: "Engineers copy the last project's scan scripts and edit them, so nobody owns the flow and a fix has nowhere to live."
+{
+  "date": "2026-08-11",
+  "tag": "eda",
+  "title": "Broken DFT flows are ownership problems, not tool problems.",
+  "why": "Engineers copy the last project's scan scripts and edit them, so nobody owns the flow and a fix has nowhere to live.",
+  "problem": "A design-for-test flow can accumulate project-local fixes while the next project starts again from an older copy of the scripts.",
+  "cause": "Without an owned common flow and explicit places for project differences, a useful fix has no shared home. Changing the build tool leaves that responsibility gap in place.",
+  "steps": [
+    "Name an owner for the common flow and separate shared behaviour from project-specific configuration.",
+    "Give shared fixes a release path and expose supported override points, then record which release each project consumes."
+  ],
+  "solution": "For a scan-script correction, decide whether it belongs in the common release or a documented project override before copying it. That decision gives the next maintainer somewhere to send a related fix.",
+  "verification": "Trace one correction from report to shared release and then to a consuming project. Check that the project can identify its version and retain its supported differences without editing the common scripts.",
+  "limitations": "This addresses ownership-driven decay. Tool defects, missing artifacts and unsuitable interfaces can still need technical changes; ownership is not proof those problems are absent."
+}

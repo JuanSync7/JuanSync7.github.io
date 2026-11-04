@@ -1,4 +1,16 @@
-date: 2026-05-16
-tag: git
-title: "Keep a PR under 500 hand-written lines."
-why: "A reviewer can read 500 lines line by line. Past that, review turns into skimming. Generated files don't count toward it."
+{
+  "date": "2026-05-16",
+  "tag": "git",
+  "title": "Keep a PR under 500 hand-written lines.",
+  "why": "A reviewer can read 500 lines line by line. Past that, review turns into skimming. Generated files don't count toward it.",
+  "problem": "A large pull request can pass review while receiving less line-by-line attention than its author expects.",
+  "cause": "As hand-written changes grow, the reviewer has more intent and interaction to hold at once. The source’s size bar is meant to keep the review unit readable.",
+  "steps": [
+    "Cut work into coherent slices with an explicit intended behavior.",
+    "Keep each review around the stated hand-written line budget.",
+    "Separate generated output from the hand-written change and explain how it is reproduced."
+  ],
+  "solution": "A small API behavior change should carry its implementation, tests and needed documentation together. Splitting by behavior gives the reviewer one claim to follow from input to result, rather than several unrelated partial changes.",
+  "verification": "Inspect the actual hand-written diff and ask whether each line can be tied to the PR’s stated intent. If several independent intents appear, split the review before asking someone to skim the whole batch.",
+  "limitations": "The 500-line bar is a review policy, not a measured human limit. A smaller diff can still be complex, and generated changes still need appropriate validation."
+}

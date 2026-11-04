@@ -1,4 +1,16 @@
-date: 2026-07-29
-tag: frontend
-title: "Hover-only help doesn't exist on a phone."
-why: "Tooltips need a pointer. Put the hint in the placeholder or a help line people can reach on any screen."
+{
+  "date": "2026-07-29",
+  "tag": "frontend",
+  "title": "Hover-only help doesn't exist on a phone.",
+  "why": "Tooltips need a pointer. Put the hint in the placeholder or a help line people can reach on any screen.",
+  "problem": "Help available only on hover can leave touchscreen users and keyboard users without the instruction needed to operate a control.",
+  "cause": "A hover trigger assumes a pointing device and an interaction people may never discover. The hint can be present in the implementation yet absent from the user’s working path.",
+  "steps": [
+    "Put essential instructions in visible text associated with the control.",
+    "Use a reachable help action for longer explanations and examples.",
+    "Check keyboard, touch and assistive-technology paths alongside pointer use."
+  ],
+  "solution": "For example, a filter box can show a short help line explaining AND, OR and NOT. A longer guide can provide examples without making the user discover an invisible hover target first.",
+  "verification": "Try the task without a mouse and on a narrow touch layout. Confirm that the user can find the rule before submitting an invalid query, and that help remains associated with its control.",
+  "limitations": "Placeholder text disappears during entry and should not replace a persistent label or essential instructions. Tooltips remain useful for supplementary detail when the core path is already understandable."
+}

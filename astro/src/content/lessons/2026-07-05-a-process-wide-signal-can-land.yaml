@@ -1,4 +1,16 @@
-date: 2026-07-05
-tag: python
-title: "A process-wide signal can land on any thread."
-why: "os.kill targets the whole process, so the kernel may deliver it to any thread that hasn't blocked it. signal.pthread_kill aims at the thread you mean."
+{
+  "date": "2026-07-05",
+  "tag": "python",
+  "title": "A process-wide signal can land on any thread.",
+  "why": "os.kill targets the whole process, so the kernel may deliver it to any thread that hasn't blocked it. signal.pthread_kill aims at the thread you mean.",
+  "problem": "A signal test can disturb the wrong thread when it assumes that targeting a process also selects a particular worker.",
+  "cause": "A process-directed signal may be delivered to any eligible thread that has not blocked it. Thread-directed delivery selects a thread, but Python’s signal-handler rules remain a separate constraint.",
+  "steps": [
+    "Write down whether the test needs process delivery or delivery to a specific thread.",
+    "Control signal masks explicitly and restore them during cleanup.",
+    "Use thread-directed delivery only with a clear understanding of the runtime’s handling rules."
+  ],
+  "solution": "For example, a test of an interrupted worker should identify that worker rather than relying on whichever thread the kernel chooses. Keep the signal action small and arrange deterministic synchronization around the expected interruption.",
+  "verification": "Repeat the isolated test and check which thread was targeted and which handler behavior occurred. A test that merely observed some signal is too weak.",
+  "limitations": "Python handlers normally run in the main thread, and pthread_kill is not a general way to execute Python callbacks in a worker. The source trail for this exact historical assertion is weak; treat the procedure as general guidance."
+}

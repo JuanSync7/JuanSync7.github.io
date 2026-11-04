@@ -1,4 +1,16 @@
-date: 2026-09-09
-tag: frontend
-title: "TypeScript types don't cross the network."
-why: "A client compiled cleanly while calling four endpoints the API never defined. Only a test against the server's real routes catches that."
+{
+  "date": "2026-09-09",
+  "tag": "frontend",
+  "title": "TypeScript types don't cross the network.",
+  "why": "A client compiled cleanly while calling four endpoints the API never defined. Only a test against the server's real routes catches that.",
+  "problem": "A frontend can pass its type check while sending requests to routes the server does not provide.",
+  "cause": "A URL written as a string is valid TypeScript regardless of whether a matching server route exists. Locally consistent client types cannot establish a remote contract.",
+  "steps": [
+    "Extract the routes actually called by the client.",
+    "Compare their methods and paths with the server's registered routes.",
+    "Add a live smoke check for important deployed paths after restarting the server."
+  ],
+  "solution": "Illustrative: a perfectly typed function calling a nonexistent summary route still compiles. A route-contract check fails before the user reaches that page.",
+  "verification": "Deliberately change a client path in a disposable check. The contract test should fail, and the unchanged deployed client should reach its real server route.",
+  "limitations": "Route existence does not prove response shape, filter behavior or correct values. Generated schemas and runtime integration checks cover different parts of the contract."
+}

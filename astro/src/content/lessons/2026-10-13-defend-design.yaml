@@ -1,4 +1,15 @@
-date: 2026-10-13
-tag: design
-title: "Make the design defend itself."
-why: "Take every feature it must carry and ask the hard questions: ten times the input, a second user, a failure nobody notices. Gaps found now cost an edit."
+{
+  "date": "2026-10-13",
+  "tag": "design",
+  "title": "Make the design defend itself.",
+  "why": "Take every feature it must carry and ask the hard questions: ten times the input, a second user, a failure nobody notices. Gaps found now cost an edit.",
+  "problem": "A design document can describe every component and still fail to explain how the system handles its required features. The missing part appears when a second user, larger input or unnoticed failure reaches the design.",
+  "cause": "A component list shows what exists. A defence question follows one feature through load, ownership and failure paths, forcing the document to explain how those pieces work together.",
+  "steps": [
+    "List each feature the design must carry and ask a few hard questions on its behalf. Include scale, concurrency, a broken dependency and who notices when the result is wrong.",
+    "Answer from the design as written, linking the section that provides the mechanism. Mark an unanswered question as a gap, then change the design or name the scope cut before planning the build."
+  ],
+  "solution": "Use the defence record to turn broad confidence into specific claims that can be challenged. Repeat the exercise when a new feature changes what the design must support.",
+  "verification": "Give the record to a reader who did not write the document. They should be able to follow the mechanism and find a concrete answer without relying on the author's spoken explanation.",
+  "limitations": "The quality of the questions still needs judgement. A complete table is useful coverage evidence, but it cannot prove that all important failure modes have been imagined."
+}

@@ -1,4 +1,15 @@
-date: 2026-10-10
-tag: code
-title: "Every branch ends with an exit code and a sign."
-why: "Think of code as a tree of roads. Every dead end should close with a clear status and a message saying why."
+{
+  "date": "2026-10-10",
+  "tag": "code",
+  "title": "Every branch ends with an exit code and a sign.",
+  "why": "Think of code as a tree of roads. Every dead end should close with a clear status and a message saying why.",
+  "problem": "A command that stops without a clear status forces its caller to guess whether work succeeded. A message alone is also weak evidence if automation can only see an exit code of zero.",
+  "cause": "Each branch in control flow ends in a result, whether success, refusal or failure. If those endings are implicit, an unhandled path can look like an ordinary completion.",
+  "steps": [
+    "List the terminal outcomes of the operation and assign documented statuses. Keep successful empty results distinct from missing input, invalid configuration and failed work.",
+    "Route each terminal branch through the appropriate return or exit path, with a short message that explains the reason. Preserve the status through wrappers and pipelines."
+  ],
+  "solution": "Make the program's outcome usable by both a person and another program. The status selects the caller's next action; the message explains what the caller can do about it.",
+  "verification": "Exercise one isolated input for each outcome. Check the structured result or exit status, and check wording only where the message itself is a public contract.",
+  "limitations": "A library usually returns a value or raises a typed exception rather than exiting the process. The same principle applies, but the boundary decides which mechanism is appropriate."
+}

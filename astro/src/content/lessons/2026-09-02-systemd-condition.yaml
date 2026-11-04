@@ -1,4 +1,16 @@
-date: 2026-09-02
-tag: systemd
-title: "In systemd, a failed condition counts as success."
-why: "A false ConditionPathExists skips the unit and reports success, and Before= only sets order. A fail-closed guard needs Requires=."
+{
+  "date": "2026-09-02",
+  "tag": "systemd",
+  "title": "In systemd, a failed condition counts as success.",
+  "why": "A false ConditionPathExists skips the unit and reports success, and Before= only sets order. A fail-closed guard needs Requires=.",
+  "problem": "A service can start even though a supposed prerequisite guard never ran successfully.",
+  "cause": "A false ConditionPathExists skips a unit rather than failing it. Before= establishes order only; it does not make another unit depend on successful validation.",
+  "steps": [
+    "Make the guard perform a real check that exits nonzero on failure.",
+    "Make the protected unit require the guard and order itself after that guard.",
+    "Exercise the missing-input path before trusting the dependency graph."
+  ],
+  "solution": "Illustrative: a missing policy file should fail an explicit validator. Requiring that validator and ordering startup after it makes the intended gate visible in the unit configuration.",
+  "verification": "Start a disposable protected service with valid and missing guard inputs. The valid case should start; a failed validator should prevent protected startup and leave an observable failure.",
+  "limitations": "Requires= alone does not turn a skipped condition into a failure. Startup gating also does not continuously enforce a policy after the protected service has already started."
+}

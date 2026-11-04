@@ -1,4 +1,16 @@
-date: 2026-07-10
-tag: docs
-title: "Silicon docs are full of brackets that aren't links."
-why: "Bit ranges like [31:0] look like Markdown link text. A converter that treats every bracket as a link mangles every register table."
+{
+  "date": "2026-07-10",
+  "tag": "docs",
+  "title": "Silicon docs are full of brackets that aren't links.",
+  "why": "Bit ranges like [31:0] look like Markdown link text. A converter that treats every bracket as a link mangles every register table.",
+  "problem": "A converter can turn literal hardware bit ranges into links and quietly corrupt technical tables.",
+  "cause": "Square brackets serve more than one role. Markdown uses them in link syntax, while register documentation uses forms such as [31:0] as ordinary content. A pattern that treats every bracket pair as a link confuses the two.",
+  "steps": [
+    "Distinguish actual link syntax from literal or escaped bracket text.",
+    "Keep bit ranges as text through conversion and later enrichment.",
+    "Use fixtures with register tables, escaped brackets and real links in the same document."
+  ],
+  "solution": "For example, a register name followed by [7:0] should retain the range exactly, while [guide](target) should remain a link. Test both together so fixing one form does not disable the other.",
+  "verification": "Inspect converted table cells and extracted link targets separately. A text-presence check alone can miss a range that survived in the wrong structure.",
+  "limitations": "This is a syntax distinction, not a reason to disable all bracket handling. Richer Markdown constructs may require a proper parser rather than increasingly broad regular expressions."
+}

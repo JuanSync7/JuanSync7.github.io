@@ -1,4 +1,16 @@
-date: 2026-05-06
-tag: inference
-title: "Context length is paid for in KV cache."
-why: "vLLM must fit one full max-length request (length times per-token KV) or it refuses to start. Longer context means fewer requests fit at once."
+{
+  "date": "2026-05-06",
+  "tag": "inference",
+  "title": "Context length is paid for in KV cache.",
+  "why": "vLLM must fit one full max-length request (length times per-token KV) or it refuses to start. Longer context means fewer requests fit at once.",
+  "problem": "Increasing a server’s advertised context length can prevent startup or reduce the number of requests it can serve at once.",
+  "cause": "The runtime needs cache space for the keys and values associated with input tokens. A larger maximum request consumes more of that fixed memory budget.",
+  "steps": [
+    "Read the configured maximum context length and the reported cache capacity.",
+    "Check that one full-length request fits.",
+    "Choose the supported context and concurrency together, then verify the deployed configuration."
+  ],
+  "solution": "For illustration, a cache that holds 32,000 tokens can fit more short requests than requests near a 16,000-token limit. Advertising a limit above the cache’s total capacity cannot be rescued by testing only short prompts.",
+  "verification": "Expect startup to report enough capacity for the maximum length. Then exercise representative lengths and inspect admission or memory behavior before treating a concurrency estimate as operational capacity.",
+  "limitations": "The arithmetic is a planning model. Model architecture, runtime version and scheduling affect the real capacity, and token capacity should come from the running configuration’s report."
+}

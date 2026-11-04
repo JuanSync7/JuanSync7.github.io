@@ -1,4 +1,16 @@
-date: 2026-07-14
-tag: testing
-title: "Mock the world, then check the mock once."
-why: "Most tests should be fast and mocked. A few unmocked tests on storage, auth and timing prove the mocks aren't lying."
+{
+  "date": "2026-07-14",
+  "tag": "testing",
+  "title": "Mock the world, then check the mock once.",
+  "why": "Most tests should be fast and mocked. A few unmocked tests on storage, auth and timing prove the mocks aren't lying.",
+  "problem": "A test suite can be fast and green while depending on a fake version of storage, authentication or timing that the real system does not provide.",
+  "cause": "Mocks verify behavior under stated assumptions. If those assumptions drift from the real dependency, the test can keep confirming an interface that no longer exists.",
+  "steps": [
+    "Use mocks for most local logic and contract cases.",
+    "Choose a few critical paths where a wrong assumption would be costly.",
+    "Exercise those paths against the real dependency through the same interface production uses."
+  ],
+  "solution": "For example, a mocked database can confirm that save is called. An unmocked check should save, reconnect and read the data back, because persistence across a connection boundary is the property at risk.",
+  "verification": "Compare the observed real behavior with the mock’s contract. Include authentication refusal or a relevant timing boundary rather than testing only a happy path.",
+  "limitations": "The right balance depends on risk and test cost; a fixed mock percentage is not a universal rule. Real-dependency tests also need isolation and repeatable cleanup to remain useful."
+}

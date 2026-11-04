@@ -1,4 +1,16 @@
-date: 2026-07-25
-tag: design
-title: "Between two equal designs, pick the one easier to draw."
-why: "The design that makes a cleaner block diagram is the one you will still understand in a year."
+{
+  "date": "2026-07-25",
+  "tag": "design",
+  "title": "Between two equal designs, pick the one easier to draw.",
+  "why": "The design that makes a cleaner block diagram is the one you will still understand in a year.",
+  "problem": "Two designs can solve the same immediate task while leaving very different amounts of explanation for the next maintainer.",
+  "cause": "A clean block diagram often exposes clear responsibilities and a small number of meaningful interfaces. A design that needs many crossing arrows may be spreading state or policy across too many owners.",
+  "steps": [
+    "Draw both candidate designs at the same level of detail.",
+    "Label the data, ownership and failure behavior at each boundary.",
+    "Prefer the simpler structure when it meets the real requirements and keeps changes local."
+  ],
+  "solution": "For example, a validation stage before storage is easier to reason about than several storage callers each applying a different part of the same rule. The diagram makes the duplicated ownership visible.",
+  "verification": "Walk a normal request, a failure and a likely future change through the chosen diagram. Check whether a reader can locate the responsible module in the code.",
+  "limitations": "A tidy picture can hide complexity by omitting details. Treat ease of drawing as a design test, not proof that the system is correct or that the fewest boxes always win."
+}

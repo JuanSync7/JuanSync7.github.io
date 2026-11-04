@@ -1,4 +1,16 @@
-date: 2026-07-04
-tag: evals
-title: "The instrument needs its own instrument."
-why: "Whatever a checker doesn't compare can regress in silence. Point a check at the grader too, or its blind spots become yours."
+{
+  "date": "2026-07-04",
+  "tag": "evals",
+  "title": "The instrument needs its own instrument.",
+  "why": "Whatever a checker doesn't compare can regress in silence. Point a check at the grader too, or its blind spots become yours.",
+  "problem": "A quality score can remain high while an important property of the output gets worse.",
+  "cause": "A checker measures only the questions it asks. Text recall, for example, can stay perfect when a converter changes table structure or slide order, because all the words remain present.",
+  "steps": [
+    "List the kinds of damage the checker is supposed to detect.",
+    "Build small examples with one known defect at a time.",
+    "Confirm that each defect changes the relevant verdict, and add an independent comparison where practical."
+  ],
+  "solution": "Treat the grader as another system under test. An illustrative table with its columns swapped should fail a structural check even when its text score stays unchanged. The two checks answer different questions.",
+  "verification": "Keep a clean control beside each damaged fixture. The checker should accept the clean case and reject the damaged one for the intended reason.",
+  "limitations": "A mutation proves sensitivity to that mutation, not complete coverage. Independent implementations can still share assumptions, so agreement alone should not be presented as a correctness proof."
+}

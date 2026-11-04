@@ -1,4 +1,16 @@
-date: 2026-09-16
-tag: learning
-title: "Jump in, then work backwards."
-why: "With something new I start from a working example and take it apart until I understand each piece."
+{
+  "date": "2026-09-16",
+  "tag": "learning",
+  "title": "Jump in, then work backwards.",
+  "why": "With something new I start from a working example and take it apart until I understand each piece.",
+  "problem": "A new tool can be easy to run before its behavior is easy to explain.",
+  "cause": "Starting from a working example provides concrete inputs and outputs, but copying it unchanged can hide prerequisites and failure paths. The learning comes from taking apart why each part is present.",
+  "steps": [
+    "Choose a small working example that matches the task.",
+    "Trace one input through its transformations to the output.",
+    "Change one element at a time and explain the resulting behavior before expanding the example."
+  ],
+  "solution": "Illustrative: remove one configuration value and predict what should fail. The difference between the prediction and the result identifies the next piece of the mental model to learn.",
+  "verification": "Explain the example without reciting its code, then rebuild the smallest useful version from that explanation. Note the setup assumptions that were initially invisible.",
+  "limitations": "This is a learning preference from the source, not a proven universal method. It can skip foundations, so check prerequisites explicitly before applying the example to a larger system."
+}

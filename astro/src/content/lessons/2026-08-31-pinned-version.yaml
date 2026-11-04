@@ -1,4 +1,15 @@
-date: 2026-08-31
-tag: config
-title: "Check behaviour on the version you actually run."
-why: "An older pinned binary silently ignored the newer form of a setting. The docs describe the latest; your fleet runs something else."
+{
+  "date": "2026-08-31",
+  "tag": "config",
+  "title": "Check behaviour on the version you actually run.",
+  "why": "An older pinned binary silently ignored the newer form of a setting. The docs describe the latest; your fleet runs something else.",
+  "problem": "A configuration can match current documentation while the installed binary silently ignores the setting that was meant to enforce it.",
+  "cause": "Policy syntax and supported keys change between versions. Valid JSON or a successful startup does not establish that an older client understands a newer setting form.",
+  "steps": [
+    "Record the exact client version and consult the corresponding setting contract, including the accepted value type.",
+    "Test the intended behaviour on that pinned binary before rolling out the policy, then repeat the compatibility check when either side changes."
+  ],
+  "solution": "For a setting that accepts an array in the deployed version, do not substitute an object because a newer reference shows one. Bind the policy release to its supported client versions.",
+  "verification": "Check effective configuration where available and exercise a harmless action the setting should prevent. Expect the pinned client to enforce the decision, not merely accept the file without an error.",
+  "limitations": "A version pin is reproducibility, not proof of security or continued support. Keep an upgrade path and test older clients explicitly if they remain permitted in the fleet."
+}

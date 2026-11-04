@@ -1,4 +1,15 @@
-date: 2026-08-06
-tag: inference
-title: "Without a reasoning parser, thinking leaks into answers."
-why: "Some models close their thinking with </think> but never open it. The server needs the matching parser to split the thought from the reply."
+{
+  "date": "2026-08-06",
+  "tag": "inference",
+  "title": "Without a reasoning parser, thinking leaks into answers.",
+  "why": "Some models close their thinking with </think> but never open it. The server needs the matching parser to split the thought from the reply.",
+  "problem": "A client expecting only an answer can receive the model’s reasoning text, or receive no answer when the token budget runs out before the answer starts.",
+  "cause": "The model’s output format and the server’s parser have to agree. A closing thinking marker without a matching opening marker can defeat a parser chosen for a different template.",
+  "steps": [
+    "Inspect the model’s documented chat template and choose the matching reasoning parser in the serving configuration.",
+    "Send a short diagnostic request and inspect the structured reasoning field, answer field and finish reason separately."
+  ],
+  "solution": "Keep reasoning and the final reply in separate response fields. Budget for both phases rather than setting the token limit to the desired answer length alone.",
+  "verification": "The expected response has answer text in message.content and reasoning in its separate field. A length finish reason with empty content calls for a budget check before blaming the client renderer.",
+  "limitations": "Parser names and response shapes depend on the model and server version. Do not apply one model’s parser setting to every model."
+}

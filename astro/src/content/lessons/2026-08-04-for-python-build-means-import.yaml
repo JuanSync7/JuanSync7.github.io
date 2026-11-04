@@ -1,4 +1,16 @@
-date: 2026-08-04
-tag: build
-title: "For Python, build means import."
-why: "Compiling won't catch a module importing a name another change removed. The gate has to import every module."
+{
+  "date": "2026-08-04",
+  "tag": "build",
+  "title": "For Python, build means import.",
+  "why": "Compiling won't catch a module importing a name another change removed. The gate has to import every module.",
+  "problem": "A Python file can compile even though importing it fails. A removed function name or a missing dependency may only become visible when the module-level imports actually execute.",
+  "cause": "Bytecode compilation checks syntax. It does not establish that a dependency exists, that an imported name is still exported or that module initialization succeeds in the environment the product uses.",
+  "steps": [
+    "List the delivered non-test modules and the interpreter and import roots they require. Make that list explicit rather than relying on whichever modules tests happen to touch.",
+    "Import the declared modules in a fresh interpreter with the project environment. Capture failures per module so one early exception does not hide the rest.",
+    "Keep compilation and runtime tests where they add value, but make a successful import part of the build claim for this kind of Python project."
+  ],
+  "solution": "Define build in terms of the runtime contract. The useful question is whether the delivered module can be loaded where it is meant to run.",
+  "verification": "An illustrative regression removes an exported name that another module imports. Syntax checks can stay green, while the import gate must fail and name the affected module.",
+  "limitations": "Importing modules can execute code. Run the gate in an isolated test environment, and keep external effects out of module initialization."
+}

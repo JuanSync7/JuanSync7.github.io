@@ -1,4 +1,16 @@
-date: 2026-07-25
-tag: data
-title: "pptx slide order isn't in the file names."
-why: "Reordering slides only changes sldIdLst in presentation.xml; slide1.xml keeps its name. Resolve each r:id, and shuffle fixture order so tests can catch it."
+{
+  "date": "2026-07-25",
+  "tag": "data",
+  "title": "pptx slide order isn't in the file names.",
+  "why": "Reordering slides only changes sldIdLst in presentation.xml; slide1.xml keeps its name. Resolve each r:id, and shuffle fixture order so tests can catch it.",
+  "problem": "A slide converter can preserve every slide’s words while presenting the slides in the wrong sequence.",
+  "cause": "PowerPoint stores presentation order in presentation.xml’s sldIdLst. Slide filenames remain stable when slides move, and each list entry resolves through a relationship id to the actual slide part.",
+  "steps": [
+    "Read slide ids in the order listed by sldIdLst.",
+    "Resolve each r:id through presentation.xml.rels.",
+    "Convert the resolved slide parts in that order rather than sorting filenames."
+  ],
+  "solution": "For example, a presentation whose order is slide3, slide1, slide2 must keep that sequence. Sorting the part names would produce a coherent-looking but incorrect document.",
+  "verification": "Build a fixture whose filename order deliberately differs from presentation order. Check the output sequence and the independent expected result, so both sides cannot make the same filename-order mistake.",
+  "limitations": "Hidden slides and custom shows need an explicit output policy. Text recall alone will not detect this ordering defect, and changing conversion order can require updating downstream expectations and structural checks."
+}

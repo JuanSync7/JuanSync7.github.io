@@ -1,4 +1,16 @@
-date: 2026-08-03
-tag: ops
-title: "On a shared host, look for the farm first."
-why: "Size the job and send heavy work to the scheduler. With no farm, run gently. Only on your own machine do you just run it."
+{
+  "date": "2026-08-03",
+  "tag": "ops",
+  "title": "On a shared host, look for the farm first.",
+  "why": "Size the job and send heavy work to the scheduler. With no farm, run gently. Only on your own machine do you just run it.",
+  "problem": "A long test or data job can make everyone else on a shared machine wait. The command may be correct while the place it runs is the wrong choice.",
+  "cause": "A shared login or desktop host has other users whose work is invisible to the current shell. Starting all available workers treats shared capacity as if it belonged to one task.",
+  "steps": [
+    "Estimate the job from previous runs: CPU, peak memory and duration. When there is no previous run, start with a bounded sample rather than assuming the largest allocation is needed.",
+    "Check whether the machine is personal or shared and whether a scheduler is available. Apply the configured resource policy to choose a local run or a submitted job.",
+    "Request the measured resources when submitting. With no scheduler on a shared host, bound the workers and lower priority where appropriate, then observe the effect."
+  ],
+  "solution": "Make placement part of starting the job. A short note saying where it will run and why is easier to review than a slow host after the fact.",
+  "verification": "Check the actual job allocation and peak use after the run. Use that evidence to size the next run instead of repeating the original guess.",
+  "limitations": "A lower process priority does not limit memory, and an idle-looking host may still be shared. Local convenience is not evidence that a heavy job belongs there."
+}

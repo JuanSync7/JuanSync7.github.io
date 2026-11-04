@@ -1,4 +1,16 @@
-date: 2026-06-12
-tag: git
-title: "Git happily stores Foo.md and foo.md."
-why: "Linux sees two files; a case-insensitive checkout sees a collision. Check case-folded uniqueness wherever filenames are generated."
+{
+  "date": "2026-06-12",
+  "tag": "git",
+  "title": "Git happily stores Foo.md and foo.md.",
+  "why": "Linux sees two files; a case-insensitive checkout sees a collision. Check case-folded uniqueness wherever filenames are generated.",
+  "problem": "A repository that works on Linux can fail to check out cleanly on a case-insensitive filesystem when two filenames differ only by case.",
+  "cause": "Git records path names distinctly, while the target filesystem may treat those paths as the same file. One working tree cannot represent both names reliably.",
+  "steps": [
+    "Normalize generated names according to one naming policy.",
+    "Check case-folded uniqueness before writing or accepting paths.",
+    "Reject a collision with both conflicting names so it can be resolved deliberately."
+  ],
+  "solution": "Foo.md and foo.md are different Git entries but can collide on a default Windows checkout. Choosing one canonical spelling before generation avoids leaving the conflict for the next machine to discover.",
+  "verification": "Run the collision check over the full generated path set, including existing tracked files. Expect the example pair to fail even when the check runs on a case-sensitive host.",
+  "limitations": "Case folding is one portability risk. Unicode normalization, reserved names and path-length limits can also matter; a case-only check does not establish complete cross-platform compatibility."
+}

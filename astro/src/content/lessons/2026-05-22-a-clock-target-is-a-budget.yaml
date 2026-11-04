@@ -1,4 +1,16 @@
-date: 2026-05-22
-tag: sta
-title: "A clock target is a budget."
-why: "At 2.6 GHz the period is about 385 ps, shared by PLL jitter, clock-tree skew, variation and setup time. When one share grows, another must shrink."
+{
+  "date": "2026-05-22",
+  "tag": "sta",
+  "title": "A clock target is a budget.",
+  "why": "At 2.6 GHz the period is about 385 ps, shared by PLL jitter, clock-tree skew, variation and setup time. When one share grows, another must shrink.",
+  "problem": "A clock frequency target can look like one number while hiding several competing demands on the same timing window.",
+  "cause": "At 2.6 GHz, one period is about 385 ps. Jitter, clock-tree skew, variation and setup requirements reduce the time available for useful data-path delay.",
+  "steps": [
+    "Convert the frequency target into a period.",
+    "Write down the timing shares and the assumptions behind them.",
+    "Revisit the architecture or target when one share grows beyond its allocation."
+  ],
+  "solution": "For example, if the clock uncertainty increases, that time must come from the remaining path budget unless another share shrinks. Changing the frequency label without revisiting those assumptions leaves the design target inconsistent.",
+  "verification": "Check that the timing constraint defines the intended clock period on the right pins, then compare the budget with the relevant timing analysis. The period calculation alone is not timing closure.",
+  "limitations": "The shares depend on the technology, path and analysis conditions. This is an illustrative budget from the source, not a claim that all timing terms can always be added without checking the tool’s model."
+}

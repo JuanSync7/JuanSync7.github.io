@@ -1,4 +1,16 @@
-date: 2026-07-02
-tag: python
-title: "`import a.b` binds a, not b."
-why: "The name added to your namespace is the top package. Any tool that resolves or patches imports has to follow that rule."
+{
+  "date": "2026-07-02",
+  "tag": "python",
+  "title": "`import a.b` binds a, not b.",
+  "why": "The name added to your namespace is the top package. Any tool that resolves or patches imports has to follow that rule.",
+  "problem": "A code graph or patch target can point at the wrong object even when the import statement itself is valid.",
+  "cause": "Python separates loading a module from binding a local name. With import a.b, the local name is a; treating a.b as the bound name loses the first step of attribute lookup.",
+  "steps": [
+    "Parse the import form and any alias before resolving a later call.",
+    "Track the local binding separately from the fully qualified module path.",
+    "Cover plain imports, aliases and from-imports with small examples."
+  ],
+  "solution": "In an illustrative module, import package.worker makes package.worker.run() reachable through package. By contrast, import package.worker as worker binds worker. A resolver needs both the spelling used locally and the target it denotes.",
+  "verification": "Inspect the module namespace in a small fixture and compare the graph’s resolved target with Python’s actual lookup. Include a case where a package and a function share a name.",
+  "limitations": "Dynamic imports, re-exports and attribute chains need additional rules. Mark unresolved targets rather than turning a partial static analysis into a confident but false edge."
+}

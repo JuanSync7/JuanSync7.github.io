@@ -1,4 +1,16 @@
-date: 2026-09-24
-tag: data
-title: "Fix attribution at the source."
-why: "Scraping logs to guess which job used what is fragile. Have the flow record the job id and its parent when it runs."
+{
+  "date": "2026-09-24",
+  "tag": "data",
+  "title": "Fix attribution at the source.",
+  "why": "Scraping logs to guess which job used what is fragile. Have the flow record the job id and its parent when it runs.",
+  "problem": "Job attribution becomes fragile when a monitoring system has to reconstruct relationships from names and logs after the run.",
+  "cause": "A tool may not record a scheduler job id, and several jobs can share the same user and host. Source-side identifiers preserve a relationship that later heuristics can only infer.",
+  "steps": [
+    "Record the job id and parent id when the flow launches work.",
+    "Attach the feature or resource record at that same point.",
+    "Keep the evidence kind with every derived lineage edge."
+  ],
+  "solution": "Illustrative: an inherited parent-job identifier lets a worker report its origin directly. A matching name prefix can remain a fallback, clearly labelled as inference rather than equivalent proof.",
+  "verification": "Trace a known parent and worker through the recorded fields. Their relationship should be recoverable without guessing from similar names, and missing metadata should remain visible.",
+  "limitations": "Adding a field does not backfill historical runs that never captured it. Instrumentation also needs owner approval and a defined scope so unrelated jobs are not accidentally linked."
+}

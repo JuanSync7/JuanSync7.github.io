@@ -1,4 +1,15 @@
-date: 2026-08-09
-tag: design
-title: "A design is ready when it has a feedback loop."
-why: "If the output can't be checked and fed back to the input, you can't tell whether it works. That loop is my test for 'ready to build'."
+{
+  "date": "2026-08-09",
+  "tag": "design",
+  "title": "A design is ready when it has a feedback loop.",
+  "why": "If the output can't be checked and fed back to the input, you can't tell whether it works. That loop is my test for 'ready to build'.",
+  "problem": "A design can name its components and still leave nobody able to tell whether the result meets the goal.",
+  "cause": "Without a route from output back to a decision, an observed error changes nothing. The design describes production of an output but not how it learns that the output is wrong.",
+  "steps": [
+    "State the end goal without choosing tools, then name the observable result that would demonstrate it.",
+    "Draw the path from that observation back to the input or decision it can change, including who acts and when the loop stops."
+  ],
+  "solution": "For a generated report, identify the source totals, the comparison with those totals and the correction when they disagree. That loop is meaningful before choosing a report engine.",
+  "verification": "Walk one plausible bad output through the drawing. Someone should be able to say how it is detected, what changes next and what result ends the correction.",
+  "limitations": "A feedback loop does not make a goal useful or a measurement accurate. Those choices remain design questions, and some checks need a human rather than automatic retries."
+}

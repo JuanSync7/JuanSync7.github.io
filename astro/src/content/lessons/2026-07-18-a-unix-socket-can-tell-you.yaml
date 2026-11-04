@@ -1,4 +1,16 @@
-date: 2026-07-18
-tag: security
-title: "A Unix socket can tell you who is calling."
-why: "SO_PEERCRED gives the peer's uid, stamped by the kernel, so a local service can identify users without a login. Clients should check the server's uid too."
+{
+  "date": "2026-07-18",
+  "tag": "security",
+  "title": "A Unix socket can tell you who is calling.",
+  "why": "SO_PEERCRED gives the peer's uid, stamped by the kernel, so a local service can identify users without a login. Clients should check the server's uid too.",
+  "problem": "A local broker cannot safely authorize callers from a username they type into the request.",
+  "cause": "On Linux, SO_PEERCRED exposes credentials associated with a connected Unix-domain peer. The kernel supplies this identity, so it is stronger than request text or environment variables the caller can choose.",
+  "steps": [
+    "Read the peer credentials from the connected local socket.",
+    "Map the uid to an allowed identity and refuse unknown callers.",
+    "Have the client verify the expected server uid as well as the server checking the client."
+  ],
+  "solution": "For example, a credential-holding broker can receive a request from a local user while keeping the service key unreadable to that user. Authorization then uses the peer identity, not an arbitrary act-as field.",
+  "verification": "Connect as an allowed and an unmapped local user, and try a socket served by the wrong account in an isolated fixture. Check that each side rejects the wrong peer.",
+  "limitations": "This mechanism applies to supported local Unix sockets, not remote HTTP requests. Shared accounts still collapse identity, and peer authentication does not replace operation-level authorization."
+}

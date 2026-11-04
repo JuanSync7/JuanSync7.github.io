@@ -1,4 +1,16 @@
-date: 2026-09-19
-tag: python
-title: "One blocking call stalls every async route."
-why: "A subprocess or sync DB call inside `async def` freezes the event loop, health checks included. Push it to a thread."
+{
+  "date": "2026-09-19",
+  "tag": "python",
+  "title": "One blocking call stalls every async route.",
+  "why": "A subprocess or sync DB call inside `async def` freezes the event loop, health checks included. Push it to a thread.",
+  "problem": "An asynchronous API can stop answering health requests while one handler waits for a synchronous subprocess.",
+  "cause": "async def does not make the work inside it nonblocking. A blocking function occupies the event-loop thread, preventing other coroutines on that loop from advancing.",
+  "steps": [
+    "Identify synchronous subprocess, database and file calls inside async handlers.",
+    "Use an async-native operation or move suitable blocking work to a bounded worker thread.",
+    "Keep timeouts and cancellation behavior explicit."
+  ],
+  "solution": "Illustrative: await asyncio.to_thread(blocking_probe) lets the event loop serve another request while the probe waits. An async subprocess API can provide more direct process lifecycle control.",
+  "verification": "Run a deliberately slow operation beside a simple health request in a disposable service. The health request should remain responsive while the slow task is still in progress.",
+  "limitations": "Thread offloading does not stop the underlying function automatically when its awaiting request is cancelled. CPU-heavy work, thread safety and pool exhaustion need their own design."
+}

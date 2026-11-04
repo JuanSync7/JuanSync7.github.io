@@ -1,4 +1,16 @@
-date: 2026-09-05
-tag: data
-title: "Use UTC everywhere, and label it."
-why: "Host-local summer time put the same wait on two different dates in one report. Labelled UTC keeps day buckets stable."
+{
+  "date": "2026-09-05",
+  "tag": "data",
+  "title": "Use UTC everywhere, and label it.",
+  "why": "Host-local summer time put the same wait on two different dates in one report. Labelled UTC keeps day buckets stable.",
+  "problem": "The same event can fall on different displayed dates when a report mixes local time with UTC day buckets.",
+  "cause": "Day boundaries belong to a timezone. Summer-time offsets can move an event across midnight, so a locally formatted timestamp may disagree with the server's grouping.",
+  "steps": [
+    "Parse source timestamps using their actual timezone.",
+    "Convert them to UTC before grouping and comparing.",
+    "Label every displayed timestamp and date range with the timezone used."
+  ],
+  "solution": "Illustrative: an event shortly after local midnight may still belong to the previous UTC date. A UTC-labelled table and a UTC-labelled chart can then agree about which bucket contains it.",
+  "verification": "Check events around midnight and a daylight-saving transition. The same instant should retain one UTC bucket across the API, export and visible report.",
+  "limitations": "UTC cannot repair a timestamp that was originally parsed in the wrong zone. A local-time business report may be valid, but its grouping and labels must use that zone consistently."
+}

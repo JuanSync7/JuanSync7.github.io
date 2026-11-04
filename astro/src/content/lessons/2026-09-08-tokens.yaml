@@ -1,4 +1,16 @@
-date: 2026-09-08
-tag: css
-title: "Tokens, never hex."
-why: "Every colour, gap and radius comes from a token. One place to change the theme, and no one-off values creeping in."
+{
+  "date": "2026-09-08",
+  "tag": "css",
+  "title": "Tokens, never hex.",
+  "why": "Every colour, gap and radius comes from a token. One place to change the theme, and no one-off values creeping in.",
+  "problem": "A theme change becomes a series of local fixes when each component owns its own colour and spacing values.",
+  "cause": "Hardcoded values copy a design decision into many places. Shared tokens give that decision one owner, so components can follow the same theme without independently choosing each number.",
+  "steps": [
+    "Define tokens for semantic colours, spacing and radii.",
+    "Replace component literals with the appropriate token.",
+    "Check that both built themes contain every token the UI reads."
+  ],
+  "solution": "Illustrative: changing the panel background token should update every panel assigned that role. A single hardcoded panel remains visibly different and reveals where ownership drifted.",
+  "verification": "Inspect representative components in each supported theme and search for unexplained literals. Required runtime tokens should exist in the built stylesheet as well as in source.",
+  "limitations": "Tokens do not guarantee contrast or a good hierarchy. Several distinct roles can need distinct tokens even when they currently share a value; avoid coupling them merely because the numbers match."
+}

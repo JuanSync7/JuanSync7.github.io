@@ -1,4 +1,15 @@
-date: 2026-10-08
-tag: build
-title: "One shared defines header defeats incremental builds."
-why: "When every file includes a hub header, touching it invalidates everything. Skip-based tools like Bazel or Snakemake save little until such hub files are split."
+{
+  "date": "2026-10-08",
+  "tag": "build",
+  "title": "One shared defines header defeats incremental builds.",
+  "why": "When every file includes a hub header, touching it invalidates everything. Skip-based tools like Bazel or Snakemake save little until such hub files are split.",
+  "problem": "An incremental flow may rebuild almost everything after a tiny edit to a common header. A sophisticated scheduler still sees a legitimate dependency change across the whole project.",
+  "cause": "When many source files include one definitions hub, they all depend on its bytes. A change to an unrelated definition invalidates every consumer because the dependency is tracked at file granularity.",
+  "steps": [
+    "Inspect the include graph and measure the actions invalidated by a representative header edit. Separate genuinely shared definitions from values used by only one subsystem.",
+    "Split definitions along real ownership boundaries and update includes to depend on the smallest relevant header. Keep a shared layer only for definitions that truly belong to every consumer."
+  ],
+  "solution": "Reduce unnecessary dependency edges before expecting a cache to skip much work. The scheduler can reuse only the independence that the source structure actually expresses.",
+  "verification": "Make a local-only definition change in an illustrative trial and inspect the rebuilt action set. Unrelated subsystems should remain reusable, while real consumers still rebuild.",
+  "limitations": "Splitting a header can create awkward include cycles or duplicate definitions if ownership is unclear. Shared interface changes should still invalidate broadly, and hidden inputs remain a separate cache risk."
+}

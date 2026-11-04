@@ -1,4 +1,16 @@
-date: 2026-08-05
-tag: testing
-title: "A skip that looks deliberate hides forever."
-why: "A test that quietly skips on a missing dependency can stay unrun for the life of the project. Make skips loud, or count them as failures."
+{
+  "date": "2026-08-05",
+  "tag": "testing",
+  "title": "A skip that looks deliberate hides forever.",
+  "why": "A test that quietly skips on a missing dependency can stay unrun for the life of the project. Make skips loud, or count them as failures.",
+  "problem": "A green suite can mean that a check passed, or that it never ran. A missing optional dependency can quietly turn a meaningful test into a permanent skip.",
+  "cause": "The harness may interpret an unavailable prerequisite as an expected condition. Unless something records the intended coverage, the same missing dependency can hide a guard on every run.",
+  "steps": [
+    "List which tests are required for the job and which are genuinely optional. Declare the required dependencies in the environment that runs those tests.",
+    "Make the result show the number of executed and skipped checks, with a concrete reason for each skip. Treat a missing required check as a failure.",
+    "Remove a required dependency in an isolated run and confirm that the job refuses to claim success. Audit similar skip patterns rather than fixing one line and assuming the class is covered."
+  ],
+  "solution": "Make absence visible at the level that decides whether the work is complete. A skip can be a useful result when it is explicit and does not silently remove promised coverage.",
+  "verification": "The normal environment should execute the required checks. The deliberately incomplete environment should produce a clear missing-prerequisite failure, not an indistinguishable green verdict.",
+  "limitations": "Some integrations cannot run on every host. Keep those intentional limits documented and visible instead of making every optional environment a hard failure."
+}

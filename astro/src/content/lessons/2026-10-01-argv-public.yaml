@@ -1,4 +1,15 @@
-date: 2026-10-01
-tag: security
-title: "Anything on the command line is public."
-why: "Every user on the host can read argv. Pipe secrets and sensitive names in through stdin."
+{
+  "date": "2026-10-01",
+  "tag": "security",
+  "title": "Anything on the command line is public.",
+  "why": "Every user on the host can read argv. Pipe secrets and sensitive names in through stdin.",
+  "problem": "Passing a token as a command-line option can expose it to another user inspecting processes on a shared host. Removing it from application logs leaves that separate channel open.",
+  "cause": "The operating system keeps the argument vector, often called argv, as process metadata. On hosts without process-visibility restrictions, peers can read that metadata while the process runs.",
+  "steps": [
+    "Check whether the receiving program supports standard input or a protected credential channel. Use a harmless canary value when testing the launch path.",
+    "Send the value through that channel and keep it out of the argument list, shell tracing and error messages. Limit who can read any credential file used along the way."
+  ],
+  "solution": "Keep sensitive launch data separate from the command that identifies the program. This makes process listings useful without turning them into a credential directory.",
+  "verification": "Inspect the running canary process and its captured launch arguments. The canary should reach the receiver while remaining absent from process arguments and diagnostic output.",
+  "limitations": "Process visibility varies by host. Standard input is not a full sandbox, and another process running as the same user may have broader access."
+}

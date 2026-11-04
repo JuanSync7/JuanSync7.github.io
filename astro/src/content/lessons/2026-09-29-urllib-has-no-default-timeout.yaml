@@ -1,4 +1,16 @@
-date: 2026-09-29
-tag: python
-title: "urllib has no default timeout."
-why: "A probe can hang forever unless you set one. Also catch HTTPError, which urllib raises for any non-2xx response."
+{
+  "date": "2026-09-29",
+  "tag": "python",
+  "title": "urllib has no default timeout.",
+  "why": "A probe can hang forever unless you set one. Also catch HTTPError, which urllib raises for any non-2xx response.",
+  "problem": "A network probe can hang long enough to block the rest of a monitoring cycle.",
+  "cause": "urllib can wait without a useful application timeout unless one is supplied. HTTP error responses also take an exception path, so code that expects only a returned status misses part of normal probe behavior.",
+  "steps": [
+    "Supply an explicit timeout for the request.",
+    "Handle HTTPError as a received HTTP outcome and separate it from transport failure.",
+    "Bound the overall probe workflow and report which target failed."
+  ],
+  "solution": "Illustrative: a 503 response is different from a DNS failure or a socket that never responds. A useful probe records those states instead of crashing or waiting indefinitely.",
+  "verification": "Use disposable endpoints for success, HTTP failure and delayed response. Expect a classified result within the intended allowance, including a non-success status when the server answers with an error.",
+  "limitations": "Some redirects are followed automatically, so the original non-2xx shorthand is too broad. Catch HTTPError for responses that reach the error handler. The timeout is not necessarily a strict total wall-clock deadline across DNS, redirects and reads; a hard deadline needs a surrounding execution and cancellation strategy."
+}

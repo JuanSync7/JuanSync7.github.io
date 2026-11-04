@@ -1,4 +1,16 @@
-date: 2026-07-24
-tag: linux
-title: "Group membership doesn't reach an open shell."
-why: "Add yourself to a group and existing sessions still lack it. Log in again, or use newgrp."
+{
+  "date": "2026-07-24",
+  "tag": "linux",
+  "title": "Group membership doesn't reach an open shell.",
+  "why": "Add yourself to a group and existing sessions still lack it. Log in again, or use newgrp.",
+  "problem": "A user can be listed in a new Unix group while a shell they already had open still gets permission denied.",
+  "cause": "A process carries a set of group credentials inherited at launch. Updating the account database does not normally rewrite those credentials in existing processes and their children.",
+  "steps": [
+    "Check the account’s configured membership and the current shell’s effective groups separately.",
+    "Start a fresh login session after the group change, or use an appropriate newgrp session.",
+    "Retry the intended operation from that refreshed context."
+  ],
+  "solution": "For example, a newly opened login may read a group-protected file while an old terminal cannot. Changing file permissions again would treat the symptom without addressing the stale process credentials.",
+  "verification": "Compare the effective group list in the old and new sessions, then perform the actual allowed operation. Check the GID rather than trusting a similar group name.",
+  "limitations": "Directory-service caches and host-local group configuration can add delays or differences. newgrp starts a changed shell context; it does not retroactively update every existing application or service."
+}

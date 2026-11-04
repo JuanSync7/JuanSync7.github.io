@@ -1,4 +1,15 @@
-date: 2026-08-06
-tag: sqlite
-title: "SQLite's WAL mode is unsafe on NFS."
-why: "WAL coordinates writers through shared memory on one host, which a network filesystem can't provide. On NFS, pin the rollback journal mode."
+{
+  "date": "2026-08-06",
+  "tag": "sqlite",
+  "title": "SQLite's WAL mode is unsafe on NFS.",
+  "why": "WAL coordinates writers through shared memory on one host, which a network filesystem can't provide. On NFS, pin the rollback journal mode.",
+  "problem": "A database can appear healthy on a network share while relying on coordination that only works reliably among processes on one machine.",
+  "cause": "SQLite write-ahead logging uses a shared-memory index. Putting the database on NFS does not give separate clients the local shared-memory arrangement WAL expects.",
+  "steps": [
+    "Identify the filesystem holding the database before choosing its journal mode; a familiar pathname may still be an NFS mount.",
+    "For the supported single-writer arrangement, configure rollback journaling explicitly and read the selected journal mode back through the actual connection."
+  ],
+  "solution": "Make the storage assumption part of the database contract. Keep WAL on suitable local storage; reconsider the database choice when clients need shared writes.",
+  "verification": "Reopen through each supported entry point and check the journal mode and recovery behaviour on a disposable database. Configuration text alone does not establish the active mode.",
+  "limitations": "Rollback journaling does not make every network filesystem safe. Locking behaviour and the deployment topology still need validation; a database server may be the better boundary."
+}

@@ -1,4 +1,16 @@
-date: 2026-05-05
-tag: games
-title: "Games teach you to think one move ahead."
-why: "Plan the move, predict the response, adapt. Thousands of hours of that loop turned out to be debugging practice."
+{
+  "date": "2026-05-05",
+  "tag": "games",
+  "title": "Games teach you to think one move ahead.",
+  "why": "Plan the move, predict the response, adapt. Thousands of hours of that loop turned out to be debugging practice.",
+  "problem": "Debugging becomes slow when each change is a reaction to the latest symptom. There is no prediction to compare with what happens next.",
+  "cause": "The gaming loop named in the source is to plan a move, predict the response and adapt. Applied to engineering, it turns an edit into a test of a specific model of the system.",
+  "steps": [
+    "State the current hypothesis and what it predicts.",
+    "Choose one move that should produce a different result if the hypothesis is wrong.",
+    "Compare the response with the prediction before choosing the next move."
+  ],
+  "solution": "For example, if a failure is blamed on cached state, predict what a clean state should change. Then reset only that state and inspect the result, rather than changing the cache and several settings together.",
+  "verification": "Write the expected result before running the experiment. A useful result distinguishes competing explanations, even when it disproves the preferred one.",
+  "limitations": "This is a practical reasoning pattern inspired by the source’s account. It does not establish that time spent gaming causes debugging skill, or replace knowledge of the system being tested."
+}

@@ -1,4 +1,16 @@
-date: 2026-09-30
-tag: aws
-title: "Bedrock has no dollar cap."
-why: "Only token rate limits, and budgets lag by hours. The only hard stop is a gateway in front, and only for traffic that goes through it."
+{
+  "date": "2026-09-30",
+  "tag": "aws",
+  "title": "Bedrock has no dollar cap.",
+  "why": "Only token rate limits, and budgets lag by hours. The only hard stop is a gateway in front, and only for traffic that goes through it.",
+  "problem": "A budget alert can arrive after spending has already crossed the amount an operator meant to enforce.",
+  "cause": "Provider budgets use delayed billing information, while token rate limits constrain throughput rather than dollars. A gateway can enforce its own allowance only on requests that actually pass through it.",
+  "steps": [
+    "Inventory every invocation path and its identity.",
+    "Separate delayed budget backstops from request-time gateway enforcement.",
+    "Check for direct routes that bypass the gateway's accounting and admission rule."
+  ],
+  "solution": "Illustrative: a harness behind a gateway can be stopped while a separate direct client continues spending. Calling the gateway limit a whole-account cap would overstate its reach.",
+  "verification": "Use a controlled allowance to test admitted and denied gateway requests, then verify that the report states which routes were covered. Record reporting lag separately from enforcement behavior.",
+  "limitations": "Concurrent in-flight calls, price estimation and billing adjustments can affect exact totals. Current provider features and gateway settings must be checked before making a hard-dollar guarantee."
+}

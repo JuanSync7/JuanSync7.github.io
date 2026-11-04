@@ -1,4 +1,16 @@
-date: 2026-06-15
-tag: inference
-title: "Check that the GPU shares add up."
-why: "Each model's memory fraction looked fine on its own; together they asked for 1.67 cards. Validate invariants across files before anything starts."
+{
+  "date": "2026-06-15",
+  "tag": "inference",
+  "title": "Check that the GPU shares add up.",
+  "why": "Each model's memory fraction looked fine on its own; together they asked for 1.67 cards. Validate invariants across files before anything starts.",
+  "problem": "Each model configuration can look valid on its own while all the configured instances together reserve more GPU memory than the card can provide.",
+  "cause": "Splitting configuration across files removes the place where a shared resource limit was previously obvious. Per-file validation cannot establish a cross-file invariant.",
+  "steps": [
+    "Load every instance assigned to the same GPU.",
+    "Sum the relevant memory shares and validate the combined budget.",
+    "Reject overcommit before starting any instance and show which allocations caused it."
+  ],
+  "solution": "If three files request fractions that add to 1.67, each fraction can be individually below one while the fleet still asks for more than one card. The validator needs the whole set.",
+  "verification": "Use a fixture whose individual files are valid but whose total exceeds the allowed budget. Expect the fleet check to reject it, then check a valid combined allocation.",
+  "limitations": "A fraction sum is only one invariant. Model weights, caches, runtime overhead and other processes still need headroom; a valid configuration total does not prove the device is currently free."
+}

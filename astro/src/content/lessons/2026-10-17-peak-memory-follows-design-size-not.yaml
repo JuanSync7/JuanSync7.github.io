@@ -1,4 +1,15 @@
-date: 2026-10-17
-tag: eda
-title: "Peak memory follows design size, not input file size."
-why: "Predicting from the size of the input files made forecasts worse. The tool's own log of design size was the signal."
+{
+  "date": "2026-10-17",
+  "tag": "eda",
+  "title": "Peak memory follows design size, not input file size.",
+  "why": "Predicting from the size of the input files made forecasts worse. The tool's own log of design size was the signal.",
+  "problem": "A large input file is not always a large design in memory. Compression, hierarchy and tool processing can make byte size a poor proxy for the state an EDA tool builds internally.",
+  "cause": "Peak memory follows the tool's working representation and effort, not simply the number of input bytes. A feature can look convenient to collect while contributing little predictive information.",
+  "steps": [
+    "Compare candidate signals against a simple baseline using earlier runs for training and later runs for evaluation. Keep the tool and job role visible so unlike workloads are not pooled blindly.",
+    "Inspect design-size information in tool logs and test whether it improves the held-out forecast. Confirm that each signal exists at the point where the forecast is needed."
+  ],
+  "solution": "Choose predictors from measured usefulness rather than convenience. In the reported study, recorded input size did not help, while tool-reported design size was the promising signal to investigate.",
+  "verification": "Compare prediction errors and the share of underestimates on the same held-out jobs. A new feature should improve the intended decision, not merely fit the training data more closely.",
+  "limitations": "A log produced during execution may arrive too late for a pre-submit forecast. The source does not establish a finished design-size predictor, and missing effort data or uncertain job attribution can still limit accuracy."
+}

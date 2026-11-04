@@ -1,4 +1,16 @@
-date: 2026-09-07
-tag: design
-title: "An accent is a spotlight, not a paint."
-why: "One loud colour, one focal point per view. Use it everywhere and nothing stands out."
+{
+  "date": "2026-09-07",
+  "tag": "design",
+  "title": "An accent is a spotlight, not a paint.",
+  "why": "One loud colour, one focal point per view. Use it everywhere and nothing stands out.",
+  "problem": "A bright accent loses its purpose when every control and panel uses it.",
+  "cause": "Visual emphasis depends on contrast with quieter surroundings. Repeating the loud treatment across the whole view makes routine content compete with the action or finding the reader should notice first.",
+  "steps": [
+    "Choose the main task or finding for the view.",
+    "Reserve the strongest accent treatment for that focal element.",
+    "Use neutral text, spacing and weaker lines for supporting structure."
+  ],
+  "solution": "Illustrative: one highlighted action beside neutral secondary controls gives the reader a starting point. Filling all the controls with the same bright colour removes that distinction.",
+  "verification": "Review the complete viewport with real content. A reader should be able to identify the intended focal element before reading every label, while text remains legible on accented surfaces.",
+  "limitations": "Status information can require several colours. Keep those meanings stable and provide text or shape cues as well; one accent is a hierarchy rule, not a reason to erase state."
+}

@@ -1,4 +1,16 @@
-date: 2026-04-10
-tag: testing
-title: "A pass over zero items is a failure."
-why: "A live eval where every case was 'not run' scored a pass. A check that selected nothing has proven nothing."
+{
+  "date": "2026-04-10",
+  "tag": "testing",
+  "title": "A pass over zero items is a failure.",
+  "why": "A live eval where every case was 'not run' scored a pass. A check that selected nothing has proven nothing.",
+  "problem": "A suite can report success even though none of its live cases ran. The result looks green while the behavior it was meant to check remains unknown.",
+  "cause": "The scoring path counted no failures without first requiring any completed work. An empty set therefore satisfied the success condition.",
+  "steps": [
+    "Report selected, completed, skipped and failed cases separately.",
+    "Require the intended cases to complete before returning a passing verdict.",
+    "Make missing credentials or unavailable prerequisites visible as a non-passing result."
+  ],
+  "solution": "A live evaluation with ten selected cases and ten marked “not run” should say it was not evaluated. It should never share the same success signal as ten completed, passing cases.",
+  "verification": "Deliberately remove a required prerequisite and expect the gate to stop or report incomplete execution. Also run a known failing case to check that failure reaches the final verdict.",
+  "limitations": "An intentionally optional suite can be skipped, but the caller must see that distinction. No completed cases means no evidence about the behavior under test."
+}

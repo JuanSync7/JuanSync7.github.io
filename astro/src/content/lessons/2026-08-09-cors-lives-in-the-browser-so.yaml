@@ -1,4 +1,15 @@
-date: 2026-08-09
-tag: frontend
-title: "CORS lives in the browser, so curl proves nothing."
-why: "curl and server-to-server calls ignore CORS. And an error response without CORS headers shows up in the console as a CORS failure."
+{
+  "date": "2026-08-09",
+  "tag": "frontend",
+  "title": "CORS lives in the browser, so curl proves nothing.",
+  "why": "curl and server-to-server calls ignore CORS. And an error response without CORS headers shows up in the console as a CORS failure.",
+  "problem": "An API request can work in curl and still be blocked when a web page makes the same request. The server being reachable does not establish browser access.",
+  "cause": "The browser enforces cross-origin resource sharing, or CORS. Command-line clients do not apply that browser policy, and a server error without CORS headers can hide its real response from page code.",
+  "steps": [
+    "Reproduce from the actual page origin in a browser and inspect both the request and any preflight request.",
+    "Check the allowed origin, method and headers on successful responses and on errors; inspect server logs when the browser cannot expose the response."
+  ],
+  "solution": "Test the path users take. Use curl to isolate transport or server behaviour, then use the browser to establish whether the intended origin can read the result.",
+  "verification": "Expect a permitted page request to expose its response to page code. Also trigger a controlled server error and confirm it remains diagnosable through the intended CORS policy.",
+  "limitations": "A browser failure may also involve authentication, mixed content or networking. CORS headers do not grant server-side authorization and should not replace it."
+}

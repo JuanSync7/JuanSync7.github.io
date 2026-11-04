@@ -1,4 +1,15 @@
-date: 2026-10-12
-tag: linux
-title: "On a RAM-backed /tmp, scratch files are memory."
-why: "Files in tmpfs count against RAM and can dwarf a process's own footprint. Clean up scratch after every slice."
+{
+  "date": "2026-10-12",
+  "tag": "linux",
+  "title": "On a RAM-backed /tmp, scratch files are memory.",
+  "why": "Files in tmpfs count against RAM and can dwarf a process's own footprint. Clean up scratch after every slice.",
+  "problem": "A helper can exit while its temporary files keep consuming a large share of host memory. Looking only at running processes can miss the scratch space left behind.",
+  "cause": "On a tmpfs filesystem, file data uses RAM and may use swap. A directory called /tmp does not necessarily live on disk, and its contents can outlast the process that created them.",
+  "steps": [
+    "Check the mount type and available space on the actual host before choosing a scratch directory. Give each run an identifiable directory and a bounded expected footprint.",
+    "Clean up completed run directories at the workflow boundary, keeping only the artifacts needed for diagnosis. Confirm ownership and retention before removing anything that another process may still need."
+  ],
+  "solution": "Treat RAM-backed scratch as a budgeted shared resource. Fast temporary I/O is useful only while its memory cost leaves room for the rest of the machine.",
+  "verification": "Compare scratch usage before a representative run and after cleanup. Expected temporary growth should return near the starting level, with required outputs preserved elsewhere.",
+  "limitations": "Hosts differ: /tmp can be disk-backed on one machine and tmpfs on another. RAM scratch also changes persistence and timing behaviour, so disk-specific correctness checks still need a disk path."
+}

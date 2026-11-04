@@ -1,4 +1,16 @@
-date: 2026-09-03
-tag: security
-title: "A convenient private install is a governance gap."
-why: "Same fact, seen twice: whatever lets one user run ahead of the fleet also runs outside the fleet's policy."
+{
+  "date": "2026-09-03",
+  "tag": "security",
+  "title": "A convenient private install is a governance gap.",
+  "why": "Same fact, seen twice: whatever lets one user run ahead of the fleet also runs outside the fleet's policy.",
+  "problem": "A private installation can let someone test a newer binary while making fleet version reports incomplete.",
+  "cause": "A package pin governs its package channel. It does not automatically select every executable a user can launch, even when broader managed policy still applies.",
+  "steps": [
+    "Inventory the executable each launcher actually selects.",
+    "Separate approved evaluation builds from the normal fleet path.",
+    "Check both the package pin and the managed version floor when changing releases."
+  ],
+  "solution": "Illustrative: a user-local native binary may run ahead of the managed package. Record that evaluation path explicitly rather than reporting the installed package version as proof of the running version.",
+  "verification": "Launch each supported entry point and inspect its resolved executable and version. Compare those results with the intended fleet and evaluation policies.",
+  "limitations": "A private binary is not proof that all security controls disappear. Managed configuration may still apply across installation methods; the gap must be described at the control it actually bypasses."
+}

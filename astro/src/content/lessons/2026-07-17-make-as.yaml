@@ -1,4 +1,16 @@
-date: 2026-07-17
-tag: make
-title: "Never name a Makefile variable AS."
-why: "AS, CC and CXX are GNU Make built-ins and are never empty, so '--as $(AS)' quietly became '--as as'."
+{
+  "date": "2026-07-17",
+  "tag": "make",
+  "title": "Never name a Makefile variable AS.",
+  "why": "AS, CC and CXX are GNU Make built-ins and are never empty, so '--as $(AS)' quietly became '--as as'.",
+  "problem": "A Make recipe can pass an unintended identity argument even when no developer explicitly configured that variable.",
+  "cause": "GNU Make supplies built-in variables. AS commonly names the assembler, so a recipe using $(AS) as a convenient “act as” parameter can receive as instead of an empty value.",
+  "steps": [
+    "Choose a task-specific variable name such as WHO for the requested identity.",
+    "Inspect the variable’s origin and the expanded recipe while debugging.",
+    "Validate the supplied identity before invoking the downstream command."
+  ],
+  "solution": "For example, --as $(AS) can become --as as. Renaming the configuration avoids a collision with Make’s toolchain namespace and makes the argument’s meaning clearer to callers.",
+  "verification": "Use a dry-run recipe inspection with no override, then with an explicit WHO value. Confirm the default behavior and the expanded argument list before exercising a real privileged operation.",
+  "limitations": "Built-in variables vary with Make settings and platforms, and environment overrides can add more collisions. Namespacing avoids the immediate trap; validation is still needed at the command boundary."
+}

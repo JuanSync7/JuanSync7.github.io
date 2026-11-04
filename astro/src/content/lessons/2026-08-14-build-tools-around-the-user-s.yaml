@@ -1,4 +1,15 @@
-date: 2026-08-14
-tag: agents
-title: "Build tools around the user's question, not the API's pages."
-why: "Paging through raw records burns tokens and context. A tool that answers 'how many, grouped by what' directly is cheaper and harder to misuse."
+{
+  "date": "2026-08-14",
+  "tag": "agents",
+  "title": "Build tools around the user's question, not the API's pages.",
+  "why": "Paging through raw records burns tokens and context. A tool that answers 'how many, grouped by what' directly is cheaper and harder to misuse.",
+  "problem": "An agent asked for a monthly summary can spend its context fetching pages of records instead of answering the question.",
+  "cause": "A record-listing API exposes storage access, not the aggregation the user needs. Asking the model to collect and count everything makes pagination, completeness and arithmetic part of its reasoning burden.",
+  "steps": [
+    "Translate the question into an explicit time range, grouping and measure, then implement that calculation beside the data access code.",
+    "Return the grouped answer with the total population, inspected coverage and any unavailable fields, rather than returning an unbounded record dump."
+  ],
+  "solution": "For “how many tickets by category over 30 days,” expose a bounded aggregation tool. Leave interpretation and possible causes to the model after deterministic counting is complete.",
+  "verification": "Compare the tool with a small known dataset and reconcile group totals with the declared population. Simulate a missing API page and expect partial coverage to remain visible.",
+  "limitations": "Aggregation cannot answer every qualitative question. Keep a bounded way to inspect representative records, and do not describe incomplete collection as a complete report."
+}

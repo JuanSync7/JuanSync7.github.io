@@ -1,4 +1,15 @@
-date: 2026-10-08
-tag: llm
-title: "A neutral API doesn't mean neutral limits."
-why: "One chat API fronts many vendors, yet one model family rejected max tokens below 16 while others accepted 1. Test every model."
+{
+  "date": "2026-10-08",
+  "tag": "llm",
+  "title": "A neutral API doesn't mean neutral limits.",
+  "why": "One chat API fronts many vendors, yet one model family rejected max tokens below 16 while others accepted 1. Test every model.",
+  "problem": "A provider-neutral model API can accept the same request shape while different models reject different parameter values. Testing one model therefore leaves compatibility failures hidden until another is selected.",
+  "cause": "The common interface translates the request, but the model provider still validates its own limits. In the reported example, a one-token output limit worked for some model families and failed for another.",
+  "steps": [
+    "Build a small probe for every model exposed by the application. Keep the request within documented limits and record validation failures separately from access or availability failures.",
+    "Choose shared defaults from the supported range, then store any model-specific constraints in configuration. Record the reason for a changed default so a later cleanup does not undo it."
+  ],
+  "solution": "Preserve the common adapter while testing the differences behind it. The reported probe needed an output allowance of 16 tokens for the model family that rejected 1.",
+  "verification": "Repeat the compatibility sweep when adding models or changing parameters. Every configured model should accept the supported minimal request, or be clearly excluded with its reason.",
+  "limitations": "A minimal successful response proves invocability, not quality or complete feature parity. The reported floor is historical; new models and API changes can introduce different constraints."
+}

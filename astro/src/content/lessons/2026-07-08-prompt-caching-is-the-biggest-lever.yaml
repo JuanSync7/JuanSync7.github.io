@@ -1,4 +1,16 @@
-date: 2026-07-08
-tag: llm
-title: "Prompt caching is the biggest lever on agent cost."
-why: "Agent sessions resend the same long prompt every turn. Cached reads cost a small fraction of fresh input, so most of the bill falls away."
+{
+  "date": "2026-07-08",
+  "tag": "llm",
+  "title": "Prompt caching is the biggest lever on agent cost.",
+  "why": "Agent sessions resend the same long prompt every turn. Cached reads cost a small fraction of fresh input, so most of the bill falls away.",
+  "problem": "A long agent session can spend much of its input budget rereading instructions and context that have not changed.",
+  "cause": "Prompt caching lets a provider reuse an eligible repeated prefix at a lower input price. The saving depends on how much is reused, cache lifetime and the provider’s current pricing.",
+  "steps": [
+    "Put stable instructions and reusable context before frequently changing material.",
+    "Use the provider’s supported cache boundaries and record cache-read and cache-write tokens.",
+    "Compare total cost over a representative session, including the initial cache write."
+  ],
+  "solution": "For example, a stable rule deck followed by the current task can reuse more input than a prompt that inserts changing status text before the deck. Check actual token categories rather than inferring a hit from identical-looking prompts.",
+  "verification": "Compare uncached input, cache writes and cache reads for similar workloads using the correct model prices. Keep output cost separate so the source of the saving remains visible.",
+  "limitations": "Caching is not always the largest lever. Short sessions, changing prefixes and expired entries may gain little, and model choice or smaller context may matter more."
+}

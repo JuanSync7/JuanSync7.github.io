@@ -1,4 +1,16 @@
-date: 2026-09-16
-tag: aws
-title: "Serverless doesn't mean zero idle cost."
-why: "OpenSearch Serverless bills capacity for as long as the collection exists. Compare standing hourly floors before per-query prices."
+{
+  "date": "2026-09-16",
+  "tag": "aws",
+  "title": "Serverless doesn't mean zero idle cost.",
+  "why": "OpenSearch Serverless bills capacity for as long as the collection exists. Compare standing hourly floors before per-query prices.",
+  "problem": "A low-query service can still produce a material bill while sitting idle.",
+  "cause": "Serverless describes who manages capacity, not whether reserved or minimum capacity is free. A collection can have a standing hourly floor before query and ingestion charges are counted.",
+  "steps": [
+    "Compare minimum billed capacity before per-request prices.",
+    "Estimate the cost of keeping the collection alive across the expected month.",
+    "Choose a backend whose standing cost and capabilities match the workload."
+  ],
+  "solution": "Illustrative: an occasionally used knowledge base may spend more on its idle floor than on all its queries. A usage-priced alternative can change that trade-off even if individual requests cost more.",
+  "verification": "Use the current regional pricing and chosen configuration to calculate idle and active scenarios separately. Check actual billing categories after a controlled pilot.",
+  "limitations": "Prices and minimum capacities change. A lower idle bill does not establish equivalent search features, latency, operational behavior or total cost at sustained load."
+}

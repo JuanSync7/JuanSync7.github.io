@@ -1,4 +1,15 @@
-date: 2026-08-15
-tag: docs
-title: "A heading's closing hashes vanish."
-why: "In CommonMark `# Drain procedure #` renders as 'Drain procedure', so a trailing # in a title is silently lost."
+{
+  "date": "2026-08-15",
+  "tag": "docs",
+  "title": "A heading's closing hashes vanish.",
+  "why": "In CommonMark `# Drain procedure #` renders as 'Drain procedure', so a trailing # in a title is silently lost.",
+  "problem": "A converted title can lose a literal hash at its end even though the generated Markdown looks close to the source.",
+  "cause": "In CommonMark, a space followed by trailing hashes can close an ATX heading. Those hashes are syntax, so the renderer omits them from the visible title.",
+  "steps": [
+    "When emitting source text into a Markdown heading, distinguish literal punctuation from the heading marker.",
+    "Escape a literal trailing hash: for example, emit `# Drain procedure \\#` when the visible title must end in a hash."
+  ],
+  "solution": "Test the rendered title rather than comparing raw Markdown alone. The unescaped `# Drain procedure #` and the escaped form carry different visible text.",
+  "verification": "Render both tiny examples with the target parser. Expect the first to show “Drain procedure” and the escaped form to show “Drain procedure #”, with the same heading level.",
+  "limitations": "Escaping rules depend on context. This fixes literal heading content; it does not justify escaping intentional Markdown syntax throughout the document."
+}

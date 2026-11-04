@@ -1,4 +1,16 @@
-date: 2026-07-16
-tag: security
-title: "The prompt is not the boundary."
-why: "Scope has to be enforced by code the model can't talk its way past, like a hook that re-checks arguments and live ownership and fails closed."
+{
+  "date": "2026-07-16",
+  "tag": "security",
+  "title": "The prompt is not the boundary.",
+  "why": "Scope has to be enforced by code the model can't talk its way past, like a hook that re-checks arguments and live ownership and fails closed.",
+  "problem": "A model can follow a scope instruction most of the time while still making an out-of-scope call when context changes or injected text directs it elsewhere.",
+  "cause": "A prompt influences the decision maker; it is not an independent enforcement layer. The same model choosing arguments cannot also provide the final guarantee that those arguments are authorized.",
+  "steps": [
+    "Keep authentication and authorization in code outside the model.",
+    "Allow only known tools and argument shapes, then check live record ownership.",
+    "Refuse unknown tools, missing identity and failed ownership lookups rather than guessing."
+  ],
+  "solution": "For example, a hook can compare a requested record with the authenticated caller before allowing a service-key operation. The model may explain its request, but its explanation cannot override that check.",
+  "verification": "Try cross-user identifiers, extra scope-changing fields and a failed ownership lookup. Each should stop at the enforcing layer, even with persuasive instructions in the model context.",
+  "limitations": "The boundary also depends on protecting the credential and blocking alternate routes. If callers can read the shared key directly, the hook is a workflow guard rather than complete access control."
+}

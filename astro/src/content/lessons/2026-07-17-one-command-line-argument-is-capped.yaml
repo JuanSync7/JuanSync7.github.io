@@ -1,4 +1,16 @@
-date: 2026-07-17
-tag: linux
-title: "One command-line argument is capped at 128 KiB."
-why: "Linux refuses a single argv element over 131,072 bytes, so a big prompt passed as an argument has a hard ceiling. Use stdin or a file."
+{
+  "date": "2026-07-17",
+  "tag": "linux",
+  "title": "One command-line argument is capped at 128 KiB.",
+  "why": "Linux refuses a single argv element over 131,072 bytes, so a big prompt passed as an argument has a hard ceiling. Use stdin or a file.",
+  "problem": "A large prompt can fail before the target program starts when it is placed in one command-line argument.",
+  "cause": "Linux limits individual argument strings as well as the combined argument and environment space. On common 4 KiB-page systems, the per-string ceiling is about 128 KiB, including its terminator.",
+  "steps": [
+    "Check whether the CLI accepts stdin or a prompt file.",
+    "Use that supported input path for large content rather than constructing one huge argv element.",
+    "Keep environment and total invocation size bounded too."
+  ],
+  "solution": "For example, a prompt assembled from several documents can cross the limit even though the model accepts a much larger context. Moving the bytes to stdin addresses the launch boundary, not the model’s own input limit.",
+  "verification": "Try a controlled fixture around the expected boundary, then confirm the program receives the complete stdin or file content. Report launch failure separately from model rejection.",
+  "limitations": "The exact per-string limit depends on platform and page size; 131,072 bytes is not universal. File permissions and retention also matter when prompts contain sensitive content."
+}

@@ -1,4 +1,16 @@
-date: 2026-05-03
-tag: gpu
-title: "Finishing first is not happening-before."
-why: "A write that completed earlier is still not visible to a reader unless the two sync through an acquire-release pair. Clock order is not memory order."
+{
+  "date": "2026-05-03",
+  "tag": "gpu",
+  "title": "Finishing first is not happening-before.",
+  "why": "A write that completed earlier is still not visible to a reader unless the two sync through an acquire-release pair. Clock order is not memory order.",
+  "problem": "A reader can run after a writer in wall-clock time and still have no valid synchronization relationship with that write.",
+  "cause": "Happens-before is an ordering defined by the memory model, not by which operation appeared to finish first. Threads need an appropriate synchronization path to publish and acquire shared state.",
+  "steps": [
+    "Identify the shared data and the flag or event meant to publish it.",
+    "Use the required release operation after the write and matching acquire before the read.",
+    "Check the whole path, including any transitive synchronization through other threads."
+  ],
+  "solution": "For example, write a payload, publish readiness with release semantics, and have the reader acquire that readiness before using the payload. A delay or an observed completion time does not replace that relationship.",
+  "verification": "Trace the actual synchronization edge between the conflicting accesses. A run that happens to return the expected value only shows one execution; it does not establish the memory-order guarantee.",
+  "limitations": "The exact operations and scopes depend on the language and hardware memory model. Use its specified primitives rather than assuming every flag or barrier has the needed semantics."
+}

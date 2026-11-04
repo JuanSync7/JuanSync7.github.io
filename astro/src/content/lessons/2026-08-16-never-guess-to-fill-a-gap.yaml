@@ -1,4 +1,15 @@
-date: 2026-08-16
-tag: data
-title: "Never guess to fill a gap."
-why: "Backfill with NULL or UNKNOWN, so missing stays distinct from zero and later readers can tell the two apart."
+{
+  "date": "2026-08-16",
+  "tag": "data",
+  "title": "Never guess to fill a gap.",
+  "why": "Backfill with NULL or UNKNOWN, so missing stays distinct from zero and later readers can tell the two apart.",
+  "problem": "A historical import can make a missing measurement look like a measured zero, and later reports may treat that invented certainty as data.",
+  "cause": "Defaults carry meaning. Writing 0, false or none says a question was answered, even when the source never supplied an answer.",
+  "steps": [
+    "Define a representation for unknown before importing, keeping it distinct from measured zero, known absence and broken collection.",
+    "Backfill only values that can be derived from preserved evidence; keep authored facts missing until someone can supply them."
+  ],
+  "solution": "For an unrecorded duration, store NULL or the schema’s explicit unknown state. Do not substitute zero merely because the reporting code expects a number.",
+  "verification": "Import a small sample containing a real zero and a missing value. Confirm that both survive storage, export and display as different states, and that aggregation states its treatment of unknowns.",
+  "limitations": "NULL alone may not explain why data is missing. Preserve collection errors and provenance separately where they affect interpretation; unknown must not conceal a failed endpoint."
+}

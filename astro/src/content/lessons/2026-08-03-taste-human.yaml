@@ -1,4 +1,16 @@
-date: 2026-08-03
-tag: design
-title: "Taste stays human."
-why: "AI implements a design well and invents one badly. I set the direction and the templates; the agent fills them in."
+{
+  "date": "2026-08-03",
+  "tag": "design",
+  "title": "Taste stays human.",
+  "why": "AI implements a design well and invents one badly. I set the direction and the templates; the agent fills them in.",
+  "problem": "An agent can produce a technically complete screen that still feels wrong. Correct layout code does not decide which visual direction, level of detail or emphasis suits the person using it.",
+  "cause": "Implementation and judgment are different jobs. Without a clear reference, an agent fills an open design brief with its own defaults, and each local choice can pull the page in another direction.",
+  "steps": [
+    "Choose the purpose of the page and the few things its reader should notice first. Bring examples that show the intended direction.",
+    "Set the reusable structure, tokens and templates before asking the agent to fill in the content or implement the view.",
+    "Look at the rendered result and give concrete corrections: what draws too much attention, what is hard to read and which reference it should move toward."
+  ],
+  "solution": "Keep the direction and final judgment with the human. Use the agent to execute the chosen system consistently and to make alternatives cheap enough to compare.",
+  "verification": "Compare the actual page with the references at the sizes people will use. Passing code checks should sit alongside that visual review, rather than standing in for it.",
+  "limitations": "This is my working preference, not a measured limit on every model or a claim that all human design choices are good."
+}

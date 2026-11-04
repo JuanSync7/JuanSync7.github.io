@@ -1,4 +1,15 @@
-date: 2026-10-07
-tag: security
-title: "Env-var filtering is a seatbelt, not a sandbox."
-why: "Stripping variables cuts accidents. It doesn't stop a process that goes looking for another one's environment."
+{
+  "date": "2026-10-07",
+  "tag": "security",
+  "title": "Env-var filtering is a seatbelt, not a sandbox.",
+  "why": "Stripping variables cuts accidents. It doesn't stop a process that goes looking for another one's environment.",
+  "problem": "A subprocess often inherits credentials it never needed. A helper that prints its environment or forwards it to another tool can then leak a parent process's secrets by accident.",
+  "cause": "Environment inheritance is automatic unless the launcher supplies an explicit replacement. Starting with an empty mapping and adding permitted names makes every inherited capability a deliberate choice.",
+  "steps": [
+    "Define the variable names the child needs, such as the executable search path and required locale settings. Keep secret values out of the allowlist configuration itself.",
+    "Build the child environment from that list at the shared launch boundary. Review explicit exceptions and make direct unfiltered subprocess launches fail a structural check where practical."
+  ],
+  "solution": "Use the allowlist to reduce accidental exposure and make inheritance reviewable. It is a useful default even for helpers that are otherwise trusted.",
+  "verification": "Launch a test helper with canary secrets in the parent environment. Required variables should arrive, and the unlisted canaries should be absent from the child's environment.",
+  "limitations": "This is not process isolation. A same-user child may still read credential files or process metadata, and it may have network access; stronger threats require controls beyond environment filtering."
+}

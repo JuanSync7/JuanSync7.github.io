@@ -1,4 +1,16 @@
-date: 2026-09-13
-tag: security
-title: "SELECT ... INTO is a write."
-why: "A blocklist that trusts anything starting with SELECT lets writes through. Use a read-only transaction and a statement timeout instead."
+{
+  "date": "2026-09-13",
+  "tag": "security",
+  "title": "SELECT ... INTO is a write.",
+  "why": "A blocklist that trusts anything starting with SELECT lets writes through. Use a read-only transaction and a statement timeout instead.",
+  "problem": "A query tool can allow writes even though its text begins with SELECT.",
+  "cause": "A leading keyword is not a semantic security boundary. SELECT INTO and called functions complicate a string-based allow rule, and expensive reads can still exhaust resources.",
+  "steps": [
+    "Use a least-privilege database role.",
+    "Execute each request inside a read-only transaction with a local statement timeout.",
+    "Retain explicit limits for result size and operations that read-only mode does not constrain."
+  ],
+  "solution": "Illustrative: a query-shaped string should still be rejected by the database if it attempts a persistent write. The text filter becomes an additional check rather than the only protection.",
+  "verification": "On a disposable database, try an allowed read, a forbidden write-shaped statement and an overlong query. Expect the read to succeed and the other cases to fail within their stated limits.",
+  "limitations": "Read-only transactions do not forbid every side effect, such as advisory locks. Review the permitted functions and connection behavior as well as transaction mode."
+}

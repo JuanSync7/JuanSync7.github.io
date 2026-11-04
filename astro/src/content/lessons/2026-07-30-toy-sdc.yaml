@@ -1,4 +1,16 @@
-date: 2026-07-30
-tag: synthesis
-title: "Toy constraints give toy answers."
-why: "A synthesis run with simple SDC says little about real timing. Results are only as real as the constraints and libraries you feed in."
+{
+  "date": "2026-07-30",
+  "tag": "synthesis",
+  "title": "Toy constraints give toy answers.",
+  "why": "A synthesis run with simple SDC says little about real timing. Results are only as real as the constraints and libraries you feed in.",
+  "problem": "A synthesis report can look authoritative even when its timing result describes only a simplified exploratory setup.",
+  "cause": "Synthesis optimizes the RTL against supplied libraries and constraints. Missing I/O delays, clock assumptions or timing exceptions change the problem the tool solves, so the result cannot represent requirements it never received.",
+  "steps": [
+    "State whether the run is an early structural check or a realistic implementation estimate.",
+    "Supply the intended library and reviewed clock and interface constraints.",
+    "Inspect unconstrained paths and warnings before interpreting the headline timing result."
+  ],
+  "solution": "For example, a simple clock constraint may be enough to test that RTL elaborates and maps. It does not establish that all real external arrival and required times will be met.",
+  "verification": "Check that expected clocks and path groups exist, review constraint coverage, and compare representative paths against the design intent. Keep the run inputs with its reports.",
+  "limitations": "Even realistic synthesis constraints do not replace timing analysis after physical implementation. A toy run remains useful when its scope is stated clearly and its result is not presented as final closure."
+}

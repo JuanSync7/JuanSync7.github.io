@@ -1,4 +1,15 @@
-date: 2026-08-12
-tag: tls
-title: "Most TLS errors behind a corporate proxy are one missing root."
-why: "An inspecting proxy re-signs traffic. Install its root once and point each tool's bundle at it, and git, pip and containers all recover."
+{
+  "date": "2026-08-12",
+  "tag": "tls",
+  "title": "Most TLS errors behind a corporate proxy are one missing root.",
+  "why": "An inspecting proxy re-signs traffic. Install its root once and point each tool's bundle at it, and git, pip and containers all recover.",
+  "problem": "Several unrelated HTTPS clients can fail certificate verification on the same inspected network, even while the browser connects successfully.",
+  "cause": "An inspecting proxy presents certificates signed by its own certificate authority. A client that does not trust that root cannot verify the substituted chain; different clients may read different bundles.",
+  "steps": [
+    "Inspect the presented chain and obtain the approved inspection root through the organisation’s trusted distribution route.",
+    "Add it to the relevant trust stores and configure each affected client or container to use the intended bundle."
+  ],
+  "solution": "Fix trust at the client’s real boundary. A host trust-store update does not necessarily reach a Python package bundle or a container image, so trace each failing path.",
+  "verification": "Retry the original verified HTTPS operation for each affected tool. Check that it succeeds with verification enabled and that the chain still terminates at the intended trusted authority.",
+  "limitations": "One missing root is a useful shared explanation, not a diagnosis for every TLS failure. Expired certificates, hostname mismatches and blocked protocol upgrades require different fixes."
+}

@@ -1,4 +1,16 @@
-date: 2026-05-10
-tag: ops
-title: "Read the output, not the task status."
-why: "A background run reported success because its wrapper exited cleanly. The file it was meant to write said otherwise."
+{
+  "date": "2026-05-10",
+  "tag": "ops",
+  "title": "Read the output, not the task status.",
+  "why": "A background run reported success because its wrapper exited cleanly. The file it was meant to write said otherwise.",
+  "problem": "A background task can be marked complete even though the command it wrapped failed. Reading only the task status turns a scheduling result into a false success claim.",
+  "cause": "The wrapper reports that it finished managing the task. Its status may not preserve the child command’s real exit code or the contents of the result file.",
+  "steps": [
+    "Locate the run’s actual output record.",
+    "Read the real exit code and the produced artifact.",
+    "Report completion only at the level those records establish."
+  ],
+  "solution": "If a wrapper exits cleanly but the verification file records exit 1, the verification failed. An echoed command or a status field containing the word “success” does not override that record.",
+  "verification": "Compare the wrapper status, child exit and artifact for a deliberately failing command in a safe fixture. Expect the reporting path to preserve the failure rather than promote wrapper completion to a pass.",
+  "limitations": "An output file can also be stale or belong to another run. Match it to the current run identifier and inputs before treating it as evidence."
+}

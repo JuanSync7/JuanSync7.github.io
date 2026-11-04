@@ -1,4 +1,15 @@
-date: 2026-08-10
-tag: integrity
-title: "Read-only is a promise about a path. A hash is a fact about bytes."
-why: "Permissions say who may write. Only a content hash tells you whether anything actually changed."
+{
+  "date": "2026-08-10",
+  "tag": "integrity",
+  "title": "Read-only is a promise about a path. A hash is a fact about bytes.",
+  "why": "Permissions say who may write. Only a content hash tells you whether anything actually changed.",
+  "problem": "A read-only release directory can pass a permissions check while the file being consumed is the wrong version.",
+  "cause": "Permissions describe who may write through a path. They do not establish the content’s identity, detect a previous replacement or prove that the consumer opened the intended file.",
+  "steps": [
+    "Record a content digest from the approved input and carry it with the release reference.",
+    "At the consuming boundary, hash the actual bytes and compare the result with that recorded digest before accepting the artifact."
+  ],
+  "solution": "Use permissions to restrict writes and hashes to check identity. For example, a same-named replacement with a preserved timestamp should still be rejected when its digest differs.",
+  "verification": "On disposable copies, change a byte without changing the filename, then restore the timestamp. The content check should still report a mismatch; a path or timestamp check alone is insufficient.",
+  "limitations": "A matching digest proves agreement with the recorded bytes, not that those bytes are correct or trusted. The reference digest and all declared inputs need protection too."
+}

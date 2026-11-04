@@ -1,4 +1,16 @@
-date: 2026-05-27
-tag: frontend
-title: "Refuse min > max. Don't show an empty page."
-why: "An impossible filter returns no rows, which reads as 'nothing matched'. Reject it on both sides with a message."
+{
+  "date": "2026-05-27",
+  "tag": "frontend",
+  "title": "Refuse min > max. Don't show an empty page.",
+  "why": "An impossible filter returns no rows, which reads as 'nothing matched'. Reject it on both sides with a message.",
+  "problem": "A range filter with its minimum above its maximum returns an empty page. The user can mistake an invalid request for a valid search with no matches.",
+  "cause": "The query is contradictory, but the interface treats it like an ordinary empty result. Client-only validation also leaves the API open to the same ambiguity.",
+  "steps": [
+    "Validate the range in the interface before submitting it.",
+    "Apply the same rule on the server.",
+    "Return a clear invalid-range response and preserve valid zero-valued bounds."
+  ],
+  "solution": "A minimum of 20 and maximum of 10 should ask the user to correct the range. A minimum of zero should remain a real bound, so presence checks must distinguish zero from a missing value.",
+  "verification": "Test min below max, min equal to max, min above max and a zero bound. Expect only the contradictory range to be rejected, with server behavior matching the interface.",
+  "limitations": "Validation must follow the field’s real units and inclusive or exclusive boundary rules. An empty valid result is still legitimate; it should simply be distinguishable from an invalid request."
+}

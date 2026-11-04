@@ -1,4 +1,16 @@
-date: 2026-06-30
-tag: llm
-title: "Let code aggregate. Let the model judge."
-why: "LLMs summarise well and count badly. Do the heavy aggregation in code and hand the model only the part that needs judgment."
+{
+  "date": "2026-06-30",
+  "tag": "llm",
+  "title": "Let code aggregate. Let the model judge.",
+  "why": "LLMs summarise well and count badly. Do the heavy aggregation in code and hand the model only the part that needs judgment.",
+  "problem": "A reporting agent can stall while collecting hundreds of records that a deterministic query could have reduced to a few useful totals.",
+  "cause": "Raw pagination spends context and model effort on counting and grouping. Those operations have exact rules that code can apply before the judgment step.",
+  "steps": [
+    "Define the summary questions and their data scope.",
+    "Compute counts and groups in code or an appropriate server-side aggregation.",
+    "Pass compact results and coverage limits to the model for explanation."
+  ],
+  "solution": "For a monthly ticket summary, return counts and a bounded set of themes rather than asking the model to read every ticket and calculate totals. Keep drill-down available for the records behind a claim.",
+  "verification": "Compare the aggregate with a checked small dataset and confirm the report’s window, filters and completeness. The model should not describe a partial page as the whole population.",
+  "limitations": "The source does not establish a particular time-bucketing implementation. Aggregation still depends on correct queries and access rules, and a compact summary can hide outliers unless the reporting design preserves them."
+}

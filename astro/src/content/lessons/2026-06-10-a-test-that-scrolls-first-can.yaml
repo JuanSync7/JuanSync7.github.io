@@ -1,4 +1,16 @@
-date: 2026-06-10
-tag: frontend
-title: "A test that scrolls first can't see the fold."
-why: "Scrolling the element into view hides what a real first visit shows. Test at the real screen size, from the top."
+{
+  "date": "2026-06-10",
+  "tag": "frontend",
+  "title": "A test that scrolls first can't see the fold.",
+  "why": "Scrolling the element into view hides what a real first visit shows. Test at the real screen size, from the top.",
+  "problem": "A browser test can make a control visible before taking its screenshot, hiding the fact that a new visitor would not see it on the initial screen.",
+  "cause": "Automatic scrolling changes the layout state being tested. A check after scroll answers a different question from a first-visit visibility check.",
+  "steps": [
+    "Set the viewport to the intended user screen size.",
+    "Open the page at the top without scrolling to the target.",
+    "Inspect the first screen before testing later interactions or sections."
+  ],
+  "solution": "For a primary action expected above the fold, check its position in the initial viewport. A locator that scrolls it into view can still be useful for clicking, but it cannot establish initial visibility.",
+  "verification": "Capture the first viewport and check clipping, overlap and the action’s bounds. Repeat at the actual small screen sizes the page supports, not only a large standard screenshot size.",
+  "limitations": "Some content intentionally belongs below the fold. Define which elements must be visible initially, and test keyboard access and later scrolling separately."
+}

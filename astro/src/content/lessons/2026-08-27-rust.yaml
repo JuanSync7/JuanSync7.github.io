@@ -1,4 +1,15 @@
-date: 2026-08-27
-tag: thoughts
-title: "Python for now. Rust is underrated."
-why: "The AI ecosystem pulls everything to Python today. For systems-level infrastructure, where speed starts to matter, Rust is worth a serious look."
+{
+  "date": "2026-08-27",
+  "tag": "thoughts",
+  "title": "Python for now. Rust is underrated.",
+  "why": "The AI ecosystem pulls everything to Python today. For systems-level infrastructure, where speed starts to matter, Rust is worth a serious look.",
+  "problem": "A language choice can become an argument about preference before anyone separates the AI ecosystem needs from the infrastructure’s performance constraints.",
+  "cause": "Python has strong library and integration support for AI work. A systems component may have different needs around memory, speed and deployment, so one language need not serve every layer.",
+  "steps": [
+    "Start with the libraries and integration paths the feature actually requires, using Python where that ecosystem saves substantial work.",
+    "Measure the systems bottleneck before considering a bounded Rust component with an explicit interface back to the rest of the application."
+  ],
+  "solution": "Keep the choice reversible. A narrow service or library boundary is easier to compare and replace than a rewrite justified only by a language’s reputation.",
+  "verification": "Compare representative workload latency, memory use, build effort and operational complexity. Include the cost of crossing the language boundary rather than timing only the inner loop.",
+  "limitations": "This is a stated direction of interest, not a reported benchmark or a decision to rewrite a project. A mature Python implementation may remain the best choice when it already meets the requirements."
+}

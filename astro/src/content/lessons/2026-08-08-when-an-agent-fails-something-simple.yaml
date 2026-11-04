@@ -1,4 +1,15 @@
-date: 2026-08-08
-tag: agents
-title: "When an agent fails something simple, check its context."
-why: "A plain SQL aggregation shouldn't fail. When it does, the cause is usually missing schema or bad orchestration, not the model."
+{
+  "date": "2026-08-08",
+  "tag": "agents",
+  "title": "When an agent fails something simple, check its context.",
+  "why": "A plain SQL aggregation shouldn't fail. When it does, the cause is usually missing schema or bad orchestration, not the model.",
+  "problem": "A small SQL aggregation can fail even when the model knows how to write SQL. Repeating the request with a larger model may leave the real gap untouched.",
+  "cause": "The agent may lack table definitions, time-window rules or a way to inspect an error. Without those inputs it is solving a different problem from the one the operator has in mind.",
+  "steps": [
+    "Give the agent the relevant schema, units and one example row, with the exact aggregation and time range requested.",
+    "Ask it to show the query and inspect the returned error or a small sample before producing the final summary."
+  ],
+  "solution": "For a 30-day total, make the date field, timezone and treatment of missing values explicit. Feed query errors back into the same bounded task instead of restarting without them.",
+  "verification": "Compare a small, hand-checkable subset with the query result. Then inspect the complete query’s filters before trusting the larger total.",
+  "limitations": "Context is a useful first diagnosis, not proof that model capability never matters. Reassess after the task, permissions and feedback path are complete."
+}

@@ -1,4 +1,6 @@
-date: 2026-06-01
-tag: postgres
-title: "Killing psql doesn't kill the query."
-why: "The server backend keeps running after the client dies. Set statement_timeout on ad-hoc queries instead."
+{
+  "date": "2026-06-01",
+  "tag": "postgres",
+  "title": "Killing psql doesn't kill the query.",
+  "why": "The server backend keeps running after the client dies. Set statement_timeout on ad-hoc queries instead."
+}

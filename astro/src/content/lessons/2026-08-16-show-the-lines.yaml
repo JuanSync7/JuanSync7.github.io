@@ -1,4 +1,15 @@
-date: 2026-08-16
-tag: art
-title: "Show the lines."
-why: "I like drawings where you can see the strokes: line art, low-poly, diagrams that look drawn by hand. A diagram that looks drawn reads as a diagram."
+{
+  "date": "2026-08-16",
+  "tag": "art",
+  "title": "Show the lines.",
+  "why": "I like drawings where you can see the strokes: line art, low-poly, diagrams that look drawn by hand. A diagram that looks drawn reads as a diagram.",
+  "problem": "A diagram can become harder to read when visual polish hides the strokes, boundaries and connections that explain its structure.",
+  "cause": "The drawing’s job is to make a system legible. Rendering fidelity can compete with that job when it gives surfaces more weight than the relationships the reader needs.",
+  "steps": [
+    "Choose a line-based style for diagrams and give the important paths a clear, consistent stroke treatment.",
+    "Use labels and a small accent to explain meaning, then remove shading or detail that does not help a reader follow the structure."
+  ],
+  "solution": "For a block diagram, let the boxes, ports and lines remain visible as constructed marks. A code-generated SVG can make that treatment repeatable while keeping the drawing editable.",
+  "verification": "Ask a reader to trace one input through the drawing and identify its output. Check the same route at the size where the diagram will actually be read.",
+  "limitations": "This is a design preference, not a rule for every image. The source distinguishes line-based diagrams from painterly raster imagery; a photograph or texture has a different purpose."
+}

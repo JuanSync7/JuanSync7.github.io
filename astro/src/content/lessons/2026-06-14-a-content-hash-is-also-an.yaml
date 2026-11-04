@@ -1,4 +1,16 @@
-date: 2026-06-14
-tag: integrity
-title: "A content hash is also an address."
-why: "Name a file by the hash of its bytes and the name tells you where it's stored and whether it changed. Git and build caches both work this way."
+{
+  "date": "2026-06-14",
+  "tag": "integrity",
+  "title": "A content hash is also an address.",
+  "why": "Name a file by the hash of its bytes and the name tells you where it's stored and whether it changed. Git and build caches both work this way.",
+  "problem": "A path can stay unchanged while the file at that path is replaced. Using the name as identity can therefore accept stale or incorrect evidence.",
+  "cause": "A content hash derives an identifier from the file’s bytes. In content-addressed storage, that identifier also determines where the object is stored.",
+  "steps": [
+    "Choose and record one hash algorithm and identifier format.",
+    "Compute the digest from the exact bytes being stored.",
+    "Use that digest as the storage key and verify it when reading the object."
+  ],
+  "solution": "If one byte changes, the content identifier should change even when the filename and modification time are restored. A cache can reuse the object only when its declared content identity agrees.",
+  "verification": "Recompute the digest after reading and compare the full identifier. In a disposable fixture, change a byte and expect the old identifier to fail verification.",
+  "limitations": "Byte identity is not semantic identity: two visually equal documents can have different bytes. Hashes also do not prove authorship or permission to use content; they establish integrity under the chosen hash assumptions."
+}

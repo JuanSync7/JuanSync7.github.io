@@ -1,4 +1,16 @@
-date: 2026-06-24
-tag: security
-title: "In a group chat, a bot may only know what everyone may see."
-why: "Its answer is visible to the whole channel, so retrieval must be limited to what every participant is allowed to read."
+{
+  "date": "2026-06-24",
+  "tag": "security",
+  "title": "In a group chat, a bot may only know what everyone may see.",
+  "why": "Its answer is visible to the whole channel, so retrieval must be limited to what every participant is allowed to read.",
+  "problem": "A bot can retrieve a document for one authorized requester and then expose its contents to everyone else in a group conversation.",
+  "cause": "The answer’s audience is larger than the person asking. Retrieval authorization must account for the recipients who can read the reply, including guests.",
+  "steps": [
+    "Establish the audience and its access rules before retrieval.",
+    "Restrict the evidence to material that may be shared with that whole audience.",
+    "If that scope cannot answer the question, refuse or move the question to an appropriately authorized private context."
+  ],
+  "solution": "For example, a private engineering document should not enter a channel answer merely because the person mentioning the bot can read it. The channel’s guest rules need enforcement in code.",
+  "verification": "Test a group with a lower-privilege participant and a document that only some members can read. Expect the group reply to exclude that document and any details derived from it.",
+  "limitations": "This is a design rule, not a claim that the source’s agent already implemented it. Membership changes, cached answers and quoted history also need a clear policy."
+}

@@ -1,4 +1,16 @@
-date: 2026-05-22
-tag: rtl
-title: "Hazards hide between two blocks that each look right."
-why: "Core and accelerator can each pass their own checks while the handoff between them breaks. List the boundary cases early and synchronise retirement across both units."
+{
+  "date": "2026-05-22",
+  "tag": "rtl",
+  "title": "Hazards hide between two blocks that each look right.",
+  "why": "Core and accelerator can each pass their own checks while the handoff between them breaks. List the boundary cases early and synchronise retirement across both units.",
+  "problem": "A core and accelerator can each pass unit checks while their combined behavior violates instruction ordering.",
+  "cause": "The risk sits at dispatch, hazard handling and retirement, where both blocks must agree on ownership and visible architectural state.",
+  "steps": [
+    "List the cross-boundary instruction and hazard cases early.",
+    "Define when an operation is accepted, completed and retired.",
+    "Exercise both units together with checks on the visible retirement order."
+  ],
+  "solution": "For example, an accelerator operation and a later core operation may complete in a different order. Their handoff must still preserve the architectural ordering the design promises, rather than exposing each block’s local completion order directly.",
+  "verification": "Check the combined retirement trace and state changes for the boundary cases. Passing the core’s suite and the accelerator’s suite separately does not establish that the handoff is correct.",
+  "limitations": "The exact hazard set depends on the ISA and integration contract. The lesson is to name and verify the seam; it does not supply a universal retirement protocol for every accelerator."
+}

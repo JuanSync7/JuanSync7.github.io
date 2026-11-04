@@ -1,4 +1,16 @@
-date: 2026-09-21
-tag: design
-title: "The design shouldn't care which library you picked."
-why: "If the architecture can be described without naming components, swapping one is cheap. I swap them often."
+{
+  "date": "2026-09-21",
+  "tag": "design",
+  "title": "The design shouldn't care which library you picked.",
+  "why": "If the architecture can be described without naming components, swapping one is cheap. I swap them often.",
+  "problem": "A design becomes expensive to change when its purpose can only be explained by naming today's libraries.",
+  "cause": "Tight coupling lets one component's interface and storage assumptions spread through the pipeline. Replacing that component then changes several unrelated parts of the system.",
+  "steps": [
+    "Describe the system in terms of roles and information flow.",
+    "Define contracts at those boundaries.",
+    "Keep component-specific translation inside adapters and check the same contract when swapping an implementation."
+  ],
+  "solution": "Illustrative: 'retrieve evidence, rank it, compose an answer' can survive a search-backend change if each stage has an explicit input and output. Backend-specific response objects crossing every boundary make that swap harder.",
+  "verification": "Replace one component with a small alternative in a disposable example. The surrounding stages should continue to satisfy the agreed contract with limited local changes.",
+  "limitations": "A clean diagram does not prove that a migration is cheap. Data format changes, performance assumptions and operational dependencies can still require careful transition work."
+}

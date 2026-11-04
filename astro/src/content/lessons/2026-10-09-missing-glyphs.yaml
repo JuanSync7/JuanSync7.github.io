@@ -1,4 +1,15 @@
-date: 2026-10-09
-tag: linux
-title: "Missing glyphs look like missing words."
-why: "Blank gaps in the terminal were font coverage, not locale. fc-list :charset=<hex> shows which fonts have the character."
+{
+  "date": "2026-10-09",
+  "tag": "linux",
+  "title": "Missing glyphs look like missing words.",
+  "why": "Blank gaps in the terminal were font coverage, not locale. fc-list :charset=<hex> shows which fonts have the character.",
+  "problem": "Blank gaps in terminal output can look like lost words or a broken locale. First separate a problem identifying the character from a problem drawing a valid character.",
+  "cause": "Encoding determines which character the bytes represent; font coverage and selection determine whether it can be drawn. Readable ordinary text alongside a missing symbol is a reason to investigate rendering, rather than change the locale at random.",
+  "steps": [
+    "Identify the affected character and check coverage for its code point with fc-list :charset=<hex>. Compare a working character with the missing one; the related code-point lesson explains this probe in more detail.",
+    "If coverage is absent, consider a suitable user-local fallback font. If coverage exists, inspect font selection and terminal behaviour before installing more fonts or rewriting locale settings."
+  ],
+  "solution": "Let the evidence choose the layer to investigate. A valid character with no covering font points to a glyph gap; a coverage result by itself still leaves font selection and terminal rendering to check.",
+  "verification": "Render a short line containing ordinary text and the affected symbols in the original terminal. After any cache refresh or restart, check both the symbols and neighbouring spacing rather than relying on a font preview.",
+  "limitations": "The source records a recommended installation, not a verified fix. This is the same font-coverage case used in the related code-point lesson, viewed as a diagnosis across layers. The two historical log dates do not establish separate observed failures."
+}

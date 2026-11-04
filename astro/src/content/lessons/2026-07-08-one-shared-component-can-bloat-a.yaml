@@ -1,4 +1,16 @@
-date: 2026-07-08
-tag: frontend
-title: "One shared component can bloat a bundle."
-why: "Sharing a filter control pulled a whole page's code into another chunk, which grew six-fold. Check chunk sizes when you share components."
+{
+  "date": "2026-07-08",
+  "tag": "frontend",
+  "title": "One shared component can bloat a bundle.",
+  "why": "Sharing a filter control pulled a whole page's code into another chunk, which grew six-fold. Check chunk sizes when you share components.",
+  "problem": "Reusing a small interface control can unexpectedly increase the amount of JavaScript another page must load.",
+  "cause": "A component brings its imports with it. If a reusable filter depends on page-level modules, the bundler may pull those modules and their dependencies into the consuming page’s chunk.",
+  "steps": [
+    "Compare the consuming chunk before and after the shared import.",
+    "Inspect the dependency graph to find the large transitive imports.",
+    "Move the small shared contract and control into modules that do not depend on an entire page."
+  ],
+  "solution": "Keep shared UI code close to the data types and behavior it actually needs. In an illustrative split, a filter accepts values and a change callback; it does not import the jobs page to obtain them.",
+  "verification": "Build the affected pages and inspect emitted chunk sizes and their imports. Then exercise the control in both pages to confirm that the smaller boundary preserved behavior.",
+  "limitations": "Bundle size is one cost, and an intentional shared dependency may be worthwhile. The source reports a large chunk increase; this rewrite does not claim it has been removed."
+}

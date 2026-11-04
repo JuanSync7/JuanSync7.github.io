@@ -1,4 +1,16 @@
-date: 2026-09-27
-tag: tls
-title: "AWS CLI v2 ignores the system trust store."
-why: "It ships its own CA bundle, so a proxy root added to the OS does nothing. Set ca_bundle or AWS_CA_BUNDLE."
+{
+  "date": "2026-09-27",
+  "tag": "tls",
+  "title": "AWS CLI v2 ignores the system trust store.",
+  "why": "It ships its own CA bundle, so a proxy root added to the OS does nothing. Set ca_bundle or AWS_CA_BUNDLE.",
+  "problem": "A command-line client can reject an intercepted TLS connection after the same certificate works in a browser.",
+  "cause": "AWS CLI v2 uses its own certificate configuration rather than automatically inheriting every operating-system trust change. The client can therefore remain unaware of an approved proxy root.",
+  "steps": [
+    "Identify the CA bundle the CLI actually uses.",
+    "Configure ca_bundle or AWS_CA_BUNDLE to include the approved trust chain.",
+    "Check each intended profile and the noninteractive environment that will run the command."
+  ],
+  "solution": "Illustrative: updating the operating-system store may repair one client while leaving an AWS login unchanged. Configuring the CLI's explicit bundle addresses that client-specific trust boundary.",
+  "verification": "Repeat a small HTTPS-backed AWS operation with certificate verification enabled. Expect the trust error to disappear before judging credentials or service permissions.",
+  "limitations": "A valid bundle does not grant access or repair an expired session. Keep the approved root source and bundle maintenance clear, since a stale custom bundle can become another source of failures."
+}

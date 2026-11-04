@@ -1,4 +1,15 @@
-date: 2026-08-19
-tag: yaml
-title: "Quote your YAML."
-why: "Bare no, yes, on and off become booleans, and an unquoted id: 42 becomes an int. Identity keys need a type, not a guess."
+{
+  "date": "2026-08-19",
+  "tag": "yaml",
+  "title": "Quote your YAML.",
+  "why": "Bare no, yes, on and off become booleans, and an unquoted id: 42 becomes an int. Identity keys need a type, not a guess.",
+  "problem": "A metadata value that looks like an identifier can arrive in code as a boolean or integer, breaking comparisons and joins that expect text.",
+  "cause": "YAML loaders infer scalar types. Under YAML 1.1-style rules, unquoted yes, no, on and off can become booleans; an unquoted numeric id can become an integer.",
+  "steps": [
+    "Quote values whose contract is text, such as `id: \"42\"` and `status: \"no\"`.",
+    "After loading, validate the resulting types against the schema rather than assuming the source’s appearance establishes its meaning."
+  ],
+  "solution": "Treat quoting as part of the serialized contract. A textual id must remain the same type through parsing, validation and export, even if its characters happen to be digits.",
+  "verification": "Load a small fixture with the actual application loader and inspect both value and type. Expect the quoted examples to remain strings, and reject an inferred integer where the schema requires a string.",
+  "limitations": "Boolean inference differs across YAML versions and loaders. Test the one you ship; quoting text is useful even when a newer loader no longer treats “on” as a boolean."
+}

@@ -1,4 +1,15 @@
-date: 2026-08-21
-tag: ops
-title: "Baked images turn age into version drift."
-why: "A machine built from an old image runs old pins forever. In a baked-image world, how old a host is decides which version it runs."
+{
+  "date": "2026-08-21",
+  "tag": "ops",
+  "title": "Baked images turn age into version drift.",
+  "why": "A machine built from an old image runs old pins forever. In a baked-image world, how old a host is decides which version it runs.",
+  "problem": "A fleet can be built from one standard image process and still run different software versions because its machines were launched from different image generations.",
+  "cause": "An image captures installed packages and pins at bake time. Without an update or replacement policy, older instances retain those captured choices even when a newer image exists.",
+  "steps": [
+    "Record the image version and important package versions with each instance, then inventory the running fleet.",
+    "Set a rebuild and rollout cadence, including how existing instances move to the new image rather than only changing future launches."
+  ],
+  "solution": "Treat the image as a versioned release. When a pin changes, decide whether existing machines are replaced or updated and keep that choice observable.",
+  "verification": "Compare a newly launched instance with an older one against the desired release. Check the actual binary versions as well as image labels, because later in-place changes can separate the two.",
+  "limitations": "Instance age is a warning signal, not a version identifier. Patching or replacement can break the age/version relationship, and rollout timing depends on service availability needs."
+}

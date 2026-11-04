@@ -1,4 +1,16 @@
-date: 2026-05-27
-tag: process
-title: "Keep the claim and today's state in separate columns."
-why: "Mix what it will do with what it does now and you'll be issuing corrections. Two columns keep the claim honest."
+{
+  "date": "2026-05-27",
+  "tag": "process",
+  "title": "Keep the claim and today's state in separate columns.",
+  "why": "Mix what it will do with what it does now and you'll be issuing corrections. Two columns keep the claim honest.",
+  "problem": "A product description can imply that a planned capability already works. Later status reports then need corrections even when the implementation team made no new mistake.",
+  "cause": "A statement about the intended product and a statement about the current build answer different questions. Combining them hides the evidence boundary.",
+  "steps": [
+    "Write the product claim in one column.",
+    "Write the currently supported state and its evidence in another.",
+    "Name the missing work needed to close the gap."
+  ],
+  "solution": "For example, “tracks delivery evidence” can be the product goal while today’s state says which records exist, which checks run and which integrations remain planned. A reader can then assess both the direction and the usable capability.",
+  "verification": "For each current-state sentence, point to a present artifact or recorded check. If the only support is a plan, move it out of the built-state column.",
+  "limitations": "A two-column layout is a writing aid, not an implementation guarantee. Keep the state dated or versioned and revisit it when the product changes."
+}

@@ -1,4 +1,15 @@
-date: 2026-10-15
-tag: ci
-title: "If setup is good, CI should just call it."
-why: "Then every CI run tests the real bootstrap on a fresh machine, and the setup steps can't quietly rot."
+{
+  "date": "2026-10-15",
+  "tag": "ci",
+  "title": "If setup is good, CI should just call it.",
+  "why": "Then every CI run tests the real bootstrap on a fresh machine, and the setup steps can't quietly rot.",
+  "problem": "A repository can pass CI while its documented setup fails for a new developer. This happens when the pipeline installs dependencies through a separate path that nobody maintains as the public bootstrap.",
+  "cause": "Two setup scripts create two descriptions of the required environment. The familiar CI path stays exercised while the developer path quietly misses a tool, configuration step or version constraint.",
+  "steps": [
+    "Make the documented setup command the entry point for both developers and fresh CI workers. Let environment-specific choices be explicit parameters rather than a second handwritten installation sequence.",
+    "Run the normal checks after that setup on a clean workspace. Cache downloads where useful, but keep a check that does not depend on a pre-existing virtual environment or undeclared host package."
+  ],
+  "solution": "Use CI to rehearse the path a new contributor follows. Fixing one bootstrap then repairs both environments and makes the documentation easier to trust.",
+  "verification": "Try the documented command in a clean supported environment and inspect failures for missing prerequisites. A successful check should require only the prerequisites the documentation actually names.",
+  "limitations": "Hosted CI covers its own operating system and network conditions. It cannot prove every developer platform works, and caches or preinstalled tools can still mask a missing setup step."
+}

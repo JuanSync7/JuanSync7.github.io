@@ -1,4 +1,17 @@
-date: 2026-04-05
-tag: git
-title: "Tag after the full gate. Push last."
-why: "The release order that works: changelog, commit, tag locally, run the full gate, then push. It was found by running it, not by planning it."
+{
+  "date": "2026-04-05",
+  "tag": "git",
+  "title": "Tag after the full gate. Push last.",
+  "why": "The release order that works: changelog, commit, tag locally, run the full gate, then push. It was found by running it, not by planning it.",
+  "problem": "A release procedure can fail even when each individual command is valid. The full gate may depend on release metadata that was not present during an earlier check.",
+  "cause": "The order of operations changes the tree and the metadata being verified. A gate run before the local release state exists has checked a different state.",
+  "steps": [
+    "Prepare the changelog and commit the release tree.",
+    "Create the release tag locally.",
+    "Run the complete required gate against that local release state.",
+    "Push the commit and tag only after the gate succeeds."
+  ],
+  "solution": "Treat the tag as local preparation until verification finishes. If a release check reads the version tag, it can now inspect the same version that would be pushed.",
+  "verification": "Inspect the gate’s real result and confirm which commit the local tag resolves to. A successful earlier test run is not a substitute for this release check.",
+  "limitations": "The original title is shorthand; the recorded procedure creates the local tag before the full gate and pushes last. Repositories with different release contracts may need another order."
+}

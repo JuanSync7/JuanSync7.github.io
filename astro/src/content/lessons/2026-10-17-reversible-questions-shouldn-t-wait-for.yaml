@@ -1,4 +1,15 @@
-date: 2026-10-17
-tag: process
-title: "Reversible questions shouldn't wait for me."
-why: "My work stalled while I slept. Now a reversible call is made and logged as what, why and cost if wrong; only irreversible ones wait."
+{
+  "date": "2026-10-17",
+  "tag": "process",
+  "title": "Reversible questions shouldn't wait for me.",
+  "why": "My work stalled while I slept. Now a reversible call is made and logged as what, why and cost if wrong; only irreversible ones wait.",
+  "problem": "Work can stop for hours behind a small question whose answer is easy to change. When the owner is unavailable, an agent may preserve uncertainty by doing nothing even though the next step is reversible.",
+  "cause": "Waiting treats every choice as if it had the same cost of being wrong. A local implementation detail and an irreversible external commitment need different decision boundaries.",
+  "steps": [
+    "Identify what would change, whether it can be undone and the likely cost of a wrong choice. Check the task's existing authority before deciding that work can proceed.",
+    "For a reversible choice within that scope, make a written ruling stating what was chosen, why and how to reverse it. Continue the dependent work and keep the ruling easy for the owner to inspect."
+  ],
+  "solution": "Use the record to support momentum without hiding judgement. It gives the owner a concrete result to review and makes a mistaken assumption cheaper to find and correct.",
+  "verification": "Review the next handoff for silent waits and undocumented choices. A reader should be able to identify the decision, its effect and the recovery path without reconstructing the chat.",
+  "limitations": "Irreversible, external or tightly coupled actions still need the relevant authority. Reversibility is not permission to expand scope, and a cheap local edit can still create expensive downstream obligations."
+}

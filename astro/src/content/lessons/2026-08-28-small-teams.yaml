@@ -1,4 +1,15 @@
-date: 2026-08-28
-tag: teams
-title: "Small teams with guardrails win."
-why: "AI multiplies a small team once linters, rule decks and checklists are in place. Without them it multiplies chaos."
+{
+  "date": "2026-08-28",
+  "tag": "teams",
+  "title": "Small teams with guardrails win.",
+  "why": "AI multiplies a small team once linters, rule decks and checklists are in place. Without them it multiplies chaos.",
+  "problem": "A small team can generate more changes with AI while spending more time untangling inconsistent interfaces, unreviewed assumptions and partially finished work.",
+  "cause": "Fast output magnifies the workflow around it. Without shared contracts and observable completion, each additional change creates more uncertainty for the next person or agent.",
+  "steps": [
+    "Give the team a common set of interfaces, rule decks and required checks before increasing the number of parallel tasks.",
+    "Assign bounded work with explicit completion evidence, and reserve human review for requirements, trade-offs and choices the checks cannot decide."
+  ],
+  "solution": "For a small feature, define its input, output and end-to-end acceptance path. Let tools check syntax and contracts while a reviewer asks whether the result actually serves the user.",
+  "verification": "Try one representative change through the full path. Inspect whether a broken contract is rejected and whether a reviewer can understand the outcome without reconstructing the whole session.",
+  "limitations": "This is a working preference, not a measured claim that every small team beats every large one. Team size, domain knowledge and coordination costs still affect what the workflow can support."
+}

@@ -1,4 +1,16 @@
-date: 2026-07-16
-tag: security
-title: "Knowing who's asking isn't the same as being allowed."
-why: "When an API authenticates the key and not the person, it can't scope by user. The layer in front has to own identity."
+{
+  "date": "2026-07-16",
+  "tag": "security",
+  "title": "Knowing who's asking isn't the same as being allowed.",
+  "why": "When an API authenticates the key and not the person, it can't scope by user. The layer in front has to own identity.",
+  "problem": "A wrapper can know the requesting person while the API behind it still sees one broadly privileged service key.",
+  "cause": "Authentication answers who is calling at a particular boundary. If the destination authenticates only the key, per-person authorization must be enforced before the request uses that key.",
+  "steps": [
+    "Bind the request to identity from a trusted authentication layer.",
+    "Define the allowed tools, arguments and records for that identity.",
+    "Check ownership or other scope rules using current server-side data before protected access."
+  ],
+  "solution": "For example, a caller asking for a ticket id does not establish ownership of that ticket. A service using a broad key must check the relationship rather than trusting a user-supplied email or the model’s description.",
+  "verification": "Test the same operation with an owned and an unowned record, then alter identity-like request fields. Only the authenticated identity should control authorization.",
+  "limitations": "An input hook cannot remove sensitive fields from a response it never inspects. Some broad API operations may need to be excluded or placed behind a stronger filtering service."
+}

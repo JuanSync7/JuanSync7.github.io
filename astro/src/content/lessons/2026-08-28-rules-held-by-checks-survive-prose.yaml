@@ -1,4 +1,15 @@
-date: 2026-08-28
-tag: agents
-title: "Rules held by checks survive. Prose rules drift."
-why: "Across audits, requirements backed by a check stayed true and prose-only governance didn't. Move rules into checks."
+{
+  "date": "2026-08-28",
+  "tag": "agents",
+  "title": "Rules held by checks survive. Prose rules drift.",
+  "why": "Across audits, requirements backed by a check stayed true and prose-only governance didn't. Move rules into checks.",
+  "problem": "A rule written in a guide can disappear from daily practice while the guide still claims the project follows it.",
+  "cause": "Prose depends on each reader remembering and interpreting the rule at the right moment. A required check can make a decidable violation visible on the acceptance path.",
+  "steps": [
+    "For each rule, ask what concrete artifact proves compliance and whether code can decide it reliably.",
+    "Put decidable rules into the normal gate, keep judgment questions in review, and add a deliberately broken example proving the gate rejects the violation."
+  ],
+  "solution": "For a required metadata field, validate its presence and type instead of repeating “remember the field” in more documents. Keep a link to the reason so future maintainers know what the check protects.",
+  "verification": "Run the negative example through the same gate used for real work. Confirm a non-zero result and a specific diagnostic, then confirm a valid case is accepted.",
+  "limitations": "Checks can encode the wrong rule or be disconnected from real acceptance. They do not replace judgment, and the historical audit claim in the original card is a source report rather than a new comparison here."
+}

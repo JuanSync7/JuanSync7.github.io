@@ -1,4 +1,16 @@
-date: 2026-07-04
-tag: build
-title: "Hashing makes inputs reproducible, not outputs."
-why: "Content addressing proves you fed the same things in. Outputs repeat only if the tool is deterministic, and LLM steps often aren't."
+{
+  "date": "2026-07-04",
+  "tag": "build",
+  "title": "Hashing makes inputs reproducible, not outputs.",
+  "why": "Content addressing proves you fed the same things in. Outputs repeat only if the tool is deterministic, and LLM steps often aren't.",
+  "problem": "An input hash can be used to make a stronger reproducibility claim than it actually supports.",
+  "cause": "A digest identifies bytes supplied to a run. It says nothing by itself about random sampling, parallel execution, remote services or hidden inputs that can change the output.",
+  "steps": [
+    "Record input identities and the execution environment separately.",
+    "State whether a step promises repeatable bytes, equivalent meaning or only acceptable quality.",
+    "Keep the produced output and its own digest alongside the run evidence."
+  ],
+  "solution": "For an illustrative language-model step, store the prompt, model identifier and generation settings, then preserve the actual answer. Repeating the same prompt may produce another valid answer; that does not mean either input digest was wrong.",
+  "verification": "Repeat a representative run and compare outputs against the promised level of agreement. If they differ, identify the source of variation instead of calling the hash a failed determinism guarantee.",
+  "limitations": "Even deterministic code needs all relevant inputs declared. A matching hash is evidence of matching captured inputs, not proof that the capture was complete or the result correct."
+}

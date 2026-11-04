@@ -1,4 +1,16 @@
-date: 2026-09-17
-tag: linux
-title: "A oneshot unit takes its background children with it."
-why: "When the service's main process exits, systemd cleans up the unit's processes, so work launched with & silently never finishes."
+{
+  "date": "2026-09-17",
+  "tag": "linux",
+  "title": "A oneshot unit takes its background children with it.",
+  "why": "When the service's main process exits, systemd cleans up the unit's processes, so work launched with & silently never finishes.",
+  "problem": "A background task can vanish when the oneshot service that launched it exits.",
+  "cause": "An ampersand changes shell waiting behavior, but it does not give the child an independent service owner. Under the normal unit cleanup behavior, remaining processes can be terminated when the unit stops.",
+  "steps": [
+    "Keep finite work in the foreground so the service owns its completion.",
+    "If the task must outlive the launcher, give it a separate appropriate service unit.",
+    "Inspect unit status and task output together."
+  ],
+  "solution": "Illustrative: a launcher that starts a long copy with & may exit successfully before the copy finishes. Running the copy as the unit's tracked work makes completion and failure observable.",
+  "verification": "Rehearse with a disposable delayed task. Expect the service to remain responsible until completion and to report a failing task as a failure.",
+  "limitations": "Unit type, KillMode and lifecycle settings affect cleanup. Changing those settings to detach work can create orphan-management problems; model ownership deliberately rather than relying on shell backgrounding."
+}

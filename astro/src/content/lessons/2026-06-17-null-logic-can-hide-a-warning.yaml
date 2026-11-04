@@ -1,4 +1,16 @@
-date: 2026-06-17
-tag: sql
-title: "NULL logic can hide a warning."
-why: "`state='FAILED' AND exit_signal=0` is NULL when the signal is missing, not true, so the warning badge never renders."
+{
+  "date": "2026-06-17",
+  "tag": "sql",
+  "title": "NULL logic can hide a warning.",
+  "why": "`state='FAILED' AND exit_signal=0` is NULL when the signal is missing, not true, so the warning badge never renders.",
+  "problem": "A warning badge can disappear when a database expression returns NULL instead of true or false. The display then looks reassuring while a required value is missing.",
+  "cause": "SQL has three-valued logic. With state equal to FAILED and exit_signal missing, the expression state=FAILED AND exit_signal=0 evaluates to unknown.",
+  "steps": [
+    "List the allowed meaning of a missing signal.",
+    "Handle that case explicitly in the decoding rule.",
+    "Return a defined status for the interface instead of letting NULL silently decide visibility."
+  ],
+  "solution": "If missing signal information should trigger an unknown warning, encode that outcome directly. Do not replace it with zero just to force a Boolean result; that would change the meaning of the record.",
+  "verification": "Check the truth table for failed and non-failed states with zero, nonzero and missing signals. Expect every combination to produce the intended status and badge behavior.",
+  "limitations": "The correct missing-value policy is domain-specific. Explicit handling prevents accidental suppression, but the lesson does not decide that every NULL is a failure or that missing means zero."
+}

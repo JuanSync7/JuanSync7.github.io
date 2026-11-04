@@ -1,4 +1,16 @@
-date: 2026-05-04
-tag: music
-title: "Music taught me structure."
-why: "Grade 8 piano: themes, variations, tension and resolution. The same shapes show up in how I lay out a system."
+{
+  "date": "2026-05-04",
+  "tag": "music",
+  "title": "Music taught me structure.",
+  "why": "Grade 8 piano: themes, variations, tension and resolution. The same shapes show up in how I lay out a system.",
+  "problem": "A system can contain sensible parts and still feel difficult to follow. The problem is often the relationship between parts rather than the quality of any one block.",
+  "cause": "Music offers a useful way to think about structure: a theme returns with variation, tension builds, and resolution gives the earlier material a purpose. The source names piano as one influence on this way of thinking.",
+  "steps": [
+    "Identify the central idea the system or explanation should carry.",
+    "Let each part develop that idea rather than introduce an unrelated direction.",
+    "Return to the main idea at the point where the parts come together."
+  ],
+  "solution": "For example, an architecture explanation can introduce one request, follow how each module changes it, and finish with the resulting response. The repeated request gives the reader a thread through the design.",
+  "verification": "Try removing or moving one section. If the explanation still works exactly the same way, that section may not be advancing the structure.",
+  "limitations": "This is a way to organise thought, not a proof of technical correctness. Interface checks and real requirements still decide whether the system works."
+}

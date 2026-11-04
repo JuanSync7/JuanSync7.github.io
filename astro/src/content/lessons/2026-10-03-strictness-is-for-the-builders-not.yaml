@@ -1,4 +1,15 @@
-date: 2026-10-03
-tag: design
-title: "Strictness is for the builders, not the customer."
-why: "Strict ledgers and gates are taste for systems people rely on. The customer should feel the reliability, not carry the rules."
+{
+  "date": "2026-10-03",
+  "tag": "design",
+  "title": "Strictness is for the builders, not the customer.",
+  "why": "Strict ledgers and gates are taste for systems people rely on. The customer should feel the reliability, not carry the rules.",
+  "problem": "A reliable system can still be unpleasant if users must learn its internal ledger rules before doing ordinary work. Every extra bookkeeping choice competes with the task they came to complete.",
+  "cause": "The engine needs strict records so changes have an owner, a reason and a traceable effect. Those requirements describe how the system preserves trust; they need not become manual chores on every screen.",
+  "steps": [
+    "Start from the user's action and identify which facts the system can collect itself. Record the change as an event and compute which dependent work becomes stale.",
+    "Expose the decision that needs human judgement, such as rerun, defer or waive. Give its cost and consequence rather than asking the user to reconstruct the dependency machinery."
+  ],
+  "solution": "Keep strictness in the underlying mechanism and make the interface explain meaningful choices. A simple action can still create a complete audit record.",
+  "verification": "Walk an ordinary change through the interface, then inspect its record. The user should complete the task while the owner, reason and affected work remain recoverable.",
+  "limitations": "Some regulated or high-risk actions need explicit acknowledgement. Hiding implementation detail must never hide a consequence or turn a proposal into an automatic expensive rerun."
+}

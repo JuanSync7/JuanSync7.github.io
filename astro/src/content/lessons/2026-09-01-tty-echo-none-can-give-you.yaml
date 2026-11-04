@@ -1,4 +1,16 @@
-date: 2026-09-01
-tag: shell
-title: "$(tty || echo none) can give you both."
-why: "tty prints 'not a tty' to stdout and still exits non-zero, so you get two strings. It only shows up in non-interactive runs."
+{
+  "date": "2026-09-01",
+  "tag": "shell",
+  "title": "$(tty || echo none) can give you both.",
+  "why": "tty prints 'not a tty' to stdout and still exits non-zero, so you get two strings. It only shows up in non-interactive runs.",
+  "problem": "An audit record expected to contain one terminal identifier can split across lines during automation.",
+  "cause": "tty writes a diagnostic to standard output when no terminal exists, then exits nonzero. A fallback echo adds another value without removing the first output.",
+  "steps": [
+    "Capture the terminal name only on success.",
+    "Suppress or discard tty's unsuccessful standard output before supplying a single fallback.",
+    "Exercise the audit writer through a noninteractive invocation as well as a terminal."
+  ],
+  "solution": "Illustrative: assigning the output of tty followed by an echo fallback can capture both 'not a tty' and 'none'. Branching on success gives the field exactly one value.",
+  "verification": "Inspect raw records from both invocation modes. Each event should remain one parseable record, and the terminal field should contain either a real terminal name or the agreed missing value.",
+  "limitations": "Suppress only the expected terminal probe output. Other audit failures still need to be visible, and a missing terminal must not be confused with a missing event."
+}

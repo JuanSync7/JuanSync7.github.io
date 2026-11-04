@@ -1,4 +1,16 @@
-date: 2026-07-28
-tag: tooling
-title: "A merge tool can succeed and drop your changes."
-why: "A template update reported success while silently keeping the template's side of conflicted files. Diff the result; don't trust the exit code."
+{
+  "date": "2026-07-28",
+  "tag": "tooling",
+  "title": "A merge tool can succeed and drop your changes.",
+  "why": "A template update reported success while silently keeping the template's side of conflicted files. Diff the result; don't trust the exit code.",
+  "problem": "A template update can exit successfully while leaving important project changes in reject files instead of the resulting source.",
+  "cause": "With some conflict modes, tool success means the update operation completed, not that every conflict was resolved in favor of the intended project behavior. The template side may remain active.",
+  "steps": [
+    "Rehearse the update on a disposable copy with a clean recorded baseline.",
+    "Inspect the diff, reject files and conflict markers after the command.",
+    "Resolve the intended behavior and run the project’s checks before accepting the update."
+  ],
+  "solution": "For example, a local authentication customization moved into a .rej file is no longer active just because the update returned zero. Compare the resulting code and contract, not only the command status.",
+  "verification": "Use a fixture with an intentional project/template conflict and confirm the review procedure discovers it. Exercise the preserved project behavior after resolution.",
+  "limitations": "Conflict handling varies by tool version and options. Follow the actual migration procedure; restarting an interrupted update incorrectly can skip required migrations even when the files look plausible."
+}

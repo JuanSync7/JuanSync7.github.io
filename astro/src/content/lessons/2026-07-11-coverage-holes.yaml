@@ -1,4 +1,16 @@
-date: 2026-07-11
-tag: dft
-title: "Coverage is a number. The holes are the to-do list."
-why: "Pushing ATPG coverage up meant chasing each uncovered fault class one by one. The percentage says how far you are; the holes say what to do next."
+{
+  "date": "2026-07-11",
+  "tag": "dft",
+  "title": "Coverage is a number. The holes are the to-do list.",
+  "why": "Pushing ATPG coverage up meant chasing each uncovered fault class one by one. The percentage says how far you are; the holes say what to do next.",
+  "problem": "A test-coverage percentage tells you how much fault space is covered, but gives little direction for the next repair.",
+  "cause": "ATPG generates manufacturing test patterns against a fault model. Uncovered faults have different causes: some are unreachable, some lack control or observation, and some expose a setup or design problem.",
+  "steps": [
+    "Group uncovered faults by the tool’s reported class and reason.",
+    "Inspect representative faults and trace what prevents activation or observation.",
+    "Change the design, test setup or justified exclusions, then rerun the relevant analysis."
+  ],
+  "solution": "For example, a group of faults behind an incorrectly constrained control should be investigated as a group. Adding patterns blindly may not help when the setup prevents the tool from exercising that logic.",
+  "verification": "Compare fault identities and classifications before and after the change, alongside the percentage. Confirm that improvement came from meaningful coverage rather than quietly excluding difficult faults.",
+  "limitations": "The fault model and coverage denominator matter. A higher ATPG percentage does not prove every possible silicon defect is detectable, and no new coverage result is claimed here."
+}

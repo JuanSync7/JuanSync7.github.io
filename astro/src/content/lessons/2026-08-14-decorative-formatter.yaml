@@ -1,4 +1,15 @@
-date: 2026-08-14
-tag: tooling
-title: "A formatter outside the gate is decoration."
-why: "The format target existed, but nothing ran it in verify or CI. A tool that isn't wired into a gate isn't enforcing anything."
+{
+  "date": "2026-08-14",
+  "tag": "tooling",
+  "title": "A formatter outside the gate is decoration.",
+  "why": "The format target existed, but nothing ran it in verify or CI. A tool that isn't wired into a gate isn't enforcing anything.",
+  "problem": "A repository can contain a format target while accepting every unformatted change. Its presence looks like enforcement without changing what passes.",
+  "cause": "The command is disconnected from the path that decides whether work is accepted. A tool nobody has to run is an available action, not a gate.",
+  "steps": [
+    "Add the formatter’s non-writing check mode to the normal verify target and the CI path used for changes.",
+    "Pin the tool version, then introduce a small formatting violation on a disposable branch to check that the acceptance path rejects it."
+  ],
+  "solution": "Keep automatic rewriting as a separate convenience command. For example, use a format-check dependency in verify so CI reports the violation rather than silently changing the submitted files.",
+  "verification": "The deliberate violation should make the normal gate exit non-zero. After formatting it, the same gate should pass that check and continue to the other required checks.",
+  "limitations": "A formatting gate establishes layout consistency, not readable design or correct behaviour. Large mechanical reformats also deserve a separate change so functional edits remain reviewable."
+}

@@ -1,4 +1,16 @@
-date: 2026-09-19
-tag: python
-title: "Python truthiness eats zero."
-why: "'exit_code or \"not recorded\"' turned a clean exit into missing data. Test for None, not for falsy."
+{
+  "date": "2026-09-19",
+  "tag": "python",
+  "title": "Python truthiness eats zero.",
+  "why": "'exit_code or \"not recorded\"' turned a clean exit into missing data. Test for None, not for falsy.",
+  "problem": "A clean exit can appear as missing data when a fallback expression treats zero like absence.",
+  "cause": "Python's or operator chooses its fallback for any falsy value. Exit code 0 and elapsed time 0 are valid measurements, so truthiness is the wrong missing-value test.",
+  "steps": [
+    "Define which sentinel actually means missing.",
+    "Use an explicit None check before choosing the fallback.",
+    "Carry zero unchanged through the formatter, filter and export."
+  ],
+  "solution": "Illustrative: value if value is not None else 'not recorded' displays an exit code of 0 as zero while still naming an absent record. The distinction changes how a reader interprets the run.",
+  "verification": "Exercise None, 0 and a nonzero value through the real rendering path. Expect all three states to remain distinguishable, including a valid zero threshold in filters.",
+  "limitations": "Empty strings and false booleans may also be valid in other fields. Choose the missing-value rule from the field's contract rather than replacing every or expression mechanically."
+}

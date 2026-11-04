@@ -1,4 +1,15 @@
-date: 2026-10-08
-tag: typography
-title: "Find the code point before blaming the font."
-why: "Name the exact glyph (say U+23FA), check which installed fonts cover it, then add a fallback font in your user font folder. No root needed."
+{
+  "date": "2026-10-08",
+  "tag": "typography",
+  "title": "Find the code point before blaming the font.",
+  "why": "Name the exact glyph (say U+23FA), check which installed fonts cover it, then add a fallback font in your user font folder. No root needed.",
+  "problem": "A terminal symbol can show as a blank even when ordinary text is readable. Before choosing a fallback font, identify the character the terminal is trying to draw.",
+  "cause": "Unicode identifies a character by its code point. Font coverage is a separate question: a familiar monospace font need not contain a glyph for that point.",
+  "steps": [
+    "Identify the missing character precisely, for example U+23FA. Query installed coverage with fc-list :charset=23fa, using the hexadecimal code point rather than guessing from the symbol’s appearance.",
+    "Compare the result with a character that already displays correctly. If no suitable font covers the missing point, choose an appropriate user-local symbols font; then refresh the font cache if needed and restart the terminal."
+  ],
+  "solution": "Use the code point and coverage result to choose a narrow fallback. Keep the main text font when only a few symbols need another source of glyphs.",
+  "verification": "Print the exact character in the affected terminal after any change. It should appear at a sensible width beside ordinary text; a coverage listing alone does not prove the terminal selected the font.",
+  "limitations": "The font installation was recommended, not confirmed applied. The related lesson on missing glyphs uses this same font-coverage example to distinguish encoding from rendering faults. Their dates are historical log dates, not evidence of two separate failures."
+}

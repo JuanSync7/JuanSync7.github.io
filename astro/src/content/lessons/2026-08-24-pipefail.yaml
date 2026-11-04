@@ -1,4 +1,15 @@
-date: 2026-08-24
-tag: shell
-title: "A pipeline ending in tail always exits 0."
-why: "Pipe a failing check into tail and the gate goes green. Use set -o pipefail, or don't pipe the gate."
+{
+  "date": "2026-08-24",
+  "tag": "shell",
+  "title": "A pipeline ending in tail always exits 0.",
+  "why": "Pipe a failing check into tail and the gate goes green. Use set -o pipefail, or don't pipe the gate.",
+  "problem": "A failing check can print an error while the shell reports success after its output is piped through a display command.",
+  "cause": "Without pipefail, a shell normally returns the last command’s status for a pipeline. A successful tail can therefore hide a failed command before it.",
+  "steps": [
+    "For a Bash gate, enable `set -o pipefail` in the shell that actually runs the pipeline, or avoid piping the gate command.",
+    "Keep log trimming separate from the command’s captured status when the surrounding runner needs precise failure reporting."
+  ],
+  "solution": "As an illustrative check, `set -o pipefail; false | tail -n 5` should return non-zero. The failure has no output, which makes the exit status the essential signal.",
+  "verification": "Test a failing producer and a successful producer through the real wrapper. Expect failure to remain non-zero after logging and success to remain successful.",
+  "limitations": "The unchanged title’s “always” is too broad: tail can fail too. Early-closing consumers can also cause SIGPIPE under pipefail, so inspect expected pipeline behaviour rather than blindly enabling it."
+}

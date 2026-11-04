@@ -1,4 +1,16 @@
-date: 2026-07-30
-tag: docs
-title: "A model's default prose sits in the middle of everyone's."
-why: "To make it sound like you, give it your own writing samples and rules a reviewer can check, not adjectives like 'sound human'."
+{
+  "date": "2026-07-30",
+  "tag": "docs",
+  "title": "A model's default prose sits in the middle of everyone's.",
+  "why": "To make it sound like you, give it your own writing samples and rules a reviewer can check, not adjectives like 'sound human'.",
+  "problem": "Asking a model to “sound human” gives it little information about one particular person’s writing.",
+  "cause": "Without examples and concrete decisions, a model fills gaps with common phrasing. Broad adjectives do not tell it how the writer explains causes, marks uncertainty or structures a technical example.",
+  "steps": [
+    "Provide samples the person actually wrote and label their context.",
+    "Extract a few observable rules, such as point first, small words and uncertainty tied to evidence.",
+    "Review a draft against those samples and revise specific weak passages."
+  ],
+  "solution": "For example, “explain the cause with a worked domain example” gives a clearer target than “be authentic.” A reviewer can quote whether the example helped and whether each sentence advanced the explanation.",
+  "verification": "Compare drafts blind using the same underlying facts. Ask which explains the point better and require quoted reasons, rather than accepting a self-reported style score.",
+  "limitations": "Style matching must not invent experiences, feelings or outcomes. Samples guide expression; factual claims still need their own source, and inferred style rules remain proposals until adopted."
+}

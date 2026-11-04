@@ -1,4 +1,16 @@
-date: 2026-09-26
-tag: frontend
-title: "A dashboard page leads with its answer."
-why: "One sentence first, then figures, then tables. Make readers dig and they will quote the wrong number."
+{
+  "date": "2026-09-26",
+  "tag": "frontend",
+  "title": "A dashboard page leads with its answer.",
+  "why": "One sentence first, then figures, then tables. Make readers dig and they will quote the wrong number.",
+  "problem": "A dashboard can make readers choose a number before they understand what question it answers.",
+  "cause": "A table gives many facts equal visual weight. Without a plain-language finding and scope first, a reader may quote a nearby number that measures a different population or period.",
+  "steps": [
+    "Open the page with its main finding and relevant scope.",
+    "Place the supporting figures next.",
+    "Use detailed tables as the evidence readers can inspect after understanding the claim."
+  ],
+  "solution": "Illustrative: a sentence naming the affected job population gives a waste figure context before the reader reaches the per-job table. The detail then supports the answer instead of competing to define it.",
+  "verification": "Ask a reader to state the page's answer, time window and population after a brief scan. Their statement should match the figures and the table's filters.",
+  "limitations": "The opening sentence must be generated from the same current data and filters. A confident summary that ignores stale or incomplete data is more misleading than a dense table."
+}

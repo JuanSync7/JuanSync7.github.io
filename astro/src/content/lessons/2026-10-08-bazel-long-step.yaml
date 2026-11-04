@@ -1,4 +1,15 @@
-date: 2026-10-08
-tag: build
-title: "A build cache skips work. It doesn't speed up one long step."
-why: "EDA regressions spend their time in single long tool runs, and caching only helps once every input is declared."
+{
+  "date": "2026-10-08",
+  "tag": "build",
+  "title": "A build cache skips work. It doesn't speed up one long step.",
+  "why": "EDA regressions spend their time in single long tool runs, and caching only helps once every input is declared.",
+  "problem": "A slow regression is not automatically a caching problem. If most time sits inside one long tool invocation, a new build scheduler cannot make that invocation finish faster.",
+  "cause": "Incremental build tools avoid actions whose declared inputs have not changed. They save repeated work, while hung jobs, slow first runs and hidden dependencies need different corrections.",
+  "steps": [
+    "Break elapsed time into useful execution, waiting, failed work and repeated unchanged work. Compare input revisions between repeated runs rather than treating every repeated job name as a cache opportunity.",
+    "Trial a small representative flow with declared source, tool and configuration inputs. Measure cold and warm runs separately and inspect outputs for deterministic behaviour."
+  ],
+  "solution": "Choose the intervention from the measured loss. Time limits and wrapper fixes may matter more than caching when jobs fail to terminate or hold allocations after useful work ends.",
+  "verification": "Compare total elapsed and compute time before and after the trial. A credible cache benefit comes from avoided unchanged actions, not a claim that the longest action itself became faster.",
+  "limitations": "Undeclared absolute-path reads, tool versions and nondeterministic outputs can make caching unsafe. The historical investigation remained in progress; it did not establish that a new build system was adopted."
+}
