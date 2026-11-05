@@ -1,5 +1,7 @@
 ---
 import { EDGES, LABELS, MAP_H, MAP_W, NODES, STEPS } from '../../data/system-map';
+import SectionHead from '../ui/SectionHead.astro';
+import { SYSTEM } from '../../data/home';
 
 // The map is words and connections, so it is DOM, not a figure (CLAUDE.md, Figures 2):
 // boxes are real text, and one SVG layer underneath carries the connectors.
@@ -10,10 +12,8 @@ const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([
 ---
 
 <section id="system" class="nt-wrap system">
-  <div class="cap">
-    <span class="label">// 0x00 · the system I'm building</span>
-    <span class="key">arrows flow the way data moves · dashed = next</span>
-  </div>
+  <SectionHead label={SYSTEM.label} title={SYSTEM.title} accent={SYSTEM.accent} lead={SYSTEM.lead} />
+  <span class="key">{SYSTEM.key}</span>
 
   {/* Screen readers get the steps below, in reading order; the map is the same story laid
       out for the eye, so it is hidden from them rather than read box by box. */}
@@ -73,25 +73,13 @@ const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([
     display: flex;
     flex-direction: column;
     gap: var(--hf-space-6);
-    padding-top: var(--nt-section-y-tight);
+    padding-top: var(--nt-section-y);
     padding-bottom: var(--nt-section-y);
   }
 
-  .cap {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: var(--hf-space-2) var(--hf-space-6);
+  .key {
     font-family: var(--nt-mono);
     font-size: var(--nt-fs-caption);
-  }
-
-  .label {
-    color: var(--nt-signal);
-    font-size: var(--nt-fs-meta);
-  }
-
-  .key {
     color: var(--nt-ink-muted);
   }
 

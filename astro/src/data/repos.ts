@@ -28,8 +28,6 @@ export const REPOS = {
       facts: [
         { label: 'intent', value: 'customer sentence → GDS' },
         { label: 'unit of work', value: 'one node, one workspace' },
-        { label: 'agent runs', value: '2,200+ review sessions' },
-        { label: 'tests', value: '3,800+' },
         { label: 'built on', value: 'project-keel' },
       ],
     },
