@@ -14,6 +14,7 @@ import {
   type BufferGeometry,
 } from 'three';
 import { defineTemplate } from '../defineTemplate';
+import { defineThreeFigure } from '../defineThree';
 import { camera, project, type Vec3 } from '../kit/camera';
 import { box } from '../kit/draw';
 import { hexOf, ink } from '../kit/ink';
@@ -270,6 +271,7 @@ export default defineTemplate<P, S>({
   title: 'Tabletop still life',
   idea: 'A seeded three-dimensional tabletop of vessels, plants, lamps, books and candles, each given its own clear space; the pointer inspects one object at a time.',
   style: 'three',
+  renderer: defineThreeFigure,
   motion: 'responsive',
   answers: true,
   aspect: 2,

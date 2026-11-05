@@ -1,5 +1,5 @@
 import { defineCanvasFigure } from './define';
-import { defineThreeFigure, type ThreeEnv, type ThreeFrame } from './defineThree';
+import type { defineThreeFigure, ThreeEnv, ThreeFrame } from './defineThree';
 import { mulberry32, type Rng } from './kit/rng';
 import type { CanvasEnv, CanvasFrame, Figure, FigureMeta } from './types';
 
@@ -38,6 +38,8 @@ export interface TemplateSpec<P, S> extends TemplateMeta<P> {
 
 export interface ThreeTemplateSpec<P, S> extends TemplateMeta<P> {
   style: 'three';
+  /** Supplied by the 3D template so canvas templates do not download Three.js. */
+  renderer: typeof defineThreeFigure;
   build(env: ThreeEnv & { params: P }): S;
   update(frame: ThreeFrame<S> & { params: P }): string | void;
   fallback(frame: CanvasFrame<null> & { params: P }): string | void;
@@ -80,7 +82,7 @@ export function defineTemplate<P, S>(spec: TemplateSpec<P, S> | ThreeTemplateSpe
       };
       const figure =
         'build' in spec
-          ? defineThreeFigure<S>({
+          ? spec.renderer<S>({
               ...instanceMeta,
               build: (env) => spec.build({ ...env, params }),
               update: (frame) => spec.update({ ...frame, params }),

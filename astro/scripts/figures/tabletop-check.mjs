@@ -30,6 +30,17 @@ const kinds = new Set();
 const layouts = new Set();
 let objects = 0;
 try {
+  const canvasRuntime = await build({
+    entryPoints: ['src/figures/defineTemplate.ts'],
+    bundle: true,
+    platform: 'browser',
+    write: false,
+    metafile: true,
+  });
+  assert(
+    !Object.keys(canvasRuntime.metafile.inputs).some((path) => path.includes('node_modules/three/')),
+    'Canvas templates should not load Three.js',
+  );
   const out = join(dir, 'scene.mjs');
   await build({
     entryPoints: ['src/figures/templates/pixel-still.ts'],
