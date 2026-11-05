@@ -58,6 +58,9 @@
   .atlas-stage { aspect-ratio: 4 / 3; }
 }
 @media (max-width: 480px) {
+  .atlas-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--hf-space-3); }
+  .atlas-card { padding: var(--hf-space-3); }
+  .atlas-card-name { font-size: var(--nt-fs-small); }
   .atlas-detail { padding: var(--hf-space-5) 0; }
   .atlas-stage-meta, .atlas-stage-foot { padding-inline: 0; }
 }

@@ -36,6 +36,8 @@ export interface HardwareOptions {
   view: HardwareView;
   open: number;
   pick: number;
+  /** A local inspection lift, separate from the assembly opening. */
+  lift?: number;
 }
 export const DEFAULT_OPTIONS: HardwareOptions = {
   mode: 'isometric',

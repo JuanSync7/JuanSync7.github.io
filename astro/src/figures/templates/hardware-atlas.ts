@@ -24,6 +24,7 @@ interface State {
   model: HardwareModel;
   detail: number;
   open: number;
+  lift: number;
   yaw: number;
   pitch: number;
 }
@@ -34,8 +35,8 @@ function options(data: unknown, p: Params): HardwareOptions & { kind: HardwareKi
     mode:
       'mode' in d && (d.mode === 'isometric' || d.mode === 'wireframe') ? d.mode : p.wire ? 'wireframe' : 'isometric',
     view: 'view' in d && (d.view === 'front' || d.view === 'plan') ? d.view : 'three-quarter',
-    open: 'open' in d && typeof d.open === 'number' ? Math.max(0, Math.min(1, d.open)) : 0.6,
-    pick: 'pick' in d && typeof d.pick === 'number' ? Math.trunc(d.pick) : -1,
+    open: 'open' in d && typeof d.open === 'number' && Number.isFinite(d.open) ? Math.max(0, Math.min(1, d.open)) : 0.6,
+    pick: 'pick' in d && typeof d.pick === 'number' && Number.isFinite(d.pick) ? Math.trunc(d.pick) : -1,
   };
 }
 export default defineTemplate<Params, State>({
@@ -54,6 +55,7 @@ export default defineTemplate<Params, State>({
     model: hardwareModel(params.kind, params.detail),
     detail: params.detail,
     open: 0.6,
+    lift: 0,
     yaw: VIEWS['three-quarter'][0],
     pitch: VIEWS['three-quarter'][1],
   }),
@@ -65,7 +67,7 @@ export default defineTemplate<Params, State>({
       state.detail = detail;
     }
     const angle = VIEWS[o.view];
-    const opening = pointer.active && data === undefined ? 1 : o.open;
+    const opening = o.open;
     state.open = still ? opening : follow(state.open, opening, dt, 5);
     state.yaw = still ? angle[0] : follow(state.yaw, angle[0], dt, 5);
     state.pitch = still ? angle[1] : follow(state.pitch, angle[1], dt, 5);
@@ -73,7 +75,10 @@ export default defineTemplate<Params, State>({
     const frame = { ...o, open: state.open };
     let drawing = hardwareDrawing(state.model, frame, w, h, cam, false);
     const selected = pointer.active ? nearestPart(drawing, [pointer.x * w, pointer.y * h, 0]) : o.pick;
-    if (selected !== o.pick) drawing = hardwareDrawing(state.model, { ...frame, pick: selected }, w, h, cam, false);
+    const lift = pointer.active ? 0.14 : 0;
+    state.lift = still ? lift : follow(state.lift, lift, dt, 5);
+    if (selected !== o.pick || state.lift > 0.00001)
+      drawing = hardwareDrawing(state.model, { ...frame, pick: selected, lift: state.lift }, w, h, cam, false);
     paintHardware(ctx, drawing);
     return state.model.parts[selected < 0 ? state.model.parts.length - 1 : selected]?.name ?? 'assembly';
   },

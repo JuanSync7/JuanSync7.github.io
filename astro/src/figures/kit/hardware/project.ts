@@ -51,7 +51,7 @@ export function hardwareDrawing(
   const cam = { ...pose, cx: 0, cy: 0, scale: 1 };
   const volumes = new Map<number, { lo: number[]; hi: number[] }>();
   model.parts.forEach((part, index) => {
-    const offset = index * options.open * 0.5;
+    const offset = index * options.open * 0.5 + (index === options.pick ? (options.lift ?? 0) : 0);
     const all: [number, number][] = [];
     part.surfaces.forEach((s) => {
       if (s.face) {
@@ -97,7 +97,11 @@ export function hardwareDrawing(
     h / 2 + ((y ?? 0) - (minY + maxY) / 2) * scale,
   ];
   const selected = options.pick < 0 ? model.parts.length - 1 : options.pick;
-  const signal = surfaces.filter((s) => s.part === selected && s.area > 0).sort((a, b) => b.area - a.area)[0];
+  const signal = surfaces
+    .filter((s) => s.part === selected && s.area > 0)
+    .sort((a, b) => b.area - a.area || b.depth - a.depth)[0];
+  const nearDepth = Math.max(...surfaces.map((s) => s.depth));
+  const farDepth = Math.min(...surfaces.map((s) => s.depth));
   const wire = options.mode === 'wireframe';
   const solids = new Map<number, { total: number; count: number }>();
   for (const surface of surfaces) {
@@ -137,7 +141,8 @@ export function hardwareDrawing(
     .map((s): HardwarePath => {
       const points = s.points.map(fit);
       const far = s.face && s.area <= 0;
-      const alpha = far ? 0.1 : s.face ? 0.48 : 0.3;
+      const near = (s.depth - farDepth) / (nearDepth - farDepth || 1);
+      const alpha = far ? 0.1 : s.face ? 0.28 + near * 0.3 : 0.18 + near * 0.18;
       return {
         points,
         part: s.part,

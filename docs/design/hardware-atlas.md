@@ -41,6 +41,7 @@ by vertical separation before projected depth. Faces paint before their own surf
 markings. A single visible face outlines the selected part in teal. Wireframes intentionally
 show the internal and rear edges at lower opacity.
 
+Pointer inspection lifts only the selected part, using its unlifted position for picking.
 Camera presets interpolate through the existing clock's `follow`; they never spin with
 time. Reduced motion snaps to the requested pose. Each camera fits every point of the
 whole assembly, including all lifted parts. Canvas avoids SVG path-string formatting in
@@ -52,7 +53,7 @@ Use `<HardwareIcon kind="processor" mode="wireframe" />`. Optional `view`, `open
 `pick` (part index) and `decorative` props select the composition and accessible treatment.
 The component is demonstrated in `/design-system/`.
 
-`npm run hardware:export` creates 24 standalone SVGs, a sprite with stable IDs such as
+`npm run hardware:export` creates 24 standalone SVGs, twelve additional exploded poses, a sprite with stable IDs such as
 `processor-isometric`, and numbered contact sheets in the ignored `astro/hardware-out/`.
 SVGs use separate paint and opacity attributes for SVG 1.1 consumers; there are no scripts,
 external fonts, bitmap assets or network references. Their outer background is transparent;
