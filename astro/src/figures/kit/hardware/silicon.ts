@@ -2,7 +2,7 @@ import type { Draft } from './primitives';
 
 export function processor(p: Draft, n: number): void {
   p.part('Contact array', 'The package contacts carry power and signals to the board.');
-  p.tiles(0, 0, 0, n + 3, n + 3, 0.14, 0.065);
+  p.tiles(0, 0.045, 0, n + 3, n + 3, 0.14, 0.065);
   p.part('Package substrate', 'Routing in the substrate spreads the die connections out to the board pitch.');
   p.box(0, 0.07, 0, 1.65, 0.11, 1.65, 0.09);
   p.part('Silicon die', 'Repeated compute blocks surround a central shared region. The layout is illustrative.');
@@ -44,17 +44,17 @@ export function board(p: Draft, n: number): void {
   p.box(0, 0, 0, 1.9, 0.09, 1.45, 0.07);
   for (const x of [-0.82, 0.82]) for (const z of [-0.6, 0.6]) p.ring(x, 0.091, z, 0.045);
   for (let k = 0; k < n + 2; k++) {
-    const z = -0.42 + k * 0.14;
+    const z = -0.3 + (k * 0.5) / (n + 1);
     p.line([
-      [-0.29, 0.092, z],
+      [-0.43, 0.092, z],
       [-0.58, 0.092, z],
       [-0.58, 0.092, 0.57],
       [-0.68, 0.092, 0.57],
     ]);
     p.line([
-      [0.29, 0.092, z],
-      [0.59 + k * 0.035, 0.092, z],
-      [0.59 + k * 0.035, 0.092, 0.49],
+      [0.19, 0.092, z],
+      [0.59 + k * 0.025, 0.092, z],
+      [0.59 + k * 0.025, 0.092, 0.49],
     ]);
   }
   p.part('Processor and memory', 'The main processor sits beside separate memory and supporting components.');
@@ -75,11 +75,14 @@ export function accelerator(p: Draft, n: number): void {
   p.part('Silicon interposer', 'A common routing surface connects the compute die to the surrounding memory.');
   p.box(0, 0.17, 0, 1.78, 0.055, 1.36);
   for (const sign of [-1, 1])
-    for (let i = 0; i < n + 2; i++)
-      p.line([
-        [sign * 0.43, 0.226, -0.48 + i * 0.17],
-        [sign * 0.78, 0.226, -0.48 + i * 0.17],
-      ]);
+    for (const centre of [-0.4, 0.4])
+      for (let i = 0; i < n + 2; i++) {
+        const z = centre - 0.13 + (i * 0.26) / (n + 1);
+        p.line([
+          [sign * 0.4, 0.226, z],
+          [sign * 0.48, 0.226, z],
+        ]);
+      }
   p.part('Compute die', 'Repeated compute tiles occupy the centre of the package.');
   p.box(0, 0.25, 0, 0.8, 0.13, 1.08);
   p.tiles(0, 0.381, 0, 3, n + 1, 0.2, 0.13);

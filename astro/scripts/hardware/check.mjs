@@ -19,6 +19,34 @@ try {
           assert.ok(surface.points.length >= 2 && surface.points.flat().every(Number.isFinite), `${kind}: finite geometry`);
         }
       }
+      if (kind === 'board' || kind === 'accelerator') {
+        const footprints = (part) => {
+          const groups = new Map();
+          for (const surface of part.surfaces.filter((s) => s.face)) {
+            const points = groups.get(surface.solid) ?? [];
+            points.push(...surface.points);
+            groups.set(surface.solid, points);
+          }
+          return [...groups.values()].map((points) => ({
+            x0: Math.min(...points.map((p) => p[0])), x1: Math.max(...points.map((p) => p[0])),
+            z0: Math.min(...points.map((p) => p[2])), z1: Math.max(...points.map((p) => p[2])),
+          }));
+        };
+        const contains = (box, point) => point[0] >= box.x0 - 0.00001 && point[0] <= box.x1 + 0.00001 && point[2] >= box.z0 - 0.00001 && point[2] <= box.z1 + 0.00001;
+        const sources = footprints(model.parts.find((p) => p.name === (kind === 'board' ? 'Processor and memory' : 'Compute die'))).slice(0, 1);
+        const sinks = footprints(model.parts.find((p) => p.name === (kind === 'board' ? 'Connectors' : 'Memory stacks')));
+        const routing = model.parts.find((p) => p.name === (kind === 'board' ? 'Circuit board' : 'Silicon interposer'));
+        const traces = routing.surfaces.filter((s) => !s.face && s.points.length <= 4);
+        assert.ok(traces.length > 0);
+        for (const trace of traces) {
+          assert.ok(sources.some((box) => contains(box, trace.points[0])), `${kind}: every trace starts at compute`);
+          assert.ok(sinks.some((box) => contains(box, trace.points.at(-1))), `${kind}: every trace reaches its connector or memory`);
+          for (let i = 1; i < trace.points.length; i++) {
+            const a = trace.points[i - 1], b = trace.points[i];
+            assert.ok(a[0] === b[0] || a[2] === b[2], `${kind}: traces follow Manhattan routing`);
+          }
+        }
+      }
       for (const mode of ['isometric', 'wireframe']) for (const view of Object.keys(VIEWS)) for (const open of [0, 0.5, 1]) {
         const options = { ...DEFAULT_OPTIONS, mode, view, open };
         for (const [width, height] of [[256, 256], [358, 269], [640, 320]]) {

@@ -5,7 +5,10 @@ export function cooler(p: Draft, n: number): void {
   p.box(0, 0, 0, 1.4, 0.13, 1.4, 0.06);
   p.part('Fin stack', 'Thin repeated fins increase the area available to the cooling air.');
   for (let i = 0; i < n + 6; i++) p.box(-0.59 + (i * 1.18) / (n + 5), 0.13, 0, 0.035, 0.55, 1.23, 0);
-  p.part('Fan frame', 'A square frame supports the motor above the fin stack.');
+  p.part('Fan frame', 'A square frame and its cross-braces support the motor above the fin stack.');
+  for (const x of [-0.635, 0.635]) for (const z of [-0.635, 0.635]) p.box(x, 0.13, z, 0.04, 0.61, 0.04, 0);
+  p.box(0, 0.74, 0, 1.16, 0.025, 0.04, 0);
+  p.box(0, 0.74, 0, 0.04, 0.025, 1.16, 0);
   for (const x of [-0.61, 0.61]) p.box(x, 0.74, 0, 0.1, 0.1, 1.32);
   for (const z of [-0.61, 0.61]) p.box(0, 0.74, z, 1.22, 0.1, 0.1);
   for (const x of [-0.6, 0.6]) for (const z of [-0.6, 0.6]) p.ring(x, 0.841, z, 0.025);
@@ -72,7 +75,7 @@ export function sensor(p: Draft, n: number): void {
   p.box(0, 0.09, -0.05, 0.69, 0.12, 0.64);
   p.tiles(0, 0.211, -0.05, n + 1, n + 1, 0.5 / (n + 1), 0.32 / (n + 1));
   p.part('Lens barrel', 'The barrel holds optical elements in alignment above the sensor.');
-  p.cylinder(0, 0.27, -0.05, 0.39, 0.45, 32);
+  p.cylinder(0, 0.21, -0.05, 0.39, 0.56, 32);
   for (let i = 0; i < 5; i++) p.ring(0, 0.34 + i * 0.07, -0.05, 0.395, 'top', 32);
   p.part('Front optic', 'A front optical element admits light to the image sensor below.');
   p.cylinder(0, 0.77, -0.05, 0.3, 0.025, 32);

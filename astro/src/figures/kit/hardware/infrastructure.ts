@@ -30,6 +30,7 @@ export function storage(p: Draft, n: number): void {
     p.cylinder(-0.07, 0.2 + i * 0.065, -0.18, 0.53, 0.035, 40);
     for (let k = 1; k <= n + 2; k++) p.ring(-0.07, 0.236 + i * 0.065, -0.18, 0.1 + k * 0.055, 'top', 40);
   }
+  p.cylinder(-0.07, 0.18, -0.18, 0.08, 0.18);
   p.cylinder(-0.07, 0.32, -0.18, 0.11, 0.04);
   p.part('Read/write actuator', 'A pivoting arm positions the read/write head over the rotating media.');
   p.extrude(
@@ -42,7 +43,7 @@ export function storage(p: Draft, n: number): void {
     0.31,
     0.35,
   );
-  p.cylinder(0.49, 0.2, 0.56, 0.12, 0.18);
+  p.cylinder(0.49, 0.18, 0.56, 0.12, 0.2);
   p.part('Top cover', 'The cover protects the enclosed mechanical assembly. This is a simplified hard-disk cutaway.');
   p.box(0, 0.43, 0, 1.45, 0.04, 1.85, 0.08);
   p.box(0, 0.471, -0.1, 0.94, 0.002, 0.95, 0.05);
