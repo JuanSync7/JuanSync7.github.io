@@ -137,3 +137,20 @@ history lives in [docs/internals/CHANGELOG.md](docs/internals/CHANGELOG.md).
 
 See `LICENSE`.
 
+
+## Hardware atlas
+
+`/lab/icon-kit/` has twelve assemblies in isometric and wireframe, with camera presets,
+part selection, exploded views and SVG downloads. `/lab/hardware-atlas/` is the seeded
+figure template; `HardwareIcon` is demonstrated in `/design-system/`.
+
+From `astro/`:
+
+```bash
+npm run hardware:check   # geometry, frame bounds, seeded choices and SVG/canvas consistency
+npm run hardware:export  # 24 SVGs, a symbol sprite and numbered sheets in hardware-out/
+npm run build
+npm run hardware:browser # interaction/export checks; requires the existing Playwright Chromium setup
+```
+
+See the [reference card and implementation notes](docs/design/hardware-atlas.md).

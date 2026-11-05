@@ -23,7 +23,10 @@
     "lessons:sync": "node scripts/lessons/sync.mjs",
     "lessons:selftest": "node scripts/lessons/sync.mjs --selftest",
     "lessons:check": "node scripts/lessons/check.mjs",
-    "lessons:browser": "node scripts/lessons/browser-check.mjs"
+    "lessons:browser": "node scripts/lessons/browser-check.mjs",
+    "hardware:export": "node scripts/hardware/export.mjs",
+    "hardware:check": "node scripts/hardware/check.mjs",
+    "hardware:browser": "node scripts/hardware/browser-check.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",

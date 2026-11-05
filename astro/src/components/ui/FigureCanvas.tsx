@@ -6,6 +6,8 @@ interface Props {
   /** The figure's id: its file name in src/figures. */
   id: string;
   className?: string;
+  /** Accessible description for a figure whose subject is selected by page data. */
+  label?: string;
   /** Show the figure's read-out (what is under the pointer) in the corner. */
   readout?: boolean;
   /** Freeze at this time in seconds: the audit's deterministic captures. */
@@ -22,7 +24,7 @@ interface Props {
 
 /** Mounts one figure from the registry on a canvas that fills its box. The box sets the
  *  size: give the wrapper a height or an aspect-ratio. */
-export default function FigureCanvas({ id, className, readout = false, freezeAt, pointerAt, fixtures, data, onReadout }: Props) {
+export default function FigureCanvas({ id, className, label, readout = false, freezeAt, pointerAt, fixtures, data, onReadout }: Props) {
   const ref = useRef<HTMLCanvasElement>(null);
   const [text, setText] = useState('rest');
   const report = (r: string): void => {
@@ -34,7 +36,7 @@ export default function FigureCanvas({ id, className, readout = false, freezeAt,
     <div className={`figure-canvas${className ? ` ${className}` : ''}`} data-figure={id} data-style={figure?.style}>
       {/* The canvas is an image only once its figure, and so its alt text, has loaded; until
           then it is hidden from assistive tech rather than an image with no name. */}
-      <canvas ref={ref} role={figure ? 'img' : undefined} aria-label={figure?.alt} aria-hidden={figure ? undefined : true} />
+      <canvas ref={ref} role={figure ? 'img' : undefined} aria-label={label ?? figure?.alt} aria-hidden={figure ? undefined : true} />
       {/* The read-out follows the pointer: a visual aid, not news to announce. */}
       {readout ? (
         <span className="figure-readout" aria-hidden="true">

@@ -28,12 +28,22 @@ jobs:
         run: npm run check
       - name: Post check selftest (every rule still catches its broken post)
         run: npm run posts:selftest
+      - name: Hardware geometry, seed and SVG checks
+        run: npm run hardware:check
       - name: Build
         run: npm run build
       - name: Install Chromium for the figure look
         run: npx playwright install --with-deps chromium
       - name: Lesson browsing (grouping, filters, history, mobile and no JavaScript)
         run: npm run lessons:browser
+      - name: Hardware atlas browsing and exports
+        run: npm run hardware:browser
+      - name: Hardware atlas screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hardware-atlas
+          path: astro/hardware-out
       - name: Figure audit selftest (every check still catches its fixture)
         run: npm run figures:selftest
       - name: Figure look
