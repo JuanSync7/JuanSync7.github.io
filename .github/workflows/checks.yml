@@ -36,6 +36,8 @@ jobs:
         run: npm run build
       - name: Install Chromium for the figure look
         run: npx playwright install --with-deps chromium
+      - name: Themed tabletop browsing and fallback
+        run: npm run tabletop:browser
       - name: Lesson browsing (grouping, filters, history, mobile and no JavaScript)
         run: npm run lessons:browser
       - name: Hardware atlas browsing and exports

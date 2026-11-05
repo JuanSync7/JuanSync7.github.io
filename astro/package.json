@@ -18,6 +18,7 @@
     "figures:audit": "node scripts/figures/check.mjs && node scripts/figures/look.mjs",
     "figures:selftest": "node scripts/figures/check.mjs --selftest && node scripts/figures/look.mjs --selftest --no-sheet",
     "tabletop:check": "node scripts/figures/tabletop-check.mjs",
+    "tabletop:browser": "node scripts/figures/tabletop-browser.mjs",
     "format:figures": "prettier --write src/figures",
     "posts:check": "node scripts/posts/check.mjs",
     "posts:selftest": "node scripts/posts/check.mjs --selftest",

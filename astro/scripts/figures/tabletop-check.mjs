@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { build } from 'esbuild';
 import { Box3, PerspectiveCamera, Vector3 } from 'three';
+import { semanticCheck } from './tabletop-semantics.mjs';
 
 const dir = mkdtempSync(join(tmpdir(), 'tabletop-check-'));
 function rng(seed) {
@@ -45,7 +46,7 @@ try {
   await build({
     stdin: {
       contents:
-        "export { default, arrange, object } from './src/figures/templates/pixel-still'; export { webglAvailable } from './src/figures/defineThree';",
+        "export { default, arrange, object } from './src/figures/templates/pixel-still'; export { webglAvailable } from './src/figures/defineThree'; export {THEMES,GAP,tabletop} from './src/figures/kit/tabletop'; export {PROP_KINDS} from './src/figures/kit/tableprops';",
       resolveDir: process.cwd(),
       loader: 'ts',
     },
@@ -54,7 +55,16 @@ try {
     format: 'esm',
     outfile: out,
   });
-  const { default: template, arrange, object, webglAvailable } = await import(pathToFileURL(out));
+  const {
+    default: template,
+    arrange,
+    object,
+    webglAvailable,
+    THEMES,
+    GAP,
+    tabletop,
+    PROP_KINDS,
+  } = await import(pathToFileURL(out));
   const originalDocument = globalThis.document;
   let released = 0;
   try {
@@ -72,22 +82,38 @@ try {
   } finally {
     globalThis.document = originalDocument;
   }
-  for (const seed of sample) {
-    const p = arrange(rng(seed ^ 0x9e3779b9));
-    assert.deepEqual(p, arrange(rng(seed ^ 0x9e3779b9)), `non-deterministic seed ${seed}`);
-    assert(p.items.length >= 3 && p.items.length <= 7, `bad count, seed ${seed}`);
+  const cases = [
+    ...sample.map((seed) => ({ seed, theme: undefined })),
+    ...THEMES.flatMap((theme) => Array.from({ length: 40 }, (_, seed) => ({ seed, theme: theme.id }))),
+  ];
+  for (const theme of THEMES) for (const value of [0, 0.5, 0.999999]) semanticCheck(arrange(() => value, theme.id));
+  const orientations = new Map(THEMES.map((t) => [t.id, new Set()]));
+  const themeCounts = new Map();
+  for (const { seed, theme } of cases) {
+    const p = arrange(rng(seed ^ 0x9e3779b9), theme);
+    themeCounts.set(p.theme.id, (themeCounts.get(p.theme.id) ?? 0) + 1);
+    semanticCheck(p);
+    orientations.get(p.theme.id).add(p.mirror);
+    assert.deepEqual(p, arrange(rng(seed ^ 0x9e3779b9), theme), `non-deterministic seed ${seed}`);
+    assert(p.items.length >= 4 && p.items.length <= 14, `bad count, seed ${seed}`);
     assert.equal(template.instance(seed).kind, 'three');
     assert.equal(template.instance(seed).id, `pixel-still~${seed}`);
     layouts.add(JSON.stringify(p.items.map(({ kind, x, z }) => [kind, x, z])));
     const cam = new PerspectiveCamera(30, 2, 0.1, 60);
     cam.position.set(
-      Math.sin(p.yaw) * Math.cos(p.pitch) * 11.2,
-      Math.sin(p.pitch) * 11.2,
-      Math.cos(p.yaw) * Math.cos(p.pitch) * 11.2,
+      Math.sin(p.yaw) * Math.cos(p.pitch) * p.dist,
+      Math.sin(p.pitch) * p.dist,
+      Math.cos(p.yaw) * Math.cos(p.pitch) * p.dist,
     );
     cam.lookAt(0, 0, 0);
     cam.updateMatrixWorld();
     const projected = [];
+    for (const x of [-p.theme.w / 2, p.theme.w / 2])
+      for (const y of [tabletop(p).bounds.lo[1], 0])
+        for (const z of [-p.theme.d / 2, p.theme.d / 2]) {
+          const v = new Vector3(x, y, z).project(cam);
+          assert(Math.abs(v.x) < 1 && Math.abs(v.y) < 1, `cropped table ${seed}/${p.theme.id}`);
+        }
     for (const [i, it] of p.items.entries()) {
       kinds.add(it.kind);
       objects++;
@@ -95,10 +121,16 @@ try {
       g.updateMatrixWorld(true);
       const bounds = new Box3().setFromObject(g, true);
       assert(
-        bounds.min.x > -2.9 && bounds.max.x < 2.9 && bounds.min.z > -1.6 && bounds.max.z < 1.6,
+        bounds.min.x > -p.theme.w / 2 &&
+          bounds.max.x < p.theme.w / 2 &&
+          bounds.min.z > -p.theme.d / 2 &&
+          bounds.max.z < p.theme.d / 2,
         `off table ${seed}/${it.kind}`,
       );
-      assert(bounds.min.y >= -0.00001 && bounds.max.y <= it.height + 0.00001, `height envelope ${seed}/${it.kind}`);
+      assert(
+        bounds.min.y >= -0.00001 && bounds.max.y <= it.bounds.hi[1] + 0.00001,
+        `height envelope ${seed}/${it.kind}`,
+      );
       const corners = [];
       for (const x of [bounds.min.x, bounds.max.x])
         for (const y of [bounds.min.y, bounds.max.y])
@@ -124,7 +156,13 @@ try {
           const pos = o.geometry.getAttribute('position');
           for (let k = 0; k < pos.count; k++) {
             const v = new Vector3().fromBufferAttribute(pos, k).applyMatrix4(o.matrixWorld);
-            assert(Math.hypot(v.x - it.x, v.z - it.z) <= it.r + 0.00001, `undersized footprint ${seed}/${it.kind}`);
+            assert(
+              v.x >= it.bounds.lo[0] - 0.00001 &&
+                v.x <= it.bounds.hi[0] + 0.00001 &&
+                v.z >= it.bounds.lo[2] - 0.00001 &&
+                v.z <= it.bounds.hi[2] + 0.00001,
+              `undersized footprint ${seed}/${it.kind}`,
+            );
           }
           o.geometry.dispose();
         }
@@ -132,15 +170,21 @@ try {
       });
       for (const other of p.items.slice(0, i))
         assert(
-          Math.hypot(it.x - other.x, it.z - other.z) >= it.r + other.r + 0.14 - 0.00001,
+          it.bounds.hi[0] + GAP < other.bounds.lo[0] ||
+            other.bounds.hi[0] + GAP < it.bounds.lo[0] ||
+            it.bounds.hi[2] + GAP < other.bounds.lo[2] ||
+            other.bounds.hi[2] + GAP < it.bounds.lo[2],
           `physical overlap ${seed}`,
         );
     }
   }
-  assert.equal(kinds.size, 9);
-  assert.equal(layouts.size, new Set(sample).size);
+  assert.equal(kinds.size, PROP_KINDS.length);
+  assert.equal(themeCounts.size, 9);
+  for (const [theme, values] of orientations)
+    assert.equal(values.size, 2, `${theme} never varies its layout orientation`);
+  assert(layouts.size > 1300);
   console.log(
-    `Tabletop passed: ${sample.length} seeds, ${objects} objects, all 9 kinds; deterministic, on-table, no physical or projected overlaps.`,
+    `Tabletop passed: ${cases.length} themed layouts, ${objects} objects, ${kinds.size} prop kinds across all 9 themes; deterministic, on-table, no physical or projected overlaps.`,
   );
 } finally {
   rmSync(dir, { recursive: true, force: true });
