@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { createServer } from 'vite';
+import { checkTransitions } from './transitions.mjs';
 
 const server = await createServer({ server: { middlewareMode: true, ws: false }, appType: 'custom', logLevel: 'error' });
 try {
@@ -105,5 +106,6 @@ try {
   assert.equal(ids.length, 24);
   assert.equal(new Set(ids).size, 24, 'No duplicate symbol IDs');
   for (const kind of HARDWARE_KINDS) for (const mode of ['isometric', 'wireframe']) assert.ok(ids.includes(`${kind}-${mode}`));
-  console.log(`Hardware atlas: ${drawings} framed views, identical SVG/canvas geometry, 1,000 deterministic seeds and 24 unique symbols passed.`);
+  const transitions = checkTransitions(template, HARDWARE_KINDS);
+  console.log(`Hardware atlas: ${drawings} framed views, ${transitions} camera transition frames, identical SVG/canvas geometry, 1,000 deterministic seeds and 24 unique symbols passed.`);
 } finally { await server.close(); }

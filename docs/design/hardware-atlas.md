@@ -44,7 +44,7 @@ show the internal and rear edges at lower opacity.
 
 Pointer inspection hits the frontmost projected face, then lifts only that part using its unlifted position for picking. Individual explosion vectors keep peer components together. Isolation hides other assemblies and eases the selected part into view; returning to the whole assembly reveals it after the view fits.
 Camera presets interpolate through the existing clock's `follow`; they never spin with
-time. Reduced motion snaps to the requested pose. Each camera fits every point of the
+time. Transitional framing stays inside the viewport as the camera turns, and uses the currently visible part bounds while leaving isolation. Reduced motion snaps to the requested pose. Each camera fits every point of the
 whole assembly, including all lifted parts. Canvas avoids SVG path-string formatting in
 its frame loop. Changing data does not remount the clock. Immutable model geometry, prepared solid bounds and a bounded projection cache avoid recalculating static rest frames.
 
@@ -69,7 +69,7 @@ pose individually; its pack always contains all 24 assembled three-quarter symbo
 
 `npm run hardware:check` exercises 3,888 combinations of object, detail, look, view,
 opening and viewport; checks the frame margins and equal SVG/canvas points; samples
-1,000 deterministic seeds; checks every isolated part in each camera view; validates trace endpoints against named source and destination footprints; tests depth dependencies across 100 seeded layouts; and checks the 24 unique symbol names.
+1,000 deterministic seeds; checks every isolated part in each camera view; validates trace endpoints against named source and destination footprints; tests depth dependencies across 100 seeded layouts; checks outward extrusion winding; exercises 19,200 actual camera and isolation transition frames at desktop and phone sizes, including return to the whole assembly; and checks the 24 unique symbol names.
 
 `npm run hardware:browser` checks the built page's selection, filters, SVG/XML downloads,
 clipboard, sprite, isolation, detail levels, URL restoration, reduced motion, phone/tablet overflow and server-rendered

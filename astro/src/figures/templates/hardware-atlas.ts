@@ -95,6 +95,16 @@ export default defineTemplate<Params, State>({
         (Math.abs(state.framing.scale - target.scale) > 0.03 ||
           Math.abs(state.framing.x - target.x) > 0.005 ||
           Math.abs(state.framing.y - target.y) > 0.005));
+    const visibleFit =
+      state.isolated && !o.isolate
+        ? hardwareDrawing(state.model, { ...frame, isolate: true }, w, h, cam, false).framing
+        : target;
+    const reachX = Math.abs(visibleFit.x - state.framing.x) + (w * 0.38) / visibleFit.scale;
+    const reachY = Math.abs(visibleFit.y - state.framing.y) + (h * 0.38) / visibleFit.scale;
+    state.framing = {
+      ...state.framing,
+      scale: Math.min(state.framing.scale, (w * 0.46) / reachX, (h * 0.46) / reachY),
+    };
     const selected = pointer.active ? nearestPart(drawing, [pointer.x * w, pointer.y * h, 0]) : o.pick;
     const lift = pointer.active ? 0.14 : 0;
     state.lift = still ? lift : follow(state.lift, lift, dt, 5);
