@@ -1,4 +1,5 @@
 import { defineCanvasFigure } from './define';
+import { defineThreeFigure, type ThreeEnv, type ThreeFrame } from './defineThree';
 import { mulberry32, type Rng } from './kit/rng';
 import type { CanvasEnv, CanvasFrame, Figure, FigureMeta } from './types';
 
@@ -20,7 +21,7 @@ export interface TemplateFrame<P, S> extends CanvasFrame<S> {
   params: P;
 }
 
-export interface TemplateSpec<P, S> extends Omit<FigureMeta, 'group' | 'seed' | 'alt' | 'title'> {
+interface TemplateMeta<P> extends Omit<FigureMeta, 'group' | 'seed' | 'alt' | 'title'> {
   title: string;
   /** Seed → the instance's structure. Draw every discrete choice here, from `rng`. */
   grammar(rng: Rng): P;
@@ -28,8 +29,18 @@ export interface TemplateSpec<P, S> extends Omit<FigureMeta, 'group' | 'seed' | 
   name(params: P): string;
   /** What a screen-reader user should know this instance shows. */
   alt(params: P): string;
+}
+
+export interface TemplateSpec<P, S> extends TemplateMeta<P> {
   setup(env: TemplateEnv<P>): S;
   draw(frame: TemplateFrame<P, S>): string | void;
+}
+
+export interface ThreeTemplateSpec<P, S> extends TemplateMeta<P> {
+  style: 'three';
+  build(env: ThreeEnv & { params: P }): S;
+  update(frame: ThreeFrame<S> & { params: P }): string | void;
+  fallback(frame: CanvasFrame<null> & { params: P }): string | void;
 }
 
 export interface Instance extends Figure {
@@ -45,8 +56,13 @@ export interface Template extends Omit<FigureMeta, 'group' | 'seed' | 'alt'> {
 /** The grammar's own stream, salted so its choices don't mirror the drawing's rng. */
 const GRAMMAR_SALT = 0x9e3779b9;
 
-export function defineTemplate<P, S>(spec: TemplateSpec<P, S>): Template {
-  const { grammar, name, alt, setup, draw, ...meta } = spec;
+export function defineTemplate<P, S>(spec: ThreeTemplateSpec<P, S>): Template;
+export function defineTemplate<P, S>(spec: TemplateSpec<P, S>): Template;
+export function defineTemplate<P, S>(spec: TemplateSpec<P, S> | ThreeTemplateSpec<P, S>): Template {
+  const { grammar, name, alt, ...rest } = spec;
+  // Keep renderer callbacks off the catalog metadata for either kind of template.
+  const { id, title, idea, style, motion, answers, aspect, bleed } = rest;
+  const meta = { id, title, idea, style, motion, answers, aspect, bleed };
   return {
     ...meta,
     kind: 'template',
@@ -54,16 +70,27 @@ export function defineTemplate<P, S>(spec: TemplateSpec<P, S>): Template {
       const s = Math.abs(Math.trunc(seed)) >>> 0;
       const params = grammar(mulberry32((s ^ GRAMMAR_SALT) >>> 0));
       const variant = name(params);
-      const figure = defineCanvasFigure<S>({
+      const instanceMeta: FigureMeta = {
         ...meta,
         id: `${spec.id}~${s}`,
         title: `${spec.title} · ${variant}`,
         alt: alt(params),
         group: 'template',
         seed: s,
-        setup: (env) => setup({ ...env, params }),
-        draw: (frame) => draw({ ...frame, params }),
-      });
+      };
+      const figure =
+        'build' in spec
+          ? defineThreeFigure<S>({
+              ...instanceMeta,
+              build: (env) => spec.build({ ...env, params }),
+              update: (frame) => spec.update({ ...frame, params }),
+              fallback: (frame) => spec.fallback({ ...frame, params }),
+            })
+          : defineCanvasFigure<S>({
+              ...instanceMeta,
+              setup: (env) => spec.setup({ ...env, params }),
+              draw: (frame) => spec.draw({ ...frame, params }),
+            });
       return { ...figure, template: spec.id, variant };
     },
   };

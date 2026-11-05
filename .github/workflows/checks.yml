@@ -30,6 +30,8 @@ jobs:
         run: npm run posts:selftest
       - name: Hardware geometry, seed and SVG checks
         run: npm run hardware:check
+      - name: Tabletop geometry and seed clearance
+        run: npm run tabletop:check
       - name: Build
         run: npm run build
       - name: Install Chromium for the figure look
