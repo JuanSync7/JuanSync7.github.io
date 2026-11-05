@@ -1,0 +1,32 @@
+---
+import NightPage from '../../layouts/NightPage.astro';
+import NightNav from '../../components/layout/NightNav.astro';
+import NightFooter from '../../components/layout/NightFooter.astro';
+import HardwareAtlas from '../../components/icon-kit/HardwareAtlas';
+---
+<NightPage title="Hardware atlas · Lab · Juan Kok" description="Twelve physical assemblies, drawn in matching isometric and wireframe SVGs. Inspect their parts, take them apart, and download the set.">
+  <NightNav current="lab" />
+  <main class="nt-wrap nt-section">
+    <header class="atlas-page-head">
+      <a href="/lab/">← the lab</a>
+      <span>// hardware_atlas · collection 01</span>
+      <h1>Small objects.<br />Real structure.</h1>
+      <p>Twelve pieces of the physical world, drawn in one language. Switch the view, lift the layers, and see what makes each one work.</p>
+      <div class="atlas-page-meta"><span>12 assemblies</span><span>02 drawing styles</span><span>SVG, all the way down</span></div>
+    </header>
+    <HardwareAtlas client:load />
+    <p class="atlas-disclaimer">Illustrative assemblies, with simplified internals and exaggerated layer heights. For the detailed silicon breakdowns, <a href="/anatomy/chip-package/">step inside a chip package →</a></p>
+  </main>
+  <NightFooter />
+</NightPage>
+<style>
+  .atlas-page-head { max-width: var(--nt-measure); display: grid; gap: var(--hf-space-5); margin-bottom: var(--hf-space-12); }
+  .atlas-page-head > a, .atlas-page-head > span, .atlas-page-meta { font: var(--nt-fs-meta)/var(--nt-lh-body) var(--nt-mono); }
+  .atlas-page-head > a { color: var(--nt-ink-muted); }
+  .atlas-page-head > span { color: var(--nt-signal); }
+  .atlas-page-head h1 { font-family: var(--nt-display); font-size: var(--nt-fs-h1); letter-spacing: var(--nt-tracking-display); line-height: var(--nt-lh-heading); }
+  .atlas-page-head p { color: var(--nt-ink-soft); }
+  .atlas-page-meta { display: flex; flex-wrap: wrap; gap: var(--hf-space-3) var(--hf-space-6); color: var(--nt-ink-muted); }
+  .atlas-disclaimer { max-width: var(--nt-measure); margin-top: var(--hf-space-8); font-size: var(--nt-fs-small); color: var(--nt-ink-muted); }
+  .atlas-disclaimer a { color: var(--nt-signal); }
+</style>

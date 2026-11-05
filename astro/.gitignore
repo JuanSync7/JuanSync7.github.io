@@ -6,3 +6,6 @@ dist/
 .DS_Store
 *.log
 figures-out/
+
+# Generated hardware SVGs and contact sheets
+hardware-out/

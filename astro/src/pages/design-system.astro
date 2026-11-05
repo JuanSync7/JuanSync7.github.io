@@ -14,6 +14,7 @@ import NebulaStars from '../components/ui/NebulaStars.tsx';
 import ZoomSwapDemo from '../components/ui/ZoomSwapDemo.tsx';
 import CubeSwapDemo from '../components/ui/CubeSwapDemo.tsx';
 import FigureCanvas from '../components/ui/FigureCanvas.tsx';
+import HardwareIcon from '../components/ui/HardwareIcon.tsx';
 import SectionHead from '../components/ui/SectionHead.astro';
 import Monogram from '../components/ui/Monogram.astro';
 import { IDENTITY, CAREER_STATS } from '../data/site';
@@ -38,6 +39,7 @@ import ZoomSwapCss from '../components/ui/zoom-swap.css?raw';
 import CubeSwapDemoSrc from '../components/ui/CubeSwapDemo.tsx?raw';
 import CubeSwapCss from '../components/ui/cube-swap.css?raw';
 import FigureCanvasSrc from '../components/ui/FigureCanvas.tsx?raw';
+import HardwareIconSrc from '../components/ui/HardwareIcon.tsx?raw';
 import SectionHeadSrc from '../components/ui/SectionHead.astro?raw';
 
 /* All tokens read from src/styles/tokens/*.css. Hex values are resolved
@@ -476,6 +478,12 @@ ${NebulaStarsSrc}
       </div>
 
       <div class="ds-comp-grid">
+        <div class="ds-comp-card ds-copyable" data-ds-snippet={HardwareIconSrc} title="click for code">
+          <div class="ds-comp-label">&lt;HardwareIcon&gt;</div>
+          <div class="ds-comp-stage night-sample"><div style="width: var(--nt-thumb-min); aspect-ratio: 1;"><HardwareIcon kind="processor" /></div></div>
+          <div class="ds-comp-note">Twelve SVG assemblies in isometric and wireframe. Geometry is shared with the hardware-atlas figure; mode, view, open and pick select the drawing. <a href="/lab/icon-kit/">Inspect and export the collection →</a></div>
+        </div>
+
         <div class="ds-comp-card ds-comp-card-wide ds-copyable" data-ds-snippet={`// src/components/ui/FigureCanvas.tsx\n${FigureCanvasSrc}`} title="click for code">
           <div class="ds-comp-label">&lt;FigureCanvas&gt;</div>
           <div class="ds-comp-stage night-sample"><div style="width: 100%; aspect-ratio: 16 / 9;"><FigureCanvas client:visible id="ridge-lines" /></div></div>

@@ -6,3 +6,6 @@ This directory holds engineering documentation for people maintaining the site. 
 [Internal records](internals/README.md) explain where maintainers record changes. Lesson-writing
 policy and source evidence remain in the experience vault; the site receives only public payloads
 and their maintained vocabulary.
+
+[Hardware atlas](design/hardware-atlas.md) documents the SVG collection, figure template,
+reference card, exports and checks.
