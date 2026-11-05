@@ -29,7 +29,10 @@ export interface ThreeFigureSpec<S> extends Omit<FigureMeta, 'style'> {
 export function webglAvailable(): boolean {
   try {
     const probe = document.createElement('canvas');
-    return Boolean(probe.getContext('webgl2') ?? probe.getContext('webgl'));
+    const context = probe.getContext('webgl2') ?? probe.getContext('webgl');
+    // A seed gallery mounts several renderers: probes must not consume their context slots.
+    context?.getExtension('WEBGL_lose_context')?.loseContext();
+    return Boolean(context);
   } catch {
     return false;
   }

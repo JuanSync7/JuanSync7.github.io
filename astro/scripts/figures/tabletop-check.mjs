@@ -43,13 +43,35 @@ try {
   );
   const out = join(dir, 'scene.mjs');
   await build({
-    entryPoints: ['src/figures/templates/pixel-still.ts'],
+    stdin: {
+      contents:
+        "export { default, arrange, object } from './src/figures/templates/pixel-still'; export { webglAvailable } from './src/figures/defineThree';",
+      resolveDir: process.cwd(),
+      loader: 'ts',
+    },
     bundle: true,
     platform: 'node',
     format: 'esm',
     outfile: out,
   });
-  const { default: template, arrange, object } = await import(pathToFileURL(out));
+  const { default: template, arrange, object, webglAvailable } = await import(pathToFileURL(out));
+  const originalDocument = globalThis.document;
+  let released = 0;
+  try {
+    globalThis.document = {
+      createElement: () => ({
+        getContext: () => ({
+          getExtension: () => ({ loseContext: () => released++ }),
+        }),
+      }),
+    };
+    for (let i = 0; i < 18; i++) assert(webglAvailable());
+    assert.equal(released, 18, 'Every capability probe must release its WebGL context');
+    globalThis.document = { createElement: () => ({ getContext: () => null }) };
+    assert.equal(webglAvailable(), false);
+  } finally {
+    globalThis.document = originalDocument;
+  }
   for (const seed of sample) {
     const p = arrange(rng(seed ^ 0x9e3779b9));
     assert.deepEqual(p, arrange(rng(seed ^ 0x9e3779b9)), `non-deterministic seed ${seed}`);
