@@ -141,7 +141,7 @@ See `LICENSE`.
 ## Hardware atlas
 
 `/lab/icon-kit/` has twelve assemblies in isometric and wireframe, with camera presets,
-part selection, exploded views and SVG downloads. `/lab/hardware-atlas/` is the seeded
+part selection, exploded views, engineering detail, isolated-part inspection and SVG downloads. `/lab/hardware-atlas/` is the seeded
 figure template; `HardwareIcon` is demonstrated in `/design-system/`.
 
 From `astro/`:

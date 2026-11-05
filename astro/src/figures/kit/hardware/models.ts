@@ -18,8 +18,15 @@ const BUILDERS = {
   sensor,
   optics,
 };
+const CACHE = new Map<string, HardwareModel>();
 export function hardwareModel(kind: HardwareKind, detail = 4): HardwareModel {
+  const density = Math.min(5, Math.max(3, Math.trunc(Number.isFinite(detail) ? detail : 4)));
+  const key = `${kind}:${density}`;
+  const cached = CACHE.get(key);
+  if (cached) return cached;
   const draft = new Draft();
-  BUILDERS[kind](draft, Math.min(5, Math.max(3, Math.trunc(detail))));
-  return { kind, parts: draft.parts };
+  BUILDERS[kind](draft, density);
+  const model = { kind, parts: draft.parts };
+  CACHE.set(key, model);
+  return model;
 }

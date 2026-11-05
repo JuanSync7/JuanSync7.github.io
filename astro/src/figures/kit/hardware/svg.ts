@@ -27,7 +27,7 @@ export function hardwareSprite(options: HardwareOptions): string {
   const symbols = HARDWARE_KINDS.flatMap((kind) =>
     (['isometric', 'wireframe'] as const).map(
       (mode) =>
-        `<symbol id="${kind}-${mode}" viewBox="0 0 ${SVG_SIZE} ${SVG_SIZE}" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"><title>${kind} · ${mode}</title>${attributes(hardwareModel(kind), { ...options, mode, open: 0, pick: -1 })}</symbol>`,
+        `<symbol id="${kind}-${mode}" viewBox="0 0 ${SVG_SIZE} ${SVG_SIZE}" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"><title>${kind} · ${mode}</title>${attributes(hardwareModel(kind), { ...options, mode, open: 0, pick: -1, isolate: false, detail: true })}</symbol>`,
     ),
   );
   return `<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"><title>Juan Kok · hardware atlas · 24 symbols</title><defs>${symbols.join('')}</defs></svg>`;

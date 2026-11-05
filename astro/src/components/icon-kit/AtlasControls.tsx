@@ -4,11 +4,15 @@ interface Props {
   mode: HardwareMode;
   view: HardwareView;
   open: boolean;
+  detail: boolean;
+  isolate: boolean;
+  onDetail(): void;
+  onIsolate(): void;
   onMode(mode: HardwareMode): void;
   onView(view: HardwareView): void;
   onOpen(): void;
 }
-export default function AtlasControls({ mode, view, open, onMode, onView, onOpen }: Props) {
+export default function AtlasControls({ mode, view, open, detail, isolate, onMode, onView, onOpen, onDetail, onIsolate }: Props) {
   return (
     <div className="atlas-controls">
       <fieldset>
@@ -27,6 +31,14 @@ export default function AtlasControls({ mode, view, open, onMode, onView, onOpen
           ))}
         </div>
       </fieldset>
+      <fieldset>
+        <legend>Detail</legend>
+        <div className="atlas-segments">
+          <button type="button" aria-pressed={!detail} onClick={() => { if (detail) onDetail(); }}>icon</button>
+          <button type="button" aria-pressed={detail} onClick={() => { if (!detail) onDetail(); }}>engineering</button>
+        </div>
+      </fieldset>
+      <button className="atlas-action" type="button" aria-pressed={isolate} onClick={onIsolate}>{isolate ? 'View assembly ↙' : 'Isolate part ↗'}</button>
       <button className="atlas-action" type="button" aria-pressed={open} onClick={onOpen}>{open ? 'Assemble ↘' : 'Take apart ↗'}</button>
     </div>
   );

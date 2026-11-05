@@ -1,5 +1,6 @@
-import { camera, projectV, type Camera, type Vec3 } from '../camera';
+import { camera, type Camera, type Vec3 } from '../camera';
 import { ink, mix } from '../ink';
+import { hardwareScene } from './scene';
 import { VIEWS, type HardwareModel, type HardwareOptions } from './types';
 
 export interface HardwarePath {
@@ -10,151 +11,121 @@ export interface HardwarePath {
   stroke: string;
   part: number;
 }
-interface ProjectedSurface {
-  solid: number;
-  points: [number, number][];
-  depth: number;
-  area: number;
-  face: boolean;
-  part: number;
-  top: boolean;
+export interface HardwareFraming {
+  x: number;
+  y: number;
+  scale: number;
 }
 export interface HardwareDrawing {
   paths: HardwarePath[];
-  centres: [number, number][];
+  centres: ([number, number] | null)[];
+  framing: HardwareFraming;
 }
-
+const CACHE = new WeakMap<HardwareModel, Map<string, HardwareDrawing>>();
+const pathData = (points: [number, number][], close: boolean): string =>
+  points.map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(2)},${y.toFixed(2)}`).join('') + (close ? 'Z' : '');
 export function hardwareCamera(view: HardwareOptions['view']): Camera {
   const [yaw, pitch] = VIEWS[view];
   return camera({ yaw, pitch, dist: Infinity, scale: 1, cx: 0, cy: 0 });
 }
-const polygonArea = (points: [number, number][]): number =>
-  points.reduce((area, a, i) => {
-    const b = points[(i + 1) % points.length] ?? a;
-    return area + a[0] * b[1] - b[0] * a[1];
-  }, 0) / 2;
-const pathData = (points: [number, number][], close: boolean): string =>
-  points.map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(2)},${y.toFixed(2)}`).join('') + (close ? 'Z' : '');
-
-/** Every view fits the complete assembly. Camera interpolation is owned by the figure clock. */
+/** Repeated rest frames reuse the projection; transitions still use the figure clock. */
 export function hardwareDrawing(
   model: HardwareModel,
-  options: HardwareOptions,
+  o: HardwareOptions,
   w: number,
   h: number,
-  pose: Camera = hardwareCamera(options.view),
+  pose: Camera = hardwareCamera(o.view),
   vector = true,
+  framing?: HardwareFraming,
 ): HardwareDrawing {
-  const surfaces: ProjectedSurface[] = [];
-  const centres: [number, number][] = [];
-  const bounds: [number, number][] = [];
-  const cam = { ...pose, cx: 0, cy: 0, scale: 1 };
-  const volumes = new Map<number, { lo: number[]; hi: number[] }>();
-  model.parts.forEach((part, index) => {
-    const offset = index * options.open * 0.5 + (index === options.pick ? (options.lift ?? 0) : 0);
-    const all: [number, number][] = [];
-    part.surfaces.forEach((s) => {
-      if (s.face) {
-        const volume = volumes.get(s.solid) ?? {
-          lo: [Infinity, Infinity, Infinity],
-          hi: [-Infinity, -Infinity, -Infinity],
-        };
-        for (const point of s.points)
-          for (let axis = 0; axis < 3; axis++) {
-            volume.lo[axis] = Math.min(volume.lo[axis] ?? Infinity, point[axis] ?? 0);
-            volume.hi[axis] = Math.max(volume.hi[axis] ?? -Infinity, point[axis] ?? 0);
-          }
-        volumes.set(s.solid, volume);
+  const options = { ...o, detail: o.detail ?? w >= 420 };
+  const key = [
+    w,
+    h,
+    o.mode,
+    options.detail,
+    o.isolate,
+    o.pick,
+    vector,
+    ...[o.open, o.lift ?? 0, pose.yaw, pose.pitch, framing?.x ?? 0, framing?.y ?? 0, framing?.scale ?? 0].map((v) =>
+      v.toFixed(4),
+    ),
+  ].join(':');
+  const cache = CACHE.get(model) ?? new Map<string, HardwareDrawing>();
+  CACHE.set(model, cache);
+  const cached = cache.get(key);
+  if (cached) return cached;
+  const surfaces = hardwareScene(model, options, pose);
+  let x0 = Infinity,
+    x1 = -Infinity,
+    y0 = Infinity,
+    y1 = -Infinity,
+    near = -Infinity,
+    far = Infinity;
+  const centres = model.parts.map(() => null as [number, number] | null);
+  const sums = model.parts.map(() => ({ x: 0, y: 0, n: 0 }));
+  for (const s of surfaces) {
+    near = Math.max(near, s.depth);
+    far = Math.min(far, s.depth);
+    for (const [x, y] of s.points) {
+      x0 = Math.min(x0, x);
+      x1 = Math.max(x1, x);
+      y0 = Math.min(y0, y);
+      y1 = Math.max(y1, y);
+      const sum = sums[s.part];
+      if (sum) {
+        sum.x += x;
+        sum.y += y;
+        sum.n++;
       }
-      const projected = s.points.map(([x, y, z]) => projectV(cam, [x, y + offset, z]));
-      const points = projected.map((q): [number, number] => [q[0], q[1]]);
-      const area = s.face ? polygonArea(points) : 0;
-      const top = s.points.every((p) => Math.abs(p[1] - (s.points[0]?.[1] ?? 0)) < 0.00001);
-      surfaces.push({
-        solid: s.solid,
-        points,
-        area,
-        face: s.face,
-        part: index,
-        top,
-        depth: projected.reduce((sum, p) => sum + p[2], 0) / projected.length,
-      });
-      all.push(...points);
-      bounds.push(...points);
-    });
-    centres.push([
-      all.reduce((sum, p) => sum + p[0], 0) / all.length,
-      all.reduce((sum, p) => sum + p[1], 0) / all.length,
-    ]);
-  });
-  const minX = Math.min(...bounds.map((p) => p[0])),
-    maxX = Math.max(...bounds.map((p) => p[0]));
-  const minY = Math.min(...bounds.map((p) => p[1])),
-    maxY = Math.max(...bounds.map((p) => p[1]));
-  const scale = Math.min((w * 0.76) / (maxX - minX || 1), (h * 0.76) / (maxY - minY || 1));
-  const fit = ([x, y]: readonly number[]): [number, number] => [
-    w / 2 + ((x ?? 0) - (minX + maxX) / 2) * scale,
-    h / 2 + ((y ?? 0) - (minY + maxY) / 2) * scale,
-  ];
-  const selected = options.pick < 0 ? model.parts.length - 1 : options.pick;
-  const signal = surfaces
-    .filter((s) => s.part === selected && s.area > 0)
-    .sort((a, b) => b.area - a.area || b.depth - a.depth)[0];
-  const nearDepth = Math.max(...surfaces.map((s) => s.depth));
-  const farDepth = Math.min(...surfaces.map((s) => s.depth));
-  const wire = options.mode === 'wireframe';
-  const solids = new Map<number, { total: number; count: number }>();
-  for (const surface of surfaces) {
-    if (!surface.face) continue;
-    const group = solids.get(surface.solid) ?? { total: 0, count: 0 };
-    group.total += surface.depth;
-    group.count++;
-    solids.set(surface.solid, group);
-  }
-  const depthOf = (s: ProjectedSurface): number => {
-    const group = solids.get(s.solid);
-    return group ? group.total / group.count : s.depth;
-  };
-  const order = (a: ProjectedSurface, b: ProjectedSurface): number => {
-    if (a.part !== b.part) return a.part - b.part;
-    if (a.solid !== b.solid) {
-      const va = volumes.get(a.solid),
-        vb = volumes.get(b.solid);
-      if (
-        va &&
-        vb &&
-        [0, 2].every(
-          (axis) =>
-            Math.min(va.hi[axis] ?? 0, vb.hi[axis] ?? 0) - Math.max(va.lo[axis] ?? 0, vb.lo[axis] ?? 0) > 0.00001,
-        )
-      ) {
-        if ((va.hi[1] ?? 0) <= (vb.lo[1] ?? 0) + 0.00001) return -1;
-        if ((vb.hi[1] ?? 0) <= (va.lo[1] ?? 0) + 0.00001) return 1;
-      }
-      return depthOf(a) - depthOf(b) || a.solid - b.solid;
     }
-    return Number(b.face) - Number(a.face) || a.depth - b.depth;
+  }
+  const fit = framing ?? {
+    x: (x0 + x1) / 2,
+    y: (y0 + y1) / 2,
+    scale: Math.min((w * 0.76) / (x1 - x0 || 1), (h * 0.76) / (y1 - y0 || 1)),
   };
+  const point = ([x, y]: [number, number]): [number, number] => [
+    w / 2 + (x - fit.x) * fit.scale,
+    h / 2 + (y - fit.y) * fit.scale,
+  ];
+  sums.forEach((s, i) => {
+    if (s.n) centres[i] = point([s.x / s.n, s.y / s.n]);
+  });
+  const selected = o.pick < 0 ? model.parts.length - 1 : o.pick;
+  const signal = surfaces
+    .filter((s) => s.part === selected && s.area > 0 && s.outline)
+    .sort((a, b) => (Math.abs(b.area - a.area) > 0.00001 ? b.area - a.area : b.depth - a.depth))[0];
+  const strokeSignal = signal
+    ? undefined
+    : surfaces.filter((s) => s.part === selected && !s.face).sort((a, b) => b.points.length - a.points.length)[0];
+  const wire = o.mode === 'wireframe';
   const paths = surfaces
-    .sort(order)
-    .filter((s) => !s.face || s.area > 0.00001 || wire)
+    .filter((s) => !s.face || ((s.outline || !wire) && (s.area > 0.00001 || wire)))
     .map((s): HardwarePath => {
-      const points = s.points.map(fit);
-      const far = s.face && s.area <= 0;
-      const near = (s.depth - farDepth) / (nearDepth - farDepth || 1);
-      const alpha = far ? 0.1 : s.face ? 0.28 + near * 0.3 : 0.18 + near * 0.18;
+      const points = s.points.map(point);
+      const weight = (s.depth - far) / (near - far || 1);
       return {
         points,
         part: s.part,
-        d: vector ? pathData(points, s.face) : '',
         closed: s.face,
+        d: vector ? pathData(points, s.face) : '',
         fill: s.face && !wire ? mix('ground', s.top ? 'panel2' : 'panel', s.top ? 1 : 0.7) : 'none',
-        stroke: s === signal ? ink.signal(0.95) : ink.line(alpha),
+        stroke: !s.outline
+          ? 'none'
+          : s === signal || s === strokeSignal
+            ? ink.signal(0.95)
+            : ink.line(s.face && s.area <= 0 ? 0.075 : s.face ? 0.26 + weight * 0.3 : 0.16 + weight * 0.2),
       };
     });
-  return { paths, centres: centres.map(fit) };
+  const drawing = { paths, centres, framing: fit };
+  cache.set(key, drawing);
+  if (cache.size > 8) {
+    const first = cache.keys().next().value;
+    if (first !== undefined) cache.delete(first);
+  }
+  return drawing;
 }
-
 export function paintHardware(ctx: CanvasRenderingContext2D, drawing: HardwareDrawing): void {
   for (const p of drawing.paths) {
     ctx.beginPath();
@@ -164,15 +135,31 @@ export function paintHardware(ctx: CanvasRenderingContext2D, drawing: HardwareDr
       ctx.fillStyle = p.fill;
       ctx.fill();
     }
-    ctx.strokeStyle = p.stroke;
-    ctx.stroke();
+    if (p.stroke !== 'none') {
+      ctx.strokeStyle = p.stroke;
+      ctx.stroke();
+    }
   }
 }
+function contains(points: [number, number][], x: number, y: number): boolean {
+  let inside = false;
+  for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
+    const a = points[i],
+      b = points[j];
+    if (a && b && a[1] > y !== b[1] > y && x < ((b[0] - a[0]) * (y - a[1])) / (b[1] - a[1]) + a[0]) inside = !inside;
+  }
+  return inside;
+}
 export function nearestPart(drawing: HardwareDrawing, point: Vec3): number {
+  for (let i = drawing.paths.length - 1; i >= 0; i--) {
+    const path = drawing.paths[i];
+    if (path?.closed && contains(path.points, point[0], point[1])) return path.part;
+  }
   let picked = 0,
     distance = Infinity;
-  drawing.centres.forEach(([x, y], i) => {
-    const d = Math.hypot(x - point[0], y - point[1]);
+  drawing.centres.forEach((p, i) => {
+    if (!p) return;
+    const d = Math.hypot(p[0] - point[0], p[1] - point[1]);
     if (d < distance) {
       picked = i;
       distance = d;

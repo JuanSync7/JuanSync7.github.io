@@ -65,3 +65,8 @@
   .atlas-stage-meta, .atlas-stage-foot { padding-inline: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .atlas-card { transition: none; } }
+
+@media (min-width: 901px) {
+  .atlas-stage-wrap { position: sticky; top: var(--hf-space-20); align-self: start; }
+  .atlas-stage { max-height: calc(100svh - var(--hf-space-26) - var(--hf-space-20)); }
+}
