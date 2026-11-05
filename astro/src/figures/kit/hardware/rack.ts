@@ -74,7 +74,7 @@ export function rack(p: Draft, n: number): void {
     'A framed front door has a repeated mesh pattern, hinge barrels and a recessed pull handle. The mesh lets the equipment remain visible.',
     [-0.25, 0.05, 0.48],
   );
-  frame(p, 0, 0.16, 0.59, 1.18, 1.75, 0.055, 0.045);
+  p.transform(() => frame(p, 0, 0, 0, 1.18, 0.055, 1.75, 0.045), [0, 1.035, 0.565], Math.PI / 2);
   p.detail(() => {
     for (let y = 0.24; y < 1.84; y += 0.085)
       p.line([

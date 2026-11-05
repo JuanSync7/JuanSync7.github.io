@@ -7,6 +7,13 @@ try {
   const { hardwareDrawing, hardwareCamera } = await server.ssrLoadModule('/src/figures/kit/hardware/project.ts');
   const { hardwareSvg, hardwareSprite } = await server.ssrLoadModule('/src/figures/kit/hardware/svg.ts');
   const { HARDWARE_KINDS, DEFAULT_OPTIONS, VIEWS } = await server.ssrLoadModule('/src/figures/kit/hardware/types.ts');
+  const { Draft } = await server.ssrLoadModule('/src/figures/kit/hardware/primitives.ts');
+  const reversed = new Draft();
+  reversed.part('Reversed outline', 'Face normals stay outward for either outline winding.');
+  reversed.extrude([[-1,-1],[-1,1],[1,1],[1,-1]],0,1);
+  const roof=reversed.parts[0].surfaces.at(-1).points;
+  const roofArea=roof.reduce((sum,a,i)=>{const b=roof[(i+1)%roof.length];return sum+a[0]*b[2]-b[0]*a[2];},0);
+  assert.ok(roofArea>0,'Custom extrusions keep their top faces visible regardless of outline winding');
   const { orderSolids } = await server.ssrLoadModule('/src/figures/kit/hardware/depth.ts');
   const { mulberry32 } = await server.ssrLoadModule('/src/figures/kit/rng.ts');
   const { default: template } = await server.ssrLoadModule('/src/figures/templates/hardware-atlas.ts');

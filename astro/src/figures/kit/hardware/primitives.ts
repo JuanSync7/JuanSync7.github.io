@@ -74,8 +74,13 @@ export class Draft {
   }
   extrude(outline: readonly (readonly [number, number])[], low: number, high: number): void {
     this.solid++;
-    const bottom = outline.map(([x, z]): Vec3 => [x, low, z]);
-    const top = outline.map(([x, z]): Vec3 => [x, high, z]);
+    const area = outline.reduce((sum, a, i) => {
+      const b = outline[(i + 1) % outline.length] ?? a;
+      return sum + a[0] * b[1] - b[0] * a[1];
+    }, 0);
+    const loop = area < 0 ? [...outline].reverse() : outline;
+    const bottom = loop.map(([x, z]): Vec3 => [x, low, z]);
+    const top = loop.map(([x, z]): Vec3 => [x, high, z]);
     this.surfaces.push({ solid: this.solid, points: [...bottom].reverse(), face: true, detail: this.fine });
     bottom.forEach((p, i) => {
       const j = (i + 1) % bottom.length;
