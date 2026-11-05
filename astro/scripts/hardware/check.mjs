@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { createServer } from 'vite';
+import { checkTransitions } from './transitions.mjs';
 
 const server = await createServer({ server: { middlewareMode: true, ws: false }, appType: 'custom', logLevel: 'error' });
 try {
@@ -7,6 +8,15 @@ try {
   const { hardwareDrawing, hardwareCamera } = await server.ssrLoadModule('/src/figures/kit/hardware/project.ts');
   const { hardwareSvg, hardwareSprite } = await server.ssrLoadModule('/src/figures/kit/hardware/svg.ts');
   const { HARDWARE_KINDS, DEFAULT_OPTIONS, VIEWS } = await server.ssrLoadModule('/src/figures/kit/hardware/types.ts');
+  const { Draft } = await server.ssrLoadModule('/src/figures/kit/hardware/primitives.ts');
+  const reversed = new Draft();
+  reversed.part('Reversed outline', 'Face normals stay outward for either outline winding.');
+  reversed.extrude([[-1,-1],[-1,1],[1,1],[1,-1]],0,1);
+  const roof=reversed.parts[0].surfaces.at(-1).points;
+  const roofArea=roof.reduce((sum,a,i)=>{const b=roof[(i+1)%roof.length];return sum+a[0]*b[2]-b[0]*a[2];},0);
+  assert.ok(roofArea>0,'Custom extrusions keep their top faces visible regardless of outline winding');
+  const { orderSolids } = await server.ssrLoadModule('/src/figures/kit/hardware/depth.ts');
+  const { mulberry32 } = await server.ssrLoadModule('/src/figures/kit/rng.ts');
   const { default: template } = await server.ssrLoadModule('/src/figures/templates/hardware-atlas.ts');
   let drawings = 0;
   for (const kind of HARDWARE_KINDS) {
@@ -33,22 +43,21 @@ try {
           }));
         };
         const contains = (box, point) => point[0] >= box.x0 - 0.00001 && point[0] <= box.x1 + 0.00001 && point[2] >= box.z0 - 0.00001 && point[2] <= box.z1 + 0.00001;
-        const sources = footprints(model.parts.find((p) => p.name === (kind === 'board' ? 'Processor and memory' : 'Compute die'))).slice(0, 1);
-        const sinks = footprints(model.parts.find((p) => p.name === (kind === 'board' ? 'Connectors' : 'Memory stacks')));
-        const routing = model.parts.find((p) => p.name === (kind === 'board' ? 'Circuit board' : 'Silicon interposer'));
-        const traces = routing.surfaces.filter((s) => !s.face && s.points.length <= 4);
+        const traces = model.parts.flatMap(part => part.surfaces).filter(surface => surface.connection);
         assert.ok(traces.length > 0);
         for (const trace of traces) {
-          assert.ok(sources.some((box) => contains(box, trace.points[0])), `${kind}: every trace starts at compute`);
-          assert.ok(sinks.some((box) => contains(box, trace.points.at(-1))), `${kind}: every trace reaches its connector or memory`);
+          const sources = footprints(model.parts.find(part => part.name === trace.connection.from));
+          const sinks = footprints(model.parts.find(part => part.name === trace.connection.to));
+          assert.ok(sources.some(box => contains(box, trace.points[0])), `${kind}: every trace starts at its source footprint`);
+          assert.ok(sinks.some(box => contains(box, trace.points.at(-1))), `${kind}: every trace reaches its destination footprint`);
           for (let i = 1; i < trace.points.length; i++) {
             const a = trace.points[i - 1], b = trace.points[i];
             assert.ok(a[0] === b[0] || a[2] === b[2], `${kind}: traces follow Manhattan routing`);
           }
         }
       }
-      for (const mode of ['isometric', 'wireframe']) for (const view of Object.keys(VIEWS)) for (const open of [0, 0.5, 1]) {
-        const options = { ...DEFAULT_OPTIONS, mode, view, open };
+      for (const fine of [false,true]) for (const mode of ['isometric', 'wireframe']) for (const view of Object.keys(VIEWS)) for (const open of [0, 0.5, 1]) {
+        const options = { ...DEFAULT_OPTIONS, mode, view, open, detail: fine };
         for (const [width, height] of [[256, 256], [358, 269], [640, 320]]) {
           const drawing = hardwareDrawing(model, options, width, height);
           assert.ok(drawing.paths.length > 20, `${kind}: recognisable detail`);
@@ -61,10 +70,29 @@ try {
           drawings++;
         }
       }
+      for (let part=0;part<model.parts.length;part++) for (const view of Object.keys(VIEWS)) {
+        const solo=hardwareDrawing(model,{...DEFAULT_OPTIONS,pick:part,isolate:true,view},640,480);
+        assert.ok(solo.paths.length>0, `${kind}: every part can be inspected`);
+        assert.ok(solo.paths.every(path=>path.part===part), `${kind}: isolation contains only the selected assembly`);
+        for(const path of solo.paths) for(const [x,y] of path.points)
+          assert.ok(Number.isFinite(x)&&Number.isFinite(y)&&x>=70&&x<=570&&y>=50&&y<=430, `${kind}: isolated part stays whole in frame`);
+      }
+
     }
     const svg = hardwareSvg(hardwareModel(kind), DEFAULT_OPTIONS);
     assert.ok(!/NaN|Infinity|<script|href=|foreignObject|rgba\(/.test(svg), `${kind}: portable, self-contained SVG 1.1`);
     assert.equal(svg, hardwareSvg(hardwareModel(kind), DEFAULT_OPTIONS), `${kind}: repeat export is deterministic`);
+  }
+  for (let seed=0;seed<100;seed++) {
+    const rng=mulberry32(seed);
+    const solids=Array.from({length:24},(_,i)=>({ id:i,lo:[-.5+rng(),i*.08,-.5+rng()],hi:[.7+rng(),i*.08+.07,.7+rng()],depth:rng()*10 }));
+    const sorted=orderSolids(solids);
+    assert.equal(sorted.length,solids.length,'No solid disappears from depth ordering');
+    for(let i=0;i<solids.length;i++) for(let j=i+1;j<solids.length;j++) {
+      const a=solids[i],b=solids[j];
+      if([0,2].every(axis=>Math.min(a.hi[axis],b.hi[axis])-Math.max(a.lo[axis],b.lo[axis])>.00001))
+        assert.ok(sorted.indexOf(a)<sorted.indexOf(b),'A lower overlapping solid never paints over a raised panel');
+    }
   }
   const seen = new Set();
   for (let seed = 0; seed < 1000; seed++) {
@@ -78,5 +106,6 @@ try {
   assert.equal(ids.length, 24);
   assert.equal(new Set(ids).size, 24, 'No duplicate symbol IDs');
   for (const kind of HARDWARE_KINDS) for (const mode of ['isometric', 'wireframe']) assert.ok(ids.includes(`${kind}-${mode}`));
-  console.log(`Hardware atlas: ${drawings} framed views, identical SVG/canvas geometry, 1,000 deterministic seeds and 24 unique symbols passed.`);
+  const transitions = checkTransitions(template, HARDWARE_KINDS);
+  console.log(`Hardware atlas: ${drawings} framed views, ${transitions} camera transition frames, identical SVG/canvas geometry, 1,000 deterministic seeds and 24 unique symbols passed.`);
 } finally { await server.close(); }
