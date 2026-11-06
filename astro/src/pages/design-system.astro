@@ -1,940 +1,123 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import '../styles/design-system.css';
-import NeonText from '../components/ui/NeonText.tsx';
-import KineticWord from '../components/ui/KineticWord.tsx';
-import StrikeThrough from '../components/ui/StrikeThrough.tsx';
-import NotGateDivider from '../components/ui/NotGateDivider.tsx';
-import SegmentedBar from '../components/ui/SegmentedBar.tsx';
-import PurpleSkyTransition from '../components/ui/PurpleSkyTransition.tsx';
-import StarfieldStage from '../components/ui/StarfieldStage.tsx';
-import LofiFooterFade from '../components/ui/LofiFooterFade.tsx';
-import Placeholder from '../components/ui/Placeholder.tsx';
-import NebulaStars from '../components/ui/NebulaStars.tsx';
-import ZoomSwapDemo from '../components/ui/ZoomSwapDemo.tsx';
-import CubeSwapDemo from '../components/ui/CubeSwapDemo.tsx';
-import FigureCanvas from '../components/ui/FigureCanvas.tsx';
-import HardwareIcon from '../components/ui/HardwareIcon.tsx';
+import { getCollection } from 'astro:content';
+import NightPage from '../layouts/NightPage.astro';
+import NightNav from '../components/layout/NightNav.astro';
+import NightFooter from '../components/layout/NightFooter.astro';
 import SectionHead from '../components/ui/SectionHead.astro';
 import Monogram from '../components/ui/Monogram.astro';
-import { IDENTITY, CAREER_STATS } from '../data/site';
+import FigureCanvas from '../components/ui/FigureCanvas';
+import HardwareIcon from '../components/ui/HardwareIcon';
+import PostGrid from '../components/writing/PostGrid';
+import type { PostSummary } from '../components/writing/types';
+import { CATEGORY_LABEL } from '../data/writing';
+import CodeExample from '../components/design-system/CodeExample.astro';
+import SourceFiles from '../components/design-system/SourceFiles.astro';
+import LegacyGallery from '../components/design-system/LegacyGallery.astro';
+import { tokens, tokenFiles, colorGroups, source, pageRecipe, readingRecipe, figureRecipe, trackerRecipe } from '../components/design-system/reference';
+import '../styles/design-system.css';
+import '../styles/night-prose.css';
+import '../styles/learn-paper.css';
 
-/* Raw component source — Vite `?raw` returns the file as a string at
-   build time so the snippet modal can show the full component code,
-   not just an import-and-use stub. */
-import NeonTextSrc from '../components/ui/NeonText.tsx?raw';
-import MonogramSrc from '../components/ui/Monogram.astro?raw';
-import KineticWordSrc from '../components/ui/KineticWord.tsx?raw';
-import StrikeThroughSrc from '../components/ui/StrikeThrough.tsx?raw';
-import NotGateDividerSrc from '../components/ui/NotGateDivider.tsx?raw';
-import SegmentedBarSrc from '../components/ui/SegmentedBar.tsx?raw';
-import PlaceholderSrc from '../components/ui/Placeholder.tsx?raw';
-import StarfieldStageSrc from '../components/ui/StarfieldStage.tsx?raw';
-import PurpleSkyTransitionSrc from '../components/ui/PurpleSkyTransition.tsx?raw';
-import LofiFooterFadeSrc from '../components/ui/LofiFooterFade.tsx?raw';
-import PageZoomSrc from '../components/ui/page-zoom.ts?raw';
-import NebulaStarsSrc from '../components/ui/NebulaStars.tsx?raw';
-import ZoomSwapDemoSrc from '../components/ui/ZoomSwapDemo.tsx?raw';
-import ZoomSwapCss from '../components/ui/zoom-swap.css?raw';
-import CubeSwapDemoSrc from '../components/ui/CubeSwapDemo.tsx?raw';
-import CubeSwapCss from '../components/ui/cube-swap.css?raw';
-import FigureCanvasSrc from '../components/ui/FigureCanvas.tsx?raw';
-import HardwareIconSrc from '../components/ui/HardwareIcon.tsx?raw';
-import SectionHeadSrc from '../components/ui/SectionHead.astro?raw';
-
-/* All tokens read from src/styles/tokens/*.css. Hex values are resolved
-   at runtime by the inline script at the bottom of this page so this list
-   stays a single source of truth — never hardcode hex here. */
-
-const COLOR_TOKENS = [
-  { group: 'surfaces', tokens: [
-    { name: 'bg', token: '--hf-bg' },
-    { name: 'bg-2', token: '--hf-bg-2' },
-    { name: 'surface', token: '--hf-surface' },
-    { name: 'surface-2', token: '--hf-surface-2' },
-    { name: 'cockpit-bg', token: '--hf-cockpit-bg' },
-    { name: 'cockpit-panel', token: '--hf-cockpit-panel' },
-    { name: 'cockpit-panel-2', token: '--hf-cockpit-panel-2' },
-  ]},
-  { group: 'ink', tokens: [
-    { name: 'ink', token: '--hf-ink' },
-    { name: 'ink-pale', token: '--hf-ink-pale' },
-    { name: 'ink-soft', token: '--hf-ink-soft' },
-    { name: 'ink-muted', token: '--hf-ink-muted' },
-  ]},
-  { group: 'lines', tokens: [
-    { name: 'line', token: '--hf-line' },
-    { name: 'line-strong', token: '--hf-line-strong' },
-  ]},
-  { group: 'brand accents', tokens: [
-    { name: 'accent (lime)', token: '--hf-accent' },
-    { name: 'accent-2 (teal)', token: '--hf-accent-2' },
-    { name: 'accent-3 (mint)', token: '--hf-accent-3' },
-  ]},
-  { group: 'category accents', tokens: [
-    { name: 'cp-asic', token: '--cp-asic' },
-    { name: 'cp-ai', token: '--cp-ai' },
-    { name: 'cp-ai-orange', token: '--cp-ai-orange' },
-    { name: 'cp-eda', token: '--cp-eda' },
-    { name: 'cp-script', token: '--cp-script' },
-    { name: 'cp-ok', token: '--cp-ok' },
-  ]},
-  { group: 'specialty', tokens: [
-    { name: 'terminal-glow', token: '--hf-terminal-glow' },
-    { name: 'cyan', token: '--hf-cyan' },
-    { name: 'magenta', token: '--hf-magenta' },
-    { name: 'violet', token: '--hf-violet' },
-  ]},
-  { group: 'lofi / purple', tokens: [
-    { name: 'purple-deep', token: '--hf-purple-deep' },
-    { name: 'purple-mid', token: '--hf-purple-mid' },
-    { name: 'purple-shadow', token: '--hf-purple-shadow' },
-    { name: 'lofi-accent', token: '--lofi-accent' },
-    { name: 'lofi-accent-2', token: '--lofi-accent-2' },
-    { name: 'lofi-bg', token: '--lofi-bg' },
-  ]},
-  { group: 'night (home, writing, figures)', tokens: [
-    { name: 'ground', token: '--nt-ground' }, { name: 'ground-2', token: '--nt-ground-2' }, { name: 'panel', token: '--nt-panel' }, { name: 'panel-2', token: '--nt-panel-2' }, { name: 'panel-signal', token: '--nt-panel-signal' }, { name: 'rule', token: '--nt-rule' }, { name: 'line', token: '--nt-line' }, { name: 'line-2', token: '--nt-line-2' }, { name: 'line-3', token: '--nt-line-3' }, { name: 'line-4', token: '--nt-line-4' }, { name: 'ink-strong', token: '--nt-ink-strong' }, { name: 'ink', token: '--nt-ink' }, { name: 'ink-2', token: '--nt-ink-2' }, { name: 'ink-soft', token: '--nt-ink-soft' }, { name: 'ink-muted', token: '--nt-ink-muted' }, { name: 'ink-faint', token: '--nt-ink-faint' }, { name: 'signal', token: '--nt-signal' }, { name: 'signal-ink', token: '--nt-signal-ink' }, { name: 'signal-line', token: '--nt-signal-line' }, { name: 'signal-line-2', token: '--nt-signal-line-2' }, { name: 'signal-soft', token: '--nt-signal-soft' }, { name: 'signal-faint', token: '--nt-signal-faint' }, { name: 'signal-glow', token: '--nt-signal-glow' }, { name: 'dot', token: '--nt-dot' }, { name: 'scrim', token: '--nt-scrim' }, { name: 'scrim-strong', token: '--nt-scrim-strong' },
-  ]},
-  { group: 'paper (the reading column of a learn article) and code', tokens: [
-    { name: 'paper-ground', token: '--nt-paper-ground' }, { name: 'paper-panel', token: '--nt-paper-panel' }, { name: 'paper-panel-2', token: '--nt-paper-panel-2' }, { name: 'paper-line', token: '--nt-paper-line' }, { name: 'paper-ink-strong', token: '--nt-paper-ink-strong' }, { name: 'paper-ink', token: '--nt-paper-ink' }, { name: 'paper-ink-2', token: '--nt-paper-ink-2' }, { name: 'paper-ink-muted', token: '--nt-paper-ink-muted' }, { name: 'paper-signal', token: '--nt-paper-signal' }, { name: 'paper-signal-line', token: '--nt-paper-signal-line' }, { name: 'paper-signal-panel', token: '--nt-paper-signal-panel' },
-    { name: 'code-ground', token: '--nt-code-ground' }, { name: 'code-line', token: '--nt-code-line' }, { name: 'code-ink', token: '--nt-code-ink' }, { name: 'term-red', token: '--nt-term-red' }, { name: 'term-amber', token: '--nt-term-amber' }, { name: 'term-green', token: '--nt-term-green' },
-  ]},
+const colors = tokens('colors');
+const sizes = tokens('typography').filter((t) => t.name.startsWith('--nt-fs'));
+const sections = [ ['overview', 'Overview'], ['foundations', 'Foundations'], ['type', 'Typography'], ['layout', 'Layout & motion'], ['patterns', 'Page patterns'], ['components', 'Components'], ['legacy', 'Legacy library'] ];
+const pages = [
+  { name: 'Home', href: '/', path: 'pages/index.astro', kind: 'System overview', note: 'Night chrome, large display type, live city and a DOM system map.' },
+  { name: 'Writing', href: '/blog/', path: 'pages/blog/index.astro', kind: 'Browse & discover', note: 'Featured pages, filterable post cards and the lesson log.' },
+  { name: 'Learn', href: '/learn/', path: 'pages/learn/index.astro', kind: 'Read & understand', note: 'Night index; article bodies follow the reader’s light or dark preference.' },
+  { name: 'Trackers', href: '/trackers/', path: 'layouts/TrackerLayout.astro', kind: 'Compare releases', note: 'Shared tracker navigation, a left version rail and centered release detail.' },
+  { name: 'Lab', href: '/lab/', path: 'pages/lab/index.astro', kind: 'Explore & reuse', note: 'Seeded figure templates and an exportable hardware icon kit.' },
+  { name: 'Anatomy', href: '/anatomy/chip-package/', path: 'pages/anatomy/chip-package.astro', kind: 'Inspect a system', note: 'Step controls and selectable parts beside an explanatory figure.' },
 ];
-
-const GRADIENT_TOKENS = [
-  { name: 'purple bar',         token: '--hf-grad-purple-bar',        note: 'horizontal sweep for animated section dividers' },
-  { name: 'purple bar shadow',  token: '--hf-grad-purple-bar-shadow', note: 'darker mirror of purple bar — drop-shadow under the dividers' },
-  { name: 'fade-x',             token: '--hf-grad-fade-x',            note: 'horizontal fade-to-edges mask' },
-  { name: 'chart lime → yellow',     token: '--hf-grad-chart-lime-yellow',     note: 'cockpit code-activity bars (GRAD.greenYellow)' },
-  { name: 'chart rose → gold',       token: '--hf-grad-chart-rose-gold',       note: 'cockpit donut/speedo accent (GRAD.roseGold)' },
-  { name: 'chart periwinkle → mint', token: '--hf-grad-chart-periwinkle-mint', note: 'cockpit donut/speedo accent (GRAD.periwinkleMint)' },
-  { name: 'chart coral → purple',    token: '--hf-grad-chart-coral-purple',    note: 'cockpit donut/speedo accent (GRAD.coralPurple)' },
-  { name: 'chart cyan → magenta',    token: '--hf-grad-chart-cyan-magenta',    note: 'cockpit donut/speedo accent (GRAD.cyanMagenta)' },
-  { name: 'chart emerald → orange',  token: '--hf-grad-chart-emerald-orange',  note: 'cockpit donut/speedo accent (GRAD.emeraldOrange)' },
-  { name: 'chart yellow → red',      token: '--hf-grad-chart-yellow-red',      note: 'cockpit donut/speedo accent (GRAD.yellowRed)' },
-  { name: 'rainbow red → indigo',    token: '--hf-grad-rainbow-red-indigo',    note: 'ROYGBI spectrum sweep (red, orange, yellow, green, blue, indigo)' },
-  { name: 'night dots',              token: '--nt-grad-dots',                  note: 'dot grid behind night sections (.nt-dots)' },
-  { name: 'night fade left',         token: '--nt-grad-fade-left',             note: 'writing hero: words readable over the lattice' },
-  { name: 'night fade up',           token: '--nt-grad-fade-up',               note: 'fade a panel into the ground' },
-  { name: 'night fade right',        token: '--nt-grad-fade-right',            note: 'mask: a sliding row fades out at its right edge (lesson slider)' },
-  { name: 'page shade',              token: '--nt-grad-page-shade',            note: 'shadow across a featured page as it turns' },
-  { name: 'page gloss',              token: '--nt-grad-page-gloss',            note: 'brief sheen on a page as it lifts' },
-  { name: 'card spotlight',          token: '--nt-grad-spot',                  note: 'post-card pointer spotlight, sized by --nt-spot-size' },
-];
-
-const TYPE_RAMP = [
-  { token: '--hf-fs-xs',   px: '10px' },
-  { token: '--hf-fs-sm',   px: '11px' },
-  { token: '--hf-fs-base', px: '12px' },
-  { token: '--hf-fs-md',   px: '13px' },
-  { token: '--hf-fs-lg',   px: '14px' },
-  { token: '--hf-fs-xl',   px: '16px' },
-  { token: '--hf-fs-2xl',  px: '20px' },
-  { token: '--nt-fs-caption', px: '12px' },
-  { token: '--nt-fs-meta',    px: '13px' },
-  { token: '--nt-fs-small',   px: '14px' },
-  { token: '--nt-fs-ui',      px: '15px' },
-  { token: '--nt-fs-body',    px: '16px' },
-  { token: '--nt-fs-lead',    px: '17px' },
-  { token: '--nt-fs-intro',   px: '18px' },
-  { token: '--nt-fs-h5',      px: '19px' },
-  { token: '--nt-fs-h4',      px: '21px' },
-  { token: '--nt-fs-h3',      px: '24px' },
-  { token: '--nt-fs-h2',      px: '30–44px' },
-  { token: '--nt-fs-h1',      px: '42–80px' },
-  { token: '--nt-fs-hero',    px: '48–104px' },
-];
-
-const SPACING_TOKENS = [
-  { token: '--hf-space-1',  px: '4px'  },
-  { token: '--hf-space-2',  px: '8px'  },
-  { token: '--hf-space-3',  px: '12px' },
-  { token: '--hf-space-4',  px: '16px' },
-  { token: '--hf-space-5',  px: '20px' },
-  { token: '--hf-space-6',  px: '24px' },
-  { token: '--hf-space-8',  px: '32px' },
-  { token: '--hf-space-10', px: '40px' },
-  { token: '--hf-space-12', px: '48px' },
-  { token: '--hf-space-7',  px: '28px' },
-  { token: '--hf-space-14', px: '56px' },
-  { token: '--hf-space-16', px: '64px' },
-  { token: '--hf-space-20', px: '80px' },
-  { token: '--hf-space-26', px: '104px' },
-];
-
-/* Night layout and effect tokens: sizes that are not on the spacing scale. */
-const NIGHT_LAYOUT = [
-  { token: '--nt-gutter', note: 'page side gutter, 16–48px' },
-  { token: '--nt-section-y', note: 'section padding, 72–120px' },
-  { token: '--nt-section-y-tight', note: 'tighter section padding, 48–72px' },
-  { token: '--nt-max', note: 'content width, 1200px' },
-  { token: '--nt-measure', note: 'text measure, 640px' },
-  { token: '--nt-hit', note: 'smallest touch target, 44px' },
-  { token: '--nt-col', note: 'narrowest side-by-side panel, 420px' },
-  { token: '--nt-card-min', note: 'narrowest card in an auto-filling grid, 340px' },
-  { token: '--nt-thumb-min', note: 'narrowest thumbnail in a strip, 200px' },
-  { token: '--nt-perspective-page', note: '3D distance for the featured page turn, 2400px' },
-  { token: '--nt-perspective-card', note: '3D distance for the lesson card flip, 1600px' },
-  { token: '--nt-spot-size', note: 'post-card spotlight diameter, 920px' },
-  { token: '--nt-glass-blur', note: 'backdrop blur behind the sticky nav' },
-  { token: '--nt-lh-tight · --nt-lh-heading · --nt-lh-body', note: 'line heights 1.04 · 1.12 · 1.6' },
-  { token: '--nt-tracking-display · --nt-tracking-heading', note: 'letter spacing −0.035em · −0.02em' },
-];
-
-const RADIUS_TOKENS = [
-  { token: '--hf-radius-xs',   label: '2px'  },
-  { token: '--hf-radius-sm',   label: '4px'  },
-  { token: '--hf-radius-md',   label: '8px'  },
-  { token: '--hf-radius-lg',   label: '12px' },
-  { token: '--hf-radius-pill', label: 'pill' },
-  { token: '--hf-radius-xl',   label: '16px' },
-  { token: '--hf-radius-2xl',  label: '20px' },
-];
-
-/* Snippet builders — every artifact below carries a `data-ds-snippet`
-   string showing the code needed to reproduce it. Click an artifact to
-   open the snippet modal. */
-
-const colorSnippet = (token: string, name: string) =>
-  `/* ${name} — token from src/styles/tokens/colors.css */
-.element {
-  background: var(${token});
-  /* also: color | border-color | fill | box-shadow color */
-}`;
-
-const gradSnippet = (token: string, name: string) =>
-  `/* ${name} — token from src/styles/tokens/gradients.css */
-.element {
-  background: var(${token});
-}`;
-
-const fontSnippet = (token: string, label: string) =>
-  `/* ${label} — token from src/styles/tokens/typography.css */
-.element {
-  font-family: var(${token});
-}`;
-
-const fontSizeSnippet = (token: string, px: string) =>
-  `/* size token (${px}) — typography.css */
-.element {
-  font-size: var(${token});
-}`;
-
-const spacingSnippet = (token: string, px: string) =>
-  `/* spacing token (${px}) — spacing.css */
-.element {
-  padding: var(${token});
-  /* also: margin | gap | top/right/bottom/left */
-}`;
-
-const radiusSnippet = (token: string, label: string) =>
-  `/* radius token (${label}) — spacing.css */
-.element {
-  border-radius: var(${token});
-}`;
-
+const entries = (await getCollection('blog')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime()).slice(0, 2);
+const posts: PostSummary[] = entries.map((e) => ({ slug: e.slug, title: e.data.title, excerpt: e.data.excerpt, category: e.data.category, date: e.data.date.toISOString().slice(0, 10), read: e.data.readTime, cover: e.data.cover ?? null, href: e.data.externalUrl ?? `/blog/${e.slug}` }));
+const postRecipe = `---\nimport PostGrid from '../components/writing/PostGrid';\nimport { CATEGORY_LABEL } from '../data/writing';\nconst posts = ${JSON.stringify(posts, null, 2)};\n---\n<PostGrid posts={posts} labels={CATEGORY_LABEL} client:visible />`;
 ---
 
-<Layout title={`${IDENTITY.shortName} — design system`}>
-  <main class="ds-wrap">
-    <a href="/" class="ds-back" data-zoom>← back to site</a>
-
-    <header class="ds-header">
-      <div class="ds-title">// design_system.sv</div>
-      <div class="ds-subtitle">
-        Living reference for {IDENTITY.shortName}. Every value below reads from
-        the same token files and shared components the production site uses.
-        Click any artifact to view the code needed to build it; click any
-        inline <code>token</code> label to copy it raw.
+<NightPage title="Design system · Juan Kok" description="The visual language of juansync.dev: live foundations, page patterns and shared components, with copyable usage and source code.">
+  <a class="ds-skip" href="#overview">Skip to design system</a>
+  <NightNav />
+  <main data-design-system class="ds-page">
+    <header class="nt-wrap ds-hero">
+      <div class="ds-hero-copy">
+        <span class="nt-label">// design_system · living reference</span>
+        <h1>The parts.<br /><span>The whole system.</span></h1>
+        <p>The visual language of juansync.dev, from a single teal signal to the pages built around it. Explore the patterns, try the components, take the code.</p>
+        <div class="ds-actions"><a class="ds-button" href="#components">Explore components ↘</a><a class="ds-text-link" href="#patterns">Build a page →</a></div>
+      </div>
+      <div class="ds-specimen" aria-label="Site identity specimen">
+        <div class="ds-specimen-top"><span>juan_kok</span><span>night / 2026</span></div>
+        <div class="ds-mark"><Monogram intro="none" /></div>
+        <div class="ds-specimen-bottom"><span>Near-black. Cool ink.<br />One teal signal.</span><span class="ds-signal-mark" aria-hidden="true">↗</span></div>
       </div>
     </header>
 
-    {/* ───────────────────────── 01 COLOR PALETTE ───────────────────────── */}
-    <section class="ds-section">
-      <div class="ds-section-title">01 — color palette</div>
-      <div class="ds-section-sub">Source: <code>src/styles/tokens/colors.css</code>. Click a swatch to copy <code>var(--token)</code>.</div>
+    <div class="nt-wrap ds-shell">
+      <aside class="ds-index"><nav aria-label="On this page"><span class="ds-eyebrow">On this page</span>{sections.map(([id, label], i) => <a href={`#${id}`} data-section-link><span>{String(i + 1).padStart(2, '0')}</span>{label}</a>)}</nav><p>Usage first.<br />Source when you need it.</p></aside>
+      <div class="ds-content">
+        <section id="overview" data-ds-section class="ds-section">
+          <SectionHead label="// 01 · overview" title="One site. Several kinds of page." lead="A shared night shell connects the site. The content determines how much space, detail and motion belongs inside it." />
+          <div class="ds-page-grid">{pages.map((page) => <article class="ds-page-card"><span class="ds-eyebrow">{page.kind}</span><h3><a href={page.href}>{page.name} ↗</a></h3><p>{page.note}</p><a class="ds-source-link" href={`https://github.com/JuanSync7/JuanSync7.github.io/blob/main/astro/src/${page.path}`}>View page source →</a></article>)}</div>
+          <div class="ds-callout"><span class="nt-label">Start here</span><p>Use <code>--nt-*</code> for current pages, <code>NightPage</code> for the shell, and shared components for repeated patterns. The lime, typewriter and lofi library remains available below for older sections.</p></div>
+        </section>
 
-      {COLOR_TOKENS.map((g) => (
-        <>
-          <div class="ds-group-label">{g.group}</div>
-          <div class="ds-swatch-grid">
-            {g.tokens.map((c) => (
-              <div class="ds-swatch ds-copyable" data-ds-snippet={colorSnippet(c.token, c.name)} title="click for code">
-                <div class="ds-swatch-color" style={`background: var(${c.token});`}></div>
-                <div class="ds-swatch-info">
-                  <div class="ds-swatch-name">{c.name}</div>
-                  <div class="ds-swatch-hex" data-resolve-hex={c.token}>—</div>
-                  <div class="ds-swatch-var">{c.token}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </>
-      ))}
-    </section>
+        <section id="foundations" data-ds-section class="ds-section">
+          <SectionHead label="// 02 · foundations" title="Colour has a job." lead="Grounds recede, ink stays readable, teal marks an action or a point of attention. Hairlines separate content without turning every section into a filled card." />
+          <p class="ds-note">Each swatch copies its CSS variable. Values and token lists come directly from the production token files at build time.</p>
+          {colorGroups.map((group) => <div class="ds-token-group"><h3>{group.title}</h3><div class="ds-swatches">{colors.filter((t) => group.test(t.name)).map((t) => <button type="button" class="ds-swatch" data-copy-token={`var(${t.name})`} aria-label={`Copy var(${t.name})`}><span class="ds-chip" style={`background: var(${t.name})`} aria-hidden="true"></span><span class="ds-token-name">{t.name}</span><span class="ds-token-value">{t.value}</span><span class="ds-copy-hint">Copy variable ↗</span></button>)}</div></div>)}
+          <CodeExample title="colors.css · all definitions" code={source('styles/tokens/colors.css')} />
+        </section>
 
-    {/* ───────────────────────── 02 GRADIENTS ───────────────────────── */}
-    <section class="ds-section">
-      <div class="ds-section-title">02 — gradients</div>
-      <div class="ds-section-sub">Source: <code>src/styles/tokens/gradients.css</code>.</div>
-      <div class="ds-grad-row">
-        {GRADIENT_TOKENS.map((g) => (
-          <div class="ds-grad-card ds-copyable" data-ds-snippet={gradSnippet(g.token, g.name)} title="click for code">
-            <div class="ds-grad-strip" style={`background: var(${g.token});`}></div>
-            <div class="ds-grad-info">
-              <div class="ds-grad-name">{g.name}</div>
-              <div class="ds-grad-code">{g.token}</div>
-              <div class="ds-grad-note">{g.note}</div>
-            </div>
-          </div>
-        ))}
+        <section id="type" data-ds-section class="ds-section">
+          <SectionHead label="// 03 · typography" title="Three voices. One hierarchy." lead="Space Grotesk sets the direction. Geist does the reading. JetBrains Mono carries labels, navigation and code." />
+          <div class="ds-fonts">{[['Space Grotesk', '--nt-display', 'Display / 500–600', 'A system worth understanding.'], ['Geist', '--nt-sans', 'Reading / 400–600', 'Clear words, room to think.'], ['JetBrains Mono', '--nt-mono', 'Labels & code / 400–700', '// evidence → understanding']].map(([name, token, role, text]) => <article class="ds-font"><span class="ds-eyebrow">{role}</span><h3>{name}</h3><p style={`font-family: var(${token})`}>{text}</p><button class="ds-token-button" type="button" data-copy-token={`var(${token})`}>{token} <span aria-hidden="true">↗</span></button></article>)}</div>
+          <details class="ds-disclosure"><summary>Type scale · {sizes.length} sizes</summary><div class="ds-type-scale">{sizes.map((t) => <div><button type="button" class="ds-token-button" data-copy-token={`var(${t.name})`}>{t.name}</button><span class="ds-token-value">{t.value}</span><p style={`font-size: var(${t.name}); font-family: var(--nt-display); line-height: var(--nt-lh-heading)`}>Form follows understanding.</p></div>)}</div></details>
+          <p class="ds-note">Base text: 16px at 1.6 line height; article prose: 17px. Introductory text uses a 640px measure; article bodies follow the page container. Headings use tighter line height and tracking. The full file also retains the older Special Elite and Caveat stacks.</p>
+          <CodeExample title="typography.css · stacks, scale & rhythm" code={source('styles/tokens/typography.css')} />
+        </section>
+
+        <section id="layout" data-ds-section class="ds-section">
+          <SectionHead label="// 04 · layout & motion" title="Space to read. Motion with purpose." lead="A 4px spacing scale, fluid gutters and generous section rhythm. Movement explains continuity; reduced motion removes it." />
+          <div class="ds-layout-demo" aria-label="Layout specimen"><div class="ds-layout-label">.nt-wrap · max 1200px</div><div class="ds-layout-inner"><span>--nt-gutter<br />16–48px</span><div><span class="nt-label">.nt-section</span><h3>Let the content breathe.</h3><p>72–120px between sections. Use --nt-measure for text that should stay comfortably readable.</p></div></div></div>
+          <div class="ds-spacing">{tokens('spacing').filter((t) => t.name.startsWith('--hf-space')).sort((a,b) => parseInt(a.value) - parseInt(b.value)).map((t) => <button type="button" data-copy-token={`var(${t.name})`}><span style={`height: var(${t.name})`} aria-hidden="true"></span><strong>{t.value}</strong><small>{t.name}</small></button>)}</div>
+          <div class="ds-radii">{tokens('spacing').filter((t) => t.name.startsWith('--hf-radius')).map((t) => <button type="button" data-copy-token={`var(${t.name})`} style={`border-radius: var(${t.name})`}>{t.name.replace('--hf-radius-', '')}<small>{t.value}</small></button>)}</div>
+          <div class="ds-callout"><span class="nt-label">Movement</span><p>NightPage uses Astro’s router. Pages crossfade; the navigation holds its position; matching post covers travel between views. The shared duration is <code>--nt-dur-morph</code> (460ms). The easing is <code>--nt-ease-out</code>. No scroll hijacking.</p></div>
+          {tokenFiles.filter((file) => !['colors', 'typography'].includes(file)).map((file) => <CodeExample title={`${file}.css · all definitions`} code={source(`styles/tokens/${file}.css`)} />)}
+          <details class="ds-disclosure"><summary>Complete layout, effect & motion token index</summary><div class="ds-token-list">{['spacing', 'gradients', 'motion'].flatMap((file) => tokens(file)).map((t) => <button type="button" data-copy-token={`var(${t.name})`}><code>{t.name}</code><span>{t.value}</span><span aria-hidden="true">↗</span></button>)}</div></details>
+        </section>
+
+        <section id="patterns" data-ds-section class="ds-section">
+          <SectionHead label="// 05 · page patterns" title="Start with the right structure." lead="These are the layouts used by the site today. Copy a starting point, then keep the real components and their dependencies together." />
+          <article class="ds-pattern"><div class="ds-pattern-title"><span class="ds-number">01</span><div><h3>The night page</h3><p>Home, writing, learn, lab and anatomy share NightPage, NightNav and NightFooter—the same chrome used here.</p></div></div><CodeExample title="Night page · starter.astro" code={pageRecipe} open /><SourceFiles paths={['layouts/NightPage.astro','layouts/NightLayout.astro','components/layout/NightNav.astro','components/layout/NightFooter.astro','styles/night.css']} /></article>
+          <article class="ds-pattern"><div class="ds-pattern-title"><span class="ds-number">02</span><div><h3>The reading page</h3><p>Night chrome around a restrained article. Learn bodies become cream paper for light-mode readers; dark-mode readers keep the night ground. Code stays in a dark terminal in both.</p></div></div><div class="ds-reading-pair"><div class="ds-reading-sample"><span class="ds-eyebrow">Night / dark preference</span><h3>Evidence before confidence.</h3><p>Readable prose, quiet lines and a single highlight.</p></div><div class="ds-reading-sample ds-paper-sample"><span class="ds-eyebrow">Paper / light preference</span><h3>Evidence before confidence.</h3><p>The same hierarchy, on warm paper with darker ink.</p></div></div><CodeExample title="Reading body · usage" code={readingRecipe} /><SourceFiles paths={['styles/night-prose.css','styles/learn-paper.css']} /></article>
+          <article class="ds-pattern"><div class="ds-pattern-title"><span class="ds-number">03</span><div><h3>The tracker</h3><p>A shared navigation row above a flush-left version-history rail and centered release details. Engines, frontier models and silicon use the same shell; each supplies its own content grid.</p></div></div><CodeExample title="Tracker · starter.astro" code={trackerRecipe} /><SourceFiles paths={['layouts/TrackerLayout.astro','components/trackers/_chrome.css','components/trackers/tracker-night.css']} /><a class="ds-text-link" href="/trackers/">See the trackers →</a></article>
+          <article class="ds-pattern"><div class="ds-pattern-title"><span class="ds-number">04</span><div><h3>The interactive explorer</h3><p>Lab pairs figure templates with seeds and a hardware icon kit with export controls. Anatomy pairs a figure with step navigation and readable part descriptions. Keep labels and controls in the DOM; mount the drawing with FigureCanvas.</p></div></div><div class="ds-actions"><a class="ds-text-link" href="/lab/">Explore the lab →</a><a class="ds-text-link" href="/lab/icon-kit/">Hardware atlas →</a><a class="ds-text-link" href="/anatomy/chip-package/">Inspect a chip package →</a></div><SourceFiles paths={['pages/lab/index.astro','pages/lab/icon-kit.astro','pages/anatomy/chip-package.astro']} /></article>
+        </section>
+
+        <section id="components" data-ds-section class="ds-section">
+          <SectionHead label="// 06 · shared components" title="Real components. Real examples." lead="These previews render the production components. Usage snippets assume the Astro + React project and imports relative to src/pages/. Source is included for inspection and reuse." />
+          <article class="ds-component"><div class="ds-component-head"><h3>SectionHead</h3><span class="ds-badge">Astro · static</span></div><p>The mono label, two-tone heading and lead used across night pages. Use as="h1" once for the page title.</p><div class="ds-stage"><SectionHead label="// a shared pattern" title="Make it understandable." accent="Then make it work." lead="A familiar opening, wherever you are on the site." /></div><CodeExample title="SectionHead · usage" code={`---
+import SectionHead from '../components/ui/SectionHead.astro';\n---\n<SectionHead label="// a shared pattern" title="Make it understandable." accent="Then make it work." lead="A familiar opening." />`} /><SourceFiles paths={['components/ui/SectionHead.astro']} /></article>
+          <article class="ds-component"><div class="ds-component-head"><h3>Monogram</h3><span class="ds-badge">Astro · inline SVG</span></div><p>The SJ mark: two nets between one pair of pins. Size its container. Intro modes: session, always or none.</p><div class="ds-stage ds-monogram"><Monogram intro="none" /></div><CodeExample title="Monogram · usage" code={`---
+import Monogram from '../components/ui/Monogram.astro';\n---\n<div style="height: var(--hf-space-16)"><Monogram intro="session" /></div>`} /><SourceFiles paths={['components/ui/Monogram.astro']} /></article>
+          <article class="ds-component"><div class="ds-component-head"><h3>FigureCanvas</h3><span class="ds-badge">React · client:visible</span></div><p>One figure registry for the home city, post covers, lab and anatomy. The wrapper sets the size; the figure supplies its accessible description. Public examples keep the audit readout hidden.</p><div class="ds-figure"><FigureCanvas id="system-stack" client:visible /></div><CodeExample title="FigureCanvas · usage" code={figureRecipe} /><SourceFiles paths={['components/ui/FigureCanvas.tsx','components/ui/figure-canvas.css']} /><p class="ds-note">Dependencies: hooks/useFigureLoop.ts and the figures/ registry and kit. Renderer source alone does not include a drawing. <a href="/lab/">Find figures in the lab →</a></p></article>
+          <article class="ds-component"><div class="ds-component-head"><h3>HardwareIcon</h3><span class="ds-badge">React · static SVG</span></div><p>Exportable hardware geometry shared with the hardware atlas. Supports isometric and wireframe presentation, view selection and opened parts.</p><div class="ds-hardware"><div><HardwareIcon kind="processor" /><span>isometric</span></div><div><HardwareIcon kind="processor" mode="wireframe" /><span>wireframe</span></div></div><CodeExample title="HardwareIcon · usage" code={`---
+import HardwareIcon from '../components/ui/HardwareIcon';\n---\n<div style="width: var(--nt-thumb-min); aspect-ratio: 1">\n  <HardwareIcon kind="processor" mode="wireframe" />\n</div>`} /><SourceFiles paths={['components/ui/HardwareIcon.tsx']} /><p class="ds-note">Dependencies: figures/kit/hardware/ and data/hardware.ts. <a href="/lab/icon-kit/">Open the hardware atlas for the geometry library and exports →</a></p></article>
+          <article class="ds-component"><div class="ds-component-head"><h3>PostGrid</h3><span class="ds-badge">React · client:visible</span></div><p>The same filter pills, hairline cards, pointer spotlight and live covers used on writing and learn. These are the two newest real posts.</p><div class="ds-post-grid"><PostGrid posts={posts} labels={CATEGORY_LABEL} client:visible /></div><CodeExample title="PostGrid · usage with real post data" code={postRecipe} /><SourceFiles paths={['components/writing/PostGrid.tsx','components/writing/post-grid.css']} /><p class="ds-note">Dependencies: writing/types.ts, FigureCanvas and its registry. Filters expose aria-pressed; cards remain links without JavaScript.</p></article>
+        </section>
+
+        <section id="legacy" data-ds-section class="ds-section">
+          <SectionHead label="// 07 · legacy library" title="Keep the old parts findable." lead="The earlier lime, typewriter, cockpit and lofi system is preserved here. Use the night system above for current pages; this library documents the existing older components." />
+          <details class="ds-disclosure ds-legacy"><summary>Open legacy component previews & source</summary><LegacyGallery /></details>
+          <details class="ds-disclosure"><summary>Legacy colour tokens · {colors.filter((t) => !t.name.startsWith('--nt-')).length} variables</summary><div class="ds-swatches">{colors.filter((t) => !t.name.startsWith('--nt-')).map((t) => <button type="button" class="ds-swatch" data-copy-token={`var(${t.name})`}><span class="ds-chip" style={`background: var(${t.name})`} aria-hidden="true"></span><span class="ds-token-name">{t.name}</span><span class="ds-token-value">{t.value}</span><span class="ds-copy-hint">Copy variable ↗</span></button>)}</div></details>
+          <div class="ds-callout"><span class="nt-label">Keeping this current</span><p>Token inventories and source panels are generated from the same files the site builds with. Add a live preview here whenever a new shared component is introduced, and link page-specific systems to their production pages.</p></div>
+        </section>
+        <div class="ds-end"><span class="nt-label">// end of reference</span><a class="ds-text-link" href="#overview">Back to overview ↑</a></div>
       </div>
-    </section>
-
-    {/* ───────────────────────── 03 TYPOGRAPHY ───────────────────────── */}
-    <section class="ds-section">
-      <div class="ds-section-title">03 — typography</div>
-      <div class="ds-section-sub">Source: <code>src/styles/tokens/typography.css</code>.</div>
-
-      <div class="ds-font-row">
-        <div class="ds-font-card ds-copyable" data-ds-snippet={fontSnippet('--hf-mono', 'JetBrains Mono — primary')} title="click for code">
-          <div class="ds-font-label">--hf-mono · primary</div>
-          <div class="ds-font-display" style="font-family: var(--hf-mono); font-size: 24px;">JetBrains Mono</div>
-          <div class="ds-font-sample" style="font-family: var(--hf-mono);">
-            ABCDEFGHIJKLM abcdefghijklm 0123456789<br/>
-            The quick brown fox jumps over the lazy dog.
-          </div>
-          <div class="ds-font-meta">Body, code, labels, nav, dashboard UI · 400/500/600/700</div>
-        </div>
-        <div class="ds-font-card ds-copyable" data-ds-snippet={fontSnippet('--hf-display', 'Special Elite — display')} title="click for code">
-          <div class="ds-font-label">--hf-display · display</div>
-          <div class="ds-font-display" style="font-family: var(--hf-display); font-size: 32px;">Special Elite</div>
-          <div class="ds-font-sample" style="font-family: var(--hf-display);">
-            ABCDEFGHIJKLM abcdefghijklm 0123456789<br/>
-            The quick brown fox jumps over the lazy dog.
-          </div>
-          <div class="ds-font-meta">Hero headings, project titles, signature badge</div>
-        </div>
-        <div class="ds-font-card ds-copyable" data-ds-snippet={fontSnippet('--hf-hand', 'Caveat — handwritten')} title="click for code">
-          <div class="ds-font-label">--hf-hand · handwritten</div>
-          <div class="ds-font-display" style="font-family: var(--hf-hand); font-size: 28px;">Caveat</div>
-          <div class="ds-font-sample" style="font-family: var(--hf-hand); font-size: 16px;">
-            ABCDEFGHIJKLM abcdefghijklm 0123456789<br/>
-            The quick brown fox jumps over the lazy dog.
-          </div>
-          <div class="ds-font-meta">Lofi annotations, casual accents · 400/600</div>
-        </div>
-      </div>
-
-      <div class="ds-group-label" style="margin-top: 24px;">size scale</div>
-      <div class="ds-type-ramp">
-        {TYPE_RAMP.map((t) => (
-          <div class="ds-type-row ds-copyable" data-ds-snippet={fontSizeSnippet(t.token, t.px)} title="click for code">
-            <span class="ds-type-label">{t.token}</span>
-            <span class="ds-type-px">{t.px}</span>
-            <span class="ds-type-sample" style={`font-size: var(${t.token});`}>The quick brown fox jumps over the lazy dog.</span>
-          </div>
-        ))}
-      </div>
-    </section>
-
-    {/* ───────────────────────── 04 ATMOSPHERIC EFFECTS ───────────────────────── */}
-    <section class="ds-section">
-      <div class="ds-section-title">04 — atmospheric effects</div>
-      <div class="ds-section-sub">Live components from <code>src/components/ui/</code>. Each one self-positions — drop it anywhere.</div>
-
-      <div class="ds-atmo-stack">
-        <div class="ds-atmo-item">
-          <div class="ds-atmo-stage ds-atmo-stage-band ds-atmo-stage-starfield ds-copyable" data-ds-snippet={`// src/components/ui/StarfieldStage.tsx\n${StarfieldStageSrc}`} title="click for code">
-            <StarfieldStage client:load />
-          </div>
-          <div class="ds-atmo-cap">&lt;StarfieldStage&gt; — twinkling stars + periodic shooting stars on black bg (scoped canvas; the global version is wired in <code>Layout.astro</code>)</div>
-        </div>
-        <div class="ds-atmo-item">
-          <div class="ds-atmo-stage ds-copyable" data-ds-snippet={`// src/components/ui/PurpleSkyTransition.tsx\n${PurpleSkyTransitionSrc}`} title="click for code"><PurpleSkyTransition client:load /></div>
-          <div class="ds-atmo-cap">&lt;PurpleSkyTransition&gt; — dark to deep-purple sky with stars</div>
-        </div>
-        <div class="ds-atmo-item">
-          <div class="ds-atmo-stage ds-copyable" data-ds-snippet={`// src/components/ui/LofiFooterFade.tsx\n${LofiFooterFadeSrc}`} title="click for code"><LofiFooterFade client:load /></div>
-          <div class="ds-atmo-cap">&lt;LofiFooterFade&gt; — purple → page bg fade with drifting dots, between lofi room and footer</div>
-        </div>
-        <div class="ds-atmo-item">
-          <div class="ds-atmo-stage ds-atmo-stage-band hf-band-cosmic ds-copyable" data-ds-snippet={`/* ─── Backdrop CSS — paste into a global stylesheet ─── */
-.hf-band-cosmic {
-  position: relative;
-  overflow: hidden;
-  background: var(--hf-grad-cockpit);
-}
-
-/* ─── NebulaStars component — src/components/ui/NebulaStars.tsx ─── */
-${NebulaStarsSrc}
-
-/* ─── Usage ─── */
-<div class="hf-band-cosmic">
-  <NebulaStars count={40} />
-</div>`} title="click for code">
-            <NebulaStars client:load count={40} />
-          </div>
-          <div class="ds-atmo-cap">.hf-band-cosmic + &lt;NebulaStars&gt; — cockpit cosmic backdrop, <code>var(--hf-grad-cockpit)</code></div>
-        </div>
-        <div class="ds-atmo-item">
-          <div class="ds-atmo-stage ds-atmo-stage-band hf-band-nebula ds-copyable" data-ds-snippet={`/* ─── Backdrop CSS — paste into a global stylesheet ─── */
-.hf-band-nebula {
-  position: relative;
-  overflow: hidden;
-  background: var(--hf-grad-nebula);
-}
-
-/* ─── NebulaStars component — src/components/ui/NebulaStars.tsx ─── */
-${NebulaStarsSrc}
-
-/* ─── Usage ─── */
-<div class="hf-band-nebula">
-  <NebulaStars count={40} />
-</div>`} title="click for code">
-            <NebulaStars client:load count={40} />
-          </div>
-          <div class="ds-atmo-cap">.hf-band-nebula + &lt;NebulaStars&gt; — terminal nebula backdrop, <code>var(--hf-grad-nebula)</code></div>
-        </div>
-      </div>
-    </section>
-
-    {/* ───────────────────────── 05 CONTAINERS ───────────────────────── */}
-    <section class="ds-section">
-      <div class="ds-section-title">05 — containers</div>
-      <div class="ds-section-sub">Common surface treatments. All values come from tokens — no inline hex.</div>
-
-      <div class="ds-container-grid">
-        <div class="ds-container-demo ds-copyable" data-ds-snippet={`/* cp-dash — cockpit dashboard panel */
-.cp-dash {
-  background: var(--hf-cockpit-bg);
-  border: 1px solid var(--hf-alpha-white-06);
-  border-radius: var(--hf-radius-lg);
-  box-shadow:
-    inset 0 0 60px rgba(0, 229, 255, 0.04),
-    inset 0 0 120px rgba(168, 85, 247, 0.03),
-    inset 0 1px 0 var(--hf-alpha-white-05),
-    0 0 40px var(--hf-alpha-black-40);
-}`} title="click for code" style="background: var(--hf-cockpit-bg); border: 1px solid var(--hf-alpha-white-06); border-radius: var(--hf-radius-lg); box-shadow: inset 0 0 60px rgba(0,229,255,0.04), inset 0 0 120px rgba(168,85,247,0.03), inset 0 1px 0 var(--hf-alpha-white-05), 0 0 40px var(--hf-alpha-black-40);">
-          <div class="ds-container-label">cp-dash</div>
-          <div class="ds-container-desc">Cockpit dashboard panel — flat dark bg with cyan + purple inner glow.</div>
-          <div class="ds-container-meta">bg: --hf-cockpit-bg · border: --hf-alpha-white-06 · radius: --hf-radius-lg</div>
-        </div>
-        <div class="ds-container-demo ds-copyable" data-ds-snippet={`/* terminal — window with traffic lights */
-.terminal {
-  background: #080c0a;
-  border: 1.5px solid var(--hf-line-strong);
-  border-radius: var(--hf-radius-md);
-}
-.terminal .traffic { display: flex; gap: 6px; }
-.terminal .traffic span {
-  width: 10px; height: 10px; border-radius: 50%;
-}
-.terminal .traffic .red    { background: #ff5f57; }
-.terminal .traffic .yellow { background: #febc2e; }
-.terminal .traffic .green  { background: #28c840; }`} title="click for code" style="background: #080c0a; border: 1.5px solid var(--hf-line-strong); border-radius: var(--hf-radius-md);">
-          <div class="ds-container-label">terminal</div>
-          <div class="ds-container-desc">Terminal window — near-black bg with traffic lights.</div>
-          <div class="ds-traffic-row">
-            <span class="ds-traffic" style="background: #ff5f57;"></span>
-            <span class="ds-traffic" style="background: #febc2e;"></span>
-            <span class="ds-traffic" style="background: #28c840;"></span>
-          </div>
-          <div class="ds-container-meta">border: --hf-line-strong · radius: --hf-radius-md</div>
-        </div>
-        <div class="ds-container-demo ds-copyable" data-ds-snippet={`/* card — project / stat surface */
-.card {
-  background: var(--hf-surface);
-  border: 1.5px solid var(--hf-line);
-  border-radius: var(--hf-radius-md);
-}`} title="click for code" style="background: var(--hf-surface); border: 1.5px solid var(--hf-line); border-radius: var(--hf-radius-md);">
-          <div class="ds-container-label">card</div>
-          <div class="ds-container-desc">Project cards, stat cards — surface bg, thin border.</div>
-          <div class="ds-container-meta">bg: --hf-surface · border: --hf-line · radius: --hf-radius-md</div>
-        </div>
-        <div class="ds-container-demo ds-copyable" data-ds-snippet={`/* block — terminal output, accent left rule */
-.block {
-  background: var(--hf-alpha-white-02);
-  border: 1.5px solid var(--hf-cockpit-panel-2);
-  border-left: 3px solid var(--hf-accent);
-  border-radius: var(--hf-radius-sm);
-  padding-left: 12px;
-}`} title="click for code" style="background: var(--hf-alpha-white-02); border: 1.5px solid var(--hf-cockpit-panel-2); border-radius: var(--hf-radius-sm); border-left: 3px solid var(--hf-accent); padding-left: 12px;">
-          <div class="ds-container-label">block</div>
-          <div class="ds-container-desc">Terminal output block — accent left border, near-transparent bg.</div>
-          <div class="ds-container-meta">border-left: 3px solid --hf-accent · bg: --hf-alpha-white-02</div>
-        </div>
-      </div>
-
-    </section>
-
-    {/* ───────────────────────── 06 UI COMPONENTS ───────────────────────── */}
-    <section class="ds-section">
-      <div class="ds-section-title">06 — UI components</div>
-      <div class="ds-section-sub">
-        Live previews from <code>src/components/ui/</code>. Every shared component <em>must</em> appear here —
-        new components added without a preview don't count as reusable.
-      </div>
-
-      <div class="ds-comp-grid">
-        <div class="ds-comp-card ds-copyable" data-ds-snippet={HardwareIconSrc} title="click for code">
-          <div class="ds-comp-label">&lt;HardwareIcon&gt;</div>
-          <div class="ds-comp-stage night-sample"><div style="width: var(--nt-thumb-min); aspect-ratio: 1;"><HardwareIcon kind="processor" /></div></div>
-          <div class="ds-comp-note">Twelve SVG assemblies in isometric and wireframe. Geometry is shared with the hardware-atlas figure; mode, view, open and pick select the drawing. <a href="/lab/icon-kit/">Inspect and export the collection →</a></div>
-        </div>
-
-        <div class="ds-comp-card ds-comp-card-wide ds-copyable" data-ds-snippet={`// src/components/ui/FigureCanvas.tsx\n${FigureCanvasSrc}`} title="click for code">
-          <div class="ds-comp-label">&lt;FigureCanvas&gt;</div>
-          <div class="ds-comp-stage night-sample"><div style="width: 100%; aspect-ratio: 16 / 9;"><FigureCanvas client:visible id="ridge-lines" /></div></div>
-          <div class="ds-comp-note">mounts one figure from src/figures by id; the wrapper sets the size. Every drawing on the site goes through it (see /figures and the figure skill).</div>
-        </div>
-
-        <div class="ds-comp-card ds-copyable" data-ds-snippet={`// src/components/ui/Monogram.astro\n${MonogramSrc}`} title="click for code">
-          <div class="ds-comp-label">&lt;Monogram&gt;</div>
-          <div class="ds-comp-stage night-sample"><span class="ds-monogram"><Monogram intro="always" label="SJ monogram" /></span></div>
-          <div class="ds-comp-note">the SJ mark: two nets between one pair of pins. Draws in once per visit (intro="session", the nav), every mount ("always") or never ("none"); pointing sends a packet down each net. Height comes from its box.</div>
-        </div>
-
-        <div class="ds-comp-card ds-comp-card-wide ds-copyable" data-ds-snippet={`// src/components/ui/SectionHead.astro\n${SectionHeadSrc}`} title="click for code">
-          <div class="ds-comp-label">&lt;SectionHead&gt;</div>
-          <div class="ds-comp-stage night-sample"><SectionHead label="// 0x01 · how I think" title="Decide slowly," accent="then move fast." lead="The opening of a night-system section: mono label, two-tone heading, lead." /></div>
-          <div class="ds-comp-note">night pages · label / title / accent / lead / as</div>
-        </div>
-
-        <div class="ds-comp-card ds-copyable" data-ds-snippet={`// src/components/ui/NeonText.tsx\n${NeonTextSrc}`} title="click for code">
-          <div class="ds-comp-label">&lt;NeonText&gt;</div>
-          <div class="ds-comp-stage ds-comp-stage-display"><NeonText client:load>NEON_TEXT</NeonText></div>
-          <div class="ds-comp-note">flickering accent — wraps any inline text</div>
-        </div>
-
-        <div class="ds-comp-card ds-copyable" data-ds-snippet={`// src/components/ui/KineticWord.tsx\n${KineticWordSrc}`} title="click for code">
-          <div class="ds-comp-label">&lt;KineticWord&gt;</div>
-          <div class="ds-comp-stage ds-comp-stage-display"><KineticWord client:load word="kinetic" altWord="glitched" delay={1500} loop={true} /></div>
-          <div class="ds-comp-note">strike-then-replace cycle</div>
-        </div>
-
-        <div class="ds-comp-card ds-copyable" data-ds-snippet={`// src/components/ui/StrikeThrough.tsx\n${StrikeThroughSrc}`} title="click for code">
-          <div class="ds-comp-label">&lt;StrikeThrough&gt;</div>
-          <div class="ds-comp-stage ds-comp-stage-display"><StrikeThrough client:load delay={800}>strike-through copy</StrikeThrough></div>
-          <div class="ds-comp-note">animated cross-out on mount</div>
-        </div>
-
-        <div class="ds-comp-card ds-copyable" data-ds-snippet={`// src/components/ui/NotGateDivider.tsx\n${NotGateDividerSrc}`} title="click for code">
-          <div class="ds-comp-label">&lt;NotGateDivider&gt;</div>
-          <div class="ds-comp-stage"><NotGateDivider client:load label="design_system.boundary" /></div>
-          <div class="ds-comp-note">section divider with logic-gate motif</div>
-        </div>
-
-        <div class="ds-comp-card ds-comp-card-wide ds-copyable" data-ds-snippet={`// src/components/ui/SegmentedBar.tsx\n${SegmentedBarSrc}`} title="click for code">
-          <div class="ds-comp-label">&lt;SegmentedBar&gt;</div>
-          <div class="ds-comp-stage ds-comp-stage-stack">
-            <SegmentedBar client:load value={3} max={5} segments={5} />
-            <SegmentedBar client:load value={7} max={10} segments={10} color="var(--cp-ai)" />
-            <SegmentedBar client:load value={9} max={10} segments={10} color="var(--cp-eda)" />
-          </div>
-          <div class="ds-comp-note">value / max / color / segments — used in cockpit meters</div>
-        </div>
-
-        <div class="ds-comp-card ds-copyable" data-ds-snippet={`// src/components/ui/Placeholder.tsx\n${PlaceholderSrc}`} title="click for code">
-          <div class="ds-comp-label">&lt;Placeholder&gt;</div>
-          <div class="ds-comp-stage"><Placeholder client:load name="placeholder.module" /></div>
-          <div class="ds-comp-note">fallback panel for missing/loading content</div>
-        </div>
-
-        <div class="ds-comp-card ds-copyable" data-ds-snippet={`/* stat card — cockpit vitals tile */
-.stat-card {
-  flex: 1;
-  padding: var(--hf-space-3);
-  background: var(--hf-alpha-white-03);
-  border: 1px solid var(--hf-alpha-white-06);
-  border-radius: var(--hf-radius-md);
-  position: relative;
-  overflow: hidden;
-}
-.stat-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: var(--stat-c); /* per-card category accent */
-}
-.stat-card .num {
-  font-size: var(--hf-fs-2xl);
-  font-weight: 700;
-  color: var(--stat-c);
-}
-.stat-card .lbl {
-  font-size: var(--hf-fs-xs);
-  color: var(--hf-ink-pale);
-}
-
-/* usage */
-<div class="stat-card" style="--stat-c: var(--cp-asic);">
-  <div class="num">42</div>
-  <div class="lbl">Skills</div>
-</div>`} title="click for code">
-          <div class="ds-comp-label">stat card</div>
-          <div class="ds-comp-stage" style="gap: 8px;">
-            <div class="ds-stat-card" style="--stat-c: var(--cp-asic);">
-              <div class="ds-stat-num">{CAREER_STATS.skills}</div>
-              <div class="ds-stat-lbl">Skills</div>
-            </div>
-            <div class="ds-stat-card" style="--stat-c: var(--cp-ai-orange);">
-              <div class="ds-stat-num">{CAREER_STATS.years}</div>
-              <div class="ds-stat-lbl">Years</div>
-            </div>
-            <div class="ds-stat-card" style="--stat-c: var(--cp-ai);">
-              <div class="ds-stat-num">{CAREER_STATS.tapeouts}</div>
-              <div class="ds-stat-lbl">Tape-outs</div>
-            </div>
-          </div>
-          <div class="ds-comp-note">cockpit vitals — top accent stripe by category</div>
-        </div>
-
-        <div class="ds-comp-card ds-copyable" data-ds-snippet={`/* pill button — cockpit nav, tinted by category */
-.pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  border: 1px solid color-mix(in srgb, var(--pill-c) 35%, transparent);
-  background: color-mix(in srgb, var(--pill-c) 8%, transparent);
-  color: var(--pill-c);
-  border-radius: var(--hf-radius-md);
-  font-size: var(--hf-fs-md);
-  font-weight: 600;
-  letter-spacing: var(--hf-tracking-wide);
-}
-
-/* usage */
-<span class="pill" style="--pill-c: var(--cp-asic);">▸ asic.core</span>`} title="click for code">
-          <div class="ds-comp-label">pill buttons</div>
-          <div class="ds-comp-stage" style="flex-wrap: wrap; gap: 8px;">
-            <span class="ds-pill" style="--pill-c: var(--cp-asic);">▸ asic.core</span>
-            <span class="ds-pill" style="--pill-c: var(--cp-ai);">▸ ai.pipeline</span>
-            <span class="ds-pill" style="--pill-c: var(--cp-eda);">▸ eda.toolchain</span>
-            <span class="ds-pill" style="--pill-c: var(--cp-script);">▸ scripts.src</span>
-          </div>
-          <div class="ds-comp-note">cockpit nav — color tinted by category accent</div>
-        </div>
-
-        <div class="ds-comp-card ds-comp-card-wide ds-copyable" data-ds-snippet={`// src/components/ui/page-zoom.ts\n${PageZoomSrc}`} title="click for code">
-          <div class="ds-comp-label">&lt;PageZoom&gt;</div>
-          <div class="ds-comp-stage" style="justify-content: center;">
-            <a href="/design-system" class="ds-pill" data-zoom style="--pill-c: var(--hf-accent); cursor: pointer;">▸ trigger zoom →</a>
-          </div>
-          <div class="ds-comp-note">
-            full-page transition — fires on any <code>&lt;a data-zoom&gt;</code>. Zooms the current
-            page out to a point, navigates, then zooms the next page back in. Wired into the
-            footer's "design system" link and this page's "back to site".
-          </div>
-        </div>
-      </div>
-    </section>
-
-    {/* ───────────────────────── 07 NAMING CONVENTIONS ───────────────────────── */}
-    <section class="ds-section">
-      <div class="ds-section-title">07 — naming conventions</div>
-      <div class="ds-naming-card">
-        <div class="ds-naming-group">section headers (// prefix)</div>
-        <div><span class="ds-naming-tag">// vitals</span> — stat cards row</div>
-        <div><span class="ds-naming-tag">// output rate — live</span> — speedometer gauge</div>
-        <div><span class="ds-naming-tag">// proficiency</span> — donut chart, skill breakdown by category</div>
-        <div><span class="ds-naming-tag">// skill growth — live</span> — animated bar chart</div>
-        <div><span class="ds-naming-tag">// commit streak</span> — heatmap</div>
-        <div><span class="ds-naming-tag">// explore</span> — navigation buttons</div>
-
-        <div class="ds-naming-group">page headers (dot notation)</div>
-        <div><span class="ds-naming-tag2">// asic.core</span> · <span class="ds-naming-tag2">// ai.pipeline</span> · <span class="ds-naming-tag2">// eda.toolchain</span> · <span class="ds-naming-tag2">// scripts.src</span></div>
-
-        <div class="ds-naming-group">stat cards (real portfolio data only)</div>
-        <div>Skills: {CAREER_STATS.skills} · Commits: {CAREER_STATS.commits} · Years: {CAREER_STATS.years} · Tape-outs: {CAREER_STATS.tapeouts} · Projects: {CAREER_STATS.projects}</div>
-      </div>
-    </section>
-
-    {/* ───────────────────────── 08 BENTO GRID LAYOUT ───────────────────────── */}
-    <section class="ds-section">
-      <div class="ds-section-title">08 — bento grid layout</div>
-      <div class="ds-section-sub">Overview page uses an asymmetric 2-column bento grid. Full-width tiles span both columns.</div>
-      <div class="ds-naming-card">
-        <div class="ds-naming-group">grid structure</div>
-        <div><span class="ds-naming-tag">.cp-bento</span> — <code>display: grid; grid-template-columns: 2fr 3fr; gap: 14px</code></div>
-        <div><span class="ds-naming-tag">.cp-tile</span> — base tile: subtle bg, 1px border, --hf-radius-lg</div>
-        <div><span class="ds-naming-tag">.cp-tile-full</span> — spans both columns (<code>grid-column: 1 / -1</code>)</div>
-        <div><span class="ds-naming-tag">.cp-tile-a / -b</span> — left (narrow) / right (wide) column</div>
-        <div><span class="ds-naming-tag">.cp-bento-row3</span> — sub-grid: <code>grid-template-columns: 3fr 2fr</code></div>
-
-        <div class="ds-naming-group">layout map (live grid — real <code>.cp-bento</code> classes)</div>
-        <div class="cp-bento ds-bento-live ds-copyable" data-ds-snippet={`/* bento layout — overview page grid */
-.cp-bento {
-  display: grid;
-  grid-template-columns: 2fr 3fr;
-  gap: 14px;
-}
-.cp-tile {
-  background: var(--hf-alpha-white-03);
-  border: 1px solid var(--hf-line);
-  border-radius: var(--hf-radius-lg);
-  padding: var(--hf-space-4);
-}
-.cp-tile-full { grid-column: 1 / -1; }
-.cp-bento-row3 {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: 3fr 2fr;
-  gap: 14px;
-}
-@media (max-width: 640px) {
-  .cp-bento, .cp-bento-row3 { grid-template-columns: 1fr; }
-}
-
-/* usage */
-<div class="cp-bento">
-  <div class="cp-tile cp-tile-full">vitals row</div>
-  <div class="cp-tile cp-tile-a">speedometer</div>
-  <div class="cp-tile cp-tile-b">donut</div>
-  <div class="cp-bento-row3">
-    <div class="cp-tile">bar chart</div>
-    <div class="cp-tile">heatmap</div>
-  </div>
-  <div class="cp-tile cp-tile-full">ticker</div>
-</div>`} title="click for code">
-          <div class="cp-tile cp-tile-full">
-            <div class="ds-bento-lbl">.cp-tile-full</div>
-            <div class="ds-bento-role">vitals · stat cards row</div>
-          </div>
-          <div class="cp-tile cp-tile-a">
-            <div class="ds-bento-lbl">.cp-tile-a</div>
-            <div class="ds-bento-role">output rate · speedometer</div>
-          </div>
-          <div class="cp-tile cp-tile-b">
-            <div class="ds-bento-lbl">.cp-tile-b</div>
-            <div class="ds-bento-role">proficiency · donut chart</div>
-          </div>
-          <div class="cp-bento-row3">
-            <div class="cp-tile">
-              <div class="ds-bento-lbl">.cp-tile (in .cp-bento-row3 · 3fr)</div>
-              <div class="ds-bento-role">skill growth · bar chart</div>
-            </div>
-            <div class="cp-tile">
-              <div class="ds-bento-lbl">.cp-tile (in .cp-bento-row3 · 2fr)</div>
-              <div class="ds-bento-role">commit streak · heatmap</div>
-            </div>
-          </div>
-          <div class="cp-tile cp-tile-full">
-            <div class="ds-bento-lbl">.cp-tile-full</div>
-            <div class="ds-bento-role">ticker + explore</div>
-          </div>
-        </div>
-
-        <div class="ds-naming-group">responsive</div>
-        <div>≤640px: single column stack, all tiles and sub-grids collapse to full-width.</div>
-      </div>
-    </section>
-
-    {/* ───────────────────────── 09 SPACING & RADII ───────────────────────── */}
-    <section class="ds-section">
-      <div class="ds-section-title">09 — spacing & radii</div>
-      <div class="ds-section-sub">Source: <code>src/styles/tokens/spacing.css</code> · 4px base scale.</div>
-
-      <div class="ds-group-label">spacing scale</div>
-      <div class="ds-spacing-row">
-        {SPACING_TOKENS.map((s) => (
-          <div class="ds-spacing-item ds-copyable" data-ds-snippet={spacingSnippet(s.token, s.px)} title="click for code">
-            <div class="ds-spacing-bar" style={`height: var(${s.token}); width: var(${s.token});`}></div>
-            <div class="ds-spacing-lbl">{s.px}</div>
-            <div class="ds-spacing-tok">{s.token}</div>
-          </div>
-        ))}
-      </div>
-
-      <div class="ds-group-label" style="margin-top: 24px;">border radii</div>
-      <div class="ds-radius-row">
-        {RADIUS_TOKENS.map((r) => (
-          <div class="ds-radius-tile ds-copyable" data-ds-snippet={radiusSnippet(r.token, r.label)} title="click for code" style={`border-radius: var(${r.token});`}>
-            <div class="ds-radius-lbl">{r.label}</div>
-            <div class="ds-radius-tok">{r.token}</div>
-          </div>
-        ))}
-      </div>
-
-      <div class="ds-group-label" style="margin-top: 24px;">night layout & effects</div>
-      <div class="ds-naming-card">
-        {NIGHT_LAYOUT.map((n) => (
-          <div><span class="ds-naming-tag2">{n.token}</span> — {n.note}</div>
-        ))}
-      </div>
-    </section>
-
-    {/* ───────────────────────── 10 ANIMATION TOKENS ───────────────────────── */}
-    <section class="ds-section">
-      <div class="ds-section-title">10 — animation tokens</div>
-      <div class="ds-naming-card">
-        <div><span class="ds-naming-tag2">twinkle</span> — stars, 2s ease-in-out infinite alternate, opacity 0.15→1</div>
-        <div><span class="ds-naming-tag2">pulse</span> — nav dot, 3s ease-in-out infinite, box-shadow glow</div>
-        <div><span class="ds-naming-tag2">blink</span> — cursor, 1s steps(2) infinite, opacity toggle</div>
-        <div><span class="ds-naming-tag2">neon</span> — hero text, text-shadow flicker with random off states</div>
-        <div><span class="ds-naming-tag2">glitch</span> — hero text, color cycling + translate shake, 0.1–0.15s</div>
-        <div><span class="ds-naming-tag2">ticker</span> — portfolio stats scroll, 35s linear infinite translateX</div>
-        <div><span class="ds-naming-tag2">card-in</span> — project cards, 0.4s ease-out, opacity + translateY(12px)</div>
-        <div><span class="ds-naming-tag2">star-twinkle</span> — &lt;PurpleSkyTransition&gt; stars, 2s alternate</div>
-        <div><span class="ds-naming-tag2">--nt-dur-morph</span> — a shared element travelling between pages (post cover), 460ms</div>
-        <div><span class="ds-naming-tag2">--nt-ease-out</span> — decelerating, no overshoot: cubic-bezier(0.22, 1, 0.36, 1)</div>
-        <div><span class="ds-naming-tag2">nt-read</span> — post reading-progress hairline, driven by scroll in CSS (animation-timeline: scroll(root)); absent without support or under reduced motion</div>
-      </div>
-    </section>
-
-    {/* ───────────────────────── 11 PAGE TRANSITIONS ───────────────────────── */}
-    <section class="ds-section">
-      <div class="ds-section-title">11 — page transitions</div>
-      <div class="ds-section-sub">
-        Night pages (NightLayout) navigate with Astro's router: the page crossfades, the nav holds
-        still (<code>view-transition-name: site-nav</code>), and a post card's cover travels to the
-        post's cover (<code>cover-&lt;slug&gt;</code> on both). Reduced motion swaps without animating.
-      </div>
-      <div class="ds-section-sub">
-        Sequenced zoom-out → scroll → zoom-in pattern used by the cockpit
-        when navigating between skill pages. Click ◀ ▶ or a dot to play it.
-      </div>
-
-      <div class="ds-comp-grid">
-        <div class="ds-comp-card ds-copyable" data-ds-snippet={`/* ─── src/components/ui/zoom-swap.css ─── */
-${ZoomSwapCss}
-
-/* ─── src/components/ui/ZoomSwapDemo.tsx ─── */
-${ZoomSwapDemoSrc}`} title="click for code">
-          <div class="ds-comp-label">&lt;ZoomSwapDemo&gt; — sequenced zoom transition (dot / category nav)</div>
-          <div class="ds-comp-stage" style="min-height: 220px; padding: var(--hf-space-4);">
-            <ZoomSwapDemo client:load />
-          </div>
-          <div class="ds-comp-note">
-            phase machine: <code>idle → out</code> (scale 0.78 + blur, 320ms) →
-            <code>scroll</code> (in real cockpit) →
-            <code>in</code> (scale back to 1, 380ms springy ease) → <code>idle</code>
-          </div>
-        </div>
-
-        <div class="ds-comp-card ds-copyable" data-ds-snippet={`/* ─── src/components/ui/cube-swap.css ─── */
-${CubeSwapCss}
-
-/* ─── src/components/ui/CubeSwapDemo.tsx ─── */
-${CubeSwapDemoSrc}`} title="click for code">
-          <div class="ds-comp-label">&lt;CubeSwapDemo&gt; — 3D cube rotation (used for arrow nav in cockpit)</div>
-          <div class="ds-comp-stage" style="min-height: 240px; padding: var(--hf-space-4);">
-            <CubeSwapDemo client:load />
-          </div>
-          <div class="ds-comp-note">
-            each face is a page; rotor pivots <code>-90°</code> per cycle.
-            Faces stay tangent because a <code>ResizeObserver</code> writes
-            <code>--csd-d = stageWidth/2</code>. Keyframe (not transition) so the
-            rotor's <code>translateZ(-D)</code> applies on frame 1 alongside the
-            face's <code>translateZ(+D)</code> — no pre-rotation pop-in.
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <a href="/" class="ds-back" data-zoom>← back to site</a>
-  </main>
-
-  <div id="ds-toast" class="ds-toast">copied</div>
-
-  <div id="ds-modal" class="ds-modal" role="dialog" aria-hidden="true" aria-labelledby="ds-modal-title">
-    <div class="ds-modal-backdrop" data-ds-close></div>
-    <div class="ds-modal-card">
-      <div class="ds-modal-head">
-        <div id="ds-modal-title" class="ds-modal-title">code snippet</div>
-        <div class="ds-modal-actions">
-          <button id="ds-modal-copy" class="ds-modal-btn" type="button">copy</button>
-          <button class="ds-modal-btn ds-modal-btn-ghost" type="button" data-ds-close aria-label="close">×</button>
-        </div>
-      </div>
-      <pre id="ds-modal-pre" class="ds-modal-pre"><code id="ds-modal-code"></code></pre>
     </div>
-  </div>
-
-  <script is:inline>
-    // Resolve hex values for swatches at runtime so the displayed values
-    // always match what the tokens actually compute to.
-    function rgbToHex(rgb) {
-      const m = rgb.match(/rgba?\(([^)]+)\)/);
-      if (!m) return rgb;
-      const parts = m[1].split(',').map((s) => s.trim());
-      const [r, g, b] = parts.slice(0, 3).map(Number);
-      const a = parts[3] !== undefined ? Number(parts[3]) : 1;
-      const toHex = (n) => Number(n).toString(16).padStart(2, '0');
-      const hex = '#' + toHex(r) + toHex(g) + toHex(b);
-      return a < 1 ? hex + ' · α' + a.toFixed(2) : hex;
-    }
-    document.querySelectorAll('[data-resolve-hex]').forEach((el) => {
-      const tok = el.getAttribute('data-resolve-hex');
-      const val = getComputedStyle(document.documentElement).getPropertyValue(tok).trim();
-      if (!val) { el.textContent = '—'; return; }
-      if (val.startsWith('#')) { el.textContent = val; return; }
-      if (val.startsWith('rgb')) { el.textContent = rgbToHex(val); return; }
-      el.textContent = val;
-    });
-
-    // Click-to-copy for swatches and gradient cards.
-    const toast = document.getElementById('ds-toast');
-    let toastTimer;
-    function flash(msg) {
-      if (!toast) return;
-      toast.textContent = msg;
-      toast.classList.add('ds-show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toast.classList.remove('ds-show'), 1100);
-    }
-    function copyText(txt) {
-      if (!txt) return;
-      navigator.clipboard?.writeText(txt).then(
-        () => flash('copied: ' + (txt.length > 40 ? txt.slice(0, 38) + '…' : txt)),
-        () => flash('copy failed'),
-      );
-    }
-    // Every <code> on the page is click-to-copy (its own textContent).
-    document.querySelectorAll('code').forEach((el) => {
-      el.classList.add('ds-code-copy');
-      el.title = 'click to copy';
-      el.addEventListener('click', (e) => {
-        e.stopPropagation();
-        copyText(el.textContent || '');
-      });
-    });
-    // Snippet modal — every artifact with `data-ds-snippet` opens a modal
-    // showing the code needed to reproduce it.
-    const modal = document.getElementById('ds-modal');
-    const modalCode = document.getElementById('ds-modal-code');
-    const modalCopy = document.getElementById('ds-modal-copy');
-    let currentSnippet = '';
-    function openModal(snippet) {
-      if (!modal || !modalCode) return;
-      currentSnippet = snippet;
-      modalCode.textContent = snippet;
-      modal.classList.add('ds-show');
-      modal.setAttribute('aria-hidden', 'false');
-    }
-    function closeModal() {
-      if (!modal) return;
-      modal.classList.remove('ds-show');
-      modal.setAttribute('aria-hidden', 'true');
-    }
-    document.querySelectorAll('.ds-copyable').forEach((el) => {
-      el.addEventListener('click', (e) => {
-        const target = e.target;
-        if (target instanceof Element && target.closest('code')) return;
-        const snippet = el.getAttribute('data-ds-snippet') || el.getAttribute('data-copy') || '';
-        if (!snippet) return;
-        openModal(snippet);
-      });
-    });
-    document.querySelectorAll('[data-ds-close]').forEach((el) => {
-      el.addEventListener('click', closeModal);
-    });
-    modalCopy?.addEventListener('click', () => copyText(currentSnippet));
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeModal();
-    });
-  </script>
-</Layout>
+    <p class="ds-status" role="status" aria-live="polite" data-copy-status></p>
+    <noscript><p class="nt-wrap ds-note">Copy buttons need JavaScript. Open any code panel, select the text and copy it manually.</p></noscript>
+  </main>
+  <NightFooter />
+  <script>import '../components/design-system/design-system';</script>
+</NightPage>

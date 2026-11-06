@@ -1,0 +1,15 @@
+---
+interface Props { title: string; code: string; open?: boolean; }
+const { title, code, open = false } = Astro.props;
+---
+<details class="ds-code" open={open}>
+  <summary>{title}<span aria-hidden="true">↗</span></summary>
+  <div class="ds-terminal">
+    <div class="ds-terminal-bar">
+      <span class="ds-lights" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="ds-file">{title}</span>
+      <button type="button" data-copy-code aria-label={`Copy ${title}`}>Copy code</button>
+    </div>
+    <pre tabindex="0" aria-label={title}><code>{code.trim()}</code></pre>
+  </div>
+</details>
