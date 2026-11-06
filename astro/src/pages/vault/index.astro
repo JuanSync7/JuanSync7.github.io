@@ -36,7 +36,7 @@ const benefits = [
         {sheets.map((sheet, i) => <li class="vault-stack-item" style={`--sheet-index:${i}`}>
           <PaperAction href={sheet.href} variant={sheet.variant} class="vault-sheet">
             <span class="vault-sheet-copy"><span class="vault-sheet-meta">{sheet.label}</span><strong>{sheet.title}</strong></span>
-            <SlideIcon slot="icon" id={sheet.icon} decorative />
+            <SlideIcon slot="icon" id={sheet.icon} tone={sheet.variant === 'paper' ? 'paper' : 'night'} decorative />
           </PaperAction>
         </li>)}
       </ol>

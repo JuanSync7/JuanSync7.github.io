@@ -125,13 +125,19 @@ async function heroGeometry(page, width) {
         const label = action.querySelector('strong');
         const bounds = label?.getBoundingClientRect();
         const hit = bounds && document.elementFromPoint(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
-        return { label: label?.textContent, reachable: Boolean(hit && action.contains(hit)), bottom: action.getBoundingClientRect().bottom };
+        return {
+          label: label?.textContent, reachable: Boolean(hit && action.contains(hit)), bottom: action.getBoundingClientRect().bottom,
+          labelBounds: bounds?.toJSON(), hit: hit && `${hit.tagName}.${hit.className}`,
+          hitStack: bounds && document.elementsFromPoint(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2)
+            .slice(0, 6).map((node) => `${node.tagName}.${node.className}`),
+        };
       }),
       captionTop: stage.querySelector('.vault-stack-caption')?.getBoundingClientRect().top,
+      scrollY, viewportHeight: innerHeight,
     };
   });
   assert.equal(geometry.actions.length, 3, `${width}px: all three paper links are present`);
-  for (const action of geometry.actions) assert(action.reachable, `${width}px: the ${action.label} label is exposed and hits its own action`);
+  for (const action of geometry.actions) assert(action.reachable, `${width}px: the ${action.label} label is exposed and hits its own action: ${JSON.stringify(geometry)}`);
   assert(Number.isFinite(geometry.captionTop), 'The stack has a readable caption');
   assert(geometry.captionTop >= Math.max(...geometry.actions.map((action) => action.bottom)), `${width}px: the caption stays below every paper-link box`);
   const lines = await page.locator('.vault-hero h1').evaluate((heading) => Math.round(heading.getBoundingClientRect().height / parseFloat(getComputedStyle(heading).lineHeight)));
@@ -188,6 +194,11 @@ try {
     assert(await page.locator('main a[href="/vault/"]').first().isVisible());
     await roleContrast(page);
     await noOverflow(page, `${slug} guide`);
+    await page.screenshot({ path: join(output, `guide-${slug}-1360.png`), fullPage: true });
+    await page.setViewportSize({ width: 390, height: 960 });
+    await noOverflow(page, `390px ${slug} guide`);
+    await page.screenshot({ path: join(output, `guide-${slug}-390.png`), fullPage: true });
+    await page.setViewportSize({ width: 1360, height: 960 });
     await page.locator('main a[href="/vault/"]').first().click();
     await page.waitForURL('**/vault/');
     await ready(page);

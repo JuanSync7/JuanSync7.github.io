@@ -6,10 +6,12 @@
 .vault-actions { display: flex; flex-wrap: wrap; gap: var(--hf-space-5); align-items: center; }
 .vault-boundary { margin-top: var(--hf-space-2) !important; max-width: var(--nt-measure); }
 .vault-stack-stage { min-width: 0; perspective: var(--pr-deck-perspective); }
+/* Transparent 3D container planes must not intercept their real paper links. */
+.vault-stack-stage, .vault-stack, .vault-stack-item { pointer-events: none; }
 .vault-stack { position: relative; list-style: none; width: min(100%, var(--pr-deck-width)); height: var(--pr-deck-height); margin: 0 auto; padding: 0; transform-style: preserve-3d; }
 .vault-stack-item { position: absolute; inset: 0 auto auto 0; width: 100%; transform: translateY(calc(var(--sheet-index) * var(--pr-deck-step))) translateZ(calc(var(--sheet-index) * var(--pr-deck-depth))) rotateX(var(--pr-deck-rotate-x)) rotateY(var(--pr-deck-rotate-y)) rotateZ(var(--pr-deck-tilt)); }
 .vault-stack-item:focus-within { z-index: var(--hf-z-content); }
-.vault-stack .vault-sheet { display: flex; width: 100%; min-height: var(--pr-deck-card-height); }
+.vault-stack .vault-sheet { display: flex; width: 100%; min-height: var(--pr-deck-card-height); pointer-events: auto; }
 .vault-stack .pa-face { width: 100%; justify-content: space-between; align-items: flex-start; padding: var(--hf-space-5); }
 .vault-sheet-copy { display: flex; flex-direction: column; align-items: flex-start; gap: var(--hf-space-4); }
 .vault-sheet-meta { font-family: var(--nt-mono); font-size: var(--nt-fs-caption); }
