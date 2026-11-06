@@ -149,7 +149,9 @@ try {
   const staticPage = await nojs.newPage();
   await staticPage.goto(`${base}/design-system/`);
   assert.ok((await staticPage.locator('#patterns pre code').first().textContent()).startsWith('---'));
-  await staticPage.locator('#components .ds-code summary').first().click();
+  await staticPage.evaluate(() => document.fonts.ready);
+  await staticPage.locator('#components .ds-code summary').first().focus();
+  await staticPage.keyboard.press('Enter');
   assert.ok(
     await staticPage.locator('#components .ds-code pre').first().isVisible(),
     'Native code panels work without JavaScript',
