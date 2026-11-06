@@ -63,7 +63,7 @@ export function useCabinetPose(root: RefObject<HTMLDivElement>) {
       engine = loaded;
       context = loaded.context(() => {}, element);
       select(manual ?? story);
-    });
+    }).catch(() => { /* The projected links retain their instant, usable fallback. */ });
     return () => {
       disposed = true;
       context?.revert();

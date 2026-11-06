@@ -40,11 +40,16 @@ for (const id of exports) {
   assert.match(svg, /<title/);
   assert.match(svg, /<desc/);
 }
-assert.deepEqual(readdirSync(resolve(app, 'dist/vault')).sort(), ['index.html', ...guides, ...exports.map((id) => `${id}.svg`)].sort(),
-  'Only the landing, five guides and their three schematic exports belong in the public vault directory');
+assert.deepEqual(readdirSync(resolve(app, 'dist/vault')).sort(), ['index.html', 'vault-cabinet.png', ...guides, ...exports.map((id) => `${id}.svg`)].sort(),
+  'Only the landing, five guides, three schematic exports and the generated cabinet poster belong in the public vault directory');
+
+assert.deepEqual(readFileSync(resolve(app, 'dist/vault/vault-cabinet.png')), readFileSync(resolve(app, 'public/vault/vault-cabinet.png')));
+assert.match(html, /class="vc-poster"[^>]*src="\/vault\/vault-cabinet\.png"/);
+assert.equal([...html.matchAll(/data-cabinet-link="[012]"/g)].length, 3, 'Three cabinet links exist in static HTML');
 
 const customSources = ['src/pages/vault/index.astro', 'src/data/vault-overview.ts', 'src/data/vault-demo.ts',
-  'src/data/diagrams/vault.ts', 'src/components/vault/VaultSearchDemo.tsx', ...guides.map(slug => `src/pages/vault/${slug}/index.astro`)];
+  'src/data/diagrams/vault.ts', 'src/components/vault/VaultSearchDemo.tsx', 'src/components/vault/VaultFileCabinet.tsx',
+  'src/components/vault/useCabinetPose.ts', 'src/figures/vault-cabinet.ts', ...guides.map(slug => `src/pages/vault/${slug}/index.astro`)];
 const source = customSources.map((path) => readFileSync(resolve(app, path), 'utf8')).join('\n');
 assert(!/fetch\s*\(|XMLHttpRequest|WebSocket|EventSource|localStorage|sessionStorage|indexedDB/.test(source),
   'The public explanation and synthetic demo have no data-service or persistence integration');

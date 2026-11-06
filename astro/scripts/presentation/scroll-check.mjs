@@ -76,6 +76,12 @@ export async function checkScrollJourney(page, output, widths) {
   assert.equal(await page.locator('[data-presentation]').getAttribute('data-scroll-journey'), null);
   await page.locator('[data-cabinet] canvas[data-ready="1"]').waitFor();
   assert.equal(await page.locator('h2 .vault-word').count(), 0, 'Reduced motion restores ordinary heading text');
+  const frameCounts = await page.locator('[data-cabinet] canvas').evaluate(async (canvas) => {
+    const initial = canvas.dataset.frames;
+    for (let frame = 0; frame < 20; frame++) await new Promise(requestAnimationFrame);
+    return [initial, canvas.dataset.frames];
+  });
+  assert.equal(frameCounts[0], frameCounts[1], 'A live reduced-motion change stops the cabinet frame loop');
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.waitForFunction(() => document.querySelector('[data-presentation]').dataset.scrollJourney === 'ready');
   await position(page, 0);

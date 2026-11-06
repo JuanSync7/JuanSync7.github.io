@@ -13,6 +13,20 @@ export const DEFAULT_CABINET_POSE: CabinetPose = { drawer: 0.68, selected: 1, li
 const NAMES = ['System', 'Graph', 'Search'];
 const TAB = 0.76;
 
+function folderOutline(tab: { index: number; x0: number; y0: number }, pose: CabinetPose) {
+  const bottom = 1.61 + clamp(pose.lifts[tab.index] ?? 0, 0, 1) * 0.62;
+  return [
+    [-1.04, bottom],
+    [1.04, bottom],
+    [1.04, tab.y0],
+    [tab.x0 + TAB, tab.y0],
+    [tab.x0 + TAB, tab.y0 + 0.3],
+    [tab.x0, tab.y0 + 0.3],
+    [tab.x0, tab.y0],
+    [-1.04, tab.y0],
+  ];
+}
+
 /** This projection is shared by the drawing and the page's real HTML folder links. */
 export function cabinetLayout(w: number, h: number, pose: CabinetPose) {
   const cam = isometric(w * 0.58, h * 0.74, Math.min(w * 0.205, h * 0.22));
@@ -42,6 +56,7 @@ export function cabinetLayout(w: number, h: number, pose: CabinetPose) {
       x0,
       y0,
       z,
+      folder: folderOutline({ index, x0, y0 }, pose).map(([x, y]) => project(cam, x, y, z)),
     };
   });
   return { cam, tabs, pull };
@@ -153,22 +168,7 @@ export default defineCanvasFigure<State>({
     box(ctx, cam, 1.07, 0.5 + pull, 1.14, 1.46 + pull, 1.57, 1.94, tones(0.4));
     for (const tab of tabs) {
       const hot = tab.index === pick;
-      face(
-        ctx,
-        cam,
-        [
-          [-1.04, 1.61 + (pose.lifts[tab.index] ?? 0) * 0.62],
-          [1.04, 1.61 + (pose.lifts[tab.index] ?? 0) * 0.62],
-          [1.04, tab.y0],
-          [tab.x0 + TAB, tab.y0],
-          [tab.x0 + TAB, tab.y0 + 0.3],
-          [tab.x0, tab.y0 + 0.3],
-          [tab.x0, tab.y0],
-          [-1.04, tab.y0],
-        ],
-        tab.z,
-        hot,
-      );
+      face(ctx, cam, folderOutline(tab, pose), tab.z, hot);
       line(ctx, p(-0.98, tab.y0 - 0.1, tab.z), p(0.98, tab.y0 - 0.1, tab.z), hot ? ink.signal(0.26) : ink.line(0.18));
     }
     // The front lip hides folder bottoms, then its inset handle supplies the final near edge.

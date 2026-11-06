@@ -7,6 +7,7 @@ import { spawn } from 'node:child_process';
 import { createServer } from 'node:net';
 import { chromium } from 'playwright';
 import { contract, color, composite, luminance, separation } from './check.mjs';
+import { captureCabinetPoster } from './cabinet-poster-capture.mjs';
 import { checkScrollJourney } from './scroll-check.mjs';
 
 if (process.env.SITES_MANAGED_LINUX_CONTAINER === '1' && !process.env.CI) {
@@ -143,6 +144,10 @@ async function heroGeometry(page, width) {
 try {
   browser = await chromium.launch();
   const context = await browser.newContext({ viewport: { width: 1360, height: 960 }, deviceScaleFactor: 2, reducedMotion: 'no-preference' });
+  if (process.argv.includes('--cabinet-poster-only')) {
+    await captureCabinetPoster(context, base, output);
+    console.log('Cabinet poster and source manifest exported.');
+  } else {
   const page = watch(await context.newPage());
   await page.goto(`${base}/vault/`);
   await ready(page, 'ready');
@@ -173,20 +178,7 @@ try {
 
   await page.locator('[data-cabinet] canvas').screenshot({ path: join(output, 'cabinet-rest.png') });
 
-  // Export the actual renderer's default pose, at the landing's aspect ratio.
-  // This is the source for the checked-in static poster, not a second drawing.
-  const poster = await context.newPage();
-  await poster.goto(`${base}/figures/?only=vault-cabinet&w=500&t=1.2`);
-  const bench = poster.locator('[data-bench-figure="vault-cabinet"]');
-  await bench.waitFor();
-  await bench.evaluate((node) => { node.style.width = '500px'; node.style.height = '560px'; node.style.aspectRatio = 'auto'; });
-  await poster.waitForFunction(() => {
-    const canvas = document.querySelector('[data-bench-figure="vault-cabinet"] canvas');
-    return canvas?.dataset.ready === '1' && canvas.width === 1000 && canvas.height === 1120;
-  });
-  await bench.locator('.figure-readout').evaluate((node) => { node.style.visibility = 'hidden'; });
-  await bench.locator('canvas').screenshot({ path: join(output, 'cabinet-poster.png') });
-  await poster.close();
+  await captureCabinetPoster(context, base, output);
 
   // A scoped Astro swap must release the previous page, not leave its motion owners alive.
   await checkScrollJourney(page, output, [contract.viewports[0], contract.viewports.at(-1)]);
@@ -205,7 +197,10 @@ try {
     const folder = page.locator(`[data-cabinet-link="${index}"]`);
     await folder.scrollIntoViewIfNeeded();
     await folder.focus();
-    await page.waitForFunction(() => Number(document.querySelector('[data-cabinet]').dataset.cabinetLift) > 0.95);
+    await page.waitForFunction((expected) => {
+      const cabinet = document.querySelector('[data-cabinet]');
+      return Number(cabinet.dataset.cabinetFolder) === expected && Number(cabinet.dataset.cabinetLift) > 0.95;
+    }, index);
     await page.keyboard.press('Enter');
     await page.waitForURL(`**/vault/${slug}/`);
     await ready(page);
@@ -310,6 +305,7 @@ try {
   const still = watch(await reduced.newPage());
   await still.goto(`${base}/vault/`);
   await ready(still, 'reduced');
+  await still.locator('[data-cabinet] canvas[data-ready="1"]').waitFor();
   assert(await still.locator('[data-reveal]').evaluateAll((nodes) => nodes.every((node) => Number(getComputedStyle(node).opacity) > 0 && getComputedStyle(node).visibility !== 'hidden')));
   await noOverflow(still, 'Reduced-motion landing');
   await still.screenshot({ path: join(output, 'vault-reduced-390.png'), fullPage: true });
@@ -319,8 +315,17 @@ try {
   assert(await staticPage.locator('h1').isVisible());
   assert(await staticPage.locator('[data-reveal]').evaluateAll((nodes) => nodes.every((node) => Number(getComputedStyle(node).opacity) > 0 && getComputedStyle(node).visibility !== 'hidden')));
   assert(await staticPage.locator('main a[data-paper-action]').first().isVisible());
+  assert(await staticPage.locator('.vc-poster').isVisible(), 'A missing script retains the physical cabinet');
+  assert(await staticPage.locator('.vc-poster').evaluate((image) => image.complete && image.naturalWidth === 1000 && image.naturalHeight === 1120));
+  for (const link of await staticPage.locator('[data-cabinet-link]').all()) {
+    assert(await link.isVisible(), 'Static folder links remain available');
+    assert.notEqual(await link.getAttribute('tabindex'), '-1');
+  }
   await noOverflow(staticPage, 'No-JavaScript landing');
   await staticPage.screenshot({ path: join(output, 'vault-nojs-390.png'), fullPage: true });
+  await staticPage.locator('[data-cabinet-link="1"]').click();
+  await staticPage.waitForURL('**/vault/knowledge-graph/');
+  assert(await staticPage.locator('h1').isVisible(), 'The static folder reaches its guide');
   await staticPage.goto(`${base}/vault/search/`);
   assert(await staticPage.locator('.vsd-context h3').isVisible());
   assert(await staticPage.locator('noscript p').last().isVisible());
@@ -330,6 +335,7 @@ try {
     return parsed.origin === new URL(base).origin || ['fonts.googleapis.com', 'fonts.gstatic.com'].includes(parsed.hostname);
   }), 'Presentation visits request only site assets and the existing public webfonts');
   console.log('Presentation browser checks: responsive pages, computed hierarchy, scoped motion disposal, paper actions, graph focus, reduced motion and no-JavaScript content passed.');
+  }
 } catch (error) {
   if (currentPage && !currentPage.isClosed()) await currentPage.screenshot({ path: join(output, 'failure.png'), fullPage: true }).catch(() => {});
   throw error;
