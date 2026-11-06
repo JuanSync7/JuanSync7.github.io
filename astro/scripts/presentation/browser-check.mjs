@@ -187,7 +187,10 @@ try {
   await ready(page, 'ready');
 
   for (const slug of contract.guideSlugs) {
-    await page.locator(`main a[href="/vault/${slug}/"]`).first().click();
+    const guideLink = page.locator(`main a[href="/vault/${slug}/"]`).first();
+    // A reader scrolls a below-fold section into view before choosing its revealed link.
+    await guideLink.scrollIntoViewIfNeeded();
+    await guideLink.click();
     await page.waitForURL(`**/vault/${slug}/`);
     await ready(page);
     assert.equal(await page.locator('h1').count(), 1);
