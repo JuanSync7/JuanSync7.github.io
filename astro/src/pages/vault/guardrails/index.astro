@@ -1,0 +1,34 @@
+---
+import VaultGuide from '../../../layouts/VaultGuide.astro';
+import { VAULT_CHECKS, VAULT_METADATA } from '../../../data/vault-overview';
+---
+
+<VaultGuide slug="guardrails" intro="Useful automation needs clear contracts: who owns a page, what a field means, how failure behaves and which checks must pass before an output is used.">
+  <section data-presentation-section id="metadata">
+    <p class="pr-comment">// page metadata</p>
+    <h2>A schema gives a page a shape.</h2>
+    <p>A type declares the kind of page. A versioned schema lists required and optional fields. A summary provides a short way in; aliases capture known alternative names. Registered labels help filtering, and explicit parentage helps navigation.</p>
+    <div class="vg-terminal"><div class="vg-terminal-bar"><span class="vg-terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>illustrative note · metadata</span></div><pre><code>{VAULT_METADATA}</code></pre></div>
+    <p>Fields vary by page type, and missing facts stay unknown. A schema version validates structure; it does not verify an account's truth or turn a draft into an approved view. This made-up example remains an unreviewed draft when retrieved.</p>
+  </section>
+  <section data-presentation-section id="rules">
+    <p class="pr-comment">// working rules</p>
+    <h2>Make expectations inspectable.</h2>
+    <p>Separate guidance covers writing, code, diagrams and agent work. A rule should explain its reason and the check or review that holds it. Applying a rule to a task keeps the relevant scope and source version visible.</p>
+    <p>Writing for a landing page has a different job from writing a system guide. The landing page makes the purpose and next step clear; the guide carries the explanation, contracts and evidence. Readers can choose how deep to go.</p>
+    <p>Source labels matter throughout. Authored context, generated interpretation, a proposal and an approved view remain distinguishable when selected for a task.</p>
+  </section>
+  <section data-presentation-section id="checks">
+    <p class="pr-comment">// checks</p>
+    <h2>Check a specific boundary.</h2>
+    <dl class="vg-checks">{VAULT_CHECKS.map(([name, text]) => <div><dt>{name}</dt><dd>{text}</dd></div>)}</dl>
+    <p>These checks establish particular structural and operational properties. Human review still owns meaning and public approval.</p>
+  </section>
+  <section data-presentation-section id="repeatability">
+    <p class="pr-comment">// repeatability and uncertainty</p>
+    <h2>Make the next run ordinary.</h2>
+    <p>The local workflow rebuilds dependent views, checks whether they agree and repeats within a fixed bound. A settled snapshot produces no further changes. Ownership and source hashes guard writes; staged-bundle checks catch outputs that would leave together in an inconsistent state.</p>
+    <p>A missing destination becomes review work, with its original reference preserved. A model interpretation stays labeled. A privacy hold keeps uncleared content from normal publication.</p>
+    <p>This public website contains curated descriptions, illustrative diagrams and a synthetic example. It does not publish the private graph or connect to its notes, indexes, credentials or review state.</p>
+  </section>
+</VaultGuide>

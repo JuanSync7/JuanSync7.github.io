@@ -69,9 +69,12 @@ Requires Node 22 (matches CI; the data checks use native TypeScript loading).
 ## Vault system overview
 
 `/vault/` explains the private experience vault without publishing or connecting its records.
-It includes purpose and architecture, three downloadable diagrams, a synthetic local search
-example, metadata, rules, checks and development status. The [maintainer guide](docs/design/vault-overview.md)
-owns its public boundary, content and diagram workflow, checks and verification limits.
+The short landing page links to five guides: purpose, architecture, knowledge graph, search and
+guardrails. These hold three downloadable diagrams, a synthetic local search example, metadata,
+rules, checks and development status. The [maintainer guide](docs/design/vault-overview.md) owns its
+public boundary and diagram workflow. The [presentation pattern](docs/design/presentation-pages.md)
+covers shared typography, paper actions, GSAP motion and source/build/browser checks; the
+design-system ledger demonstrates the reusable components.
 
 ## Deployment
 

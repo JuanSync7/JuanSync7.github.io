@@ -1,0 +1,34 @@
+---
+import VaultGuide from '../../../layouts/VaultGuide.astro';
+import Diagram from '../../../components/learn/Diagram.astro';
+import { VAULT_AREAS, VAULT_SYSTEMS } from '../../../data/vault-overview';
+---
+
+<VaultGuide slug="architecture" intro="Sources, generated records and authored guidance stay distinct. The graph connects them, and retrieval brings a bounded part back to a question.">
+  <section data-presentation-section id="flow">
+    <p class="pr-comment">// the flow</p>
+    <h2>From working context to something I can use.</h2>
+    <Diagram id="vault-architecture" />
+    <p class="vg-download"><a href="/vault/vault-architecture.svg" download>Download the architecture SVG ↓</a></p>
+    <p>Collected evidence becomes generated notes, then an indexed graph. Authored guidance keeps its own ownership and can be selected directly for a task as well as informing summarization. Privacy and publication checks cover outgoing content across these stages.</p>
+  </section>
+  <section data-presentation-section id="ownership">
+    <p class="pr-comment">// ownership</p>
+    <h2>Each kind of record has a different job.</h2>
+    <p>Source records preserve the account behind the work. Generated pages make that account easier to scan and connect. Authored notes hold what I write, correct or explicitly adopt.</p>
+    <p>A producer updates its own outputs. It must not silently rewrite protected context or convert a generated interpretation into an approved personal view. Retrieval keeps those labels alongside the selected material.</p>
+  </section>
+  <section data-presentation-section id="systems">
+    <p class="pr-comment">// component responsibilities</p>
+    <h2>The systems around the graph.</h2>
+    <div class="vg-register">
+      {VAULT_SYSTEMS.map((group) => <article><p class="pr-comment">{group.scope}</p><h3>{group.title}</h3><dl>{group.modules.map(([title, text]) => <div><dt>{title}</dt><dd>{text}</dd></div>)}</dl></article>)}
+    </div>
+    <p class="vg-note pr-comment">These are responsibilities, not a live host-status report. Connected navigation and the newer maintenance work are built in development and remain under review.</p>
+  </section>
+  <section data-presentation-section id="areas">
+    <p class="pr-comment">// main areas</p>
+    <h2>Different kinds of memory.</h2>
+    <dl class="vg-definitions">{VAULT_AREAS.map((area) => <div><dt>{area.name} <span class="pr-comment">· {area.kind}</span></dt><dd>{area.text}</dd></div>)}</dl>
+  </section>
+</VaultGuide>

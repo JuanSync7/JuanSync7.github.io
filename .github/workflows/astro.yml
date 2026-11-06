@@ -37,7 +37,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: Public vault page and static data boundary
-        run: npm run vault:page
+        run: npm run vault:page && npm run presentation:page
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

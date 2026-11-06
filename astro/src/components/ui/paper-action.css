@@ -1,0 +1,105 @@
+.paper-action,
+.night .paper-action {
+  --pa-face: var(--pa-paper-face);
+  --pa-ink: var(--pa-paper-ink);
+  --pa-line: var(--pa-paper-line);
+  --pa-edge: var(--pa-paper-edge);
+  display: inline-grid;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--pa-radius);
+  background: none;
+  color: var(--pa-ink);
+  font: var(--pa-weight) var(--pa-font-size) / var(--nt-lh-body) var(--pa-font);
+  letter-spacing: var(--pa-tracking);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.paper-action[data-paper-action='signal'] {
+  --pa-face: var(--pa-signal-face);
+  --pa-ink: var(--pa-signal-ink);
+  --pa-line: var(--pa-signal-line);
+  --pa-edge: var(--pa-signal-edge);
+}
+
+.paper-action[data-paper-action='outline'] {
+  --pa-face: var(--pa-outline-face);
+  --pa-ink: var(--pa-outline-ink);
+  --pa-line: var(--pa-outline-line);
+  --pa-edge: var(--pa-outline-edge);
+}
+
+.paper-action .pa-face {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pa-gap);
+  min-height: var(--pa-min-height);
+  padding: var(--pa-padding-y) var(--pa-padding-x);
+  border: var(--pa-line-width) solid var(--pa-line);
+  border-radius: inherit;
+  background: var(--pa-face);
+  color: var(--pa-ink);
+  box-shadow: var(--pa-shadow-offset) var(--pa-edge);
+  transform: var(--pa-rest-transform);
+  transition:
+    transform var(--pa-motion-duration) var(--pa-motion-ease),
+    box-shadow var(--pa-motion-duration) var(--pa-motion-ease);
+}
+
+.paper-action .pa-label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.paper-action .pa-icon {
+  flex: none;
+}
+
+.paper-action:focus-visible {
+  outline: var(--pa-focus-width) solid var(--pa-focus);
+  outline-offset: var(--pa-focus-offset);
+}
+
+@media (hover: hover) {
+  .paper-action:not(:disabled):hover .pa-face {
+    box-shadow: var(--pa-hover-shadow-offset) var(--pa-edge);
+    transform: var(--pa-hover-transform);
+  }
+}
+
+.paper-action:not(:disabled):active .pa-face {
+  box-shadow: var(--pa-pressed-shadow-offset) var(--pa-edge);
+  transform: var(--pa-pressed-transform);
+}
+
+.paper-action:disabled {
+  --pa-face: var(--pa-disabled-face);
+  --pa-ink: var(--pa-disabled-ink);
+  --pa-line: var(--pa-disabled-line);
+  --pa-edge: var(--pa-disabled-edge);
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paper-action .pa-face {
+    transition: none;
+  }
+
+  .paper-action:not(:disabled):hover .pa-face,
+  .paper-action:not(:disabled):active .pa-face {
+    transform: var(--pa-rest-transform);
+    box-shadow: var(--pa-shadow-offset) var(--pa-edge);
+  }
+}
+
+@media (forced-colors: active) {
+  .paper-action .pa-face {
+    box-shadow: none;
+  }
+}
