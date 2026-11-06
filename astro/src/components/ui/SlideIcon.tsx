@@ -15,7 +15,7 @@ export default function SlideIcon({ id, tone = SLIDE_DEFAULT.tone, accent = SLID
   const name = SLIDE_ICONS.find((icon) => icon.id === id)?.name ?? id;
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${SLIDE_SIZE} ${SLIDE_SIZE}`} fill="none"
-      strokeWidth={SLIDE_WEIGHT} strokeLinecap="round" strokeLinejoin="round" className={className}
+      width="100%" height="100%" strokeWidth={SLIDE_WEIGHT} strokeLinecap="round" strokeLinejoin="round" className={className}
       role={decorative ? undefined : 'img'} aria-label={decorative ? undefined : name} aria-hidden={decorative || undefined}>
       {!decorative && <title>{name}</title>}
       {slideDrawing(id).map((p, i) => <path key={i} d={p.d} stroke={palette[p.role]} />)}

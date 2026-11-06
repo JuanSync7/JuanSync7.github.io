@@ -36,6 +36,14 @@ jobs:
         run: npm run slides:check
       - name: Install Chromium for the figure look
         run: npx playwright install --with-deps chromium
+      - name: Design system browsing and clipboard
+        run: node scripts/design-system/browser-check.mjs
+      - name: Design system screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: design-system
+          path: astro/design-system-out
       - name: Lesson browsing (grouping, filters, history, mobile and no JavaScript)
         run: npm run lessons:browser
       - name: Slide icon browsing and exports

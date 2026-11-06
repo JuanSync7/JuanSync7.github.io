@@ -28,12 +28,14 @@ try {
   }));
   for(const b of bounds)assert.ok(b.x>=3&&b.y>=3&&b.right<=61&&b.bottom<=61,`${b.name}: every curve and edge stays inside the 64-unit frame`);
   await page.screenshot({path:'slides-out/desktop-night.png',fullPage:true});
-  const small = await page.addStyleTag({content:'.slide-icon-preview svg { width: 32px; height: 32px; }'});
+  const small = await page.addStyleTag({content:'.slide-icon-preview svg { width: 32px; height: 32px; } header.nav { visibility: hidden; }'});
   await page.locator('.slide-grid').screenshot({path:'slides-out/small-night.png'});
   await page.getByRole('button',{name:'light',exact:true}).click();
   await page.waitForFunction(()=>new URL(location.href).searchParams.get('tone')==='paper');
   await page.locator('.slide-grid').screenshot({path:'slides-out/small-paper.png'});
   await small.evaluate(node=>node.remove());
+  await page.evaluate(()=>window.scrollTo(0,0));
+  await page.waitForFunction(()=>scrollY===0);
   await page.screenshot({path:'slides-out/desktop-paper.png',fullPage:true});
   await page.getByRole('button',{name:'monochrome',exact:true}).click();
   const colours=await page.locator('.slide-icon-preview svg').first().locator('path').evaluateAll(nodes=>nodes.map(node=>node.getAttribute('stroke')));
@@ -67,6 +69,8 @@ try {
   for(const width of [375,768]) {
     await page.setViewportSize({width,height:900});
     assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+    await page.evaluate(()=>window.scrollTo(0,0));
+  await page.waitForFunction(()=>scrollY===0);
     await page.screenshot({path:`slides-out/page-${width}.png`,fullPage:true});
   }
   const pack=await page.request.get(`${base}/downloads/slide-icons/slide-icons.zip`);
@@ -76,6 +80,12 @@ try {
   assert.equal(await staticPage.locator('.slide-card svg').count(),24);
   const href=await staticPage.locator('.slide-actions a').first().getAttribute('href');
   assert.equal((await staticPage.request.get(base+href)).status(),200);
+  await staticPage.goto(`${base}/design-system/`);
+  const ledger=staticPage.locator('.ds-slide-icons svg');
+  assert.equal(await ledger.count(),3,'The current component ledger renders the shared icon in three treatments');
+  for(const size of await ledger.evaluateAll(nodes=>nodes.map(node=>{const r=node.getBoundingClientRect();return [r.width,r.height]})))
+    assert.ok(size.every(value=>Math.abs(value-64)<0.1),'Shared icons respect their sized container');
+  await staticPage.locator('.ds-slide-icons').screenshot({path:'slides-out/design-system-marks.png'});
   assert.deepEqual(errors,[]);
-  console.log('Slide icons browser: actual bounds, themes, monochrome, download/XML, clipboard, filters, search, saved views, phone/tablet, ZIP and no-JS passed.');
+  console.log('Slide icons browser: actual bounds, themes, monochrome, download/XML, clipboard, filters, search, saved views, phone/tablet, ZIP, no-JS and the current design-system ledger passed.');
 }finally{await browser?.close();child?.kill();}
