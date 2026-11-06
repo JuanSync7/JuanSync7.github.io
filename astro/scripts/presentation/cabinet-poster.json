@@ -1,0 +1,15 @@
+{
+  "schema": "cabinet-poster/1",
+  "width": 1000,
+  "height": 1120,
+  "pose": "DEFAULT_CABINET_POSE",
+  "sources": {
+    "src/figures/vault-cabinet.ts": "d30ef50e7d6b8add1dc1bf45f54df8a7d8943ae6730ae53a766573503bde44e5",
+    "src/figures/kit/camera.ts": "b916f9b6d61ca1aaa4a0f0454558f70df7a47b5b6d5b0fd45e419ec9ac943d8a",
+    "src/figures/kit/draw.ts": "ff1513a0f8db0b2cf95208593e8643693f3afbdfc4395cc0acefe748d14662ae",
+    "src/figures/kit/ink.ts": "388ba6abc6db628b676dbd45212c53401af51566309f457c79614a8a98da86fb",
+    "src/figures/define.ts": "8e8a080c3a79789f84e9540d160ab01980d3266bb655fdf15ce889105c5d09fe",
+    "src/styles/tokens/palette.ts": "710bcf12856a3f5bb0ca803a27c4b0b8fb31dc9fe8462cd2d4a6d78496b3d8bf"
+  },
+  "pngSha256": "f73e9e10f68134ab9b7e46018967bd1400f6f09cd8204d4141760fefe9587029"
+}
