@@ -1,25 +1,23 @@
 import {
+  BackSide,
   Color,
-  BufferGeometry,
-  DoubleSide,
+  type DirectionalLight,
   Group,
   LineBasicMaterial,
   LineSegments,
-  LineLoop,
   Mesh,
-  MeshBasicMaterial,
   MeshStandardMaterial,
   OrthographicCamera,
   PerspectiveCamera,
-  PlaneGeometry,
   Raycaster,
   Vector2,
 } from 'three';
 import { hexOf } from './ink';
+import { roomShadows } from './roomshadows';
 import { solidMesh } from './tablemesh';
 import { sceneModels, type SceneModel } from './roomscene';
 import { roomProject, roomVisible, type RoomView } from './roomview';
-import { corners } from './tableparts';
+import { createRoomFocus, focusRoom, type RoomFocus } from './roomfocus';
 import type { TableScene } from './tabletop';
 import type { Pointer } from '../types';
 
@@ -30,15 +28,14 @@ interface Entity {
   edges: { material: LineBasicMaterial; base: Color; opacity: number }[];
 }
 export interface RoomState {
+  key?: DirectionalLight;
   entities: Entity[];
   pickables: Mesh[];
   ray: Raycaster;
   at: Vector2;
-  marker: Mesh<PlaneGeometry, MeshBasicMaterial>;
-  focus: LineLoop<BufferGeometry, LineBasicMaterial>;
+  focus: RoomFocus;
 }
-const SIGNAL = new Color(hexOf('signal')),
-  FOCUS = new Color(hexOf('inkStrong'));
+const SIGNAL = new Color(hexOf('signal'));
 export function buildRoom(p: TableScene): { group: Group; state: RoomState } {
   const group = new Group(),
     pickables: Mesh[] = [];
@@ -49,6 +46,10 @@ export function buildRoom(p: TableScene): { group: Group; state: RoomState } {
     model.traverse((o) => {
       if (o instanceof Mesh && o.material instanceof MeshStandardMaterial) {
         faces.push({ material: o.material, base: o.material.color.clone() });
+        o.material.shadowSide = BackSide;
+        roomShadows(o.material);
+        o.receiveShadow = true;
+        o.castShadow = source.kind !== 'room' || source.interactive;
         o.userData.target = source.interactive ? i : -1;
         o.userData.entity = i;
         pickables.push(o);
@@ -59,32 +60,9 @@ export function buildRoom(p: TableScene): { group: Group; state: RoomState } {
     group.add(model);
     return { source, group: model, faces, edges };
   });
-  const marker = new Mesh(
-    new PlaneGeometry(1, 1),
-    new MeshBasicMaterial({
-      color: hexOf('signal'),
-      transparent: true,
-      opacity: 0.5,
-      depthWrite: false,
-      side: DoubleSide,
-    }),
-  );
-  marker.rotation.x = -Math.PI / 2;
-  marker.visible = false;
-  const focus = new LineLoop(
-    new BufferGeometry().setFromPoints([
-      new Vector2(-0.5, -0.5),
-      new Vector2(0.5, -0.5),
-      new Vector2(0.5, 0.5),
-      new Vector2(-0.5, 0.5),
-    ]),
-    new LineBasicMaterial({ color: hexOf('signal'), transparent: true, opacity: 0.95, depthTest: false }),
-  );
-  focus.visible = false;
-  focus.renderOrder = 100;
-  group.add(marker, focus);
+  const focus = createRoomFocus(group);
   group.updateMatrixWorld(true);
-  return { group, state: { entities, pickables, marker, focus, ray: new Raycaster(), at: new Vector2() } };
+  return { group, state: { entities, pickables, focus, ray: new Raycaster(), at: new Vector2() } };
 }
 export function applyRoomView(
   camera: PerspectiveCamera | OrthographicCamera,
@@ -94,11 +72,12 @@ export function applyRoomView(
 ): void {
   if (camera instanceof OrthographicCamera) {
     camera.left = (-view.height * w) / h / 2;
-    camera.right = -camera.left;
-    camera.top = view.height / 2;
-    camera.bottom = -camera.top;
+    camera.right = -camera.left + view.offset[0];
+    camera.left += view.offset[0];
+    camera.top = view.height / 2 + view.offset[1];
+    camera.bottom = -view.height / 2 + view.offset[1];
   } else {
-    camera.fov = 30;
+    camera.fov = view.fov;
     camera.aspect = w / h;
   }
   camera.far = 120;
@@ -118,7 +97,10 @@ export function updateRoom(
 ): string {
   for (const entity of state.entities) {
     const s = entity.source;
-    entity.group.visible = !s.side || (s.cutaway ? !roomVisible(p, s.side, view) : roomVisible(p, s.side, view));
+    const visible =
+      !s.side || (s.cutaway ? !roomVisible(p, s.side, view, s.mount) : roomVisible(p, s.side, view, s.mount));
+    if (entity.group.visible !== visible && state.key) state.key.shadow.needsUpdate = true;
+    entity.group.visible = visible;
   }
   const pickables = state.pickables.filter((m) => state.entities[m.userData.entity]?.group.visible);
   const pick = (x: number, y: number): number => {
@@ -148,7 +130,7 @@ export function updateRoom(
     const active = i === (selected < 0 ? p.lit : selected);
     for (const { material, base } of entity.faces) {
       material.color.copy(base);
-      if (active) material.color.lerp(i === selected ? FOCUS : SIGNAL, i === selected ? 0.95 : 0.7);
+      if (active) material.color.lerp(SIGNAL, i === selected ? 1 : 0.7);
     }
     for (const { material, base, opacity } of entity.edges) {
       material.color.copy(base);
@@ -157,27 +139,6 @@ export function updateRoom(
     }
   });
   const entity = state.entities[selected];
-  state.marker.visible = Boolean(entity && selected < p.items.length);
-  state.focus.visible = Boolean(entity);
-  if (entity) {
-    const { lo, hi } = entity.source.model.bounds;
-    state.marker.position.set((lo[0] + hi[0]) / 2, 0.01, (lo[2] + hi[2]) / 2);
-    state.marker.scale.set(Math.max(1.4, hi[0] - lo[0] + 0.24), Math.max(1.1, hi[2] - lo[2] + 0.24), 1);
-    const centre: [number, number, number] = [(lo[0] + hi[0]) / 2, (lo[1] + hi[1]) / 2, (lo[2] + hi[2]) / 2];
-    const projected = corners(entity.source.model.bounds).map((q) => roomProject(view, q));
-    const xs = projected.map((q) => q[0]),
-      ys = projected.map((q) => q[1]),
-      at = roomProject(view, centre);
-    const scale =
-      view.projection.scale *
-      (Number.isFinite(view.projection.dist) ? view.projection.dist / (view.projection.dist - at[2]) : 1);
-    state.focus.position.set(...centre);
-    state.focus.quaternion.copy(camera.quaternion);
-    state.focus.scale.set(
-      Math.max(48, Math.max(...xs) - Math.min(...xs) + 10) / scale,
-      Math.max(32, Math.max(...ys) - Math.min(...ys) + 10) / scale,
-      1,
-    );
-  }
+  focusRoom(state.focus, entity?.source.model, selected < p.items.length, view, camera);
   return entity?.source.label ?? 'rest';
 }

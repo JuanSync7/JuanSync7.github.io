@@ -4,8 +4,8 @@ import { prop, type PropKind } from './tableprops';
 export function framed(p: TableDraft, x: number, y: number, width: number, height: number, depth = 0.12): void {
   p.material('recess', () => p.box(x, y, 0.02, width, height, 0.03, 0.01));
   p.material('inlay', () => {
-    for (const a of [-1, 1]) p.box(x + a * (width / 2 - 0.06), y, 0.055, 0.12, height, depth, 0.015);
-    for (const at of [y, y + height - 0.12]) p.box(x, at, 0.055, width, 0.12, depth, 0.015);
+    for (const a of [-1, 1]) p.box(x + a * (width / 2 - 0.06), y, 0.02 + depth / 2, 0.12, height, depth, 0.015);
+    for (const at of [y, y + height - 0.12]) p.box(x, at, 0.02 + depth / 2, width, 0.12, depth, 0.015);
   });
 }
 export function cupboard(p: TableDraft, x: number, y: number, width: number, height: number): void {
@@ -21,7 +21,7 @@ export function cupboard(p: TableDraft, x: number, y: number, width: number, hei
 export function shelf(p: TableDraft, x: number, y: number, width: number, height: number): void {
   framed(p, x, y, width, height, 0.48);
   p.material('frame', () => {
-    for (const at of [y, y + height / 2, y + height - 0.06]) p.box(x, at, 0.25, width, 0.06, 0.55, 0.015);
+    for (const at of [y, y + height / 2, y + height - 0.06]) p.box(x, at, 0.3, width, 0.06, 0.55, 0.015);
   });
 }
 export function accessory(p: TableDraft, kind: PropKind, x: number, y: number, z: number, scale: number): void {
@@ -45,5 +45,9 @@ export function door(p: TableDraft, floor: number): void {
   p.material('frame', () => {
     for (const y of [floor + 0.3, floor + 2.0]) p.box(0, y, 0.165, 1.3, 1.4, 0.025, 0.025);
   });
-  p.material('metal', () => p.tube([0.48, floor + 1.95, 0.22], [0.72, floor + 1.95, 0.22], 0.035));
+  p.material('metal', () => {
+    p.box(0.5, floor + 1.82, 0.205, 0.14, 0.29, 0.025, 0.02);
+    p.tube([0.48, floor + 1.95, 0.22], [0.72, floor + 1.95, 0.22], 0.035);
+    for (const y of [floor + 0.65, floor + 2.15, floor + 3.6]) p.box(-0.8, y, 0.15, 0.07, 0.19, 0.07, 0.01);
+  });
 }

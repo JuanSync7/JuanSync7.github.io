@@ -8,7 +8,7 @@ export function backFeature(p: TableDraft, theme: ThemeId, variant: number, slot
     framed(p, x, 1.85, 1.9, 1.45);
     p.material('inlay', () => p.box(x, 2.05, 0.12, 1.35, 1.02, 0.04, 0.025));
     p.material('frame', () => {
-      accessory(p, 'plant', x, 2.06, 0.2, 0.68);
+      accessory(p, 'plant', x, 2.06, 0.35, 0.68);
     });
     return 'Dining wall reliefs';
   }
@@ -42,7 +42,7 @@ export function backFeature(p: TableDraft, theme: ThemeId, variant: number, slot
     if (slot === 0) cupboard(p, -2.7, 1.85, 3.25, 1.65);
     else {
       shelf(p, 1.8, 1.85, 4.1, 1.65);
-      for (let i = 0; i < 4; i++) p.material('inlay', () => accessory(p, 'box', 0.3 + i * 0.95, 1.92, 0.28, 0.75));
+      for (let i = 0; i < 4; i++) p.material('inlay', () => accessory(p, 'box', 0.3 + i * 0.95, 1.92, 0.28, 0.6));
     }
     return 'Wall supply cabinets';
   }

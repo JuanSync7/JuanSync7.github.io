@@ -1,11 +1,10 @@
-import { AmbientLight, DirectionalLight, HemisphereLight } from 'three';
 import { defineTemplate } from '../defineTemplate';
 import { defineThreeFigure } from '../defineThree';
-import { hexOf } from '../kit/ink';
 import { solidMesh } from '../kit/tablemesh';
 import { arrange, itemModel, TABLE_ASPECT, type TableItem, type TableScene } from '../kit/tabletop';
 import { buildRoom, applyRoomView, updateRoom, type RoomState } from '../kit/roomrender';
 import { roomView } from '../kit/roomview';
+import { roomLighting } from '../kit/roomlight';
 import { flatRoom } from '../kit/roomflat';
 
 export const object = (it: TableItem) => solidMesh(itemModel(it), it.kind, 'work');
@@ -23,20 +22,11 @@ export default defineTemplate<TableScene, RoomState>({
   grammar: (rng) => arrange(rng),
   name: (p) => `${p.theme.name} room · ${p.items.length} objects`,
   alt: (p) =>
-    `A three-wall room themed as a ${p.theme.name.toLowerCase()}, with its detailed table flush against the back wall, matching floor and wall fittings, and ${p.items.length} seeded tabletop objects.`,
-  build: ({ scene, params: p }) => {
+    `A three-wall room themed as a ${p.theme.name.toLowerCase()}, with its detailed table flush against the back wall, matching floors, seating, room storage and wall fittings, and ${p.items.length} seeded tabletop objects.`,
+  build: ({ scene, renderer, params: p }) => {
     const { group, state } = buildRoom(p);
-    const key = new DirectionalLight(hexOf('inkStrong'), 2.4);
-    key.position.set(-3, 7, 6);
-    const fill = new DirectionalLight(hexOf('inkStrong'), 0.7);
-    fill.position.set(5, 4, -4);
-    scene.add(
-      new HemisphereLight(hexOf('inkStrong'), hexOf('ground'), 1.7),
-      new AmbientLight(hexOf('inkStrong'), 0.3),
-      key,
-      fill,
-      group,
-    );
+    state.key = roomLighting(scene, renderer, p);
+    scene.add(group);
     scene.updateMatrixWorld(true);
     return state;
   },

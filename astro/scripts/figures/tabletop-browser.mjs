@@ -99,7 +99,8 @@ try {
     shots,
     shots.map((s) => ({ level: 'ok', text: s.label })),
   );
-  const roomShots = [];
+  const roomShots = [],
+    isoShots = [];
   for (const fallback of [false, true]) {
     const c = await browser.newContext({ viewport: { width: 1200, height: 1000 }, reducedMotion: 'reduce' });
     const p = await c.newPage();
@@ -136,7 +137,26 @@ try {
     const png = await p.locator('.lab-main canvas').screenshot();
     assert(measure(decode(png), thresholds).coverage >= thresholds.coverageMin, 'Main canvas rendered blank');
     writeFileSync(`figures-out/tabletop-${fallback ? 'fallback' : 'webgl'}.png`, png);
-    roomShots.push(...await checkRoomCamera(p, fallback, thresholds));
+    roomShots.push(...(await checkRoomCamera(p, fallback, thresholds)));
+    if (!fallback) {
+      await p.getByRole('button', { name: 'Isometric', exact: true }).click();
+      for (const theme of THEMES) {
+        const { seed } = examples.get(theme.id);
+        await p.locator('.lab-seed input').fill(String(seed));
+        await p.locator('.lab-seed input').press('Enter');
+        await p.waitForURL(new RegExp(`seed=${seed}$`));
+        await ready();
+        const png = await p.locator('.lab-main canvas').screenshot(),
+          m = measure(decode(png), thresholds);
+        assert(
+          m.coverage >= thresholds.coverageMin && m.coverage <= thresholds.coverageMax,
+          `${theme.id} isometric framing`,
+        );
+        assert(m.offPalette <= thresholds.offPaletteMax, `${theme.id} isometric palette`);
+        writeFileSync(`figures-out/room-isometric-${theme.id}.png`, png);
+        isoShots.push({ label: `${theme.name} · seed ${seed}`, png });
+      }
+    }
     await p.setViewportSize({ width: 390, height: 844 });
     await p.waitForTimeout(200);
     assert(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
@@ -145,7 +165,32 @@ try {
     await ready();
     await c.close();
   }
-  await writeSheet(browser, join(process.cwd(), 'figures-out/room-camera-views.png'), { id: '180° room camera', style: 'three · perspective and isometric', motion: 'drag / slider / keyboard', answers: true, bleed: false }, roomShots, []);
+  await writeSheet(
+    browser,
+    join(process.cwd(), 'figures-out/room-camera-views.png'),
+    {
+      id: '180° room camera',
+      style: 'three · perspective and isometric',
+      motion: 'drag / slider / keyboard',
+      answers: true,
+      bleed: false,
+    },
+    roomShots,
+    [],
+  );
+  await writeSheet(
+    browser,
+    join(process.cwd(), 'figures-out/room-isometric-themes.png'),
+    {
+      id: 'Nine furnished isometric rooms',
+      style: 'three · WebGL · PCSS shadows',
+      motion: 'seeded room dressing',
+      answers: true,
+      bleed: false,
+    },
+    isoShots,
+    [],
+  );
   assert.deepEqual(errors, []);
   console.log(
     'All 9 rooms, WebGL/fallback, 180° sweep, true isometric projection, drag, keyboard, zoom, seed controls and mobile width passed. Wrote figures-out/tabletop-themes.png and room-camera-views.png',

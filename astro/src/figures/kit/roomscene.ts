@@ -1,6 +1,6 @@
 import { itemModel, tabletop, propName, type TableScene } from './tabletop';
 import type { PropModel } from './tableparts';
-import type { TableObject } from './tablemesh';
+import type { TableObject } from './tablefinish';
 import { roomModels } from './tableroom';
 import type { RoomSide } from './roomplan';
 
@@ -11,6 +11,7 @@ export interface SceneModel {
   interactive: boolean;
   side?: RoomSide;
   cutaway?: boolean;
+  mount?: 'floor' | 'wall';
 }
 const CACHE = new WeakMap<TableScene, SceneModel[]>();
 export function sceneModels(p: TableScene): SceneModel[] {

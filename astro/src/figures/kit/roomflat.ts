@@ -1,6 +1,7 @@
+import { roomClip } from './roomclip';
 import { poly } from './draw';
 import { ink, mix } from './ink';
-import { tableFinish } from './tablemesh';
+import { tableFinish } from './tablefinish';
 import { sceneModels } from './roomscene';
 import { roomProject, roomView, roomVisible } from './roomview';
 import type { TableScene } from './tabletop';
@@ -39,35 +40,40 @@ export function flatRoom(
   const view = roomView(p, w, h, data),
     models = sceneModels(p);
   const visible = models.map(
-    (s) => !s.side || (s.cutaway ? !roomVisible(p, s.side, view) : roomVisible(p, s.side, view)),
+    (s) => !s.side || (s.cutaway ? !roomVisible(p, s.side, view, s.mount) : roomVisible(p, s.side, view, s.mount)),
   );
   const surfaces = models.flatMap((s, index) =>
     visible[index]
       ? s.model.surfaces.map((surface) => ({
           surface,
           index,
-          points: surface.points.map((v) => roomProject(view, v)),
+          points: roomClip(view, surface.points, surface.face).map((v) => roomProject(view, v)),
           layer:
-            s.side === 'floor'
-              ? -4 + surface.solid * 0.00001
-              : s.kind === 'room'
-                ? s.interactive
-                  ? -1
-                  : -3 + surface.solid * 0.00001
-                : s.kind === 'table'
-                  ? 0
-                  : 1,
+            s.label === 'Woven area rug'
+              ? -3.5
+              : s.mount === 'floor'
+                ? 2
+                : s.side === 'floor'
+                  ? -4 + surface.solid * 0.00001
+                  : s.kind === 'room'
+                    ? s.interactive
+                      ? -1
+                      : -3 + surface.solid * 0.00001
+                    : s.kind === 'table'
+                      ? 0
+                      : 1,
         }))
       : [],
   );
-  surfaces.sort(
+  const clipped = surfaces.filter((s) => s.points.length >= (s.surface.face ? 3 : 2));
+  clipped.sort(
     (a, b) =>
       a.layer - b.layer ||
       a.points.reduce((n, q) => n + q[2] / a.points.length, 0) -
         b.points.reduce((n, q) => n + q[2] / b.points.length, 0),
   );
   const pick = (x: number, y: number): number => {
-    const hit = surfaces.findLast((s) => s.surface.face && inside(s.points, x, y));
+    const hit = clipped.findLast((s) => s.surface.face && inside(s.points, x, y));
     return hit && models[hit.index]?.interactive ? hit.index : -1;
   };
   let selected = pointer.active ? pick(pointer.x * w, pointer.y * h) : -1;
@@ -87,7 +93,7 @@ export function flatRoom(
         break;
       }
   }
-  for (const { surface, index, points } of surfaces) {
+  for (const { surface, index, points } of clipped) {
     const s = models[index];
     if (!s) continue;
     const active = index === (selected < 0 ? p.lit : selected),
@@ -110,8 +116,10 @@ export function flatRoom(
     const points = [lo[0], hi[0]].flatMap((x) =>
       [lo[1], hi[1]].flatMap((y) => [lo[2], hi[2]].map((z) => roomProject(view, [x, y, z]))),
     );
-    const width = Math.max(48, Math.max(...points.map((q) => q[0])) - Math.min(...points.map((q) => q[0])) + 10);
-    const height = Math.max(32, Math.max(...points.map((q) => q[1])) - Math.min(...points.map((q) => q[1])) + 10);
+    const width = Math.max(64, Math.max(...points.map((q) => q[0])) - Math.min(...points.map((q) => q[0])) + 10);
+    const height = Math.max(40, Math.max(...points.map((q) => q[1])) - Math.min(...points.map((q) => q[1])) + 10);
+    ctx.fillStyle = ink.signal(0.12);
+    ctx.fillRect(centre[0] - width / 2, centre[1] - height / 2, width, height);
     ctx.strokeStyle = ink.signal(0.95);
     ctx.strokeRect(centre[0] - width / 2, centre[1] - height / 2, width, height);
   }

@@ -22,6 +22,17 @@ export function roomFloor(p: TableDraft, r: RoomPlan, theme: ThemeId): void {
       p.material(light ? 'tile' : 'floor', () =>
         p.box(-r.half + (i + 0.5) * width, r.floor - 0.07, (lo + hi) / 2, width - 0.02, 0.07, hi - lo - 0.02, 0.008),
       );
+      if (wood)
+        for (let k = 0; k < 2; k++) {
+          const x = -r.half + (i + 0.28 + k * 0.4) * width;
+          const inset = 0.12 + ((i + j + r.variant) % 3) * 0.06;
+          if (hi - lo > inset * 2)
+            p.line([
+              [x, r.floor, lo + inset],
+              [x + width * 0.035, r.floor, (lo + hi) / 2],
+              [x, r.floor, hi - inset],
+            ]);
+        }
     }
   }
 }

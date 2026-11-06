@@ -4,6 +4,8 @@ import { roomPlan, type RoomPlan, type RoomSide } from './roomplan';
 import { roomFloor } from './roomfloor';
 import { backFeature } from './roomfixtures';
 import { door, windowFrame } from './roomdecor';
+import { roomDressing } from './roomdressing';
+import { sideMoulding, windowDetails, wallSwitch } from './roomarchitecture';
 import type { TableScene } from './tabletop';
 
 export interface RoomPart {
@@ -12,6 +14,7 @@ export interface RoomPart {
   interactive: boolean;
   model: PropModel;
   cutaway?: boolean;
+  mount?: 'floor' | 'wall';
 }
 const CACHE = new Map<string, RoomPart[]>();
 export function roomModels(p: TableScene): RoomPart[] {
@@ -44,6 +47,7 @@ export function roomModels(p: TableScene): RoomPart[] {
         q.box(sign * r.half, r.floor, (r.back + r.front) / 2, 0.065, 0.18, r.front - r.back, 0.01);
         q.box(sign * r.half, r.top - 0.12, (r.back + r.front) / 2, 0.1, 0.12, r.front - r.back, 0.015);
       });
+      sideMoulding(q, r, p.theme.id, sign);
     });
     add(`${side} cutaway wall`, side, (q) => {
       q.material('wall', () =>
@@ -70,7 +74,23 @@ export function roomModels(p: TableScene): RoomPart[] {
         ([x, y, z]) => [x, y, r.back + z],
       );
   }
-  add('Recessed window', 'left', windowFrame, true, ([x, y, z]) => [-r.half + z, y, r.back + 2 + x]);
+  add(
+    'Recessed window and radiator',
+    'left',
+    (q) => {
+      windowFrame(q);
+      windowDetails(q, r.floor, ['dining', 'study', 'bar'].includes(p.theme.id));
+    },
+    true,
+    ([x, y, z]) => [-r.half + z, y, r.back + 2 + x],
+  );
+  add(
+    'Door light switch',
+    'right',
+    (q) => wallSwitch(q, r.floor),
+    true,
+    ([x, y, z]) => [r.half - z, y, r.front - 2.45 + x],
+  );
   add(
     'Panelled door',
     'right',
@@ -78,6 +98,7 @@ export function roomModels(p: TableScene): RoomPart[] {
     true,
     ([x, y, z]) => [r.half - z, y, r.front - 1.25 + x],
   );
+  parts.push(...roomDressing(p));
   CACHE.set(key, parts);
   return parts;
 }

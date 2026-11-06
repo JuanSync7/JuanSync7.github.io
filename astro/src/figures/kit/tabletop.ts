@@ -129,7 +129,10 @@ function compose(rng: Rng, theme: TableTheme): TableScene | null {
       })
     )
       p.dist += 0.25;
-    p.lit = Math.floor(rng() * p.items.length);
+    const highlights = p.items.map((it, i) => ({ it, i })).filter(({ it }) => it.z > 0 && it.bounds.hi[1] > 0.2);
+    p.lit = highlights.length
+      ? (highlights[Math.floor(rng() * highlights.length)]?.i ?? 0)
+      : Math.floor(rng() * p.items.length);
     p.roomVariant = Math.floor(rng() * 3);
     return p;
   }

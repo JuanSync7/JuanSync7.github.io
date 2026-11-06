@@ -29,13 +29,13 @@ export function top(p: TableDraft, t: TableTheme): void {
   const edge = outline.map(([a, b]): Vec3 => [a, -0.055, b]);
   p.material('top', () => {
     p.extrude(outline, -0.19, -0.055);
-    p.face(inset);
+    p.face([...inset].reverse());
     edge.forEach((a, i) => {
       const j = (i + 1) % edge.length,
         b = edge[j],
         c = inset[j],
         d = inset[i];
-      if (b && c && d) p.face([a, b, c, d]);
+      if (b && c && d) p.face([d, c, b, a]);
     });
   });
   p.material(t.id === 'lab' || t.id === 'bar' ? 'metal' : 'panel', () =>
@@ -62,7 +62,7 @@ export function ovalApron(p: TableDraft, t: TableTheme): void {
     for (let i = 0; i < 48; i++) {
       p.face([outer(i, -0.23), outer(i + 1, -0.23), outer(i + 1, -0.5), outer(i, -0.5)]);
       p.face([outer(i, -0.5), outer(i + 1, -0.5), outer(i + 1, -0.5, 0.09), outer(i, -0.5, 0.09)]);
-      p.face([outer(i, -0.23, 0.09), outer(i + 1, -0.23, 0.09), outer(i + 1, -0.5, 0.09), outer(i, -0.5, 0.09)]);
+      p.face([outer(i, -0.5, 0.09), outer(i + 1, -0.5, 0.09), outer(i + 1, -0.23, 0.09), outer(i, -0.23, 0.09)]);
     }
   });
 }

@@ -16,7 +16,7 @@ export function roomPlan(p: TableScene): RoomPlan {
   const table = tableModel(p.theme).bounds;
   const half = p.theme.w / 2 + 1.25,
     back = table.lo[2],
-    front = p.theme.d / 2 + 2.3;
+    front = p.theme.d / 2 + 4.4;
   const floor = table.lo[1],
     top = 3.8;
   return {

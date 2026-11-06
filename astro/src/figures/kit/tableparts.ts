@@ -13,9 +13,20 @@ export type FurnitureFinish =
   | 'foot'
   | 'tile'
   | 'wall'
-  | 'floor';
+  | 'floor'
+  | 'rug'
+  | 'stitch'
+  | 'shade'
+  | 'light';
 export interface TableSurface extends Surface {
   finish?: FurnitureFinish;
+}
+function counterclockwise(points: readonly (readonly [number, number])[]) {
+  const area = points.reduce((sum, a, i) => {
+    const b = points[(i + 1) % points.length];
+    return sum + (b ? a[0] * b[1] - b[0] * a[1] : 0);
+  }, 0);
+  return area < 0 ? [...points].reverse() : points;
 }
 /** The hardware atlas's bevelled solids, extended with turned vessels and curved handles.
  * One model supplies both WebGL and the canvas fallback. */
@@ -23,6 +34,13 @@ export class TableDraft extends Draft {
   constructor() {
     super();
     this.part('Tabletop object', 'A physical tabletop assembly.');
+  }
+  override extrude(outline: readonly (readonly [number, number])[], low: number, high: number): void {
+    const surfaces = this.parts[this.parts.length - 1]?.surfaces;
+    const start = surfaces?.length ?? 0;
+    super.extrude(counterclockwise(outline), low, high);
+    // The atlas uses double-sided faces. Lit furniture needs outward shadow normals.
+    for (const surface of surfaces?.slice(start) ?? []) if (surface.face) surface.points.reverse();
   }
   material(kind: FurnitureFinish, build: () => void): void {
     const surfaces = this.parts[0]?.surfaces;
@@ -35,6 +53,7 @@ export class TableDraft extends Draft {
     this.parts[0]?.surfaces.push({ solid: 10000, face: true, points });
   }
   lathe(profile: readonly (readonly [number, number])[], x = 0, z = 0, n = 16): void {
+    profile = counterclockwise(profile);
     for (let k = 0; k + 1 < profile.length; k++) {
       const a = profile[k],
         b = profile[k + 1];
@@ -45,7 +64,7 @@ export class TableDraft extends Draft {
           y,
           z + Math.sin((j * Math.PI * 2) / n) * r,
         ];
-        this.face([point(a[0], a[1], i), point(a[0], a[1], i + 1), point(b[0], b[1], i + 1), point(b[0], b[1], i)]);
+        this.face([point(a[0], a[1], i), point(b[0], b[1], i), point(b[0], b[1], i + 1), point(a[0], a[1], i + 1)]);
       }
     }
   }
@@ -70,13 +89,26 @@ export class TableDraft extends Draft {
   rod(a: Vec3, b: Vec3, width = 0.035): void {
     const triangles: number[] = [];
     beam(triangles, a, b, width);
-    for (let i = 0; i < triangles.length; i += 9)
-      this.face([
+    for (let i = 0; i < triangles.length; i += 9) {
+      const triangle: [Vec3, Vec3, Vec3] = [
         [triangles[i] ?? 0, triangles[i + 1] ?? 0, triangles[i + 2] ?? 0],
         [triangles[i + 3] ?? 0, triangles[i + 4] ?? 0, triangles[i + 5] ?? 0],
         [triangles[i + 6] ?? 0, triangles[i + 7] ?? 0, triangles[i + 8] ?? 0],
-      ]);
+      ];
+      const [p, q, r] = triangle;
+      const u: Vec3 = [q[0] - p[0], q[1] - p[1], q[2] - p[2]],
+        v: Vec3 = [r[0] - p[0], r[1] - p[1], r[2] - p[2]];
+      const nx = u[1] * v[2] - u[2] * v[1],
+        ny = u[2] * v[0] - u[0] * v[2],
+        nz = u[0] * v[1] - u[1] * v[0];
+      const dot =
+        nx * ((p[0] + q[0] + r[0]) / 3 - (a[0] + b[0]) / 2) +
+        ny * ((p[1] + q[1] + r[1]) / 3 - (a[1] + b[1]) / 2) +
+        nz * ((p[2] + q[2] + r[2]) / 3 - (a[2] + b[2]) / 2);
+      this.face(dot < 0 ? triangle.reverse() : triangle);
+    }
   }
+
   tube(a: Vec3, b: Vec3, radius: number, n = 12): void {
     const length = Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]);
     if (length < 0.00001) return;

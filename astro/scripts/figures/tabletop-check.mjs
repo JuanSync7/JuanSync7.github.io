@@ -30,7 +30,8 @@ const sample = [
 ];
 const kinds = new Set();
 const layouts = new Set();
-let objects = 0, occlusions = 0;
+let objects = 0,
+  occlusions = 0;
 try {
   const canvasRuntime = await build({
     entryPoints: ['src/figures/defineTemplate.ts'],
@@ -47,7 +48,7 @@ try {
   await build({
     stdin: {
       contents:
-        "export { default, arrange, object } from './src/figures/templates/pixel-still'; export { webglAvailable } from './src/figures/defineThree'; export {THEMES,GAP,tabletop,tableView,TABLE_ASPECT} from './src/figures/kit/tabletop'; export {PROP_KINDS} from './src/figures/kit/tableprops'; export {roomPlan} from './src/figures/kit/roomplan'; export {roomModels} from './src/figures/kit/tableroom'; export {roomView,roomProject,roomVisible,roomControls} from './src/figures/kit/roomview';",
+        "export { default, arrange, object } from './src/figures/templates/pixel-still'; export { webglAvailable } from './src/figures/defineThree'; export {THEMES,GAP,tabletop,tableView,TABLE_ASPECT} from './src/figures/kit/tabletop'; export {PROP_KINDS} from './src/figures/kit/tableprops'; export {TableDraft,finish} from './src/figures/kit/tableparts'; export {roomPlan} from './src/figures/kit/roomplan'; export {roomModels} from './src/figures/kit/tableroom'; export {roomView,roomProject,roomVisible,roomControls} from './src/figures/kit/roomview';",
       resolveDir: process.cwd(),
       loader: 'ts',
     },
@@ -69,6 +70,45 @@ try {
     TABLE_ASPECT,
     PROP_KINDS,
   } = sceneModule;
+  for (const primitive of ['box', 'extrude-reversed', 'lathe', 'lathe-reversed', 'tube', 'rod']) {
+    const draft = new sceneModule.TableDraft();
+    if (primitive === 'box') draft.box(0, 0, 0, 2, 2, 2, 0.1);
+    else if (primitive === 'extrude-reversed')
+      draft.extrude(
+        [
+          [-1, -1],
+          [-1, 1],
+          [1, 1],
+          [1, -1],
+        ],
+        0,
+        2,
+      );
+    else if (primitive === 'tube') draft.tube([0, 0, 0], [0, 2, 0], 1, 16);
+    else if (primitive === 'rod') draft.rod([0, 0, 0], [0, 2, 0], 2);
+    else {
+      const profile = [
+        [0, 0],
+        [1, 0],
+        [1, 2],
+        [0, 2],
+      ];
+      draft.lathe(primitive === 'lathe-reversed' ? profile.reverse() : profile, 0, 0, 16);
+    }
+    for (const face of sceneModule.finish(draft).surfaces.filter((s) => s.face)) {
+      const points = face.points.map((q) => new Vector3(...q));
+      const a = points[0],
+        b = points[1],
+        c = points[2];
+      const normal = new Vector3().crossVectors(b.clone().sub(a), c.clone().sub(a));
+      if (normal.lengthSq() < 1e-10) continue;
+      const center = points
+        .reduce((v, p) => v.add(p), new Vector3())
+        .divideScalar(points.length)
+        .sub(new Vector3(0, 1, 0));
+      assert(normal.dot(center) > 0, `Inward ${primitive} shadow normal`);
+    }
+  }
   const originalDocument = globalThis.document;
   let released = 0;
   try {
@@ -121,10 +161,25 @@ try {
     cam.lookAt(0, 0, 0);
     cam.updateMatrixWorld();
     const furnitureModel = tabletop(p);
-    if (!fixtures.has(p.theme.id)) fixtures.set(p.theme.id, furnitureModel.surfaces.filter((s) => s.face && s.points.some((q) => q[1] > 0.025)).map((s) => ({
-      lo: [0, 1, 2].map((axis) => Math.min(...s.points.map((q) => q[axis]))),
-      hi: [0, 1, 2].map((axis) => Math.max(...s.points.map((q) => q[axis]))),
-    })));
+    const workingFace = furnitureModel.surfaces
+      .filter((s) => s.face && s.points.every((q) => Math.abs(q[1]) < 1e-9))
+      .sort((a, b) => b.points.length - a.points.length)[0];
+    assert(workingFace, 'Missing working surface');
+    const [ta, tb, tc] = workingFace.points.map((q) => new Vector3(...q));
+    assert(
+      new Vector3().crossVectors(tb.clone().sub(ta), tc.clone().sub(ta)).y > 0,
+      'Table working surface has an inward normal',
+    );
+    if (!fixtures.has(p.theme.id))
+      fixtures.set(
+        p.theme.id,
+        furnitureModel.surfaces
+          .filter((s) => s.face && s.points.some((q) => q[1] > 0.025))
+          .map((s) => ({
+            lo: [0, 1, 2].map((axis) => Math.min(...s.points.map((q) => q[axis]))),
+            hi: [0, 1, 2].map((axis) => Math.max(...s.points.map((q) => q[axis]))),
+          })),
+      );
     const projected = [];
     for (const x of [furnitureModel.bounds.lo[0], furnitureModel.bounds.hi[0]])
       for (const y of [furnitureModel.bounds.lo[1], furnitureModel.bounds.hi[1]])
@@ -138,12 +193,16 @@ try {
       const g = object(it);
       g.updateMatrixWorld(true);
       const bounds = new Box3().setFromObject(g, true);
-      for (const fitting of fixtures.get(p.theme.id)) assert(
-        bounds.max.x <= fitting.lo[0] || bounds.min.x >= fitting.hi[0] ||
-        bounds.max.y <= fitting.lo[1] || bounds.min.y >= fitting.hi[1] ||
-        bounds.max.z <= fitting.lo[2] || bounds.min.z >= fitting.hi[2],
-        `table fitting intersects ${seed}/${p.theme.id}/${it.kind}`,
-      );
+      for (const fitting of fixtures.get(p.theme.id))
+        assert(
+          bounds.max.x <= fitting.lo[0] ||
+            bounds.min.x >= fitting.hi[0] ||
+            bounds.max.y <= fitting.lo[1] ||
+            bounds.min.y >= fitting.hi[1] ||
+            bounds.max.z <= fitting.lo[2] ||
+            bounds.min.z >= fitting.hi[2],
+          `table fitting intersects ${seed}/${p.theme.id}/${it.kind}`,
+        );
       assert(
         bounds.min.x > -p.theme.w / 2 &&
           bounds.max.x < p.theme.w / 2 &&
@@ -224,7 +283,7 @@ try {
   assert(layouts.size > 1300);
   assert(occlusions > 1000, 'Eye-level density should allow natural visual occlusion');
   console.log(
-    `Tabletop passed: ${cases.length} layouts, ${objects} objects, ${kinds.size} props, ${checkedRooms.size} seeded rooms; deterministic, flush to back wall, no physical overlaps, and framed across the full 180° arc in perspective and isometric views.`,
+    `Tabletop passed: ${cases.length} layouts, ${objects} objects, ${kinds.size} props, ${checkedRooms.size} seeded rooms; deterministic, flush to back wall, no physical overlaps, with the tabletop framed across the 0–180° entrance arc and equal-axis isometric projection.`,
   );
 } finally {
   rmSync(dir, { recursive: true, force: true });

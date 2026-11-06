@@ -1,6 +1,7 @@
 import {
   Color,
   Line,
+  Light,
   Mesh,
   OrthographicCamera,
   PerspectiveCamera,
@@ -20,6 +21,7 @@ export interface ThreeEnv {
   scene: Scene;
   camera: PerspectiveCamera;
   rng: Rng;
+  renderer: WebGLRenderer;
 }
 
 export interface ThreeFrame<S> extends FrameInput {
@@ -52,6 +54,15 @@ export function webglAvailable(): boolean {
 function disposeTree(root: Object3D): void {
   root.traverse((o) => {
     // Lines hold GPU buffers too: edge outlines are LineSegments, which extend Line.
+    if (
+      o instanceof Light &&
+      'shadow' in o &&
+      o.shadow &&
+      typeof o.shadow === 'object' &&
+      'dispose' in o.shadow &&
+      typeof o.shadow.dispose === 'function'
+    )
+      o.shadow.dispose();
     if (o instanceof Mesh || o instanceof Line) {
       o.geometry.dispose();
       const mats: Material[] = Array.isArray(o.material) ? o.material : [o.material];
@@ -80,7 +91,7 @@ export function defineThreeFigure<S>(spec: ThreeFigureSpec<S>): Figure {
       const camera = new PerspectiveCamera(30, 1, 0.1, 60);
       const parallel = new OrthographicCamera(-1, 1, 1, -1, 0.1, 120);
       let active: PerspectiveCamera | OrthographicCamera = camera;
-      const state = build({ scene, camera, rng: mulberry32(spec.seed) });
+      const state = build({ scene, camera, renderer, rng: mulberry32(spec.seed) });
       let w = 1;
       let h = 1;
       return {

@@ -6,10 +6,10 @@ interface Props {
   id: string;
   aspect: number;
 }
-const clampAngle = (angle: number): number => Math.max(-90, Math.min(90, Math.round(angle)));
+const clampAngle = (angle: number): number => Math.max(0, Math.min(180, Math.round(angle)));
 
 export default function RoomStage({ id, aspect }: Props) {
-  const [angle, setAngle] = useState(0);
+  const [angle, setAngle] = useState(90);
   const [view, setView] = useState<'eye' | 'isometric'>('eye');
   const [zoom, setZoom] = useState(1);
   const [dragging, setDragging] = useState(false);
@@ -23,7 +23,7 @@ export default function RoomStage({ id, aspect }: Props) {
   };
   const preset = (mode: 'eye' | 'isometric'): void => {
     setView(mode);
-    setAngle(mode === 'isometric' ? 45 : 0);
+    setAngle(mode === 'isometric' ? 135 : 90);
     setZoom(1);
   };
   return (
@@ -69,12 +69,14 @@ export default function RoomStage({ id, aspect }: Props) {
           <input
             id={rangeId}
             type="range"
-            min={-90}
-            max={90}
+            min={0}
+            max={180}
             step={1}
             value={angle}
             onChange={(event) => setAngle(Number(event.target.value))}
-            aria-valuetext={angle === 0 ? 'Front view' : `${Math.abs(angle)} degrees ${angle < 0 ? 'left' : 'right'}`}
+            aria-valuetext={
+              angle === 90 ? '90 degrees, front view' : `${angle} degrees, ${angle < 90 ? 'left' : 'right'} side`
+            }
           />
           <output htmlFor={rangeId}>{angle}°</output>
         </label>
@@ -115,7 +117,7 @@ export default function RoomStage({ id, aspect }: Props) {
           </button>
         </div>
       </div>
-      <p className="room-help">Drag to look around · 180° sweep · the near wall cuts away to reveal the room</p>
+      <p className="room-help">Drag to explore · 0° left entrance · 90° front · 180° right entrance</p>
     </div>
   );
 }
