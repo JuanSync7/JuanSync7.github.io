@@ -1,0 +1,42 @@
+---
+import PresentationLayout from './PresentationLayout.astro';
+import PaperAction from '../components/ui/PaperAction.astro';
+import { VAULT_GUIDES, type VaultGuideSlug } from '../data/vault-pages';
+import '../components/vault/vault-guide.css';
+
+interface Props {
+  slug: VaultGuideSlug;
+  title?: string;
+  intro?: string;
+  description?: string;
+}
+
+const { slug, title, intro, description } = Astro.props;
+const guide = VAULT_GUIDES.find((item) => item.slug === slug);
+if (!guide) throw new Error(`Unknown public vault guide: ${slug}`);
+const heading = title ?? guide.title;
+---
+
+<PresentationLayout title={`${heading} · Experience vault · Juan Kok`} description={description ?? guide.summary} kind="guide">
+  <article class="vault-guide pr-body" data-vault-guide={slug}>
+    <header class="vg-head">
+      <nav class="vg-breadcrumb pr-comment" aria-label="Breadcrumb">
+        <a href="/vault/">experience vault</a><span aria-hidden="true">/</span><span aria-current="page">{guide.kicker.toLowerCase()}</span>
+      </nav>
+      <p class="vg-kicker pr-comment">// {guide.kicker.toLowerCase()}</p>
+      <h1 class="pr-title">{heading}</h1>
+      <p class="vg-intro pr-body">{intro ?? guide.summary}</p>
+    </header>
+    <nav class="vg-nav" aria-label="Vault guides">
+      {VAULT_GUIDES.map((item) => <a href={`/vault/${item.slug}/`} aria-current={slug === item.slug ? 'page' : undefined}>{item.slug === 'knowledge-graph' ? 'Graph' : item.slug.charAt(0).toUpperCase() + item.slug.slice(1)}</a>)}
+    </nav>
+    <div class="vg-content"><slot /></div>
+    <footer class="vg-end">
+      <p class="pr-comment">Public guide. Diagrams and example records are illustrative; no private vault is connected.</p>
+      <PaperAction href="/vault/" variant="outline">Back to the overview</PaperAction>
+      <nav aria-label="Read another vault guide">
+        {VAULT_GUIDES.filter((item) => item.slug !== slug).map((item) => <a href={`/vault/${item.slug}/`}>{item.title} <span aria-hidden="true">→</span></a>)}
+      </nav>
+    </footer>
+  </article>
+</PresentationLayout>

@@ -1,129 +1,77 @@
 ---
-import NightPage from '../../layouts/NightPage.astro';
-import NightNav from '../../components/layout/NightNav.astro';
-import NightFooter from '../../components/layout/NightFooter.astro';
-import Diagram from '../../components/learn/Diagram.astro';
-import VaultSearchDemo from '../../components/vault/VaultSearchDemo';
-import { VAULT_AREAS, VAULT_SYSTEMS, VAULT_CHECKS, VAULT_METADATA } from '../../data/vault-overview';
+import PresentationLayout from '../../layouts/PresentationLayout.astro';
+import PaperAction from '../../components/ui/PaperAction.astro';
+import SlideIcon from '../../components/ui/SlideIcon';
+import { VAULT_GUIDES } from '../../data/vault-pages';
+import type { SlideIconId } from '../../data/slide-icons';
 import '../../components/vault/vault-overview.css';
 
-const sections = [
-  ['purpose', 'Why it exists'], ['architecture', 'The architecture'], ['areas', 'Inside the vault'],
-  ['knowledge-graph', 'The knowledge graph'], ['search', 'How search works'],
-  ['safeguards', 'Checks and rules'], ['direction', 'Where it goes next'],
+const sheets = [
+  { href: '/vault/architecture/', label: '01 · source', title: 'Keep the account.', icon: 'files', variant: 'outline' },
+  { href: '/vault/knowledge-graph/', label: '02 · connections', title: 'Find the context.', icon: 'branch', variant: 'signal' },
+  { href: '/vault/search/', label: '03 · recall', title: 'Return to evidence.', icon: 'search', variant: 'paper' },
+] as const;
+const icons: Record<string, SlideIconId> = { architecture: 'database', 'knowledge-graph': 'branch', search: 'search', guardrails: 'shield-check' };
+const benefits = [
+  ['Keep the why', 'Decisions, alternatives and lessons stay beside the work that taught them.'],
+  ['Follow a connection', 'Move from a broad theme to the topic, lesson and source you need.'],
+  ['Read before relying', 'Keep the source and its trust label in view when using the account.'],
 ];
 ---
 
-<NightPage title="The experience vault · Juan Kok" description="A public tour of my experience vault: its purpose, architecture, knowledge graph, search, schemas, rules and safeguards. Includes a synthetic search example; no connection to the private vault.">
-  <link slot="head" rel="canonical" href="https://juansync.dev/vault/" />
-  <meta slot="head" property="og:title" content="The experience vault · Juan Kok" />
-  <meta slot="head" property="og:description" content="A public tour of the purpose, architecture, knowledge graph and search behind my experience vault." />
-  <meta slot="head" property="og:type" content="website" />
-  <meta slot="head" property="og:url" content="https://juansync.dev/vault/" />
-  <NightNav current="vault" />
-  <a class="vault-skip" href="#vault-content">Skip to the vault overview</a>
-  <main id="vault-content" class="vault-page">
-    <header class="vault-hero nt-wrap">
-      <div>
-        <p class="nt-label">// experience vault · public field guide</p>
-        <h1>The work should<br />keep its memory.</h1>
-        <p class="vault-lead">An experience vault for what I build, how I reason and what I learn. Connected so I can find the useful part again, and checked so the record keeps its meaning.</p>
-        <div class="vault-actions">
-          <a class="vault-primary" href="#architecture">Explore the system <span aria-hidden="true">↘</span></a>
-          <a href="#search-example">Try a graph search example <span aria-hidden="true">→</span></a>
-        </div>
-        <p class="vault-boundary">A public explanation of a private system. The diagrams and example are curated for this page. No private notes or live vault connection.</p>
+<PresentationLayout title="The experience vault · Juan Kok" description="A connected memory for what I build, why I chose it and what I learned. Explore the experience vault's purpose, architecture, knowledge graph, search and safeguards." kind="landing">
+  <header id="overview" class="vault-hero nt-wrap" data-presentation-section>
+    <div class="vault-hero-copy">
+      <p class="pr-comment" data-reveal>// the experience vault</p>
+      <h1 class="pr-title" data-reveal>Give experience<br /><span>a way back.</span></h1>
+      <p class="vault-lead pr-body" data-reveal>A private memory of what I build, why I chose it and what I learned—connected so the next question has a place to start.</p>
+      <div class="vault-actions" data-reveal>
+        <PaperAction href="/vault/architecture/">See how it works</PaperAction>
+        <PaperAction href="/vault/search/#search-example" variant="outline">Try the graph</PaperAction>
       </div>
-      <aside class="vault-principle" aria-label="The idea in three steps">
-        <span class="nt-label">// the shape of the idea</span>
-        <ol>
-          <li><span>01 · keep the account</span><strong>What happened, and why?</strong></li>
-          <li><span>02 · connect the context</span><strong>Where does it belong?</strong></li>
-          <li><span>03 · return to the evidence</span><strong>What can I rely on?</strong></li>
-        </ol>
-        <p>A short route in.<br />More depth when the question needs it.</p>
-      </aside>
-    </header>
+      <p class="vault-boundary pr-comment" data-reveal>A public tour with made-up examples. The private vault stays private.</p>
+    </div>
+    <div class="vault-stack-stage" data-reveal>
+      <ol class="vault-stack" aria-label="Three ways into the vault">
+        {sheets.map((sheet, i) => <li class="vault-stack-item" style={`--sheet-index:${i}`}>
+          <PaperAction href={sheet.href} variant={sheet.variant} class="vault-sheet">
+            <span class="vault-sheet-copy"><span class="vault-sheet-meta">{sheet.label}</span><strong>{sheet.title}</strong></span>
+            <SlideIcon slot="icon" id={sheet.icon} tone={sheet.variant === 'paper' ? 'paper' : 'night'} decorative />
+          </PaperAction>
+        </li>)}
+      </ol>
+      <p class="vault-stack-caption pr-comment">// a short way in · depth when you need it</p>
+    </div>
+  </header>
 
-    <nav class="vault-toc nt-wrap" aria-label="On this page">
-      {sections.map(([id, label], i) => <a href={`#${id}`}><span>{String(i + 1).padStart(2, '0')}</span>{label}</a>)}
-    </nav>
+  <nav class="vault-chapters nt-wrap pr-comment" aria-label="The overview">
+    <a href="#overview" data-section-link>01 · the idea</a><a href="#value" data-section-link>02 · the value</a><a href="#explore" data-section-link>03 · go deeper</a><a href="#purpose" data-section-link>04 · the reason</a>
+  </nav>
 
-    <section id="purpose" class="vault-section nt-wrap">
-      <header class="vault-section-head"><p class="nt-label">// 01 · purpose</p><h2>Keep the reasoning<br />behind the result.</h2></header>
-      <div class="vault-prose-grid">
-        <div class="vault-copy">
-          <h3>The problem</h3>
-          <p>Work leaves a scattered record: conversations, changes, experiments and decisions. The result is easy to remember. The reason for it, the dead end that mattered and the check that settled it are easier to lose.</p>
-          <p>When a similar problem comes back, I want to start from that experience. An agent helping me should be able to find it too, without loading the whole history or guessing what I believe.</p>
-        </div>
-        <div class="vault-copy">
-          <h3>The purpose</h3>
-          <p>The vault turns that record into connected, reusable context: what I built, how I approached it, why I chose one path and what the work taught me.</p>
-          <p>A small visible surface can have a lot beneath it. Start with an overview, follow a group, open a topic, then read the work behind it. Each step should earn the next layer of detail.</p>
-        </div>
-      </div>
-      <div class="vault-thesis"><span class="nt-label">// what drives the design</span><p>I want a system I can explain, inspect and correct. The model can help write the account. My own words, the evidence and the review still matter.</p></div>
-    </section>
+  <section id="value" class="vault-section nt-wrap" data-presentation-section>
+    <span data-section-rule aria-hidden="true"></span>
+    <header class="vault-heading" data-reveal><p class="pr-comment">// 02 · useful memory</p><h2 class="pr-title">A record worth<br />returning to.</h2></header>
+    <div class="vault-benefits">{benefits.map(([title, text], i) => <article data-reveal><span class="pr-label">0{i + 1}</span><h3 class="pr-title">{title}</h3><p class="pr-body">{text}</p></article>)}</div>
+    <p class="vault-small-note pr-comment" data-reveal>For me and the agents I work with: bounded context, with a route back to its evidence.</p>
+  </section>
 
-    <section id="architecture" class="vault-section nt-wrap">
-      <header class="vault-section-head"><p class="nt-label">// 02 · architecture</p><h2>From working context<br />to something I can use.</h2><p>Source records, generated pages and authored guidance have different owners. The graph connects them; retrieval brings a bounded part back to a question.</p></header>
-      <Diagram id="vault-architecture" />
-      <p class="vault-download"><a href="/vault/vault-architecture.svg" download>Download the architecture SVG <span aria-hidden="true">↓</span></a></p>
-      <div class="vault-system-register">
-        {VAULT_SYSTEMS.map((group, i) => <details open={i === 0}><summary><span class="vault-system-number">{String(i + 1).padStart(2, '0')}</span><strong>{group.title}</strong><span class="vault-kind">{group.scope}</span></summary><dl>{group.modules.map(([title, text]) => <div><dt>{title}</dt><dd>{text}</dd></div>)}</dl></details>)}
-      </div>
-      <p class="vault-note">These are the system's responsibilities, not a claim that every host or integration is running. The connected navigation and newer maintenance work are built in development and remain under review.</p>
-    </section>
+  <section id="explore" class="vault-section nt-wrap" data-presentation-section>
+    <span data-section-rule aria-hidden="true"></span>
+    <header class="vault-heading" data-reveal><p class="pr-comment">// 03 · open the system</p><h2 class="pr-title">The overview is<br />only the entrance.</h2><p class="pr-body">Choose the part you want to understand. The diagrams, explanations and working example live one level deeper.</p></header>
+    <div class="vault-guide-grid">{VAULT_GUIDES.filter((guide) => guide.slug !== 'purpose').map((guide) => <a class="vault-guide-card" href={`/vault/${guide.slug}/`} data-reveal>
+      <span class="vault-guide-card-top"><span class="pr-comment">{guide.kicker}</span><SlideIcon id={icons[guide.slug]} decorative /></span><h3 class="pr-title">{guide.title}</h3><p class="pr-body">{guide.summary}</p><span class="vault-guide-open pr-label">Read the guide <span aria-hidden="true">↗</span></span>
+    </a>)}</div>
+  </section>
 
-    <section id="areas" class="vault-section nt-wrap">
-      <header class="vault-section-head"><p class="nt-label">// 03 · main areas</p><h2>Different kinds of memory.</h2><p>A source, a lesson and an instruction answer different questions. Keeping those roles clear makes the connections useful.</p></header>
-      <div class="vault-areas">{VAULT_AREAS.map((area) => <article><p class="vault-kind">{area.kind}</p><h3>{area.name}</h3><p>{area.text}</p></article>)}</div>
-    </section>
+  <section id="purpose" class="vault-section vault-reason nt-wrap" data-presentation-section>
+    <span data-section-rule aria-hidden="true"></span>
+    <div class="vault-reason-copy" data-reveal><p class="pr-comment">// 04 · why I’m building it</p><h2 class="pr-title">Let past work help<br />with the next thing.</h2><p class="pr-body">The result is easier to remember than the reasoning behind it. I want to keep both, without making every new question start from the beginning.</p><p class="pr-body">The machine can help write the account. My own words, the evidence and the review still matter.</p><PaperAction href="/vault/purpose/" variant="signal">The thinking behind it</PaperAction></div>
+    <aside class="vault-reason-note" data-reveal><p class="pr-comment">// keep the distinction</p><p class="pr-title">A useful connection opens a source to inspect.</p><p class="pr-body">It gives the next question somewhere to go.</p><a href="/blog/second-brain-from-my-chats/" class="pr-comment">Read the origin story ↗</a></aside>
+  </section>
 
-    <section id="knowledge-graph" class="vault-section nt-wrap">
-      <header class="vault-section-head"><p class="nt-label">// 04 · knowledge graph</p><h2>The connections carry meaning.</h2><p>A knowledge graph describes things, the relationships between them and the context needed to interpret those relationships.</p></header>
-      <div class="vault-definitions">
-        <article><span class="nt-label">node</span><h3>A thing worth naming</h3><p>A topic, project, lesson, source or grouping page. A canonical identity keeps it recognizable when a name changes.</p></article>
-        <article><span class="nt-label">edge</span><h3>A named relationship</h3><p>One page links to another, belongs to a group or is part of a broader theme. A supported semantic edge can say more.</p></article>
-        <article><span class="nt-label">metadata</span><h3>The context around it</h3><p>Type, summary, aliases, labels, source, freshness and trust help a reader decide what to open and how to read it.</p></article>
-      </div>
-      <Diagram id="vault-knowledge-graph" />
-      <p class="vault-download"><a href="/vault/vault-knowledge-graph.svg" download>Download the knowledge graph SVG <span aria-hidden="true">↓</span></a></p>
-      <div class="vault-prose-grid">
-        <div class="vault-copy"><h3>A hierarchy inside a web</h3><p>Grouping pages provide the broad-to-narrow routes. Cross-links connect useful neighbors. A topic can belong to several groups, and a reader can enter at any page.</p><p>Depth belongs to the path. The same lesson might sit near the surface of a project overview and much deeper in a broad engineering theme. The group hierarchy has no parent cycles; ordinary cross-links can form loops.</p></div>
-        <div class="vault-copy"><h3>Resolve identity before joining things</h3><p>A canonical page, known aliases and explicit rename records help different names reach the same subject. When a name could mean several things, the system keeps the candidates visible for review.</p><p>The vault uses a closed edge vocabulary. Structural edges are <code>links_to</code>, <code>member_of</code> and <code>part_of</code>. Semantic kinds include <code>applies_to</code>, <code>supported_by</code>, <code>used_in</code>, <code>contradicted_by</code>, <code>supersedes</code> and <code>inspired_by</code>.</p></div>
-      </div>
-      <p class="vault-note">Having a relationship type available does not assert that relationship. Semantic edges need declared support. Discovered communities are proposals, and the graph's shape alone cannot establish that two claims agree.</p>
-    </section>
-
-    <section id="search" class="vault-section nt-wrap">
-      <header class="vault-section-head"><p class="nt-label">// 05 · retrieval</p><h2>Find a starting point.<br />Then follow the context.</h2><p>Graph search has two jobs: find relevant entry points, then follow useful connections. A graph needs a retrieval policy, just as a set of documents does.</p></header>
-      <Diagram id="vault-search" />
-      <p class="vault-download"><a href="/vault/vault-search.svg" download>Download the search flow SVG <span aria-hidden="true">↓</span></a></p>
-      <div class="vault-prose-grid">
-        <div class="vault-copy"><h3>Find the candidate pages</h3><p>The current vault resolves exact names and aliases, then uses word-based ranking across titles, aliases, summaries, labels, group context and body text. It gives more useful terms and fields more weight. Metadata field names are kept out of body terms.</p><p>Group and theme filters can narrow the search. A grouping page can be a useful result itself: it offers a way into the area before the reader knows the right topic name.</p></div>
-        <div class="vault-copy"><h3>Expand with a reason</h3><p>From an entry point, follow memberships for context, parents for the broader view, linked pages for neighbors and source links for evidence. Backlinks show where a page is used. Relation kinds and a small hop budget keep the exploration bounded.</p><p>Read the original account and its trust label before turning it into an answer. Reaching a source is an access result; deciding whether it supports a claim still takes inspection.</p></div>
-      </div>
-      <div class="vault-thesis"><span class="nt-label">// where an LLM fits</span><p>An LLM can use the selected context and cite what it read. The retrieval described here uses lexical indexing and graph navigation. Vector search and model-generated answers are separate choices; this public example runs entirely in the browser.</p></div>
-      <div id="search-example" class="vault-demo-section"><h3>Try a small, made-up graph</h3><p>Search the example, select a result and follow a connection. Every note below is synthetic.</p><VaultSearchDemo client:visible /></div>
-    </section>
-
-    <section id="safeguards" class="vault-section nt-wrap">
-      <header class="vault-section-head"><p class="nt-label">// 06 · contracts and checks</p><h2>Make the next run ordinary.</h2><p>Useful automation needs clear contracts: which component owns a page, which fields it may write, how a failure behaves and what must pass before an output is used.</p></header>
-      <div class="vault-prose-grid">
-        <div class="vault-copy"><h3>A schema gives a page a shape</h3><p>A type declares the kind of page. A versioned schema lists its required and optional fields. Summaries provide a short way in; aliases capture known alternative names. Registered labels help filtering, and explicit parentage helps navigation.</p><p>Fields vary by page type. Missing facts stay unknown. A schema version validates structure; it does not verify the account's truth or turn a draft into an approved view.</p><h3>Rules make expectations inspectable</h3><p>Separate guidance covers writing, code, diagrams and agent work. A rule should explain its reason and the check or review that holds it. Applying a rule to a task keeps the relevant scope and source version visible.</p></div>
-        <div class="vault-terminal"><div class="vault-terminal-bar"><span class="vault-terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>illustrative note · metadata</span></div><pre><code>{VAULT_METADATA}</code></pre><p>This example is made up. An unreviewed draft remains unreviewed when it is retrieved.</p></div>
-      </div>
-      <dl class="vault-checks">{VAULT_CHECKS.map(([name, text]) => <div><dt>{name}</dt><dd>{text}</dd></div>)}</dl>
-      <div class="vault-prose-grid vault-after-checks"><div class="vault-copy"><h3>Repeatable generation</h3><p>The local workflow rebuilds dependent views, checks whether they agree and repeats within a fixed bound. A settled snapshot produces no further changes. Ownership and source hashes guard writes; staged-bundle checks catch outputs that would leave together in an inconsistent state.</p></div><div class="vault-copy"><h3>Keep uncertainty visible</h3><p>A missing destination becomes review work, with its original reference preserved. A model interpretation stays labeled. A privacy hold keeps uncleared content from normal publication. Checks can stop a bad transfer while human review still owns meaning and public approval.</p></div></div>
-    </section>
-
-    <section id="direction" class="vault-section nt-wrap">
-      <header class="vault-section-head"><p class="nt-label">// 07 · direction</p><h2>A system I can keep improving.</h2></header>
-      <div class="vault-prose-grid"><div class="vault-copy"><h3>What is built</h3><p>Source collection and page generation, a split between authored and generated material, versioned metadata, scoped rules and privacy checks form the foundation. Connected navigation, identity resolution, lexical search, reference maintenance and component diagrams have been implemented, with the newer wiki work under review.</p><p>Code being present is separate from a host running it. This is a curated design overview, not a live status dashboard.</p></div><div class="vault-copy"><h3>What I want to add carefully</h3><p>Cached summaries of discovered themes and cross-project agreement or conflict suggestions are further work. They need bounded inputs, source trails and review before becoming trusted guidance.</p><p>The measure I care about is whether a later question reaches useful, inspectable context. More notes, more links and a larger graph are useful when they improve that outcome.</p></div></div>
-      <div class="vault-ending"><p class="nt-label">// the story behind the system</p><h3>How the vault started</h3><p>The first graph looked busy. Keeping an honest record turned out to be the harder problem.</p><a class="vault-primary" href="/blog/second-brain-from-my-chats/">Read “A second brain built from my chats” <span aria-hidden="true">→</span></a><p class="vault-note">Public overview · November 2026. All example records and diagram subjects on this page are illustrative. The private vault is not published or connected.</p></div>
-    </section>
-  </main>
-  <NightFooter />
-</NightPage>
+  <section id="try-it" class="vault-section vault-ending nt-wrap" data-presentation-section>
+    <span data-section-rule aria-hidden="true"></span>
+    <div data-reveal><p class="pr-comment">// start with a question</p><h2 class="pr-title">Follow one thread.</h2><p class="pr-body">Try a small synthetic graph: find a topic, open its connections and reach a source.</p></div>
+    <div data-reveal><PaperAction href="/vault/search/#search-example">Try the example</PaperAction><p class="vault-boundary pr-comment">No account. No private data connection.</p></div>
+  </section>
+</PresentationLayout>

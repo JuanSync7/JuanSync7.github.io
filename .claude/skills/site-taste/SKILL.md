@@ -22,6 +22,22 @@ options, not taste.
 
 ## Stated
 
+**Presentation pages and readable hierarchy** (6 Nov 2026)
+- A landing page makes a concise, high-level pitch; buttons lead to subpages for the full explanation.
+  Keep the problem, purpose and useful next action clear before the technical detail.
+- Keep the established theme while making presentation pages more minimal, modern and sleek. Use
+  purposeful transitions and section highlights; the user explicitly asked for GSAP or a suitable library.
+- Titles, body text and comment lines must read as distinct levels. Keep comments readable instead of
+  fading them away. The shared presentation roles and their checks hold the implemented contrast policy.
+- Reusable actions may have a paper-written, retro-modern, three-dimensional/isometric feel. Keep depth
+  purposeful, labels clear and focus/pressed/disabled states real. This is a scoped update to the older
+  flat-only UI convention, not permission to fill every page with shadows or motion.
+
+For new system presentation pages, start from `PresentationLayout.astro` and `PaperAction.astro`.
+Use `/design-system/#paper-actions` and the landing-page recipe there. Run the presentation source,
+built-page and browser checks. Retrieve applicable writing and organization guidance through the
+user's task briefing; private policy records stay outside the website build.
+
 **The reference.** "My site, juansync.dev, is the reference for my taste." (3 Oct 2026)
 "Frontend design needs taste, which AI lacks. I set the direction and the templates; AI
 implements." The direction is his; propose, don't impose.

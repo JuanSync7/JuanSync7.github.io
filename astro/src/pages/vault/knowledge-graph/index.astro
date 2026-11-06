@@ -1,0 +1,43 @@
+---
+import VaultGuide from '../../../layouts/VaultGuide.astro';
+import Diagram from '../../../components/learn/Diagram.astro';
+---
+
+<VaultGuide slug="knowledge-graph" intro="A knowledge graph names the things worth keeping, the relationships between them and the context needed to read those relationships.">
+  <section data-presentation-section id="parts">
+    <p class="pr-comment">// three parts</p>
+    <h2>The connections carry meaning.</h2>
+    <dl class="vg-definitions">
+      <div><dt>Nodes: things worth naming</dt><dd>A topic, project, lesson, source or grouping page. A canonical identity keeps a subject recognizable when its display name changes.</dd></div>
+      <div><dt>Edges: named relationships</dt><dd>One page links to another, belongs to a group or is part of a broader theme. An explicitly supported semantic relationship can say more.</dd></div>
+      <div><dt>Metadata: context around a record</dt><dd>Type, summary, aliases, labels, source, freshness and trust help a reader decide what to open and how to interpret it.</dd></div>
+    </dl>
+    <Diagram id="vault-knowledge-graph" />
+    <p class="vg-download"><a href="/vault/vault-knowledge-graph.svg" download>Download the knowledge graph SVG ↓</a></p>
+  </section>
+  <section data-presentation-section id="hierarchy">
+    <p class="pr-comment">// progressive discovery</p>
+    <h2>A hierarchy inside a web.</h2>
+    <p>Grouping pages provide broad-to-narrow routes. Cross-links connect useful neighbors. A topic can belong to several groups, and a reader can enter at any page.</p>
+    <p>Depth belongs to the path. The same lesson might sit near the surface of a project overview and deeper in a broad engineering theme. There is no single reading level permanently assigned to every page.</p>
+    <p>The group hierarchy has no parent cycles. Ordinary cross-links can form loops, so navigation uses deliberate routes and bounded exploration.</p>
+  </section>
+  <section data-presentation-section id="identity">
+    <p class="pr-comment">// entity resolution</p>
+    <h2>Resolve identity before joining things.</h2>
+    <p>A canonical page is the chosen home for a subject. Known aliases point to that identity, and explicit rename records preserve it when a path changes. A similar-looking name alone does not justify merging records.</p>
+    <p>When a name could mean several things, the candidates stay visible for review. Missing or ambiguous references retain their original query and a route into a review record. That route makes the gap inspectable; it does not invent the missing knowledge.</p>
+  </section>
+  <section data-presentation-section id="relationships">
+    <p class="pr-comment">// closed relationship vocabulary</p>
+    <h2>Say which connection you mean.</h2>
+    <dl class="vg-definitions">
+      <div><dt><code>links_to</code></dt><dd>A page has an ordinary link to another page.</dd></div>
+      <div><dt><code>member_of</code> and <code>part_of</code></dt><dd>A record belongs to a group, or a group/page sits under a broader structural parent.</dd></div>
+      <div><dt><code>applies_to</code>, <code>supported_by</code> and <code>used_in</code></dt><dd>Declared semantic connections can identify relevant context, supporting evidence or a place an idea was used.</dd></div>
+      <div><dt><code>contradicted_by</code>, <code>supersedes</code> and <code>inspired_by</code></dt><dd>Other declared connections can preserve contrary evidence, replacement or an originating influence.</dd></div>
+    </dl>
+    <p>Having a relationship type available does not assert that relationship. Semantic edges need declared support. Communities discovered from graph structure remain proposals until a separate decision adopts them.</p>
+    <p><a href="/vault/search/">Follow a question through the search process →</a></p>
+  </section>
+</VaultGuide>

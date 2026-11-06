@@ -4,6 +4,7 @@ import NightPage from '../layouts/NightPage.astro';
 import NightNav from '../components/layout/NightNav.astro';
 import NightFooter from '../components/layout/NightFooter.astro';
 import SectionHead from '../components/ui/SectionHead.astro';
+import PaperAction from '../components/ui/PaperAction.astro';
 import Monogram from '../components/ui/Monogram.astro';
 import FigureCanvas from '../components/ui/FigureCanvas';
 import HardwareIcon from '../components/ui/HardwareIcon';
@@ -14,11 +15,12 @@ import { CATEGORY_LABEL } from '../data/writing';
 import CodeExample from '../components/design-system/CodeExample.astro';
 import SourceFiles from '../components/design-system/SourceFiles.astro';
 import LegacyGallery from '../components/design-system/LegacyGallery.astro';
-import { tokens, tokenFiles, colorGroups, source, pageRecipe, readingRecipe, figureRecipe, trackerRecipe } from '../components/design-system/reference';
+import { tokens, tokenFiles as foundationTokenFiles, colorGroups, source, pageRecipe, readingRecipe, figureRecipe, trackerRecipe } from '../components/design-system/reference';
 import '../styles/design-system.css';
 import '../styles/night-prose.css';
 import '../styles/learn-paper.css';
 
+const tokenFiles = [...foundationTokenFiles, 'presentation', 'buttons'];
 const colors = tokens('colors');
 const sizes = tokens('typography').filter((t) => t.name.startsWith('--nt-fs'));
 const sections = [ ['overview', 'Overview'], ['foundations', 'Foundations'], ['type', 'Typography'], ['layout', 'Layout & motion'], ['patterns', 'Page patterns'], ['components', 'Components'], ['legacy', 'Legacy library'] ];
@@ -30,6 +32,19 @@ const pages = [
   { name: 'Lab', href: '/lab/', path: 'pages/lab/index.astro', kind: 'Explore & reuse', note: 'Seeded figure templates and an exportable hardware icon kit.' },
   { name: 'Anatomy', href: '/anatomy/chip-package/', path: 'pages/anatomy/chip-package.astro', kind: 'Inspect a system', note: 'Step controls and selectable parts beside an explanatory figure.' },
 ];
+const landingRecipe = `---
+import PresentationLayout from '../layouts/PresentationLayout.astro';
+import PaperAction from '../components/ui/PaperAction.astro';
+---
+<PresentationLayout kind="landing" title="A useful promise · Juan Kok" description="What this system helps someone do.">
+  <header class="nt-wrap">
+    <p class="pr-comment">// a short introduction</p>
+    <h1 class="pr-title">A clear outcome.</h1>
+    <p class="pr-body">One paragraph explaining why it is useful.</p>
+    <PaperAction href="/vault/architecture/">Explore the architecture</PaperAction>
+  </header>
+  <!-- Keep the overview concise. Put implementation and evidence in linked guides. -->
+</PresentationLayout>`;
 const entries = (await getCollection('blog')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime()).slice(0, 2);
 const posts: PostSummary[] = entries.map((e) => ({ slug: e.slug, title: e.data.title, excerpt: e.data.excerpt, category: e.data.category, date: e.data.date.toISOString().slice(0, 10), read: e.data.readTime, cover: e.data.cover ?? null, href: e.data.externalUrl ?? `/blog/${e.slug}` }));
 const postRecipe = `---\nimport PostGrid from '../components/writing/PostGrid';\nimport { CATEGORY_LABEL } from '../data/writing';\nconst posts = ${JSON.stringify(posts, null, 2)};\n---\n<PostGrid posts={posts} labels={CATEGORY_LABEL} client:visible />`;
@@ -72,6 +87,14 @@ const postRecipe = `---\nimport PostGrid from '../components/writing/PostGrid';\
         <section id="type" data-ds-section class="ds-section">
           <SectionHead label="// 03 · typography" title="Three voices. One hierarchy." lead="Space Grotesk sets the direction. Geist does the reading. JetBrains Mono carries labels, navigation and code." />
           <div class="ds-fonts">{[['Space Grotesk', '--nt-display', 'Display / 500–600', 'A system worth understanding.'], ['Geist', '--nt-sans', 'Reading / 400–600', 'Clear words, room to think.'], ['JetBrains Mono', '--nt-mono', 'Labels & code / 400–700', '// evidence → understanding']].map(([name, token, role, text]) => <article class="ds-font"><span class="ds-eyebrow">{role}</span><h3>{name}</h3><p style={`font-family: var(${token})`}>{text}</p><button class="ds-token-button" type="button" data-copy-token={`var(${token})`}>{token} <span aria-hidden="true">↗</span></button></article>)}</div>
+          <article id="presentation-hierarchy" class="ds-hierarchy" aria-label="Presentation text hierarchy">
+            <span class="ds-eyebrow">Title / body / comment · three explicit roles</span>
+            <h3 class="ds-pr-title" data-text-role="title">The work keeps its meaning.</h3>
+            <p class="ds-pr-body" data-text-role="body">Readable prose carries the explanation. Headings stay brighter and stronger; comments stay quieter without disappearing.</p>
+            <p class="ds-pr-comment" data-text-role="comment">// November 2026 · a concise public overview</p>
+            <div class="ds-token-list">{tokens('presentation').filter((t) => ['--pr-title', '--pr-body', '--pr-comment', '--pr-label'].includes(t.name)).map((t) => <button type="button" data-copy-token={`var(${t.name})`}><code>{t.name}</code><span>{t.value}</span><span aria-hidden="true">↗</span></button>)}</div>
+          </article>
+          <p class="ds-note">New presentation pages use distinct title, body and comment roles. Background contrast and separation between roles are checked by the presentation contract. A quiet comment still has readable contrast; a gradient does not carry essential text.</p>
           <details class="ds-disclosure"><summary>Type scale · {sizes.length} sizes</summary><div class="ds-type-scale">{sizes.map((t) => <div><button type="button" class="ds-token-button" data-copy-token={`var(${t.name})`}>{t.name}</button><span class="ds-token-value">{t.value}</span><p style={`font-size: var(${t.name}); font-family: var(--nt-display); line-height: var(--nt-lh-heading)`}>Form follows understanding.</p></div>)}</div></details>
           <p class="ds-note">Base text: 16px at 1.6 line height; article prose: 17px. Introductory text uses a 640px measure; article bodies follow the page container. Headings use tighter line height and tracking. The full file also retains the older Special Elite and Caveat stacks.</p>
           <CodeExample title="typography.css · stacks, scale & rhythm" code={source('styles/tokens/typography.css')} />
@@ -84,7 +107,7 @@ const postRecipe = `---\nimport PostGrid from '../components/writing/PostGrid';\
           <div class="ds-radii">{tokens('spacing').filter((t) => t.name.startsWith('--hf-radius')).map((t) => <button type="button" data-copy-token={`var(${t.name})`} style={`border-radius: var(${t.name})`}>{t.name.replace('--hf-radius-', '')}<small>{t.value}</small></button>)}</div>
           <div class="ds-callout"><span class="nt-label">Movement</span><p>NightPage uses Astro’s router. Pages crossfade; the navigation holds its position; matching post covers travel between views. The shared duration is <code>--nt-dur-morph</code> (460ms). The easing is <code>--nt-ease-out</code>. No scroll hijacking.</p></div>
           {tokenFiles.filter((file) => !['colors', 'typography'].includes(file)).map((file) => <CodeExample title={`${file}.css · all definitions`} code={source(`styles/tokens/${file}.css`)} />)}
-          <details class="ds-disclosure"><summary>Complete layout, effect & motion token index</summary><div class="ds-token-list">{['spacing', 'gradients', 'motion'].flatMap((file) => tokens(file)).map((t) => <button type="button" data-copy-token={`var(${t.name})`}><code>{t.name}</code><span>{t.value}</span><span aria-hidden="true">↗</span></button>)}</div></details>
+          <details class="ds-disclosure"><summary>Complete layout, effect & motion token index</summary><div class="ds-token-list">{['spacing', 'gradients', 'motion', 'presentation', 'buttons'].flatMap((file) => tokens(file)).map((t) => <button type="button" data-copy-token={`var(${t.name})`}><code>{t.name}</code><span>{t.value}</span><span aria-hidden="true">↗</span></button>)}</div></details>
         </section>
 
         <section id="patterns" data-ds-section class="ds-section">
@@ -93,12 +116,20 @@ const postRecipe = `---\nimport PostGrid from '../components/writing/PostGrid';\
           <article class="ds-pattern"><div class="ds-pattern-title"><span class="ds-number">02</span><div><h3>The reading page</h3><p>Night chrome around a restrained article. Learn bodies become cream paper for light-mode readers; dark-mode readers keep the night ground. Code stays in a dark terminal in both.</p></div></div><div class="ds-reading-pair"><div class="ds-reading-sample"><span class="ds-eyebrow">Night / dark preference</span><h3>Evidence before confidence.</h3><p>Readable prose, quiet lines and a single highlight.</p></div><div class="ds-reading-sample ds-paper-sample"><span class="ds-eyebrow">Paper / light preference</span><h3>Evidence before confidence.</h3><p>The same hierarchy, on warm paper with darker ink.</p></div></div><CodeExample title="Reading body · usage" code={readingRecipe} /><SourceFiles paths={['styles/night-prose.css','styles/learn-paper.css']} /></article>
           <article class="ds-pattern"><div class="ds-pattern-title"><span class="ds-number">03</span><div><h3>The tracker</h3><p>A shared navigation row above a flush-left version-history rail and centered release details. Engines, frontier models and silicon use the same shell; each supplies its own content grid.</p></div></div><CodeExample title="Tracker · starter.astro" code={trackerRecipe} /><SourceFiles paths={['layouts/TrackerLayout.astro','components/trackers/_chrome.css','components/trackers/tracker-night.css']} /><a class="ds-text-link" href="/trackers/">See the trackers →</a></article>
           <article class="ds-pattern"><div class="ds-pattern-title"><span class="ds-number">04</span><div><h3>The interactive explorer</h3><p>Lab pairs figure templates with seeds and a hardware icon kit with export controls. Anatomy pairs a figure with step navigation and readable part descriptions. Keep labels and controls in the DOM; mount the drawing with FigureCanvas.</p></div></div><div class="ds-actions"><a class="ds-text-link" href="/lab/">Explore the lab →</a><a class="ds-text-link" href="/lab/icon-kit/">Hardware atlas →</a><a class="ds-text-link" href="/anatomy/chip-package/">Inspect a chip package →</a></div><SourceFiles paths={['pages/lab/index.astro','pages/lab/icon-kit.astro','pages/anatomy/chip-package.astro']} /></article>
+          <article class="ds-pattern"><div class="ds-pattern-title"><span class="ds-number">05</span><div><h3>The presentation page</h3><p>Lead with an outcome, a clear promise and a useful next step. Keep the landing page at a high level; move architecture, definitions, examples and checks into linked guides.</p></div></div><div class="ds-stage ds-landing-preview"><p class="ds-pr-comment">// the experience vault</p><h3 class="ds-pr-title">Keep the useful part.</h3><p class="ds-pr-body">One small introduction; deeper context when a question needs it.</p><div class="ds-actions"><PaperAction href="/vault/" variant="paper">See the landing page</PaperAction><PaperAction href="/vault/architecture/" variant="signal">Read a guide</PaperAction></div></div><CodeExample title="Presentation page · starter.astro" code={landingRecipe} /><SourceFiles paths={['layouts/PresentationLayout.astro','styles/tokens/presentation.css','components/ui/PaperAction.astro']} /><p class="ds-note">Use the same text roles on the guides. Motion marks section continuity; reduced motion and a missing script keep all copy readable.</p></article>
         </section>
 
         <section id="components" data-ds-section class="ds-section">
           <SectionHead label="// 06 · shared components" title="Real components. Real examples." lead="These previews render the production components. Usage snippets assume the Astro + React project and imports relative to src/pages/. Source is included for inspection and reuse." />
           <article class="ds-component"><div class="ds-component-head"><h3>SectionHead</h3><span class="ds-badge">Astro · static</span></div><p>The mono label, two-tone heading and lead used across night pages. Use as="h1" once for the page title.</p><div class="ds-stage"><SectionHead label="// a shared pattern" title="Make it understandable." accent="Then make it work." lead="A familiar opening, wherever you are on the site." /></div><CodeExample title="SectionHead · usage" code={`---
 import SectionHead from '../components/ui/SectionHead.astro';\n---\n<SectionHead label="// a shared pattern" title="Make it understandable." accent="Then make it work." lead="A familiar opening." />`} /><SourceFiles paths={['components/ui/SectionHead.astro']} /></article>
+          <article id="paper-actions" class="ds-component"><div class="ds-component-head"><h3>PaperAction</h3><span class="ds-badge">Astro · semantic link or button</span></div><p>A printed cream face, a shallow diagonal edge and a restrained press. Signal and outline variants stay on the night ground. Essential labels have solid ink; depth is decorative.</p><div class="ds-stage"><div class="ds-actions"><PaperAction href="/vault/architecture/" variant="paper">Explore the system</PaperAction><PaperAction href="/vault/search/" variant="signal">Try the example</PaperAction><PaperAction href="/vault/guardrails/" variant="outline">Read the checks</PaperAction><PaperAction popovertarget="paper-action-note" variant="paper">Open a note<span slot="icon">+</span></PaperAction><PaperAction disabled variant="outline">Unavailable</PaperAction></div></div><div id="paper-action-note" popover class="ds-paper-note"><p class="ds-pr-comment">// a native button action</p><h3 class="ds-pr-title">A real control.</h3><p class="ds-pr-body">This button opens a native popover. Links navigate; disabled buttons remain disabled.</p><PaperAction popovertarget="paper-action-note" popovertargetaction="hide" variant="signal">Close note</PaperAction></div><CodeExample title="PaperAction · links and controls" code={`---
+import PaperAction from '../components/ui/PaperAction.astro';
+---
+<PaperAction href="/vault/architecture/" variant="paper">Explore the system</PaperAction>
+<PaperAction href="/vault/search/" variant="signal">Try the example</PaperAction>
+<PaperAction href="/vault/guardrails/" variant="outline">Read the checks</PaperAction>
+<PaperAction type="button" disabled>Unavailable</PaperAction>`} /><SourceFiles paths={['components/ui/PaperAction.astro','components/ui/paper-action.css','styles/tokens/buttons.css']} /><p class="ds-note">Minimum target height follows --nt-hit. Keyboard focus has its own visible ring; hover and press transforms stop under reduced motion. Use links for destinations and buttons for actions. Do not make disabled links imitate disabled controls.</p></article>
           <article class="ds-component"><div class="ds-component-head"><h3>Monogram</h3><span class="ds-badge">Astro · inline SVG</span></div><p>The SJ mark: two nets between one pair of pins. Size its container. Intro modes: session, always or none.</p><div class="ds-stage ds-monogram"><Monogram intro="none" /></div><CodeExample title="Monogram · usage" code={`---
 import Monogram from '../components/ui/Monogram.astro';\n---\n<div style="height: var(--hf-space-16)"><Monogram intro="session" /></div>`} /><SourceFiles paths={['components/ui/Monogram.astro']} /></article>
           <article class="ds-component"><div class="ds-component-head"><h3>FigureCanvas</h3><span class="ds-badge">React · client:visible</span></div><p>One figure registry for the home city, post covers, lab and anatomy. The wrapper sets the size; the figure supplies its accessible description. Public examples keep the audit readout hidden.</p><div class="ds-figure"><FigureCanvas id="system-stack" client:visible /></div><CodeExample title="FigureCanvas · usage" code={figureRecipe} /><SourceFiles paths={['components/ui/FigureCanvas.tsx','components/ui/figure-canvas.css']} /><p class="ds-note">Dependencies: hooks/useFigureLoop.ts and the figures/ registry and kit. Renderer source alone does not include a drawing. <a href="/lab/">Find figures in the lab →</a></p></article>
@@ -128,3 +159,51 @@ import SlideIcon from '../components/ui/SlideIcon';
   <NightFooter />
   <script>import '../components/design-system/design-system';</script>
 </NightPage>
+
+
+<style>
+  .ds-hierarchy,
+  .ds-landing-preview {
+    display: grid;
+    gap: var(--hf-space-5);
+    padding: var(--hf-space-8);
+    border: 1px solid var(--nt-line-2);
+    margin-top: var(--hf-space-6);
+  }
+  .ds-page .ds-pr-title {
+    margin: 0;
+    color: var(--pr-title);
+    font-family: var(--pr-title-font);
+    font-size: var(--nt-fs-h3);
+    font-weight: var(--pr-title-weight);
+  }
+  .ds-page .ds-pr-body {
+    margin: 0;
+    color: var(--pr-body);
+    font-family: var(--pr-body-font);
+    font-size: var(--pr-body-size);
+    font-weight: var(--pr-body-weight);
+  }
+  .ds-page .ds-pr-comment {
+    margin: 0;
+    color: var(--pr-comment);
+    font-family: var(--pr-comment-font);
+    font-size: var(--pr-comment-size);
+    font-weight: var(--pr-comment-weight);
+    letter-spacing: var(--pr-comment-tracking);
+  }
+  .ds-paper-note {
+    max-width: var(--nt-measure);
+    margin: auto;
+    padding: var(--hf-space-8);
+    border: 1px solid var(--nt-line-4);
+    background: var(--nt-panel);
+    color: var(--pr-body);
+  }
+  .ds-paper-note > * + * {
+    margin-top: var(--hf-space-5);
+  }
+  .ds-paper-note::backdrop {
+    background: var(--nt-scrim-strong);
+  }
+</style>

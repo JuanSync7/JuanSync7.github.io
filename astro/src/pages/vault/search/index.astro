@@ -1,0 +1,34 @@
+---
+import VaultGuide from '../../../layouts/VaultGuide.astro';
+import Diagram from '../../../components/learn/Diagram.astro';
+import VaultSearchDemo from '../../../components/vault/VaultSearchDemo';
+---
+
+<VaultGuide slug="search" intro="Find a useful starting point, then follow the context and evidence around it. Each step has a job; the graph does not answer a question by itself.">
+  <section data-presentation-section id="retrieval-flow">
+    <p class="pr-comment">// retrieval flow</p>
+    <h2>Find an entry point. Then inspect its connections.</h2>
+    <Diagram id="vault-search" />
+    <p class="vg-download"><a href="/vault/vault-search.svg" download>Download the search flow SVG ↓</a></p>
+    <p>A graph needs a retrieval policy. Candidate search finds places to begin; graph navigation exposes useful context around them. The final step is to inspect the source and choose what the task actually needs.</p>
+  </section>
+  <section data-presentation-section id="candidates">
+    <p class="pr-comment">// candidate pages</p>
+    <h2>Resolve names and rank useful words.</h2>
+    <p>The current vault resolves exact names and known aliases, then uses word-based ranking across titles, aliases, summaries, labels, group context and body text. More informative terms and fields receive more weight. Metadata field names stay out of body terms.</p>
+    <p>Group and theme filters can narrow the search. A grouping page can itself be a useful result: it offers an entry into an area before the reader knows the right topic name.</p>
+  </section>
+  <section data-presentation-section id="connections">
+    <p class="pr-comment">// local exploration</p>
+    <h2>Expand with a reason.</h2>
+    <p>Follow memberships for context, parents for the broader view, linked pages for neighbors and source links for evidence. Backlinks show where a page is used. Relation kinds and a small hop budget keep exploration bounded.</p>
+    <p>Read the original account and its trust label before turning it into an answer. Reaching a source is an access result; deciding whether it supports a claim still takes inspection.</p>
+    <p>An LLM can use the selected context and cite what it read. The retrieval described here uses lexical indexing and graph navigation. Vector search and model-generated answers are separate choices.</p>
+  </section>
+  <section data-presentation-section id="search-example">
+    <p class="pr-comment">// a synthetic example</p>
+    <h2>Try a small, made-up graph.</h2>
+    <p>Search the example, select a result and follow a connection. Every record below is synthetic. The demonstration runs entirely in the browser and has no connection to the actual vault.</p>
+    <VaultSearchDemo client:visible />
+  </section>
+</VaultGuide>

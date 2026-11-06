@@ -1,0 +1,39 @@
+/* Three readable text roles. Separation is checked independently from background contrast. */
+:root {
+  --pr-title: var(--nt-ink-strong);
+  --pr-body: var(--nt-ink-2);
+  --pr-comment: var(--nt-ink-muted);
+  --pr-label: var(--nt-signal);
+  --pr-title-font: var(--nt-display);
+  --pr-body-font: var(--nt-sans);
+  --pr-comment-font: var(--nt-mono);
+  --pr-title-size: var(--nt-fs-h1);
+  --pr-hero-title-size: clamp(42px, 5vw, 72px);
+  --pr-section-size: var(--nt-fs-h2);
+  --pr-body-size: var(--nt-fs-body);
+  --pr-lead-size: var(--nt-fs-intro);
+  --pr-comment-size: var(--nt-fs-caption);
+  --pr-title-weight: 600;
+  --pr-body-weight: 400;
+  --pr-comment-weight: 400;
+  --pr-title-tracking: var(--nt-tracking-display);
+  --pr-comment-tracking: var(--hf-tracking-wide);
+  --pr-rule: var(--nt-line-2);
+  --pr-reveal-distance: 20px;
+  --pr-reveal-duration: 650ms;
+  --pr-reveal-stagger: 80ms;
+  --pr-reveal-start: 88%;
+  --pr-active-point: 35%;
+  --pr-motion-ease: var(--nt-ease-out);
+  --pr-deck-height: 480px;
+  --pr-deck-width: 320px;
+  --pr-deck-card-height: 148px;
+  --pr-deck-title-size: var(--nt-fs-h3);
+  --pr-deck-step: 144px;
+  --pr-deck-tilt: -12deg;
+  --pr-deck-depth: 12px;
+  --pr-deck-perspective: 1200px;
+  --pr-deck-rotate-x: 14deg;
+  --pr-deck-rotate-y: -20deg;
+  --pr-section-rule-height: 2px;
+}
