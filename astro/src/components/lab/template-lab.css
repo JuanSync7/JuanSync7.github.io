@@ -181,3 +181,7 @@
 .voxel-controls [aria-pressed='true'] {
   color: var(--nt-signal);
 }
+
+.voxel-stage { touch-action: none; cursor: grab; }
+.voxel-stage:active { cursor: grabbing; }
+.voxel-stage:focus-visible { outline: 1px solid var(--nt-signal); outline-offset: var(--hf-space-2); }

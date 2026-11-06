@@ -42,8 +42,9 @@
     "presentation:selftest": "node scripts/presentation/check.mjs --selftest",
     "presentation:page": "node scripts/presentation/check.mjs --built",
     "presentation:browser": "node scripts/presentation/browser-check.mjs",
-    "voxel:check": "node scripts/voxel/check.mjs && node scripts/voxel/motion.mjs",
-    "voxel:browser": "node scripts/voxel/browser.mjs"
+    "voxel:check": "node scripts/voxel/agent.mjs check",
+    "voxel:browser": "node scripts/voxel/browser.mjs",
+    "voxel:agent": "node scripts/voxel/agent.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",

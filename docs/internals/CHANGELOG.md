@@ -2,6 +2,14 @@
 
 ## 2026-11-06
 
+Voxel worlds now use independent seed streams for terrain, local biome transitions, variable
+component recipes, constrained placement, boats and ambience. Fourteen biomes span nine landforms,
+including mainland cuts, valleys, dunes, Alps and cutaway caves. Shelters and boats can be absent;
+accepted objects have measured clearance, support, headroom and reserved access. Drag, touch and
+keyboard camera controls retain their pose; sunlight controls and a pausable orbit complement
+exposed-face geometry and fitted framing. One voxel agent operates seven playbooks, with replay,
+negative fixtures, diversity checks and a hashed private-vault mirror for future feedback.
+
 The vault introduction now leads with its promise and benefits, with five focused guides for the
 details. Functional paper links add restrained depth; shared paper, signal and outline buttons
 provide keyboard, disabled and press states. Scoped GSAP motion highlights sections and reveals

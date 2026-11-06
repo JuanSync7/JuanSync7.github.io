@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import FigureCanvas from '../ui/FigureCanvas';
 import VoxelWorldControls from './VoxelWorldControls';
+import VoxelStage from './VoxelStage';
+import { DEFAULT_VIEW } from './voxel-view';
+import type { Biome, Landform } from '../../figures/kit/voxel-world/types';
 import { loadTemplate } from '../../figures/registry';
 import type { Template } from '../../figures/defineTemplate';
 import './template-lab.css';
@@ -34,7 +37,7 @@ export default function TemplateLab({ template }: Props) {
   const [seed, setSeed] = useState<number | null>(null);
   const [draft, setDraft] = useState('');
   const [copied, setCopied] = useState(false);
-  const [view, setView] = useState({ turn: 0, zoom: 1, orbit: true, weather: true });
+  const [view, setView] = useState({ ...DEFAULT_VIEW });
   const voxel = template === 'voxel-scene';
 
   useEffect(() => {
@@ -65,7 +68,7 @@ export default function TemplateLab({ template }: Props) {
     setDraft(String(next));
   };
   // The next seeds, stopping at the last one rather than repeating it.
-  const ahead = Array.from({ length: NEIGHBOURS }, (_, k) => seed + 1 + k).filter((s) => s <= MAX_SEED);
+  const ahead = Array.from({ length: voxel ? 4 : NEIGHBOURS }, (_, k) => seed + 1 + k).filter((s) => s <= MAX_SEED);
   const id = `${template}~${seed}`;
   const inst = tpl.instance(seed);
   const copy = (): void => {
@@ -75,20 +78,19 @@ export default function TemplateLab({ template }: Props) {
       .catch(() => setCopied(false));
   };
 
-  const biome = (wanted: string): void => {
+  const generate = (wanted: Biome, landform?: Landform): void => {
     const start = roll();
     for (let i = 0; i < 10000; i++) {
       const candidate = (start + i) % (MAX_SEED + 1);
-      if (tpl.instance(candidate).variant === `${wanted} island`) { go(candidate); return; }
+      const variant = tpl.instance(candidate).variant;
+      if (variant.startsWith(`${wanted} · `) && (!landform || variant.endsWith(` · ${landform}`))) { go(candidate); return; }
     }
   };
 
   return (
     <div className={`lab${voxel ? ' lab-voxel' : ''}`}>
 
-      <div className="lab-main" style={{ aspectRatio: String(tpl.aspect) }}>
-        <FigureCanvas key={id} id={id} data={voxel ? view : undefined} />
-      </div>
+      {voxel ? <VoxelStage id={id} aspect={tpl.aspect} view={view} onView={setView} /> : <div className="lab-main" style={{ aspectRatio: String(tpl.aspect) }}><FigureCanvas key={id} id={id} /></div>}
       <div className="lab-bar">
         <div className="lab-id" aria-live="polite">
           <span className="lab-variant">{inst.variant}</span>
@@ -118,7 +120,7 @@ export default function TemplateLab({ template }: Props) {
           </button>
         </form>
       </div>
-      {voxel && <VoxelWorldControls view={view} onView={setView} onBiome={biome} />}
+      {voxel && <VoxelWorldControls view={view} biome={inst.variant.split(' · ')[0] as Biome} onView={setView} onGenerate={generate} />}
       <p className="lab-alt" aria-live="polite">
         {inst.alt}
       </p>

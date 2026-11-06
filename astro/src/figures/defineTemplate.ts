@@ -41,6 +41,8 @@ export interface TemplateSpec<P, S, T = S> extends Omit<FigureMeta, 'group' | 's
 export interface Instance extends Figure {
   template: string;
   variant: string;
+  /** Seeded grammar output for inspectable/replayable template diagnostics. */
+  params: unknown;
 }
 
 export interface Template extends Omit<FigureMeta, 'group' | 'seed' | 'alt'> {
@@ -84,7 +86,7 @@ export function defineTemplate<P, S, T = S>(spec: TemplateSpec<P, S, T>): Templa
             setup: (env) => setup({ ...env, params }),
             draw: (frame) => draw({ ...frame, params }),
           });
-      return { ...figure, template: spec.id, variant };
+      return { ...figure, template: spec.id, variant, params };
     },
   };
 }

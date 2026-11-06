@@ -1,6 +1,9 @@
+import { viewOf } from './view';
+import { Vector3 } from 'three';
 import type { TemplateFrame } from '../../defineTemplate';
 import { hexOf, mix } from '../ink';
-import { voxel, type Material, type World, type WorldSpec } from './types';
+import { worldBounds } from './camera';
+import { cell, voxel, type Material, type World, type WorldSpec } from './types';
 
 type Point = [number, number, number];
 interface Face {
@@ -76,7 +79,19 @@ function worldFaces(world: World): Face[] {
     for (const { normal, points } of definitions) {
       const [nx, ny, nz] = normal;
 
-      if (terrain && occupied.has(voxel(x + nx, y + ny, z + nz))) continue;
+      if (terrain) {
+        const tx = x + nx,
+          ty = y + ny,
+          tz = z + nz;
+        const floor = world.heights.get(cell(tx, tz)) ?? world.seabed.get(cell(tx, tz));
+        const roof = world.roofs.get(cell(tx, tz));
+        if (
+          occupied.has(voxel(tx, ty, tz)) ||
+          (floor !== undefined && ty >= -6 && ty <= floor) ||
+          (roof !== undefined && ty >= roof && ty < roof + 3)
+        )
+          continue;
+      }
       faces.push({
         normal,
         material,
@@ -112,24 +127,41 @@ export function drawWorldFallback({
   unseen,
 }: TemplateFrame<WorldSpec, World>): string {
   if (unseen) return `${params.biome} · ${state.props.length} objects`;
-  const controls = typeof data === 'object' && data !== null ? data : {};
-  const turn = 'turn' in controls && typeof controls.turn === 'number' ? controls.turn : 0;
-  const zoom = 'zoom' in controls && typeof controls.zoom === 'number' ? controls.zoom : 1;
-  const orbit = !('orbit' in controls) || controls.orbit !== false;
-  const angle = params.turn + turn + (orbit ? Math.sin(t * 0.07) * 0.12 : 0) + (pointer.x - 0.5) * hover * 0.3;
-  const c = Math.min(w / ((params.radius + 9) * 3.6), h / ((params.radius + 9) * 2.9)) * zoom;
-  const cs = Math.cos(angle),
-    sn = Math.sin(angle);
-  const rotate = ([x, y, z]: Point): Point => [x * cs + z * sn, y, -x * sn + z * cs];
-  const iso = ([x, y, z]: Point): [number, number] => [w / 2 + (x - z) * c, h * 0.66 + (x + z) * c * 0.5 - y * c];
+  const view = viewOf(data),
+    bounds = worldBounds(state),
+    center = bounds.getCenter(new Vector3());
+  const yaw = Math.PI / 4 + params.turn + view.turn + (view.orbit ? t * 0.045 : 0) + (pointer.x - 0.5) * hover * 0.08;
+  const sy = Math.sin(yaw),
+    cy = Math.cos(yaw),
+    sp = Math.sin(Math.max(0.28, Math.min(1.2, view.pitch + params.cameraPitch - 0.67))),
+    cp = Math.cos(Math.max(0.28, Math.min(1.2, view.pitch + params.cameraPitch - 0.67)));
+  const project = ([x, y, z]: Point): [number, number] => [
+    (x - center.x) * cy - (z - center.z) * sy,
+    (x - center.x) * sy * sp - (y - center.y) * cp + (z - center.z) * cy * sp,
+  ];
+  let maxX = 1,
+    maxY = 1;
+  for (const x of [bounds.min.x, bounds.max.x])
+    for (const y of [bounds.min.y, bounds.max.y])
+      for (const z of [bounds.min.z, bounds.max.z]) {
+        const [px, py] = project([x, y, z]);
+        maxX = Math.max(maxX, Math.abs(px));
+        maxY = Math.max(maxY, Math.abs(py));
+      }
+  const scale = Math.min((w * 0.43) / maxX, (h * 0.43) / maxY) * view.zoom;
+  const iso = (p: Point): [number, number] => {
+    const [x, y] = project(p);
+    return [w / 2 + x * scale, h / 2 + y * scale];
+  };
+  const facing = ([x, y, z]: Point): number => x * sy * cp + y * sp + z * cy * cp;
   const faces = worldFaces(state)
-    .map((face) => ({ face, center: rotate(face.center), normal: rotate(face.normal) }))
-    .filter(({ normal: [x, y, z] }) => x + y + z > 0.001);
-  faces.sort((a, b) => a.center[0] + a.center[1] + a.center[2] - (b.center[0] + b.center[1] + b.center[2]));
+    .filter((f) => facing(f.normal) > 0.001)
+    .map((face) => ({ face, normal: face.normal, depth: facing(face.center) }));
+  faces.sort((a, b) => a.depth - b.depth);
   for (const { face, normal } of faces) {
     ctx.beginPath();
     face.points.forEach((p, i) => {
-      const [x, y] = iso(rotate(p));
+      const [x, y] = iso(p);
       if (i) ctx.lineTo(x, y);
       else ctx.moveTo(x, y);
     });
