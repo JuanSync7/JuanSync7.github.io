@@ -91,6 +91,7 @@ try {
   for (const theme of THEMES) for (const value of [0, 0.5, 0.999999]) semanticCheck(arrange(() => value, theme.id));
   const orientations = new Map(THEMES.map((t) => [t.id, new Set()]));
   const themeCounts = new Map();
+  const fixtures = new Map();
   for (const { seed, theme } of cases) {
     const p = arrange(rng(seed ^ 0x9e3779b9), theme);
     themeCounts.set(p.theme.id, (themeCounts.get(p.theme.id) ?? 0) + 1);
@@ -116,10 +117,15 @@ try {
     );
     cam.lookAt(0, 0, 0);
     cam.updateMatrixWorld();
+    const furnitureModel = tabletop(p);
+    if (!fixtures.has(p.theme.id)) fixtures.set(p.theme.id, furnitureModel.surfaces.filter((s) => s.face && s.points.some((q) => q[1] > 0.025)).map((s) => ({
+      lo: [0, 1, 2].map((axis) => Math.min(...s.points.map((q) => q[axis]))),
+      hi: [0, 1, 2].map((axis) => Math.max(...s.points.map((q) => q[axis]))),
+    })));
     const projected = [];
-    for (const x of [-p.theme.w / 2, p.theme.w / 2])
-      for (const y of [tabletop(p).bounds.lo[1], tabletop(p).bounds.hi[1]])
-        for (const z of [-p.theme.d / 2, p.theme.d / 2]) {
+    for (const x of [furnitureModel.bounds.lo[0], furnitureModel.bounds.hi[0]])
+      for (const y of [furnitureModel.bounds.lo[1], furnitureModel.bounds.hi[1]])
+        for (const z of [furnitureModel.bounds.lo[2], furnitureModel.bounds.hi[2]]) {
           const v = new Vector3(x, y, z).project(cam);
           assert(Math.abs(v.x) < 1 && Math.abs(v.y) < 1, `cropped table ${seed}/${p.theme.id}`);
         }
@@ -129,6 +135,12 @@ try {
       const g = object(it);
       g.updateMatrixWorld(true);
       const bounds = new Box3().setFromObject(g, true);
+      for (const fitting of fixtures.get(p.theme.id)) assert(
+        bounds.max.x <= fitting.lo[0] || bounds.min.x >= fitting.hi[0] ||
+        bounds.max.y <= fitting.lo[1] || bounds.min.y >= fitting.hi[1] ||
+        bounds.max.z <= fitting.lo[2] || bounds.min.z >= fitting.hi[2],
+        `table fitting intersects ${seed}/${p.theme.id}/${it.kind}`,
+      );
       assert(
         bounds.min.x > -p.theme.w / 2 &&
           bounds.max.x < p.theme.w / 2 &&
@@ -199,6 +211,10 @@ try {
   assert.equal(themeCounts.size, 9);
   const furniture = new Set(THEMES.map((t) => JSON.stringify(tabletop(arrange(rng(42), t.id)).surfaces)));
   assert.equal(furniture.size, 9, 'Each theme needs its own table geometry');
+  for (const t of THEMES) {
+    const finishes = new Set(tabletop(arrange(rng(42), t.id)).surfaces.map((s) => s.finish));
+    assert(finishes.size >= 4 && !finishes.has(undefined), `${t.id} lacks distinct construction finishes`);
+  }
   for (const [theme, values] of orientations)
     assert.equal(values.size, 2, `${theme} never varies its layout orientation`);
   assert(layouts.size > 1300);

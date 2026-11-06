@@ -3,12 +3,23 @@ import type { Surface } from './hardware/types';
 import type { Vec3 } from './camera';
 import { beam } from './bodies';
 
+export type FurnitureFinish = 'top' | 'frame' | 'panel' | 'metal' | 'recess' | 'inlay' | 'foot' | 'tile';
+export interface TableSurface extends Surface {
+  finish?: FurnitureFinish;
+}
 /** The hardware atlas's bevelled solids, extended with turned vessels and curved handles.
  * One model supplies both WebGL and the canvas fallback. */
 export class TableDraft extends Draft {
   constructor() {
     super();
     this.part('Tabletop object', 'A physical tabletop assembly.');
+  }
+  material(kind: FurnitureFinish, build: () => void): void {
+    const surfaces = this.parts[0]?.surfaces;
+    if (!surfaces) return;
+    const start = surfaces.length;
+    build();
+    for (const surface of surfaces.slice(start)) if (!('finish' in surface)) Object.assign(surface, { finish: kind });
   }
   face(points: Vec3[]): void {
     this.parts[0]?.surfaces.push({ solid: 10000, face: true, points });
@@ -56,6 +67,33 @@ export class TableDraft extends Draft {
         [triangles[i + 6] ?? 0, triangles[i + 7] ?? 0, triangles[i + 8] ?? 0],
       ]);
   }
+  tube(a: Vec3, b: Vec3, radius: number, n = 12): void {
+    const length = Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]);
+    if (length < 0.00001) return;
+    const d: Vec3 = [(b[0] - a[0]) / length, (b[1] - a[1]) / length, (b[2] - a[2]) / length];
+    const ref: Vec3 = Math.abs(d[1]) > 0.9 ? [1, 0, 0] : [0, 1, 0];
+    const u: Vec3 = [d[1] * ref[2] - d[2] * ref[1], d[2] * ref[0] - d[0] * ref[2], d[0] * ref[1] - d[1] * ref[0]];
+    const norm = Math.hypot(...u);
+    const v: Vec3 = [d[1] * u[2] - d[2] * u[1], d[2] * u[0] - d[0] * u[2], d[0] * u[1] - d[1] * u[0]];
+    const ring = (origin: Vec3): Vec3[] =>
+      Array.from({ length: n }, (_, i) => {
+        const angle = (i * Math.PI * 2) / n;
+        const point = (j: 0 | 1 | 2): number =>
+          origin[j] + (radius * (u[j] * Math.cos(angle) + v[j] * Math.sin(angle))) / norm;
+        return [point(0), point(1), point(2)];
+      });
+    const low = ring(a),
+      high = ring(b);
+    this.face([...low].reverse());
+    this.face(high);
+    low.forEach((q, i) => {
+      const next = (i + 1) % n,
+        r = low[next],
+        s = high[next],
+        t = high[i];
+      if (r && s && t) this.face([q, r, s, t]);
+    });
+  }
 }
 export type BuildProp = (p: TableDraft) => void;
 export interface Bounds {
@@ -63,7 +101,7 @@ export interface Bounds {
   hi: Vec3;
 }
 export interface PropModel {
-  surfaces: Surface[];
+  surfaces: TableSurface[];
   bounds: Bounds;
 }
 export function finish(p: TableDraft): PropModel {

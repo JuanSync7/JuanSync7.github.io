@@ -10,7 +10,7 @@ import {
 } from 'three';
 import { hexOf } from './ink';
 import type { NightKey } from '../../styles/tokens/palette';
-import type { PropModel } from './tableparts';
+import type { FurnitureFinish, PropModel } from './tableparts';
 import type { PropKind } from './tableprops';
 import type { ThemeId } from './tablethemes';
 
@@ -19,6 +19,7 @@ export function tableFinish(
   kind: TableObject,
   solid: number,
   theme: ThemeId,
+  detail?: FurnitureFinish,
 ): {
   tone: NightKey;
   roughness: number;
@@ -34,6 +35,27 @@ export function tableFinish(
       tone = 'inkFaint';
       roughness = 0.4;
       metalness = 0.15;
+    }
+    if (detail === 'top') tone = theme === 'lab' || theme === 'kitchen' ? 'inkSoft' : 'line4';
+    if (detail === 'frame') tone = theme === 'lab' ? 'inkMuted' : 'line3';
+    if (detail === 'panel') tone = 'inkFaint';
+    if (detail === 'inlay') {
+      tone = 'inkMuted';
+      roughness = 0.9;
+    }
+    if (detail === 'recess' || detail === 'foot') {
+      tone = 'panel2';
+      roughness = 1;
+      metalness = 0;
+    }
+    if (detail === 'metal') {
+      tone = 'inkSoft';
+      roughness = 0.25;
+      metalness = 0.5;
+    }
+    if (detail === 'tile') {
+      tone = 'ink2';
+      roughness = 0.2;
     }
   } else if (['paper', 'openbook', 'napkins', 'towel', 'plate', 'bowl', 'mug', 'labels', 'sticky'].includes(kind)) {
     tone = 'ink2';
@@ -65,7 +87,7 @@ export function tableFinish(
 /** Only drawn markings survive. Polygon seams and hidden wireframe edges are omitted. */
 export function solidMesh(model: PropModel, kind: TableObject, theme: ThemeId): Group {
   const group = new Group(),
-    buckets = new Map<NightKey, { positions: number[]; roughness: number; metalness: number }>();
+    buckets = new Map<string, { tone: NightKey; positions: number[]; roughness: number; metalness: number }>();
   const lines: number[] = [];
   for (const surface of model.surfaces) {
     const { points, face, solid } = surface,
@@ -78,13 +100,15 @@ export function solidMesh(model: PropModel, kind: TableObject, theme: ThemeId): 
       }
       continue;
     }
-    const finish = tableFinish(kind, solid, theme);
-    const bucket = buckets.get(finish.tone) ?? {
+    const finish = tableFinish(kind, solid, theme, surface.finish);
+    const key = `${finish.tone}:${finish.roughness}:${finish.metalness}`;
+    const bucket = buckets.get(key) ?? {
+      tone: finish.tone,
       positions: [],
       roughness: finish.roughness,
       metalness: finish.metalness,
     };
-    buckets.set(finish.tone, bucket);
+    buckets.set(key, bucket);
     if (first)
       for (let i = 1; i + 1 < points.length; i++) {
         const a = points[i],
@@ -92,7 +116,7 @@ export function solidMesh(model: PropModel, kind: TableObject, theme: ThemeId): 
         if (a && b) bucket.positions.push(...first, ...a, ...b);
       }
   }
-  for (const [tone, { positions, roughness, metalness }] of buckets) {
+  for (const { tone, positions, roughness, metalness } of buckets.values()) {
     const geometry = new BufferGeometry();
     geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
     geometry.computeVertexNormals();

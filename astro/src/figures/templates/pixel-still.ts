@@ -126,7 +126,7 @@ export default defineTemplate<TableScene, S>({
       new MeshBasicMaterial({
         color: hexOf('signal'),
         transparent: true,
-        opacity: 0.3,
+        opacity: 0.45,
         depthWrite: false,
         side: DoubleSide,
       }),
@@ -242,7 +242,7 @@ export default defineTemplate<TableScene, S>({
     for (const { surface, index, points } of surfaces) {
       const kind: TableObject = index === 0 ? 'table' : (p.items[index - 1]?.kind ?? 'paper');
       const active = index - 1 === (selected < 0 ? p.lit : selected);
-      const finish = tableFinish(kind, surface.solid, p.theme.id);
+      const finish = tableFinish(kind, surface.solid, p.theme.id, surface.finish);
       poly(ctx, points, surface.face);
       if (surface.face) {
         ctx.fillStyle = active
