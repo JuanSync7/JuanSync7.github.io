@@ -3,7 +3,7 @@ This checks records and diffs; actor strings are not authenticated identities or
 """
 from pathlib import Path
 import argparse,subprocess,json,hashlib
-ROOT=Path(__file__).resolve().parents[4]
+ROOT=Path(subprocess.run(['git','rev-parse','--show-toplevel'],check=True,capture_output=True,text=True).stdout.strip())
 POLICY='astro/scripts/slides/ownership.json'
 def git(*args):return subprocess.run(['git',*args],cwd=ROOT,check=True,capture_output=True,text=True).stdout
 
@@ -26,6 +26,11 @@ def check(base,mode):
  changed=set(git('diff','--name-only',base,'--').splitlines())
  changed.update(git('ls-files','--others','--exclude-standard').splitlines())
  owned=sorted(p for p in changed if protected(p,prior) or p==POLICY)
+ if 'astro/package.json' in changed:
+  before=json.loads(git('show',f'{base}:astro/package.json'));after=json.loads((ROOT/'astro/package.json').read_text())
+  controlled=lambda value:{k:v for k,v in value.get('scripts',{}).items() if k.startswith('slides:') or k=='prebuild'}
+  if controlled(before)!=controlled(after):owned.append('astro/package.json')
+ owned=sorted(set(owned))
  if not owned:print('Slide ownership: asset-only changes; maintained engine untouched.');return
  digest=candidate_digest(owned)
  if mode!='maintainer':raise SystemExit('Protected icon engine/playbook changed. Asset tasks must retain it; maintainer review is required: '+', '.join(owned))
@@ -51,5 +56,9 @@ if __name__=='__main__':
  args=parser.parse_args()
  if args.selftest:selftest()
  elif args.digest:
-  policy=json.loads((ROOT/POLICY).read_text());changed=set(git('diff','--name-only',args.base,'--').splitlines())|set(git('ls-files','--others','--exclude-standard').splitlines());print(candidate_digest([p for p in changed if protected(p,policy) or p==POLICY]))
+  policy=json.loads((ROOT/POLICY).read_text());changed=set(git('diff','--name-only',args.base,'--').splitlines())|set(git('ls-files','--others','--exclude-standard').splitlines());owned=[p for p in changed if protected(p,policy) or p==POLICY]
+  if 'astro/package.json' in changed:
+   before=json.loads(git('show',f'{args.base}:astro/package.json'));after=json.loads((ROOT/'astro/package.json').read_text());controlled=lambda value:{k:v for k,v in value.get('scripts',{}).items()if k.startswith('slides:')or k=='prebuild'}
+   if controlled(before)!=controlled(after):owned.append('astro/package.json')
+  print(candidate_digest(set(owned)))
  else:check(args.base,args.mode)

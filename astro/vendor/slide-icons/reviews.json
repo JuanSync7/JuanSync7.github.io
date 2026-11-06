@@ -1,8 +1,8 @@
 {
   "processor": {
     "schema": "slide-review/2",
-    "fingerprint": "7c7c54d0d9d217ffeab344bcd44340fd70c59df2eff8f70f04f2d6044215330a",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "c852a947b7b11eb219ef9d1138620988c4d0f3700469c6c3cc0e93278f7ebe36",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -20,7 +20,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/processor.svg",
+      "path": "proofs/icons/processor.svg",
       "sha256": "d23a5a797b0ff60464892c0bfa2b21c70a0cd36b4dc0ba6ab0bf432c2f03fac6"
     },
     "judgments": {
@@ -46,12 +46,12 @@
       }
     },
     "notes": "All twelve pins meet the housing. The core stays centered; the teal top edge sits on the core at both sizes.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "memory": {
     "schema": "slide-review/2",
-    "fingerprint": "b718fc4ab834df7ed2497200c1c4da9d7acc6f31eea3a1329a68cebc7160bda2",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "007a72b67d3e281abc44dd1034648a0d7e62e76d8991a8b714194f3d26ca2cc1",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -69,7 +69,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/memory.svg",
+      "path": "proofs/icons/memory.svg",
       "sha256": "d6121e14fad6f4f9db1cc5ef4e2b788da8c6b1078a250e95cd1a9f058c2eec1a"
     },
     "judgments": {
@@ -95,12 +95,12 @@
       }
     },
     "notes": "Contacts share a baseline and meet the board. One contact carries teal; the slim board remains distinct at 32px.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "wafer": {
     "schema": "slide-review/2",
-    "fingerprint": "8650d3e8e9a02c5c1ca2a64ff08eacaa8aa36ff8b18f6c003272022b763db3d6",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "7d7ef1bf92c250e674578bef47e14c3eb69791a14e365c5558d7f3dd4f101c48",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -118,7 +118,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/wafer.svg",
+      "path": "proofs/icons/wafer.svg",
       "sha256": "20e42e4c98f2cd8d16e95b3a0ca9f7a000c1135b8b0612b2e9856288c073eaea"
     },
     "judgments": {
@@ -144,12 +144,12 @@
       }
     },
     "notes": "The nine-die grid fits inside the circular blank. Teal follows one existing die boundary; no grid edge escapes the wafer.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "accelerator": {
     "schema": "slide-review/2",
-    "fingerprint": "604b3960efbf723c53be825a216f5fffd48d880c11252820f91b1adb05a9598d",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "7800bdf95ba7754c6f0cfbcf05a745cd6b0d339cd17def92275c7fc793e83120",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -167,7 +167,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/accelerator.svg",
+      "path": "proofs/icons/accelerator.svg",
       "sha256": "8a744c638a465d9dd3fe6116fadf9d2defe969198e9848588319eb942ec621e4"
     },
     "judgments": {
@@ -193,12 +193,12 @@
       }
     },
     "notes": "The bracket meets the card and the connector sits below it. Both fan rims are contained; teal follows one fan rim.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "circuit-board": {
     "schema": "slide-review/2",
-    "fingerprint": "a16210fdaa76315e23716465a8ea2175aebd494530456cffa6cb92a367a10730",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "59b8f17036de483ebf869979d0d479d38feecc112e2bb357058df24768eda7db",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -216,7 +216,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/circuit-board.svg",
+      "path": "proofs/icons/circuit-board.svg",
       "sha256": "ab8a4616af02df0a9e94a86d3d74037dd29abb12a770b1b01b9d390c0e34dea5"
     },
     "judgments": {
@@ -242,12 +242,12 @@
       }
     },
     "notes": "Both terminals and the bent traces remain inside the board. The accented terminal rim stays attached at 32px.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "chiplets": {
     "schema": "slide-review/2",
-    "fingerprint": "93020a268eeb8201cf57d6e3d02c934d37f6e13987c034402aa66af8d93ce253",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "de7c281dc657104bca46fd6f2a1fac76c871b63652981fc6cbde0dbb8bbe38a6",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -265,7 +265,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/chiplets.svg",
+      "path": "proofs/icons/chiplets.svg",
       "sha256": "d3429f1283772de800c072fe4281ddfaec7e4b7293932f30a43565b87394e61a"
     },
     "judgments": {
@@ -291,12 +291,12 @@
       }
     },
     "notes": "The top rhombus closes cleanly. Two lower contours imply a parallel stack and never cross the front layer; one front edge is teal.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "ai-model": {
     "schema": "slide-review/2",
-    "fingerprint": "84df0aaef3faa2eb99829b8e721c631bb468b57489b9fedb0ecf001ac21234ab",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "461bd06ad5c3f6d498331f675da42b141f8dca00eeb75fa8257ed484886c2351",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -314,7 +314,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/ai-model.svg",
+      "path": "proofs/icons/ai-model.svg",
       "sha256": "05832a6729b70b5d304e1451b05e8a82d2434bf600747bc2e4916f79fa3baac5"
     },
     "judgments": {
@@ -340,12 +340,12 @@
       }
     },
     "notes": "The brain contour and circuit traces read as one hybrid mark. Endpoint circles stay aligned; one existing trace is accented.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "camera": {
     "schema": "slide-review/2",
-    "fingerprint": "82b7c81736cf49655d6e84a833f4eda7e0ebba65bb661db73fe5c60734f20cf3",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "b4a8736063083faa28d85d8342ab2f2d4c8ce70601024d7892e158fdbf4cd38c",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -363,7 +363,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/camera.svg",
+      "path": "proofs/icons/camera.svg",
       "sha256": "048f654cbeb859f651a9a31fa6b615e8f48c4138f3ebc7e37a872c8d54e3ef21"
     },
     "judgments": {
@@ -389,12 +389,12 @@
       }
     },
     "notes": "The lens is centered in the camera body. Its teal arc follows the lens rim without adding a floating feature.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "server": {
     "schema": "slide-review/2",
-    "fingerprint": "a44e0852eea49e2e545767ec3521a8d68614088bed2c381f9266445604d50f2e",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "f31d51b7ffb31b626b1c11d9e99850e7b490da18c015e8d9b595b4e317947952",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -412,7 +412,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/server.svg",
+      "path": "proofs/icons/server.svg",
       "sha256": "c862182ca1b20f17ac2102d8a0599f719d214b192f41b3dba6349db3bec27e8c"
     },
     "judgments": {
@@ -438,12 +438,12 @@
       }
     },
     "notes": "Two equal server units align vertically with a consistent gap. Only the upper status indicator is teal; both units remain distinct at 32px.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "switch": {
     "schema": "slide-review/2",
-    "fingerprint": "451974d5e9e0e1cfbea32fc017796d62ca90108e2f9baf8cc3fe9aed860aae96",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "56c7e79f453691772f25ae3465b7d3d9e956f88ef28cb5a7b18d9f232573e4cf",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -461,7 +461,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/switch.svg",
+      "path": "proofs/icons/switch.svg",
       "sha256": "e0340e65657a6671de35d2100cf0b2757246d2f82adf886dfa261fd809d81ef2"
     },
     "judgments": {
@@ -487,12 +487,12 @@
       }
     },
     "notes": "Three equal ports share a baseline and pitch. Each indicator sits above its port; the first indicator alone is teal.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "storage": {
     "schema": "slide-review/2",
-    "fingerprint": "8d8810a8c2708c69ae0055e6e4dd24f0fa1025929191791462128b0c78474a1a",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "0efb6614eb20395844ac9f8f7c897ae29ec4593edc04ba04aa4babbc323bab47",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -510,7 +510,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/storage.svg",
+      "path": "proofs/icons/storage.svg",
       "sha256": "571dd117dfb1111b2dea050653eb4d11b7dc22efdce9fe28e2a9312629d41492"
     },
     "judgments": {
@@ -536,12 +536,12 @@
       }
     },
     "notes": "The upper trapezoid terminates at the front panel seam. No rear edge crosses the panel; the drive indicator is a small accent.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "cloud": {
     "schema": "slide-review/2",
-    "fingerprint": "29d20fb85f9aa7fead1e613f007caa648adb32d34a3062fb7e26675793054b54",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "27f6efd575dc795bb1910a8efa826340d38337df0f4d4b3d608b175a2b0b381b",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -559,7 +559,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/cloud.svg",
+      "path": "proofs/icons/cloud.svg",
       "sha256": "d0c93282c5184e889f1c2da9f684de283e45f44f24502fac709eca2c2042f34d"
     },
     "judgments": {
@@ -585,12 +585,12 @@
       }
     },
     "notes": "The contour stays continuous through the cloud lobes. Teal overlays a short lower edge; the silhouette remains clear in monochrome.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "power": {
     "schema": "slide-review/2",
-    "fingerprint": "a8d7440e38f83e666e4f28b460572f358cbb3c406f0ee7022f6b80cdf0e875d4",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "805bf86b2854420b83d8810046070f315540e0670fcada699c5859a763e93712",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -608,7 +608,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/power.svg",
+      "path": "proofs/icons/power.svg",
       "sha256": "f674830bff3454f72d2f25dccb8887b7e034a33535ad83fa8e060ef63c344005"
     },
     "judgments": {
@@ -634,12 +634,12 @@
       }
     },
     "notes": "The vertical actuator and interrupted circular ring stay separate by design. Teal marks the actuator tip rather than an invented light.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "satellite": {
     "schema": "slide-review/2",
-    "fingerprint": "5a04e68383977ef5b12c307272517ed34ea984ded5ab3028ff1fe4483b276fb7",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "ccc301ac856499c37741aea14908135bfc13ad9ade531348777f49780d01fa73",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -657,7 +657,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/satellite.svg",
+      "path": "proofs/icons/satellite.svg",
       "sha256": "1a5a692448863c5ee6f2d9fd47c6201e710ac7bba32c2672f7f7c679e6567849"
     },
     "judgments": {
@@ -683,12 +683,12 @@
       }
     },
     "notes": "The two panel contours meet the central body in the source view. Teal follows the antenna connection; the signal arc remains separate.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "router": {
     "schema": "slide-review/2",
-    "fingerprint": "72cacf905dba5d56256f0e888e94b5138d50164d1785001630bd3398254ca9e2",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "51d81dafded4afc208735bb5e525a0a4696da31f6f3da9e761a3185037ad4431",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -706,7 +706,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/router.svg",
+      "path": "proofs/icons/router.svg",
       "sha256": "254de72ab9db319e26e59d2bb72ef3aaa327f9989a521ecea9bed19914df5510"
     },
     "judgments": {
@@ -732,12 +732,12 @@
       }
     },
     "notes": "The antenna meets the enclosure. Two source status lights stay aligned; only one is teal, with the radio arcs centered above.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "network": {
     "schema": "slide-review/2",
-    "fingerprint": "9609e07d1e9746e27b44af1add1404377f2d1b7cb2e2b5aa776429d697785e16",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "1675dfbccaa65e1fa22252b9ea5c929260230dde1105defc81899019366bae2f",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -755,7 +755,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/network.svg",
+      "path": "proofs/icons/network.svg",
       "sha256": "8a311bad01cc93d9b09ad5475d42df97c4809b443e786f84c2e70579c48cdc6a"
     },
     "judgments": {
@@ -781,12 +781,12 @@
       }
     },
     "notes": "The source uplink meets the top node and the lower bus. All three nodes align on the shared routes; teal follows the uplink.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "database": {
     "schema": "slide-review/2",
-    "fingerprint": "fe5e10c1a2ccfb2db88682ad2be116a27608fa25a93e1373e907073366748d04",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "a9669690b6340d4b563bbe1e759cb8e82232e0dc7e3e64a2a657310500296507",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -804,7 +804,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/database.svg",
+      "path": "proofs/icons/database.svg",
       "sha256": "b4e208a0b4287ddcd79d3384499e301d191f89ccdc4c0a7b0e6899c76edcdebb"
     },
     "judgments": {
@@ -830,12 +830,12 @@
       }
     },
     "notes": "The top ellipse and side edges join cleanly. Middle and lower rims share the cylinder width; teal follows the top rim.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "dataset": {
     "schema": "slide-review/2",
-    "fingerprint": "da56e858e8c95d9919ad0837fe778b5ad0fffcf625a032b330de251d6ce6e68b",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "cecccf9cb5c355001aaa424cb2a53120c1188b9e83dfc595eecf78a14554e049",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -853,7 +853,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/dataset.svg",
+      "path": "proofs/icons/dataset.svg",
       "sha256": "db482e362a5244fe6eb38a208f62e9fa44c3db2e13672c64e11ce9d0fbfb0886"
     },
     "judgments": {
@@ -879,12 +879,12 @@
       }
     },
     "notes": "Rows and the central divider meet the table enclosure. Teal marks the header divider without changing the cell alignment.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "document": {
     "schema": "slide-review/2",
-    "fingerprint": "9860e55632321f83faa428600e118b9752a62a36e5d8c32bc353d1379a9dc48a",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "9cc3a942dce7105a6559e6b11a3cffbe85053a84103c0b1d0cd86488cafd2bc0",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -902,7 +902,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/document.svg",
+      "path": "proofs/icons/document.svg",
       "sha256": "49469ea5db082dc879fabf93646a788de0624abac4d1d224e408e58551510bae"
     },
     "judgments": {
@@ -928,12 +928,12 @@
       }
     },
     "notes": "The folded corner meets the page outline. Text rows fit inside the page; one existing row carries the small accent.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "folder": {
     "schema": "slide-review/2",
-    "fingerprint": "1a918d2cea01ec59774a8681f8ea7aab1b97b17c75e553a985b37a18445c8797",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "e5514cf6176b17c82fe82ea707cfb0ccf31d2abe7eb7f05cc4d86d580531f8d1",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -951,7 +951,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/folder.svg",
+      "path": "proofs/icons/folder.svg",
       "sha256": "fd6551e3fb1196f55014bdef5f1732bca7730c699de6d08fd55f8e80aad3c846"
     },
     "judgments": {
@@ -977,12 +977,12 @@
       }
     },
     "notes": "The tab joins the folder contour cleanly. Teal follows the tab edge and stays visible without becoming an extra loose dash.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "archive": {
     "schema": "slide-review/2",
-    "fingerprint": "930017a16ae569b333d69bdfaa14c52d5e6130fb301ae7bd3826e6602c664b68",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "ac6903b6dad71b0bd18113e3513c01fb6506415eefc3c6228b0d622af5761e09",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -1000,7 +1000,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/archive.svg",
+      "path": "proofs/icons/archive.svg",
       "sha256": "81b5d4fe00ce8a4936371478a4d3a7049008f6abeb633b12b3cbf0e52be5dfac"
     },
     "judgments": {
@@ -1026,12 +1026,12 @@
       }
     },
     "notes": "The box sides meet the lid. The centered handle is the only accented feature; the box remains clear at 32px.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "terminal": {
     "schema": "slide-review/2",
-    "fingerprint": "d368a3b11c72ed02c5d1e2a54a3d8d380b789983e76b122c473dfa213c726b4e",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "81c0f9322fed446645000500201065665d3d3b17984b6ed00d8570c76bf3bede",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -1049,7 +1049,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/terminal.svg",
+      "path": "proofs/icons/terminal.svg",
       "sha256": "8022b95b75d3653f6c70d1f33172262be9832c8a8f5583e7099a51be3375ef37"
     },
     "judgments": {
@@ -1075,12 +1075,12 @@
       }
     },
     "notes": "The prompt and cursor fit inside the terminal frame. Teal follows the cursor and monochrome removes the redundant overlay.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "files": {
     "schema": "slide-review/2",
-    "fingerprint": "5fa6f3ff6f34c4ef55622b5e8d6b697c8268d544bcceee98b3460fbf300af163",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "4c8b4f2e94273156d2d23af856dd2e59240af1460c5ccb4c5028fc70ed6fa6c4",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -1098,7 +1098,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/files.svg",
+      "path": "proofs/icons/files.svg",
       "sha256": "7c3afc4f7f40adaf71cc2c293d1f1992f04ec18ec19ae7aa7f90cf05ba3f236e"
     },
     "judgments": {
@@ -1124,12 +1124,12 @@
       }
     },
     "notes": "A partial rear page sits behind the front page. Rear strokes remain outside the front silhouette; the front fold carries teal.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "folders": {
     "schema": "slide-review/2",
-    "fingerprint": "558533fc96f60eacb31fa8751114ae7765a85b8856fa83e3aa2d28ac00073d3e",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "ac4e8414b28a6c08aac7dfbcd2996b691c577fa60be1f0e0b5c54836c2735a38",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -1147,7 +1147,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/folders.svg",
+      "path": "proofs/icons/folders.svg",
       "sha256": "935c66104c8db341a93994dc0e13196d788b324967526a75e9afcf16993f7831"
     },
     "judgments": {
@@ -1173,12 +1173,12 @@
       }
     },
     "notes": "A partial rear folder sits behind the closed front folder. The tab carries teal; neither rear contour crosses the front face.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "notebook": {
     "schema": "slide-review/2",
-    "fingerprint": "12648f266ab1c56f972e706fecb99c7a8e266eb3926495d8630fafa32925bb8f",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "4a1a77e56da49846726ca61465a1739fe237af8699a499412cfc5641c0248d55",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -1196,7 +1196,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/notebook.svg",
+      "path": "proofs/icons/notebook.svg",
       "sha256": "4b5d463adf31986fb306376acd6d9a350ff5b363e693f0073bf6f34161dfa411"
     },
     "judgments": {
@@ -1222,12 +1222,12 @@
       }
     },
     "notes": "Four binding strokes share their pitch and meet the cover edge. One binding is accented; the spine remains straight.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "chart": {
     "schema": "slide-review/2",
-    "fingerprint": "003519a3ed314fe79e4e47cfc0fb7df9431150ad8c1f8994f37f54a2a5c9e3f8",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "e6a3a46a669f5edaba359917bc4a962fb652b2f23065b5db01ba1beaaafbe27a",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -1245,7 +1245,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/chart.svg",
+      "path": "proofs/icons/chart.svg",
       "sha256": "83aee41f7203562fe2806f457df46e4054fbe47366e251c948bed9827d9f361c"
     },
     "judgments": {
@@ -1271,12 +1271,12 @@
       }
     },
     "notes": "Three bars share a baseline with distinct heights. Teal stays on the tip of the tallest bar and does not imply an extra data series.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "flask": {
     "schema": "slide-review/2",
-    "fingerprint": "9e3cf23b9e5c633193663b3dda34cf7fb33145c3c2db8857a6037fca396b8bec",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "0fc2fa474d65b88520a0191ffe275b91808ab241f4c5fb6a19400f11cc6f3c57",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -1294,7 +1294,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/flask.svg",
+      "path": "proofs/icons/flask.svg",
       "sha256": "241d7ee0a83745d2be3141e4291d26eeebe232a498c8d3d333090ede39ebe331"
     },
     "judgments": {
@@ -1320,12 +1320,12 @@
       }
     },
     "notes": "The neck and sloped sides form a closed flask. The liquid line terminates on both walls; only its central portion is teal.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "microscope": {
     "schema": "slide-review/2",
-    "fingerprint": "fa4bf4856a97057f59b6d0e03912a295ba8261775d05c9127abbd0710dce7c6d",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "95c89573053a1a2b51e6a87b2d0dcd133540a29df21e7a95b461c2d65ecd0b38",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -1343,7 +1343,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/microscope.svg",
+      "path": "proofs/icons/microscope.svg",
       "sha256": "0cfccf06f8a66ede6e22c6866bccf49f8ce098e60693c4617805e948547fc004"
     },
     "judgments": {
@@ -1369,12 +1369,12 @@
       }
     },
     "notes": "The objective, arm, stage and base retain their source relationships. Teal follows the stage; the objective stays above it.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "calipers": {
     "schema": "slide-review/2",
-    "fingerprint": "1ec2dd1c07e1eccfe5ee010c58ef272a1ddae73372c3620be5e21e554cd14d3f",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "fea3a098b4c484ef085e5789305ed643482bf6a52e933aeb31dc944051a5ed07",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -1392,7 +1392,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/calipers.svg",
+      "path": "proofs/icons/calipers.svg",
       "sha256": "8397b793f9492f6bc0598621252301e3a32515ed3a0f19cf0b2041b5e97b7dda"
     },
     "judgments": {
@@ -1418,12 +1418,12 @@
       }
     },
     "notes": "Revised the jaws to opposing faces with a clear gap. Both lower jaws are parallel; beam segments stop at the slider; the display fits inside.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "compass": {
     "schema": "slide-review/2",
-    "fingerprint": "2037de47591fbb10fc9cb4a918a3a58f459b6aefda0e7e59d82a421216a1bc03",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "50a8fa0c5c7eb78bb40663139fca9ec9b0f8763f828a1c4161b440ef555e96f5",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -1441,7 +1441,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/compass.svg",
+      "path": "proofs/icons/compass.svg",
       "sha256": "bbda5d58b2af19d6a725f690b8c184d24251edc2a9cd39e4fc834c630d80154e"
     },
     "judgments": {
@@ -1467,12 +1467,12 @@
       }
     },
     "notes": "The pivot anchors the two leg directions. The interrupted right leg and measurement arc retain the source geometry; teal follows the pivot.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "target": {
     "schema": "slide-review/2",
-    "fingerprint": "57eb9d46fdf25599b22daecd1f600ff7d15ed569c13dd6e57c07fa2ce094ea0a",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "adfd099380e7dc2479bdd0f7ccf7b7691d92f7c405f492440597d44774327714",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -1490,7 +1490,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/target.svg",
+      "path": "proofs/icons/target.svg",
       "sha256": "8b3183a5320cdc6cbb03396e7fb88ecefdaafe8564a31aa61f392f36db7d7d6a"
     },
     "judgments": {
@@ -1516,12 +1516,12 @@
       }
     },
     "notes": "Three concentric circles share one center. The small inner rim carries teal; all rings remain distinct at 32px.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "idea": {
     "schema": "slide-review/2",
-    "fingerprint": "12f2c8de00be92ef2d588d0875563bf1b29dbf98c4089a776c8602ea72acc9e1",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "ff6d437ae1a364a7f1343c2daebff43c38c624038a34065dc928491502ee45bf",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -1539,7 +1539,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/idea.svg",
+      "path": "proofs/icons/idea.svg",
       "sha256": "8e2c67c3ecc6ef49c91a3013479106daa7bf143bb1cfb0ccdaece8df4fd116eb"
     },
     "judgments": {
@@ -1565,12 +1565,12 @@
       }
     },
     "notes": "The bulb contour narrows toward the base. The two base strokes stay centered and separated; the upper base stroke has a restrained accent.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "search": {
     "schema": "slide-review/2",
-    "fingerprint": "5be80d4e5ea6429d8abe34928010b0ae6ac599ae8213b88b68cd01c1d46fe53c",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "078d63da987ff3535969fff7effc2047f369b3f4eb4156ed7525086eabed4cee",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -1588,7 +1588,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/search.svg",
+      "path": "proofs/icons/search.svg",
       "sha256": "f42606f4d76af71734e1b752c0ce38c2d58280fc2cd1f94539110f9a6332991e"
     },
     "judgments": {
@@ -1614,12 +1614,12 @@
       }
     },
     "notes": "Reduced the lens accent to a 45-degree arc after the first budget failure. The handle meets the lens at the source junction.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "filter": {
     "schema": "slide-review/2",
-    "fingerprint": "49440b8ff2e9c1df1686f96b4deae34b4f1e05826c69767f49a78279ae35be03",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "e0863568d3a8bd339a4fa65ecb1e53fd4600f3e7a65200fc0466f594c628a932",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -1637,7 +1637,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/filter.svg",
+      "path": "proofs/icons/filter.svg",
       "sha256": "ed358a1bf8f5b15f79a2e1e92be3c30eb418dd3c24f4e257d7a311509ab08e2c"
     },
     "judgments": {
@@ -1663,12 +1663,12 @@
       }
     },
     "notes": "Three descending line lengths share their center. Only the middle of the shortest result line is teal; no added decorative dot.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "settings": {
     "schema": "slide-review/2",
-    "fingerprint": "c1f08d20373ce8a1349fcbdb05a491f387f52070f896aa85374f79dbe1fb3dd8",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "3f5cc536a42fe17bd4b2348a1abf2934a2f3644e64193236fbb0db9f8f49ca3b",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -1686,7 +1686,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/settings.svg",
+      "path": "proofs/icons/settings.svg",
       "sha256": "f38d674e04caed91ed9e91a742311f49bec2cd54fd46187398f4a1d4e9b60032"
     },
     "judgments": {
@@ -1712,12 +1712,12 @@
       }
     },
     "notes": "The hub stays centered inside the gear contour. The small accent follows the hub rim and keeps the teeth in one ink colour.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "branch": {
     "schema": "slide-review/2",
-    "fingerprint": "8481a1327159496fa605dee39be31839be789555dc4b5210244db325a4cb755c",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "798391f962446303a86841d95cbeec72b294832489d865df4382c67f050f877a",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -1735,7 +1735,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/branch.svg",
+      "path": "proofs/icons/branch.svg",
       "sha256": "e8259c96d3e07a25f0a5bd59a4752d0685df00efe124966fd918abdad98fb597"
     },
     "judgments": {
@@ -1761,12 +1761,12 @@
       }
     },
     "notes": "The curved branch meets both circular endpoints in the source geometry. Teal follows the upper endpoint rim; the trunk remains continuous.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "checklist": {
     "schema": "slide-review/2",
-    "fingerprint": "1e433d4c5d6bed3b380877d8a18bd76fb12ef1f0b3246d62b42ec118a81720d2",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "1fcff08d939a33ef4e733dcc814dbf03f1760aff6557c514bb1f435f17a11759",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -1784,7 +1784,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/checklist.svg",
+      "path": "proofs/icons/checklist.svg",
       "sha256": "d005356d7cb71cf4b0d4275a866cf712db6619237834acad877f79ee321a6a1c"
     },
     "judgments": {
@@ -1810,12 +1810,12 @@
       }
     },
     "notes": "Two checks align with their list rows. The lower check has one accented stroke segment; line spacing remains consistent at 32px.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "shield-check": {
     "schema": "slide-review/2",
-    "fingerprint": "bcc4ef45cc03cca5023ae955ffcd4b923ab0f0cedb64592d66821aa8af2ff968",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "faa18118c6df11ee3264fcf5ef7cc2a3cc23e815a669fb87ff71ec60962a9f85",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -1833,7 +1833,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/shield-check.svg",
+      "path": "proofs/icons/shield-check.svg",
       "sha256": "352ebd114eb9e5d1df279ab7bcb969823da250e29e5eb0d36b73dc8354add43a"
     },
     "judgments": {
@@ -1859,12 +1859,12 @@
       }
     },
     "notes": "The check sits inside the shield with clear margins. Teal follows a check segment; the outer contour stays continuous.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "clock": {
     "schema": "slide-review/2",
-    "fingerprint": "293f38df4d79d76f7b31bcc4ee35ec3e4dc04a3d7d4b990b46b324754c3c46f7",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "bd716075870184fc0f5f3452080ecd153305ff7d41d23ed69bf1dd485279b343",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -1882,7 +1882,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/clock.svg",
+      "path": "proofs/icons/clock.svg",
       "sha256": "c9b0232a413228ba4e673fc9627cfe21a972f0275112c85479eae7a8555a0030"
     },
     "judgments": {
@@ -1908,12 +1908,12 @@
       }
     },
     "notes": "Both hands meet at the circle center. Teal lies on the minute hand; the outer rim and short hand remain legible in both palettes.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "rocket": {
     "schema": "slide-review/2",
-    "fingerprint": "f723a04ec5a5da6bf35c09c047cb63f7dfd7a89164dbca94c1c73c8a0c4a2c86",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "910e2120c3d6721e67f8daaebb31139a259c9c8c41c07f3c00268243ceaeeaac",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -1931,7 +1931,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/rocket.svg",
+      "path": "proofs/icons/rocket.svg",
       "sha256": "78ae18cab2211e18e57d752644fd55c1862948b727f05fd92cbf389b8d556b71"
     },
     "judgments": {
@@ -1957,12 +1957,12 @@
       }
     },
     "notes": "The fins join the body at the source seams. The exhaust is intentionally separate; teal follows one existing fin edge.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "message": {
     "schema": "slide-review/2",
-    "fingerprint": "933600ca0ac380e677b59796117ef07cc68d228e2692ba74d0179ec18ca50fe0",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "acc459f7ea8267e740a3b7d5ccc6b183fd9c8cc529646d9d8e68c38d1d1b53ea",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -1980,7 +1980,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/message.svg",
+      "path": "proofs/icons/message.svg",
       "sha256": "f163d403cacfebcb6387c838502683df72565f22b8bf25f68dddfc49e1f86b40"
     },
     "judgments": {
@@ -2006,12 +2006,12 @@
       }
     },
     "notes": "The tail joins the message outline. A short top-edge accent stays attached; no text or added internal detail competes at 32px.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "mail": {
     "schema": "slide-review/2",
-    "fingerprint": "fbb2bbcfd6b4ec63e818d45da96668535d7afc6dd15d4cec7a3dbfa7a3fed11f",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "c484d0be7623e72325fac0a0f43af2e96fdbc0ebd2c462a8129390e9f0de92dc",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -2029,7 +2029,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/mail.svg",
+      "path": "proofs/icons/mail.svg",
       "sha256": "59ed3e7774858bdf0d3d5bf5d99782e97172ede23e9a7a9c5d3ce26480fc7c91"
     },
     "judgments": {
@@ -2055,12 +2055,12 @@
       }
     },
     "notes": "The envelope fold meets the side edges within the frame. Teal follows one diagonal fold segment and remains distinct from the outer box.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "slide-deck": {
     "schema": "slide-review/2",
-    "fingerprint": "34b844159ca4bff424f6e66c62b0221615080b3e1eb1e1ce9466451ced090284",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "e13a3b76182a8dde8af64c59e985c319975faba8bbd1d50dfd759d6a11a2aca1",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -2078,7 +2078,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/slide-deck.svg",
+      "path": "proofs/icons/slide-deck.svg",
       "sha256": "ffeba3a9f2523bebada77f020dd47186a11de38f5e422975cc9c912ce9691236"
     },
     "judgments": {
@@ -2104,12 +2104,12 @@
       }
     },
     "notes": "All three sheets retain the same height and two-unit offsets. Rear top/right edges stay outside the front sheet; the front title line alone is teal. Rechecked at 32/64px in all four treatments.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "person": {
     "schema": "slide-review/2",
-    "fingerprint": "d46a8416c4f2892dc163bc85a1a07ce8cb83234c571b956419c1f0dc2651f1a5",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "e24dc79ac862c8d0e668e29960771d56da3a7ecfaa0ac2a37c90ee65472c9959",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -2127,7 +2127,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/person.svg",
+      "path": "proofs/icons/person.svg",
       "sha256": "0120ea52e5ab3443f5732ad8faeb1c4c4791e925643212c4f025b7a5f3b5e04a"
     },
     "judgments": {
@@ -2153,12 +2153,12 @@
       }
     },
     "notes": "The head is centered over the shoulder contour. Teal follows a small head arc; the intentionally open lower profile remains clean.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "calendar": {
     "schema": "slide-review/2",
-    "fingerprint": "377584bd273d29d5cb1123a78e52b9ab4f757d5b58c77510b3c9193bb75312ab",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "2d5f172e36e0919409d2eb350419860d0d36e18cbaef5bb8b6d47a4d6118085c",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -2176,7 +2176,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/calendar.svg",
+      "path": "proofs/icons/calendar.svg",
       "sha256": "09a44c340590b710a91e1c11b49ec2c996294ea3106fdceb75a79b05c002b325"
     },
     "judgments": {
@@ -2202,12 +2202,12 @@
       }
     },
     "notes": "Two bindings align across the header. The divider meets both sides; one binding carries teal without adding a date glyph.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "link": {
     "schema": "slide-review/2",
-    "fingerprint": "09c4ea204dfddc1a8597e15fb4f6acc1c55a231e20c0ab5e56256445bcf8f85e",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "a54423bd0806d9d7a8e9512726069f7da8bf342a9e350f2cfde3afdab8334def",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -2225,7 +2225,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/link.svg",
+      "path": "proofs/icons/link.svg",
       "sha256": "19f6e5415618ccf1c00e7aea6b4e1edbd43a12c144e71b9e83b53fd77d41ce1a"
     },
     "judgments": {
@@ -2251,12 +2251,12 @@
       }
     },
     "notes": "Both curved link halves retain the source overlap and open ends. Teal follows one straight end segment; no false crossing was introduced.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "globe": {
     "schema": "slide-review/2",
-    "fingerprint": "92489866b0a9b632f0d98902f9dec8600d3734f75e235ed307682fe24ef81163",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "72ad22064b56a967d76a50d05eaa327316fb15743069b4408a82d4a56a4fe4d3",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -2274,7 +2274,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/globe.svg",
+      "path": "proofs/icons/globe.svg",
       "sha256": "67ad45ca6beeea994d6d814f9262545b4bbed6ca5724caa45362bcda719ac322"
     },
     "judgments": {
@@ -2300,12 +2300,12 @@
       }
     },
     "notes": "The latitude line meets the outer rim and the meridian closes symmetrically. Teal follows a short equator segment through the center.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "bookmark": {
     "schema": "slide-review/2",
-    "fingerprint": "3329c06af858d2337539164ad2afdf9fbc3a39a044d87e7529590bbdb715dca7",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "ba76e64ace2cc15b7f671240ebe9ecf67be0b6eb705af593cf141aede2d94dc1",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -2323,7 +2323,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/bookmark.svg",
+      "path": "proofs/icons/bookmark.svg",
       "sha256": "654b8b64c39b0b58697a5519f69c211088b3e99199af2c4f3804e56279df64f1"
     },
     "judgments": {
@@ -2349,12 +2349,12 @@
       }
     },
     "notes": "The crown and notched bottom close cleanly. Teal follows a short side edge, leaving the silhouette recognizable in every treatment.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "bathtub": {
     "schema": "slide-review/2",
-    "fingerprint": "390baa22e015d5d381448fa705a1bb6fbff182a11d67dd4b9f836402b99ebae9",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "d0b64d5aed66e965c6b4998ad7986c706c39e467ea6ee9d31d129b9c2552f5ae",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -2372,7 +2372,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/bathtub.svg",
+      "path": "proofs/icons/bathtub.svg",
       "sha256": "504b0fae45590b3a7ed59343403629552213c868461885d14a3639d58c4ef314"
     },
     "judgments": {
@@ -2398,12 +2398,12 @@
       }
     },
     "notes": "The tub silhouette includes a permitted shower fixture. Both supports meet the vessel at the same baseline; a short rim segment is teal. All four treatments remain clear at both sizes.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   },
   "freestanding-bathtub": {
     "schema": "slide-review/2",
-    "fingerprint": "fb07060914ff62b5b57c733311d4c3be00b375f91e8548edd44e2595656d41ab",
-    "engine": "538209578db5b7e9f089f7d5a3a687e24482e90054e5fdaf6efb74286a8e66ed",
+    "fingerprint": "7ca49e2735387876080464cdade11474471dcf23c077ad760249fa75bf050c84",
+    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
     "reviewed": "2026-11-06",
     "reviewer": {
       "id": "/root",
@@ -2421,7 +2421,7 @@
       "paper/mono"
     ],
     "proof": {
-      "path": "proofs/freestanding-bathtub.svg",
+      "path": "proofs/icons/freestanding-bathtub.svg",
       "sha256": "86e3eb8d18ac8f0656dcc35a2144f8bf0d7330f3902878782d74d0505b4113dc"
     },
     "judgments": {
@@ -2447,6 +2447,6 @@
       }
     },
     "notes": "The empty freestanding tub has a rounded vessel, a rim and two attached parallel supports. No shower, interior drain or rear supports appear. The small upper-rim accent is attached and the silhouette remains clear at both sizes.",
-    "revalidation": "The renderer proofs are byte-identical to the inspected author review; updated engine checks passed. Independent maintainer review is a separate pending lane."
+    "revalidation": "Proof bytes are identical to the inspected author review; engine validity checks and collision-safe packaging were revalidated. Independent maintainer review remains pending."
   }
 }

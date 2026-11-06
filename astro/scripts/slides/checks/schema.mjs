@@ -6,6 +6,10 @@ const validate=ajv.compile(schema);
 const validateNode=ajv.compile(schema.properties.nodes.items);
 export function validateDefinition(definition){
  if(!definition||!Array.isArray(definition.nodes)||!definition.nodes.length||!validateNode(definition.accent)||!definition.nodes.every(n=>validateNode(n)))throw Error('Invalid generated SVG primitive');
+ for(const node of [...definition.nodes,definition.accent]){
+  const dimensions={rect:['width','height'],circle:['r'],ellipse:['rx','ry']}[node.tag]??[];
+  if(dimensions.some(key=>!(Number(node.attrs[key])>0)))throw Error('A visible primitive needs positive dimensions');
+ }
  for(const node of [...definition.nodes,definition.accent])for(const [key,value] of Object.entries(node.attrs)){
   if(!['d','points'].includes(key)&&!Number.isFinite(Number(value)))throw Error(`Non-finite coordinate ${key}`);
   if(['width','height','r'].includes(key)&&Number(value)<=0)throw Error(`Nonpositive dimension ${key}`);
@@ -31,6 +35,6 @@ export function validateIcon(icon){
 export function validateManifest(manifest){
  if(manifest.schema!=='slide-library/2'||!Array.isArray(manifest.icons)||!manifest.icons.length)throw Error('Invalid or empty slide library');
  if(!manifest.licenses||!Object.keys(manifest.licenses).length)throw Error('Missing license registry');
- const ids=new Set();for(const icon of manifest.icons){validateIcon(icon);if(icon.licenses.some(ref=>!manifest.licenses[ref]))throw Error(`${icon.id}: unknown license notice`);if(ids.has(icon.id))throw Error(`Duplicate icon ${icon.id}`);ids.add(icon.id);}
+ const ids=new Set();for(const icon of manifest.icons){validateIcon(icon);if(icon.licenses.some(ref=>!Object.hasOwn(manifest.licenses,ref)))throw Error(`${icon.id}: unknown license notice`);if(ids.has(icon.id))throw Error(`Duplicate icon ${icon.id}`);ids.add(icon.id);}
  return manifest;
 }

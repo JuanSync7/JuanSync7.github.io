@@ -23,25 +23,33 @@ with tempfile.TemporaryDirectory(prefix='juansync-icon-extension-',dir='/tmp') a
   return result
  manifest=json.loads((root/'vendor/slide-icons/sources.json').read_text());before=len(manifest['icons']);protected=digest(root/'scripts/slides')
  candidate=json.loads((root/'vendor/slide-icons/candidates/freestanding-bathtub.json').read_text())
- candidate.update(id='unseen-vessel',name='Unseen vessel',group='new-domain',file='fixture-library/unseen-vessel.svg',licenses=['fixture-notice'])
+ candidate.update(id='overview',name='Unseen vessel',group='new-domain',file='fixture-library/overview.svg',licenses=['fixture-notice'])
  candidate['view']['description']='a newly named side plane'
  candidate['fit']['brief']='Synthetic extensibility fixture, not a published icon or measured creative trial.'
  spec=root/'candidate.json';spec.write_text(json.dumps(candidate));svg=root/'candidate.svg';svg.write_bytes((root/'vendor/slide-icons/original/freestanding-bathtub.svg').read_bytes())
  args=['python3','scripts/slides/kernel/add.py','--spec',str(spec),'--svg',str(svg),'--license-file',str(root/'vendor/slide-icons/ORIGINAL-LICENSE.txt'),'--license-id','fixture-notice']
- run(*args);run('node','scripts/slides/import.mjs');run('python3','scripts/slides/check-source.py');run('node','scripts/slides/export.mjs','--proof','--id=unseen-vessel')
+ run(*args);run('node','scripts/slides/import.mjs');run('python3','scripts/slides/check-source.py');run('node','scripts/slides/export.mjs','--proof','--id=overview')
  after=json.loads((root/'vendor/slide-icons/sources.json').read_text());assert len(after['icons'])==before+1
  assert (root/'src/data/slide-icons/new-domain.ts').exists()
- assert (root/'slides-out/review/unseen-vessel/proofs/unseen-vessel.svg').exists()
+ assert (root/'slides-out/review/overview/proofs/icons/overview.svg').exists()
  assert not (root/'public/downloads/slide-icons/slide-icons.zip').exists()
- assert 'unseen-vessel' not in json.loads((root/'vendor/slide-icons/reviews.json').read_text())
+ assert 'overview' not in json.loads((root/'vendor/slide-icons/reviews.json').read_text())
  stable=(root/'vendor/slide-icons/sources.json').read_bytes();run(*args,success=False);assert (root/'vendor/slide-icons/sources.json').read_bytes()==stable
  bad={**candidate,'id':'broken-vessel','file':'fixture-library/broken-vessel.svg'};spec.write_text(json.dumps(bad));svg.write_bytes(svg.read_bytes().replace(b'M9 19v2',b'M9 20v2'))
  run('python3','scripts/slides/kernel/add.py','--spec',str(spec),'--svg',str(svg),success=False)
  assert (root/'vendor/slide-icons/sources.json').read_bytes()==stable and not (root/'vendor/slide-icons/fixture-library/broken-vessel.svg').exists()
+ # Names used by old aggregate resources remain valid source ids.
+ assert (root/'slides-out/review/overview/night/accent/overview.svg').read_bytes()!=(root/'slides-out/review/overview/night/accent/collections/overview.svg').read_bytes()
+ collision={**candidate,'id':'family-new-domain','file':'fixture-library/family-new-domain.svg'}
+ spec.write_text(json.dumps(collision));svg.write_bytes((root/'vendor/slide-icons/original/freestanding-bathtub.svg').read_bytes())
+ run('python3','scripts/slides/kernel/add.py','--spec',str(spec),'--svg',str(svg));run('node','scripts/slides/import.mjs');run('node','scripts/slides/export.mjs','--proof','--id=family-new-domain')
+ assert (root/'slides-out/review/family-new-domain/proofs/icons/family-new-domain.svg').exists()
+ assert (root/'slides-out/review/family-new-domain/proofs/families/new-domain.svg').exists()
+ after=json.loads((root/'vendor/slide-icons/sources.json').read_text());assert len(after['icons'])==before+2
  assert digest(root/'scripts/slides')==protected,'Adding an unknown noun/family/license changed the maintained engine'
  # Catalog contraction also works; the regression examples do not depend on production subjects.
  after['icons']=[after['icons'][-1]];(root/'vendor/slide-icons/sources.json').write_text(json.dumps(after))
  run('node','scripts/slides/import.mjs');run('node','scripts/slides/checks/selftest.mjs');run('node','scripts/slides/export.mjs',success=False)
  assert not (root/'public/downloads/slide-icons/slide-icons.zip').exists()
- result={'schema':'slide-extension-test/1','catalogBefore':before,'catalogAfterAddition':before+1,'catalogAfterContraction':len(after['icons']),'newFamily':True,'newLicense':True,'unknownViewName':True,'protectedEngineUnchanged':True,'badCandidateRolledBack':True,'duplicateRejected':True,'unreviewedPreviewOnly':True,'behavioralEvaluation':'not measured by this test'}
+ result={'schema':'slide-extension-test/1','catalogBefore':before,'catalogAfterAddition':before+2,'catalogAfterContraction':len(after['icons']),'newFamily':True,'newLicense':True,'unknownViewName':True,'protectedEngineUnchanged':True,'badCandidateRolledBack':True,'duplicateRejected':True,'unreviewedPreviewOnly':True,'resourceNameCollisionsAvoided':True,'behavioralEvaluation':'not measured by this test'}
  report_path.parent.mkdir(exist_ok=True);report_path.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))

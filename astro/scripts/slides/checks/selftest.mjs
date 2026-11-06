@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {auditIcon,rules} from '../audit.mjs';
+import {distance,pointsOf} from './geometry.mjs';
 import {validateIcon} from './schema.mjs';
 
 export function selftest(){
@@ -21,6 +22,8 @@ export function selftest(){
  test('missing view rationale','processor',i=>i.view.rationale='','SPEC');
  test('malformed generated primitive','processor',(_,d)=>d.accent={tag:'image',attrs:{href:'external'}},'GEOMETRY');
  test('nonfinite coordinate','processor',(_,d)=>d.nodes[13].attrs.width='NaN','GEOMETRY');
+ test('invalid point tokens','processor',(_,d)=>d.accent={tag:'polygon',attrs:{points:'5,5 10,5 garbage 10,10'}},'GEOMETRY');
+ test('invisible ellipse','processor',(_,d)=>d.accent={tag:'ellipse',attrs:{cx:'12',cy:'12',rx:'0',ry:'2'}},'GEOMETRY');
  test('source drift','processor',(_,d)=>d.nodes[13].attrs.rx='0','SOURCE');
  test('outside frame','processor',(_,d)=>d.nodes[0].attrs.d='M12 20V25','FRAME');
  test('excess accent','processor',(_,d)=>d.accent=d.nodes[12],'BUDGET');
@@ -36,6 +39,9 @@ export function selftest(){
  assert.deepEqual(auditIcon(novel,definition).failures,[],'New subjects, groups, view names and angled parallel supports must be allowed');
  const damaged=structuredClone(definition);damaged.nodes[2].attrs.d='M14 16L15 20';
  assert.ok(auditIcon(novel,damaged).failures.some(f=>f.rule==='JUNCTION'),'A detached support on an unknown subject must fail');
+ const rounded={tag:'rect',attrs:{x:'2',y:'8',width:'20',height:'4',rx:'6',ry:'2'}};
+ const ellipsePoint={x:8-6/Math.sqrt(2),y:10-2/Math.sqrt(2)};
+ assert.ok(Math.min(...pointsOf(rounded,rules.geometryStep).map(p=>distance(p,ellipsePoint)))<rules.geometryTolerance,'Independent x/y rounded-rectangle radii must follow SVG geometry');
  assert.ok(rules.accentDistance>0&&rules.accentLengthFraction>0,'Theme policy remains explicit');
  console.log(`Slide audit: ${tests.length} negative fixtures and an unseen-subject pass/fail pair passed.`);
  return tests;

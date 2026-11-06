@@ -19,7 +19,14 @@ jobs:
       - name: Asset boundary or independently reviewed maintainer change
         env:
           SLIDE_BASE: ${{ github.event.pull_request.base.sha || 'origin/main' }}
-        run: python3 scripts/slides/checks/guard.py --base "$SLIDE_BASE" --mode maintainer
+        run: |
+          SLIDE_GUARD_PATH="$RUNNER_TEMP/slide-guard.py"
+          if git cat-file -e "$SLIDE_BASE:astro/scripts/slides/checks/guard.py" 2>/dev/null; then
+            git show "$SLIDE_BASE:astro/scripts/slides/checks/guard.py" > "$SLIDE_GUARD_PATH"
+          else
+            cp scripts/slides/checks/guard.py "$SLIDE_GUARD_PATH"
+          fi
+          python3 "$SLIDE_GUARD_PATH" --base "$SLIDE_BASE" --mode maintainer
   checks:
     # Pinned: ubuntu-latest moved to Ubuntu 26 on 19 Oct 2026, and Playwright 1.56's
     # --with-deps only knows Ubuntu up to 24.04, so the Chromium install fails there.

@@ -74,7 +74,10 @@ Source-library folders and license references are open; every notice is pinned.
 
 Proofs are previews under `slides-out/review/`; they cannot create a publishable
 ZIP. Strict export requires current per-icon reviews. Every standalone SVG embeds
-its applicable license notices. Family sheets, sprites, inventories, archive
+its applicable license notices. Aggregate sheets and sprites live under each treatment’s `collections/`;
+individual and family proofs use `proofs/icons/` and `proofs/families/`. This keeps
+subjects named “overview”, “sprite” or “family-…” valid without file collisions.
+Family sheets, sprites, inventories, archive
 entries and all public counts grow from actual catalog data.
 
 ## Evaluation and evidence
@@ -106,7 +109,10 @@ deterministic checks and must remain pending until real runs are evidenced.
 
 Asset authors own their source/spec/fit/review data. Generated files are checked
 for freshness. The kernel, checker, policy and playbook are protected from asset
-task changes by `slides:guard`. A maintainer change needs a revision-bound review
+task changes by `slides:guard`. CI uses the guard from the trusted base revision
+when one exists; the first installation uses the candidate and therefore needs
+its independent bootstrap review. Controlled npm entry points, the CI definition
+and the evaluation summary are maintained changes too. A maintainer change needs a revision-bound review
 record and independent evidence. This is a diff/record control, not an authenticated
 security sandbox. Keep private vault content and approval boundaries separate;
 this local workflow is not automatically adopted into the vault's rule package.

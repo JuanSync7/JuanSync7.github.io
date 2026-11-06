@@ -6,7 +6,7 @@ const root=resolve(dirname(fileURLToPath(import.meta.url)),'../../..');
 const hash=value=>createHash('sha256').update(value).digest('hex');
 export function packet({stage,task,id}){
  const routes=JSON.parse(readFileSync(`${root}/astro/scripts/slides/stages.json`));
- if(!routes[stage])throw Error(`Unknown stage ${stage}; choose a routed stage`);
+ if(!Object.hasOwn(routes,stage))throw Error(`Unknown stage ${stage}; choose a routed stage`);
  if(!task?.trim())throw Error('Name the slide meaning or authoring task');
  const sources=routes[stage].map(path=>{const content=readFileSync(`${root}/${path}`,'utf8');return {path,sha256:hash(content),trust:'maintained project process; not an adoption of vault guidance',content};});
  let icon=null;

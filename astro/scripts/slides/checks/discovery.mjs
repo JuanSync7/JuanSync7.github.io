@@ -10,4 +10,5 @@ assert.ok(review.sources.some(s=>s.path.endsWith('LOOK.md'))&&review.icon.id===s
 assert.ok(!review.sources.some(s=>s.path.includes('EVAL')),'Asset review does not load playbook-maintenance evaluation');
 assert.notEqual(packet({stage:'fit',task:'A different meaning'}).id,fit.id);
 assert.throws(()=>packet({stage:'unregistered',task}));
+assert.throws(()=>packet({stage:'constructor',task}));
 console.log('Slide discovery: deterministic stage receipts, task-specific context, relevant craft/look loading and no maintenance-source spill passed.');

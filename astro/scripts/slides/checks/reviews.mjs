@@ -12,7 +12,7 @@ export function checkReview(icon,review,digest,engine,root='public/downloads/sli
  assert.deepEqual(review.treatments,['night/accent','night/mono','paper/accent','paper/mono']);
  assert.match(review.reviewed,/^\d{4}-\d{2}-\d{2}$/);
  assert.ok(review.reviewer?.id&&['agent','human'].includes(review.reviewer.kind),`${icon.id}: name the actual reviewer`);
- assert.equal(review.proof.path,`proofs/${icon.id}.svg`);
+ assert.equal(review.proof.path,`proofs/icons/${icon.id}.svg`);
  assert.equal(review.proof.sha256,proofHash(readFileSync(`${root}/${review.proof.path}`)),`${icon.id}: stale or missing size proof`);
  for(const question of ['recognition','view','alignment','accent','smallSize']){
   assert.equal(review.judgments?.[question]?.verdict,'pass',`${icon.id}: ${question} is not resolved`);

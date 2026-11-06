@@ -5,6 +5,8 @@ export function pathOf({tag,attrs:a}) {
   const n=k=>Number(a[k]??0);
   if(tag==='path')return a.d;
   if(tag==='polyline'||tag==='polygon'){
+    const number='[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?';
+    if(!new RegExp(`^${number}(?:[\\s,]+${number})*[\\s,]*$`).test(a.points.trim()))throw Error('Invalid SVG points grammar');
     const values=(a.points.match(/[+-]?(?:\d*\.?\d+)(?:e[+-]?\d+)?/gi)??[]).map(Number);
     if(values.length<4||values.length%2)throw Error('Invalid SVG point pairs');
     const pairs=[];for(let i=0;i<values.length;i+=2)pairs.push(`${values[i]} ${values[i+1]}`);
@@ -16,8 +18,8 @@ export function pathOf({tag,attrs:a}) {
     return `M${x+rx} ${y}A${rx} ${ry} 0 1 1 ${x-rx} ${y}A${rx} ${ry} 0 1 1 ${x+rx} ${y}Z`;
   }
   if(tag==='rect'){
-    const x=n('x'),y=n('y'),w=n('width'),h=n('height'),r=Math.min(n('rx'),w/2,h/2),q=Number(a.ry??r);
-    return r?`M${x+r} ${y}H${x+w-r}A${r} ${q} 0 0 1 ${x+w} ${y+q}V${y+h-q}A${r} ${q} 0 0 1 ${x+w-r} ${y+h}H${x+r}A${r} ${q} 0 0 1 ${x} ${y+h-q}V${y+q}A${r} ${q} 0 0 1 ${x+r} ${y}Z`:`M${x} ${y}H${x+w}V${y+h}H${x}Z`;
+    const x=n('x'),y=n('y'),w=n('width'),h=n('height'),r=Math.min(Number(a.rx??a.ry??0),w/2),q=Math.min(Number(a.ry??a.rx??0),h/2);
+    return r&&q?`M${x+r} ${y}H${x+w-r}A${r} ${q} 0 0 1 ${x+w} ${y+q}V${y+h-q}A${r} ${q} 0 0 1 ${x+w-r} ${y+h}H${x+r}A${r} ${q} 0 0 1 ${x} ${y+h-q}V${y+q}A${r} ${q} 0 0 1 ${x+r} ${y}Z`:`M${x} ${y}H${x+w}V${y+h}H${x}Z`;
   }
   throw Error(`Unsupported SVG primitive: ${tag}`);
 }

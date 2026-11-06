@@ -38,11 +38,11 @@ try {
  for(const o of options){
   const look=`${o.tone}/${o.accent?'accent':'mono'}`,p=slidePalette(o),height=Math.ceil(icons.length/columns)*overviewRow+60,width=columns*overviewCellWidth;
   for(const icon of icons)save(`${look}/${icon.id}.svg`,slideSvg(icon.id,o));
-  save(`${look}/sprite.svg`,slideSprite(o));
+  save(`${look}/collections/sprite.svg`,slideSprite(o));
   const cards=icons.map((icon,i)=>{const x=i%columns*overviewCellWidth,y=Math.floor(i/columns)*overviewRow+60;let cursor=y+4;
    return sizes.map(size=>{const svg=nested(icon.id,o,x+(overviewCellWidth-size)/2,cursor,size);cursor+=size+14;return svg;}).join('')+text(x+8,y+overviewRow-12,`${String(i+1).padStart(2,'0')} / ${icon.name}`,p.line,11);
   }).join('');
-  save(`${look}/overview.svg`,`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><rect width="${width}" height="${height}" fill="${p.ground}"/>${text(16,30,`Juan Kok / slide icons / ${look} / ${caption}`,p.line,14)}${cards}</svg>`);
+  save(`${look}/collections/overview.svg`,`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><rect width="${width}" height="${height}" fill="${p.ground}"/>${text(16,30,`Juan Kok / slide icons / ${look} / ${caption}`,p.line,14)}${cards}</svg>`);
  }
  for(const icon of icons){
   const spec=specs.find(i=>i.id===icon.id),paint=slidePalette(options[0]);
@@ -50,12 +50,12 @@ try {
    const marks=sizes.map(size=>{const svg=nested(icon.id,o,x+(column-size)/2,cursor,size);cursor+=size+24;return svg;}).join('');
    return `<rect x="${x}" y="44" width="${column}" height="${cellHeight}" fill="${p.ground}"/>${marks}${text(x+10,44+cellHeight-14,`${o.tone} / ${o.accent?'accent':'mono'}`,p.line,10)}`;
   }).join('');
-  save(`proofs/${icon.id}.svg`,`<svg xmlns="http://www.w3.org/2000/svg" width="${proofWidth}" height="${proofHeight}" viewBox="0 0 ${proofWidth} ${proofHeight}"><rect width="${proofWidth}" height="${proofHeight}" fill="${paint.ground}"/>${text(12,27,`${icon.name} / ${caption} / ${spec.view.projection}`,paint.line,14)}${cells}${text(12,44+cellHeight+22,`Accent: ${spec.accent.meaning}`,paint.line)}${text(12,44+cellHeight+44,spec.file,paint.line,10)}</svg>`);
+  save(`proofs/icons/${icon.id}.svg`,`<svg xmlns="http://www.w3.org/2000/svg" width="${proofWidth}" height="${proofHeight}" viewBox="0 0 ${proofWidth} ${proofHeight}"><rect width="${proofWidth}" height="${proofHeight}" fill="${paint.ground}"/>${text(12,27,`${icon.name} / ${caption} / ${spec.view.projection}`,paint.line,14)}${cells}${text(12,44+cellHeight+22,`Accent: ${spec.accent.meaning}`,paint.line)}${text(12,44+cellHeight+44,spec.file,paint.line,10)}</svg>`);
  }
  for(const group of [...new Set(icons.map(i=>i.group))]){
   const members=icons.filter(i=>i.group===group),height=members.length*proofHeight;
-  const cards=members.map((icon,i)=>`<svg x="0" y="${i*proofHeight}" width="${proofWidth}" height="${proofHeight}" viewBox="0 0 ${proofWidth} ${proofHeight}">${readFileSync(join(root,`proofs/${icon.id}.svg`),'utf8').replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'')}</svg>`).join('');
-  save(`proofs/family-${group}.svg`,`<svg xmlns="http://www.w3.org/2000/svg" width="${proofWidth}" height="${height}" viewBox="0 0 ${proofWidth} ${height}">${cards}</svg>`);
+  const cards=members.map((icon,i)=>`<svg x="0" y="${i*proofHeight}" width="${proofWidth}" height="${proofHeight}" viewBox="0 0 ${proofWidth} ${proofHeight}">${readFileSync(join(root,`proofs/icons/${icon.id}.svg`),'utf8').replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'')}</svg>`).join('');
+  save(`proofs/families/${group}.svg`,`<svg xmlns="http://www.w3.org/2000/svg" width="${proofWidth}" height="${height}" viewBox="0 0 ${proofWidth} ${height}">${cards}</svg>`);
  }
  for(const notice of Object.values(manifest.licenses))save(notice.file,readFileSync('vendor/slide-icons/'+notice.file,'utf8'));
  save('README.txt',`Juan Kok — slide and web icons\n\n${SLIDE_ICONS.length} marks, ${SLIDE_ICONS.length*options.length} transparent SVG variants.\n${manifest.icons.filter(i=>i.fit.decision==='reuse').length} reused library sources; ${manifest.icons.filter(i=>i.fit.decision==='create').length} original sources.\nPinned reference library: ${manifest.version}.\nGrid: ${rules.grid}; stroke: ${rules.stroke}; proofs: ${caption}.\n\nnight/: light ink on dark slides. paper/: dark ink on light slides.\naccent/: one source-attached teal feature. mono/: one ink, no duplicate overlay.\nInsert individual SVGs in PowerPoint, Keynote or Figma; resize proportionally.\n\nThe catalog and families grow from source specifications; their counts are not limits.\nSource/fit decisions, relevant physical constraints, license notices and per-icon\nreview records are preserved. Each standalone SVG carries its license metadata.\nThe quality report combines deterministic results and reviewer attestations.\nGeometry checks do not establish recognition or authenticate visual judgment.\n\nhttps://juansync.dev/lab/slide-icons/\n`);

@@ -7,7 +7,7 @@ export function accentOf(icon){
   const {node:index,kind,segment,from=.25,to=.75}=icon.accent,node=icon.nodes[index],a=node.attrs;
   if(kind==='whole')return structuredClone(node);
   if(kind==='top'){
-    const x=Number(a.x),y=Number(a.y),r=Number(a.rx??0),w=Number(a.width);
+    const x=Number(a.x),y=Number(a.y),w=Number(a.width),r=Number(a.ry??a.rx??0)===0?0:Math.min(Number(a.rx??a.ry??0),w/2);
     const left=x+r,right=x+w-r,start=icon.accent.from??0,end=icon.accent.to??1;
     return {tag:'path',attrs:{d:`M${left+(right-left)*start} ${y}H${left+(right-left)*end}`}};
   }

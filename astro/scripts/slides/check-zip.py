@@ -9,9 +9,9 @@ expected.update(notice['file'] for notice in manifest['licenses'].values())
 for tone in ['night','paper']:
  for look in ['accent','mono']:
   expected.update(f'{tone}/{look}/{i["id"]}.svg' for i in icons)
-  expected.update({f'{tone}/{look}/sprite.svg',f'{tone}/{look}/overview.svg'})
-expected.update(f'proofs/{i["id"]}.svg' for i in icons)
-expected.update(f'proofs/family-{group}.svg' for group in {i['group'] for i in icons})
+  expected.update({f'{tone}/{look}/collections/sprite.svg',f'{tone}/{look}/collections/overview.svg'})
+expected.update(f'proofs/icons/{i["id"]}.svg' for i in icons)
+expected.update(f'proofs/families/{group}.svg' for group in {i['group'] for i in icons})
 with ZipFile(root/'slide-icons.zip') as archive:
  assert archive.testzip() is None
  names=archive.namelist();assert len(names)==len(set(names)) and set(names)==expected
