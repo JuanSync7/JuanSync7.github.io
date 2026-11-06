@@ -55,3 +55,15 @@ export function inside(point,polygon){
   }
   return hit;
 }
+
+export function straightEdges(node){
+  const edges=[];let x=0,y=0,startX=0,startY=0;
+  for(const [cmd,...values] of svgpath(pathOf(node)).abs().unshort().segments){
+    const from={x,y};
+    if(cmd==='M'){[x,y]=values;startX=x;startY=y;}
+    else if(cmd==='H')x=values[0];else if(cmd==='V')y=values[0];else if(cmd==='Z'){x=startX;y=startY;}
+    else [x,y]=values.slice(-2);
+    if(['L','H','V','Z'].includes(cmd))edges.push({from,to:{x,y}});
+  }
+  return edges;
+}

@@ -1962,7 +1962,7 @@
     {
       "id": "slide-deck",
       "file": "original/slide-deck.svg",
-      "sha256": "df2cdeafe29487a43218c6921dd81baafcbfc236704e65e43b8f3ac949789f47",
+      "sha256": "7723795c575df231919f245ae966ca15c854b65cd6f760fb316ca11b86e13b65",
       "upstream": "https://github.com/JuanSync7/JuanSync7.github.io",
       "license": "MIT",
       "view": "front",
@@ -1977,13 +1977,13 @@
         {
           "tag": "path",
           "attrs": {
-            "d": "M7 3H21V15"
+            "d": "M7 3H21V17"
           }
         },
         {
           "tag": "path",
           "attrs": {
-            "d": "M5 5H19V17"
+            "d": "M5 5H19V19"
           }
         },
         {

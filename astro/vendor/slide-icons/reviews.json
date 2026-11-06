@@ -630,7 +630,7 @@
     "notes": "The envelope fold meets the side edges within the frame. Teal follows one diagonal fold segment and remains distinct from the outer box."
   },
   "slide-deck": {
-    "fingerprint": "61cb079ce046adbbb2cf8acf6285c5e2505378b480fe6b5ae88c1c12d2387fed",
+    "fingerprint": "f86412c5af37c9738790a12d0f33a7c6c44291edd6d6750e42b61613bf2f5436",
     "reviewed": "2026-11-06",
     "sizes": [
       32,
@@ -642,7 +642,7 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "Three sheets use the same two-unit offsets. Rear top/right edges stay outside the front sheet; teal follows its title line."
+    "notes": "All three sheets retain the same height and two-unit offsets. Rear top/right edges stay outside the front sheet; the front title line alone is teal. Rechecked at 32/64px in all four treatments."
   },
   "person": {
     "fingerprint": "2b8e3d88141e506e6315a15666f34b1de3e864ad737bd6275b3d49d51298863d",

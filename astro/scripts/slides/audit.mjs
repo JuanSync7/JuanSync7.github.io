@@ -1,6 +1,6 @@
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
-import {accentOf,distance,inside,lengthOf,pointsOf} from './geometry.mjs';
+import {accentOf,distance,inside,lengthOf,pointsOf,straightEdges} from './geometry.mjs';
 export const rules=JSON.parse(readFileSync('scripts/slides/rules.json','utf8'));
 export const manifest=JSON.parse(readFileSync('vendor/slide-icons/sources.json','utf8'));
 const hash=value=>createHash('sha256').update(value).digest('hex');
@@ -26,7 +26,8 @@ export function auditIcon(icon,definition){
     }
     if(icon.id==='slide-deck'){
       const [back,middle]=icon.stack.rear.map(i=>nodes[i].attrs.d.match(/[-\d.]+/g).map(Number));
-      if(back[0]-middle[0]!==2||middle[1]-back[1]!==2||back[2]-middle[2]!==2||middle[3]-back[3]!==2)fail('STACK','Rear sheets must use the same two-unit offset');
+      const front=nodes[icon.stack.front].attrs;
+      if(back[0]-middle[0]!==2||middle[1]-back[1]!==2||back[2]-middle[2]!==2||middle[3]-back[3]!==2||middle[0]-Number(front.x)!==2||Number(front.y)-middle[1]!==2||back[3]-back[1]!==Number(front.height)||middle[3]-middle[1]!==Number(front.height))fail('STACK','Every sheet must retain its height and the same two-unit offset');
     }
   }
   if(icon.stack?.vertical){
@@ -45,8 +46,15 @@ export function auditIcon(icon,definition){
   }
   if(icon.id==='calipers'){
     for(const n of nodes.slice(0,2))if(pointsOf(n).some(p=>p.x>13+.02&&p.x<18-.02&&p.y>7&&p.y<13))fail('OCCLUSION','The beam is visible through the slider');
-    const expected=['M4 9V3L6 5V9','M14 7V5L16 3V7','M4 11V21H6V11','M14 13V21H16V13'];
-    if(nodes.slice(3,7).some((n,i)=>n.attrs.d!==expected[i]))fail('JUNCTION','Caliper jaws lost their parallel alignment or beam attachment');
+    const housing=nodes[2].attrs,hx=Number(housing.x),hy=Number(housing.y),hb=hy+Number(housing.height);
+    const beam=pointsOf(nodes[0]),beamTop=Math.min(...beam.map(p=>p.y)),beamBottom=Math.max(...beam.map(p=>p.y));
+    const roots=[beamTop,hy,beamBottom,hb];
+    for(const [i,jaw] of nodes.slice(3,7).entries()){
+      const points=pointsOf(jaw),start=points[0],end=points.at(-1);
+      if(Math.abs(start.y-roots[i])>.001||Math.abs(end.y-roots[i])>.001||Math.abs(end.x-start.x-2)>.001||((i===1||i===3)&&(start.x<hx||end.x>hx+Number(housing.width))))fail('JUNCTION','A jaw no longer meets its beam/slider boundary with a consistent width');
+    }
+    const lower=nodes.slice(5,7).map(jaw=>straightEdges(jaw).filter(e=>e.from.x===e.to.x));
+    if(lower.some(edges=>edges.length!==2)||lower.flat().some(e=>Math.max(e.from.y,e.to.y)!==21)||lower[1][0].from.x<=lower[0][1].from.x||lower[1][0].from.x<=hx)fail('JUNCTION','Opposing lower jaw faces must be parallel, separated and share a tip baseline');
     if(pointsOf(nodes[9]).some(p=>p.x<=13||p.x>=18||p.y<=7||p.y>=13))fail('CONTAINMENT','The display leaves the slider housing');
   }
   return {id:icon.id,failures,metrics:{accentGap:Number(gap.toFixed(4)),accentFraction:Number(fraction.toFixed(4)),view:icon.view,plural:icon.plural}};
@@ -63,9 +71,10 @@ export function selftest(definitions){
   test('rear edge through front sheet','slide-deck',(_,d)=>d.nodes[0].attrs.d='M7 3H21V15H4','OCCLUSION');
   test('misaligned stack','server',(_,d)=>d.nodes[1].attrs.x='3','STACK');
   test('missing plural stack','files',i=>delete i.stack,'STACK');
+  test('misaligned caliper jaw','calipers',(_,d)=>d.nodes[6].attrs.d='M14 13L15 21H17V13','JUNCTION');
   test('unregistered camera','processor',i=>i.view='perspective','VIEW');
   test('source drift','processor',(_,d)=>d.nodes[13].attrs.rx='0','SOURCE');
   test('out of frame','processor',(_,d)=>d.nodes[0].attrs.d='M12 20V25','FRAME');
   test('excess teal','processor',(_,d)=>d.accent=d.nodes[12],'BUDGET');
-  console.log('Slide audit selftest: 11 deliberately broken icons caught by their specific geometry rule.');
+  console.log('Slide audit selftest: 12 deliberately broken icons caught by their specific geometry rule.');
 }

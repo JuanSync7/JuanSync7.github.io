@@ -54,10 +54,10 @@ npm run build
 npm run slides:browser # native Chromium, run by the CI preview harness
 ```
 
-The audit selftest deliberately breaks eleven icons: a floating accent, detached
+The audit selftest deliberately breaks twelve icons: a floating accent, detached
 CPU pin, escaping wafer grid, beam through a slider, rear line through a front
 sheet, misaligned server, absent plural stack, unknown camera, source drift,
-out-of-frame line and excessive teal. Each must fail its own geometry rule;
+out-of-frame line, excessive teal and a tilted caliper jaw. Each must fail its own geometry rule;
 rejecting only the source hash would be insufficient. A changed export must also
 invalidate the review fingerprint.
 

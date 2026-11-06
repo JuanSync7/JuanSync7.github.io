@@ -172,6 +172,4 @@ and overview sheets. `SlideIcon` appears in the design-system ledger.
 From `astro/`, `npm run slides:export` regenerates the downloads; the build runs
 this automatically. `npm run slides:check` checks vectors and ZIP integrity, and
 `npm run slides:browser` checks the collection and exports in the existing browser
-harness. See [implementation notes](docs/design/slide-icons.md).
-
-Slide icon geometry, camera, occlusion, accent and per-icon review rules: [slide icons](docs/design/slide-icons.md).
+harness. See the [geometry, camera, accent and per-icon review rules](docs/design/slide-icons.md).
