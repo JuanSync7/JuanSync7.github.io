@@ -75,6 +75,25 @@ page lifecycle events and hot reload. Content starts visible, remains readable w
 and uses a static layout when reduced motion is requested. No global kill-all-trigger operation
 can disturb the rest of the site.
 
+The vault landing uses `landing-scroll.ts` for reversible ScrollTrigger motion. Scrolling moves
+and gently turns the existing paper stack, brings headings and feature cards into place, and draws
+section dividers. The chapter bar stays below the site header and its rail shows actual progress.
+Anchor links use native smooth scrolling; wheel, touch and keyboard scrolling keep browser control.
+Guides retain their quieter reading layout.
+
+`--pr-scroll-*` tokens in `styles/tokens/presentation.css` configure the sequence. `--pr-scroll-scrub`
+sets catch-up time; `--pr-scroll-reference` scales travel down on narrower layouts. The hero, title
+and card travel tokens set maximum pixel movement, `--pr-scroll-deck-turn` sets stack rotation and
+`--pr-scroll-card-shrink` sets the entry size reduction. The enter/settle percentage pairs place
+section and card transitions in the viewport. `--pr-scroll-clearance` leaves space below the
+sticky navigation; measured header heights set `--pr-scroll-inset` at runtime. The design-system
+token ledger displays all current values.
+
+The sequence animates transforms on its own elements and keeps reading text opaque. Reduced-motion
+changes revert every owned tween and observer immediately; enabling motion again rebuilds the
+sequence. The page remains readable without JavaScript, with no pin spacer or artificial scroll
+length. New scroll behavior must retain those properties.
+
 ## Verification
 
 From `astro/`, run `npm run check`, `npm run build`, `npm run vault:page` and
@@ -86,6 +105,11 @@ The browser check covers 1360, 768 and 390px widths; actual computed text/button
 all guide links; Astro cleanup; hover, keyboard, native disabled and popover controls; moved graph
 search; reduced motion; and no-JavaScript readability. Inspect the resulting screenshots as well
 as the assertions. A green build alone cannot establish a polished visual result.
+
+`scroll-check.mjs` additionally checks native scroll position, forward and reverse hero movement,
+sticky progress, anchor clearance, clickable paper links after reversal and live reduced-motion
+teardown. The artifact includes start, hero-exit and guide-entry viewport captures for desktop and
+phone widths, alongside the full-page views.
 
 | Failure question | Answer in this pattern | Held by |
 |---|---|---|

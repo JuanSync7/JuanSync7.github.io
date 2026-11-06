@@ -27,6 +27,8 @@ options, not taste.
   Keep the problem, purpose and useful next action clear before the technical detail.
 - Keep the established theme while making presentation pages more minimal, modern and sleek. Use
   purposeful transitions and section highlights; the user explicitly asked for GSAP or a suitable library.
+- The landing page should have a coordinated scrolling animation. Use scroll position to drive
+  transitions, with a readable static reduced-motion view and normal browser scrolling.
 - Titles, body text and comment lines must read as distinct levels. Keep comments readable instead of
   fading them away. The shared presentation roles and their checks hold the implemented contrast policy.
 - Reusable actions may have a paper-written, retro-modern, three-dimensional/isometric feel. Keep depth

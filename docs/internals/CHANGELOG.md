@@ -2,6 +2,12 @@
 
 ## 2026-11-06
 
+The vault landing now has reversible GSAP scroll motion: its paper stack moves with the hero,
+headings and feature cards settle into place, and section dividers draw with scroll progress. A
+sticky chapter bar tracks the page and keeps anchor headings clear of both navigation rows.
+Native scrolling, opaque reading text, reduced-motion switching and Astro cleanup remain intact;
+browser checks exercise forward/back movement, progress, anchor clearance and clickable paper links.
+
 The vault introduction now leads with its promise and benefits, with five focused guides for the
 details. Functional paper links add restrained depth; shared paper, signal and outline buttons
 provide keyboard, disabled and press states. Scoped GSAP motion highlights sections and reveals
