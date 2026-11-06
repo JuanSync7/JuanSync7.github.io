@@ -40,5 +40,7 @@ import ${name} from '../components/ui/${name}.tsx';\n---\n${usage}`} />
   ))}
 </div>
 <p class="ds-note">Legacy dependencies: styles-core.css, styles-sections.css and tokens/index.css. PurpleSkyTransition also uses hooks/useInView.ts. These previews retain their original styling; canvas and timed legacy effects are opt-in by opening this section.</p>
+<CodeExample title="Source · src/styles/styles-core.css" code={core} />
+<CodeExample title="Source · src/styles/styles-sections.css" code={sections} />
 <SourceFiles paths={['components/ui/page-zoom.ts', 'components/ui/page-zoom.css']} />
 <p class="ds-note">PageZoom belongs to the older Layout.astro and its data-zoom links. Night pages use NightPage’s Astro transitions instead. It is not installed on this page.</p>

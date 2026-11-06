@@ -73,6 +73,10 @@ try {
   assert.equal(await page.locator('h1').count(), 1);
   assert.equal(await page.locator('section[data-ds-section]').count(), 7);
   await page.screenshot({ path: join(out, 'desktop.png') });
+  for (const id of ['foundations', 'components']) {
+    await page.locator(`#${id}`).evaluate((section) => section.scrollIntoView({ block: 'start' }));
+    await page.screenshot({ path: join(out, `desktop-${id}.png`) });
+  }
 
   // The copied payload must equal the complete file, including Astro fences and CSS.
   const starter = page
@@ -117,9 +121,15 @@ try {
   await page.waitForFunction(() => navigator.clipboard.readText().then((text) => text === 'var(--nt-ground)'));
 
   await page.setViewportSize({ width: 390, height: 844 });
+  await page.waitForFunction(() => document.querySelector('[data-copy-status]')?.textContent === '');
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: join(out, 'phone.png') });
-  await page.locator('#patterns').scrollIntoViewIfNeeded();
+  await page.locator('#foundations').evaluate((section) => section.scrollIntoView({ block: 'start' }));
+  await page.screenshot({ path: join(out, 'phone-foundations.png') });
+  await page
+    .locator('#patterns .ds-code')
+    .first()
+    .evaluate((panel) => panel.scrollIntoView({ block: 'start' }));
   await page.screenshot({ path: join(out, 'phone-code.png') });
   assert.ok(
     await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),

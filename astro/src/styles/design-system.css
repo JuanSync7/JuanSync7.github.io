@@ -70,6 +70,9 @@
   border-bottom: 1px solid var(--nt-line);
 }
 .ds-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: var(--nt-thumb-min);
   padding: var(--hf-space-10);
   color: var(--nt-signal);
@@ -252,6 +255,7 @@
   margin-top: auto;
 }
 .ds-code {
+  scroll-margin-top: var(--hf-space-20);
   min-width: 0;
   border: 1px solid var(--nt-code-line);
   border-radius: var(--hf-radius-md);
@@ -656,6 +660,9 @@
     grid-template-columns: minmax(0, 1fr);
   }
   .ds-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: var(--nt-thumb-min);
   }
   .ds-page-grid,
@@ -696,4 +703,10 @@
 .ds-motion-preview .hf-starfield-stage {
   width: 100%;
   height: 100%;
+}
+
+@media (max-width: 640px) {
+  .ds-swatches {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
