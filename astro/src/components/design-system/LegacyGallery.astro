@@ -1,0 +1,44 @@
+---
+import CodeExample from './CodeExample.astro';
+import core from '../../styles/styles-core.css?raw';
+import sections from '../../styles/styles-sections.css?raw';
+import SourceFiles from './SourceFiles.astro';
+import MotionPreview from './MotionPreview';
+import NotGateDivider from '../ui/NotGateDivider';
+import SegmentedBar from '../ui/SegmentedBar';
+import Placeholder from '../ui/Placeholder';
+const components = [
+  ['NeonText', '<NeonText client:visible>NEON_TEXT</NeonText>'],
+  ['KineticWord', '<KineticWord word="design" altWord="build" client:visible />'],
+  ['StrikeThrough', '<StrikeThrough client:visible>First draft</StrikeThrough>'],
+  ['NotGateDivider', '<NotGateDivider label="section.boundary" />'],
+  ['SegmentedBar', '<SegmentedBar value={65} max={100} segments={20} />'],
+  ['Placeholder', '<Placeholder name="module" />'],
+  ['StarfieldStage', '<StarfieldStage client:visible />'],
+  ['PurpleSkyTransition', '<PurpleSkyTransition client:visible />'],
+  ['LofiFooterFade', '<LofiFooterFade client:visible />'],
+  ['NebulaStars', '<NebulaStars client:visible />'],
+  ['ZoomSwapDemo', '<ZoomSwapDemo client:visible />'],
+  ['CubeSwapDemo', '<CubeSwapDemo client:visible />'],
+];
+---
+<style is:global set:html={`@scope (.ds-legacy) { ${core} ${sections} }`} />
+<div class="ds-legacy-grid">
+  {components.map(([name, usage]) => (
+    <article class="ds-card">
+      <h3>{name}</h3>
+      <div class={`ds-stage ds-legacy-stage ds-preview-${name}`}>
+        {!['NotGateDivider', 'SegmentedBar', 'Placeholder'].includes(name) && <MotionPreview name={name} client:visible />}
+        {name === 'NotGateDivider' && <NotGateDivider label="section.boundary" />}
+        {name === 'SegmentedBar' && <SegmentedBar value={65} />}
+        {name === 'Placeholder' && <Placeholder name="module" />}
+      </div>
+      <CodeExample title={`${name} · usage`} code={`---
+import ${name} from '../components/ui/${name}.tsx';\n---\n${usage}`} />
+      <SourceFiles paths={[`components/ui/${name}.tsx`, ...(name === 'ZoomSwapDemo' ? ['components/ui/zoom-swap.css'] : name === 'CubeSwapDemo' ? ['components/ui/cube-swap.css'] : [])]} />
+    </article>
+  ))}
+</div>
+<p class="ds-note">Legacy dependencies: styles-core.css, styles-sections.css and tokens/index.css. PurpleSkyTransition also uses hooks/useInView.ts. These previews retain their original styling; canvas and timed legacy effects are opt-in by opening this section.</p>
+<SourceFiles paths={['components/ui/page-zoom.ts', 'components/ui/page-zoom.css']} />
+<p class="ds-note">PageZoom belongs to the older Layout.astro and its data-zoom links. Night pages use NightPage’s Astro transitions instead. It is not installed on this page.</p>

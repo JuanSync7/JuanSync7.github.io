@@ -9,3 +9,6 @@ figures-out/
 
 # Generated hardware SVGs and contact sheets
 hardware-out/
+
+# Design system browser captures
+design-system-out/
