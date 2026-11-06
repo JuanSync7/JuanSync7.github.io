@@ -67,6 +67,9 @@ async function ready(page, expected) {
   assert.notEqual(actual, 'failed', 'The presentation engine must initialize successfully');
   if (expected) assert.equal(actual, expected);
   await page.evaluate(() => document.fonts.ready);
+  // Astro's new DOM is ready before the old/new visual snapshots finish crossfading.
+  await page.waitForFunction(() => !document.documentElement.hasAttribute('data-astro-transition')
+    && !document.documentElement.hasAttribute('data-astro-transition-fallback'));
 }
 
 async function noOverflow(page, label) {
