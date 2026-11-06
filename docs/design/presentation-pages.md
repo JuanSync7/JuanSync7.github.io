@@ -12,10 +12,9 @@ Use a presentation page to introduce a system and help a reader choose where to 
 landing page states the problem, outcome and main benefits; focused guides carry the architecture,
 rules, schema and examples. The vault pages are the first implementation of this pattern.
 
-The user's canonical website preferences live in the private vault's
-`Notes/Decks/Designing website pages.md` (R-WEB-1–8). This document describes the public
-implementation, not a private-data synchronization mechanism. Review the canonical rules during
-website work; no private file enters this site's build or runtime.
+This document describes the public implementation. Review the user's applicable website guidance
+during website work; private policy records stay in their own system. No private file enters this
+site's build or runtime.
 
 ## Template and hierarchy
 

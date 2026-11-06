@@ -35,8 +35,8 @@ options, not taste.
 
 For new system presentation pages, start from `PresentationLayout.astro` and `PaperAction.astro`.
 Use `/design-system/#paper-actions` and the landing-page recipe there. Run the presentation source,
-built-page and browser checks. The canonical writing/organization rules are maintained in the vault's
-`Notes/Decks/Designing website pages.md`; website builds do not import that private file.
+built-page and browser checks. Retrieve applicable writing and organization guidance through the
+user's task briefing; private policy records stay outside the website build.
 
 **The reference.** "My site, juansync.dev, is the reference for my taste." (3 Oct 2026)
 "Frontend design needs taste, which AI lacks. I set the direction and the templates; AI
