@@ -121,36 +121,28 @@ async function roleContrast(page) {
 }
 
 async function heroGeometry(page, width) {
-  await page.locator('.vault-stack-stage').scrollIntoViewIfNeeded();
-  const geometry = await page.locator('.vault-stack-stage').evaluate((stage) => {
-    const actions = [...stage.querySelectorAll('[data-paper-action]')];
-    return {
-      actions: actions.map((action) => {
-        const label = action.querySelector('strong');
-        const bounds = label?.getBoundingClientRect();
-        const hit = bounds && document.elementFromPoint(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
-        return {
-          label: label?.textContent, reachable: Boolean(hit && action.contains(hit)), bottom: action.getBoundingClientRect().bottom,
-          labelBounds: bounds?.toJSON(), hit: hit && `${hit.tagName}.${hit.className}`,
-          hitStack: bounds && document.elementsFromPoint(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2)
-            .slice(0, 6).map((node) => `${node.tagName}.${node.className}`),
-        };
-      }),
-      captionTop: stage.querySelector('.vault-stack-caption')?.getBoundingClientRect().top,
-      scrollY, viewportHeight: innerHeight,
-    };
-  });
-  assert.equal(geometry.actions.length, 3, `${width}px: all three paper links are present`);
-  for (const action of geometry.actions) assert(action.reachable, `${width}px: the ${action.label} label is exposed and hits its own action: ${JSON.stringify(geometry)}`);
-  assert(Number.isFinite(geometry.captionTop), 'The stack has a readable caption');
-  assert(geometry.captionTop >= Math.max(...geometry.actions.map((action) => action.bottom)), `${width}px: the caption stays below every paper-link box`);
+  const cabinet = page.locator('[data-cabinet]');
+  await cabinet.scrollIntoViewIfNeeded();
+  await page.waitForFunction(() => document.querySelector('[data-cabinet]')?.dataset.cabinetReady === 'true');
+  await page.locator('[data-cabinet] canvas[data-ready="1"]').waitFor();
+  assert.equal(await page.locator('[data-cabinet] canvas').getAttribute('data-error'), null);
+  assert.equal(await cabinet.locator('[data-cabinet-link]').count(), 3);
+  for (const action of await cabinet.locator('[data-cabinet-link]').all()) {
+    const box = await action.locator('[data-folder-label]').boundingBox();
+    assert(box && box.width > 0 && box.height > 0);
+    assert(await action.locator('[data-folder-label]').evaluate((label) => {
+      const box = label.getBoundingClientRect();
+      const hit = document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2);
+      return Boolean(hit && label.closest('a').contains(hit));
+    }), `${width}px: each folder label hits its own real link`);
+  }
   const lines = await page.locator('.vault-hero h1').evaluate((heading) => Math.round(heading.getBoundingClientRect().height / parseFloat(getComputedStyle(heading).lineHeight)));
-  assert(lines > 0 && lines <= contract.maxHeroHeadlineLines, `${width}px: headline uses ${lines} lines; maximum is ${contract.maxHeroHeadlineLines}`);
+  assert(lines > 0 && lines <= contract.maxHeroHeadlineLines);
 }
 
 try {
   browser = await chromium.launch();
-  const context = await browser.newContext({ viewport: { width: 1360, height: 960 }, reducedMotion: 'no-preference' });
+  const context = await browser.newContext({ viewport: { width: 1360, height: 960 }, deviceScaleFactor: 2, reducedMotion: 'no-preference' });
   const page = watch(await context.newPage());
   await page.goto(`${base}/vault/`);
   await ready(page, 'ready');
@@ -175,9 +167,11 @@ try {
     await page.mouse.move(0, 0);
     await heroGeometry(page, width);
     await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
-    await page.waitForFunction(() => Math.abs(new DOMMatrix(getComputedStyle(document.querySelector('[data-scroll-stack]')).transform).m42) < 0.2);
+    await page.waitForFunction(() => Number(document.querySelector('[data-cabinet]').dataset.cabinetDrawer) < 0.75);
     await page.screenshot({ path: join(output, `vault-${width}.png`), fullPage: true });
   }
+
+  await page.locator('[data-cabinet] canvas').screenshot({ path: join(output, 'cabinet-rest.png') });
 
   // A scoped Astro swap must release the previous page, not leave its motion owners alive.
   await checkScrollJourney(page, output, [contract.viewports[0], contract.viewports.at(-1)]);

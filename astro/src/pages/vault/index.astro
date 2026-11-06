@@ -1,16 +1,12 @@
 ---
 import PresentationLayout from '../../layouts/PresentationLayout.astro';
 import PaperAction from '../../components/ui/PaperAction.astro';
+import VaultFileCabinet from '../../components/vault/VaultFileCabinet';
 import SlideIcon from '../../components/ui/SlideIcon';
 import { VAULT_GUIDES } from '../../data/vault-pages';
 import type { SlideIconId } from '../../data/slide-icons';
 import '../../components/vault/vault-overview.css';
 
-const sheets = [
-  { href: '/vault/architecture/', label: '01 · source', title: 'Keep the account.', icon: 'files', variant: 'outline' },
-  { href: '/vault/knowledge-graph/', label: '02 · connections', title: 'Find the context.', icon: 'branch', variant: 'signal' },
-  { href: '/vault/search/', label: '03 · recall', title: 'Return to evidence.', icon: 'search', variant: 'paper' },
-] as const;
 const icons: Record<string, SlideIconId> = { architecture: 'database', 'knowledge-graph': 'branch', search: 'search', guardrails: 'shield-check' };
 const benefits = [
   ['Keep the why', 'Decisions, alternatives and lessons stay beside the work that taught them.'],
@@ -31,17 +27,7 @@ const benefits = [
       </div>
       <p class="vault-boundary pr-comment" data-reveal>A public tour with made-up examples. The private vault stays private.</p>
     </div>
-    <div class="vault-stack-stage" data-reveal>
-      <ol class="vault-stack" aria-label="Three ways into the vault" data-scroll-stack>
-        {sheets.map((sheet, i) => <li class="vault-stack-item" style={`--sheet-index:${i}`}>
-          <PaperAction href={sheet.href} variant={sheet.variant} class="vault-sheet">
-            <span class="vault-sheet-copy"><span class="vault-sheet-meta">{sheet.label}</span><strong>{sheet.title}</strong></span>
-            <SlideIcon slot="icon" id={sheet.icon} tone={sheet.variant === 'paper' ? 'paper' : 'night'} decorative />
-          </PaperAction>
-        </li>)}
-      </ol>
-      <p class="vault-stack-caption pr-comment">// a short way in · depth when you need it</p>
-    </div>
+    <div class="vault-cabinet-stage" data-reveal><VaultFileCabinet client:load /></div>
   </header>
 
   <nav class="vault-chapters nt-wrap pr-comment" aria-label="The overview" data-scroll-chapters>
