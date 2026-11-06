@@ -45,7 +45,9 @@
     "slides:selftest": "node scripts/slides/checks/selftest.mjs && python3 scripts/slides/checks/guard.py --selftest",
     "slides:extension": "python3 scripts/slides/checks/extensibility.py",
     "slides:eval-check": "node scripts/slides/evals/check-report.mjs",
-    "slides:brief": "node scripts/slides/brief.mjs"
+    "slides:brief": "node scripts/slides/brief.mjs",
+    "voxel:check": "node scripts/voxel/check.mjs && node scripts/voxel/motion.mjs",
+    "voxel:browser": "node scripts/voxel/browser.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",
