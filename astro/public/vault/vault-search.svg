@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated from public schematic data by scripts/vault/export.mjs. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="551" viewBox="0 0 760 551" role="img" aria-labelledby="vault-search-title vault-search-desc">
+<title id="vault-search-title">Experience vault / search</title>
+<desc id="vault-search-desc">arrows = the next retrieval step · lit = inspecting the source and its trust The current navigator combines exact name resolution with weighted token search, then exposes graph routes and source trust for inspection. This describes retrieval, without implying vector search or an automatically generated answer. Resolve: Exact paths and aliases identify records; ambiguous names remain candidates rather than being silently merged. Rank: Word matches in titles, aliases, summaries, bodies and grouping context produce candidate pages. Common metadata keys are excluded from body terms. Navigate: Inspect the candidate’s groups, backlinks and supported typed relations. A reader or calling agent chooses which routes to follow. Read: Open the evidence and keep its authority, inference, review state and freshness visible. Select: Choose a bounded set of relevant sources for the task. Search and navigation do not establish semantic answer correctness.</desc>
+<style>
+text{font-family:'Geist', system-ui, sans-serif;fill:#e6e8ee}
+.heading{font-family:'Space Grotesk', 'Geist', sans-serif;font-size:21px;font-weight:600}.meta,.label{font-family:'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;font-size:11px;fill:#a3a9ba}
+.name{font-size:14px;font-weight:600}.sub{font-family:'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;font-size:11px;fill:#a3a9ba}
+.caption{font-size:12px;fill:#a3a9ba}.reading{font-size:12px;fill:#2dd4bf}
+.wire{fill:none;stroke:#2dd4bf;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+</style>
+<rect width="760" height="551" fill="#07080c"/>
+<text x="24" y="36" class="heading" text-anchor="start">Experience vault / search</text>
+<text x="24" y="60" class="meta" text-anchor="start">Public system overview · schematic examples · no vault connection</text>
+<text x="24" y="84" class="meta" text-anchor="start">arrows = the next retrieval step · lit = inspecting the source and its trust</text>
+<defs>
+<marker id="vault-search-arrow" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#2dd4bf"/></marker>
+<marker id="vault-search-tail" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L6 3 L0 6 Z" fill="#2dd4bf"/></marker>
+</defs>
+<g transform="translate(0 100)">
+<path class="wire" d="M212 60 L284 60" marker-end="url(#vault-search-arrow)"/>
+<path class="wire" d="M476 60 L548 60" marker-end="url(#vault-search-arrow)"/>
+<path class="wire" d="M644 100 L644 220" marker-end="url(#vault-search-arrow)"/>
+<path class="wire" d="M548 260 L476 260" marker-end="url(#vault-search-arrow)"/>
+<path class="wire" d="M284 260 L212 260" marker-end="url(#vault-search-arrow)"/>
+<text x="248" y="46" class="label" text-anchor="middle">lookup</text>
+<text x="512" y="46" class="label" text-anchor="middle">rank</text>
+<text x="660" y="159" class="label" text-anchor="start">inspect</text>
+<text x="512" y="246" class="label" text-anchor="middle">follow</text>
+<text x="248" y="246" class="label" text-anchor="middle">choose</text>
+<rect x="24" y="24" width="184" height="72" rx="10" fill="#0b0d13" stroke="#3a4054"/>
+<text x="36" y="54.5" class="name" text-anchor="start">Ask a question</text>
+<text x="36" y="77.5" class="sub" text-anchor="start">names + useful terms</text>
+<rect x="288" y="24" width="184" height="72" rx="10" fill="#0b0d13" stroke="#3a4054"/>
+<text x="300" y="54.5" class="name" text-anchor="start">Resolve names</text>
+<text x="300" y="77.5" class="sub" text-anchor="start">paths + aliases</text>
+<rect x="552" y="24" width="184" height="72" rx="10" fill="#0b0d13" stroke="#3a4054"/>
+<text x="564" y="54.5" class="name" text-anchor="start">Rank candidates</text>
+<text x="564" y="77.5" class="sub" text-anchor="start">weighted word matches</text>
+<rect x="552" y="224" width="184" height="72" rx="10" fill="#0b0d13" stroke="#3a4054"/>
+<text x="564" y="254.5" class="name" text-anchor="start">Inspect graph routes</text>
+<text x="564" y="277.5" class="sub" text-anchor="start">groups + typed links</text>
+<rect x="288" y="224" width="184" height="72" rx="10" fill="#0c1514" stroke="#2dd4bf"/>
+<text x="300" y="254.5" class="name" text-anchor="start">Read the evidence</text>
+<text x="300" y="277.5" class="sub" text-anchor="start">source + trust + age</text>
+<rect x="24" y="224" width="184" height="72" rx="10" fill="#0b0d13" stroke="#3a4054"/>
+<text x="36" y="254.5" class="name" text-anchor="start">Select context</text>
+<text x="36" y="277.5" class="sub" text-anchor="start">bounded to the task</text>
+</g>
+<text x="24" y="460" class="reading" text-anchor="start">Reading the map</text>
+<text x="24" y="481" class="caption" text-anchor="start">The current navigator combines exact name resolution with weighted token search, then exposes graph</text>
+<text x="24" y="498" class="caption" text-anchor="start">routes and source trust for inspection. This describes retrieval, without implying vector search or</text>
+<text x="24" y="515" class="caption" text-anchor="start">an automatically generated answer.</text>
+</svg>

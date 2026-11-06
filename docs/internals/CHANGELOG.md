@@ -2,6 +2,13 @@
 
 ## 2026-11-06
 
+The vault has a dedicated `/vault/` landing page, linked from the shared navigation and home system
+map. It explains the purpose, main areas, component responsibilities, knowledge graph, progressive
+discovery, search, schemas, rules and checks. Three diagrams have matching downloadable SVGs; a
+synthetic browser-only graph demonstrates ranking and one-hop navigation. The public page imports
+no private vault data and makes no connection to it. Source, diagram and built-page checks keep that
+boundary explicit.
+
 Slide icons adds 24 simple computing, systems, data and research marks for presentations. Transparent SVGs share a 64-unit grid and one stroke family, with dark/light ink and teal-accent/monochrome treatments. The Lab collection supports filtering, search, clipboard export and downloads of each icon or the complete 96-variant set. Build-time exports, independent ZIP checks and browser checks keep the assets and interface in step.
 
 ## 2026-11-05

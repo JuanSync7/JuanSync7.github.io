@@ -9,3 +9,6 @@ and their maintained vocabulary.
 
 [Hardware atlas](design/hardware-atlas.md) documents the SVG collection, figure template,
 reference card, exports and checks.
+
+[Vault overview](design/vault-overview.md) describes the public landing page, synthetic graph search,
+diagram exports, maintenance checks and the separation from private vault data.

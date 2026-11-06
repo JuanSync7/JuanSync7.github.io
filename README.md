@@ -64,7 +64,14 @@ npm run check        # astro check + eslint
 npm run lint
 ```
 
-Requires Node 20 (matches CI).
+Requires Node 22 (matches CI; the data checks use native TypeScript loading).
+
+## Vault system overview
+
+`/vault/` explains the private experience vault without publishing or connecting its records.
+It includes purpose and architecture, three downloadable diagrams, a synthetic local search
+example, metadata, rules, checks and development status. The [maintainer guide](docs/design/vault-overview.md)
+owns its public boundary, content and diagram workflow, checks and verification limits.
 
 ## Deployment
 
