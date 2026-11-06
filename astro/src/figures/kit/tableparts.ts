@@ -3,7 +3,17 @@ import type { Surface } from './hardware/types';
 import type { Vec3 } from './camera';
 import { beam } from './bodies';
 
-export type FurnitureFinish = 'top' | 'frame' | 'panel' | 'metal' | 'recess' | 'inlay' | 'foot' | 'tile';
+export type FurnitureFinish =
+  | 'top'
+  | 'frame'
+  | 'panel'
+  | 'metal'
+  | 'recess'
+  | 'inlay'
+  | 'foot'
+  | 'tile'
+  | 'wall'
+  | 'floor';
 export interface TableSurface extends Surface {
   finish?: FurnitureFinish;
 }

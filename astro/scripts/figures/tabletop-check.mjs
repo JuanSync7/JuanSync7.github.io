@@ -7,6 +7,7 @@ import { pathToFileURL } from 'node:url';
 import { build } from 'esbuild';
 import { Box3, PerspectiveCamera, Vector3 } from 'three';
 import { semanticCheck } from './tabletop-semantics.mjs';
+import { checkRoom, checkedRooms } from './tabletop-room-check.mjs';
 
 const dir = mkdtempSync(join(tmpdir(), 'tabletop-check-'));
 function rng(seed) {
@@ -46,7 +47,7 @@ try {
   await build({
     stdin: {
       contents:
-        "export { default, arrange, object } from './src/figures/templates/pixel-still'; export { webglAvailable } from './src/figures/defineThree'; export {THEMES,GAP,tabletop,tableView,TABLE_ASPECT} from './src/figures/kit/tabletop'; export {PROP_KINDS} from './src/figures/kit/tableprops';",
+        "export { default, arrange, object } from './src/figures/templates/pixel-still'; export { webglAvailable } from './src/figures/defineThree'; export {THEMES,GAP,tabletop,tableView,TABLE_ASPECT} from './src/figures/kit/tabletop'; export {PROP_KINDS} from './src/figures/kit/tableprops'; export {roomPlan} from './src/figures/kit/roomplan'; export {roomModels} from './src/figures/kit/tableroom'; export {roomView,roomProject,roomVisible,roomControls} from './src/figures/kit/roomview';",
       resolveDir: process.cwd(),
       loader: 'ts',
     },
@@ -55,6 +56,7 @@ try {
     format: 'esm',
     outfile: out,
   });
+  const sceneModule = await import(pathToFileURL(out));
   const {
     default: template,
     arrange,
@@ -66,7 +68,7 @@ try {
     tableView,
     TABLE_ASPECT,
     PROP_KINDS,
-  } = await import(pathToFileURL(out));
+  } = sceneModule;
   const originalDocument = globalThis.document;
   let released = 0;
   try {
@@ -96,6 +98,7 @@ try {
     const p = arrange(rng(seed ^ 0x9e3779b9), theme);
     themeCounts.set(p.theme.id, (themeCounts.get(p.theme.id) ?? 0) + 1);
     semanticCheck(p);
+    checkRoom(p, sceneModule);
     orientations.get(p.theme.id).add(p.mirror);
     assert.deepEqual(p, arrange(rng(seed ^ 0x9e3779b9), theme), `non-deterministic seed ${seed}`);
     assert(p.items.length >= p.theme.minItems && p.items.length <= p.theme.targetItems, `bad count, seed ${seed}`);
@@ -209,6 +212,7 @@ try {
   }
   assert.equal(kinds.size, PROP_KINDS.length);
   assert.equal(themeCounts.size, 9);
+  assert.equal(checkedRooms.size, 27, 'All seeded room construction variants must be covered');
   const furniture = new Set(THEMES.map((t) => JSON.stringify(tabletop(arrange(rng(42), t.id)).surfaces)));
   assert.equal(furniture.size, 9, 'Each theme needs its own table geometry');
   for (const t of THEMES) {
@@ -220,7 +224,7 @@ try {
   assert(layouts.size > 1300);
   assert(occlusions > 1000, 'Eye-level density should allow natural visual occlusion');
   console.log(
-    `Tabletop passed: ${cases.length} themed layouts, ${objects} objects, ${kinds.size} prop kinds across all 9 themes; deterministic, on-table, eye-height camera, solid lit meshes, no physical overlaps (${occlusions} natural occlusions).`,
+    `Tabletop passed: ${cases.length} layouts, ${objects} objects, ${kinds.size} props, ${checkedRooms.size} seeded rooms; deterministic, flush to back wall, no physical overlaps, and framed across the full 180° arc in perspective and isometric views.`,
   );
 } finally {
   rmSync(dir, { recursive: true, force: true });

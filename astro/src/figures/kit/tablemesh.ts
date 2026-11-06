@@ -1,5 +1,6 @@
 import {
   BufferGeometry,
+  Color,
   DoubleSide,
   Float32BufferAttribute,
   Group,
@@ -14,7 +15,7 @@ import type { FurnitureFinish, PropModel } from './tableparts';
 import type { PropKind } from './tableprops';
 import type { ThemeId } from './tablethemes';
 
-export type TableObject = PropKind | 'table';
+export type TableObject = PropKind | 'table' | 'room';
 export function tableFinish(
   kind: TableObject,
   solid: number,
@@ -24,11 +25,31 @@ export function tableFinish(
   tone: NightKey;
   roughness: number;
   metalness: number;
+  strength: number;
 } {
   let tone: NightKey = 'inkMuted',
     roughness = 0.75,
-    metalness = 0;
-  if (kind === 'table') {
+    metalness = 0,
+    strength = 1;
+  if (kind === 'room') {
+    tone =
+      detail === 'wall'
+        ? 'panel'
+        : detail === 'floor'
+          ? 'panel2'
+          : detail === 'recess'
+            ? 'ground2'
+            : detail === 'metal'
+              ? 'inkFaint'
+              : detail === 'inlay'
+                ? 'line4'
+                : detail === 'tile'
+                  ? 'line2'
+                  : 'line3';
+    roughness = detail === 'metal' ? 0.35 : 0.95;
+    metalness = detail === 'metal' ? 0.2 : 0;
+    strength = detail === 'wall' ? 0.4 : detail === 'floor' ? 0.22 : detail === 'tile' ? 0.5 : 1;
+  } else if (kind === 'table') {
     tone = 'line4';
     roughness = 0.9;
     if (theme === 'lab' || theme === 'kitchen') {
@@ -81,13 +102,16 @@ export function tableFinish(
     roughness = 0.35;
     metalness = 0.25;
   }
-  return { tone, roughness, metalness };
+  return { tone, roughness, metalness, strength };
 }
 
 /** Only drawn markings survive. Polygon seams and hidden wireframe edges are omitted. */
 export function solidMesh(model: PropModel, kind: TableObject, theme: ThemeId): Group {
   const group = new Group(),
-    buckets = new Map<string, { tone: NightKey; positions: number[]; roughness: number; metalness: number }>();
+    buckets = new Map<
+      string,
+      { tone: NightKey; positions: number[]; roughness: number; metalness: number; strength: number }
+    >();
   const lines: number[] = [];
   for (const surface of model.surfaces) {
     const { points, face, solid } = surface,
@@ -101,12 +125,13 @@ export function solidMesh(model: PropModel, kind: TableObject, theme: ThemeId): 
       continue;
     }
     const finish = tableFinish(kind, solid, theme, surface.finish);
-    const key = `${finish.tone}:${finish.roughness}:${finish.metalness}`;
+    const key = `${finish.tone}:${finish.roughness}:${finish.metalness}:${finish.strength}`;
     const bucket = buckets.get(key) ?? {
       tone: finish.tone,
       positions: [],
       roughness: finish.roughness,
       metalness: finish.metalness,
+      strength: finish.strength,
     };
     buckets.set(key, bucket);
     if (first)
@@ -116,7 +141,7 @@ export function solidMesh(model: PropModel, kind: TableObject, theme: ThemeId): 
         if (a && b) bucket.positions.push(...first, ...a, ...b);
       }
   }
-  for (const { tone, positions, roughness, metalness } of buckets.values()) {
+  for (const { tone, positions, roughness, metalness, strength } of buckets.values()) {
     const geometry = new BufferGeometry();
     geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
     geometry.computeVertexNormals();
@@ -124,7 +149,7 @@ export function solidMesh(model: PropModel, kind: TableObject, theme: ThemeId): 
       new Mesh(
         geometry,
         new MeshStandardMaterial({
-          color: hexOf(tone),
+          color: new Color(hexOf(tone)).multiplyScalar(strength),
           roughness,
           metalness,
           side: DoubleSide,

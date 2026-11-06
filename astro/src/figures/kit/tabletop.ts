@@ -25,6 +25,7 @@ export interface TableScene {
   dist: number;
   lit: number;
   mirror: number;
+  roomVariant: number;
 }
 export const GAP = 0.075;
 export function tableView(p: TableScene, w = TABLE_ASPECT, h = 1): Camera {
@@ -98,6 +99,7 @@ function compose(rng: Rng, theme: TableTheme): TableScene | null {
       dist: 14,
       lit: 0,
       mirror,
+      roomVariant: 0,
     };
     const intents = recipe(theme.id, rng, mirror);
     let valid = true;
@@ -128,6 +130,7 @@ function compose(rng: Rng, theme: TableTheme): TableScene | null {
     )
       p.dist += 0.25;
     p.lit = Math.floor(rng() * p.items.length);
+    p.roomVariant = Math.floor(rng() * 3);
     return p;
   }
   return null;

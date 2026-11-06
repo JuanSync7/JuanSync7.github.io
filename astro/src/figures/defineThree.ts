@@ -1,4 +1,14 @@
-import { Color, Line, Mesh, PerspectiveCamera, Scene, WebGLRenderer, type Material, type Object3D } from 'three';
+import {
+  Color,
+  Line,
+  Mesh,
+  OrthographicCamera,
+  PerspectiveCamera,
+  Scene,
+  WebGLRenderer,
+  type Material,
+  type Object3D,
+} from 'three';
 import { defineCanvasFigure } from './define';
 import { mulberry32, type Rng } from './kit/rng';
 import type { CanvasFrame, Figure, FigureInstance, FigureMeta, FrameInput } from './types';
@@ -15,6 +25,7 @@ export interface ThreeEnv {
 export interface ThreeFrame<S> extends FrameInput {
   scene: Scene;
   camera: PerspectiveCamera;
+  selectCamera(projection: 'perspective' | 'orthographic'): PerspectiveCamera | OrthographicCamera;
   state: S;
   w: number;
   h: number;
@@ -67,6 +78,8 @@ export function defineThreeFigure<S>(spec: ThreeFigureSpec<S>): Figure {
       renderer.setClearColor(new Color(0x000000), 0);
       const scene = new Scene();
       const camera = new PerspectiveCamera(30, 1, 0.1, 60);
+      const parallel = new OrthographicCamera(-1, 1, 1, -1, 0.1, 120);
+      let active: PerspectiveCamera | OrthographicCamera = camera;
       const state = build({ scene, camera, rng: mulberry32(spec.seed) });
       let w = 1;
       let h = 1;
@@ -80,8 +93,12 @@ export function defineThreeFigure<S>(spec: ThreeFigureSpec<S>): Figure {
           camera.updateProjectionMatrix();
         },
         frame(input: FrameInput): string | void {
-          const read = update({ ...input, scene, camera, state, w, h });
-          if (!input.unseen) renderer.render(scene, camera);
+          const selectCamera = (projection: 'perspective' | 'orthographic'): PerspectiveCamera | OrthographicCamera => {
+            active = projection === 'orthographic' ? parallel : camera;
+            return active;
+          };
+          const read = update({ ...input, scene, camera, selectCamera, state, w, h });
+          if (!input.unseen) renderer.render(scene, active);
           return read;
         },
         dispose(): void {

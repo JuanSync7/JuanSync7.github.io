@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import FigureCanvas from '../ui/FigureCanvas';
+import RoomStage from './RoomStage';
 import { loadTemplate } from '../../figures/registry';
 import type { Template } from '../../figures/defineTemplate';
 import './template-lab.css';
@@ -36,7 +37,9 @@ export default function TemplateLab({ template }: Props) {
 
   useEffect(() => {
     let live = true;
-    loadTemplate(template).then((t) => live && setTpl(t)).catch((err: unknown) => console.error('lab:', err));
+    loadTemplate(template)
+      .then((t) => live && setTpl(t))
+      .catch((err: unknown) => console.error('lab:', err));
     const s = readSeed();
     setSeed(s);
     setDraft(String(s));
@@ -74,9 +77,13 @@ export default function TemplateLab({ template }: Props) {
 
   return (
     <div className="lab">
-      <div className="lab-main" style={{ aspectRatio: tpl.aspect }}>
-        <FigureCanvas key={id} id={id} />
-      </div>
+      {template === 'pixel-still' ? (
+        <RoomStage id={id} aspect={tpl.aspect} />
+      ) : (
+        <div className="lab-main" style={{ aspectRatio: tpl.aspect }}>
+          <FigureCanvas key={id} id={id} />
+        </div>
+      )}
       <div className="lab-bar">
         <div className="lab-id" aria-live="polite">
           <span className="lab-variant">{inst.variant}</span>
@@ -91,14 +98,31 @@ export default function TemplateLab({ template }: Props) {
             go(Number(draft));
           }}
         >
-          <button type="button" className="lab-btn" onClick={() => go(seed - 1)} disabled={seed === 0} aria-label="Previous seed">
+          <button
+            type="button"
+            className="lab-btn"
+            onClick={() => go(seed - 1)}
+            disabled={seed === 0}
+            aria-label="Previous seed"
+          >
             ←
           </button>
           <label className="lab-seed">
             <span>seed</span>
-            <input inputMode="numeric" value={draft} onChange={(e) => setDraft(e.target.value.replace(/\D/g, ''))} onBlur={() => go(Number(draft))} />
+            <input
+              inputMode="numeric"
+              value={draft}
+              onChange={(e) => setDraft(e.target.value.replace(/\D/g, ''))}
+              onBlur={() => go(Number(draft))}
+            />
           </label>
-          <button type="button" className="lab-btn" onClick={() => go(seed + 1)} disabled={seed === MAX_SEED} aria-label="Next seed">
+          <button
+            type="button"
+            className="lab-btn"
+            onClick={() => go(seed + 1)}
+            disabled={seed === MAX_SEED}
+            aria-label="Next seed"
+          >
             →
           </button>
           <button type="button" className="lab-btn lab-roll" onClick={() => go(roll())}>
@@ -113,7 +137,12 @@ export default function TemplateLab({ template }: Props) {
         {/* Keyed by position, so the button just pressed stays mounted and keeps focus. */}
         {ahead.map((s, k) => (
           <li key={k}>
-            <button type="button" className="lab-thumb" onClick={() => go(s)} aria-label={`Seed ${s}: ${tpl.instance(s).variant}`}>
+            <button
+              type="button"
+              className="lab-thumb"
+              onClick={() => go(s)}
+              aria-label={`Seed ${s}: ${tpl.instance(s).variant}`}
+            >
               <span className="lab-thumb-stage">
                 <FigureCanvas id={`${template}~${s}`} />
               </span>

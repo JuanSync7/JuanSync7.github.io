@@ -9,6 +9,7 @@ import { build } from 'esbuild';
 import { chromium } from 'playwright';
 import { writeSheet } from './sheet.mjs';
 import { decode, measure } from './pixels.mjs';
+import { checkRoomCamera, checkRoomTouch } from './tabletop-room-browser.mjs';
 
 const scratch = mkdtempSync(join(tmpdir(), 'tabletop-browser-'));
 const arg = process.argv.find((a) => a.startsWith('--url='));
@@ -98,6 +99,7 @@ try {
     shots,
     shots.map((s) => ({ level: 'ok', text: s.label })),
   );
+  const roomShots = [];
   for (const fallback of [false, true]) {
     const c = await browser.newContext({ viewport: { width: 1200, height: 1000 }, reducedMotion: 'reduce' });
     const p = await c.newPage();
@@ -134,16 +136,19 @@ try {
     const png = await p.locator('.lab-main canvas').screenshot();
     assert(measure(decode(png), thresholds).coverage >= thresholds.coverageMin, 'Main canvas rendered blank');
     writeFileSync(`figures-out/tabletop-${fallback ? 'fallback' : 'webgl'}.png`, png);
+    roomShots.push(...await checkRoomCamera(p, fallback, thresholds));
     await p.setViewportSize({ width: 390, height: 844 });
     await p.waitForTimeout(200);
     assert(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+    await checkRoomTouch(p);
     await p.getByRole('button', { name: 'roll', exact: true }).click();
     await ready();
     await c.close();
   }
+  await writeSheet(browser, join(process.cwd(), 'figures-out/room-camera-views.png'), { id: '180° room camera', style: 'three · perspective and isometric', motion: 'drag / slider / keyboard', answers: true, bleed: false }, roomShots, []);
   assert.deepEqual(errors, []);
   console.log(
-    'All 9 themes, WebGL/fallback, seed controls, mobile width and context lifecycle passed. Wrote figures-out/tabletop-themes.png',
+    'All 9 rooms, WebGL/fallback, 180° sweep, true isometric projection, drag, keyboard, zoom, seed controls and mobile width passed. Wrote figures-out/tabletop-themes.png and room-camera-views.png',
   );
 } finally {
   await browser?.close();
