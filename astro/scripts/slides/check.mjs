@@ -1,34 +1,41 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import { createServer } from 'vite';
+import {readFileSync} from 'node:fs';
+import {createServer} from 'vite';
+import {auditIcon,fingerprint,manifest,selftest} from './audit.mjs';
 
 const server=await createServer({server:{middlewareMode:true,ws:false},appType:'custom',logLevel:'error'});
 try {
   const {SLIDE_ICONS}=await server.ssrLoadModule('/src/data/slide-icons.ts');
   const {slideDrawing}=await server.ssrLoadModule('/src/figures/kit/slides/models.ts');
   const {slideSvg,slideSprite,slidePalette}=await server.ssrLoadModule('/src/figures/kit/slides/svg.ts');
-  assert.equal(SLIDE_ICONS.length,24);
-  assert.equal(new Set(SLIDE_ICONS.map(icon=>icon.id)).size,24);
+  const definitions=JSON.parse(readFileSync('src/figures/kit/slides/definitions.json'));
+  const reviews=JSON.parse(readFileSync('vendor/slide-icons/reviews.json'));
+  const options=['night','paper'].flatMap(tone=>[true,false].map(accent=>({tone,accent})));
+  assert.equal(SLIDE_ICONS.length,48);
+  assert.equal(new Set(SLIDE_ICONS.map(i=>i.id)).size,48);
+  assert.deepEqual(SLIDE_ICONS.map(i=>i.id),manifest.icons.map(i=>i.id));
+  selftest(definitions);
   const variants=new Set();
-  for(const tone of ['night','paper'])for(const accent of [true,false]) {
-    const options={tone,accent},look=`${tone}/${accent?'accent':'mono'}`;
-    for(const icon of SLIDE_ICONS) {
-      const drawing=slideDrawing(icon.id);
-      assert.equal(drawing.filter(p=>p.role==='signal').length,1,`${icon.id}: one deliberate highlight`);
-      assert.ok(drawing.length<=16,`${icon.id}: small, legible marks rather than engineering textures`);
-      const svg=slideSvg(icon.id,options);
+  for(const icon of manifest.icons){
+    assert.deepEqual(auditIcon(icon,definitions[icon.id]).failures,[],icon.id);
+    const digest=fingerprint(icon,options.map(o=>slideSvg(icon.id,o)));
+    assert.equal(reviews[icon.id]?.fingerprint,digest,`${icon.id}: review is missing or stale`);
+    assert.ok(reviews[icon.id].notes.length>35&&reviews[icon.id].sizes.join(',')==='32,64');
+    assert.notEqual(fingerprint(icon,options.map(o=>slideSvg(icon.id,o)+' ')),digest,'Changed export must invalidate the visual review');
+    for(const o of options){
+      const look=`${o.tone}/${o.accent?'accent':'mono'}`,drawing=slideDrawing(icon.id,o.accent),svg=slideSvg(icon.id,o);
+      assert.equal(drawing.filter(n=>n.role==='signal').length,o.accent?1:0);
       assert.equal(svg,readFileSync(`public/downloads/slide-icons/${look}/${icon.id}.svg`,'utf8'));
       assert.ok(!/NaN|Infinity|<script|<image|<text|href=|foreignObject|filter=|style=|rgba\(/.test(svg));
-      assert.match(svg,/<svg[^>]*viewBox="0 0 64 64"[^>]*fill="none"[^>]*stroke-width="1.25"/);
-      assert.match(svg,/<title>[^<]+<\/title>/);
-      assert.ok(drawing.every(p=>p.d.length>0&&!/[<>&]/.test(p.d)));
-      if(!accent)assert.equal(new Set([...svg.matchAll(/stroke="([^"]+)"/g)].map(m=>m[1])).size,1);
-      const paint=slidePalette(options);
-      assert.ok(svg.includes(paint.line));
+      assert.match(svg,/<svg[^>]*viewBox="0 0 24 24"[^>]*fill="none"[^>]*stroke-width="1"/);
+      assert.match(svg,/<title>[^<]+<\/title><metadata>[^<]+<\/metadata>/);
+      const colors=new Set([...svg.matchAll(/stroke="([^"]+)"/g)].map(m=>m[1]));
+      assert.equal(colors.size,o.accent?2:1);
+      assert.ok(svg.includes(slidePalette(o).line));
       variants.add(svg);
     }
-    assert.equal([...slideSprite(options).matchAll(/<symbol id="slide-[^"]+"/g)].length,24);
   }
-  assert.equal(variants.size,96,'Four distinct treatments for every mark');
-  console.log('Slide icons: 24 distinct marks, 96 portable variants, one highlight each and four complete sprites passed.');
+  for(const o of options)assert.equal([...slideSprite(o).matchAll(/<symbol id="slide-[^"]+"/g)].length,48);
+  assert.equal(variants.size,192);
+  console.log('Slide icons: all 48 geometry contracts, review fingerprints, 192 portable exports and four sprites passed.');
 }finally{await server.close();}

@@ -1,0 +1,50 @@
+export const workflow = [
+  {
+    id: 'search',
+    name: 'Search',
+    group: 'workflow',
+    tags: 'search',
+  },
+  {
+    id: 'filter',
+    name: 'Filter',
+    group: 'workflow',
+    tags: 'filter list',
+  },
+  {
+    id: 'settings',
+    name: 'Settings',
+    group: 'workflow',
+    tags: 'settings',
+  },
+  {
+    id: 'branch',
+    name: 'Branch',
+    group: 'workflow',
+    tags: 'branch git',
+  },
+  {
+    id: 'checklist',
+    name: 'Checklist',
+    group: 'workflow',
+    tags: 'checklist list checks',
+  },
+  {
+    id: 'shield-check',
+    name: 'Verified',
+    group: 'workflow',
+    tags: 'shield check',
+  },
+  {
+    id: 'clock',
+    name: 'Clock',
+    group: 'workflow',
+    tags: 'clock',
+  },
+  {
+    id: 'rocket',
+    name: 'Launch',
+    group: 'workflow',
+    tags: 'rocket',
+  },
+] as const;

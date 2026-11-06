@@ -1,0 +1,722 @@
+{
+  "processor": {
+    "fingerprint": "c0cf87ebdb8ca4d8755e50415e2b960f353ca0c5d4ac20f0287fc12ffc336513",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "All twelve pins meet the housing. The core stays centered; the teal top edge sits on the core at both sizes."
+  },
+  "memory": {
+    "fingerprint": "a8bbee65ae1751bb9fbf625ab696b965f361be1c0723b1656439b86a9b40f104",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "Contacts share a baseline and meet the board. One contact carries teal; the slim board remains distinct at 32px."
+  },
+  "wafer": {
+    "fingerprint": "d68bd4662b9f17750b11700a093629f198ef5cd74c6876084c4ca4c854fb1dea",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The nine-die grid fits inside the circular blank. Teal follows one existing die boundary; no grid edge escapes the wafer."
+  },
+  "accelerator": {
+    "fingerprint": "6eb060f4e932c47d69e8d7114f0f20fee88ab474f284e86d4c9afec674bf76b8",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The bracket meets the card and the connector sits below it. Both fan rims are contained; teal follows one fan rim."
+  },
+  "circuit-board": {
+    "fingerprint": "9e35fd632d416fd9c8295a694f88c936db6637bd4cbc3aae9a1223616c842b18",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "Both terminals and the bent traces remain inside the board. The accented terminal rim stays attached at 32px."
+  },
+  "chiplets": {
+    "fingerprint": "25703a3d95b2407deb288ba4f6f21c8cc12fa38447799c25ae05966ff205836b",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The top rhombus closes cleanly. Two lower contours imply a parallel stack and never cross the front layer; one front edge is teal."
+  },
+  "ai-model": {
+    "fingerprint": "fa85a7f7de2fdbf2cc2ffd380798d4853d3826b6a98bbbfc53a2ebfc61213442",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The brain contour and circuit traces read as one hybrid mark. Endpoint circles stay aligned; one existing trace is accented."
+  },
+  "camera": {
+    "fingerprint": "d4de69e17128b49089ddf24639bfa925d395b0ec1c9015c9e99a76017e9fd368",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The lens is centered in the camera body. Its teal arc follows the lens rim without adding a floating feature."
+  },
+  "server": {
+    "fingerprint": "27082d768a07056acb09170d392f824f555f1c3dc718a4efbbd4d8758a2f37f8",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "Two equal server units align vertically with a consistent gap. Only the upper status indicator is teal; both units remain distinct at 32px."
+  },
+  "switch": {
+    "fingerprint": "7f8001c117672e39f263e635aa1e9a7238aa17cf58cd5b25ec713b97245f4b1c",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "Three equal ports share a baseline and pitch. Each indicator sits above its port; the first indicator alone is teal."
+  },
+  "storage": {
+    "fingerprint": "064bd046c1b63e943b32c86b85efac48cf136ab08ff8cbc580adf17cf63afe4b",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The upper trapezoid terminates at the front panel seam. No rear edge crosses the panel; the drive indicator is a small accent."
+  },
+  "cloud": {
+    "fingerprint": "5bb0a4f141c39c0b004fdb4b7c25389ae3c42bf3c51022c7b9a4c0a4f171049c",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The contour stays continuous through the cloud lobes. Teal overlays a short lower edge; the silhouette remains clear in monochrome."
+  },
+  "power": {
+    "fingerprint": "20eac73f4e3c97fb4b8f9f6dbf2bd855fa1c9047a7255463b60adb5f0718ccae",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The vertical actuator and interrupted circular ring stay separate by design. Teal marks the actuator tip rather than an invented light."
+  },
+  "satellite": {
+    "fingerprint": "7df5001cc22255f6946a9c456170a2bd5f09caffd88a300d7f296787370b1521",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The two panel contours meet the central body in the source view. Teal follows the antenna connection; the signal arc remains separate."
+  },
+  "router": {
+    "fingerprint": "d5e9e3cf051de8ee92c2bcdac29d04238b2386ccbaa8dae8517563f0e5aa4b7e",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The antenna meets the enclosure. Two source status lights stay aligned; only one is teal, with the radio arcs centered above."
+  },
+  "network": {
+    "fingerprint": "3c7b10153669b6e2b57de005cfd750c0a3fc635606f493d47a217566a2e9483f",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The source uplink meets the top node and the lower bus. All three nodes align on the shared routes; teal follows the uplink."
+  },
+  "database": {
+    "fingerprint": "e0a7e11649a12c3b47b0a8d3da477cfa45c7be56ce1ce8509f2ade170160bca0",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The top ellipse and side edges join cleanly. Middle and lower rims share the cylinder width; teal follows the top rim."
+  },
+  "dataset": {
+    "fingerprint": "a840fc05a961be3d32d40aa78a2661f15d65a5dac3b0ae167170f539f8662240",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "Rows and the central divider meet the table enclosure. Teal marks the header divider without changing the cell alignment."
+  },
+  "document": {
+    "fingerprint": "83ecc69db88fd07c1ad20b1a0c5b0859ad82fef42358447268719d87b67f96a5",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The folded corner meets the page outline. Text rows fit inside the page; one existing row carries the small accent."
+  },
+  "folder": {
+    "fingerprint": "84361eb14681b9d186e928a801885270b3a121b1a9d64f8280ddfe4a9ecd7622",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The tab joins the folder contour cleanly. Teal follows the tab edge and stays visible without becoming an extra loose dash."
+  },
+  "archive": {
+    "fingerprint": "311bd733af7d59fe827eaf892c8d327a5cf469c03c6f8d7b4162f698eed4eb47",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The box sides meet the lid. The centered handle is the only accented feature; the box remains clear at 32px."
+  },
+  "terminal": {
+    "fingerprint": "16c27295c95ae03b7592c57f47fc84854dcf319639dca39c037e7bc73202ac98",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The prompt and cursor fit inside the terminal frame. Teal follows the cursor and monochrome removes the redundant overlay."
+  },
+  "files": {
+    "fingerprint": "a410982d9ecbe901e394fc30cd7e61aeacd342564ad862ec0ca181e0b2a1c6b5",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "A partial rear page sits behind the front page. Rear strokes remain outside the front silhouette; the front fold carries teal."
+  },
+  "folders": {
+    "fingerprint": "22ab192899ee2839d09f36f1651da2d91ffadcc428f8e8d73ce71034fc5675de",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "A partial rear folder sits behind the closed front folder. The tab carries teal; neither rear contour crosses the front face."
+  },
+  "notebook": {
+    "fingerprint": "8f4587c3ac327c7f83dc6e3a4621607cb5dff1bcc21206b25d981023c3b8993a",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "Four binding strokes share their pitch and meet the cover edge. One binding is accented; the spine remains straight."
+  },
+  "chart": {
+    "fingerprint": "ffb9013e5f0902101f7d83844f8a3e07a15e2683b06a7f1f0bf9a8fe294d2ba8",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "Three bars share a baseline with distinct heights. Teal stays on the tip of the tallest bar and does not imply an extra data series."
+  },
+  "flask": {
+    "fingerprint": "cb3acc21035ac5bd75936e59e081136d11d439fc409255f6a890041c6a685946",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The neck and sloped sides form a closed flask. The liquid line terminates on both walls; only its central portion is teal."
+  },
+  "microscope": {
+    "fingerprint": "27b9c5652442b976872f04a33c12e75a9f3886aae808b669c0a9ac60e24e6185",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The objective, arm, stage and base retain their source relationships. Teal follows the stage; the objective stays above it."
+  },
+  "calipers": {
+    "fingerprint": "2bb9c3f9aa78e39fa08bec7f9219406bf9d21f0f10e3acb084c7238a9802f90d",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "Revised the jaws to opposing faces with a clear gap. Both lower jaws are parallel; beam segments stop at the slider; the display fits inside."
+  },
+  "compass": {
+    "fingerprint": "d3a4f44434c51e446df5c308f1e2d63a82a4b99c1163141ef49ce8ac1d8593e9",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The pivot anchors the two leg directions. The interrupted right leg and measurement arc retain the source geometry; teal follows the pivot."
+  },
+  "target": {
+    "fingerprint": "78ed0b61af174d3ea2a85c51cef26550dca56aebf647b31d4f69a456311d93a7",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "Three concentric circles share one center. The small inner rim carries teal; all rings remain distinct at 32px."
+  },
+  "idea": {
+    "fingerprint": "82857cad9d58cf2a7257f5dbff6b99aec1f623009054f9fb28267ba86f26cb9f",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The bulb contour narrows toward the base. The two base strokes stay centered and separated; the upper base stroke has a restrained accent."
+  },
+  "search": {
+    "fingerprint": "750f9181899fcb87604e0678e9227bac78d13b1111ade0913d28b3f19021beed",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "Reduced the lens accent to a 45-degree arc after the first budget failure. The handle meets the lens at the source junction."
+  },
+  "filter": {
+    "fingerprint": "8f3a173aac738d34d67843078d682a28cb5fe91a36a56922f86db628df0dc622",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "Three descending line lengths share their center. Only the middle of the shortest result line is teal; no added decorative dot."
+  },
+  "settings": {
+    "fingerprint": "0e4fbc538b8b9f9d71f64aca967cce2c91f2e274950a3490d543d13e2926eb35",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The hub stays centered inside the gear contour. The small accent follows the hub rim and keeps the teeth in one ink colour."
+  },
+  "branch": {
+    "fingerprint": "7749d8823efc10f9ba353fe5a7cdb3c2895d1a647ba74ae61a628fa6e4b2a4d0",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The curved branch meets both circular endpoints in the source geometry. Teal follows the upper endpoint rim; the trunk remains continuous."
+  },
+  "checklist": {
+    "fingerprint": "44b4d3feacac7530f795516dfffdbc418a9fd896cde786322896dadb4cf93283",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "Two checks align with their list rows. The lower check has one accented stroke segment; line spacing remains consistent at 32px."
+  },
+  "shield-check": {
+    "fingerprint": "2dca5428421ba14cdbea69748f5c65ac84a921f2e135be6b09ef281a06a77c92",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The check sits inside the shield with clear margins. Teal follows a check segment; the outer contour stays continuous."
+  },
+  "clock": {
+    "fingerprint": "529a3b59a74a45a73cee75c6283871c157ecf5955ecb4c6de3efc1c299118413",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "Both hands meet at the circle center. Teal lies on the minute hand; the outer rim and short hand remain legible in both palettes."
+  },
+  "rocket": {
+    "fingerprint": "a189bd4222750b137796dcb10c195c3f1f6d8152bfbf7f2b485926ba09554be1",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The fins join the body at the source seams. The exhaust is intentionally separate; teal follows one existing fin edge."
+  },
+  "message": {
+    "fingerprint": "6253f9590ebb895937b84e4ba76055349e50aac14a7166ea0355e6d32977efd3",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The tail joins the message outline. A short top-edge accent stays attached; no text or added internal detail competes at 32px."
+  },
+  "mail": {
+    "fingerprint": "17c91dc7d94544fbbe2d90406a7db272c84bcbf4b95a947b6504ffcfb4eea60c",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The envelope fold meets the side edges within the frame. Teal follows one diagonal fold segment and remains distinct from the outer box."
+  },
+  "slide-deck": {
+    "fingerprint": "61cb079ce046adbbb2cf8acf6285c5e2505378b480fe6b5ae88c1c12d2387fed",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "Three sheets use the same two-unit offsets. Rear top/right edges stay outside the front sheet; teal follows its title line."
+  },
+  "person": {
+    "fingerprint": "2b8e3d88141e506e6315a15666f34b1de3e864ad737bd6275b3d49d51298863d",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The head is centered over the shoulder contour. Teal follows a small head arc; the intentionally open lower profile remains clean."
+  },
+  "calendar": {
+    "fingerprint": "c4a8263af899679b26be87bbb0528bb2b5cd5796b3520affbf09b06e779f4cdf",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "Two bindings align across the header. The divider meets both sides; one binding carries teal without adding a date glyph."
+  },
+  "link": {
+    "fingerprint": "3e02e63ce203253553159ee18ad72f91ec4a5283542b2b9488eb585f72cc2160",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "Both curved link halves retain the source overlap and open ends. Teal follows one straight end segment; no false crossing was introduced."
+  },
+  "globe": {
+    "fingerprint": "b668a974ad4e876d4bcec64fa8f1443b29b8f1b70f788657b2f6f874c53096dc",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The latitude line meets the outer rim and the meridian closes symmetrically. Teal follows a short equator segment through the center."
+  },
+  "bookmark": {
+    "fingerprint": "7b265603f794b7da4b1a8437f86d66c1f868305855537398391e1b1c8aea4ee6",
+    "reviewed": "2026-11-06",
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "notes": "The crown and notched bottom close cleanly. Teal follows a short side edge, leaving the silhouette recognizable in every treatment."
+  }
+}

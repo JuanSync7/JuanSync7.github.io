@@ -1,0 +1,2187 @@
+{
+  "version": "lucide-static@1.70.0",
+  "icons": [
+    {
+      "id": "processor",
+      "file": "lucide/cpu.svg",
+      "sha256": "7a76f59d53fa26e78cbba938eae5584f4b93f0378aa5a785343ff0b48eca9c45",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/cpu.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 13,
+        "kind": "top",
+        "meaning": "active core edge"
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M12 20v2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M12 2v2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M17 20v2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M17 2v2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M2 12h2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M2 17h2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M2 7h2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M20 12h2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M20 17h2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M20 7h2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M7 20v2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M7 2v2"
+          }
+        },
+        {
+          "tag": "rect",
+          "attrs": {
+            "x": "4",
+            "y": "4",
+            "width": "16",
+            "height": "16",
+            "rx": "2"
+          }
+        },
+        {
+          "tag": "rect",
+          "attrs": {
+            "x": "8",
+            "y": "8",
+            "width": "8",
+            "height": "8",
+            "rx": "1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "memory",
+      "file": "lucide/memory-stick.svg",
+      "sha256": "61bc1501b7ff4f6bd81e55e3c7162cff91c815a552cc432e7076eea123f3bb17",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/memory-stick.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 1,
+        "kind": "line",
+        "meaning": "one electrical contact",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M12 12v-2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M12 18v-2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M16 12v-2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M16 18v-2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M2 11h1.5"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M20 18v-2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M20.5 11H22"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M4 18v-2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M8 12v-2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M8 18v-2"
+          }
+        },
+        {
+          "tag": "rect",
+          "attrs": {
+            "x": "2",
+            "y": "6",
+            "width": "20",
+            "height": "10",
+            "rx": "2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wafer",
+      "file": "original/wafer.svg",
+      "sha256": "ea3ffefd824c10ddd71df990bb086adf9bcf8f49abc0a89256dbf47c1f60d777",
+      "upstream": "https://github.com/JuanSync7/JuanSync7.github.io",
+      "license": "MIT",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 5,
+        "kind": "line",
+        "meaning": "central die boundary",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "12",
+            "cy": "12",
+            "r": "10"
+          }
+        },
+        {
+          "tag": "rect",
+          "attrs": {
+            "x": "6",
+            "y": "6",
+            "width": "12",
+            "height": "12"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M10 6V18"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M14 6V18"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M6 10H18"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M6 14H18"
+          }
+        }
+      ]
+    },
+    {
+      "id": "accelerator",
+      "file": "lucide/gpu.svg",
+      "sha256": "d6decf4ed6b05c45ef0968d1d17273baccb9bb679dfcc107ddf8e00792fe3ef8",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/gpu.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 3,
+        "kind": "arc",
+        "meaning": "fan rim"
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M2 17h18a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M2 21V3"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M7 17v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "16",
+            "cy": "11",
+            "r": "2"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "8",
+            "cy": "11",
+            "r": "2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "circuit-board",
+      "file": "lucide/circuit-board.svg",
+      "sha256": "d28d8c8ce9ce6d68e533a59ba9c465c82b28271d72c6f61188993860cbe5ba39",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/circuit-board.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 4,
+        "kind": "arc",
+        "meaning": "one component terminal"
+      },
+      "nodes": [
+        {
+          "tag": "rect",
+          "attrs": {
+            "width": "18",
+            "height": "18",
+            "x": "3",
+            "y": "3",
+            "rx": "2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M11 9h4a2 2 0 0 0 2-2V3"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "9",
+            "cy": "9",
+            "r": "2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M7 21v-4a2 2 0 0 1 2-2h4"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "15",
+            "cy": "15",
+            "r": "2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "chiplets",
+      "file": "lucide/layers-3.svg",
+      "sha256": "c2a76bb098f761ff4e9cb109b0f53a338f57a810ae028c773ef7e82686746b6a",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/layers-3.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "parallel layers; front rhombus, rear contours only",
+      "plural": true,
+      "accent": {
+        "node": 0,
+        "kind": "line",
+        "meaning": "front layer edge",
+        "segment": 4
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"
+          }
+        }
+      ],
+      "stack": {
+        "front": 0,
+        "rear": [
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "id": "ai-model",
+      "file": "lucide/brain-circuit.svg",
+      "sha256": "5eb5800717f982d879e6aef6371fe0d14462ac135117a07484bc6b6e91b9ccd6",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/brain-circuit.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 0,
+        "kind": "line",
+        "meaning": "active circuit trace",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M12 13h4"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M12 18h6a2 2 0 012 2v1"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M12 8h8"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M12 9a4.17 4.17 0 01-3 4"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M16 8V5a2 2 0 012-2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M6 18a4 4 0 01-2-7.465"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M6.004 5.125a4 4 0 00-2.526 5.77"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M6.294 6.294A3 3 0 1112 5v13a4 4 0 11-7.967-.518"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "16",
+            "cy": "13",
+            "r": "0.5"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "18",
+            "cy": "3",
+            "r": "0.5"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "20",
+            "cy": "21",
+            "r": "0.5"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "20",
+            "cy": "8",
+            "r": "0.5"
+          }
+        }
+      ]
+    },
+    {
+      "id": "camera",
+      "file": "lucide/camera.svg",
+      "sha256": "b88193fbdbd789fae3cff7ba324e388392080ca2c0ff6a95f21e1be4f34a6492",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/camera.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 1,
+        "kind": "arc",
+        "meaning": "lens rim"
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "12",
+            "cy": "13",
+            "r": "3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "server",
+      "file": "lucide/server.svg",
+      "sha256": "a9360713df211361ff9e3796f55e594cf75ff70a0f9b60d2f042c33a72689105",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/server.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": true,
+      "accent": {
+        "node": 2,
+        "kind": "whole",
+        "meaning": "one status indicator"
+      },
+      "nodes": [
+        {
+          "tag": "rect",
+          "attrs": {
+            "width": "20",
+            "height": "8",
+            "x": "2",
+            "y": "2",
+            "rx": "2",
+            "ry": "2"
+          }
+        },
+        {
+          "tag": "rect",
+          "attrs": {
+            "width": "20",
+            "height": "8",
+            "x": "2",
+            "y": "14",
+            "rx": "2",
+            "ry": "2"
+          }
+        },
+        {
+          "tag": "line",
+          "attrs": {
+            "x1": "6",
+            "x2": "6.01",
+            "y1": "6",
+            "y2": "6"
+          }
+        },
+        {
+          "tag": "line",
+          "attrs": {
+            "x1": "6",
+            "x2": "6.01",
+            "y1": "18",
+            "y2": "18"
+          }
+        }
+      ],
+      "stack": {
+        "vertical": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "id": "switch",
+      "file": "original/switch.svg",
+      "sha256": "04d91467f45059a9a4ac335c2ca0081638fa6639c83dd318204a78055e988131",
+      "upstream": "https://github.com/JuanSync7/JuanSync7.github.io",
+      "license": "MIT",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 4,
+        "kind": "whole",
+        "meaning": "one port status light"
+      },
+      "nodes": [
+        {
+          "tag": "rect",
+          "attrs": {
+            "x": "2",
+            "y": "6",
+            "width": "20",
+            "height": "12",
+            "rx": "2"
+          }
+        },
+        {
+          "tag": "rect",
+          "attrs": {
+            "x": "4",
+            "y": "11",
+            "width": "4",
+            "height": "4",
+            "rx": "0.5"
+          }
+        },
+        {
+          "tag": "rect",
+          "attrs": {
+            "x": "10",
+            "y": "11",
+            "width": "4",
+            "height": "4",
+            "rx": "0.5"
+          }
+        },
+        {
+          "tag": "rect",
+          "attrs": {
+            "x": "16",
+            "y": "11",
+            "width": "4",
+            "height": "4",
+            "rx": "0.5"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "6",
+            "cy": "9",
+            "r": "0.4"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "12",
+            "cy": "9",
+            "r": "0.4"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "18",
+            "cy": "9",
+            "r": "0.4"
+          }
+        }
+      ]
+    },
+    {
+      "id": "storage",
+      "file": "lucide/hard-drive.svg",
+      "sha256": "477229fb8723264ae650190dc06ccffda008011264967097ec9a4f955effc7df",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/hard-drive.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "parallel front/top; closed upper and front faces",
+      "plural": false,
+      "accent": {
+        "node": 3,
+        "kind": "whole",
+        "meaning": "drive status light"
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M10 16h.01"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M2.212 11.577a2 2 0 0 0-.212.896V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5.527a2 2 0 0 0-.212-.896L18.55 5.11A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M21.946 12.013H2.054"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M6 16h.01"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cloud",
+      "file": "lucide/cloud.svg",
+      "sha256": "14dce47d659275bf0e028bd89f619aec4f4c8fb4d2bcb20d96dc54fc402ee937",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/cloud.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 0,
+        "kind": "line",
+        "meaning": "lower cloud contour",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "power",
+      "file": "lucide/power.svg",
+      "sha256": "f8222a786c34ffc1d4b46c17ed01359dcad25d724080bbbb5735c9f552715746",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/power.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 0,
+        "kind": "line",
+        "meaning": "power actuator",
+        "segment": 1,
+        "from": 0,
+        "to": 0.3
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M12 2v10"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M18.4 6.6a9 9 0 1 1-12.77.04"
+          }
+        }
+      ]
+    },
+    {
+      "id": "satellite",
+      "file": "lucide/satellite.svg",
+      "sha256": "a3079acc18387b0d3dc8d478f29fba038adc9441174aa8e9c68f61a7d10c4219",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/satellite.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 1,
+        "kind": "line",
+        "meaning": "antenna connection",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "m13.5 6.5-3.148-3.148a1.205 1.205 0 0 0-1.704 0L6.352 5.648a1.205 1.205 0 0 0 0 1.704L9.5 10.5"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M16.5 7.5 19 5"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "m17.5 10.5 3.148 3.148a1.205 1.205 0 0 1 0 1.704l-2.296 2.296a1.205 1.205 0 0 1-1.704 0L13.5 14.5"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M9 21a6 6 0 0 0-6-6"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "router",
+      "file": "lucide/router.svg",
+      "sha256": "b7ba1c582768076acf8e413b88a0820629181c7928189073a71a740d34798ca0",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/router.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 1,
+        "kind": "whole",
+        "meaning": "router status light"
+      },
+      "nodes": [
+        {
+          "tag": "rect",
+          "attrs": {
+            "width": "20",
+            "height": "8",
+            "x": "2",
+            "y": "14",
+            "rx": "2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M6.01 18H6"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M10.01 18H10"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M15 10v4"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M17.84 7.17a4 4 0 0 0-5.66 0"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M20.66 4.34a8 8 0 0 0-11.31 0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "network",
+      "file": "lucide/network.svg",
+      "sha256": "329405d18640a0b03dc7fee707e71d3b94d05ba88ee42164eab319b90313ea98",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/network.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 4,
+        "kind": "line",
+        "meaning": "uplink connection",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "rect",
+          "attrs": {
+            "x": "16",
+            "y": "16",
+            "width": "6",
+            "height": "6",
+            "rx": "1"
+          }
+        },
+        {
+          "tag": "rect",
+          "attrs": {
+            "x": "2",
+            "y": "16",
+            "width": "6",
+            "height": "6",
+            "rx": "1"
+          }
+        },
+        {
+          "tag": "rect",
+          "attrs": {
+            "x": "9",
+            "y": "2",
+            "width": "6",
+            "height": "6",
+            "rx": "1"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M12 12V8"
+          }
+        }
+      ]
+    },
+    {
+      "id": "database",
+      "file": "lucide/database.svg",
+      "sha256": "9e790fb8577919f2fe0e0899fe589e5a0793f4541eb3066bf2dc962a5f26e48b",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/database.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 0,
+        "kind": "arc",
+        "meaning": "top record rim"
+      },
+      "nodes": [
+        {
+          "tag": "ellipse",
+          "attrs": {
+            "cx": "12",
+            "cy": "5",
+            "rx": "9",
+            "ry": "3"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M3 5V19A9 3 0 0 0 21 19V5"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M3 12A9 3 0 0 0 21 12"
+          }
+        }
+      ]
+    },
+    {
+      "id": "dataset",
+      "file": "lucide/table.svg",
+      "sha256": "bce78ebf86c75187cd3e29131e461e6f7801299b4ca2e691a0d509ef8aced2dc",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/table.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 2,
+        "kind": "line",
+        "meaning": "header divider",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M12 3v18"
+          }
+        },
+        {
+          "tag": "rect",
+          "attrs": {
+            "width": "18",
+            "height": "18",
+            "x": "3",
+            "y": "3",
+            "rx": "2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M3 9h18"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M3 15h18"
+          }
+        }
+      ]
+    },
+    {
+      "id": "document",
+      "file": "lucide/file-text.svg",
+      "sha256": "411f1e52b691e42cf958c14659a4305bcb9e15f5e5ffbb52987fbafa099d4f2c",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/file-text.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 3,
+        "kind": "line",
+        "meaning": "one text row",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M14 2v5a1 1 0 0 0 1 1h5"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M10 9H8"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M16 13H8"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M16 17H8"
+          }
+        }
+      ]
+    },
+    {
+      "id": "folder",
+      "file": "lucide/folder.svg",
+      "sha256": "c67f53e0e26cb88c6030fc43d8c02591eaea5c48643a98693a706f7208f0e631",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/folder.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 0,
+        "kind": "line",
+        "meaning": "folder tab edge",
+        "segment": 8
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "archive",
+      "file": "lucide/archive.svg",
+      "sha256": "db7bfae5a6c7825291df300cb34782c5b037ac72f4bf904306d4f5d90294432e",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/archive.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 2,
+        "kind": "line",
+        "meaning": "handle",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "rect",
+          "attrs": {
+            "width": "20",
+            "height": "5",
+            "x": "2",
+            "y": "3",
+            "rx": "1"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M10 12h4"
+          }
+        }
+      ]
+    },
+    {
+      "id": "terminal",
+      "file": "lucide/square-terminal.svg",
+      "sha256": "b9e4f3287f5210b3b0ce06376cdf9ab517a4703b55ab6ae98d91b937e03ab2b0",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/square-terminal.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 1,
+        "kind": "line",
+        "meaning": "cursor",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "m7 11 2-2-2-2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M11 13h4"
+          }
+        },
+        {
+          "tag": "rect",
+          "attrs": {
+            "width": "18",
+            "height": "18",
+            "x": "3",
+            "y": "3",
+            "rx": "2",
+            "ry": "2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "files",
+      "file": "lucide/files.svg",
+      "sha256": "daccecd1e778b5950c53b6c536643e7ada70caaa02d0390674050b29200e939f",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/files.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": true,
+      "accent": {
+        "node": 1,
+        "kind": "line",
+        "meaning": "front page fold",
+        "segment": 2
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M15 2h-4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M16.706 2.706A2.4 2.4 0 0 0 15 2v5a1 1 0 0 0 1 1h5a2.4 2.4 0 0 0-.706-1.706z"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M5 7a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 1.732-1"
+          }
+        }
+      ],
+      "stack": {
+        "front": 0,
+        "rear": [
+          2
+        ]
+      }
+    },
+    {
+      "id": "folders",
+      "file": "lucide/folders.svg",
+      "sha256": "b7d142e994ef838c7cf2bb384879a313d5e96366e46a9bc5105dce38660f2ec8",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/folders.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": true,
+      "accent": {
+        "node": 0,
+        "kind": "line",
+        "meaning": "front folder tab",
+        "segment": 8
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M20 5a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2.5a1.5 1.5 0 0 1 1.2.6l.6.8a1.5 1.5 0 0 0 1.2.6z"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M3 8.268a2 2 0 0 0-1 1.738V19a2 2 0 0 0 2 2h11a2 2 0 0 0 1.732-1"
+          }
+        }
+      ],
+      "stack": {
+        "front": 0,
+        "rear": [
+          1
+        ]
+      }
+    },
+    {
+      "id": "notebook",
+      "file": "lucide/notebook.svg",
+      "sha256": "b2cd5094acb0c4aa6a71b45223255dd6fb82613d8da9114ac384ba208430086e",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/notebook.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 1,
+        "kind": "line",
+        "meaning": "one binding loop",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M2 6h4"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M2 10h4"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M2 14h4"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M2 18h4"
+          }
+        },
+        {
+          "tag": "rect",
+          "attrs": {
+            "width": "16",
+            "height": "20",
+            "x": "4",
+            "y": "2",
+            "rx": "2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M16 2v20"
+          }
+        }
+      ]
+    },
+    {
+      "id": "chart",
+      "file": "lucide/chart-no-axes-column.svg",
+      "sha256": "4fda18b001e9a080e836ab6268c67ddfbfdaf6633ead741c8cb4a7ad76292818",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/chart-no-axes-column.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 1,
+        "kind": "line",
+        "meaning": "leading bar tip",
+        "segment": 1,
+        "from": 0.8,
+        "to": 1
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M5 21v-6"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M12 21V3"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M19 21V9"
+          }
+        }
+      ]
+    },
+    {
+      "id": "flask",
+      "file": "lucide/flask-conical.svg",
+      "sha256": "5169408e27ad80b9bb4f13b7194cd05405d219d742c18e3c23210f6e86746a35",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/flask-conical.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 1,
+        "kind": "line",
+        "meaning": "liquid level",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M6.453 15h11.094"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M8.5 2h7"
+          }
+        }
+      ]
+    },
+    {
+      "id": "microscope",
+      "file": "lucide/microscope.svg",
+      "sha256": "0e4cfcda0d6b3d7ee068023d809214c4963fcddf30dc0ab82464138a383a4316",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/microscope.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 0,
+        "kind": "line",
+        "meaning": "specimen stage",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M6 18h8"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M3 22h18"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M14 22a7 7 0 1 0 0-14h-1"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M9 14h2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2Z"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "calipers",
+      "file": "original/calipers.svg",
+      "sha256": "a27fc3d70056655fa2ede47eade1748f070d68ebe3145d1291ef5993670f9148",
+      "upstream": "https://github.com/JuanSync7/JuanSync7.github.io",
+      "license": "MIT",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 9,
+        "kind": "top",
+        "meaning": "slider display edge"
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M2 9H13V11H2Z"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M18 9H22V11H18"
+          }
+        },
+        {
+          "tag": "rect",
+          "attrs": {
+            "x": "13",
+            "y": "7",
+            "width": "5",
+            "height": "6",
+            "rx": "0.5"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M4 9V3L6 5V9"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M14 7V5L16 3V7"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M4 11V21H6V11"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M14 13V21H16V13"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M9 9V10"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M20 9V10"
+          }
+        },
+        {
+          "tag": "rect",
+          "attrs": {
+            "x": "14",
+            "y": "9",
+            "width": "3",
+            "height": "2",
+            "rx": "0.2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "compass",
+      "file": "lucide/drafting-compass.svg",
+      "sha256": "8fc40843128b558c5fc90ee5456299a23d19bdec1b9500bcd3e7191959613b25",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/drafting-compass.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 4,
+        "kind": "arc",
+        "meaning": "pivot rim"
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "m12.99 6.74 1.93 3.44"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M19.136 12a10 10 0 0 1-14.271 0"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "m21 21-2.16-3.84"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "m3 21 8.02-14.26"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "12",
+            "cy": "5",
+            "r": "2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "target",
+      "file": "lucide/target.svg",
+      "sha256": "eb7bbf2c37c88ac3a48606132ec3e71674ee9e10d0c625eb164dc7196066d0cc",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/target.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 2,
+        "kind": "arc",
+        "meaning": "bullseye rim"
+      },
+      "nodes": [
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "12",
+            "cy": "12",
+            "r": "10"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "12",
+            "cy": "12",
+            "r": "6"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "12",
+            "cy": "12",
+            "r": "2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "idea",
+      "file": "lucide/lightbulb.svg",
+      "sha256": "cfb408e3fe2455dcdedada54013750f5819bb2cf5879f927ebd5acf3ca6eedd2",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/lightbulb.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 1,
+        "kind": "line",
+        "meaning": "lamp base",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M9 18h6"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M10 22h4"
+          }
+        }
+      ]
+    },
+    {
+      "id": "search",
+      "file": "lucide/search.svg",
+      "sha256": "b395924bb54d8c436cb5bf6aa21899dfbf5f43a8a3b4252ed88d3391ec724aa5",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/search.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 1,
+        "kind": "arc",
+        "meaning": "lens rim",
+        "degrees": 45
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "m21 21-4.34-4.34"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "11",
+            "cy": "11",
+            "r": "8"
+          }
+        }
+      ]
+    },
+    {
+      "id": "filter",
+      "file": "lucide/list-filter.svg",
+      "sha256": "862e938eac8e28ab558a547a4fc436c1b9f7809ed4f167a9d5e53ab5a14eb1e4",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/list-filter.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 2,
+        "kind": "line",
+        "meaning": "selected result",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M2 5h20"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M6 12h12"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M9 19h6"
+          }
+        }
+      ]
+    },
+    {
+      "id": "settings",
+      "file": "lucide/settings.svg",
+      "sha256": "c02c11ec0c28c77e3865bb8ba960c62e1752eef44f45f70821f669d983d2796a",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/settings.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 1,
+        "kind": "arc",
+        "meaning": "central hub"
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "12",
+            "cy": "12",
+            "r": "3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "branch",
+      "file": "lucide/git-branch.svg",
+      "sha256": "160b73332db6ced1b82bc6976e8cb04e9fddf453cade4bdbfdeaa0beeff77975",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/git-branch.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 1,
+        "kind": "arc",
+        "meaning": "branch endpoint"
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M15 6a9 9 0 0 0-9 9V3"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "18",
+            "cy": "6",
+            "r": "3"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "6",
+            "cy": "18",
+            "r": "3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "checklist",
+      "file": "lucide/list-checks.svg",
+      "sha256": "bfc969a508528c20025faa5d958b0bb2e6e4adaf3b033e37b288d0c747782a8e",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/list-checks.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 3,
+        "kind": "line",
+        "meaning": "completed check",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M13 5h8"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M13 12h8"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M13 19h8"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "m3 17 2 2 4-4"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "m3 7 2 2 4-4"
+          }
+        }
+      ]
+    },
+    {
+      "id": "shield-check",
+      "file": "lucide/shield-check.svg",
+      "sha256": "4472323e4d46471c0e7e6448d5bd042cd66bc8e11b65108be6321e7cb76541af",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/shield-check.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 1,
+        "kind": "line",
+        "meaning": "verification check",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "m9 12 2 2 4-4"
+          }
+        }
+      ]
+    },
+    {
+      "id": "clock",
+      "file": "lucide/clock.svg",
+      "sha256": "cbb462ccf75f94d5a3f6e3c7169a8ecadee4912b2a64f37ad2e4d9388fef88a1",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/clock.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 1,
+        "kind": "line",
+        "meaning": "minute hand",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "12",
+            "cy": "12",
+            "r": "10"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M12 6v6l4 2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "rocket",
+      "file": "lucide/rocket.svg",
+      "sha256": "5b9777b51eecaf49f40ac12af95e2c4881cae207e73d7c7f1a4f0290c88eca6a",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/rocket.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 3,
+        "kind": "line",
+        "meaning": "fin edge",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"
+          }
+        }
+      ]
+    },
+    {
+      "id": "message",
+      "file": "lucide/message-square.svg",
+      "sha256": "3ed9a6ad622dc1106ddf2bcd5ff4d680d4949f6215d23ea864b719087610b29e",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/message-square.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 0,
+        "kind": "line",
+        "meaning": "message edge",
+        "segment": 8
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mail",
+      "file": "lucide/mail.svg",
+      "sha256": "b399d35c76389da60c3746cf08dc211a1a2ce6316a55334349ae8da21faa2276",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/mail.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 0,
+        "kind": "line",
+        "meaning": "envelope fold",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"
+          }
+        },
+        {
+          "tag": "rect",
+          "attrs": {
+            "x": "2",
+            "y": "4",
+            "width": "20",
+            "height": "16",
+            "rx": "2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "slide-deck",
+      "file": "original/slide-deck.svg",
+      "sha256": "df2cdeafe29487a43218c6921dd81baafcbfc236704e65e43b8f3ac949789f47",
+      "upstream": "https://github.com/JuanSync7/JuanSync7.github.io",
+      "license": "MIT",
+      "view": "front",
+      "plural": true,
+      "accent": {
+        "node": 3,
+        "kind": "line",
+        "meaning": "front slide title line",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M7 3H21V15"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M5 5H19V17"
+          }
+        },
+        {
+          "tag": "rect",
+          "attrs": {
+            "x": "3",
+            "y": "7",
+            "width": "14",
+            "height": "14",
+            "rx": "1"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M6 11H14"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M6 15H11"
+          }
+        }
+      ],
+      "stack": {
+        "front": 2,
+        "rear": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "id": "person",
+      "file": "lucide/user.svg",
+      "sha256": "9e5d536e689d5f11ebd5dd0a5537b71635461cce8cc8910cffc51faccb727e48",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/user.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 1,
+        "kind": "arc",
+        "meaning": "profile rim"
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "12",
+            "cy": "7",
+            "r": "4"
+          }
+        }
+      ]
+    },
+    {
+      "id": "calendar",
+      "file": "lucide/calendar.svg",
+      "sha256": "8595f509f1cde7020df5e9d1c7a441903c7d7f03ea7b53f286e26b0bd1e3e4cf",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/calendar.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 0,
+        "kind": "line",
+        "meaning": "one binding",
+        "segment": 1,
+        "from": 0,
+        "to": 1
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M8 2v3"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M16 2v3"
+          }
+        },
+        {
+          "tag": "rect",
+          "attrs": {
+            "x": "3",
+            "y": "3",
+            "width": "18",
+            "height": "18",
+            "rx": "2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M3 9h18"
+          }
+        }
+      ]
+    },
+    {
+      "id": "link",
+      "file": "lucide/link.svg",
+      "sha256": "7c7172c4cfcf6d1459650d545e2f61711b8aff864a271ee7d330664a30cc3043",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/link.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 0,
+        "kind": "line",
+        "meaning": "link end",
+        "segment": 2
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+          }
+        }
+      ]
+    },
+    {
+      "id": "globe",
+      "file": "lucide/globe.svg",
+      "sha256": "d471ab883af77c71783867995c23bcfbe2f33609d3d17913e9dcec39c214d2c0",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/globe.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 2,
+        "kind": "line",
+        "meaning": "equator",
+        "segment": 1
+      },
+      "nodes": [
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "12",
+            "cy": "12",
+            "r": "10"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M2 12h20"
+          }
+        }
+      ]
+    },
+    {
+      "id": "bookmark",
+      "file": "lucide/bookmark.svg",
+      "sha256": "ab50a1b4a24108a3c9c98ece203f80f8c674059468e355cb58eb993e4a8e3f8c",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/bookmark.svg",
+      "license": "ISC + MIT (Feather-derived icons; see license)",
+      "view": "front",
+      "plural": false,
+      "accent": {
+        "node": 0,
+        "kind": "line",
+        "meaning": "bookmark side edge",
+        "segment": 2
+      },
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z"
+          }
+        }
+      ]
+    }
+  ]
+}

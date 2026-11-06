@@ -164,11 +164,14 @@ See the [reference card and implementation notes](docs/design/hardware-atlas.md)
 
 ## Slide icons
 
-`/lab/slide-icons/` has 24 simpler marks for presentations. Dark/light ink and
-teal-accent/monochrome treatments provide 96 transparent SVG variants, four sprites
+`/lab/slide-icons/` has 48 flat marks for presentations, adapted from pinned Lucide
+sources plus four originals. Dark/light ink and teal-accent/monochrome treatments
+provide 192 transparent SVG variants, four sprites
 and overview sheets. `SlideIcon` appears in the design-system ledger.
 
 From `astro/`, `npm run slides:export` regenerates the downloads; the build runs
 this automatically. `npm run slides:check` checks vectors and ZIP integrity, and
 `npm run slides:browser` checks the collection and exports in the existing browser
 harness. See [implementation notes](docs/design/slide-icons.md).
+
+Slide icon geometry, camera, occlusion, accent and per-icon review rules: [slide icons](docs/design/slide-icons.md).

@@ -1,0 +1,50 @@
+export const data = [
+  {
+    id: 'database',
+    name: 'Database',
+    group: 'data',
+    tags: 'database records query store',
+  },
+  {
+    id: 'dataset',
+    name: 'Dataset',
+    group: 'data',
+    tags: 'dataset table samples training records',
+  },
+  {
+    id: 'document',
+    name: 'Document',
+    group: 'data',
+    tags: 'document file text report specification',
+  },
+  {
+    id: 'folder',
+    name: 'Folder',
+    group: 'data',
+    tags: 'folder directory project collection',
+  },
+  {
+    id: 'archive',
+    name: 'Archive',
+    group: 'data',
+    tags: 'archive package backup repository box',
+  },
+  {
+    id: 'terminal',
+    name: 'Terminal',
+    group: 'data',
+    tags: 'terminal square code cli command software',
+  },
+  {
+    id: 'files',
+    name: 'Files',
+    group: 'data',
+    tags: 'files documents plural stack',
+  },
+  {
+    id: 'folders',
+    name: 'Folders',
+    group: 'data',
+    tags: 'folders directories plural stack',
+  },
+] as const;
