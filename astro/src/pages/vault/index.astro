@@ -38,7 +38,7 @@ const benefits = [
   <section id="value" class="vault-section nt-wrap" data-presentation-section>
     <span data-section-rule aria-hidden="true"></span>
     <header class="vault-heading" data-reveal><p class="pr-comment">// 02 · useful memory</p><h2 class="pr-title">A record worth<br />returning to.</h2></header>
-    <div class="vault-benefits">{benefits.map(([title, text], i) => <article data-reveal><span class="pr-label">0{i + 1}</span><h3 class="pr-title">{title}</h3><p class="pr-body">{text}</p></article>)}</div>
+    <div class="vault-benefits">{benefits.map(([title, text], i) => <div class="vault-benefit-mask"><article data-reveal><span class="pr-label">0{i + 1}</span><h3 class="pr-title">{title}</h3><p class="pr-body">{text}</p></article></div>)}</div>
     <p class="vault-small-note pr-comment" data-reveal>For me and the agents I work with: bounded context, with a route back to its evidence.</p>
   </section>
 

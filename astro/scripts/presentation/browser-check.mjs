@@ -173,6 +173,20 @@ try {
 
   await page.locator('[data-cabinet] canvas').screenshot({ path: join(output, 'cabinet-rest.png') });
 
+  // Export the actual renderer's default pose, at the landing's aspect ratio.
+  // This is the source for the checked-in static poster, not a second drawing.
+  const poster = await context.newPage();
+  await poster.goto(`${base}/figures/?only=vault-cabinet&w=500&t=1.2`);
+  const bench = poster.locator('[data-bench-figure="vault-cabinet"]');
+  await bench.waitFor();
+  await bench.evaluate((node) => { node.style.aspectRatio = '500 / 560'; });
+  await poster.waitForFunction(() => {
+    const canvas = document.querySelector('[data-bench-figure="vault-cabinet"] canvas');
+    return canvas?.dataset.ready === '1' && Math.abs(canvas.getBoundingClientRect().height / canvas.getBoundingClientRect().width - 560 / 500) < 0.002;
+  });
+  await bench.locator('canvas').screenshot({ path: join(output, 'cabinet-poster.png') });
+  await poster.close();
+
   // A scoped Astro swap must release the previous page, not leave its motion owners alive.
   await checkScrollJourney(page, output, [contract.viewports[0], contract.viewports.at(-1)]);
   await page.setViewportSize({ width: 1360, height: 960 });
@@ -185,6 +199,19 @@ try {
   await page.locator('main a[href="/vault/"]').first().click();
   await page.waitForURL('**/vault/');
   await ready(page, 'ready');
+
+  for (const [index, slug] of ['architecture', 'knowledge-graph', 'search'].entries()) {
+    const folder = page.locator(`[data-cabinet-link="${index}"]`);
+    await folder.scrollIntoViewIfNeeded();
+    await folder.focus();
+    await page.waitForFunction(() => Number(document.querySelector('[data-cabinet]').dataset.cabinetLift) > 0.95);
+    await page.keyboard.press('Enter');
+    await page.waitForURL(`**/vault/${slug}/`);
+    await ready(page);
+    await page.locator('main a[href="/vault/"]').first().click();
+    await page.waitForURL('**/vault/');
+    await ready(page, 'ready');
+  }
 
   for (const slug of contract.guideSlugs) {
     const guideLink = page.locator(`main a[href="/vault/${slug}/"]`).first();

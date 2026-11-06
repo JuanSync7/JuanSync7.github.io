@@ -73,7 +73,7 @@ export function createLandingScroll(engine: typeof gsap, root: HTMLElement, styl
   root.querySelectorAll<HTMLElement>('.vault-benefits article').forEach((card, index) => {
     animations.push(engine.fromTo(card, { y: () => travel('--vc-card-travel') * (1 + index / 3) }, {
       y: 0, ease: 'power2.out', scrollTrigger: {
-        trigger: card, start: 'top 92%', end: 'top 54%', scrub, invalidateOnRefresh: true,
+        trigger: card.parentElement, start: `top ${read('--pr-scroll-card-enter', ['%'])}%`, end: `top ${read('--pr-scroll-card-settle', ['%'])}%`, scrub, invalidateOnRefresh: true,
       },
     }));
   });

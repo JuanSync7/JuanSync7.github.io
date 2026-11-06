@@ -17,6 +17,7 @@ html:has(.pr-landing) { scroll-behavior: smooth; }
 .vault-heading { display: flex; flex-direction: column; gap: var(--hf-space-5); margin-bottom: var(--hf-space-12); max-width: var(--nt-measure); }
 .vault-section h2 { font-size: var(--pr-section-size); line-height: var(--nt-lh-heading); letter-spacing: var(--nt-tracking-heading); }
 .vault-benefits { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--hf-space-10); }
+.vault-benefit-mask { overflow: clip; }
 .vault-benefits article { display: flex; flex-direction: column; gap: var(--hf-space-4); border-left: 1px solid var(--pr-rule); padding-left: var(--hf-space-6); }
 .vault-benefits h3 { font-size: var(--nt-fs-h3); }
 .vault-small-note { margin-top: var(--hf-space-10) !important; max-width: var(--nt-measure); }
