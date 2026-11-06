@@ -15,6 +15,7 @@ import ZoomSwapDemo from '../components/ui/ZoomSwapDemo.tsx';
 import CubeSwapDemo from '../components/ui/CubeSwapDemo.tsx';
 import FigureCanvas from '../components/ui/FigureCanvas.tsx';
 import HardwareIcon from '../components/ui/HardwareIcon.tsx';
+import SlideIcon from '../components/ui/SlideIcon.tsx';
 import SectionHead from '../components/ui/SectionHead.astro';
 import Monogram from '../components/ui/Monogram.astro';
 import { IDENTITY, CAREER_STATS } from '../data/site';
@@ -40,6 +41,7 @@ import CubeSwapDemoSrc from '../components/ui/CubeSwapDemo.tsx?raw';
 import CubeSwapCss from '../components/ui/cube-swap.css?raw';
 import FigureCanvasSrc from '../components/ui/FigureCanvas.tsx?raw';
 import HardwareIconSrc from '../components/ui/HardwareIcon.tsx?raw';
+import SlideIconSrc from '../components/ui/SlideIcon.tsx?raw';
 import SectionHeadSrc from '../components/ui/SectionHead.astro?raw';
 
 /* All tokens read from src/styles/tokens/*.css. Hex values are resolved
@@ -478,6 +480,11 @@ ${NebulaStarsSrc}
       </div>
 
       <div class="ds-comp-grid">
+        <div class="ds-comp-card ds-copyable" data-ds-snippet={SlideIconSrc} title="click for code">
+          <div class="ds-comp-label">&lt;SlideIcon&gt;</div>
+          <div class="ds-comp-stage night-sample"><div style="width: var(--hf-space-20); aspect-ratio: 1;"><SlideIcon id="satellite" /></div></div>
+          <div class="ds-comp-note">Simple slide marks · 24 subjects · dark/light ink and monochrome · shared export geometry. <a href="/lab/slide-icons/">Browse and download →</a></div>
+        </div>
         <div class="ds-comp-card ds-copyable" data-ds-snippet={HardwareIconSrc} title="click for code">
           <div class="ds-comp-label">&lt;HardwareIcon&gt;</div>
           <div class="ds-comp-stage night-sample"><div style="width: var(--nt-thumb-min); aspect-ratio: 1;"><HardwareIcon kind="processor" /></div></div>

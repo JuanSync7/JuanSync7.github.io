@@ -1,0 +1,33 @@
+.slide-library { display: grid; gap: var(--hf-space-6); }
+.slide-toolbar { display: grid; grid-template-columns: minmax(0, 1.5fr) 1fr 1.2fr; align-items: end; gap: var(--hf-space-6); padding-block: var(--hf-space-6); border-block: 1px solid var(--nt-line-2); }
+.slide-search span, .slide-toolbar legend { display: block; padding: 0; margin-bottom: var(--hf-space-2); color: var(--nt-ink-muted); font: var(--nt-fs-caption)/var(--nt-lh-body) var(--nt-mono); }
+.slide-search input { width: 100%; min-height: var(--nt-hit); border: 0; border-bottom: 1px solid var(--nt-line-3); background: transparent; color: var(--nt-ink); font: var(--nt-fs-small)/var(--nt-lh-body) var(--nt-sans); }
+.slide-search input::placeholder { color: var(--nt-ink-faint); }
+.slide-toolbar fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
+.slide-segments { display: flex; border: 1px solid var(--nt-line-2); }
+.slide-segments button { flex: 1; border: 0; min-height: var(--nt-hit); padding: var(--hf-space-2); background: transparent; color: var(--nt-ink-soft); }
+.slide-segments button + button { border-left: 1px solid var(--nt-line-2); }
+.slide-segments button[aria-pressed='true'] { color: var(--nt-signal); background: var(--nt-panel-signal); }
+.slide-library button { cursor: pointer; font: var(--nt-fs-meta)/var(--nt-lh-body) var(--nt-mono); }
+.slide-library button:focus-visible, .slide-library input:focus-visible, .slide-library a:focus-visible { outline: 2px solid var(--nt-signal); outline-offset: var(--hf-space-1); }
+.slide-filters { display: flex; flex-wrap: wrap; align-items: center; gap: var(--hf-space-2); font: var(--nt-fs-meta)/var(--nt-lh-body) var(--nt-mono); }
+.slide-filters button { min-height: var(--nt-hit); border: 1px solid transparent; padding: var(--hf-space-2) var(--hf-space-3); color: var(--nt-ink-muted); background: transparent; }
+.slide-filters button[aria-pressed='true'] { border-color: var(--nt-signal-line); color: var(--nt-signal); background: var(--nt-panel-signal); }
+.slide-filters > span { margin-left: auto; color: var(--nt-ink-faint); }
+.slide-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--hf-space-4); margin: 0; padding: 0; list-style: none; }
+.slide-card { display: flex; flex-direction: column; min-width: 0; border: 1px solid var(--nt-line-2); }
+.slide-card:hover { border-color: var(--nt-line-4); }
+.slide-icon-preview { display: grid; place-items: center; aspect-ratio: 1; background: var(--nt-ground); }
+.slide-icon-preview svg { display: block; width: var(--hf-space-20); height: var(--hf-space-20); }
+.slide-library[data-tone='paper'] .slide-icon-preview { background: var(--nt-paper-ground); }
+.slide-card-label { display: grid; gap: var(--hf-space-2); padding: var(--hf-space-3); }
+.slide-card-label > span { color: var(--nt-ink-faint); font: var(--nt-fs-caption)/var(--nt-lh-body) var(--nt-mono); }
+.slide-card-label h2 { min-height: 2lh; margin: 0; font: var(--nt-fs-small)/var(--nt-lh-body) var(--nt-display); color: var(--nt-ink); }
+.slide-actions { display: flex; justify-content: space-between; gap: var(--hf-space-2); align-items: center; border-top: 1px solid var(--nt-rule); padding-inline: var(--hf-space-3); margin-top: auto; }
+.slide-actions a, .slide-actions button { display: inline-flex; align-items: center; min-height: var(--nt-hit); padding: 0; border: 0; color: var(--nt-ink-soft); background: transparent; font: var(--nt-fs-meta)/var(--nt-lh-body) var(--nt-mono); }
+.slide-actions a:hover, .slide-actions button:hover { color: var(--nt-signal); }
+.slide-status { min-height: 2lh; margin: 0; color: var(--nt-ink-muted); font: var(--nt-fs-caption)/var(--nt-lh-body) var(--nt-mono); }
+.slide-empty { color: var(--nt-ink-soft); padding-block: var(--hf-space-8); }
+@media (max-width: 1000px) { .slide-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 700px) { .slide-toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--hf-space-4); } .slide-search { grid-column: 1 / -1; } }
+@media (max-width: 480px) { .slide-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--hf-space-3); } }

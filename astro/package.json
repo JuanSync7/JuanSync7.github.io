@@ -26,7 +26,11 @@
     "lessons:browser": "node scripts/lessons/browser-check.mjs",
     "hardware:export": "node scripts/hardware/export.mjs",
     "hardware:check": "node scripts/hardware/check.mjs",
-    "hardware:browser": "node scripts/hardware/browser-check.mjs"
+    "hardware:browser": "node scripts/hardware/browser-check.mjs",
+    "prebuild": "npm run slides:export",
+    "slides:export": "node scripts/slides/export.mjs",
+    "slides:check": "node scripts/slides/check.mjs && python3 scripts/slides/check-zip.py",
+    "slides:browser": "node scripts/slides/browser-check.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",

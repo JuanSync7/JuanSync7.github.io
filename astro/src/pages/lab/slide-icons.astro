@@ -1,0 +1,43 @@
+---
+import NightPage from '../../layouts/NightPage.astro';
+import NightNav from '../../components/layout/NightNav.astro';
+import NightFooter from '../../components/layout/NightFooter.astro';
+import SlideLibrary from '../../components/slide-icons/SlideLibrary';
+---
+<NightPage title="Slide icons · Lab · Juan Kok" description="24 simple computing, data and research icons for slides. Transparent SVGs, with teal-accent and monochrome versions for dark and light backgrounds.">
+  <NightNav current="lab" />
+  <main class="nt-wrap nt-section">
+    <header class="slide-page-head">
+      <a href="/lab/">← the lab</a>
+      <span>// slide_icons · collection 02</span>
+      <h1>Small marks.<br />Clear ideas.</h1>
+      <p>Compute, systems, data, and the tools of research. Twenty-four quiet icons, made to sit beside the words in your next deck.</p>
+      <div class="slide-page-meta"><span>24 marks</span><span>64-unit grid</span><span>SVG · transparent</span></div>
+      <a class="slide-pack-link" href="/downloads/slide-icons/slide-icons.zip" download>Download the complete SVG set ↓</a>
+    </header>
+    <SlideLibrary client:load />
+    <section class="slide-use" aria-labelledby="slide-use-title">
+      <div><span>// take them into your deck</span><h2 id="slide-use-title">Same mark. Any slide.</h2>
+        <p>Insert an SVG in PowerPoint, Keynote, or Figma and resize it freely. Choose dark or light ink to match the slide background; monochrome keeps every stroke in one colour.</p>
+        <p>The complete set includes all four treatments, individual files, SVG sprites, and numbered overview sheets. The drawings contain no type, images, or external references.</p></div>
+      <a class="slide-pack-link" href="/downloads/slide-icons/slide-icons.zip" download>All 96 SVG variants ↓</a>
+    </section>
+    <p class="slide-more">For the detailed assemblies, <a href="/lab/icon-kit/">open the hardware atlas →</a></p>
+  </main>
+  <NightFooter />
+</NightPage>
+<style>
+  .slide-page-head { display: grid; gap: var(--hf-space-5); max-width: var(--nt-measure); margin-bottom: var(--hf-space-12); }
+  .slide-page-head > a:first-child, .slide-page-head > span, .slide-page-meta, .slide-use > div > span { font: var(--nt-fs-meta)/var(--nt-lh-body) var(--nt-mono); }
+  .slide-page-head > a:first-child { color: var(--nt-ink-muted); }
+  .slide-page-head > span, .slide-use > div > span { color: var(--nt-signal); }
+  .slide-page-head h1 { font: var(--nt-fs-h1)/var(--nt-lh-heading) var(--nt-display); letter-spacing: var(--nt-tracking-display); }
+  .slide-page-head p, .slide-use p, .slide-more { margin: 0; color: var(--nt-ink-soft); }
+  .slide-page-meta { display: flex; flex-wrap: wrap; gap: var(--hf-space-3) var(--hf-space-6); color: var(--nt-ink-muted); }
+  .slide-pack-link { display: inline-flex; align-items: center; justify-content: center; justify-self: start; min-height: var(--nt-hit); border: 1px solid var(--nt-signal-line); background: var(--nt-panel-signal); padding: var(--hf-space-3) var(--hf-space-5); color: var(--nt-signal); font: var(--nt-fs-meta)/var(--nt-lh-body) var(--nt-mono); }
+  .slide-use { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--hf-space-8); padding-block: var(--hf-space-8); margin-block: var(--hf-space-12) var(--hf-space-8); border-block: 1px solid var(--nt-line-2); }
+  .slide-use > div { display: grid; gap: var(--hf-space-4); max-width: var(--nt-measure); }
+  .slide-use h2 { margin: 0; font: var(--nt-fs-h3)/var(--nt-lh-heading) var(--nt-display); }
+  .slide-more { font-size: var(--nt-fs-small); }
+  .slide-more a { color: var(--nt-signal); }
+</style>

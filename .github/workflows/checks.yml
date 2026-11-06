@@ -32,10 +32,20 @@ jobs:
         run: npm run hardware:check
       - name: Build
         run: npm run build
+      - name: Slide icon vector and ZIP checks
+        run: npm run slides:check
       - name: Install Chromium for the figure look
         run: npx playwright install --with-deps chromium
       - name: Lesson browsing (grouping, filters, history, mobile and no JavaScript)
         run: npm run lessons:browser
+      - name: Slide icon browsing and exports
+        run: npm run slides:browser
+      - name: Slide icon screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: slide-icons
+          path: astro/slides-out
       - name: Hardware atlas browsing and exports
         run: npm run hardware:browser
       - name: Hardware atlas screenshots
