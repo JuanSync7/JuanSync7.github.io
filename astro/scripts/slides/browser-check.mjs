@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { mkdir, readFile } from 'node:fs/promises';
 import { spawn } from 'node:child_process';
 import { chromium } from 'playwright';
+import { inspectNativeGeometry } from './browser-audit.mjs';
 
 const supplied=process.argv.find(arg=>arg.startsWith('--url='))?.slice(6);
 const base=supplied??'http://127.0.0.1:4388';
@@ -22,23 +23,25 @@ try {
   page.on('console',message=>{if(message.type()==='error')errors.push(message.text());});
   await page.goto(`${base}/lab/slide-icons/`);
   await page.waitForFunction(()=>new URL(location.href).searchParams.has('tone'));
-  assert.equal(await page.locator('.slide-card').count(),24);
-  const bounds=await page.locator('.slide-icon-preview svg').evaluateAll(nodes=>nodes.map(svg=>{
-    const b=svg.getBBox();return {name:svg.getAttribute('aria-label'),x:b.x,y:b.y,right:b.x+b.width,bottom:b.y+b.height};
-  }));
-  for(const b of bounds)assert.ok(b.x>=3&&b.y>=3&&b.right<=61&&b.bottom<=61,`${b.name}: every curve and edge stays inside the 64-unit frame`);
+  assert.equal(await page.locator('.slide-card').count(),48);
+  await inspectNativeGeometry(page,true);
   await page.screenshot({path:'slides-out/desktop-night.png',fullPage:true});
   const small = await page.addStyleTag({content:'.slide-icon-preview svg { width: 32px; height: 32px; } header.nav { visibility: hidden; }'});
   await page.locator('.slide-grid').screenshot({path:'slides-out/small-night.png'});
   await page.getByRole('button',{name:'light',exact:true}).click();
   await page.waitForFunction(()=>new URL(location.href).searchParams.get('tone')==='paper');
   await page.locator('.slide-grid').screenshot({path:'slides-out/small-paper.png'});
+  await inspectNativeGeometry(page,true);
   await small.evaluate(node=>node.remove());
   await page.evaluate(()=>window.scrollTo(0,0));
   await page.waitForFunction(()=>scrollY===0);
   await page.screenshot({path:'slides-out/desktop-paper.png',fullPage:true});
   await page.getByRole('button',{name:'monochrome',exact:true}).click();
-  const colours=await page.locator('.slide-icon-preview svg').first().locator('path').evaluateAll(nodes=>nodes.map(node=>node.getAttribute('stroke')));
+  await inspectNativeGeometry(page,false);
+  await page.getByRole('button',{name:'dark',exact:true}).click();
+  await inspectNativeGeometry(page,false);
+  await page.getByRole('button',{name:'light',exact:true}).click();
+  const colours=await page.locator('.slide-icon-preview svg').first().locator('[stroke]').evaluateAll(nodes=>nodes.map(node=>node.getAttribute('stroke')));
   assert.equal(new Set(colours).size,1);
   const download=page.waitForEvent('download');
   await page.getByRole('link',{name:'Download Processor SVG',exact:true}).click();
@@ -53,7 +56,7 @@ try {
   await page.waitForFunction(()=>document.querySelector('.slide-status')?.textContent==='Clipboard unavailable. Use the SVG download.');
   await page.evaluate(()=>Reflect.deleteProperty(navigator,'clipboard'));
   await page.getByRole('button',{name:'research',exact:true}).click();
-  assert.equal(await page.locator('.slide-card').count(),6);
+  assert.equal(await page.locator('.slide-card').count(),8);
   await page.getByRole('searchbox').fill('measure');
   assert.equal(await page.locator('.slide-card').count(),2);
   await page.getByRole('searchbox').fill('no-such-icon');
@@ -66,18 +69,31 @@ try {
   assert.equal(await page.getByRole('button',{name:'monochrome',exact:true}).getAttribute('aria-pressed'),'true');
   await page.getByRole('button',{name:'all',exact:true}).click();
   await page.getByRole('button',{name:'teal accent',exact:true}).click();
-  for(const width of [375,768]) {
+  for(const width of [320,375,768]) {
     await page.setViewportSize({width,height:900});
     assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+    const actions=await page.locator('.slide-actions').evaluateAll(rows=>rows.map(row=>{
+      const parent=row.getBoundingClientRect();
+      return [...row.children].every(child=>{const r=child.getBoundingClientRect(),range=document.createRange();range.selectNodeContents(child);return range.getClientRects().length===1&&r.left>=parent.left&&r.right<=parent.right;});
+    }));
+    assert.ok(actions.every(Boolean),`${width}px: every action fits on one line inside its card`);
     await page.evaluate(()=>window.scrollTo(0,0));
   await page.waitForFunction(()=>scrollY===0);
     await page.screenshot({path:`slides-out/page-${width}.png`,fullPage:true});
   }
+  await page.getByRole('button',{name:'workflow',exact:true}).click();
+  assert.equal(await page.locator('.slide-card').count(),8);
+  await page.reload();
+  await page.waitForFunction(()=>document.querySelector('.slide-filters button[aria-pressed="true"]')?.textContent==='workflow');
+  assert.equal(await page.locator('.slide-card').count(),8);
+  await page.getByRole('button',{name:'all',exact:true}).click();
+  const proofHref=await page.getByRole('link',{name:'View Processor size proof',exact:true}).getAttribute('href');
+  assert.equal((await page.request.get(base+proofHref)).status(),200);
   const pack=await page.request.get(`${base}/downloads/slide-icons/slide-icons.zip`);
   assert.equal(pack.status(),200);assert.equal((await pack.body()).readUInt32LE(0),0x04034b50);
   const plain=await browser.newContext({javaScriptEnabled:false}),staticPage=await plain.newPage();
   await staticPage.goto(`${base}/lab/slide-icons/`);
-  assert.equal(await staticPage.locator('.slide-card svg').count(),24);
+  assert.equal(await staticPage.locator('.slide-card svg').count(),48);
   const href=await staticPage.locator('.slide-actions a').first().getAttribute('href');
   assert.equal((await staticPage.request.get(base+href)).status(),200);
   await staticPage.goto(`${base}/design-system/`);
