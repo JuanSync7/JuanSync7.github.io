@@ -13,7 +13,7 @@ export function createLandingScroll(engine: typeof gsap, root: HTMLElement, styl
   const siteNav = document.querySelector<HTMLElement>('body > header.nav');
   const previousInset = root.style.getPropertyValue('--pr-scroll-inset');
   const previousJourney = root.dataset.scrollJourney;
-  const previousProgress = root.dataset.scrollProgress;
+  const previousProgress = root.dataset.scrollFraction;
   const measureInset = () => {
     const height = (chapters?.offsetHeight ?? 0) + (siteNav?.offsetHeight ?? 0);
     root.style.setProperty('--pr-scroll-inset', `${height + read('--pr-scroll-clearance', ['px'])}px`);
@@ -63,11 +63,11 @@ export function createLandingScroll(engine: typeof gsap, root: HTMLElement, styl
   });
 
   const progress = root.querySelector<HTMLElement>('[data-scroll-progress]');
-  root.dataset.scrollProgress = '0';
+  root.dataset.scrollFraction = '0';
   if (progress) animations.push(engine.fromTo(progress, { scaleX: 0, transformOrigin: 'left' }, {
     scaleX: 1, ease: 'none', scrollTrigger: {
       trigger: root, start: 'top top', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true,
-      onUpdate: (trigger) => { root.dataset.scrollProgress = trigger.progress.toFixed(4); },
+      onUpdate: (trigger) => { root.dataset.scrollFraction = trigger.progress.toFixed(4); },
     },
   }));
   root.dataset.scrollJourney = 'ready';
@@ -80,8 +80,8 @@ export function createLandingScroll(engine: typeof gsap, root: HTMLElement, styl
       else root.style.removeProperty('--pr-scroll-inset');
       if (previousJourney === undefined) delete root.dataset.scrollJourney;
       else root.dataset.scrollJourney = previousJourney;
-      if (previousProgress === undefined) delete root.dataset.scrollProgress;
-      else root.dataset.scrollProgress = previousProgress;
+      if (previousProgress === undefined) delete root.dataset.scrollFraction;
+      else root.dataset.scrollFraction = previousProgress;
     },
   };
 }

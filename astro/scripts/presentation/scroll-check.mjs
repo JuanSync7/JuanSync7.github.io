@@ -3,6 +3,23 @@ import { join } from 'node:path';
 
 const position = (page, top) => page.evaluate((target) => window.scrollTo({ top: target, behavior: 'instant' }), top);
 
+async function settled(page, selector) {
+  await page.locator(selector).first().evaluate((element) => new Promise((resolve, reject) => {
+    let previous = '';
+    let stable = 0;
+    const started = performance.now();
+    const sample = () => {
+      const transform = getComputedStyle(element).transform;
+      stable = transform === previous ? stable + 1 : 0;
+      previous = transform;
+      if (stable >= 5) return resolve();
+      if (performance.now() - started > 5000) return reject(new Error('Scroll transform did not settle'));
+      requestAnimationFrame(sample);
+    };
+    requestAnimationFrame(sample);
+  }));
+}
+
 export async function checkScrollJourney(page, output, widths) {
   for (const width of widths) {
     await page.setViewportSize({ width, height: 960 });
@@ -18,14 +35,16 @@ export async function checkScrollJourney(page, output, widths) {
     const target = await page.locator('#overview').evaluate((hero) => Math.min(innerHeight, hero.offsetHeight) / 3);
     await position(page, target);
     await page.waitForFunction(() => new DOMMatrix(getComputedStyle(document.querySelector('[data-scroll-stack]')).transform).m42 < -1);
+    await settled(page, '[data-scroll-stack]');
     assert(Math.abs(await page.evaluate(() => scrollY) - target) < 2, 'GSAP must not intercept native scrolling');
     await page.screenshot({ path: join(output, `scroll-${width}-hero.png`) });
 
     const explore = await page.locator('#explore').evaluate((section) => section.getBoundingClientRect().top + scrollY
       - parseFloat(getComputedStyle(document.querySelector('[data-presentation]')).getPropertyValue('--pr-scroll-inset')));
     await position(page, explore);
-    await page.waitForFunction(() => Number(document.querySelector('[data-presentation]').dataset.scrollProgress) > 0);
+    await page.waitForFunction(() => Number(document.querySelector('[data-presentation]').dataset.scrollFraction) > 0);
     await page.waitForFunction((initial) => new DOMMatrix(getComputedStyle(document.querySelector('[data-scroll-card]')).transform).m42 < initial / 2, cardTravel);
+    await settled(page, '[data-scroll-card]');
     const bar = await page.locator('[data-scroll-chapters]').boundingBox();
     const header = await page.locator('body > header.nav').boundingBox();
     assert(bar && header && Math.abs(bar.y - header.height) < 2, 'Chapter navigation stays below the site header');
@@ -48,7 +67,7 @@ export async function checkScrollJourney(page, output, widths) {
       const stack = document.querySelector('[data-scroll-stack]');
       return Math.abs(new DOMMatrix(getComputedStyle(stack).transform).m42) < 0.2;
     });
-    assert(Number(await page.locator('[data-presentation]').getAttribute('data-scroll-progress')) < 0.001, 'Progress resets when scrolling back');
+    assert(Number(await page.locator('[data-presentation]').getAttribute('data-scroll-fraction')) < 0.001, 'Progress resets when scrolling back');
     await page.locator('.vault-stack-stage').scrollIntoViewIfNeeded();
     assert(await page.locator('[data-scroll-stack]').evaluate((stack) => {
       const label = stack.querySelector('strong');
