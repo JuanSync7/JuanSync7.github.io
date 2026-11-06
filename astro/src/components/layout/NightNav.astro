@@ -100,8 +100,9 @@ const hasCurrent = NAV.some((link) => link.label === current);
     border-color: var(--nt-line-4);
   }
 
-  /* Close the nine links up below 900px. A phone keeps the active destination, or writing. */
-  @media (max-width: 900px) {
+  /* Nine destinations need a full-width header. Below 1000px keep the active page,
+     or writing; the footer still exposes every destination. */
+  @media (max-width: 1000px) {
     .nav-inner {
       gap: var(--hf-space-4);
     }
@@ -109,9 +110,6 @@ const hasCurrent = NAV.some((link) => link.label === current);
     ul {
       gap: var(--hf-space-3);
     }
-  }
-
-  @media (max-width: 760px) {
     nav li:not(:last-child) {
       display: none;
     }
