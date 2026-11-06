@@ -20,6 +20,8 @@ try {
     assert.deepEqual(auditIcon(icon,definitions[icon.id]).failures,[],icon.id);
     const digest=fingerprint(icon,options.map(o=>slideSvg(icon.id,o)));
     assert.equal(reviews[icon.id]?.fingerprint,digest,`${icon.id}: review is missing or stale`);
+    assert.match(reviews[icon.id].reviewed,/^\d{4}-\d{2}-\d{2}$/);
+    assert.deepEqual(reviews[icon.id].treatments,['night/accent','night/mono','paper/accent','paper/mono']);
     assert.ok(reviews[icon.id].notes.length>35&&reviews[icon.id].sizes.join(',')==='32,64');
     assert.notEqual(fingerprint(icon,options.map(o=>slideSvg(icon.id,o)+' ')),digest,'Changed export must invalidate the visual review');
     for(const o of options){
