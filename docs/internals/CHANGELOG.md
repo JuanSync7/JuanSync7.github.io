@@ -2,6 +2,8 @@
 
 ## 2026-11-06
 
+Slide accents now cover their complete selected straight edge or circle/ellipse. Partial spans and arc selectors are rejected; complete-feature coverage replaces the old percentage cap, following the user’s correction.
+
 The icon workflow now discovers existing sources, judges their fit, and either reuses or creates a source through staged instructions. Catalog counts, families, view descriptions, license registries and export inventories grow from specifications. Shared relationship checks replace icon-id branches. The bathtub examples exercise reuse and creation; an isolated test checks new subjects/families/licenses and catalog contraction with no engine edits. Reviewer attestations, deterministic checks and independent behavioral evaluation have separate evidence and status.
 
 The vault introduction now leads with its promise and benefits, with five focused guides for the

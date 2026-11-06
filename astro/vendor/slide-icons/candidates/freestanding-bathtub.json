@@ -41,9 +41,7 @@
   "accent": {
     "node": 0,
     "kind": "top",
-    "from": 0.35,
-    "to": 0.65,
-    "meaning": "a short upper rim segment"
+    "meaning": "the complete straight upper rim edge"
   },
   "constraints": [
     {

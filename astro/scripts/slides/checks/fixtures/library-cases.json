@@ -486,7 +486,7 @@
         "accent": {
           "tag": "path",
           "attrs": {
-            "d": "M9 14L15 14"
+            "d": "M6 14L18 14"
           }
         },
         "licenses": [
@@ -796,7 +796,7 @@
         "accent": {
           "tag": "path",
           "attrs": {
-            "d": "M15 3.25L15 5.75"
+            "d": "M15 2L15 7"
           }
         },
         "licenses": [
@@ -1287,7 +1287,7 @@
         "accent": {
           "tag": "path",
           "attrs": {
-            "d": "M8 11L12 11"
+            "d": "M6 11L14 11"
           }
         },
         "licenses": [

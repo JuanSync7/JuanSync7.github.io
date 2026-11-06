@@ -2,7 +2,7 @@
 
 **Reuse: generic bathtub.** The pinned Lucide `bath` silhouette includes a tub,
 rim, two supports and a shower fixture. The generic facilities brief permits that
-fixture. Keep the geometry, use a short rim accent and inspect its size proof.
+fixture. Keep the geometry, accent the complete straight rim and inspect its size proof.
 
 **Create: freestanding bathtub with no shower.** The closest source includes fixed
 plumbing and misses the brief. An original side view shows a rim, vessel and two

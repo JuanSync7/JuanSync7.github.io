@@ -45,9 +45,7 @@
     "node": 2,
     "kind": "line",
     "segment": 1,
-    "from": 0.35,
-    "to": 0.65,
-    "meaning": "a short visible rim segment"
+    "meaning": "the complete visible rim"
   },
   "constraints": [
     {

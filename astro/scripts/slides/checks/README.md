@@ -5,6 +5,11 @@ parses source XML; Node samples actual generated geometry; Chromium independentl
 measures native primitives. Shared specifications are data, not a shared verdict.
 Sampling checks have configured resolution and do not prove physical meaning.
 
+Accent coverage checks both directions against the independently reconstructed
+source feature and compares total lengths. An attached partial line or circle
+still fails. Straight accents cover their full selected edge; circular/elliptical
+accents cover the full outline. No percentage budget truncates these features.
+
 Standard path, line, circle, ellipse, rect, polyline and polygon primitives are supported,
 so common outline libraries do not require a new validator for a different source format.
 

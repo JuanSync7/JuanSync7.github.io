@@ -8,8 +8,9 @@
   "candidate": {
     "revision": null,
     "revisionMeaning": "content-addressed working candidate; commit id will be recorded with actual trials",
-    "playbookDigest": "f837ae635724be8209f89c4201ba702f9f0da11b68abd38de96d7fa1554ce1b4",
-    "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc"
+    "playbookDigest": "ac97e21ef1b3ccaee2b4b547c610e4fa8a6a7acbb3d0d40ff7f5a0b160aebcb9",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
+    "playbookDigestMeaning": "SHA-256 of sorted skill Markdown paths and bytes, followed by stages.json, NUL-delimited."
   },
   "pending": [
     "Explicit host authorization for fresh sub-agent evaluation has not been received.",

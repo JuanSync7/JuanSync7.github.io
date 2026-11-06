@@ -28,6 +28,9 @@ export function validateIcon(icon){
  if(assigned.some(n=>n>=icon.nodes.length)||new Set(assigned).size!==icon.nodes.length)throw Error(`${icon.id}: every visible primitive must belong to a part`);
  if(new Set(icon.view.visible).size!==parts.size||icon.view.visible.some(p=>!parts.has(p)))throw Error(`${icon.id}: visible parts must match the view declaration`);
  if(icon.accent.node>=icon.nodes.length)throw Error(`${icon.id}: accent feature does not exist`);
+ const accentSource=icon.nodes[icon.accent.node];
+ if(['circle','ellipse','line'].includes(accentSource.tag)&&icon.accent.kind!=='whole')throw Error(`${icon.id}: accent the full source circle, ellipse or line`);
+ if(icon.accent.kind==='top'&&accentSource.tag!=='rect')throw Error(`${icon.id}: top selects a rectangle edge`);
  if(icon.plural&&!icon.collection)throw Error(`${icon.id}: plural requires a declared stack`);
  if(icon.fit.decision==='create'&&!icon.constraints.length)throw Error(`${icon.id}: original geometry requires a physical constraint`);
  return icon;

@@ -2,7 +2,7 @@
 
 The slide/web icon library is extensible. Source subjects, names, families and
 view descriptions have no catalog-size limit or subject whitelist. Grid, stroke,
-palette, safe margins, accent budget and proof sizes remain explicit theme policy
+palette, safe margins, complete-feature accents and proof sizes remain explicit theme policy
 in `astro/scripts/slides/rules.json`; these bound visual consistency.
 
 ## Find → judge → reuse or create
@@ -40,6 +40,11 @@ visual review judges whether that view is physically convincing.
 Supported relationships are inside, attach, occlude, repeat, align, parallel and
 separate. Numbers such as support spacing belong to the icon's own geometry.
 The checker applies declared relationships to every subject with the same code.
+The accent covers exactly one complete selected feature: an entire straight source edge
+or a full circle/ellipse. Partial ranges and arc selectors are rejected. The former
+percentage cap is removed; accent proportion is a descriptive metric, not permission
+to truncate a feature. Visual review still judges which feature best fits the icon.
+
 Original geometry needs an explicit physical constraint. New mathematical
 operations require a maintained checker extension, fixtures and independent
 review; a new noun or family does not.

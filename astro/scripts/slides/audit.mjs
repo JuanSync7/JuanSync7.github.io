@@ -2,6 +2,7 @@ import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {distance,lengthOf,pointsOf} from './checks/geometry.mjs';
 import {checkContracts} from './checks/contracts.mjs';
+import {checkAccentCoverage} from './checks/accent.mjs';
 import {engineRevision} from './checks/engine.mjs';
 import {validateIcon,validateManifest,validateDefinition} from './checks/schema.mjs';
 export const rules=JSON.parse(readFileSync('scripts/slides/rules.json','utf8'));
@@ -24,7 +25,7 @@ export function auditIcon(icon,definition){
  const gap=Math.max(...pointsOf(accent,rules.accentStep).map(a=>Math.min(...support.map(b=>distance(a,b)))));
  if(gap>rules.accentDistance)fail('ACCENT',`Accent floats ${gap.toFixed(3)} units off its designated feature`);
  const fraction=lengthOf(accent)/nodes.reduce((sum,n)=>sum+lengthOf(n),0);
- if(fraction>rules.accentLengthFraction)fail('BUDGET',`Accent uses ${(fraction*100).toFixed(1)}% of the base stroke length`);
+ try{failures.push(...checkAccentCoverage(icon,accent,rules));}catch(error){fail('ACCENT',error.message);}
  failures.push(...checkContracts(icon,nodes,rules));
  return {id:icon.id,failures,metrics:{accentGap:Number(gap.toFixed(4)),accentFraction:Number(fraction.toFixed(4)),view:icon.view,plural:icon.plural}};
 }

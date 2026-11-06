@@ -9,7 +9,7 @@ Asset authors read this index; kernel implementation is read-only to their task.
 | `slides:use -- --id=ID --task="meaning" --why="fit"` | Current reviewed icon → copied SVG and ignored use receipt | Fit is caller judgment; no canonical data changes. |
 | `slides:add -- --spec=PATH --svg=PATH` | New source/spec → staged catalog record | Never overwrites an existing source or grants review. |
 | `slides:import` | Staged sources/specs → typed catalog, geometry, policy mirror | Reports failed constraints; never edits checks. |
-| `accentOf(spec)` | Existing source feature selector → one accent primitive | A selector chooses a feature, not arbitrary loose coordinates. |
+| `accentOf(spec)` | Existing source feature selector → one accent primitive | Select the whole feature: `whole` for a circle/ellipse/line, `top` for a full straight rectangle top, or `line` with a source segment index. Partial ranges/arcs are forbidden. |
 | `slides:proof -- --id=ID` | One icon → rendered size proof and candidate fingerprint | Preview has no publishable ZIP or automatic approval. |
 | `slides:export` | Reviewed library → portable assets | Missing/stale reviews block export. |
 

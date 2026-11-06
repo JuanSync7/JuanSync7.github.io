@@ -1,11 +1,13 @@
 import assert from 'node:assert/strict';
 import {readFileSync,writeFileSync} from 'node:fs';
+import {accentFeature} from './checks/accent.mjs';
 
 export async function inspectNativeGeometry(page,accent){
   const definitions=JSON.parse(readFileSync('src/figures/kit/slides/definitions.json'));
   const policy=JSON.parse(readFileSync('scripts/slides/rules.json'));
   const sources=JSON.parse(readFileSync('vendor/slide-icons/sources.json')).icons;
-  const result=await page.locator('.slide-card').evaluateAll((cards,{definitions,sources,accent,policy})=>cards.map(card=>{
+  const features=Object.fromEntries(sources.map(icon=>[icon.id,accentFeature(icon)]));
+  const result=await page.locator('.slide-card').evaluateAll((cards,{definitions,sources,accent,policy,features})=>cards.map(card=>{
     const id=card.getAttribute('data-icon'),svg=card.querySelector('.slide-icon-preview svg');
     const expected=definitions[id],spec=sources.find(i=>i.id===id);
     const geometry=[...svg.children].filter(n=>n instanceof SVGGeometryElement);
@@ -29,10 +31,21 @@ export async function inspectNativeGeometry(page,accent){
       }
       fraction=accentLength/base.reduce((sum,n)=>sum+n.getTotalLength(),0);
       if(gap>policy.accentDistance)failures.push('floating accent');
-      if(fraction>policy.accentLengthFraction)failures.push('accent budget');
+      const feature=features[id],reference=document.createElementNS('http://www.w3.org/2000/svg',feature.tag);
+      for(const [key,value] of Object.entries(feature.attrs))reference.setAttribute(key,value);
+      svg.append(reference);
+      const fullLength=reference.getTotalLength(),fullCount=Math.max(1,Math.ceil(fullLength/policy.browser.nativeStep));
+      const painted=Array.from({length:samples+1},(_,i)=>highlight.getPointAtLength(accentLength*i/samples));
+      let missing=0;
+      for(let i=0;i<=fullCount;i++){
+        const p=reference.getPointAtLength(fullLength*i/fullCount);
+        missing=Math.max(missing,Math.min(...painted.map(q=>Math.hypot(p.x-q.x,p.y-q.y))));
+      }
+      if(missing>policy.accentDistance||Math.abs(fullLength-accentLength)>policy.geometryTolerance)failures.push('incomplete accent');
+      reference.remove();
     }
     return {id,bounds:{x:box.x,y:box.y,width:box.width,height:box.height},gap,fraction,failures};
-  }),{definitions,sources,accent,policy});
+  }),{definitions,sources,accent,policy,features});
   assert.equal(result.length,sources.length);
   assert.deepEqual(result.map(i=>i.id).sort(),sources.map(i=>i.id).sort());
   for(const icon of result)assert.deepEqual(icon.failures,[],`${icon.id}: native SVG audit`);

@@ -479,7 +479,7 @@
       "plural": false,
       "accent": {
         "node": 3,
-        "kind": "arc",
+        "kind": "whole",
         "meaning": "fan rim"
       },
       "nodes": [
@@ -567,7 +567,7 @@
       "plural": false,
       "accent": {
         "node": 4,
-        "kind": "arc",
+        "kind": "whole",
         "meaning": "one component terminal"
       },
       "nodes": [
@@ -895,7 +895,7 @@
       "plural": false,
       "accent": {
         "node": 1,
-        "kind": "arc",
+        "kind": "whole",
         "meaning": "lens rim"
       },
       "nodes": [
@@ -1388,9 +1388,7 @@
         "node": 0,
         "kind": "line",
         "meaning": "power actuator",
-        "segment": 1,
-        "from": 0,
-        "to": 0.3
+        "segment": 1
       },
       "nodes": [
         {
@@ -1729,7 +1727,7 @@
       "plural": false,
       "accent": {
         "node": 0,
-        "kind": "arc",
+        "kind": "whole",
         "meaning": "top record rim"
       },
       "nodes": [
@@ -2448,10 +2446,8 @@
       "accent": {
         "node": 1,
         "kind": "line",
-        "meaning": "leading bar tip",
-        "segment": 1,
-        "from": 0.8,
-        "to": 1
+        "meaning": "the complete leading bar",
+        "segment": 1
       },
       "nodes": [
         {
@@ -2909,7 +2905,7 @@
       "plural": false,
       "accent": {
         "node": 4,
-        "kind": "arc",
+        "kind": "whole",
         "meaning": "pivot rim"
       },
       "nodes": [
@@ -2995,7 +2991,7 @@
       "plural": false,
       "accent": {
         "node": 2,
-        "kind": "arc",
+        "kind": "whole",
         "meaning": "bullseye rim"
       },
       "nodes": [
@@ -3142,9 +3138,8 @@
       "plural": false,
       "accent": {
         "node": 1,
-        "kind": "arc",
-        "meaning": "lens rim",
-        "degrees": 45
+        "kind": "whole",
+        "meaning": "lens rim"
       },
       "nodes": [
         {
@@ -3279,7 +3274,7 @@
       "plural": false,
       "accent": {
         "node": 1,
-        "kind": "arc",
+        "kind": "whole",
         "meaning": "central hub"
       },
       "nodes": [
@@ -3344,7 +3339,7 @@
       "plural": false,
       "accent": {
         "node": 1,
-        "kind": "arc",
+        "kind": "whole",
         "meaning": "branch endpoint"
       },
       "nodes": [
@@ -3967,7 +3962,7 @@
       "plural": false,
       "accent": {
         "node": 1,
-        "kind": "arc",
+        "kind": "whole",
         "meaning": "profile rim"
       },
       "nodes": [
@@ -4034,9 +4029,7 @@
         "node": 0,
         "kind": "line",
         "meaning": "one binding",
-        "segment": 1,
-        "from": 0,
-        "to": 1
+        "segment": 1
       },
       "nodes": [
         {
@@ -4339,9 +4332,7 @@
         "node": 2,
         "kind": "line",
         "segment": 1,
-        "from": 0.35,
-        "to": 0.65,
-        "meaning": "a short visible rim segment"
+        "meaning": "the complete visible rim"
       },
       "constraints": [
         {
@@ -4462,9 +4453,7 @@
       "accent": {
         "node": 0,
         "kind": "top",
-        "from": 0.35,
-        "to": 0.65,
-        "meaning": "a short upper rim segment"
+        "meaning": "the complete straight upper rim edge"
       },
       "constraints": [
         {

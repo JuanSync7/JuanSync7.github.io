@@ -367,7 +367,6 @@
           "enum": [
             "whole",
             "top",
-            "arc",
             "line"
           ]
         },
@@ -378,21 +377,6 @@
         "segment": {
           "type": "integer",
           "minimum": 0
-        },
-        "from": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1
-        },
-        "to": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1
-        },
-        "degrees": {
-          "type": "number",
-          "exclusiveMinimum": 0,
-          "maximum": 180
         }
       },
       "required": [

@@ -2,12 +2,12 @@
   "schema": "slide-proof-review/1",
   "reviewer": "/root",
   "scope": "Actual rasterized family sheets inspected through view_image; author self-review only.",
-  "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
+  "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
   "families": [
     {
       "group": "compute",
       "path": "slides-out/review/all/proofs/families/compute.png",
-      "sha256": "09d6cd46b013e85555eef9c0e33852e1e14c3821b3b10a255f87a93b37f88c54",
+      "sha256": "3e25d46fcedd4cbd7a91cb287aad7ed40ea6364878bb0cec3a9818240b052779",
       "icons": [
         "processor",
         "memory",
@@ -22,7 +22,7 @@
     {
       "group": "systems",
       "path": "slides-out/review/all/proofs/families/systems.png",
-      "sha256": "56d0932fc784aabd1bb038b067016bf736afe46c278a5ce0e903b85ebca63e79",
+      "sha256": "357f11601b2e4f67db4bd56d0c2c02ac8479a6db734ce91011e1c622ff4c5990",
       "icons": [
         "server",
         "switch",
@@ -37,7 +37,7 @@
     {
       "group": "data",
       "path": "slides-out/review/all/proofs/families/data.png",
-      "sha256": "0616b38768b5d7ebb5034e5092c4dc10afe67c66c9a49c3bc518a8e67d83529d",
+      "sha256": "d0cf8e91bcba701a6835f56d452e8131d9a67bc16bab2e93b37ccfb9f936412f",
       "icons": [
         "database",
         "dataset",
@@ -52,7 +52,7 @@
     {
       "group": "research",
       "path": "slides-out/review/all/proofs/families/research.png",
-      "sha256": "0ae7090702dd47d2a0903309ded16d665945af2e7286351e339c525c6d137fb7",
+      "sha256": "7191c2b9612b090009be88e84442f4dea8928d9b45a2c751e8f935c6bf0a136f",
       "icons": [
         "notebook",
         "chart",
@@ -67,7 +67,7 @@
     {
       "group": "workflow",
       "path": "slides-out/review/all/proofs/families/workflow.png",
-      "sha256": "3a9b609ee2c5161e19e1a69c9cd1ff16e52ddfa4b34a6c18aff3701cb9ee48f9",
+      "sha256": "701445388a93fedf8fadc248f63b54c8e84bd3d5ee4ccb4b8c66813f69d3a13c",
       "icons": [
         "search",
         "filter",
@@ -82,7 +82,7 @@
     {
       "group": "communication",
       "path": "slides-out/review/all/proofs/families/communication.png",
-      "sha256": "9529af37697d6895882fd3325683d2445b1cf2babc571cd23a0e7c8b106157a8",
+      "sha256": "cde77436673d9bfcb4c75878c4157e7439077ba373275a622344d3e4b62505c9",
       "icons": [
         "message",
         "mail",
@@ -97,7 +97,7 @@
     {
       "group": "everyday",
       "path": "slides-out/review/all/proofs/families/everyday.png",
-      "sha256": "30239ceab719b11654242f02242084b76f1b0352fd405ed4176aa4eb60eee7a1",
+      "sha256": "22a40f4c1363e6019ed96848d72941ddeee20e7427ee6d814104e0f8fb8ab647",
       "icons": [
         "bathtub",
         "freestanding-bathtub"
@@ -105,6 +105,5 @@
     }
   ],
   "independentReview": "not claimed",
-  "initialInspectionEngine": "bda625c38c05ffa559ced0c87cc3a78f7b479b2130a3838961eeb6063ce6b662",
-  "revalidation": "All individual proof SVG hashes remain identical to the actually inspected size proofs. Re-rendered family sheets preserve the same geometry; independent review is not claimed."
+  "revalidation": "Fresh size proofs with full line/circle/ellipse accents rasterized and inspected for all icons in every treatment. Author self-review only."
 }

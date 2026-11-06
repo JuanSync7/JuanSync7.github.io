@@ -7,7 +7,7 @@ Geometry contracts live with each icon. This file holds judgments.
 | --- | --- | --- |
 | FIT | Express the slide's intended meaning. Reject a convenient library mark whose extra parts change the story. | User request to reuse only when appropriate; generic bath versus freestanding-no-shower case. |
 | VIEW | Choose a coherent view and omit concealed edges. Reject a rear part visible through a front face. | User's misplaced 3D edges; rear-sheet and beam-through-slider fixtures. |
-| SIGNAL | Put teal on one meaningful existing feature. Reject a floating dash or decorative new detail. | User's requested small theme accent; detached-accent fixture. |
+| SIGNAL | Put teal on one meaningful existing feature in full: a straight line runs endpoint to endpoint; a circle or ellipse uses the complete outline. Reject partial spans, floating dashes or extra decoration. | User's full-line/full-circle correction (6 Nov 2026); partial-line and partial-circle regressions. |
 | CLARITY | Preserve recognition at the configured proof sizes. Reject detail that merges or an outline that reads as another noun. | User's slide-use request; LOOK questions and unseen-subject trials. |
 | COLLECTION | Use a stack when the meaning is a collection; keep visible rear contours coherent. | User's plural instruction; stack/misalignment fixtures. |
 
