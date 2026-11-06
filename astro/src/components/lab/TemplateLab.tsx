@@ -74,7 +74,7 @@ export default function TemplateLab({ template }: Props) {
 
   return (
     <div className="lab">
-      <div className="lab-main">
+      <div className="lab-main" style={{ aspectRatio: tpl.aspect }}>
         <FigureCanvas key={id} id={id} />
       </div>
       <div className="lab-bar">

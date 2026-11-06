@@ -13,17 +13,57 @@ const REQUIRED = {
   lab: ['microscope', 'tuberack', 'flask', 'beaker', 'petridish'],
 };
 const OPTIONAL = {
-  dining: ['candle', 'bottle'],
-  work: ['phone', 'mug', 'tasklamp'],
-  computer: ['speaker', 'headphones', 'mug', 'plant'],
-  storage: ['jar', 'notebook'],
-  messy: ['phone', 'penholder'],
-  study: ['penholder', 'mug', 'phone'],
-  kitchen: ['bowl', 'mug'],
-  bar: ['tumbler', 'bowl'],
-  lab: ['pipette', 'box'],
+  dining: ['candle', 'bottle', 'bread', 'condiments', 'napkins', 'plate', 'spoon', 'tumbler'],
+  work: [
+    'phone',
+    'mug',
+    'tasklamp',
+    'calculator',
+    'sticky',
+    'pen',
+    'stapler',
+    'pencilcase',
+    'clock',
+    'tray',
+    'paper',
+    'usb',
+    'tape',
+  ],
+  computer: [
+    'speaker',
+    'headphones',
+    'mug',
+    'plant',
+    'gamepad',
+    'usb',
+    'phone',
+    'drive',
+    'notebook',
+    'cable',
+    'sticky',
+    'pen',
+    'clock',
+  ],
+  storage: ['jar', 'notebook', 'labels', 'tape', 'tray', 'pen'],
+  messy: ['phone', 'penholder', 'pen', 'snack', 'usb', 'cable', 'tape', 'sticky'],
+  study: ['penholder', 'mug', 'phone', 'clock', 'pen', 'pencilcase', 'calculator', 'sticky', 'tray', 'paper'],
+  kitchen: ['bowl', 'mug', 'fruitbowl', 'utensils', 'towel', 'plate', 'jar', 'spoon', 'timer', 'napkins'],
+  bar: ['tumbler', 'bowl', 'fruitbowl', 'napkins', 'spoon', 'towel', 'plate'],
+  lab: ['pipette', 'box', 'bottle', 'notebook', 'penholder', 'labels', 'jar'],
 };
 export function semanticCheck(p) {
+  const minimum = {
+    dining: 10,
+    work: 11,
+    computer: 11,
+    storage: 11,
+    messy: 14,
+    study: 11,
+    kitchen: 11,
+    bar: 10,
+    lab: 12,
+  };
+  assert(p.items.length >= minimum[p.theme.id], `${p.theme.id} is too sparse`);
   const theme = p.theme.id,
     remaining = [...REQUIRED[theme]],
     allowed = new Set([...remaining, ...OPTIONAL[theme]]);
@@ -55,7 +95,11 @@ export function semanticCheck(p) {
     assert(Math.abs(one('notebook').x - one('openbook').x) > 1);
   }
   if (theme === 'storage') {
-    assert(all('box').every((it) => it.z < 0));
+    assert(
+      all('box')
+        .filter((it) => it.required)
+        .every((it) => it.z < 0),
+    );
     assert(one('organizer').z > 0.5);
   }
   if (theme === 'messy') assert(all('paper').every((it) => Math.abs(it.turn) <= 0.65));

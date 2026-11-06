@@ -46,7 +46,7 @@ try {
   await build({
     stdin: {
       contents:
-        "export { default, arrange, object } from './src/figures/templates/pixel-still'; export { webglAvailable } from './src/figures/defineThree'; export {THEMES,GAP,tabletop} from './src/figures/kit/tabletop'; export {PROP_KINDS} from './src/figures/kit/tableprops';",
+        "export { default, arrange, object } from './src/figures/templates/pixel-still'; export { webglAvailable } from './src/figures/defineThree'; export {THEMES,GAP,tabletop,TABLE_ASPECT} from './src/figures/kit/tabletop'; export {PROP_KINDS} from './src/figures/kit/tableprops';",
       resolveDir: process.cwd(),
       loader: 'ts',
     },
@@ -63,6 +63,7 @@ try {
     THEMES,
     GAP,
     tabletop,
+    TABLE_ASPECT,
     PROP_KINDS,
   } = await import(pathToFileURL(out));
   const originalDocument = globalThis.document;
@@ -95,11 +96,11 @@ try {
     semanticCheck(p);
     orientations.get(p.theme.id).add(p.mirror);
     assert.deepEqual(p, arrange(rng(seed ^ 0x9e3779b9), theme), `non-deterministic seed ${seed}`);
-    assert(p.items.length >= 4 && p.items.length <= 14, `bad count, seed ${seed}`);
+    assert(p.items.length >= p.theme.minItems && p.items.length <= p.theme.targetItems, `bad count, seed ${seed}`);
     assert.equal(template.instance(seed).kind, 'three');
     assert.equal(template.instance(seed).id, `pixel-still~${seed}`);
     layouts.add(JSON.stringify(p.items.map(({ kind, x, z }) => [kind, x, z])));
-    const cam = new PerspectiveCamera(30, 2, 0.1, 60);
+    const cam = new PerspectiveCamera(30, TABLE_ASPECT, 0.1, 60);
     cam.position.set(
       Math.sin(p.yaw) * Math.cos(p.pitch) * p.dist,
       Math.sin(p.pitch) * p.dist,
@@ -109,7 +110,7 @@ try {
     cam.updateMatrixWorld();
     const projected = [];
     for (const x of [-p.theme.w / 2, p.theme.w / 2])
-      for (const y of [tabletop(p).bounds.lo[1], 0])
+      for (const y of [tabletop(p).bounds.lo[1], tabletop(p).bounds.hi[1]])
         for (const z of [-p.theme.d / 2, p.theme.d / 2]) {
           const v = new Vector3(x, y, z).project(cam);
           assert(Math.abs(v.x) < 1 && Math.abs(v.y) < 1, `cropped table ${seed}/${p.theme.id}`);
@@ -135,6 +136,13 @@ try {
       for (const x of [bounds.min.x, bounds.max.x])
         for (const y of [bounds.min.y, bounds.max.y])
           for (const z of [bounds.min.z, bounds.max.z]) corners.push(new Vector3(x, y, z).project(cam));
+      if (p.theme.surface === 'oval')
+        for (const x of [bounds.min.x, bounds.max.x])
+          for (const z of [bounds.min.z, bounds.max.z])
+            assert(
+              (x / (p.theme.w / 2 - 0.08)) ** 2 + (z / (p.theme.d / 2 - 0.08)) ** 2 < 0.98,
+              `off oval surface ${seed}`,
+            );
       const rect = [
         Math.min(...corners.map((q) => q.x)),
         Math.min(...corners.map((q) => q.y)),
@@ -180,6 +188,8 @@ try {
   }
   assert.equal(kinds.size, PROP_KINDS.length);
   assert.equal(themeCounts.size, 9);
+  const furniture = new Set(THEMES.map((t) => JSON.stringify(tabletop(arrange(rng(42), t.id)).surfaces)));
+  assert.equal(furniture.size, 9, 'Each theme needs its own table geometry');
   for (const [theme, values] of orientations)
     assert.equal(values.size, 2, `${theme} never varies its layout orientation`);
   assert(layouts.size > 1300);

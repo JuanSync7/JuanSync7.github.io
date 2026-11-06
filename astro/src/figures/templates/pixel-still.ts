@@ -8,6 +8,7 @@ import {
   LineSegments,
   Mesh,
   MeshBasicMaterial,
+  PlaneGeometry,
 } from 'three';
 import { defineTemplate } from '../defineTemplate';
 import { defineThreeFigure } from '../defineThree';
@@ -21,6 +22,17 @@ import type { Pointer } from '../types';
 interface S {
   edges: LineBasicMaterial[][];
   faces: { material: MeshBasicMaterial; base: Color }[][];
+  marker: Mesh<PlaneGeometry, MeshBasicMaterial>;
+}
+/** Keep small accessories easy to locate without enlarging their physical models. */
+function selection(it: TableItem): { x: number; z: number; w: number; d: number } {
+  const { lo, hi } = it.bounds;
+  return {
+    x: (lo[0] + hi[0]) / 2,
+    z: (lo[2] + hi[2]) / 2,
+    w: Math.max(1.4, hi[0] - lo[0] + 0.24),
+    d: Math.max(1.1, hi[2] - lo[2] + 0.24),
+  };
 }
 function closest(p: TableScene, pointer: Pointer, w: number, h: number): number {
   let selected = -1,
@@ -78,7 +90,9 @@ function mesh(model: PropModel, isTable = false): Group {
     if (!positions.length) return;
     const geometry = new BufferGeometry();
     geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
-    const color = isTable ? new Color(hexOf('panel2')) : new Color(hexOf('inkFaint')).multiplyScalar(0.14 + i * 0.09);
+    const color = isTable
+      ? new Color(hexOf(i === 2 ? 'panel2' : i === 1 ? 'line2' : 'line'))
+      : new Color(hexOf('inkFaint')).multiplyScalar(0.14 + i * 0.09);
     group.add(
       new Mesh(
         geometry,
@@ -97,7 +111,7 @@ function mesh(model: PropModel, isTable = false): Group {
   group.add(
     new LineSegments(
       geometry,
-      new LineBasicMaterial({ color: hexOf('ink'), transparent: true, opacity: isTable ? 0.3 : 0.48 }),
+      new LineBasicMaterial({ color: hexOf('ink'), transparent: true, opacity: isTable ? 0.42 : 0.48 }),
     ),
   );
   return group;
@@ -115,7 +129,7 @@ export default defineTemplate<TableScene, S>({
   renderer: defineThreeFigure,
   motion: 'responsive',
   answers: true,
-  aspect: 2,
+  aspect: 1.5,
   grammar: (rng) => arrange(rng),
   name: (p) => `${p.theme.name} · ${p.items.length} objects`,
   alt: (p) =>
@@ -135,8 +149,20 @@ export default defineTemplate<TableScene, S>({
       faces.push(f);
       edges.push(e);
     }
-    scene.add(mesh(tabletop(p), true), ...models);
-    return { faces, edges };
+    const marker = new Mesh(
+      new PlaneGeometry(1, 1),
+      new MeshBasicMaterial({
+        color: hexOf('signal'),
+        transparent: true,
+        opacity: 0.3,
+        depthWrite: false,
+        side: DoubleSide,
+      }),
+    );
+    marker.rotation.x = -Math.PI / 2;
+    marker.visible = false;
+    scene.add(mesh(tabletop(p), true), marker, ...models);
+    return { faces, edges, marker };
   },
   update: ({ camera, params: p, state: s, w, h, pointer, hover }) => {
     const dist = tableView(p, w, h).dist;
@@ -147,6 +173,13 @@ export default defineTemplate<TableScene, S>({
     );
     camera.lookAt(0, 0, 0);
     const selected = hover > 0.1 ? closest(p, pointer, w, h) : -1;
+    const item = p.items[selected];
+    s.marker.visible = Boolean(item);
+    if (item) {
+      const m = selection(item);
+      s.marker.position.set(m.x, 0.008, m.z);
+      s.marker.scale.set(m.w, m.d, 1);
+    }
     s.faces.forEach((faces, i) =>
       faces.forEach(({ material, base }) => {
         if (i === selected) material.color.set(hexOf('inkStrong'));
@@ -167,6 +200,22 @@ export default defineTemplate<TableScene, S>({
     const models = flatModels.get(p) ?? [tabletop(p), ...p.items.map(itemModel)];
     flatModels.set(p, models);
     models.forEach((model, i) => {
+      const item = p.items[selected];
+      if (i === 1 && item) {
+        const m = selection(item);
+        poly(
+          ctx,
+          [
+            [-1, -1],
+            [1, -1],
+            [1, 1],
+            [-1, 1],
+          ].map(([a = 0, b = 0]) => project(cam, m.x + (a * m.w) / 2, 0.008, m.z + (b * m.d) / 2)),
+          true,
+        );
+        ctx.fillStyle = ink.signal(0.3);
+        ctx.fill();
+      }
       const active = i - 1 === (selected < 0 ? p.lit : selected);
       const surfaces = model.surfaces.map((s) => ({ s, points: s.points.map((v) => project(cam, ...v)) }));
       surfaces.sort(
@@ -177,10 +226,13 @@ export default defineTemplate<TableScene, S>({
       for (const { s, points } of surfaces) {
         poly(ctx, points, s.face);
         if (s.face) {
-          ctx.fillStyle = i === 0 ? ink.face() : mix('ground', 'inkFaint', 0.22 + shade(s.points) * 0.07);
+          ctx.fillStyle =
+            i === 0
+              ? mix('ground', 'inkFaint', 0.08 + (2 - shade(s.points)) * 0.06)
+              : mix('ground', 'inkFaint', 0.22 + shade(s.points) * 0.07);
           ctx.fill();
         }
-        ctx.strokeStyle = active ? ink.signal(0.75) : ink.line(i === 0 ? 0.28 : 0.4);
+        ctx.strokeStyle = active ? ink.signal(0.75) : ink.line(i === 0 ? 0.42 : 0.4);
         ctx.stroke();
       }
     });
