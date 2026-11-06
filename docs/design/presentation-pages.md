@@ -133,7 +133,8 @@ landing's aspect ratio and 2× resolution. After a geometry or palette change:
 3. Run `npm run cabinet:poster -- /absolute/path/to/cabinet-poster.png` from `astro/`.
 4. Commit the PNG and generated manifest; run the source/build checks and review the final fallback.
 
-The manifest binds the image bytes to the figure, camera, drawing, ink, renderer and palette sources.
+The manifest binds the image bytes to the figure, camera, drawing, ink, motion helpers, palette, renderer, frame clock, figure wrappers,
+registry and capture recipe.
 `presentation:check` rejects stale assets. The installer checks the PNG dimensions and verifies the exported source manifest against the local
 renderer before accepting the image; the browser cases
 check visible image loading and real links with JavaScript disabled. A source hash cannot establish

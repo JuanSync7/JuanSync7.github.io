@@ -9,6 +9,11 @@ on:
       - 'astro/src/figures/define.ts'
       - 'astro/src/figures/kit/**'
       - 'astro/src/styles/tokens/palette.ts'
+      - 'astro/src/styles/tokens/presentation.css'
+      - 'astro/src/hooks/useFigureLoop.ts'
+      - 'astro/src/components/ui/FigureCanvas.tsx'
+      - 'astro/src/components/figures/FigureBench.tsx'
+      - 'astro/src/figures/registry.ts'
       - 'astro/scripts/presentation/cabinet-poster*.mjs'
       - 'astro/scripts/presentation/browser-check.mjs'
 

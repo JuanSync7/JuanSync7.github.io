@@ -195,8 +195,8 @@ try {
 
   for (const [index, slug] of ['architecture', 'knowledge-graph', 'search'].entries()) {
     const folder = page.locator(`[data-cabinet-link="${index}"]`);
-    await folder.scrollIntoViewIfNeeded();
     await page.keyboard.press('Tab');
+    await folder.scrollIntoViewIfNeeded();
     await folder.focus();
     await page.waitForFunction((expected) => {
       const cabinet = document.querySelector('[data-cabinet]');
