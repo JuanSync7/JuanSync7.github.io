@@ -7,7 +7,8 @@
    in subject, metaphor, silhouette, arrangement and useful detail.
 3. Draw one source SVG on the configured theme grid. Use the site's stroke family.
    Show visible edges only. Choose a small existing feature as the accent support.
-4. Write a `slide-icon/2` specification. Use arbitrary meaningful part names and
+4. Write a `slide-icon/2` specification. The routed freestanding-tub source/spec
+   demonstrates the record shape; copy its structure, not its subject or geometry. Use arbitrary meaningful part names and
    only relevant constraints from the [constraint API](../../../../astro/scripts/slides/checks/README.md).
    Examples: supports attach to a tub; ports fit inside a housing; repeated sheets
    share an offset; rear contours stay outside the front silhouette.

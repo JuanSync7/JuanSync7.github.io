@@ -1,0 +1,34 @@
+{
+  "schema": "slide-deterministic-evaluation/1",
+  "verification": "checked by executable source/geometry/extension/reuse/archive checks; not a behavioral LLM evaluation",
+  "icons": 50,
+  "variants": 200,
+  "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc",
+  "extensibility": {
+    "schema": "slide-extension-test/1",
+    "catalogBefore": 50,
+    "catalogAfterAddition": 52,
+    "catalogAfterContraction": 1,
+    "newFamily": true,
+    "newLicense": true,
+    "unknownViewName": true,
+    "protectedEngineUnchanged": true,
+    "badCandidateRolledBack": true,
+    "duplicateRejected": true,
+    "unreviewedPreviewOnly": true,
+    "resourceNameCollisionsAvoided": true,
+    "behavioralEvaluation": "not measured by this test"
+  },
+  "unchangedReuse": {
+    "schema": "slide-reuse-test/1",
+    "canonicalUnchanged": true,
+    "deterministicReceipt": true,
+    "exactCopy": true,
+    "staleExportRejected": true,
+    "semanticFit": "not measured by this test"
+  },
+  "negativeFixtures": 16,
+  "geometryFailures": [],
+  "reviewScope": "Author-inspected size proofs, with exact proof hashes; independent review not claimed",
+  "behavioralEvaluation": "pending delegation authorization and actual fresh trials"
+}

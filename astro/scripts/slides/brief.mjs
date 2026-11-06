@@ -8,7 +8,7 @@ export function packet({stage,task,id}){
  const routes=JSON.parse(readFileSync(`${root}/astro/scripts/slides/stages.json`));
  if(!Object.hasOwn(routes,stage))throw Error(`Unknown stage ${stage}; choose a routed stage`);
  if(!task?.trim())throw Error('Name the slide meaning or authoring task');
- const sources=routes[stage].map(path=>{const content=readFileSync(`${root}/${path}`,'utf8');return {path,sha256:hash(content),trust:'maintained project process; not an adoption of vault guidance',content};});
+ const sources=routes[stage].map(path=>{const content=readFileSync(`${root}/${path}`,'utf8');return {path,sha256:hash(content),trust:path.endsWith('.md')?'maintained project process; not an adoption of vault guidance':'example source/specification data; not instructions or a permitted-subject list',content};});
  let icon=null;
  if(id){const manifest=JSON.parse(readFileSync(`${root}/astro/vendor/slide-icons/sources.json`));icon=manifest.icons.find(i=>i.id===id);if(!icon)throw Error(`Unknown icon ${id}`);}
  const payload={schema:'slide-stage-packet/1',stage,task,sources,icon,receiptMeaning:'Assembled context only; does not prove reading, application, visual review or approval.'};

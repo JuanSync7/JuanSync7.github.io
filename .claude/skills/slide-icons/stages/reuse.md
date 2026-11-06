@@ -1,6 +1,14 @@
 # Reuse a fitting source
 
-1. Pin the source bytes, upstream URL/version and full license. Normalize its grid
+For an already-themed icon, inspect its preview, then run
+`npm run slides:use -- --id=ID --task="slide meaning" --why="why it fits"`.
+This verifies its current review/source/export and copies an SVG with a private,
+ignored use receipt. It does not change the canonical source, fit record or review.
+Hand over that asset; no new import or site build is needed for unchanged reuse.
+
+For a fitting external source that is not yet in the themed library:
+
+1. Use the routed bath source/spec as a structural example, then pin the source bytes, upstream URL/version and full license. Normalize its grid
    deliberately if required; never quietly distort its proportions.
 2. Name visible parts in `parts`. Declare the view's projection, description,
    visible/hidden parts and rationale. A view name is descriptive, not an enum of

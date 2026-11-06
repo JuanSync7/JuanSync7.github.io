@@ -57,6 +57,8 @@ jobs:
         run: npm run slides:check
       - name: Open icon catalog and staging transaction
         run: npm run slides:extension
+      - name: Unchanged icon reuse and stale-export rejection
+        run: npm run slides:reuse-check
       - name: Playbook evaluation record status
         run: npm run slides:eval-check -- ../docs/design/slide-icons/evaluation/evaluation.json
       - name: Design system browsing and clipboard

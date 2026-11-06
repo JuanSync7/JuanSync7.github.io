@@ -12,7 +12,9 @@ It routes to one stage at a time instead of loading the entire rulebook globally
 
 1. Search the themed catalog and pinned library references with `slides:find`.
 2. Judge the closest candidate against the slide's meaning, view and useful size.
-3. Reuse a fitting source with its exact version, bytes and full license notices.
+3. Use an already-themed fitting icon through `slides:use`; retain its source and
+   review unchanged and record the slide-specific fit in an ignored receipt.
+   Reuse a fitting external source with its exact version, bytes and full license notices.
 4. Create the missing silhouette when candidates do not fit. Keep the brief and
    iterate its failing part rather than restarting the design.
 5. Validate declared relationships, inspect size proofs, record the exact review,
@@ -49,6 +51,7 @@ From `astro/`:
 ```sh
 npm run slides:brief -- --stage=fit --task="A bathtub for a facilities slide"
 npm run slides:find -- --query="bathtub"
+npm run slides:use -- --id=bathtub --task="Facilities slide" --why="A shower fixture fits"
 npm run slides:add -- --spec=PATH --svg=PATH
 # For another source library, also supply --license-file=PATH --license-id=NAME.
 npm run slides:import
@@ -58,6 +61,7 @@ npm run slides:guard -- --base=origin/main
 npm run slides:export
 npm run slides:check
 npm run slides:extension
+npm run slides:reuse-check
 npm run check
 npm run build
 npm run slides:browser
@@ -91,6 +95,8 @@ an object is recognizable or that every possible projection is correct.
 Negative fixtures cover floating accents, broken joins, containment/occlusion,
 repetition, view/spec omissions and invalid geometry. A passing/failing unknown
 subject pair checks that new nouns, families, views and angled supports work.
+The unchanged-reuse test verifies exact copies, deterministic receipts, stale-export
+rejection and preservation of canonical data; it makes no semantic-fit judgment.
 The isolated extensibility test adds a new subject/family/library/license, tests
 bad-candidate rollback, duplicate rejection and preview-only handling, then
 contracts the catalog to one entry without changing the maintained engine.

@@ -47,7 +47,9 @@
     "slides:eval-check": "node scripts/slides/evals/check-report.mjs",
     "slides:brief": "node scripts/slides/brief.mjs",
     "voxel:check": "node scripts/voxel/check.mjs && node scripts/voxel/motion.mjs",
-    "voxel:browser": "node scripts/voxel/browser.mjs"
+    "voxel:browser": "node scripts/voxel/browser.mjs",
+    "slides:use": "node scripts/slides/use.mjs",
+    "slides:reuse-check": "python3 scripts/slides/checks/reuse.py"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",

@@ -1,5 +1,9 @@
 # Integrate and hand over
 
+For unchanged reuse, hand over the `slides:use` asset and receipt. Do not rerun a
+whole-site build or rewrite an approved icon just to use it on another slide.
+The steps below apply when source/catalog assets changed.
+
 1. Run `npm run slides:guard -- --base=origin/main` for an asset task. Generated
    catalog and family files may change; the protected kernel/checks may not.
 2. Run `npm run slides:export`, `npm run slides:check` and `npm run check`.

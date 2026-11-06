@@ -8,7 +8,7 @@
   "candidate": {
     "revision": null,
     "revisionMeaning": "content-addressed working candidate; commit id will be recorded with actual trials",
-    "playbookDigest": "b85090d8f400fe74506c8f8b17c2a6d55454955d5cae525dbbb9b3572544d647",
+    "playbookDigest": "f837ae635724be8209f89c4201ba702f9f0da11b68abd38de96d7fa1554ce1b4",
     "engine": "6c2e75787df5627ee8b3f6c7dcbf5e987cc7a19844f629a69d92740c99107fbc"
   },
   "pending": [
