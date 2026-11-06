@@ -1,5 +1,13 @@
 # Public vault overview
 
+| | |
+|---|---|
+| What | A public landing page and five guides explaining the private experience vault. |
+| Why | Let visitors understand the system without exposing or connecting its records. |
+| Who | Readers exploring the system; maintainers updating its public description. |
+| When | Browsing `/vault/` or changing the public copy, synthetic example or diagrams. |
+| Where | `astro/src/pages/vault/`, public data modules and `astro/scripts/vault/`. |
+
 The `/vault/` landing page gives the promise, three benefits and routes into the system. Detailed
 explanations live at `/vault/purpose/`, `/vault/architecture/`, `/vault/knowledge-graph/`,
 `/vault/search/` and `/vault/guardrails/`. Shared navigation, the footer and the home system map link
