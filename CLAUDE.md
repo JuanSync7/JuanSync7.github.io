@@ -28,6 +28,12 @@ These rules apply to all code in this repo. They are enforced where possible by 
 
 ## Styling rules
 
+Presentation pages use `PresentationLayout.astro`: a short landing page leads to focused guides.
+Follow the page-organization and contrast rules in the site-taste skill, and reuse `PaperAction.astro`
+for paper/depth actions. Keep title/body/comment roles distinct through the shared tokens; run
+`npm run presentation:check`, `npm run presentation:page` after a build and the CI browser check.
+The design-system page contains the live component specimens and starting recipe.
+
 1. **Design tokens are mandatory.** Colors, gradients, spacing, font stacks, radii, shadows must come from CSS variables defined in `astro/src/styles/tokens/`. Hardcoded hex/rgb values, raw `linear-gradient(...)` literals, or magic pixel values in component CSS are not allowed.
 2. **Tokens are the single source of truth.** If a value isn't in tokens, add it there first, then reference via `var(--token-name)`.
 3. **Component-scoped CSS** lives next to the `.tsx` (e.g. `cockpit/cockpit.css`), imported by the component. Site-global CSS (reset, typography, layout primitives) lives in `astro/src/styles/`.

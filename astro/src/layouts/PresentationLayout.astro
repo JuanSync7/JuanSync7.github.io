@@ -1,0 +1,32 @@
+---
+import NightPage from './NightPage.astro';
+import NightNav from '../components/layout/NightNav.astro';
+import NightFooter from '../components/layout/NightFooter.astro';
+import PresentationMotion from '../components/presentation/PresentationMotion.astro';
+import '../styles/presentation.css';
+
+interface Props {
+  title: string;
+  description: string;
+  kind: 'landing' | 'guide';
+  current?: string;
+}
+const { title, description, kind, current = 'vault' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, 'https://juansync.dev').href;
+---
+
+<NightPage title={title} description={description}>
+  <link slot="head" rel="canonical" href={canonical} />
+  <meta slot="head" property="og:title" content={title} />
+  <meta slot="head" property="og:description" content={description} />
+  <meta slot="head" property="og:type" content="website" />
+  <meta slot="head" property="og:url" content={canonical} />
+  <slot name="head" slot="head" />
+  <NightNav current={current} />
+  <a class="pr-skip" href="#presentation-content">Skip to the content</a>
+  <main id="presentation-content" class:list={['pr-page', `pr-${kind}`]} data-presentation data-page-kind={kind}>
+    <slot />
+  </main>
+  <NightFooter />
+  <PresentationMotion />
+</NightPage>

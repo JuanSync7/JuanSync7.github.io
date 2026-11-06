@@ -1,0 +1,18 @@
+{
+  "schema": "presentation-contract/1",
+  "minNormalContrast": 4.5,
+  "minTitleBodyLuminanceRatio": 1.35,
+  "minBodyCommentLuminanceRatio": 1.45,
+  "maxLandingWords": 550,
+  "maxHeroHeadlineLines": 3,
+  "background": "--nt-ground",
+  "roles": {
+    "title": "--pr-title",
+    "body": "--pr-body",
+    "comment": "--pr-comment",
+    "label": "--pr-label"
+  },
+  "buttonVariants": ["paper", "signal", "outline"],
+  "guideSlugs": ["purpose", "architecture", "knowledge-graph", "search", "guardrails"],
+  "viewports": [1360, 768, 390]
+}

@@ -33,9 +33,17 @@ jobs:
       - name: Build
         run: npm run build
       - name: Public vault page and static data boundary
-        run: npm run vault:page
+        run: npm run vault:page && npm run presentation:page
       - name: Install Chromium for the figure look
         run: npx playwright install --with-deps chromium
+      - name: Presentation pages, paper actions and motion
+        run: npm run presentation:browser
+      - name: Presentation screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vault-presentation
+          path: astro/presentation-out
       - name: Slide icon vector and ZIP checks
         run: npm run slides:check
       - name: Design system browsing and clipboard

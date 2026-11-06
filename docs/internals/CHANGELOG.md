@@ -2,6 +2,14 @@
 
 ## 2026-11-06
 
+The vault introduction now leads with its promise and benefits, with five focused guides for the
+details. Functional paper links add restrained depth; shared paper, signal and outline buttons
+provide keyboard, disabled and press states. Scoped GSAP motion highlights sections and reveals
+content with reduced-motion and static fallbacks. A reusable presentation layout and live
+design-system specimens define title, body, comment and label roles. Source and built-page checks
+enforce text contrast, hierarchy separation, the landing word budget, guide links and the public
+data boundary; hosted browser checks capture responsive, interaction and fallback evidence.
+
 The slide set replaces hand-positioned perspective geometry with 48 flat and restrained 2.5D marks. Forty-four use pinned Lucide source geometry; four have original front-view/stack sources. Teal is derived from a real feature, and collections use stacks with hidden rear edges. Each icon has a dated visual review at 32/64px tied to its geometry and exports. Source, attachment, alignment, containment, occlusion, native SVG and archive checks protect the 192 variants; twelve deliberately broken icons verify the geometry rules. Source licenses and individual size proofs travel with the download.
 
 The vault has a dedicated `/vault/` landing page, linked from the shared navigation and home system
