@@ -4,6 +4,7 @@
   "minTitleBodyLuminanceRatio": 1.35,
   "minBodyCommentLuminanceRatio": 1.45,
   "maxLandingWords": 550,
+  "maxHeroHeadlineLines": 3,
   "background": "--nt-ground",
   "roles": {
     "title": "--pr-title",

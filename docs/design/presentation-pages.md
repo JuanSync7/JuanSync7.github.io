@@ -41,6 +41,7 @@ separation. Deliberately failing fixtures protect these checks.
 | `minTitleBodyLuminanceRatio` | 1.35 | Minimum separation between title and body inks. |
 | `minBodyCommentLuminanceRatio` | 1.45 | Minimum separation between body and comment inks. |
 | `maxLandingWords` | 550 | Maximum words in the landing's main content; detailed guides have their own reading task. |
+| `maxHeroHeadlineLines` | 3 | Maximum rendered hero lines at the configured widths; catches a headline that overwhelms the opening. |
 | `background` | `--nt-ground` | Token used as the source-check background. Browser checks also inspect actual rendered colors. |
 | `roles` | title/body/comment/label → matching `--pr-*` aliases | The color roles resolved and tested; keep the template and live specimen in agreement. |
 | `buttonVariants` | paper, signal, outline | Faces covered by source and browser contrast checks. Update the component and specimen together. |

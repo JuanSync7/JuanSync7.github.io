@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { readMotionToken } from '../../src/components/presentation/motion.ts';
 
 const site = fileURLToPath(new URL('../../', import.meta.url));
 export const contract = JSON.parse(readFileSync(new URL('./contract.json', import.meta.url), 'utf8'));
@@ -109,6 +110,13 @@ function selftest(tokens) {
   assert.equal(landingWords(`<p>${'word '.repeat(contract.maxLandingWords)}</p>`), contract.maxLandingWords);
   assert.throws(() => landingWords(`<p>${'word '.repeat(contract.maxLandingWords + 1)}</p>`), /Move depth into a guide/);
   assert.equal(mainHtml('<main><p>Useful</p></main><footer>Outside</footer>'), '<p>Useful</p>');
+  const motion = (value, units = ['ms', 's']) => readMotionToken({ getPropertyValue: () => value }, '--test-motion', units);
+  for (const value of ['650ms', '.65s', '0.65s']) assert.equal(motion(value), 0.65, `${value}: source and minified duration agree`);
+  for (const value of ['80ms', '.08s', '0.08s']) assert.equal(motion(value), 0.08, `${value}: source and minified stagger agree`);
+  assert.equal(motion('.5px', ['px']), 0.5);
+  for (const value of ['calc(1s)', '-1s', '20px', 'Infinitys', 'NaNms', '']) {
+    assert.throws(() => motion(value), /presentation token/, `${value}: unsupported motion token fails closed`);
+  }
 }
 
 function checkSource(tokens) {
@@ -134,6 +142,15 @@ function assertAnchors(html, path) {
 }
 
 function checkBuilt() {
+  const builtDirectory = resolve(site, 'dist/_astro');
+  const builtTokens = cssTokens(readdirSync(builtDirectory).filter((name) => name.endsWith('.css'))
+    .map((name) => readFileSync(join(builtDirectory, name), 'utf8')).join('\n'));
+  const sourceTokens = loadTokens();
+  for (const name of ['--pr-reveal-duration', '--pr-reveal-stagger']) {
+    const parsed = (tokens) => readMotionToken({ getPropertyValue: () => resolveToken(name, tokens) }, name, ['ms', 's']);
+    assert.equal(parsed(builtTokens), parsed(sourceTokens), `${name}: production serialization preserves its source duration`);
+    assert(parsed(builtTokens) > 0, `${name}: normal presentation motion has a positive duration`);
+  }
   const landing = read('dist/vault/index.html');
   const main = mainHtml(landing);
   assert(main, 'The landing page needs a main landmark');
@@ -172,7 +189,7 @@ function checkBuilt() {
 const invoked = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 if (invoked) {
   assert.equal(contract.schema, 'presentation-contract/1');
-  for (const key of ['minNormalContrast', 'minTitleBodyLuminanceRatio', 'minBodyCommentLuminanceRatio', 'maxLandingWords']) {
+  for (const key of ['minNormalContrast', 'minTitleBodyLuminanceRatio', 'minBodyCommentLuminanceRatio', 'maxLandingWords', 'maxHeroHeadlineLines']) {
     assert(Number.isFinite(contract[key]) && contract[key] > 0, `${key} must be positive`);
   }
   const tokens = loadTokens();

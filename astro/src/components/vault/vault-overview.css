@@ -1,6 +1,6 @@
 .vault-hero { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--hf-space-16); align-items: center; padding-block: var(--nt-section-y); }
 .vault-hero-copy { display: flex; flex-direction: column; align-items: flex-start; gap: var(--hf-space-6); }
-.vault-hero h1 { font-size: var(--nt-fs-hero); line-height: var(--nt-lh-tight); letter-spacing: var(--pr-title-tracking); }
+.vault-hero h1 { font-size: var(--pr-hero-title-size); line-height: var(--nt-lh-tight); letter-spacing: var(--pr-title-tracking); }
 .vault-hero h1 span { text-decoration-line: underline; text-decoration-color: var(--pr-label); text-decoration-thickness: var(--pr-section-rule-height); text-underline-offset: var(--hf-space-3); }
 .vault-lead { max-width: var(--nt-measure); font-size: var(--pr-lead-size); }
 .vault-actions { display: flex; flex-wrap: wrap; gap: var(--hf-space-5); align-items: center; }
@@ -13,7 +13,7 @@
 .vault-stack .pa-face { width: 100%; justify-content: space-between; align-items: flex-start; padding: var(--hf-space-5); }
 .vault-sheet-copy { display: flex; flex-direction: column; align-items: flex-start; gap: var(--hf-space-4); }
 .vault-sheet-meta { font-family: var(--nt-mono); font-size: var(--nt-fs-caption); }
-.vault-sheet-copy strong { font-family: var(--hf-hand); font-size: var(--nt-fs-h2); font-weight: 600; text-align: left; line-height: var(--nt-lh-heading); }
+.vault-sheet-copy strong { font-family: var(--hf-hand); font-size: var(--pr-deck-title-size); font-weight: 600; text-align: left; line-height: var(--nt-lh-heading); }
 .vault-sheet .pa-icon { width: var(--hf-space-10); height: var(--hf-space-10); }
 .vault-stack-caption { text-align: center; margin-top: var(--hf-space-6) !important; }
 .vault-chapters { display: flex; flex-wrap: wrap; align-items: center; gap: var(--hf-space-4) var(--hf-space-8); padding-block: var(--hf-space-4); border-block: 1px solid var(--pr-rule); }
@@ -43,7 +43,6 @@
 @media (max-width: 1000px) {
   .vault-hero { grid-template-columns: minmax(0, 1fr); gap: var(--hf-space-12); }
   .vault-hero-copy { max-width: var(--nt-measure); }
-  .vault-hero h1 { font-size: var(--pr-title-size); }
   .vault-benefits { gap: var(--hf-space-6); }
   .vault-reason { gap: var(--hf-space-10); }
 }

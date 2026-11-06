@@ -116,6 +116,28 @@ async function roleContrast(page) {
   assert(styles.titleSize > styles.bodySize && styles.bodySize > styles.commentSize, 'Computed text sizes preserve the three-role hierarchy');
 }
 
+async function heroGeometry(page, width) {
+  await page.locator('.vault-stack-stage').scrollIntoViewIfNeeded();
+  const geometry = await page.locator('.vault-stack-stage').evaluate((stage) => {
+    const actions = [...stage.querySelectorAll('[data-paper-action]')];
+    return {
+      actions: actions.map((action) => {
+        const label = action.querySelector('strong');
+        const bounds = label?.getBoundingClientRect();
+        const hit = bounds && document.elementFromPoint(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
+        return { label: label?.textContent, reachable: Boolean(hit && action.contains(hit)), bottom: action.getBoundingClientRect().bottom };
+      }),
+      captionTop: stage.querySelector('.vault-stack-caption')?.getBoundingClientRect().top,
+    };
+  });
+  assert.equal(geometry.actions.length, 3, `${width}px: all three paper links are present`);
+  for (const action of geometry.actions) assert(action.reachable, `${width}px: the ${action.label} label is exposed and hits its own action`);
+  assert(Number.isFinite(geometry.captionTop), 'The stack has a readable caption');
+  assert(geometry.captionTop >= Math.max(...geometry.actions.map((action) => action.bottom)), `${width}px: the caption stays below every paper-link box`);
+  const lines = await page.locator('.vault-hero h1').evaluate((heading) => Math.round(heading.getBoundingClientRect().height / parseFloat(getComputedStyle(heading).lineHeight)));
+  assert(lines > 0 && lines <= contract.maxHeroHeadlineLines, `${width}px: headline uses ${lines} lines; maximum is ${contract.maxHeroHeadlineLines}`);
+}
+
 try {
   browser = await chromium.launch();
   const context = await browser.newContext({ viewport: { width: 1360, height: 960 }, reducedMotion: 'no-preference' });
@@ -141,6 +163,7 @@ try {
     await revealAll(page);
     await noOverflow(page, `${width}px landing`);
     await page.mouse.move(0, 0);
+    await heroGeometry(page, width);
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.screenshot({ path: join(output, `vault-${width}.png`), fullPage: true });
   }

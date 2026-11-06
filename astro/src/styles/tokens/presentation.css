@@ -8,6 +8,7 @@
   --pr-body-font: var(--nt-sans);
   --pr-comment-font: var(--nt-mono);
   --pr-title-size: var(--nt-fs-h1);
+  --pr-hero-title-size: clamp(42px, 5vw, 72px);
   --pr-section-size: var(--nt-fs-h2);
   --pr-body-size: var(--nt-fs-body);
   --pr-lead-size: var(--nt-fs-intro);
@@ -24,10 +25,11 @@
   --pr-reveal-start: 88%;
   --pr-active-point: 35%;
   --pr-motion-ease: var(--nt-ease-out);
-  --pr-deck-height: 400px;
+  --pr-deck-height: 480px;
   --pr-deck-width: 320px;
   --pr-deck-card-height: 148px;
-  --pr-deck-step: 112px;
+  --pr-deck-title-size: var(--nt-fs-h3);
+  --pr-deck-step: 144px;
   --pr-deck-tilt: -12deg;
   --pr-deck-depth: 12px;
   --pr-deck-perspective: 1200px;

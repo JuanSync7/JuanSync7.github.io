@@ -7,22 +7,26 @@ const loadEngine = async () => {
   return { gsap, CustomEase };
 };
 
-function token(style: CSSStyleDeclaration, name: string, units: readonly string[]): number {
+export function readMotionToken(style: CSSStyleDeclaration, name: string, units: readonly string[]): number {
   const value = style.getPropertyValue(name).trim();
-  const match = /^(\d+(?:\.\d+)?)(ms|s|px|%)$/.exec(value);
+  // Production CSS serializes 650ms as .65s; both are valid values of the same token.
+  const match = /^((?:\d+(?:\.\d+)?|\.\d+))(ms|s|px|%)$/.exec(value);
   if (!match || !units.includes(match[2])) throw new Error(`Invalid presentation token ${name}`);
-  return Number(match[1]) / (match[2] === 'ms' ? 1000 : 1);
+  const number = Number(match[1]);
+  if (!Number.isFinite(number)) throw new Error(`Non-finite presentation token ${name}`);
+  return number / (match[2] === 'ms' ? 1000 : 1);
 }
 
 export function mountPresentation(root: HTMLElement): () => void {
   const controller = new AbortController();
   delete root.dataset.motionDisposed;
+  delete root.dataset.presentationMotionError;
   const style = getComputedStyle(root);
   const sections = [...root.querySelectorAll<HTMLElement>('[data-presentation-section]')];
   const links = [...root.querySelectorAll<HTMLAnchorElement>('[data-section-link]')];
   const previousLinks = new Map(links.map((link) => [link, link.getAttribute('aria-current')]));
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
-  const activePoint = token(style, '--pr-active-point', ['%']);
+  const activePoint = readMotionToken(style, '--pr-active-point', ['%']);
   const previousMotion = root.dataset.presentationMotion;
   const previousSection = root.dataset.activeSection;
   let observer: IntersectionObserver | undefined;
@@ -55,6 +59,7 @@ export function mountPresentation(root: HTMLElement): () => void {
 
   const animate = async (): Promise<void> => {
     const attempt = ++generation;
+    delete root.dataset.presentationMotionError;
     removeMotion();
     removeMotion = (): void => {};
     if (preference.matches) {
@@ -65,10 +70,10 @@ export function mountPresentation(root: HTMLElement): () => void {
     try {
       const { gsap, CustomEase } = await loadEngine();
       if (controller.signal.aborted || attempt !== generation || !root.isConnected) return;
-      const duration = token(style, '--pr-reveal-duration', ['ms', 's']);
-      const stagger = token(style, '--pr-reveal-stagger', ['ms', 's']);
-      const distance = token(style, '--pr-reveal-distance', ['px']);
-      const start = token(style, '--pr-reveal-start', ['%']);
+      const duration = readMotionToken(style, '--pr-reveal-duration', ['ms', 's']);
+      const stagger = readMotionToken(style, '--pr-reveal-stagger', ['ms', 's']);
+      const distance = readMotionToken(style, '--pr-reveal-distance', ['px']);
+      const start = readMotionToken(style, '--pr-reveal-start', ['%']);
       const curve = style.getPropertyValue('--nt-ease-out').trim().match(/^cubic-bezier\(([^)]+)\)$/);
       if (!curve) throw new Error('Presentation motion needs the declared cubic-bezier easing token');
       const ease = CustomEase.create('', curve[1]);
@@ -102,10 +107,12 @@ export function mountPresentation(root: HTMLElement): () => void {
       void document.fonts.ready.then(() => {
         if (!controller.signal.aborted && attempt === generation) refreshers.forEach((refresh) => refresh());
       });
-    } catch {
+    } catch (error) {
       if (controller.signal.aborted || attempt !== generation) return;
       removeMotion();
       root.dataset.presentationMotion = 'failed';
+      root.dataset.presentationMotionError = error instanceof Error ? error.message : String(error);
+      console.warn('Presentation motion initialization failed; static content remains readable.', error);
     }
   };
   const preferenceChanged = (): void => { void animate(); };
@@ -144,7 +151,11 @@ export function installPresentationMotion(): () => void {
     if (!root) return;
     activeRoot = root;
     try { unmount = mountPresentation(root); }
-    catch { root.dataset.presentationMotion = 'failed'; }
+    catch (error) {
+      root.dataset.presentationMotion = 'failed';
+      root.dataset.presentationMotionError = error instanceof Error ? error.message : String(error);
+      console.warn('Presentation motion initialization failed; static content remains readable.', error);
+    }
   };
   document.addEventListener('astro:page-load', start);
   document.addEventListener('astro:before-swap', stop);
