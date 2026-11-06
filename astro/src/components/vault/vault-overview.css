@@ -18,7 +18,10 @@
 .vault-sheet-copy strong { font-family: var(--hf-hand); font-size: var(--pr-deck-title-size); font-weight: 600; text-align: left; line-height: var(--nt-lh-heading); }
 .vault-sheet .pa-icon { width: var(--hf-space-10); height: var(--hf-space-10); }
 .vault-stack-caption { text-align: center; margin-top: var(--hf-space-6) !important; }
-.vault-chapters { display: flex; flex-wrap: wrap; align-items: center; gap: var(--hf-space-4) var(--hf-space-8); padding-block: var(--hf-space-4); border-block: 1px solid var(--pr-rule); }
+.vault-chapters { display: flex; flex-wrap: wrap; align-items: center; gap: var(--hf-space-4) var(--hf-space-8); padding-block: var(--hf-space-4); border-block: 1px solid var(--pr-rule); position: sticky; top: var(--hf-space-16); z-index: var(--hf-z-content); background: var(--nt-ground); }
+.vault-scroll-progress { position: absolute; bottom: 0; left: var(--nt-gutter); width: calc(100% - var(--nt-gutter) * 2); height: var(--pr-section-rule-height); background: var(--pr-label); transform: scaleX(0); transform-origin: left; pointer-events: none; }
+.pr-landing [data-presentation-section] { scroll-margin-top: var(--pr-scroll-inset); }
+html:has(.pr-landing) { scroll-behavior: smooth; }
 .vault-chapters a { color: var(--pr-comment); min-height: var(--nt-hit); display: inline-flex; align-items: center; }
 .pr-page .vault-chapters a[aria-current='location'] { color: var(--pr-label); }
 .vault-section { padding-block: var(--nt-section-y); position: relative; }
@@ -57,6 +60,8 @@
   .vault-chapters { gap: var(--hf-space-2) var(--hf-space-5); }
 }
 @media (prefers-reduced-motion: reduce) {
+  html:has(.pr-landing) { scroll-behavior: auto; }
+  .vault-scroll-progress { display: none; }
   .vault-stack { height: auto; display: grid; gap: var(--hf-space-4); }
   .vault-stack-item { position: static; transform: none; }
   .vault-stack .vault-sheet { min-height: var(--nt-hit); }

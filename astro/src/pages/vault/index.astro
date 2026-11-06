@@ -32,7 +32,7 @@ const benefits = [
       <p class="vault-boundary pr-comment" data-reveal>A public tour with made-up examples. The private vault stays private.</p>
     </div>
     <div class="vault-stack-stage" data-reveal>
-      <ol class="vault-stack" aria-label="Three ways into the vault">
+      <ol class="vault-stack" aria-label="Three ways into the vault" data-scroll-stack>
         {sheets.map((sheet, i) => <li class="vault-stack-item" style={`--sheet-index:${i}`}>
           <PaperAction href={sheet.href} variant={sheet.variant} class="vault-sheet">
             <span class="vault-sheet-copy"><span class="vault-sheet-meta">{sheet.label}</span><strong>{sheet.title}</strong></span>
@@ -44,7 +44,8 @@ const benefits = [
     </div>
   </header>
 
-  <nav class="vault-chapters nt-wrap pr-comment" aria-label="The overview">
+  <nav class="vault-chapters nt-wrap pr-comment" aria-label="The overview" data-scroll-chapters>
+    <span class="vault-scroll-progress" data-scroll-progress aria-hidden="true"></span>
     <a href="#overview" data-section-link>01 · the idea</a><a href="#value" data-section-link>02 · the value</a><a href="#explore" data-section-link>03 · go deeper</a><a href="#purpose" data-section-link>04 · the reason</a>
   </nav>
 
@@ -58,7 +59,7 @@ const benefits = [
   <section id="explore" class="vault-section nt-wrap" data-presentation-section>
     <span data-section-rule aria-hidden="true"></span>
     <header class="vault-heading" data-reveal><p class="pr-comment">// 03 · open the system</p><h2 class="pr-title">The overview is<br />only the entrance.</h2><p class="pr-body">Choose the part you want to understand. The diagrams, explanations and working example live one level deeper.</p></header>
-    <div class="vault-guide-grid">{VAULT_GUIDES.filter((guide) => guide.slug !== 'purpose').map((guide) => <a class="vault-guide-card" href={`/vault/${guide.slug}/`} data-reveal>
+    <div class="vault-guide-grid">{VAULT_GUIDES.filter((guide) => guide.slug !== 'purpose').map((guide) => <a class="vault-guide-card" href={`/vault/${guide.slug}/`} data-reveal data-scroll-card>
       <span class="vault-guide-card-top"><span class="pr-comment">{guide.kicker}</span><SlideIcon id={icons[guide.slug]} decorative /></span><h3 class="pr-title">{guide.title}</h3><p class="pr-body">{guide.summary}</p><span class="vault-guide-open pr-label">Read the guide <span aria-hidden="true">↗</span></span>
     </a>)}</div>
   </section>

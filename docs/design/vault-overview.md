@@ -32,7 +32,8 @@ Three abstract diagrams live in `src/data/diagrams/vault.ts`: `vault-architectur
 the same story becomes an ordered list below the established narrow-container threshold. The page
 uses the existing night palette and spacing tokens. The existing diagrams are unchanged. The
 landing page adds functional paper links arranged with CSS depth, rather than a second illustration
-source. Scoped GSAP reveals and section highlights follow the shared
+source. Reversible GSAP scroll motion coordinates those links, headings, feature cards and dividers;
+a sticky chapter bar shows reading progress. These effects follow the shared
 [presentation-page pattern](presentation-pages.md), including reduced-motion and static fallbacks.
 
 `scripts/vault/export.mjs` generates the downloadable SVGs from those same diagrams and the site's

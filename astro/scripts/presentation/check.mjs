@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readMotionToken } from '../../src/components/presentation/motion.ts';
+import { readMotionToken } from '../../src/components/presentation/motion-values.ts';
 
 const site = fileURLToPath(new URL('../../', import.meta.url));
 export const contract = JSON.parse(readFileSync(new URL('./contract.json', import.meta.url), 'utf8'));
@@ -146,7 +146,7 @@ function checkBuilt() {
   const builtTokens = cssTokens(readdirSync(builtDirectory).filter((name) => name.endsWith('.css'))
     .map((name) => readFileSync(join(builtDirectory, name), 'utf8')).join('\n'));
   const sourceTokens = loadTokens();
-  for (const name of ['--pr-reveal-duration', '--pr-reveal-stagger']) {
+  for (const name of ['--pr-reveal-duration', '--pr-reveal-stagger', '--pr-scroll-scrub']) {
     const parsed = (tokens) => readMotionToken({ getPropertyValue: () => resolveToken(name, tokens) }, name, ['ms', 's']);
     assert.equal(parsed(builtTokens), parsed(sourceTokens), `${name}: production serialization preserves its source duration`);
     assert(parsed(builtTokens) > 0, `${name}: normal presentation motion has a positive duration`);
