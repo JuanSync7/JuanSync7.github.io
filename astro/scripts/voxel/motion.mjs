@@ -8,7 +8,13 @@ for(const biome of BIOMES) {
   updateWorldView({state,camera,scene,w:900,h:562,t,dt:1/60,hover:0,pointer:{x:.5,y:.5,active:false},pulses:[],still:true,data});
   const sample=state.waterView.cells.findIndex(c=>c.liquid.kind==='water');
   if(sample>=0)state.waterView.mesh.getMatrixAt(sample,matrix);
-  assert([...state.waterView.mesh.instanceMatrix.array].every(Number.isFinite),'VXL-MOTION: invalid water matrix');
+  const matrices=state.waterView.mesh.instanceMatrix.array;
+  assert([...matrices].every(Number.isFinite),'VXL-MOTION: invalid water matrix');
+  for(let i=0;i<state.waterView.cells.length;i++) {
+   const {x,z,liquid}=state.waterView.cells[i],h=matrices[i*16+5],y=matrices[i*16+13];
+   assert(matrices[i*16]===1&&matrices[i*16+10]===1&&matrices[i*16+12]===x&&matrices[i*16+14]===z,'VXL-MOTION: changed horizontal water matrix');
+   assert(Math.abs(h-(liquid.level-liquid.bottom+1))<=.161&&Math.abs(y-h/2-(liquid.bottom-.5))<.00001,'VXL-LIQUID: animated water detached from base or exceeded envelope');
+  }
   state.waterView.boats.forEach((b,i)=>{assert(Math.abs(b.position.y-state.world.boats[i].y)<=.161,'VXL-NAVIGATION: boat exceeds bob envelope');assert(Math.abs(b.rotation.z)<=.02&&Math.abs(b.rotation.x)<=.02,'VXL-NAVIGATION: boat exceeds roll envelope');});
   assert.deepEqual(state.solid.geometry.attributes.position.array,staticPositions,'VXL-MOTION: solid geometry moved');
   return{water:sample>=0?[...matrix.elements]:null,boats:state.waterView.boats.map(b=>[b.position.y,b.rotation.x,b.rotation.z])};

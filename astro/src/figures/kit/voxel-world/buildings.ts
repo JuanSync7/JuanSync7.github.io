@@ -26,7 +26,7 @@ export function building(r: Recipe): Block[] {
     for (let x = -w; x <= w; x++)
       for (let z = -d; z <= d; z++) {
         if (Math.abs(x) !== w && Math.abs(z) !== d) continue;
-        if (r.kind === 'ruin' && (x * 3 + z * 7 + r.variant + y) % 5 > 1 && y > 1) continue;
+        if (r.kind === 'ruin' && y > 1 + (Math.abs(x * 3 + z * 7 + r.variant) % h)) continue;
         const window = y % 3 === 2 && (Math.abs(x) === w ? z % 2 === 0 : x % 2 === 0);
         b.put(
           x,

@@ -2,6 +2,11 @@
 
 ## 2026-11-06
 
+Voxel mainland edges gain eroded outlines, biome strata and a closed, stepped underside that
+shortens exposed walls without removing the terrain relief. Supporting catalogs add 37 detail
+types and birch, willow and bamboo. Seeds choose different local prop selections; geometry checks
+cover 75 archetypes and reject floating fragments, unknown names and open base surfaces.
+
 Voxel worlds now use independent seed streams for terrain, local biome transitions, variable
 component recipes, constrained placement, boats and ambience. Fourteen biomes span nine landforms,
 including mainland cuts, valleys, dunes, Alps and cutaway caves. Shelters and boats can be absent;
@@ -9,6 +14,12 @@ accepted objects have measured clearance, support, headroom and reserved access.
 keyboard camera controls retain their pose; sunlight controls and a pausable orbit complement
 exposed-face geometry and fitted framing. One voxel agent operates seven playbooks, with replay,
 negative fixtures, diversity checks and a hashed private-vault mirror for future feedback.
+
+The vault landing now has reversible GSAP scroll motion: its paper stack moves with the hero,
+headings and feature cards settle into place, and section dividers draw with scroll progress. A
+sticky chapter bar tracks the page and keeps anchor headings clear of both navigation rows.
+Native scrolling, opaque reading text, reduced-motion switching and Astro cleanup remain intact;
+browser checks exercise forward/back movement, progress, anchor clearance and clickable paper links.
 
 The vault introduction now leads with its promise and benefits, with five focused guides for the
 details. Functional paper links add restrained depth; shared paper, signal and outline buttons

@@ -8,13 +8,40 @@ export function recipe(seed: number, id: string, kind: string, biome: Biome): Re
   const tree = TREES.has(kind),
     house = BUILDINGS.has(kind),
     tower = kind === 'tower';
+  const broad =
+    /bush|shrub|patch|clump|cluster|drift|boulder|arch|pillar|planter|fountain|stall/.test(kind) ||
+    [
+      'rock',
+      'agave',
+      'barrel cactus',
+      'banana plant',
+      'tree fern',
+      'tree stump',
+      'cairn',
+      'scree',
+      'slag heap',
+      'lava vent',
+      'hay bale',
+      'crate',
+      'park bench',
+    ].includes(kind);
   return {
     id,
     seed: objectSeed,
     kind,
     biome,
-    width: house ? integer(rng, 1, tower ? 4 : 3) : tree || kind === 'giant mushroom' ? integer(rng, 1, 3) : 1,
-    depth: house ? integer(rng, 2, 4) : kind === 'bones' || kind === 'fallen log' ? integer(rng, 2, 4) : 1,
+    width: house
+      ? integer(rng, 1, tower ? 4 : 3)
+      : tree || kind === 'giant mushroom'
+        ? integer(rng, 1, 3)
+        : broad
+          ? integer(rng, 1, 2)
+          : 1,
+    depth: house
+      ? integer(rng, 2, 4)
+      : ['bones', 'fallen log', 'wagon', 'minecart', 'rail track', 'sled'].includes(kind)
+        ? integer(rng, 2, 4)
+        : 1,
     height: tower
       ? integer(rng, 6, 17)
       : house
@@ -48,22 +75,19 @@ export function population(world: World): Recipe[] {
   }
   for (const [biome, area] of areas) {
     const habitat = HABITATS[biome];
+    const paletteRng = stream(spec.layoutSeed, `ecology/${biome}/palette`);
+    const palette = habitat.details.filter((kind) => !BUILDINGS.has(kind));
+    for (let i = palette.length - 1; i > 0; i--) {
+      const j = integer(paletteRng, 0, i);
+      [palette[i], palette[j]] = [palette[j]!, palette[i]!];
+    }
+    const selected = palette.slice(0, integer(paletteRng, 4, Math.min(8, palette.length)));
     const count = Math.min(150, Math.floor(area * habitat.treeRate * spec.density * (0.6 + rng() * 0.8)));
     for (let i = 0; i < count; i++)
       recipes.push(recipe(spec.layoutSeed, `vegetation/${biome}/${i}`, choose(rng, habitat.plants), biome));
     const details = Math.min(90, Math.floor(area * (0.012 + rng() * 0.018) * spec.density));
     for (let i = 0; i < details; i++)
-      recipes.push(
-        recipe(
-          spec.layoutSeed,
-          `props/${biome}/${i}`,
-          choose(
-            rng,
-            habitat.details.filter((kind) => !BUILDINGS.has(kind)),
-          ),
-          biome,
-        ),
-      );
+      recipes.push(recipe(spec.layoutSeed, `props/${biome}/${i}`, choose(rng, selected), biome));
   }
   return recipes.sort((a, b) => a.priority - b.priority || a.id.localeCompare(b.id));
 }

@@ -5,14 +5,14 @@ import {kernelFingerprint} from './fingerprint.mjs';
 import {loadKernel} from './load.mjs';
 import {auditWorld,rules} from './validate.mjs';
 import {auditDiversity} from './diversity.mjs';
-const {planWorld,generateWorld,BIOMES,BUILDINGS,stream}=await loadKernel();
+const {planWorld,generateWorld,BIOMES,BUILDINGS,TREES,stream}=await loadKernel();
 const sets=Object.fromEntries(['biomes','landforms','dimensions','houseCounts','boatCounts','houseRecipes','houseSites','treeCounts'].map(k=>[k,new Set()]));
 let mixed=0,emptySettlements=0,zeroBoats=0,worlds=0,maxBlocks=0;
 const records=[];
 for(let seed=0;seed<rules.atlasSeeds;seed++) {
   const p=planWorld(seed),w=generateWorld(p),result=auditWorld(w);worlds++;
   sets.biomes.add(p.biome);sets.landforms.add(p.landform);sets.dimensions.add(`${p.radius},${p.stretch.toFixed(2)}`);
-  sets.houseCounts.add(result.houseCount);sets.boatCounts.add(w.boats.length);sets.treeCounts.add(w.props.filter(p=>['tree','pine','palm','jungle tree','dead tree'].includes(p.kind)).length);
+  sets.houseCounts.add(result.houseCount);sets.boatCounts.add(w.boats.length);sets.treeCounts.add(w.props.filter(p=>TREES.has(p.kind)).length);
   for(const house of w.props.filter(p=>BUILDINGS.has(p.kind))){sets.houseRecipes.add(`${house.kind},${house.recipe.width},${house.recipe.depth},${house.recipe.height},${house.recipe.variant},${house.recipe.turn}`);sets.houseSites.add(`${house.x},${house.y},${house.z}`);}
   if(p.secondary)mixed++;if(result.houseCount===0)emptySettlements++;if(w.boats.length===0)zeroBoats++;maxBlocks=Math.max(maxBlocks,w.blocks.length);
   records.push({seed,...result,biome:p.biome,secondary:p.secondary,landform:p.landform,dimension:p.radius*2+1,daylight:p.daylight});

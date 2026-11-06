@@ -1,6 +1,7 @@
 import { BufferGeometry, Color, Float32BufferAttribute, Mesh, MeshLambertMaterial } from 'three';
 import { hexOf } from '../ink';
-import { cell, voxel, type Block, type Material, type World } from './types';
+import { voxel, type Block, type Material, type World } from './types';
+import { terrainSolid } from './edges';
 
 const faces: { normal: [number, number, number]; corners: [number, number, number][] }[] = [
   {
@@ -65,9 +66,7 @@ export function blockMesh(blocks: Block[], world?: World): Mesh {
   const solid = (x: number, y: number, z: number): boolean => {
     if (occupied.has(voxel(x, y, z))) return true;
     if (!world) return false;
-    const h = world.heights.get(cell(x, z)) ?? world.seabed.get(cell(x, z));
-    const roof = world.roofs.get(cell(x, z));
-    return (h !== undefined && y >= -6 && y <= h) || (roof !== undefined && y >= roof && y < roof + 3);
+    return terrainSolid(world, x, y, z);
   };
   const positions: number[] = [],
     normals: number[] = [],

@@ -12,6 +12,7 @@ export function generateWorld(spec: WorldSpec, seed = spec.layoutSeed): World {
   const world: World = {
     spec,
     ...terrain(spec),
+    bottoms: new Map(),
     boats: [],
     structures: [],
     blocks: [],

@@ -120,6 +120,7 @@ export class Placement {
       world.emitters.push({ x: x + top.x, y: y + top.y + 1, z: z + top.z, kind: 'smoke' });
     }
     if (r.kind === 'cauldron') world.emitters.push({ x, y: y + 2, z, kind: 'magic' });
+    if (r.kind === 'campfire' || r.kind === 'lava vent') world.emitters.push({ x, y: y + 3, z, kind: 'fire' });
     return prop;
   }
 }

@@ -34,7 +34,7 @@ export function exportVault(vaultPath,check=false) {
   report=JSON.parse(readFileSync(reportPath,'utf8'));assert.equal(report.kernelFingerprint,kernelFingerprint(),'Audit report predates current kernel; rerun voxel:check');const {sha256,...content}=report;assert.equal(hash(JSON.stringify(content)),sha256,'Audit report hash mismatch');
   writes.push({source:reportPath,target:`${folder}/Reports/current.json`,sourceHash:hash(readFileSync(reportPath)),body:readFileSync(reportPath,'utf8')});
  }
- for(const file of ['voxel-browser-evidence.json','voxel-visual-review.json','voxel-scene.seeds.png']) {
+ for(const file of ['voxel-content-report.json','voxel-browser-evidence.json','voxel-visual-review.json','voxel-scene.seeds.png']) {
   const source=`figures-out/${file}`;if(!existsSync(source))continue;
   const body=readFileSync(source);
   if(file.endsWith('.json'))assert.equal(JSON.parse(body.toString()).kernelFingerprint,kernelFingerprint(),`Stale evidence ${file}`);

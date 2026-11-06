@@ -9,6 +9,9 @@ on a deliberately broken case. Taste questions live in `LOOK.md`, not in pass fl
 | VXL-STREAMS | When consuming an unrelated stage changes the terrain stream. | `check.mjs`, extra prop-stream calls. |
 | VXL-DIVERSITY | When the atlas repeats fixed object counts, dimensions, house recipes or sites, or misses declared scene families. | `diversity.mjs`; fixed-house/two-boat and fixed-shape fixtures. |
 | VXL-SEMANTICS | When a city has no buildings or a cavern lacks its roof/headroom. | `validate.mjs`; empty-city fixture and steep city seed 81195841. |
+| VXL-CONTENT | When a catalog is undersized, names an unknown model, repeats one shape/material for every sampled recipe, or fails to realize supporting variety. | `content.mjs`; empty-geometry fixture in `selftest.mjs`. |
+| VXL-ATTACHMENT | When any component cell lacks a face-connected path to a supported ground-contact cell. | `content-rules.mjs`; floating-fragment fixture and ruin/branch regressions. |
+| VXL-EDGE | When a base column is invalid, has open caps/walls, disconnects adjacent ground, or leaves a mainland as an untreated rectangular slab. | `validate.mjs`; missing-base fixture. |
 | VXL-GRID | When a solid voxel has noninteger coordinates. | `validate.mjs`; fractional-coordinate fixture. |
 | VXL-COLLISION | When two emitted solid cells occupy one coordinate. | `validate.mjs`; duplicate-solid fixture. |
 | VXL-ENVELOPE | When any realized voxel lies outside its declared footprint. | `validate.mjs`; undersized roof/sail envelope. |

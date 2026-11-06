@@ -4,6 +4,7 @@ import { stream, integer } from './seeds';
 import { climate } from './climate';
 import { biomeHeight, landscapeHeight } from './profiles';
 import { addWaterFeatures } from './water-features';
+import { mainlandOutline } from './edges';
 
 export function terrain(spec: WorldSpec) {
   const rng = stream(spec.layoutSeed, 'terrain'),
@@ -27,8 +28,10 @@ export function terrain(spec: WorldSpec) {
     radius: spec.landform === 'archipelago' ? r * (0.23 + rng() * 0.13) : r * (0.79 + rng() * 0.1),
   }));
   const ocean = ['island', 'archipelago'].includes(spec.landform);
+  const inside = mainlandOutline(spec);
   for (let x = -r; x <= r; x++)
     for (let z = -rz; z <= rz; z++) {
+      if (!ocean && !inside(x, z)) continue;
       let coast = 0;
       if (ocean) {
         coast = Math.min(...islands.map((i) => Math.hypot(x - i.x, (z - i.z) / spec.stretch) / i.radius));

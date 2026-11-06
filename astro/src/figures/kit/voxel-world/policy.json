@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "baseLevel": -6,
+  "edgeDepth": 5,
+  "edgeBand": 7,
   "placementAttempts": 96,
   "clearance": 1,
   "maxFoundationGrade": 2,

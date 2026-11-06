@@ -10,7 +10,7 @@ import {exportVault} from './vault.mjs';
 const {positionals,values}=parseArgs({allowPositionals:true,options:{seed:{type:'string'},biome:{type:'string'},rule:{type:'string'},note:{type:'string'},evidence:{type:'string'},vault:{type:'string'},check:{type:'boolean',default:false},public:{type:'boolean',default:false}}});
 const command=positionals[0]??'help';
 if(command==='check'){
- for(const file of ['workflow','selftest','check','motion']){const r=spawnSync(process.execPath,[`scripts/voxel/${file}.mjs`],{stdio:'inherit'});if(r.status!==0)process.exit(r.status??1);}
+ for(const file of ['workflow','selftest','content','check','motion']){const r=spawnSync(process.execPath,[`scripts/voxel/${file}.mjs`],{stdio:'inherit'});if(r.status!==0)process.exit(r.status??1);}
 }else if(command==='vault'){
  assert(values.vault,'--vault is required');console.log(JSON.stringify(exportVault(values.vault,values.check),null,2));
 }else if(command==='replay'||command==='feedback'){

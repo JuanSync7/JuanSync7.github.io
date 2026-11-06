@@ -7,6 +7,7 @@ import { spawn } from 'node:child_process';
 import { createServer } from 'node:net';
 import { chromium } from 'playwright';
 import { contract, color, composite, luminance, separation } from './check.mjs';
+import { checkScrollJourney } from './scroll-check.mjs';
 
 if (process.env.SITES_MANAGED_LINUX_CONTAINER === '1' && !process.env.CI) {
   throw new Error('Presentation browser checks run in the existing GitHub-hosted CI browser job, not as a managed preview workaround.');
@@ -173,11 +174,13 @@ try {
     await noOverflow(page, `${width}px landing`);
     await page.mouse.move(0, 0);
     await heroGeometry(page, width);
-    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+    await page.waitForFunction(() => Math.abs(new DOMMatrix(getComputedStyle(document.querySelector('[data-scroll-stack]')).transform).m42) < 0.2);
     await page.screenshot({ path: join(output, `vault-${width}.png`), fullPage: true });
   }
 
   // A scoped Astro swap must release the previous page, not leave its motion owners alive.
+  await checkScrollJourney(page, output, [contract.viewports[0], contract.viewports.at(-1)]);
   await page.setViewportSize({ width: 1360, height: 960 });
   const oldRoot = await page.locator('[data-presentation]').elementHandle();
   await page.locator('main a[href="/vault/architecture/"]').first().click();

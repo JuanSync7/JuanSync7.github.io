@@ -24,7 +24,13 @@ there is no universal house, boat pair, central platform or ocean border.
 The catalog contains woodland, rainforest, plains, desert, oasis, tundra, snow, frozen
 ice lands, wasteland, volcanic, mushroom, village, city and caves. Compatible pairs can
 share a continuous terrain field. Landforms include islands, archipelagos, slices,
-valleys, dunes, Alps, canyons, calderas and cutaway caverns.
+valleys, dunes, Alps, canyons, calderas and cutaway caverns. Mainland windows have eroded
+outlines, stepped undersides and biome geology instead of tall rectangular slab faces.
+
+The catalog has 75 archetypes. A seed selects a local supporting palette: tropical understory,
+berries and deadwood, arid succulents and sandstone, frozen formations, camp equipment,
+market props, mine equipment and urban fixtures. Size and silhouette variation are checked
+separately from rotation; each sampled model must connect back to supported contact cells.
 
 Limits: this is a bounded diorama generator, not an editable Minecraft simulation.
 Conservative envelopes can omit a prop that would fit a more expensive solver; omissions

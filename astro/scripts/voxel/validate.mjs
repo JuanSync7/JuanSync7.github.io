@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {auditAttachment} from './content-rules.mjs';
 import {readFileSync} from 'node:fs';
 export const rules=JSON.parse(readFileSync('src/figures/kit/voxel-world/policy.json','utf8'));
 const key=(x,y,z)=>`${x},${y},${z}`;
@@ -17,6 +18,7 @@ export function auditWorld(w) {
   const solid=new Set();
   for(const b of w.blocks){require([b.x,b.y,b.z].every(Number.isInteger),'VXL-GRID','fractional solid voxel');const k=key(b.x,b.y,b.z);require(!solid.has(k),'VXL-COLLISION',`duplicate solid at ${k}`);solid.add(k);}
   for(const p of w.props) {
+    auditAttachment(p.blocks,`${context}/${p.kind}`);
     require(w.biomes.get(`${p.x},${p.z}`)===p.recipe.biome,'VXL-ECOLOGY','component outside its biome');
     for(const b of p.blocks) {
       require(Math.abs(b.x)<=p.rx&&Math.abs(b.z)<=p.rz,'VXL-ENVELOPE','underestimated component envelope');
@@ -55,5 +57,33 @@ export function auditWorld(w) {
   require(placed===w.props.length+w.boats.length,'VXL-ACCOUNTING','reported counts disagree with geometry');
   require(w.report.attempts<=planned*rules.placementAttempts,'VXL-TERMINATION','placement retry budget');
   if(w.spec.secondary)require(new Set(w.biomes.values()).size===2,'VXL-TRANSITION','declared transition is absent');
+  auditEdges(w,solid,require);
   return {context,props:w.props.length,boats:w.boats.length,blocks:w.blocks.length,houseCount:w.props.filter(p=>buildingKinds.has(p.kind)).length};
+}
+
+function auditEdges(w,solid,require) {
+ const floors=new Map([...w.seabed,...w.heights]);
+ require(w.bottoms.size===floors.size,'VXL-EDGE','missing base columns');
+ let bevelled=0;
+ for(const[k,h]of floors) {
+  const bottom=w.bottoms.get(k),[x,z]=k.split(',').map(Number);
+  require(Number.isInteger(bottom)&&bottom>=rules.baseLevel&&bottom<=h,'VXL-EDGE','invalid column base');
+  require(solid.has(key(x,bottom,z))&&solid.has(key(x,h,z)),'VXL-EDGE','open top or underside');
+  let boundary=false;
+  for(const[dx,dz]of[[1,0],[-1,0],[0,1],[0,-1]]) {
+   const next=`${x+dx},${z+dz}`,top=floors.get(next),low=w.bottoms.get(next);
+   if(top===undefined){boundary=true;continue;}
+   require(Math.max(bottom,low)<=Math.min(h,top),'VXL-EDGE','disconnected adjacent ground columns');
+  }
+  if(boundary) {
+   if(bottom>rules.baseLevel)bevelled++;
+   for(let y=bottom;y<=h;y++)require(solid.has(key(x,y,z)),'VXL-EDGE','hole in outside wall');
+  }
+ }
+ if(!['island','archipelago'].includes(w.spec.landform)) {
+  require(bevelled>0,'VXL-EDGE','untreated vertical slab');
+  const points=[...w.heights.keys()].map(k=>k.split(',').map(Number)),xs=points.map(p=>p[0]),zs=points.map(p=>p[1]);
+  const corners=[...new Set([Math.min(...xs),Math.max(...xs)])].flatMap(x=>[Math.min(...zs),Math.max(...zs)].map(z=>`${x},${z}`));
+  require(corners.filter(k=>w.heights.has(k)).length<4,'VXL-EDGE','rectangular cookie-cutter footprint');
+ }
 }

@@ -11,12 +11,17 @@ repeated houses, trees, boats or biome props.
    mushrooms, crystals and rock formations. Do not scatter every prop everywhere.
 2. Plan counts from habitat area, density and seeded budgets. Zero buildings, trees
    or boats is valid. Cities and villages may have many independently shaped shelters.
-3. Draw dimensions, roof/body variant, height and quarter-turn from each recipe's
+3. Select a seeded subset of the local supporting catalog. Different worlds can emphasize
+   berries, deadwood, flowers, geological formations, camp equipment or urban fixtures.
+   Keep every catalog kind tied to a distinct model; unknown names fail instead of drawing
+   a generic plant. The catalog and realized population are both checked.
+4. Draw dimensions, roof/body variant, height and quarter-turn from each recipe's
    own stream. Size affects geometry and placement cost, not only metadata.
-4. Realize the entire local model before placement. Include eaves, branches, vines,
+5. Realize the entire local model before placement. Include eaves, branches, vines,
    a tent's poles and a boat's sail. Measure bounds from the actual voxels.
-5. Keep integer block coordinates. Closed solids may share cells within one model's
-   builder map; distinct placed models cannot share a solid cell.
+6. Keep integer block coordinates. Closed solids may share cells within one model's
+   builder map; distinct placed models cannot share a solid cell. Flood-fill each model
+   from its ground-contact cells to detect floating branch tips, fragments or roof pieces.
 
 **Reject:** labels on plain filler boxes, a new recipe with a fixed silhouette despite
 size settings, or geometry outside its declared envelope.

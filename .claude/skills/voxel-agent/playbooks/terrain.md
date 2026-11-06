@@ -8,7 +8,8 @@ unsupported water, cave clearance or a repeated island outline.
 seabed and named geological features.
 
 1. Select the landform from the habitat catalog. Islands and archipelagos have an
-   ocean mask. Slices, valleys, dunes, Alps, canyons and caverns end in terrain cuts.
+   ocean mask. Mainland windows use an eroded, irregular outline instead of four straight
+   edges. Keep the landform relief; do not flatten mountain edges into a universal beach.
 2. Compute a domain-warped transition weight. Blend relief continuously, then assign
    local habitats for vegetation. Compatible transitions are catalog data.
 3. Generate the height field before grading a building site. Preserve high relief
@@ -17,10 +18,14 @@ seabed and named geological features.
    them. River cuts reach the bounds of a mainland slice. Record liquid bottom and level.
 5. For caves, preserve separate roof geometry and lowest free headroom, including
    hanging formations. Open a cutaway so the interior can be inspected.
-6. Emit the closed boundary of the solid columns. Treat the height field as the full
+6. Shape the underside after accepted grading. A boundary-distance field raises the base
+   toward each exposed edge across seven cells. Clamp bases to adjacent terrain so volumes
+   stay connected; retain a deep interior and a short visible outer face. Strata follow
+   biome geology. Cave openings remain genuine cutaways.
+7. Emit the closed boundary of the solid columns, including stepped undersides. Treat the height field as the full
    solid volume when testing intersections or culling hidden faces.
 
 **Reject:** a flat base with only recoloured props, an ocean border on every biome,
 missing declared transitions, unsupported liquid or a ceiling that clips objects.
 **Check:** terrain/transition/liquid/headroom checks and visual landform recognition.
-**Tools:** `terrain`, `climate`, `ground`, `water-features`; numbered seed atlas.
+**Tools:** `terrain`, `edges`, `climate`, `ground`, `water-features`; numbered seed atlas.

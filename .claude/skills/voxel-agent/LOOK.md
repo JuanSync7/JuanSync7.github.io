@@ -8,6 +8,10 @@ Record the exact public seed, layout seed, engine version and screenshot path.
   cave opening, island, archipelago or a mainland slice?
 - Does a mainland edge cut through the actual terrain and vegetation, rather than a
   water border added to every scene?
+- Do outer sides read as an irregular, stepped geological edge rather than four tall,
+  flat slab faces? Check from multiple yaw angles and inspect the underside for holes.
+- Do subcomponents have distinct silhouettes and a coherent local selection, rather than
+  the same five props repeated through each biome?
 - Are empty wilderness, a small camp and a dense settlement all represented?
 - Do buildings vary in number, site, dimensions, roof and orientation?
 - Do forests have enough canopy density to read as forests, while arid terrain stays sparse?

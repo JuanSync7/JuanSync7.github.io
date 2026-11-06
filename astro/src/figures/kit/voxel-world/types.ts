@@ -103,6 +103,7 @@ export interface GenerationReport {
 export interface World {
   spec: WorldSpec;
   heights: Map<string, number>;
+  bottoms: Map<string, number>;
   biomes: Map<string, Biome>;
   ceilings: Map<string, number>;
   roofs: Map<string, number>;
@@ -121,7 +122,7 @@ export const cell = (x: number, z: number): string => `${x},${z}`;
 export const voxel = (x: number, y: number, z: number): string => `${x},${y},${z}`;
 export const COLD = new Set<Biome>(['snow', 'tundra', 'frozen']);
 export const BUILDINGS = new Set(['cottage', 'tower', 'hut', 'tent', 'ruin']);
-export const TREES = new Set(['tree', 'pine', 'palm', 'jungle tree', 'dead tree']);
+export const TREES = new Set(['tree', 'pine', 'palm', 'jungle tree', 'dead tree', 'birch', 'willow', 'bamboo']);
 export interface Theme {
   ground: Material;
   leaf: Material;

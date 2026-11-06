@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {auditAttachment} from './content-rules.mjs';
 import {loadKernel} from './load.mjs';
 import {auditWorld,rules} from './validate.mjs';
 import {auditDiversity} from './diversity.mjs';
@@ -23,6 +24,9 @@ broken('VXL-LIQUID',water,w=>{const [k,l]=w.liquids.entries().next().value;w.liq
 broken('VXL-NAVIGATION',water,w=>{w.boats[0].x=999;});
 broken('VXL-ACCOUNTING',base,w=>{w.report.placed.fake=1;});
 broken('VXL-TERMINATION',base,w=>{w.report.attempts=1e9;});
+broken('VXL-EDGE',base,w=>w.bottoms.clear());
+assert.throws(()=>auditAttachment([{x:0,y:0,z:0},{x:0,y:2,z:0}]),/VXL-ATTACHMENT/);count++;
+assert.throws(()=>auditAttachment([]),/VXL-CONTENT/);count++;
 const diverse={naturalSeeds:rules.atlasSeeds,mixed:rules.minMixedWorlds,emptySettlements:1,zeroBoats:1,diversity:{biomes:14,landforms:9,houseCounts:5,boatCounts:5,dimensions:20,houseRecipes:20,houseSites:30,treeCounts:15}};
 auditDiversity(diverse);
 for(const field of ['houseCounts','boatCounts','dimensions','houseRecipes','houseSites','treeCounts']){const report=structuredClone(diverse);report.diversity[field]=1;assert.throws(()=>auditDiversity(report),/VXL-DIVERSITY/);count++;}

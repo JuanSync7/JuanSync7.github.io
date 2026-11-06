@@ -23,6 +23,7 @@ Read this index first; inspect a module's implementation only for the stage bein
 | `planWorld(seed, biome?)` | versioned world specification | Invalid numeric seeds fail; a forced biome is an audit input. |
 | `stream(seed, stage)` | independent PRNG | Stable stage names; no shared cursor between stages. |
 | `terrain(spec)` | height, climate, roof and liquid maps | Mainland cuts continue the biome to the edge; islands and archipelagos have coasts. |
+| `shapeBase(world)` | connected, beveled underside | A boundary-distance field shortens outer walls; both renderers cull against per-column bottoms. |
 | `population(world)` | stable component recipes | Counts use actual habitat area and a seeded density. Zero is valid. |
 | `componentModel(recipe)` | local integer voxel geometry | Measure this geometry before placement. Roofs, roots and sails count. |
 | `Placement.put(recipe)` | accepted prop or reported omission | Atomic acceptance; bounded search; conservative occupancy grid. |

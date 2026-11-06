@@ -3,7 +3,8 @@ import { Vector3 } from 'three';
 import type { TemplateFrame } from '../../defineTemplate';
 import { hexOf, mix } from '../ink';
 import { worldBounds } from './camera';
-import { cell, voxel, type Material, type World, type WorldSpec } from './types';
+import { terrainSolid } from './edges';
+import { voxel, type Material, type World, type WorldSpec } from './types';
 
 type Point = [number, number, number];
 interface Face {
@@ -83,14 +84,7 @@ function worldFaces(world: World): Face[] {
         const tx = x + nx,
           ty = y + ny,
           tz = z + nz;
-        const floor = world.heights.get(cell(tx, tz)) ?? world.seabed.get(cell(tx, tz));
-        const roof = world.roofs.get(cell(tx, tz));
-        if (
-          occupied.has(voxel(tx, ty, tz)) ||
-          (floor !== undefined && ty >= -6 && ty <= floor) ||
-          (roof !== undefined && ty >= roof && ty < roof + 3)
-        )
-          continue;
+        if (occupied.has(voxel(tx, ty, tz)) || terrainSolid(world, tx, ty, tz)) continue;
       }
       faces.push({
         normal,

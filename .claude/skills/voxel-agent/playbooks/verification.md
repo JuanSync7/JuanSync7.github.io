@@ -21,6 +21,7 @@ browser in a constrained environment; normal CI uses Playwright's installed brow
 
 - `check.mjs` samples natural seed distribution and a balanced biome matrix. It checks
   geometry against the terrain maps and tests counts, sites, dimensions and recipes.
+- `content.mjs` samples 600 model recipes, ground-connected geometry and local catalog coverage.
 - `selftest.mjs` corrupts real generated fixtures. Each must fail its named rule.
 - `motion.mjs` checks actual renderer state and projected camera bounds, not a copy of
   the animation formula.

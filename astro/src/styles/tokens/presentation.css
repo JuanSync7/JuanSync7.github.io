@@ -36,4 +36,17 @@
   --pr-deck-rotate-x: 14deg;
   --pr-deck-rotate-y: -20deg;
   --pr-section-rule-height: 2px;
+  --pr-scroll-scrub: 450ms;
+  --pr-scroll-reference: 1100px;
+  --pr-scroll-hero-travel: 72px;
+  --pr-scroll-deck-turn: 6deg;
+  --pr-scroll-title-travel: 32px;
+  --pr-scroll-card-travel: 64px;
+  --pr-scroll-card-shrink: 3%;
+  --pr-scroll-enter: 88%;
+  --pr-scroll-settle: 28%;
+  --pr-scroll-card-enter: 96%;
+  --pr-scroll-card-settle: 48%;
+  --pr-scroll-clearance: 24px;
+  --pr-scroll-inset: calc(var(--hf-space-16) + var(--hf-space-16) + var(--pr-scroll-clearance));
 }
