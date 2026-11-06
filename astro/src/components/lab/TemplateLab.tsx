@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import FigureCanvas from '../ui/FigureCanvas';
+import VoxelWorldControls from './VoxelWorldControls';
 import { loadTemplate } from '../../figures/registry';
 import type { Template } from '../../figures/defineTemplate';
 import './template-lab.css';
@@ -33,6 +34,8 @@ export default function TemplateLab({ template }: Props) {
   const [seed, setSeed] = useState<number | null>(null);
   const [draft, setDraft] = useState('');
   const [copied, setCopied] = useState(false);
+  const [view, setView] = useState({ turn: 0, zoom: 1, orbit: true, weather: true });
+  const voxel = template === 'voxel-scene';
 
   useEffect(() => {
     let live = true;
@@ -72,10 +75,19 @@ export default function TemplateLab({ template }: Props) {
       .catch(() => setCopied(false));
   };
 
+  const biome = (wanted: string): void => {
+    const start = roll();
+    for (let i = 0; i < 10000; i++) {
+      const candidate = (start + i) % (MAX_SEED + 1);
+      if (tpl.instance(candidate).variant === `${wanted} island`) { go(candidate); return; }
+    }
+  };
+
   return (
-    <div className="lab">
-      <div className="lab-main">
-        <FigureCanvas key={id} id={id} />
+    <div className={`lab${voxel ? ' lab-voxel' : ''}`}>
+
+      <div className="lab-main" style={{ aspectRatio: String(tpl.aspect) }}>
+        <FigureCanvas key={id} id={id} data={voxel ? view : undefined} />
       </div>
       <div className="lab-bar">
         <div className="lab-id" aria-live="polite">
@@ -106,6 +118,7 @@ export default function TemplateLab({ template }: Props) {
           </button>
         </form>
       </div>
+      {voxel && <VoxelWorldControls view={view} onView={setView} onBiome={biome} />}
       <p className="lab-alt" aria-live="polite">
         {inst.alt}
       </p>
@@ -115,7 +128,7 @@ export default function TemplateLab({ template }: Props) {
           <li key={k}>
             <button type="button" className="lab-thumb" onClick={() => go(s)} aria-label={`Seed ${s}: ${tpl.instance(s).variant}`}>
               <span className="lab-thumb-stage">
-                <FigureCanvas id={`${template}~${s}`} />
+                <FigureCanvas key={voxel ? s : undefined} id={`${template}~${s}`} freezeAt={voxel ? 1.2 : undefined} />
               </span>
               <span className="lab-thumb-label">
                 {s} · {tpl.instance(s).variant}
