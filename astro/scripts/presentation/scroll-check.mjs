@@ -67,7 +67,10 @@ export async function checkScrollJourney(page, output, widths) {
     await first.focus();
     await page.waitForFunction(() => Number(document.querySelector('[data-cabinet]').dataset.cabinetLift) > 0.95);
     assert.equal(await first.evaluate((node) => node === document.activeElement), true);
+    const label = await first.locator('[data-folder-label]').boundingBox();
+    assert(label && label.y >= header.height && label.y + label.height <= page.viewportSize().height, 'The focused folder stays in the visible cabinet viewport');
     await page.screenshot({ path: join(output, `cabinet-${width}-raised.png`) });
+    await page.locator('[data-cabinet] .vc-stage').screenshot({ path: join(output, `cabinet-${width}-detail.png`) });
     await first.evaluate((node) => node.blur());
 
   }
