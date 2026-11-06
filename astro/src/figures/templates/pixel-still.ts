@@ -1,28 +1,54 @@
 import {
-  BufferGeometry,
+  AmbientLight,
   Color,
-  DoubleSide,
-  Float32BufferAttribute,
+  DirectionalLight,
   Group,
+  HemisphereLight,
   LineBasicMaterial,
   LineSegments,
   Mesh,
   MeshBasicMaterial,
+  MeshStandardMaterial,
   PlaneGeometry,
+  DoubleSide,
+  Raycaster,
+  Vector2,
 } from 'three';
 import { defineTemplate } from '../defineTemplate';
 import { defineThreeFigure } from '../defineThree';
 import { project, type Vec3 } from '../kit/camera';
 import { poly } from '../kit/draw';
 import { hexOf, ink, mix } from '../kit/ink';
-import { arrange, itemModel, propName, tableView, tabletop, type TableItem, type TableScene } from '../kit/tabletop';
+import { solidMesh, tableFinish, type TableObject } from '../kit/tablemesh';
+import {
+  arrange,
+  itemModel,
+  propName,
+  tableView,
+  tabletop,
+  TABLE_ASPECT,
+  type TableItem,
+  type TableScene,
+} from '../kit/tabletop';
 import type { PropModel } from '../kit/tableparts';
 import type { Pointer } from '../types';
 
 interface S {
-  edges: LineBasicMaterial[][];
-  faces: { material: MeshBasicMaterial; base: Color }[][];
+  edges: { material: LineBasicMaterial; base: Color; opacity: number }[][];
+  faces: { material: MeshStandardMaterial; base: Color }[][];
   marker: Mesh<PlaneGeometry, MeshBasicMaterial>;
+  pickables: Mesh[];
+  ray: Raycaster;
+  at: Vector2;
+}
+function inside(points: readonly Vec3[], x: number, y: number): boolean {
+  let hit = false;
+  for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
+    const a = points[i],
+      b = points[j];
+    if (a && b && a[1] > y !== b[1] > y && x < ((b[0] - a[0]) * (y - a[1])) / (b[1] - a[1]) + a[0]) hit = !hit;
+  }
+  return hit;
 }
 /** Keep small accessories easy to locate without enlarging their physical models. */
 function selection(it: TableItem): { x: number; z: number; w: number; d: number } {
@@ -34,20 +60,16 @@ function selection(it: TableItem): { x: number; z: number; w: number; d: number 
     d: Math.max(1.1, hi[2] - lo[2] + 0.24),
   };
 }
-function closest(p: TableScene, pointer: Pointer, w: number, h: number): number {
-  let selected = -1,
-    nearest = h * 0.28;
-  if (pointer.active)
-    p.items.forEach((it, i) => {
+function candidates(p: TableScene, pointer: Pointer, w: number, h: number) {
+  if (!pointer.active) return [];
+  return p.items
+    .map((it, i) => {
       const { lo, hi } = it.bounds;
       const q = project(tableView(p, w, h), (lo[0] + hi[0]) / 2, hi[1] / 2, (lo[2] + hi[2]) / 2);
-      const d = Math.hypot(q[0] - pointer.x * w, q[1] - pointer.y * h);
-      if (d < nearest) {
-        selected = i;
-        nearest = d;
-      }
-    });
-  return selected;
+      return { i, q, distance: Math.hypot(q[0] - pointer.x * w, q[1] - pointer.y * h) };
+    })
+    .filter((it) => it.distance < h * 0.28)
+    .sort((a, b) => a.distance - b.distance);
 }
 function shade(points: Vec3[]): number {
   const [a, b, c] = points;
@@ -62,62 +84,7 @@ function shade(points: Vec3[]): number {
     nx = Math.abs(uy * vz - uz * vy);
   return ny > nx ? 2 : nx > 0.00001 ? 1 : 0;
 }
-function mesh(model: PropModel, isTable = false): Group {
-  const group = new Group(),
-    buckets: number[][] = [[], [], []],
-    edges: number[] = [];
-  const seen = new Set<string>();
-  for (const surface of model.surfaces) {
-    const { points, face } = surface;
-    const first = points[0];
-    if (face && first)
-      for (let i = 1; i + 1 < points.length; i++) {
-        const a = points[i],
-          b = points[i + 1];
-        if (a && b) buckets[shade(points)]?.push(...first, ...a, ...b);
-      }
-    for (let i = 0; i < (face ? points.length : points.length - 1); i++) {
-      const a = points[i],
-        b = points[(i + 1) % points.length];
-      if (!a || !b) continue;
-      const key = [a.map((n) => n.toFixed(5)).join(','), b.map((n) => n.toFixed(5)).join(',')].sort().join('/');
-      if (seen.has(key)) continue;
-      seen.add(key);
-      edges.push(...a, ...b);
-    }
-  }
-  buckets.forEach((positions, i) => {
-    if (!positions.length) return;
-    const geometry = new BufferGeometry();
-    geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
-    const color = isTable
-      ? new Color(hexOf(i === 2 ? 'panel2' : i === 1 ? 'line2' : 'line'))
-      : new Color(hexOf('inkFaint')).multiplyScalar(0.14 + i * 0.09);
-    group.add(
-      new Mesh(
-        geometry,
-        new MeshBasicMaterial({
-          color,
-          side: DoubleSide,
-          polygonOffset: true,
-          polygonOffsetFactor: 1,
-          polygonOffsetUnits: 1,
-        }),
-      ),
-    );
-  });
-  const geometry = new BufferGeometry();
-  geometry.setAttribute('position', new Float32BufferAttribute(edges, 3));
-  group.add(
-    new LineSegments(
-      geometry,
-      new LineBasicMaterial({ color: hexOf('ink'), transparent: true, opacity: isTable ? 0.42 : 0.48 }),
-    ),
-  );
-  return group;
-}
-
-export const object = (it: TableItem): Group => mesh(itemModel(it));
+export const object = (it: TableItem): Group => solidMesh(itemModel(it), it.kind, 'work');
 export { arrange };
 const flatModels = new WeakMap<TableScene, PropModel[]>();
 
@@ -129,22 +96,27 @@ export default defineTemplate<TableScene, S>({
   renderer: defineThreeFigure,
   motion: 'responsive',
   answers: true,
-  aspect: 1.5,
+  aspect: TABLE_ASPECT,
   grammar: (rng) => arrange(rng),
   name: (p) => `${p.theme.name} · ${p.items.length} objects`,
   alt: (p) =>
-    `An angled ${p.theme.name.toLowerCase()} with ${p.items.map((it) => propName(it.kind)).join(', ')}, placed for their use with clear space between objects.`,
+    `A solid 3D ${p.theme.name.toLowerCase()} seen from eye height with ${p.items.map((it) => propName(it.kind)).join(', ')}, placed for their use with clear space between objects.`,
   build: ({ scene, params: p }) => {
-    const models = p.items.map(object);
+    const models = p.items.map((it) => solidMesh(itemModel(it), it.kind, p.theme.id));
     const faces: S['faces'] = [],
       edges: S['edges'] = [];
-    for (const model of models) {
+    const pickables: Mesh[] = [];
+    for (const [i, model] of models.entries()) {
       const f: S['faces'][number] = [],
-        e: LineBasicMaterial[] = [];
+        e: S['edges'][number] = [];
       model.traverse((o) => {
-        if (o instanceof Mesh && o.material instanceof MeshBasicMaterial)
+        if (o instanceof Mesh && o.material instanceof MeshStandardMaterial) {
           f.push({ material: o.material, base: o.material.color.clone() });
-        if (o instanceof LineSegments && o.material instanceof LineBasicMaterial) e.push(o.material);
+          o.userData.item = i;
+          pickables.push(o);
+        }
+        if (o instanceof LineSegments && o.material instanceof LineBasicMaterial)
+          e.push({ material: o.material, base: o.material.color.clone(), opacity: o.material.opacity });
       });
       faces.push(f);
       edges.push(e);
@@ -161,18 +133,56 @@ export default defineTemplate<TableScene, S>({
     );
     marker.rotation.x = -Math.PI / 2;
     marker.visible = false;
-    scene.add(mesh(tabletop(p), true), marker, ...models);
-    return { faces, edges, marker };
+    const key = new DirectionalLight(hexOf('inkStrong'), 2.4);
+    key.position.set(-3, 7, 6);
+    const fill = new DirectionalLight(hexOf('inkStrong'), 0.7);
+    fill.position.set(5, 4, -4);
+    const furniture = solidMesh(tabletop(p), 'table', p.theme.id);
+    furniture.traverse((o) => {
+      if (o instanceof Mesh) {
+        o.userData.item = -1;
+        pickables.push(o);
+      }
+    });
+    scene.add(
+      new HemisphereLight(hexOf('inkStrong'), hexOf('ground'), 1.7),
+      new AmbientLight(hexOf('inkStrong'), 0.3),
+      key,
+      fill,
+      furniture,
+      marker,
+      ...models,
+    );
+    scene.updateMatrixWorld(true);
+    return { faces, edges, marker, pickables, ray: new Raycaster(), at: new Vector2() };
   },
   update: ({ camera, params: p, state: s, w, h, pointer, hover }) => {
-    const dist = tableView(p, w, h).dist;
+    const view = tableView(p, w, h),
+      { dist, pitch } = view;
     camera.position.set(
-      Math.sin(p.yaw) * Math.cos(p.pitch) * dist,
-      Math.sin(p.pitch) * dist,
-      Math.cos(p.yaw) * Math.cos(p.pitch) * dist,
+      Math.sin(p.yaw) * Math.cos(pitch) * dist,
+      Math.sin(pitch) * dist,
+      Math.cos(p.yaw) * Math.cos(pitch) * dist,
     );
     camera.lookAt(0, 0, 0);
-    const selected = hover > 0.1 ? closest(p, pointer, w, h) : -1;
+    camera.updateMatrixWorld();
+    let selected = -1;
+    if (hover > 0.1 && pointer.active) {
+      const pick = (x: number, y: number): number => {
+        s.at.set(x * 2 - 1, 1 - y * 2);
+        s.ray.setFromCamera(s.at, camera);
+        const hit = s.ray.intersectObjects(s.pickables, false)[0];
+        return hit && typeof hit.object.userData.item === 'number' ? hit.object.userData.item : -1;
+      };
+      selected = pick(pointer.x, pointer.y);
+      if (selected < 0)
+        for (const candidate of candidates(p, pointer, w, h)) {
+          if (pick(candidate.q[0] / w, candidate.q[1] / h) === candidate.i) {
+            selected = candidate.i;
+            break;
+          }
+        }
+    }
     const item = p.items[selected];
     s.marker.visible = Boolean(item);
     if (item) {
@@ -182,60 +192,68 @@ export default defineTemplate<TableScene, S>({
     }
     s.faces.forEach((faces, i) =>
       faces.forEach(({ material, base }) => {
-        if (i === selected) material.color.set(hexOf('inkStrong'));
-        else material.color.copy(base);
+        material.color.copy(base);
+        if (i === selected) material.color.lerp(new Color(hexOf('inkStrong')), 0.95);
+        else if (selected < 0 && i === p.lit) material.color.lerp(new Color(hexOf('signal')), 0.7);
       }),
     );
     s.edges.forEach((edges, i) =>
-      edges.forEach((m) => {
-        m.color.set(hexOf(i === (selected < 0 ? p.lit : selected) ? 'signal' : 'ink'));
-        m.opacity = i === (selected < 0 ? p.lit : selected) ? 0.9 : 0.42 + (p.items[i]?.z ?? 0) * 0.035;
+      edges.forEach(({ material, base, opacity }) => {
+        const active = i === (selected < 0 ? p.lit : selected);
+        material.color.copy(base);
+        if (active) material.color.set(hexOf('signal'));
+        material.opacity = active ? 0.9 : opacity;
       }),
     );
     return selected >= 0 ? propName(p.items[selected]?.kind ?? 'paper') : 'rest';
   },
   fallback: ({ ctx, w, h, pointer, params: p }) => {
-    const cam = tableView(p, w, h),
-      selected = closest(p, pointer, w, h);
+    const cam = tableView(p, w, h);
+    let selected = -1;
     const models = flatModels.get(p) ?? [tabletop(p), ...p.items.map(itemModel)];
     flatModels.set(p, models);
-    models.forEach((model, i) => {
-      const item = p.items[selected];
-      if (i === 1 && item) {
-        const m = selection(item);
-        poly(
-          ctx,
-          [
-            [-1, -1],
-            [1, -1],
-            [1, 1],
-            [-1, 1],
-          ].map(([a = 0, b = 0]) => project(cam, m.x + (a * m.w) / 2, 0.008, m.z + (b * m.d) / 2)),
-          true,
-        );
-        ctx.fillStyle = ink.signal(0.3);
-        ctx.fill();
-      }
-      const active = i - 1 === (selected < 0 ? p.lit : selected);
-      const surfaces = model.surfaces.map((s) => ({ s, points: s.points.map((v) => project(cam, ...v)) }));
-      surfaces.sort(
-        (a, b) =>
-          a.points.reduce((n, v) => n + v[2] / a.points.length, 0) -
+    const surfaces = models.flatMap((model, index) =>
+      model.surfaces.map((surface) => ({
+        surface,
+        index,
+        points: surface.points.map((v) => project(cam, ...v)),
+      })),
+    );
+    surfaces.sort(
+      (a, b) =>
+        // All props sit above the top and in front of the rear furniture. A single
+        // depth for a broad tabletop would incorrectly paint over its rear props.
+        Number(a.index > 0) - Number(b.index > 0) ||
+        a.points.reduce((n, v) => n + v[2] / a.points.length, 0) -
           b.points.reduce((n, v) => n + v[2] / b.points.length, 0),
-      );
-      for (const { s, points } of surfaces) {
-        poly(ctx, points, s.face);
-        if (s.face) {
-          ctx.fillStyle =
-            i === 0
-              ? mix('ground', 'inkFaint', 0.08 + (2 - shade(s.points)) * 0.06)
-              : mix('ground', 'inkFaint', 0.22 + shade(s.points) * 0.07);
-          ctx.fill();
+    );
+    if (pointer.active) {
+      const pick = (x: number, y: number): number =>
+        (surfaces.findLast((s) => s.surface.face && inside(s.points, x, y))?.index ?? 0) - 1;
+      selected = pick(pointer.x * w, pointer.y * h);
+      if (selected < 0)
+        for (const candidate of candidates(p, pointer, w, h)) {
+          if (pick(candidate.q[0], candidate.q[1]) === candidate.i) {
+            selected = candidate.i;
+            break;
+          }
         }
-        ctx.strokeStyle = active ? ink.signal(0.75) : ink.line(i === 0 ? 0.42 : 0.4);
+    }
+    for (const { surface, index, points } of surfaces) {
+      const kind: TableObject = index === 0 ? 'table' : (p.items[index - 1]?.kind ?? 'paper');
+      const active = index - 1 === (selected < 0 ? p.lit : selected);
+      const finish = tableFinish(kind, surface.solid, p.theme.id);
+      poly(ctx, points, surface.face);
+      if (surface.face) {
+        ctx.fillStyle = active
+          ? mix('signalLine', 'signal', 0.5 + shade(surface.points) * 0.2)
+          : mix('ground', finish.tone, 0.5 + shade(surface.points) * 0.2);
+        ctx.fill();
+      } else {
+        ctx.strokeStyle = active ? ink.signal(0.85) : kind === 'table' ? ink.faint(0.25) : ink.line(0.5);
         ctx.stroke();
       }
-    });
+    }
     return selected >= 0 ? propName(p.items[selected]?.kind ?? 'paper') : 'rest';
   },
 });

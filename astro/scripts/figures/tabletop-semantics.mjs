@@ -53,15 +53,15 @@ const OPTIONAL = {
 };
 export function semanticCheck(p) {
   const minimum = {
-    dining: 10,
-    work: 11,
-    computer: 11,
-    storage: 11,
-    messy: 14,
-    study: 11,
-    kitchen: 11,
-    bar: 10,
-    lab: 12,
+    dining: 16,
+    work: 19,
+    computer: 19,
+    storage: 19,
+    messy: 25,
+    study: 19,
+    kitchen: 20,
+    bar: 18,
+    lab: 21,
   };
   assert(p.items.length >= minimum[p.theme.id], `${p.theme.id} is too sparse`);
   const theme = p.theme.id,

@@ -71,6 +71,7 @@ try {
     const canvas = page.locator(`[data-bench-figure="pixel-still~${seed}"] canvas`);
     await canvas.waitFor();
     await page.waitForFunction(() => document.querySelector('canvas')?.dataset.ready === '1');
+    assert.equal(await canvas.getAttribute('data-error'), null, `${theme.id} failed to draw`);
     assert.equal(await canvas.getAttribute('data-renderer'), 'webgl');
     const alt = await canvas.getAttribute('aria-label');
     assert(alt.includes(theme.name.toLowerCase()));
@@ -113,7 +114,10 @@ try {
         };
       });
     await p.goto(`${url}/lab/pixel-still/?seed=7`);
-    const ready = () => p.waitForFunction(() => document.querySelector('.lab-main canvas')?.dataset.ready === '1');
+    const ready = async () => {
+      await p.waitForFunction(() => document.querySelector('.lab-main canvas')?.dataset.ready === '1');
+      assert.equal(await p.locator('.lab-main canvas').getAttribute('data-error'), null, 'Main canvas failed to draw');
+    };
     await ready();
     assert.equal(await p.locator('.lab-main canvas').getAttribute('data-renderer'), fallback ? '2d-fallback' : 'webgl');
     await p.getByRole('button', { name: 'Next seed', exact: true }).click();
@@ -127,9 +131,9 @@ try {
     await input.press('Enter');
     await p.waitForURL(/seed=42/);
     await ready();
-    await p
-      .locator('.lab-main canvas')
-      .screenshot({ path: `figures-out/tabletop-${fallback ? 'fallback' : 'webgl'}.png` });
+    const png = await p.locator('.lab-main canvas').screenshot();
+    assert(measure(decode(png), thresholds).coverage >= thresholds.coverageMin, 'Main canvas rendered blank');
+    writeFileSync(`figures-out/tabletop-${fallback ? 'fallback' : 'webgl'}.png`, png);
     await p.setViewportSize({ width: 390, height: 844 });
     await p.waitForTimeout(200);
     assert(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth));

@@ -29,7 +29,7 @@ const sample = [
 ];
 const kinds = new Set();
 const layouts = new Set();
-let objects = 0;
+let objects = 0, occlusions = 0;
 try {
   const canvasRuntime = await build({
     entryPoints: ['src/figures/defineTemplate.ts'],
@@ -46,7 +46,7 @@ try {
   await build({
     stdin: {
       contents:
-        "export { default, arrange, object } from './src/figures/templates/pixel-still'; export { webglAvailable } from './src/figures/defineThree'; export {THEMES,GAP,tabletop,TABLE_ASPECT} from './src/figures/kit/tabletop'; export {PROP_KINDS} from './src/figures/kit/tableprops';",
+        "export { default, arrange, object } from './src/figures/templates/pixel-still'; export { webglAvailable } from './src/figures/defineThree'; export {THEMES,GAP,tabletop,tableView,TABLE_ASPECT} from './src/figures/kit/tabletop'; export {PROP_KINDS} from './src/figures/kit/tableprops';",
       resolveDir: process.cwd(),
       loader: 'ts',
     },
@@ -63,6 +63,7 @@ try {
     THEMES,
     GAP,
     tabletop,
+    tableView,
     TABLE_ASPECT,
     PROP_KINDS,
   } = await import(pathToFileURL(out));
@@ -101,10 +102,17 @@ try {
     assert.equal(template.instance(seed).id, `pixel-still~${seed}`);
     layouts.add(JSON.stringify(p.items.map(({ kind, x, z }) => [kind, x, z])));
     const cam = new PerspectiveCamera(30, TABLE_ASPECT, 0.1, 60);
+    const view = tableView(p);
+    assert(view.pitch > 0 && view.pitch < 0.2, `overhead view ${seed}`);
+    assert(p.eye > 1.8 && p.eye < 2.6, `not at eye height ${seed}`);
+    for (const aspect of [1, 2.4]) {
+      const resized = tableView(p, aspect, 1);
+      assert(Math.abs(Math.sin(resized.pitch) * resized.dist - p.eye) < 1e-9, `eye rises on resize ${seed}`);
+    }
     cam.position.set(
-      Math.sin(p.yaw) * Math.cos(p.pitch) * p.dist,
-      Math.sin(p.pitch) * p.dist,
-      Math.cos(p.yaw) * Math.cos(p.pitch) * p.dist,
+      Math.sin(p.yaw) * Math.cos(view.pitch) * p.dist,
+      Math.sin(view.pitch) * p.dist,
+      Math.cos(p.yaw) * Math.cos(view.pitch) * p.dist,
     );
     cam.lookAt(0, 0, 0);
     cam.updateMatrixWorld();
@@ -154,12 +162,13 @@ try {
         `cropped seed ${seed}`,
       );
       for (const other of projected)
-        assert(
-          rect[2] < other[0] || other[2] < rect[0] || rect[3] < other[1] || other[3] < rect[1],
-          `screen overlap ${seed}`,
-        );
+        if (!(rect[2] < other[0] || other[2] < rect[0] || rect[3] < other[1] || other[3] < rect[1])) occlusions++;
       projected.push(rect);
       g.traverse((o) => {
+        if (o.isMesh) {
+          assert(o.material.isMeshStandardMaterial, `unlit wireframe prop ${it.kind}`);
+          assert(o.geometry.getAttribute('normal'), `missing lighting normals ${it.kind}`);
+        }
         if (o.geometry) {
           const pos = o.geometry.getAttribute('position');
           for (let k = 0; k < pos.count; k++) {
@@ -193,8 +202,9 @@ try {
   for (const [theme, values] of orientations)
     assert.equal(values.size, 2, `${theme} never varies its layout orientation`);
   assert(layouts.size > 1300);
+  assert(occlusions > 1000, 'Eye-level density should allow natural visual occlusion');
   console.log(
-    `Tabletop passed: ${cases.length} themed layouts, ${objects} objects, ${kinds.size} prop kinds across all 9 themes; deterministic, on-table, no physical or projected overlaps.`,
+    `Tabletop passed: ${cases.length} themed layouts, ${objects} objects, ${kinds.size} prop kinds across all 9 themes; deterministic, on-table, eye-height camera, solid lit meshes, no physical overlaps (${occlusions} natural occlusions).`,
   );
 } finally {
   rmSync(dir, { recursive: true, force: true });

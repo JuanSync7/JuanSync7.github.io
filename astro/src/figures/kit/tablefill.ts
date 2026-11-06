@@ -1,6 +1,7 @@
 import { between, type Rng } from './rng';
 import type { PropKind } from './tableprops';
 import type { Intent, ThemeId } from './tablethemes';
+import { TABLE_DETAILS } from './tabledetails';
 
 type Slot = readonly [PropKind, number, number];
 const ACCESSORIES: Record<ThemeId, readonly Slot[]> = {
@@ -110,13 +111,13 @@ const ACCESSORIES: Record<ThemeId, readonly Slot[]> = {
   ],
 };
 export function fillRecipe(theme: ThemeId, rng: Rng, mirror: number): Intent[] {
-  return ACCESSORIES[theme].map(([kind, x, z]) => ({
+  return [...ACCESSORIES[theme], ...TABLE_DETAILS[theme]].map(([kind, x, z]) => ({
     kind,
     x: x * mirror,
     z,
     role: 'accessory',
     required: false,
-    jitter: 0.22,
+    jitter: 0.3,
     angle: theme === 'messy' ? 0.65 : 0.12,
     scale: between(rng, 0.85, 1),
   }));

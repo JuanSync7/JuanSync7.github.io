@@ -21,7 +21,7 @@ export interface TableScene {
   theme: TableTheme;
   items: TableItem[];
   yaw: number;
-  pitch: number;
+  eye: number;
   dist: number;
   lit: number;
   mirror: number;
@@ -33,7 +33,7 @@ export function tableView(p: TableScene, w = TABLE_ASPECT, h = 1): Camera {
     cx: w / 2,
     cy: h / 2,
     yaw: p.yaw,
-    pitch: p.pitch,
+    pitch: Math.asin(p.eye / dist),
     dist,
     scale: h / (2 * Math.tan(Math.PI / 12) * dist),
   });
@@ -69,11 +69,8 @@ function place(p: TableScene, intent: Intent, rng: Rng): boolean {
       turn = between(rng, -angle, angle);
     const bounds = footprint(kind, px, pz, s, turn);
     if (!surfaceContains(p.theme, bounds)) continue;
-    const rect = projected(p, bounds);
-    if (
-      p.items.some((it) => !apart(flat(bounds), flat(it.bounds), GAP) || !apart(rect, projected(p, it.bounds), 0.0025))
-    )
-      continue;
+    // A lower viewpoint permits natural occlusion; the solids still cannot touch.
+    if (p.items.some((it) => !apart(flat(bounds), flat(it.bounds), GAP))) continue;
     p.items.push({
       kind,
       x: px,
@@ -96,8 +93,8 @@ function compose(rng: Rng, theme: TableTheme): TableScene | null {
     const p: TableScene = {
       theme,
       items: [],
-      yaw: between(rng, 0.35, 0.55),
-      pitch: between(rng, 0.8, 0.95),
+      yaw: between(rng, 0.16, 0.3),
+      eye: between(rng, 2.1, 2.45),
       dist: 14,
       lit: 0,
       mirror,
@@ -130,13 +127,6 @@ function compose(rng: Rng, theme: TableTheme): TableScene | null {
       })
     )
       p.dist += 0.25;
-    // A fitted distance changes perspective: validate the silhouettes again.
-    if (
-      p.items.some((it, i) =>
-        p.items.slice(0, i).some((q) => !apart(projected(p, it.bounds), projected(p, q.bounds), 0.001)),
-      )
-    )
-      continue;
     p.lit = Math.floor(rng() * p.items.length);
     return p;
   }
