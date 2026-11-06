@@ -179,11 +179,12 @@ try {
   await poster.goto(`${base}/figures/?only=vault-cabinet&w=500&t=1.2`);
   const bench = poster.locator('[data-bench-figure="vault-cabinet"]');
   await bench.waitFor();
-  await bench.evaluate((node) => { node.style.aspectRatio = '500 / 560'; });
+  await bench.evaluate((node) => { node.style.width = '500px'; node.style.height = '560px'; node.style.aspectRatio = 'auto'; });
   await poster.waitForFunction(() => {
     const canvas = document.querySelector('[data-bench-figure="vault-cabinet"] canvas');
-    return canvas?.dataset.ready === '1' && Math.abs(canvas.getBoundingClientRect().height / canvas.getBoundingClientRect().width - 560 / 500) < 0.002;
+    return canvas?.dataset.ready === '1' && canvas.width === 1000 && canvas.height === 1120;
   });
+  await bench.locator('.figure-readout').evaluate((node) => { node.style.visibility = 'hidden'; });
   await bench.locator('canvas').screenshot({ path: join(output, 'cabinet-poster.png') });
   await poster.close();
 
