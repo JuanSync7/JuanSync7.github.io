@@ -9,6 +9,7 @@ interface Props {
 }
 
 const { current } = Astro.props;
+const hasCurrent = NAV.some((link) => link.label === current);
 ---
 
 <header class="nav">
@@ -18,9 +19,9 @@ const { current } = Astro.props;
       <span class="word">{IDENTITY.shortName}</span>
     </a>
     <nav aria-label="Primary">
-      <ul>
+      <ul class:list={{ 'has-current': hasCurrent }}>
         {NAV.map((l) => (
-          <li>
+          <li class:list={{ 'is-current': l.label === current }}>
             <a href={l.href} aria-current={l.label === current ? 'page' : undefined}>{l.label}</a>
           </li>
         ))}
@@ -99,8 +100,7 @@ const { current } = Astro.props;
     border-color: var(--nt-line-4);
   }
 
-  /* Eight links and the cv button fit at 24px gaps only above 900px; below it they close up,
-     and below 760px only writing (the last link) stays. */
+  /* Close the nine links up below 900px. A phone keeps the active destination, or writing. */
   @media (max-width: 900px) {
     .nav-inner {
       gap: var(--hf-space-4);
@@ -114,6 +114,14 @@ const { current } = Astro.props;
   @media (max-width: 760px) {
     nav li:not(:last-child) {
       display: none;
+    }
+
+    nav ul.has-current li {
+      display: none;
+    }
+
+    nav ul.has-current li.is-current {
+      display: list-item;
     }
   }
 </style>

@@ -32,6 +32,8 @@ jobs:
         run: npm run hardware:check
       - name: Build
         run: npm run build
+      - name: Public vault page and static data boundary
+        run: npm run vault:page
       - name: Install Chromium for the figure look
         run: npx playwright install --with-deps chromium
       - name: Lesson browsing (grouping, filters, history, mobile and no JavaScript)

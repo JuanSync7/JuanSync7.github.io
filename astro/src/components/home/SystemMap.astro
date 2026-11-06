@@ -66,6 +66,7 @@ const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([
       </li>
     ))}
   </ol>
+  <p class="vault-link"><a href="/vault/">Inside the experience vault: the graph, retrieval and checks <span aria-hidden="true">→</span></a></p>
 </section>
 
 <style>
@@ -75,6 +76,18 @@ const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([
     gap: var(--hf-space-6);
     padding-top: var(--nt-section-y-tight);
     padding-bottom: var(--nt-section-y);
+  }
+
+  .vault-link {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+  }
+
+  .vault-link a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--nt-hit);
+    color: var(--nt-signal);
   }
 
   .cap {

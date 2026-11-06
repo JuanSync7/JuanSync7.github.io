@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-11-06
+
+The vault has a dedicated `/vault/` landing page, linked from the shared navigation and home system
+map. It explains the purpose, main areas, component responsibilities, knowledge graph, progressive
+discovery, search, schemas, rules and checks. Three diagrams have matching downloadable SVGs; a
+synthetic browser-only graph demonstrates ranking and one-hop navigation. The public page imports
+no private vault data and makes no connection to it. Source, diagram and built-page checks keep that
+boundary explicit.
+
 ## 2026-11-05
 
 The hardware atlas models now include populated boards, die floorplans, bonding fields, recessed sockets, serviceable server internals, mechanical fasteners, heat pipes and retained optics. Engineering detail and isolated-part inspection make those features readable at full size; isolated poses can be shared and exported. Depth dependencies prevent raised panels from being hidden by lower parts.

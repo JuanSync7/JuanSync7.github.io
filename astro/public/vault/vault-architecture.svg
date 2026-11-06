@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated from public schematic data by scripts/vault/export.mjs. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="567" viewBox="0 0 760 567" role="img" aria-labelledby="vault-architecture-title vault-architecture-desc">
+<title id="vault-architecture-title">Experience vault / architecture</title>
+<desc id="vault-architecture-desc">arrows = inputs read by the next component · lit = hand-authored guidance Collected evidence becomes generated notes, then an indexed graph that a reader or agent can inspect. Authored guidance stays separately owned and can also be selected directly. Privacy and publication checks cover the outgoing bundle across these stages. Collect: Work records and source notes provide evidence for the record. Summarise: Bounded, cached model calls produce structured accounts. Hand-authored guidance is a separate input, with its own authority. Render and index: Rebuildable notes receive metadata, identities, links and grouping routes; the index makes those routes searchable. Retrieve: A reader or calling agent searches, inspects and selects source context, including authored guidance directly. Privacy and publication checks govern what may leave the system.</desc>
+<style>
+text{font-family:'Geist', system-ui, sans-serif;fill:#e6e8ee}
+.heading{font-family:'Space Grotesk', 'Geist', sans-serif;font-size:21px;font-weight:600}.meta,.label{font-family:'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;font-size:11px;fill:#a3a9ba}
+.name{font-size:14px;font-weight:600}.sub{font-family:'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;font-size:11px;fill:#a3a9ba}
+.caption{font-size:12px;fill:#a3a9ba}.reading{font-size:12px;fill:#2dd4bf}
+.wire{fill:none;stroke:#2dd4bf;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+</style>
+<rect width="760" height="567" fill="#07080c"/>
+<text x="24" y="36" class="heading" text-anchor="start">Experience vault / architecture</text>
+<text x="24" y="60" class="meta" text-anchor="start">Public system overview · schematic examples · no vault connection</text>
+<text x="24" y="84" class="meta" text-anchor="start">arrows = inputs read by the next component · lit = hand-authored guidance</text>
+<defs>
+<marker id="vault-architecture-arrow" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#2dd4bf"/></marker>
+<marker id="vault-architecture-tail" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L6 3 L0 6 Z" fill="#2dd4bf"/></marker>
+</defs>
+<g transform="translate(0 100)">
+<path class="wire" d="M212 60 L284 60" marker-end="url(#vault-architecture-arrow)"/>
+<path class="wire" d="M476 60 L548 60" marker-end="url(#vault-architecture-arrow)"/>
+<path class="wire" d="M644 100 L644 236" marker-end="url(#vault-architecture-arrow)"/>
+<path class="wire" d="M548 276 L476 276" marker-end="url(#vault-architecture-arrow)"/>
+<path class="wire" d="M212 276 L284 276" marker-end="url(#vault-architecture-arrow)"/>
+<path class="wire" d="M116 236 L116 168 L380 168 L380 100" marker-end="url(#vault-architecture-arrow)"/>
+<text x="248" y="46" class="label" text-anchor="middle">extract</text>
+<text x="512" y="46" class="label" text-anchor="middle">render</text>
+<text x="660" y="167" class="label" text-anchor="start">index</text>
+<text x="512" y="260" class="label" text-anchor="middle">retrieve</text>
+<text x="280" y="154" class="label" text-anchor="middle">guidance</text>
+<text x="248" y="260" class="label" text-anchor="middle">select</text>
+<rect x="24" y="24" width="184" height="72" rx="10" fill="#0b0d13" stroke="#3a4054"/>
+<text x="36" y="54.5" class="name" text-anchor="start">Sources</text>
+<text x="36" y="77.5" class="sub" text-anchor="start">work records + notes</text>
+<rect x="288" y="24" width="184" height="72" rx="10" fill="#0b0d13" stroke="#3a4054"/>
+<text x="300" y="54.5" class="name" text-anchor="start">Summarise</text>
+<text x="300" y="77.5" class="sub" text-anchor="start">bounded model calls</text>
+<rect x="552" y="24" width="184" height="72" rx="10" fill="#0b0d13" stroke="#3a4054"/>
+<text x="564" y="54.5" class="name" text-anchor="start">Generated notes</text>
+<text x="564" y="77.5" class="sub" text-anchor="start">rebuildable accounts</text>
+<rect x="552" y="240" width="184" height="72" rx="10" fill="#0b0d13" stroke="#3a4054"/>
+<text x="564" y="270.5" class="name" text-anchor="start">Indexed graph</text>
+<text x="564" y="293.5" class="sub" text-anchor="start">identity + links</text>
+<rect x="288" y="240" width="184" height="72" rx="10" fill="#0b0d13" stroke="#3a4054"/>
+<text x="300" y="270.5" class="name" text-anchor="start">Task retrieval</text>
+<text x="300" y="293.5" class="sub" text-anchor="start">search + inspect</text>
+<rect x="24" y="240" width="184" height="72" rx="10" fill="#0c1514" stroke="#2dd4bf"/>
+<text x="36" y="270.5" class="name" text-anchor="start">Authored guidance</text>
+<text x="36" y="293.5" class="sub" text-anchor="start">owned by the author</text>
+</g>
+<text x="24" y="476" class="reading" text-anchor="start">Reading the map</text>
+<text x="24" y="497" class="caption" text-anchor="start">Collected evidence becomes generated notes, then an indexed graph that a reader or agent can</text>
+<text x="24" y="514" class="caption" text-anchor="start">inspect. Authored guidance stays separately owned and can also be selected directly. Privacy and</text>
+<text x="24" y="531" class="caption" text-anchor="start">publication checks cover the outgoing bundle across these stages.</text>
+</svg>

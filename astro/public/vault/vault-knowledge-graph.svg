@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated from public schematic data by scripts/vault/export.mjs. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="751" viewBox="0 0 760 751" role="img" aria-labelledby="vault-knowledge-graph-title vault-knowledge-graph-desc">
+<title id="vault-knowledge-graph-title">Experience vault / knowledge graph</title>
+<desc id="vault-knowledge-graph-desc">arrows = the named relation from one record to another · lit = an example lesson Illustrative records only. Two pages can share a group and link sideways; an explicit supported_by relation provides a route to evidence. Following a link exposes a source to inspect, not a guarantee that its claim is true. Group: The invented topic Retry policy and lesson Bound retry work each belong to the Reliable systems grouping page. Cross-link: The lesson links sideways to the topic; their shared group supplies another route between them. Inspect evidence: The lesson has an illustrative supported_by relation to an invented work note. Its evidence and trust labels still need to be read. Enter anywhere: Start at a group, topic, lesson or source. Follow outgoing relations, backlinks or inverse membership to discover wider context.</desc>
+<style>
+text{font-family:'Geist', system-ui, sans-serif;fill:#e6e8ee}
+.heading{font-family:'Space Grotesk', 'Geist', sans-serif;font-size:21px;font-weight:600}.meta,.label{font-family:'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;font-size:11px;fill:#a3a9ba}
+.name{font-size:14px;font-weight:600}.sub{font-family:'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;font-size:11px;fill:#a3a9ba}
+.caption{font-size:12px;fill:#a3a9ba}.reading{font-size:12px;fill:#2dd4bf}
+.wire{fill:none;stroke:#2dd4bf;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+</style>
+<rect width="760" height="751" fill="#07080c"/>
+<text x="24" y="36" class="heading" text-anchor="start">Experience vault / knowledge graph</text>
+<text x="24" y="60" class="meta" text-anchor="start">Public system overview · schematic examples · no vault connection</text>
+<text x="24" y="84" class="meta" text-anchor="start">arrows = the named relation from one record to another · lit = an example lesson</text>
+<defs>
+<marker id="vault-knowledge-graph-arrow" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#2dd4bf"/></marker>
+<marker id="vault-knowledge-graph-tail" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L6 3 L0 6 Z" fill="#2dd4bf"/></marker>
+</defs>
+<g transform="translate(0 100)">
+<path class="wire" d="M116 220 L116 60 L284 60" marker-end="url(#vault-knowledge-graph-arrow)"/>
+<path class="wire" d="M644 220 L644 60 L476 60" marker-end="url(#vault-knowledge-graph-arrow)"/>
+<path class="wire" d="M548 260 L212 260" marker-end="url(#vault-knowledge-graph-arrow)"/>
+<path class="wire" d="M644 300 L644 420" marker-end="url(#vault-knowledge-graph-arrow)"/>
+<text x="203" y="46" class="label" text-anchor="middle">member_of</text>
+<text x="555" y="46" class="label" text-anchor="middle">member_of</text>
+<text x="359" y="246" class="label" text-anchor="middle">links_to</text>
+<text x="628" y="362" class="label" text-anchor="end">supported_by</text>
+<rect x="288" y="24" width="184" height="72" rx="10" fill="#0b0d13" stroke="#3a4054"/>
+<text x="300" y="54.5" class="name" text-anchor="start">Reliable systems</text>
+<text x="300" y="77.5" class="sub" text-anchor="start">a grouping page</text>
+<rect x="24" y="224" width="184" height="72" rx="10" fill="#0b0d13" stroke="#3a4054"/>
+<text x="36" y="254.5" class="name" text-anchor="start">Retry policy</text>
+<text x="36" y="277.5" class="sub" text-anchor="start">an example topic</text>
+<rect x="552" y="224" width="184" height="72" rx="10" fill="#0c1514" stroke="#2dd4bf"/>
+<text x="564" y="254.5" class="name" text-anchor="start">Bound retry work</text>
+<text x="564" y="277.5" class="sub" text-anchor="start">an example lesson</text>
+<rect x="552" y="424" width="184" height="72" rx="10" fill="#0b0d13" stroke="#3a4054"/>
+<text x="564" y="454.5" class="name" text-anchor="start">Example work note</text>
+<text x="564" y="477.5" class="sub" text-anchor="start">source evidence</text>
+</g>
+<text x="24" y="660" class="reading" text-anchor="start">Reading the map</text>
+<text x="24" y="681" class="caption" text-anchor="start">Illustrative records only. Two pages can share a group and link sideways; an explicit supported_by</text>
+<text x="24" y="698" class="caption" text-anchor="start">relation provides a route to evidence. Following a link exposes a source to inspect, not a guarantee</text>
+<text x="24" y="715" class="caption" text-anchor="start">that its claim is true.</text>
+</svg>
