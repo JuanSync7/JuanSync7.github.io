@@ -69,9 +69,14 @@ try {
   assert.equal(await page.getByRole('button',{name:'monochrome',exact:true}).getAttribute('aria-pressed'),'true');
   await page.getByRole('button',{name:'all',exact:true}).click();
   await page.getByRole('button',{name:'teal accent',exact:true}).click();
-  for(const width of [375,768]) {
+  for(const width of [320,375,768]) {
     await page.setViewportSize({width,height:900});
     assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+    const actions=await page.locator('.slide-actions').evaluateAll(rows=>rows.map(row=>{
+      const parent=row.getBoundingClientRect();
+      return [...row.children].every(child=>{const r=child.getBoundingClientRect(),range=document.createRange();range.selectNodeContents(child);return range.getClientRects().length===1&&r.left>=parent.left&&r.right<=parent.right;});
+    }));
+    assert.ok(actions.every(Boolean),`${width}px: every action fits on one line inside its card`);
     await page.evaluate(()=>window.scrollTo(0,0));
   await page.waitForFunction(()=>scrollY===0);
     await page.screenshot({path:`slides-out/page-${width}.png`,fullPage:true});

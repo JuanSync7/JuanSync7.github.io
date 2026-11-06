@@ -99,7 +99,7 @@ export default function SlideLibrary() {
             </div>
             <div className="slide-actions">
               <a href={slideAsset(icon.id, options)} download aria-label={`Download ${icon.name} SVG`}>
-                SVG ↓
+                SVG
               </a>
               <button
                 type="button"
@@ -116,7 +116,7 @@ export default function SlideLibrary() {
                 target="_blank"
                 rel="noreferrer"
               >
-                Sizes ↗
+                Sizes
               </a>
             </div>
           </li>

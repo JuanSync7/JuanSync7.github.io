@@ -23,11 +23,11 @@
 .slide-card-label { display: grid; gap: var(--hf-space-2); padding: var(--hf-space-3); }
 .slide-card-label > span { color: var(--nt-ink-faint); font: var(--nt-fs-caption)/var(--nt-lh-body) var(--nt-mono); }
 .slide-card-label h2 { min-height: 2lh; margin: 0; font: var(--nt-fs-small)/var(--nt-lh-body) var(--nt-display); color: var(--nt-ink); }
-.slide-actions { display: flex; justify-content: space-between; gap: var(--hf-space-2); align-items: center; border-top: 1px solid var(--nt-rule); padding-inline: var(--hf-space-3); margin-top: auto; }
-.slide-actions a, .slide-actions button { display: inline-flex; align-items: center; min-height: var(--nt-hit); padding: 0; border: 0; color: var(--nt-ink-soft); background: transparent; font: var(--nt-fs-meta)/var(--nt-lh-body) var(--nt-mono); }
+.slide-actions { display: flex; justify-content: space-between; gap: var(--hf-space-1); align-items: center; border-top: 1px solid var(--nt-rule); padding-inline: var(--hf-space-3); margin-top: auto; }
+.slide-actions a, .slide-actions button { white-space: nowrap; flex-shrink: 0; display: inline-flex; align-items: center; min-height: var(--nt-hit); padding: 0; border: 0; color: var(--nt-ink-soft); background: transparent; font: var(--nt-fs-meta)/var(--nt-lh-body) var(--nt-mono); }
 .slide-actions a:hover, .slide-actions button:hover { color: var(--nt-signal); }
 .slide-status { min-height: 2lh; margin: 0; color: var(--nt-ink-muted); font: var(--nt-fs-caption)/var(--nt-lh-body) var(--nt-mono); }
 .slide-empty { color: var(--nt-ink-soft); padding-block: var(--hf-space-8); }
 @media (max-width: 1000px) { .slide-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (max-width: 700px) { .slide-toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--hf-space-4); } .slide-search { grid-column: 1 / -1; } }
-@media (max-width: 480px) { .slide-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--hf-space-3); } }
+@media (max-width: 480px) { .slide-toolbar { grid-template-columns: minmax(0, 1fr); } .slide-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--hf-space-3); } }
