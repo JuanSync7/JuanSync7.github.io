@@ -63,6 +63,7 @@ export async function checkScrollJourney(page, output, widths) {
     assert(Number(await page.locator('[data-presentation]').getAttribute('data-scroll-fraction')) < 0.001, 'Progress resets when scrolling back');
     await page.locator('[data-cabinet]').scrollIntoViewIfNeeded();
     const first = page.locator('[data-cabinet-link="1"]');
+    await page.keyboard.press('Tab');
     await first.focus();
     await page.waitForFunction(() => Number(document.querySelector('[data-cabinet]').dataset.cabinetLift) > 0.95);
     assert.equal(await first.evaluate((node) => node === document.activeElement), true);

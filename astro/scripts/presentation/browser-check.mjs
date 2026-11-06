@@ -196,11 +196,13 @@ try {
   for (const [index, slug] of ['architecture', 'knowledge-graph', 'search'].entries()) {
     const folder = page.locator(`[data-cabinet-link="${index}"]`);
     await folder.scrollIntoViewIfNeeded();
+    await page.keyboard.press('Tab');
     await folder.focus();
     await page.waitForFunction((expected) => {
       const cabinet = document.querySelector('[data-cabinet]');
       return Number(cabinet.dataset.cabinetFolder) === expected && Number(cabinet.dataset.cabinetLift) > 0.95;
     }, index);
+    assert(await folder.locator('[data-folder-label]').evaluate((label) => getComputedStyle(label).outlineStyle !== 'none'), 'A keyboard-selected folder has a visible focus ring');
     await page.keyboard.press('Enter');
     await page.waitForURL(`**/vault/${slug}/`);
     await ready(page);
