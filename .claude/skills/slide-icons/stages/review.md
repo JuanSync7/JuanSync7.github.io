@@ -9,7 +9,8 @@
    reviewer identity and specific judgments. These records are attestations, not
    proof that a person or model actually looked. Independent review must name its
    separate reviewer and artifact; never infer it from a green geometry check.
-5. Run `npm run slides:check`. A missing or stale review blocks publishable export.
-   `--proof` is a preview path and cannot create a publishable ZIP.
+5. Run `npm run slides:export`, then `npm run slides:check`. Strict export checks
+   the recorded review before producing a publishable ZIP; the final check then
+   verifies the fresh exports. `--proof` is a preview path and cannot produce that ZIP.
 
 Exit to [ship](ship.md) when checks pass and the review has no unresolved concern.
