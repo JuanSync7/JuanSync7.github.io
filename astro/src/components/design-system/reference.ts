@@ -34,6 +34,7 @@ export function tokens(file: string): Token[] {
 }
 export const tokenFiles = ['colors', 'typography', 'spacing', 'gradients', 'motion'];
 export const colorGroups = [
+  { title: 'Voxel world · biome materials', test: (n: string) => n.startsWith('--nt-world-') },
   { title: 'Night · surfaces', test: (n: string) => /^--nt-(ground|panel)/.test(n) },
   { title: 'Night · text & lines', test: (n: string) => /^--nt-(ink|rule|line)/.test(n) },
   { title: 'Night · signal & overlays', test: (n: string) => /^--nt-(signal|dot|scrim)/.test(n) },

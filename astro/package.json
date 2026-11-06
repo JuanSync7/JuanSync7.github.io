@@ -37,7 +37,9 @@
     "vault:check": "npm run vault:search && npm run vault:diagrams",
     "vault:page": "node scripts/vault/page-check.mjs",
     "slides:import": "node scripts/slides/import.mjs",
-    "slides:proof": "python3 scripts/slides/check-source.py && node scripts/slides/export.mjs --proof"
+    "slides:proof": "python3 scripts/slides/check-source.py && node scripts/slides/export.mjs --proof",
+    "voxel:check": "node scripts/voxel/check.mjs && node scripts/voxel/motion.mjs",
+    "voxel:browser": "node scripts/voxel/browser.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",
