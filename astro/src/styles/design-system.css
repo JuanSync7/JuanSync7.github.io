@@ -710,3 +710,9 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* Static slide marks use the same nominal grid as their exported SVGs. */
+.ds-slide-icons { display: flex; flex-wrap: wrap; gap: var(--hf-space-6); padding: var(--hf-space-5); margin-bottom: var(--hf-space-5); }
+.ds-slide-icons > div { display: grid; place-items: center; width: var(--hf-space-20); aspect-ratio: 1; }
+.ds-slide-icons svg { display: block; width: var(--hf-space-16); height: var(--hf-space-16); }
+.ds-slide-paper { background: var(--nt-paper-ground); }

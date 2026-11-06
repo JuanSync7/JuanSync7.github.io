@@ -63,6 +63,14 @@ export const night = {
 
 export type NightKey = keyof typeof night;
 
+/** Existing paper tokens, mirrored for portable slide SVGs as well as CSS previews. */
+export const paper = {
+  ground: '#dcd8cc',
+  ink: '#34302a',
+  inkMuted: '#5a564d',
+  signal: '#0a7164',
+} as const;
+
 /** Compose a translucent variant of a 6-digit hex colour. a ∈ [0,1]; returns an
  *  8-digit hex (#rrggbbaa). Drop-in for the legacy `${color}44` concatenation. */
 export function alpha(hex: string, a: number): string {

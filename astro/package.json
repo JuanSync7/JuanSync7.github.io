@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "npm run slides:export",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
@@ -24,6 +25,9 @@
     "lessons:selftest": "node scripts/lessons/sync.mjs --selftest",
     "lessons:check": "node scripts/lessons/check.mjs",
     "lessons:browser": "node scripts/lessons/browser-check.mjs",
+    "slides:export": "node scripts/slides/export.mjs",
+    "slides:check": "node scripts/slides/check.mjs && python3 scripts/slides/check-zip.py",
+    "slides:browser": "node scripts/slides/browser-check.mjs",
     "hardware:export": "node scripts/hardware/export.mjs",
     "hardware:check": "node scripts/hardware/check.mjs",
     "hardware:browser": "node scripts/hardware/browser-check.mjs",
