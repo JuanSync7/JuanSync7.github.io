@@ -10,6 +10,16 @@ defaults:
     working-directory: astro
 
 jobs:
+  icon-ownership:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Asset boundary or independently reviewed maintainer change
+        env:
+          SLIDE_BASE: ${{ github.event.pull_request.base.sha || 'origin/main' }}
+        run: python3 scripts/slides/checks/guard.py --base "$SLIDE_BASE" --mode maintainer
   checks:
     # Pinned: ubuntu-latest moved to Ubuntu 26 on 19 Oct 2026, and Playwright 1.56's
     # --with-deps only knows Ubuntu up to 24.04, so the Chromium install fails there.
@@ -38,6 +48,10 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Slide icon vector and ZIP checks
         run: npm run slides:check
+      - name: Open icon catalog and staging transaction
+        run: npm run slides:extension
+      - name: Playbook evaluation record status
+        run: npm run slides:eval-check -- ../docs/design/slide-icons/evaluation/evaluation.json
       - name: Design system browsing and clipboard
         run: node scripts/design-system/browser-check.mjs
       - name: Design system screenshots

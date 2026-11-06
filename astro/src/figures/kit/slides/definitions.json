@@ -99,7 +99,8 @@
       "attrs": {
         "d": "M9 8H15"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "memory": {
     "nodes": [
@@ -179,7 +180,8 @@
       "attrs": {
         "d": "M12 17.5L12 16.5"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "wafer": {
     "nodes": [
@@ -230,7 +232,8 @@
       "attrs": {
         "d": "M9 14L15 14"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "accelerator": {
     "nodes": [
@@ -274,7 +277,8 @@
       "attrs": {
         "d": "M16 9A2 2 0 0 1 18 11"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "circuit-board": {
     "nodes": [
@@ -322,7 +326,8 @@
       "attrs": {
         "d": "M15 13A2 2 0 0 1 17 15"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "chiplets": {
     "nodes": [
@@ -350,7 +355,8 @@
       "attrs": {
         "d": "M4.745 8.8875L9.035 10.842500000000001"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "ai-model": {
     "nodes": [
@@ -440,7 +446,8 @@
       "attrs": {
         "d": "M13 13L15 13"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "camera": {
     "nodes": [
@@ -464,7 +471,8 @@
       "attrs": {
         "d": "M12 10A3 3 0 0 1 15 13"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "server": {
     "nodes": [
@@ -517,7 +525,8 @@
         "y1": "6",
         "y2": "6"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "switch": {
     "nodes": [
@@ -593,7 +602,8 @@
         "cy": "9",
         "r": "0.4"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "storage": {
     "nodes": [
@@ -627,7 +637,8 @@
       "attrs": {
         "d": "M6 16h.01"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "cloud": {
     "nodes": [
@@ -643,7 +654,8 @@
       "attrs": {
         "d": "M15.375 19L11.125 19"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "power": {
     "nodes": [
@@ -665,7 +677,8 @@
       "attrs": {
         "d": "M12 2L12 5"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "satellite": {
     "nodes": [
@@ -705,7 +718,8 @@
       "attrs": {
         "d": "M17.125 6.875L18.375 5.625"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "router": {
     "nodes": [
@@ -755,7 +769,8 @@
       "attrs": {
         "d": "M6.01 18H6"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "network": {
     "nodes": [
@@ -807,7 +822,8 @@
       "attrs": {
         "d": "M12 11L12 9"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "database": {
     "nodes": [
@@ -838,7 +854,8 @@
       "attrs": {
         "d": "M12 2A9 3 0 0 1 21 5"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "dataset": {
     "nodes": [
@@ -876,7 +893,8 @@
       "attrs": {
         "d": "M7.5 9L16.5 9"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "document": {
     "nodes": [
@@ -916,7 +934,8 @@
       "attrs": {
         "d": "M14 13L10 13"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "folder": {
     "nodes": [
@@ -932,7 +951,8 @@
       "attrs": {
         "d": "M6.9475 3L4.9825 3"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "archive": {
     "nodes": [
@@ -964,7 +984,8 @@
       "attrs": {
         "d": "M11 12L13 12"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "terminal": {
     "nodes": [
@@ -997,7 +1018,8 @@
       "attrs": {
         "d": "M12 13L14 13"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "files": {
     "nodes": [
@@ -1025,7 +1047,8 @@
       "attrs": {
         "d": "M15 3.25L15 5.75"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "folders": {
     "nodes": [
@@ -1047,7 +1070,8 @@
       "attrs": {
         "d": "M9.625 3L10.875 3"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "notebook": {
     "nodes": [
@@ -1097,7 +1121,8 @@
       "attrs": {
         "d": "M3 10L5 10"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "chart": {
     "nodes": [
@@ -1125,7 +1150,8 @@
       "attrs": {
         "d": "M12 6.6L12 3"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "flask": {
     "nodes": [
@@ -1153,7 +1179,8 @@
       "attrs": {
         "d": "M9.226500000000001 15L14.773500000000002 15"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "microscope": {
     "nodes": [
@@ -1199,7 +1226,8 @@
       "attrs": {
         "d": "M8 18L12 18"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "calipers": {
     "nodes": [
@@ -1277,7 +1305,8 @@
       "attrs": {
         "d": "M14.2 9H16.8"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "compass": {
     "nodes": [
@@ -1319,7 +1348,8 @@
       "attrs": {
         "d": "M12 3A2 2 0 0 1 14 5"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "target": {
     "nodes": [
@@ -1353,7 +1383,8 @@
       "attrs": {
         "d": "M12 10A2 2 0 0 1 14 12"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "idea": {
     "nodes": [
@@ -1381,7 +1412,8 @@
       "attrs": {
         "d": "M10.5 18L13.5 18"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "search": {
     "nodes": [
@@ -1405,7 +1437,8 @@
       "attrs": {
         "d": "M11 3A8 8 0 0 1 16.65685424949238 5.343145750507619"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "filter": {
     "nodes": [
@@ -1433,7 +1466,8 @@
       "attrs": {
         "d": "M10.5 19L13.5 19"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "settings": {
     "nodes": [
@@ -1457,7 +1491,8 @@
       "attrs": {
         "d": "M12 9A3 3 0 0 1 15 12"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "branch": {
     "nodes": [
@@ -1489,7 +1524,8 @@
       "attrs": {
         "d": "M18 3A3 3 0 0 1 21 6"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "checklist": {
     "nodes": [
@@ -1529,7 +1565,8 @@
       "attrs": {
         "d": "M3.5 17.5L4.5 18.5"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "shield-check": {
     "nodes": [
@@ -1551,7 +1588,8 @@
       "attrs": {
         "d": "M9.5 12.5L10.5 13.5"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "clock": {
     "nodes": [
@@ -1575,7 +1613,8 @@
       "attrs": {
         "d": "M12 7.5L12 10.5"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "rocket": {
     "nodes": [
@@ -1609,7 +1648,8 @@
       "attrs": {
         "d": "M7.75 12L5.25 12"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "message": {
     "nodes": [
@@ -1625,7 +1665,8 @@
       "attrs": {
         "d": "M8 3L16 3"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "mail": {
     "nodes": [
@@ -1651,7 +1692,8 @@
       "attrs": {
         "d": "M19.75225 8.431750000000001L15.25675 11.29525"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "slide-deck": {
     "nodes": [
@@ -1695,7 +1737,8 @@
       "attrs": {
         "d": "M8 11L12 11"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "person": {
     "nodes": [
@@ -1719,7 +1762,8 @@
       "attrs": {
         "d": "M12 3A4 4 0 0 1 16 7"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "calendar": {
     "nodes": [
@@ -1757,7 +1801,8 @@
       "attrs": {
         "d": "M8 2L8 5"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "link": {
     "nodes": [
@@ -1779,7 +1824,8 @@
       "attrs": {
         "d": "M18.29 12.79L19.79 11.29"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "globe": {
     "nodes": [
@@ -1809,7 +1855,8 @@
       "attrs": {
         "d": "M7 12L17 12"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
   },
   "bookmark": {
     "nodes": [
@@ -1825,6 +1872,87 @@
       "attrs": {
         "d": "M19 8.75L19 16.25"
       }
-    }
+    },
+    "licenses": ["lucide", "original"]
+  },
+  "bathtub": {
+    "nodes": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M10 4 8 6"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M17 19v2"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M2 12h20"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M7 19v2"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M9 5 7.621 3.621A2.121 2.121 0 0 0 4 5v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"
+        }
+      }
+    ],
+    "accent": {
+      "tag": "path",
+      "attrs": {
+        "d": "M9 12L15 12"
+      }
+    },
+    "licenses": ["lucide", "original"]
+  },
+  "freestanding-bathtub": {
+    "nodes": [
+      {
+        "tag": "rect",
+        "attrs": {
+          "x": "2",
+          "y": "8",
+          "width": "20",
+          "height": "2",
+          "rx": "1"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M4 10v4a5 5 0 0 0 5 5h6a5 5 0 0 0 5-5v-4"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M9 19v2"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M15 19v2"
+        }
+      }
+    ],
+    "accent": {
+      "tag": "path",
+      "attrs": {
+        "d": "M9.3 8H14.700000000000001"
+      }
+    },
+    "licenses": ["original"]
   }
 }

@@ -1,26 +1,27 @@
 ---
+import stats from '../../data/slide-stats.json';
 import NightPage from '../../layouts/NightPage.astro';
 import NightNav from '../../components/layout/NightNav.astro';
 import NightFooter from '../../components/layout/NightFooter.astro';
 import SlideLibrary from '../../components/slide-icons/SlideLibrary';
 ---
-<NightPage title="Slide icons · Lab · Juan Kok" description="48 flat computing, data, research and workflow icons for slides. Transparent SVGs, with teal-accent and monochrome versions for dark and light backgrounds.">
+<NightPage title="Slide icons · Lab · Juan Kok" description={`${stats.count} flat icons for slides and web pages, with themed accents and monochrome SVGs for dark and light backgrounds. Search the collection or add a new subject through the icon playbook.`}>
   <NightNav current="lab" />
   <main class="nt-wrap nt-section">
     <header class="slide-page-head">
       <a href="/lab/">← the lab</a>
       <span>// slide_icons · collection 02</span>
       <h1>Small marks.<br />Clear ideas.</h1>
-      <p>Flat marks for compute, systems, data, research, workflow, and communication. A quiet ink palette, one small teal detail, and clear stacks for collections.</p>
-      <div class="slide-page-meta"><span>48 marks</span><span>2D · restrained 2.5D</span><span>SVG · transparent</span></div>
+      <p>A growing collection for slides and web pages. A quiet ink palette, one small teal detail, and clear stacks for collections. Search for a subject; reuse a fitting source or create the missing mark.</p>
+      <div class="slide-page-meta"><span>{stats.count} marks</span><span>2D · restrained 2.5D</span><span>SVG · transparent</span></div>
       <a class="slide-pack-link" href="/downloads/slide-icons/slide-icons.zip" download>Download the complete SVG set ↓</a>
     </header>
     <SlideLibrary client:load />
     <section class="slide-use" aria-labelledby="slide-use-title">
       <div><span>// take them into your deck</span><h2 id="slide-use-title">Same mark. Any slide.</h2>
         <p>Insert an SVG in PowerPoint, Keynote, or Figma and resize it freely. Choose dark or light ink to match the slide background; monochrome keeps every stroke in one colour.</p>
-        <p>The complete set includes all four treatments, individual files, sprites, and size proofs. Adapted from Lucide with source attribution, plus four original marks. Every icon is reviewed at 32 and 64 pixels.</p></div>
-      <a class="slide-pack-link" href="/downloads/slide-icons/slide-icons.zip" download>All 192 SVG variants ↓</a>
+        <p>The complete set includes all four treatments, individual files, sprites, and size proofs. {stats.adapted} library adaptations and {stats.original} original marks, with source attribution. Every icon is reviewed at 32 and 64 pixels.</p></div>
+      <a class="slide-pack-link" href="/downloads/slide-icons/slide-icons.zip" download>All {stats.variants} SVG variants ↓</a>
     </section>
     <p class="slide-more"><a href="https://lucide.dev/">Lucide source library</a> · <a href="/downloads/slide-icons/LUCIDE-LICENSE.txt">Licenses</a> · <a href="/downloads/slide-icons/quality-report.json">Review record</a></p>
     <p class="slide-more">For the detailed assemblies, <a href="/lab/icon-kit/">open the hardware atlas →</a></p>

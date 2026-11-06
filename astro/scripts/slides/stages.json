@@ -1,0 +1,7 @@
+{
+ "fit":[".claude/skills/slide-icons/stages/fit.md",".claude/skills/slide-icons/examples/fit-decisions.md"],
+ "reuse":[".claude/skills/slide-icons/stages/reuse.md","astro/scripts/slides/kernel/README.md"],
+ "create":[".claude/skills/slide-icons/stages/create.md",".claude/skills/slide-icons/RULES.md","astro/scripts/slides/kernel/README.md","astro/scripts/slides/checks/README.md"],
+ "review":[".claude/skills/slide-icons/stages/review.md",".claude/skills/slide-icons/LOOK.md"],
+ "ship":[".claude/skills/slide-icons/stages/ship.md"]
+}

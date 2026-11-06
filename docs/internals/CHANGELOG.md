@@ -2,6 +2,8 @@
 
 ## 2026-11-06
 
+The icon workflow now discovers existing sources, judges their fit, and either reuses or creates a source through staged instructions. Catalog counts, families, view descriptions, license registries and export inventories grow from specifications. Shared relationship checks replace icon-id branches. The bathtub examples exercise reuse and creation; an isolated test checks new subjects/families/licenses and catalog contraction with no engine edits. Reviewer attestations, deterministic checks and independent behavioral evaluation have separate evidence and status.
+
 The slide set replaces hand-positioned perspective geometry with 48 flat and restrained 2.5D marks. Forty-four use pinned Lucide source geometry; four have original front-view/stack sources. Teal is derived from a real feature, and collections use stacks with hidden rear edges. Each icon has a dated visual review at 32/64px tied to its geometry and exports. Source, attachment, alignment, containment, occlusion, native SVG and archive checks protect the 192 variants; twelve deliberately broken icons verify the geometry rules. Source licenses and individual size proofs travel with the download.
 
 The vault has a dedicated `/vault/` landing page, linked from the shared navigation and home system

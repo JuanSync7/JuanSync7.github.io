@@ -1,76 +1,112 @@
-# Slide icon rules and review
+# Open icon authoring workflow
 
-`/lab/slide-icons/` contains 48 static icons across compute, systems, data,
-research, workflow and communication. It uses a 24-unit grid, one-unit round
-strokes, transparent backgrounds, and the site's existing night/paper palette.
-Forty-four marks retain Lucide 1.70.0 geometry; wafer, network switch, calipers and
-slide deck are original. Small filled Lucide circuit endpoints become outline
-circles; their coordinates and radii stay unchanged. Full Lucide/Feather and
-original MIT notices are included in the repository and download pack. Every
-individual SVG embeds the notices as non-rendering metadata.
+The slide/web icon library is extensible. Source subjects, names, families and
+view descriptions have no catalog-size limit or subject whitelist. Grid, stroke,
+palette, safe margins, accent budget and proof sizes remain explicit theme policy
+in `astro/scripts/slides/rules.json`; these bound visual consistency.
 
-The earlier hand-built perspective boxes were removed. Flat views are the default.
-The storage mark retains its source's parallel front/top view. The layer stack
-uses parallel rhombi with partial rear contours. Files, folders and slide deck
-show partial rear sheets behind a front item. Server units share a vertical pitch.
-The `chiplets` URL remains compatible; its honest display name is now Layer stack.
-These are icon assets under CLAUDE.md's static-icon exception.
+## Find → judge → reuse or create
 
-## Rules
+The [slide-icons skill](../../.claude/skills/slide-icons/SKILL.md) is the entry point.
+It routes to one stage at a time instead of loading the entire rulebook globally:
 
-| Rule | What is enforced |
-| --- | --- |
-| SOURCE | Pinned source hash, XML primitives, whitelist and license. Generated/live/exported coordinates must agree. |
-| VIEW | Each icon declares a fixed front view or one of the reviewed parallel views. No arbitrary perspective assembly. |
-| FRAME | All sampled curves, including half the stroke width, stay inside the 1–23 safe frame. The browser independently measures native SVG bounds. |
-| ACCENT | One source feature with a written physical meaning. Its sampled accent must stay within 0.035 units of that exact feature. |
-| BUDGET | Accent length is at most 18% of base drawing length. Monochrome removes the overlay entirely. |
-| CONTAINMENT | Wafer grid inside wafer, ports/lights inside switch, caliper display inside slider. |
-| JUNCTION | CPU pins meet the package; switch ports share size/pitch; caliper jaws remain parallel and attached. |
-| OCCLUSION | Rear stack contours stay outside front silhouettes. Caliper beam is interrupted beneath the slider. |
-| STACK | Plural collections declare a stack. Server alignment and slide-sheet offsets are checked explicitly. |
-| REVIEW | A dated per-icon judgment at 32/64px in four treatments matches the current source/rules/export fingerprint. |
+1. Search the themed catalog and pinned library references with `slides:find`.
+2. Judge the closest candidate against the slide's meaning, view and useful size.
+3. Reuse a fitting source with its exact version, bytes and full license notices.
+4. Create the missing silhouette when candidates do not fit. Keep the brief and
+   iterate its failing part rather than restarting the design.
+5. Validate declared relationships, inspect size proofs, record the exact review,
+   then export and run integration checks.
 
-The numeric contract lives in `astro/scripts/slides/rules.json`. Checks cannot judge
-recognition or physical meaning by themselves: every icon also has a specific
-visual review in `astro/vendor/slide-icons/reviews.json`. A library source is a
-starting point, not a substitute for looking. Original physical parts require
-additional containment, junction and occlusion contracts.
+A generic bathtub reuses Lucide's bath, including its permitted shower fixture.
+A freestanding-no-shower brief uses an original rim, vessel and supports. Both
+follow the same pipeline; neither requires a validator branch or a count update.
+See the [fit examples](../../.claude/skills/slide-icons/examples/fit-decisions.md).
 
-## Workflow
+## Per-icon specification
 
-Use [the slide-icons skill](../../.claude/skills/slide-icons/SKILL.md). Run commands
-from `astro/`:
+`astro/vendor/slide-icons/sources.json` contains `slide-icon/2` records: identity,
+family, source hash, license references, fit decision/evidence, accent selector,
+view, arbitrary named parts and applicable physical constraints. The schema is
+`astro/scripts/slides/checks/icon.schema.json`. It validates data, not taste.
+
+Flat and parallel projections are the current 2D/2.5D style boundary. Each icon's
+view description, visible parts, hidden parts and rationale are open text/part
+identities. The checker verifies that the declaration is structurally consistent;
+visual review judges whether that view is physically convincing.
+
+Supported relationships are inside, attach, occlude, repeat, align, parallel and
+separate. Numbers such as support spacing belong to the icon's own geometry.
+The checker applies declared relationships to every subject with the same code.
+Original geometry needs an explicit physical constraint. New mathematical
+operations require a maintained checker extension, fixtures and independent
+review; a new noun or family does not.
+
+## Commands
+
+From `astro/`:
 
 ```sh
-npm run slides:import  # deterministic normalization and source-derived accents
-npm run slides:proof   # permits unapproved proofs, never a publishable ZIP
-# Inspect each changed icon in slides-out/revision-flat/proofs/ at 32 and 64px.
-# Record a specific review and the proof report's fingerprint only after looking.
-npm run slides:export # refuses a missing/stale review
-npm run slides:check  # independent XML, geometry, fixtures, reviews, SVG and ZIP
+npm run slides:brief -- --stage=fit --task="A bathtub for a facilities slide"
+npm run slides:find -- --query="bathtub"
+npm run slides:add -- --spec=PATH --svg=PATH
+# For another source library, also supply --license-file=PATH --license-id=NAME.
+npm run slides:import
+npm run slides:proof -- --id=ICON_ID
+# Inspect the rendered proof and record the actual review of this exact revision.
+npm run slides:guard -- --base=origin/main
+npm run slides:export
+npm run slides:check
+npm run slides:extension
 npm run check
 npm run build
-npm run slides:browser # native Chromium, run by the CI preview harness
+npm run slides:browser
 ```
 
-The audit selftest deliberately breaks twelve icons: a floating accent, detached
-CPU pin, escaping wafer grid, beam through a slider, rear line through a front
-sheet, misaligned server, absent plural stack, unknown camera, source drift,
-out-of-frame line, excessive teal and a tilted caliper jaw. Each must fail its own geometry rule;
-rejecting only the source hash would be insufficient. A changed export must also
-invalidate the review fingerprint.
+`slides:add` preflights schema and geometry before publishing the source/registry
+change; duplicate ids, unsafe paths and failed constraints leave existing data
+unchanged. `slides:import` derives geometry, typed catalogs, family lists, policy
+mirrors and counts from the registry. `--check` reports stale outputs without
+rewriting them. The generated TypeScript retains inferred literal identity types.
+Stage packets preserve exact context hashes and load only the routed sources;
+assembly is not recorded as actual reading or successful use.
+Source-library folders and license references are open; every notice is pinned.
 
-Geometry is vendored under `astro/vendor/slide-icons/` and generated into
-`astro/src/figures/kit/slides/definitions.json`. `SlideIcon` and the SVG serializer
-present the same native primitives. No runtime icon-library dependency is needed.
-The component is demonstrated in the design-system ledger with copyable usage.
+Proofs are previews under `slides-out/review/`; they cannot create a publishable
+ZIP. Strict export requires current per-icon reviews. Every standalone SVG embeds
+its applicable license notices. Family sheets, sprites, inventories, archive
+entries and all public counts grow from actual catalog data.
 
-The build regenerates 192 individual SVGs, four sprites, four 64/32px overview
-sheets, 48 individual proofs, six family proofs, licenses, a source manifest,
-per-icon quality report and deterministic ZIP: 259 entries. Python independently
-parses every SVG and decodes the ZIP/checksums. Browser checks compare every live
-primitive against the canonical data in all four treatments, independently measure
-accent attachment/budget, and exercise search, six families, saved views, copy,
-downloads, mobile overflow and useful no-JavaScript rendering. Desktop, phone and
-32px contact sheets are inspected before shipping.
+## Evaluation and evidence
+
+The construction kernel and judging code are separate. Python independently
+parses raw source XML and hashes; Node measures generated geometry without calling
+the construction accent selector; Chromium independently measures native SVGs.
+Geometry is sampled at configured resolution. Passing samples do not prove that
+an object is recognizable or that every possible projection is correct.
+
+Negative fixtures cover floating accents, broken joins, containment/occlusion,
+repetition, view/spec omissions and invalid geometry. A passing/failing unknown
+subject pair checks that new nouns, families, views and angled supports work.
+The isolated extensibility test adds a new subject/family/library/license, tests
+bad-candidate rollback, duplicate rejection and preview-only handling, then
+contracts the catalog to one entry without changing the maintained engine.
+
+Visual reviews name the reviewer, actual size proof and its hash, engine revision,
+configured sizes/treatments and specific recognition/view/alignment/accent/size
+judgments. They are attestations, not authenticated identities or proof that a
+model looked. Geometry/engine/export changes invalidate their exact fingerprints.
+An independent review claim requires a distinct reviewer and preserved evidence.
+
+[Behavioral evaluation](slide-icons/evaluation/README.md) evaluates the playbook
+with fresh paired sessions and independent judging. Its status is separate from
+deterministic checks and must remain pending until real runs are evidenced.
+
+## Ownership
+
+Asset authors own their source/spec/fit/review data. Generated files are checked
+for freshness. The kernel, checker, policy and playbook are protected from asset
+task changes by `slides:guard`. A maintainer change needs a revision-bound review
+record and independent evidence. This is a diff/record control, not an authenticated
+security sandbox. Keep private vault content and approval boundaries separate;
+this local workflow is not automatically adopted into the vault's rule package.

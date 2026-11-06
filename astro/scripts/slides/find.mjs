@@ -1,0 +1,12 @@
+import {readFileSync} from 'node:fs';
+const policy=JSON.parse(readFileSync('scripts/slides/rules.json'));
+const offset=Number(process.argv.find(a=>a.startsWith('--offset='))?.slice(9)??0),limit=Number(process.argv.find(a=>a.startsWith('--limit='))?.slice(8)??policy.retrievalPageSize);
+if(!Number.isInteger(offset)||offset<0||!Number.isInteger(limit)||limit<=0)throw Error('Use a nonnegative offset and positive limit');
+const query=process.argv.find(a=>a.startsWith('--query='))?.slice(8)?.toLowerCase().trim();
+if(!query)throw Error('Usage: npm run slides:find -- --query="bathtub"');
+const manifest=JSON.parse(readFileSync('vendor/slide-icons/sources.json'));
+const reference=JSON.parse(readFileSync('vendor/slide-icons/reference-index.json'));
+const terms=query.split(/\s+/),matches=value=>terms.some(t=>value.toLowerCase().includes(t)||value.toLowerCase().split(/[^a-z]+/).some(word=>word.length>=4&&t.startsWith(word)));
+const local=manifest.icons.filter(i=>matches(`${i.id} ${i.name} ${i.tags}`)).map(i=>({id:i.id,name:i.name,source:i.upstream,stage:'already themed'}));
+const library=reference.icons.filter(i=>matches(`${i.id} ${i.tags}`)).map(i=>({id:i.id,source:`https://unpkg.com/lucide-static@${reference.version}/icons/${i.id}.svg`,stage:'reference; inspect before reuse'}));
+console.log(JSON.stringify({query,local,library:library.slice(offset,offset+limit),libraryMatches:library.length,nextOffset:offset+limit<library.length?offset+limit:null,fitQuestions:['Does the silhouette express this slide’s meaning?','Are the visible parts appropriate for the requested view?','Does it stay readable at the configured proof sizes?'],next:'Record fit.decision and evidence. Reuse a fitting source; create a source when the closest candidates miss the brief.'},null,2));

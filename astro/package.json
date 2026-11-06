@@ -26,7 +26,7 @@
     "lessons:check": "node scripts/lessons/check.mjs",
     "lessons:browser": "node scripts/lessons/browser-check.mjs",
     "slides:export": "python3 scripts/slides/check-source.py && node scripts/slides/export.mjs",
-    "slides:check": "python3 scripts/slides/check-source.py && node scripts/slides/check.mjs && python3 scripts/slides/check-zip.py",
+    "slides:check": "npm run slides:structure && npm run slides:import -- --check && python3 scripts/slides/check-source.py && node scripts/slides/check.mjs && python3 scripts/slides/check-zip.py",
     "slides:browser": "node scripts/slides/browser-check.mjs",
     "hardware:export": "node scripts/hardware/export.mjs",
     "hardware:check": "node scripts/hardware/check.mjs",
@@ -37,7 +37,15 @@
     "vault:check": "npm run vault:search && npm run vault:diagrams",
     "vault:page": "node scripts/vault/page-check.mjs",
     "slides:import": "node scripts/slides/import.mjs",
-    "slides:proof": "python3 scripts/slides/check-source.py && node scripts/slides/export.mjs --proof"
+    "slides:proof": "python3 scripts/slides/check-source.py && node scripts/slides/export.mjs --proof",
+    "slides:find": "node scripts/slides/find.mjs",
+    "slides:add": "python3 scripts/slides/kernel/add.py",
+    "slides:guard": "python3 scripts/slides/checks/guard.py",
+    "slides:structure": "node scripts/slides/checks/structure.mjs && node scripts/slides/checks/discovery.mjs",
+    "slides:selftest": "node scripts/slides/checks/selftest.mjs && python3 scripts/slides/checks/guard.py --selftest",
+    "slides:extension": "python3 scripts/slides/checks/extensibility.py",
+    "slides:eval-check": "node scripts/slides/evals/check-report.mjs",
+    "slides:brief": "node scripts/slides/brief.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",
@@ -55,6 +63,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/three": "^0.170.0",
+    "ajv": "8.20.0",
     "eslint": "^9.39.4",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",

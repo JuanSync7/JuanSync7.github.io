@@ -1,0 +1,1300 @@
+{
+  "note": "Frozen regression examples, independent of the production catalog. Source notices remain in vendor/slide-icons/.",
+  "seeds": {
+    "processor": {
+      "spec": {
+        "id": "processor",
+        "file": "lucide/cpu.svg",
+        "sha256": "7a76f59d53fa26e78cbba938eae5584f4b93f0378aa5a785343ff0b48eca9c45",
+        "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/cpu.svg",
+        "license": "ISC + MIT (Feather-derived icons; see license)",
+        "view": {
+          "projection": "flat",
+          "description": "front",
+          "visible": [
+            "housing",
+            "core",
+            "pin-0",
+            "pin-1",
+            "pin-2",
+            "pin-3",
+            "pin-4",
+            "pin-5",
+            "pin-6",
+            "pin-7",
+            "pin-8",
+            "pin-9",
+            "pin-10",
+            "pin-11"
+          ],
+          "hidden": [],
+          "rationale": "Retain the reviewed source view and its visible contour relationships."
+        },
+        "plural": false,
+        "accent": {
+          "node": 13,
+          "kind": "top",
+          "meaning": "active core edge"
+        },
+        "nodes": [
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M12 20v2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M12 2v2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M17 20v2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M17 2v2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M2 12h2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M2 17h2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M2 7h2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M20 12h2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M20 17h2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M20 7h2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M7 20v2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M7 2v2"
+            }
+          },
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "4",
+              "y": "4",
+              "width": "16",
+              "height": "16",
+              "rx": "2"
+            }
+          },
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "8",
+              "y": "8",
+              "width": "8",
+              "height": "8",
+              "rx": "1"
+            }
+          }
+        ],
+        "name": "Processor",
+        "group": "compute",
+        "tags": "processor cpu silicon core chip",
+        "schema": "slide-icon/2",
+        "parts": {
+          "housing": [
+            12
+          ],
+          "core": [
+            13
+          ],
+          "pin-0": [
+            0
+          ],
+          "pin-1": [
+            1
+          ],
+          "pin-2": [
+            2
+          ],
+          "pin-3": [
+            3
+          ],
+          "pin-4": [
+            4
+          ],
+          "pin-5": [
+            5
+          ],
+          "pin-6": [
+            6
+          ],
+          "pin-7": [
+            7
+          ],
+          "pin-8": [
+            8
+          ],
+          "pin-9": [
+            9
+          ],
+          "pin-10": [
+            10
+          ],
+          "pin-11": [
+            11
+          ]
+        },
+        "constraints": [
+          {
+            "type": "attach",
+            "parts": [
+              "pin-0",
+              "pin-1",
+              "pin-2",
+              "pin-3",
+              "pin-4",
+              "pin-5",
+              "pin-6",
+              "pin-7",
+              "pin-8",
+              "pin-9",
+              "pin-10",
+              "pin-11"
+            ],
+            "to": "housing",
+            "ends": "either"
+          },
+          {
+            "type": "inside",
+            "parts": [
+              "core"
+            ],
+            "within": "housing"
+          }
+        ],
+        "fit": {
+          "brief": "Processor as a quiet slide/web mark.",
+          "decision": "reuse",
+          "rationale": "Retains a reviewed, recognizable source silhouette.",
+          "references": [
+            {
+              "url": "https://unpkg.com/lucide-static@1.70.0/icons/cpu.svg",
+              "note": "Pinned source bytes and complete license are retained."
+            }
+          ],
+          "alternatives": []
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      },
+      "definition": {
+        "nodes": [
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M12 20v2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M12 2v2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M17 20v2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M17 2v2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M2 12h2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M2 17h2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M2 7h2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M20 12h2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M20 17h2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M20 7h2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M7 20v2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M7 2v2"
+            }
+          },
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "4",
+              "y": "4",
+              "width": "16",
+              "height": "16",
+              "rx": "2"
+            }
+          },
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "8",
+              "y": "8",
+              "width": "8",
+              "height": "8",
+              "rx": "1"
+            }
+          }
+        ],
+        "accent": {
+          "tag": "path",
+          "attrs": {
+            "d": "M9 8H15"
+          }
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      }
+    },
+    "wafer": {
+      "spec": {
+        "id": "wafer",
+        "file": "original/wafer.svg",
+        "sha256": "ea3ffefd824c10ddd71df990bb086adf9bcf8f49abc0a89256dbf47c1f60d777",
+        "upstream": "https://github.com/JuanSync7/JuanSync7.github.io",
+        "license": "MIT",
+        "view": {
+          "projection": "flat",
+          "description": "front",
+          "visible": [
+            "blank",
+            "grid"
+          ],
+          "hidden": [],
+          "rationale": "Retain the reviewed source view and its visible contour relationships."
+        },
+        "plural": false,
+        "accent": {
+          "node": 5,
+          "kind": "line",
+          "meaning": "central die boundary",
+          "segment": 1
+        },
+        "nodes": [
+          {
+            "tag": "circle",
+            "attrs": {
+              "cx": "12",
+              "cy": "12",
+              "r": "10"
+            }
+          },
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "6",
+              "y": "6",
+              "width": "12",
+              "height": "12"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M10 6V18"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M14 6V18"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M6 10H18"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M6 14H18"
+            }
+          }
+        ],
+        "name": "Wafer",
+        "group": "compute",
+        "tags": "wafer fabrication silicon manufacturing",
+        "schema": "slide-icon/2",
+        "parts": {
+          "blank": [
+            0
+          ],
+          "grid": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "constraints": [
+          {
+            "type": "inside",
+            "parts": [
+              "grid"
+            ],
+            "within": "blank"
+          }
+        ],
+        "fit": {
+          "brief": "Wafer as a quiet slide/web mark.",
+          "decision": "create",
+          "rationale": "Original geometry supplies the requested physical object with explicit constraints.",
+          "references": [
+            {
+              "url": "https://github.com/JuanSync7/JuanSync7.github.io",
+              "note": "Pinned source bytes and complete license are retained."
+            }
+          ],
+          "alternatives": []
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      },
+      "definition": {
+        "nodes": [
+          {
+            "tag": "circle",
+            "attrs": {
+              "cx": "12",
+              "cy": "12",
+              "r": "10"
+            }
+          },
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "6",
+              "y": "6",
+              "width": "12",
+              "height": "12"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M10 6V18"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M14 6V18"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M6 10H18"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M6 14H18"
+            }
+          }
+        ],
+        "accent": {
+          "tag": "path",
+          "attrs": {
+            "d": "M9 14L15 14"
+          }
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      }
+    },
+    "server": {
+      "spec": {
+        "id": "server",
+        "file": "lucide/server.svg",
+        "sha256": "a9360713df211361ff9e3796f55e594cf75ff70a0f9b60d2f042c33a72689105",
+        "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/server.svg",
+        "license": "ISC + MIT (Feather-derived icons; see license)",
+        "view": {
+          "projection": "flat",
+          "description": "front",
+          "visible": [
+            "upper",
+            "lower",
+            "indicator-upper",
+            "indicator-lower"
+          ],
+          "hidden": [],
+          "rationale": "Retain the reviewed source view and its visible contour relationships."
+        },
+        "plural": true,
+        "accent": {
+          "node": 2,
+          "kind": "whole",
+          "meaning": "one status indicator"
+        },
+        "nodes": [
+          {
+            "tag": "rect",
+            "attrs": {
+              "width": "20",
+              "height": "8",
+              "x": "2",
+              "y": "2",
+              "rx": "2",
+              "ry": "2"
+            }
+          },
+          {
+            "tag": "rect",
+            "attrs": {
+              "width": "20",
+              "height": "8",
+              "x": "2",
+              "y": "14",
+              "rx": "2",
+              "ry": "2"
+            }
+          },
+          {
+            "tag": "line",
+            "attrs": {
+              "x1": "6",
+              "x2": "6.01",
+              "y1": "6",
+              "y2": "6"
+            }
+          },
+          {
+            "tag": "line",
+            "attrs": {
+              "x1": "6",
+              "x2": "6.01",
+              "y1": "18",
+              "y2": "18"
+            }
+          }
+        ],
+        "name": "Server stack",
+        "group": "systems",
+        "tags": "server compute infrastructure machine",
+        "schema": "slide-icon/2",
+        "parts": {
+          "upper": [
+            0
+          ],
+          "lower": [
+            1
+          ],
+          "indicator-upper": [
+            2
+          ],
+          "indicator-lower": [
+            3
+          ]
+        },
+        "constraints": [
+          {
+            "type": "repeat",
+            "parts": [
+              "upper",
+              "lower"
+            ],
+            "offset": [
+              0,
+              12
+            ],
+            "same": [
+              "width",
+              "height"
+            ]
+          }
+        ],
+        "collection": {
+          "kind": "stack",
+          "items": [
+            "upper",
+            "lower"
+          ]
+        },
+        "fit": {
+          "brief": "Server stack as a quiet slide/web mark.",
+          "decision": "reuse",
+          "rationale": "Retains a reviewed, recognizable source silhouette.",
+          "references": [
+            {
+              "url": "https://unpkg.com/lucide-static@1.70.0/icons/server.svg",
+              "note": "Pinned source bytes and complete license are retained."
+            }
+          ],
+          "alternatives": []
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      },
+      "definition": {
+        "nodes": [
+          {
+            "tag": "rect",
+            "attrs": {
+              "width": "20",
+              "height": "8",
+              "x": "2",
+              "y": "2",
+              "rx": "2",
+              "ry": "2"
+            }
+          },
+          {
+            "tag": "rect",
+            "attrs": {
+              "width": "20",
+              "height": "8",
+              "x": "2",
+              "y": "14",
+              "rx": "2",
+              "ry": "2"
+            }
+          },
+          {
+            "tag": "line",
+            "attrs": {
+              "x1": "6",
+              "x2": "6.01",
+              "y1": "6",
+              "y2": "6"
+            }
+          },
+          {
+            "tag": "line",
+            "attrs": {
+              "x1": "6",
+              "x2": "6.01",
+              "y1": "18",
+              "y2": "18"
+            }
+          }
+        ],
+        "accent": {
+          "tag": "line",
+          "attrs": {
+            "x1": "6",
+            "x2": "6.01",
+            "y1": "6",
+            "y2": "6"
+          }
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      }
+    },
+    "files": {
+      "spec": {
+        "id": "files",
+        "file": "lucide/files.svg",
+        "sha256": "daccecd1e778b5950c53b6c536643e7ada70caaa02d0390674050b29200e939f",
+        "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/files.svg",
+        "license": "ISC + MIT (Feather-derived icons; see license)",
+        "view": {
+          "projection": "flat",
+          "description": "front",
+          "visible": [
+            "front",
+            "rear-0",
+            "detail"
+          ],
+          "hidden": [],
+          "rationale": "Retain the reviewed source view and its visible contour relationships."
+        },
+        "plural": true,
+        "accent": {
+          "node": 1,
+          "kind": "line",
+          "meaning": "front page fold",
+          "segment": 2
+        },
+        "nodes": [
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M15 2h-4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M16.706 2.706A2.4 2.4 0 0 0 15 2v5a1 1 0 0 0 1 1h5a2.4 2.4 0 0 0-.706-1.706z"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M5 7a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 1.732-1"
+            }
+          }
+        ],
+        "name": "Files",
+        "group": "data",
+        "tags": "files documents plural stack",
+        "schema": "slide-icon/2",
+        "parts": {
+          "front": [
+            0
+          ],
+          "rear-0": [
+            2
+          ],
+          "detail": [
+            1
+          ]
+        },
+        "constraints": [
+          {
+            "type": "occlude",
+            "front": "front",
+            "rear": [
+              "rear-0"
+            ]
+          }
+        ],
+        "collection": {
+          "kind": "stack",
+          "items": [
+            "front",
+            "rear-0"
+          ]
+        },
+        "fit": {
+          "brief": "Files as a quiet slide/web mark.",
+          "decision": "reuse",
+          "rationale": "Retains a reviewed, recognizable source silhouette.",
+          "references": [
+            {
+              "url": "https://unpkg.com/lucide-static@1.70.0/icons/files.svg",
+              "note": "Pinned source bytes and complete license are retained."
+            }
+          ],
+          "alternatives": []
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      },
+      "definition": {
+        "nodes": [
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M15 2h-4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M16.706 2.706A2.4 2.4 0 0 0 15 2v5a1 1 0 0 0 1 1h5a2.4 2.4 0 0 0-.706-1.706z"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M5 7a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 1.732-1"
+            }
+          }
+        ],
+        "accent": {
+          "tag": "path",
+          "attrs": {
+            "d": "M15 3.25L15 5.75"
+          }
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      }
+    },
+    "calipers": {
+      "spec": {
+        "id": "calipers",
+        "file": "original/calipers.svg",
+        "sha256": "a27fc3d70056655fa2ede47eade1748f070d68ebe3145d1291ef5993670f9148",
+        "upstream": "https://github.com/JuanSync7/JuanSync7.github.io",
+        "license": "MIT",
+        "view": {
+          "projection": "flat",
+          "description": "front",
+          "visible": [
+            "beam-left",
+            "beam-right",
+            "slider",
+            "fixed-upper",
+            "moving-upper",
+            "fixed-lower",
+            "moving-lower",
+            "tick-left",
+            "tick-right",
+            "display"
+          ],
+          "hidden": [],
+          "rationale": "Retain the reviewed source view and its visible contour relationships."
+        },
+        "plural": false,
+        "accent": {
+          "node": 9,
+          "kind": "top",
+          "meaning": "slider display edge"
+        },
+        "nodes": [
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M2 9H13V11H2Z"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M18 9H22V11H18"
+            }
+          },
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "13",
+              "y": "7",
+              "width": "5",
+              "height": "6",
+              "rx": "0.5"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M4 9V3L6 5V9"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M14 7V5L16 3V7"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M4 11V21H6V11"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M14 13V21H16V13"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M9 9V10"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M20 9V10"
+            }
+          },
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "14",
+              "y": "9",
+              "width": "3",
+              "height": "2",
+              "rx": "0.2"
+            }
+          }
+        ],
+        "name": "Calipers",
+        "group": "research",
+        "tags": "calipers measure dimension precision",
+        "schema": "slide-icon/2",
+        "parts": {
+          "beam-left": [
+            0
+          ],
+          "beam-right": [
+            1
+          ],
+          "slider": [
+            2
+          ],
+          "fixed-upper": [
+            3
+          ],
+          "moving-upper": [
+            4
+          ],
+          "fixed-lower": [
+            5
+          ],
+          "moving-lower": [
+            6
+          ],
+          "tick-left": [
+            7
+          ],
+          "tick-right": [
+            8
+          ],
+          "display": [
+            9
+          ]
+        },
+        "constraints": [
+          {
+            "type": "occlude",
+            "front": "slider",
+            "rear": [
+              "beam-left",
+              "beam-right"
+            ]
+          },
+          {
+            "type": "inside",
+            "parts": [
+              "display"
+            ],
+            "within": "slider"
+          },
+          {
+            "type": "attach",
+            "parts": [
+              "fixed-upper",
+              "fixed-lower"
+            ],
+            "to": "beam-left",
+            "ends": "both"
+          },
+          {
+            "type": "attach",
+            "parts": [
+              "moving-upper",
+              "moving-lower"
+            ],
+            "to": "slider",
+            "ends": "both"
+          },
+          {
+            "type": "parallel",
+            "edges": [
+              {
+                "part": "fixed-lower",
+                "edge": 0
+              },
+              {
+                "part": "fixed-lower",
+                "edge": 2
+              },
+              {
+                "part": "moving-lower",
+                "edge": 0
+              },
+              {
+                "part": "moving-lower",
+                "edge": 2
+              }
+            ]
+          },
+          {
+            "type": "align",
+            "parts": [
+              "fixed-lower",
+              "moving-lower"
+            ],
+            "features": [
+              "bottom"
+            ]
+          },
+          {
+            "type": "separate",
+            "parts": [
+              "fixed-lower",
+              "moving-lower"
+            ]
+          }
+        ],
+        "fit": {
+          "brief": "Calipers as a quiet slide/web mark.",
+          "decision": "create",
+          "rationale": "Original geometry supplies the requested physical object with explicit constraints.",
+          "references": [
+            {
+              "url": "https://github.com/JuanSync7/JuanSync7.github.io",
+              "note": "Pinned source bytes and complete license are retained."
+            }
+          ],
+          "alternatives": []
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      },
+      "definition": {
+        "nodes": [
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M2 9H13V11H2Z"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M18 9H22V11H18"
+            }
+          },
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "13",
+              "y": "7",
+              "width": "5",
+              "height": "6",
+              "rx": "0.5"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M4 9V3L6 5V9"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M14 7V5L16 3V7"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M4 11V21H6V11"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M14 13V21H16V13"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M9 9V10"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M20 9V10"
+            }
+          },
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "14",
+              "y": "9",
+              "width": "3",
+              "height": "2",
+              "rx": "0.2"
+            }
+          }
+        ],
+        "accent": {
+          "tag": "path",
+          "attrs": {
+            "d": "M14.2 9H16.8"
+          }
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      }
+    },
+    "slide-deck": {
+      "spec": {
+        "id": "slide-deck",
+        "file": "original/slide-deck.svg",
+        "sha256": "7723795c575df231919f245ae966ca15c854b65cd6f760fb316ca11b86e13b65",
+        "upstream": "https://github.com/JuanSync7/JuanSync7.github.io",
+        "license": "MIT",
+        "view": {
+          "projection": "flat",
+          "description": "front",
+          "visible": [
+            "front",
+            "rear-0",
+            "rear-1",
+            "detail"
+          ],
+          "hidden": [],
+          "rationale": "Retain the reviewed source view and its visible contour relationships."
+        },
+        "plural": true,
+        "accent": {
+          "node": 3,
+          "kind": "line",
+          "meaning": "front slide title line",
+          "segment": 1
+        },
+        "nodes": [
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M7 3H21V17"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M5 5H19V19"
+            }
+          },
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "3",
+              "y": "7",
+              "width": "14",
+              "height": "14",
+              "rx": "1"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M6 11H14"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M6 15H11"
+            }
+          }
+        ],
+        "name": "Slide deck",
+        "group": "communication",
+        "tags": "slide-deck presentation slides plural stack",
+        "schema": "slide-icon/2",
+        "parts": {
+          "front": [
+            2
+          ],
+          "rear-0": [
+            0
+          ],
+          "rear-1": [
+            1
+          ],
+          "detail": [
+            3,
+            4
+          ]
+        },
+        "constraints": [
+          {
+            "type": "occlude",
+            "front": "front",
+            "rear": [
+              "rear-0",
+              "rear-1"
+            ]
+          },
+          {
+            "type": "repeat",
+            "parts": [
+              "front",
+              "rear-1",
+              "rear-0"
+            ],
+            "offset": [
+              2,
+              -2
+            ],
+            "same": [
+              "width",
+              "height"
+            ]
+          }
+        ],
+        "collection": {
+          "kind": "stack",
+          "items": [
+            "front",
+            "rear-0",
+            "rear-1"
+          ]
+        },
+        "fit": {
+          "brief": "Slide deck as a quiet slide/web mark.",
+          "decision": "create",
+          "rationale": "Original geometry supplies the requested physical object with explicit constraints.",
+          "references": [
+            {
+              "url": "https://github.com/JuanSync7/JuanSync7.github.io",
+              "note": "Pinned source bytes and complete license are retained."
+            }
+          ],
+          "alternatives": []
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      },
+      "definition": {
+        "nodes": [
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M7 3H21V17"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M5 5H19V19"
+            }
+          },
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "3",
+              "y": "7",
+              "width": "14",
+              "height": "14",
+              "rx": "1"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M6 11H14"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M6 15H11"
+            }
+          }
+        ],
+        "accent": {
+          "tag": "path",
+          "attrs": {
+            "d": "M8 11L12 11"
+          }
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      }
+    }
+  }
+}

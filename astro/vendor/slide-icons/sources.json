@@ -7,7 +7,28 @@
       "sha256": "7a76f59d53fa26e78cbba938eae5584f4b93f0378aa5a785343ff0b48eca9c45",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/cpu.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "housing",
+          "core",
+          "pin-0",
+          "pin-1",
+          "pin-2",
+          "pin-3",
+          "pin-4",
+          "pin-5",
+          "pin-6",
+          "pin-7",
+          "pin-8",
+          "pin-9",
+          "pin-10",
+          "pin-11"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 13,
@@ -107,6 +128,98 @@
             "rx": "1"
           }
         }
+      ],
+      "name": "Processor",
+      "group": "compute",
+      "tags": "processor cpu silicon core chip",
+      "schema": "slide-icon/2",
+      "parts": {
+        "housing": [
+          12
+        ],
+        "core": [
+          13
+        ],
+        "pin-0": [
+          0
+        ],
+        "pin-1": [
+          1
+        ],
+        "pin-2": [
+          2
+        ],
+        "pin-3": [
+          3
+        ],
+        "pin-4": [
+          4
+        ],
+        "pin-5": [
+          5
+        ],
+        "pin-6": [
+          6
+        ],
+        "pin-7": [
+          7
+        ],
+        "pin-8": [
+          8
+        ],
+        "pin-9": [
+          9
+        ],
+        "pin-10": [
+          10
+        ],
+        "pin-11": [
+          11
+        ]
+      },
+      "constraints": [
+        {
+          "type": "attach",
+          "parts": [
+            "pin-0",
+            "pin-1",
+            "pin-2",
+            "pin-3",
+            "pin-4",
+            "pin-5",
+            "pin-6",
+            "pin-7",
+            "pin-8",
+            "pin-9",
+            "pin-10",
+            "pin-11"
+          ],
+          "to": "housing",
+          "ends": "either"
+        },
+        {
+          "type": "inside",
+          "parts": [
+            "core"
+          ],
+          "within": "housing"
+        }
+      ],
+      "fit": {
+        "brief": "Processor as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/cpu.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -115,7 +228,15 @@
       "sha256": "61bc1501b7ff4f6bd81e55e3c7162cff91c815a552cc432e7076eea123f3bb17",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/memory-stick.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 1,
@@ -194,6 +315,42 @@
             "rx": "2"
           }
         }
+      ],
+      "name": "Memory",
+      "group": "compute",
+      "tags": "memory stick dram ram contact hbm layers stack",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Memory as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/memory-stick.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -202,7 +359,16 @@
       "sha256": "ea3ffefd824c10ddd71df990bb086adf9bcf8f49abc0a89256dbf47c1f60d777",
       "upstream": "https://github.com/JuanSync7/JuanSync7.github.io",
       "license": "MIT",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "blank",
+          "grid"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 5,
@@ -252,6 +418,47 @@
             "d": "M6 14H18"
           }
         }
+      ],
+      "name": "Wafer",
+      "group": "compute",
+      "tags": "wafer fabrication silicon manufacturing",
+      "schema": "slide-icon/2",
+      "parts": {
+        "blank": [
+          0
+        ],
+        "grid": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "constraints": [
+        {
+          "type": "inside",
+          "parts": [
+            "grid"
+          ],
+          "within": "blank"
+        }
+      ],
+      "fit": {
+        "brief": "Wafer as a quiet slide/web mark.",
+        "decision": "create",
+        "rationale": "Original geometry supplies the requested physical object with explicit constraints.",
+        "references": [
+          {
+            "url": "https://github.com/JuanSync7/JuanSync7.github.io",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -260,7 +467,15 @@
       "sha256": "d6decf4ed6b05c45ef0968d1d17273baccb9bb679dfcc107ddf8e00792fe3ef8",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/gpu.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 3,
@@ -302,6 +517,36 @@
             "r": "2"
           }
         }
+      ],
+      "name": "Accelerator",
+      "group": "compute",
+      "tags": "accelerator gpu ai compute card",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Accelerator as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/gpu.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -310,7 +555,15 @@
       "sha256": "d28d8c8ce9ce6d68e533a59ba9c465c82b28271d72c6f61188993860cbe5ba39",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/circuit-board.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 4,
@@ -356,6 +609,36 @@
             "r": "2"
           }
         }
+      ],
+      "name": "Circuit board",
+      "group": "compute",
+      "tags": "circuit board pcb electronics embedded",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Circuit board as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/circuit-board.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -364,7 +647,17 @@
       "sha256": "c2a76bb098f761ff4e9cb109b0f53a338f57a810ae028c773ef7e82686746b6a",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/layers-3.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "parallel layers; front rhombus, rear contours only",
+      "view": {
+        "projection": "parallel",
+        "description": "parallel layers; front rhombus, rear contours only",
+        "visible": [
+          "front",
+          "rear-0",
+          "rear-1"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": true,
       "accent": {
         "node": 0,
@@ -392,13 +685,55 @@
           }
         }
       ],
-      "stack": {
-        "front": 0,
-        "rear": [
-          1,
+      "name": "Layer stack",
+      "group": "compute",
+      "tags": "chiplets layers 3 plural stack package interposer integration dies",
+      "schema": "slide-icon/2",
+      "parts": {
+        "front": [
+          0
+        ],
+        "rear-0": [
+          1
+        ],
+        "rear-1": [
           2
         ]
-      }
+      },
+      "constraints": [
+        {
+          "type": "occlude",
+          "front": "front",
+          "rear": [
+            "rear-0",
+            "rear-1"
+          ]
+        }
+      ],
+      "collection": {
+        "kind": "stack",
+        "items": [
+          "front",
+          "rear-0",
+          "rear-1"
+        ]
+      },
+      "fit": {
+        "brief": "Layer stack as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/layers-3.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
+      ]
     },
     {
       "id": "ai-model",
@@ -406,7 +741,15 @@
       "sha256": "5eb5800717f982d879e6aef6371fe0d14462ac135117a07484bc6b6e91b9ccd6",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/brain-circuit.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 0,
@@ -495,6 +838,43 @@
             "r": "0.5"
           }
         }
+      ],
+      "name": "AI model",
+      "group": "compute",
+      "tags": "ai model brain circuit",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "AI model as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/brain-circuit.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -503,7 +883,15 @@
       "sha256": "b88193fbdbd789fae3cff7ba324e388392080ca2c0ff6a95f21e1be4f34a6492",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/camera.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 1,
@@ -525,6 +913,33 @@
             "r": "3"
           }
         }
+      ],
+      "name": "Camera",
+      "group": "compute",
+      "tags": "camera",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Camera as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/camera.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -533,7 +948,18 @@
       "sha256": "a9360713df211361ff9e3796f55e594cf75ff70a0f9b60d2f042c33a72689105",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/server.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "upper",
+          "lower",
+          "indicator-upper",
+          "indicator-lower"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": true,
       "accent": {
         "node": 2,
@@ -582,12 +1008,64 @@
           }
         }
       ],
-      "stack": {
-        "vertical": [
-          0,
+      "name": "Server stack",
+      "group": "systems",
+      "tags": "server compute infrastructure machine",
+      "schema": "slide-icon/2",
+      "parts": {
+        "upper": [
+          0
+        ],
+        "lower": [
           1
+        ],
+        "indicator-upper": [
+          2
+        ],
+        "indicator-lower": [
+          3
         ]
-      }
+      },
+      "constraints": [
+        {
+          "type": "repeat",
+          "parts": [
+            "upper",
+            "lower"
+          ],
+          "offset": [
+            0,
+            12
+          ],
+          "same": [
+            "width",
+            "height"
+          ]
+        }
+      ],
+      "collection": {
+        "kind": "stack",
+        "items": [
+          "upper",
+          "lower"
+        ]
+      },
+      "fit": {
+        "brief": "Server stack as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/server.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
+      ]
     },
     {
       "id": "switch",
@@ -595,7 +1073,21 @@
       "sha256": "04d91467f45059a9a4ac335c2ca0081638fa6639c83dd318204a78055e988131",
       "upstream": "https://github.com/JuanSync7/JuanSync7.github.io",
       "license": "MIT",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "housing",
+          "port-0",
+          "port-1",
+          "port-2",
+          "light-0",
+          "light-1",
+          "light-2"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 4,
@@ -667,6 +1159,79 @@
             "r": "0.4"
           }
         }
+      ],
+      "name": "Network switch",
+      "group": "systems",
+      "tags": "switch ethernet ports networking",
+      "schema": "slide-icon/2",
+      "parts": {
+        "housing": [
+          0
+        ],
+        "port-0": [
+          1
+        ],
+        "port-1": [
+          2
+        ],
+        "port-2": [
+          3
+        ],
+        "light-0": [
+          4
+        ],
+        "light-1": [
+          5
+        ],
+        "light-2": [
+          6
+        ]
+      },
+      "constraints": [
+        {
+          "type": "inside",
+          "parts": [
+            "port-0",
+            "port-1",
+            "port-2",
+            "light-0",
+            "light-1",
+            "light-2"
+          ],
+          "within": "housing"
+        },
+        {
+          "type": "repeat",
+          "parts": [
+            "port-0",
+            "port-1",
+            "port-2"
+          ],
+          "offset": [
+            6,
+            0
+          ],
+          "same": [
+            "width",
+            "height"
+          ]
+        }
+      ],
+      "fit": {
+        "brief": "Network switch as a quiet slide/web mark.",
+        "decision": "create",
+        "rationale": "Original geometry supplies the requested physical object with explicit constraints.",
+        "references": [
+          {
+            "url": "https://github.com/JuanSync7/JuanSync7.github.io",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -675,7 +1240,15 @@
       "sha256": "477229fb8723264ae650190dc06ccffda008011264967097ec9a4f955effc7df",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/hard-drive.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "parallel front/top; closed upper and front faces",
+      "view": {
+        "projection": "parallel",
+        "description": "parallel front/top; closed upper and front faces",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 3,
@@ -707,6 +1280,35 @@
             "d": "M6 16h.01"
           }
         }
+      ],
+      "name": "Storage",
+      "group": "systems",
+      "tags": "storage hard drive ssd disk persistent",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Storage as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/hard-drive.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -715,7 +1317,15 @@
       "sha256": "14dce47d659275bf0e028bd89f619aec4f4c8fb4d2bcb20d96dc54fc402ee937",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/cloud.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 0,
@@ -730,6 +1340,32 @@
             "d": "M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"
           }
         }
+      ],
+      "name": "Cloud",
+      "group": "systems",
+      "tags": "cloud remote distributed infrastructure",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Cloud as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/cloud.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -738,7 +1374,15 @@
       "sha256": "f8222a786c34ffc1d4b46c17ed01359dcad25d724080bbbb5735c9f552715746",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/power.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 0,
@@ -761,6 +1405,33 @@
             "d": "M18.4 6.6a9 9 0 1 1-12.77.04"
           }
         }
+      ],
+      "name": "Power",
+      "group": "systems",
+      "tags": "power energy supply efficiency",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Power as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/power.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -769,7 +1440,15 @@
       "sha256": "a3079acc18387b0d3dc8d478f29fba038adc9441174aa8e9c68f61a7d10c4219",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/satellite.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 1,
@@ -808,6 +1487,36 @@
             "d": "M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"
           }
         }
+      ],
+      "name": "Satellite",
+      "group": "systems",
+      "tags": "satellite space communications orbit",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Satellite as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/satellite.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -816,7 +1525,15 @@
       "sha256": "b7ba1c582768076acf8e413b88a0820629181c7928189073a71a740d34798ca0",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/router.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 1,
@@ -864,6 +1581,37 @@
             "d": "M20.66 4.34a8 8 0 0 0-11.31 0"
           }
         }
+      ],
+      "name": "Router",
+      "group": "systems",
+      "tags": "router",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Router as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/router.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -872,7 +1620,15 @@
       "sha256": "329405d18640a0b03dc7fee707e71d3b94d05ba88ee42164eab319b90313ea98",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/network.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 4,
@@ -923,6 +1679,36 @@
             "d": "M12 12V8"
           }
         }
+      ],
+      "name": "Network",
+      "group": "systems",
+      "tags": "network",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Network as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/network.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -931,7 +1717,15 @@
       "sha256": "9e790fb8577919f2fe0e0899fe589e5a0793f4541eb3066bf2dc962a5f26e48b",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/database.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 0,
@@ -960,6 +1754,34 @@
             "d": "M3 12A9 3 0 0 0 21 12"
           }
         }
+      ],
+      "name": "Database",
+      "group": "data",
+      "tags": "database records query store",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Database as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/database.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -968,7 +1790,15 @@
       "sha256": "bce78ebf86c75187cd3e29131e461e6f7801299b4ca2e691a0d509ef8aced2dc",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/table.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 2,
@@ -1005,6 +1835,35 @@
             "d": "M3 15h18"
           }
         }
+      ],
+      "name": "Dataset",
+      "group": "data",
+      "tags": "dataset table samples training records",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Dataset as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/table.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1013,7 +1872,15 @@
       "sha256": "411f1e52b691e42cf958c14659a4305bcb9e15f5e5ffbb52987fbafa099d4f2c",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/file-text.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 3,
@@ -1052,6 +1919,36 @@
             "d": "M16 17H8"
           }
         }
+      ],
+      "name": "Document",
+      "group": "data",
+      "tags": "document file text report specification",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Document as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/file-text.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1060,7 +1957,15 @@
       "sha256": "c67f53e0e26cb88c6030fc43d8c02591eaea5c48643a98693a706f7208f0e631",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/folder.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 0,
@@ -1075,6 +1980,32 @@
             "d": "M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"
           }
         }
+      ],
+      "name": "Folder",
+      "group": "data",
+      "tags": "folder directory project collection",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Folder as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/folder.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1083,7 +2014,15 @@
       "sha256": "db7bfae5a6c7825291df300cb34782c5b037ac72f4bf904306d4f5d90294432e",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/archive.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 2,
@@ -1114,6 +2053,34 @@
             "d": "M10 12h4"
           }
         }
+      ],
+      "name": "Archive",
+      "group": "data",
+      "tags": "archive package backup repository box",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Archive as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/archive.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1122,7 +2089,15 @@
       "sha256": "b9e4f3287f5210b3b0ce06376cdf9ab517a4703b55ab6ae98d91b937e03ab2b0",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/square-terminal.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 1,
@@ -1154,6 +2129,34 @@
             "ry": "2"
           }
         }
+      ],
+      "name": "Terminal",
+      "group": "data",
+      "tags": "terminal square code cli command software",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Terminal as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/square-terminal.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1162,7 +2165,17 @@
       "sha256": "daccecd1e778b5950c53b6c536643e7ada70caaa02d0390674050b29200e939f",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/files.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "front",
+          "rear-0",
+          "detail"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": true,
       "accent": {
         "node": 1,
@@ -1190,12 +2203,53 @@
           }
         }
       ],
-      "stack": {
-        "front": 0,
-        "rear": [
+      "name": "Files",
+      "group": "data",
+      "tags": "files documents plural stack",
+      "schema": "slide-icon/2",
+      "parts": {
+        "front": [
+          0
+        ],
+        "rear-0": [
           2
+        ],
+        "detail": [
+          1
         ]
-      }
+      },
+      "constraints": [
+        {
+          "type": "occlude",
+          "front": "front",
+          "rear": [
+            "rear-0"
+          ]
+        }
+      ],
+      "collection": {
+        "kind": "stack",
+        "items": [
+          "front",
+          "rear-0"
+        ]
+      },
+      "fit": {
+        "brief": "Files as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/files.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
+      ]
     },
     {
       "id": "folders",
@@ -1203,7 +2257,16 @@
       "sha256": "b7d142e994ef838c7cf2bb384879a313d5e96366e46a9bc5105dce38660f2ec8",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/folders.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "front",
+          "rear-0"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": true,
       "accent": {
         "node": 0,
@@ -1225,12 +2288,50 @@
           }
         }
       ],
-      "stack": {
-        "front": 0,
-        "rear": [
+      "name": "Folders",
+      "group": "data",
+      "tags": "folders directories plural stack",
+      "schema": "slide-icon/2",
+      "parts": {
+        "front": [
+          0
+        ],
+        "rear-0": [
           1
         ]
-      }
+      },
+      "constraints": [
+        {
+          "type": "occlude",
+          "front": "front",
+          "rear": [
+            "rear-0"
+          ]
+        }
+      ],
+      "collection": {
+        "kind": "stack",
+        "items": [
+          "front",
+          "rear-0"
+        ]
+      },
+      "fit": {
+        "brief": "Folders as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/folders.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
+      ]
     },
     {
       "id": "notebook",
@@ -1238,7 +2339,15 @@
       "sha256": "b2cd5094acb0c4aa6a71b45223255dd6fb82613d8da9114ac384ba208430086e",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/notebook.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 1,
@@ -1287,6 +2396,37 @@
             "d": "M16 2v20"
           }
         }
+      ],
+      "name": "Notebook",
+      "group": "research",
+      "tags": "notebook notes journal experiment",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Notebook as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/notebook.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1295,7 +2435,15 @@
       "sha256": "4fda18b001e9a080e836ab6268c67ddfbfdaf6633ead741c8cb4a7ad76292818",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/chart-no-axes-column.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 1,
@@ -1324,6 +2472,34 @@
             "d": "M19 21V9"
           }
         }
+      ],
+      "name": "Chart",
+      "group": "research",
+      "tags": "chart no axes column benchmark measurement results",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Chart as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/chart-no-axes-column.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1332,7 +2508,15 @@
       "sha256": "5169408e27ad80b9bb4f13b7194cd05405d219d742c18e3c23210f6e86746a35",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/flask-conical.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 1,
@@ -1359,6 +2543,34 @@
             "d": "M8.5 2h7"
           }
         }
+      ],
+      "name": "Flask",
+      "group": "research",
+      "tags": "flask conical lab experiment chemistry",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Flask as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/flask-conical.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1367,7 +2579,15 @@
       "sha256": "0e4cfcda0d6b3d7ee068023d809214c4963fcddf30dc0ab82464138a383a4316",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/microscope.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 0,
@@ -1412,6 +2632,37 @@
             "d": "M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"
           }
         }
+      ],
+      "name": "Microscope",
+      "group": "research",
+      "tags": "microscope inspect analysis research",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Microscope as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/microscope.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1420,7 +2671,24 @@
       "sha256": "a27fc3d70056655fa2ede47eade1748f070d68ebe3145d1291ef5993670f9148",
       "upstream": "https://github.com/JuanSync7/JuanSync7.github.io",
       "license": "MIT",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "beam-left",
+          "beam-right",
+          "slider",
+          "fixed-upper",
+          "moving-upper",
+          "fixed-lower",
+          "moving-lower",
+          "tick-left",
+          "tick-right",
+          "display"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 9,
@@ -1496,6 +2764,131 @@
             "rx": "0.2"
           }
         }
+      ],
+      "name": "Calipers",
+      "group": "research",
+      "tags": "calipers measure dimension precision",
+      "schema": "slide-icon/2",
+      "parts": {
+        "beam-left": [
+          0
+        ],
+        "beam-right": [
+          1
+        ],
+        "slider": [
+          2
+        ],
+        "fixed-upper": [
+          3
+        ],
+        "moving-upper": [
+          4
+        ],
+        "fixed-lower": [
+          5
+        ],
+        "moving-lower": [
+          6
+        ],
+        "tick-left": [
+          7
+        ],
+        "tick-right": [
+          8
+        ],
+        "display": [
+          9
+        ]
+      },
+      "constraints": [
+        {
+          "type": "occlude",
+          "front": "slider",
+          "rear": [
+            "beam-left",
+            "beam-right"
+          ]
+        },
+        {
+          "type": "inside",
+          "parts": [
+            "display"
+          ],
+          "within": "slider"
+        },
+        {
+          "type": "attach",
+          "parts": [
+            "fixed-upper",
+            "fixed-lower"
+          ],
+          "to": "beam-left",
+          "ends": "both"
+        },
+        {
+          "type": "attach",
+          "parts": [
+            "moving-upper",
+            "moving-lower"
+          ],
+          "to": "slider",
+          "ends": "both"
+        },
+        {
+          "type": "parallel",
+          "edges": [
+            {
+              "part": "fixed-lower",
+              "edge": 0
+            },
+            {
+              "part": "fixed-lower",
+              "edge": 2
+            },
+            {
+              "part": "moving-lower",
+              "edge": 0
+            },
+            {
+              "part": "moving-lower",
+              "edge": 2
+            }
+          ]
+        },
+        {
+          "type": "align",
+          "parts": [
+            "fixed-lower",
+            "moving-lower"
+          ],
+          "features": [
+            "bottom"
+          ]
+        },
+        {
+          "type": "separate",
+          "parts": [
+            "fixed-lower",
+            "moving-lower"
+          ]
+        }
+      ],
+      "fit": {
+        "brief": "Calipers as a quiet slide/web mark.",
+        "decision": "create",
+        "rationale": "Original geometry supplies the requested physical object with explicit constraints.",
+        "references": [
+          {
+            "url": "https://github.com/JuanSync7/JuanSync7.github.io",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1504,7 +2897,15 @@
       "sha256": "8fc40843128b558c5fc90ee5456299a23d19bdec1b9500bcd3e7191959613b25",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/drafting-compass.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 4,
@@ -1544,6 +2945,36 @@
             "r": "2"
           }
         }
+      ],
+      "name": "Drafting compass",
+      "group": "research",
+      "tags": "compass drafting design geometry plan",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Drafting compass as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/drafting-compass.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1552,7 +2983,15 @@
       "sha256": "eb7bbf2c37c88ac3a48606132ec3e71674ee9e10d0c625eb164dc7196066d0cc",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/target.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 2,
@@ -1584,6 +3023,34 @@
             "r": "2"
           }
         }
+      ],
+      "name": "Target",
+      "group": "research",
+      "tags": "target",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Target as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/target.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1592,7 +3059,15 @@
       "sha256": "cfb408e3fe2455dcdedada54013750f5819bb2cf5879f927ebd5acf3ca6eedd2",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/lightbulb.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 1,
@@ -1619,6 +3094,34 @@
             "d": "M10 22h4"
           }
         }
+      ],
+      "name": "Idea",
+      "group": "research",
+      "tags": "idea lightbulb",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Idea as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/lightbulb.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1627,7 +3130,15 @@
       "sha256": "b395924bb54d8c436cb5bf6aa21899dfbf5f43a8a3b4252ed88d3391ec724aa5",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/search.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 1,
@@ -1650,6 +3161,33 @@
             "r": "8"
           }
         }
+      ],
+      "name": "Search",
+      "group": "workflow",
+      "tags": "search",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Search as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/search.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1658,7 +3196,15 @@
       "sha256": "862e938eac8e28ab558a547a4fc436c1b9f7809ed4f167a9d5e53ab5a14eb1e4",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/list-filter.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 2,
@@ -1685,6 +3231,34 @@
             "d": "M9 19h6"
           }
         }
+      ],
+      "name": "Filter",
+      "group": "workflow",
+      "tags": "filter list",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Filter as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/list-filter.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1693,7 +3267,15 @@
       "sha256": "c02c11ec0c28c77e3865bb8ba960c62e1752eef44f45f70821f669d983d2796a",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/settings.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 1,
@@ -1715,6 +3297,33 @@
             "r": "3"
           }
         }
+      ],
+      "name": "Settings",
+      "group": "workflow",
+      "tags": "settings",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Settings as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/settings.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1723,7 +3332,15 @@
       "sha256": "160b73332db6ced1b82bc6976e8cb04e9fddf453cade4bdbfdeaa0beeff77975",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/git-branch.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 1,
@@ -1753,6 +3370,34 @@
             "r": "3"
           }
         }
+      ],
+      "name": "Branch",
+      "group": "workflow",
+      "tags": "branch git",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Branch as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/git-branch.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1761,7 +3406,15 @@
       "sha256": "bfc969a508528c20025faa5d958b0bb2e6e4adaf3b033e37b288d0c747782a8e",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/list-checks.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 3,
@@ -1800,6 +3453,36 @@
             "d": "m3 7 2 2 4-4"
           }
         }
+      ],
+      "name": "Checklist",
+      "group": "workflow",
+      "tags": "checklist list checks",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Checklist as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/list-checks.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1808,7 +3491,15 @@
       "sha256": "4472323e4d46471c0e7e6448d5bd042cd66bc8e11b65108be6321e7cb76541af",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/shield-check.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 1,
@@ -1829,6 +3520,33 @@
             "d": "m9 12 2 2 4-4"
           }
         }
+      ],
+      "name": "Verified",
+      "group": "workflow",
+      "tags": "shield check",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Verified as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/shield-check.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1837,7 +3555,15 @@
       "sha256": "cbb462ccf75f94d5a3f6e3c7169a8ecadee4912b2a64f37ad2e4d9388fef88a1",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/clock.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 1,
@@ -1860,6 +3586,33 @@
             "d": "M12 6v6l4 2"
           }
         }
+      ],
+      "name": "Clock",
+      "group": "workflow",
+      "tags": "clock",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Clock as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/clock.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1868,7 +3621,15 @@
       "sha256": "5b9777b51eecaf49f40ac12af95e2c4881cae207e73d7c7f1a4f0290c88eca6a",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/rocket.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 3,
@@ -1901,6 +3662,35 @@
             "d": "M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"
           }
         }
+      ],
+      "name": "Launch",
+      "group": "workflow",
+      "tags": "rocket",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Launch as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/rocket.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1909,7 +3699,15 @@
       "sha256": "3ed9a6ad622dc1106ddf2bcd5ff4d680d4949f6215d23ea864b719087610b29e",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/message-square.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 0,
@@ -1924,6 +3722,32 @@
             "d": "M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"
           }
         }
+      ],
+      "name": "Message",
+      "group": "communication",
+      "tags": "message square",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Message as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/message-square.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1932,7 +3756,15 @@
       "sha256": "b399d35c76389da60c3746cf08dc211a1a2ce6316a55334349ae8da21faa2276",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/mail.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 0,
@@ -1957,6 +3789,33 @@
             "rx": "2"
           }
         }
+      ],
+      "name": "Mail",
+      "group": "communication",
+      "tags": "mail",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Mail as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/mail.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -1965,7 +3824,18 @@
       "sha256": "7723795c575df231919f245ae966ca15c854b65cd6f760fb316ca11b86e13b65",
       "upstream": "https://github.com/JuanSync7/JuanSync7.github.io",
       "license": "MIT",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "front",
+          "rear-0",
+          "rear-1",
+          "detail"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": true,
       "accent": {
         "node": 3,
@@ -2009,13 +3879,75 @@
           }
         }
       ],
-      "stack": {
-        "front": 2,
-        "rear": [
-          0,
+      "name": "Slide deck",
+      "group": "communication",
+      "tags": "slide-deck presentation slides plural stack",
+      "schema": "slide-icon/2",
+      "parts": {
+        "front": [
+          2
+        ],
+        "rear-0": [
+          0
+        ],
+        "rear-1": [
           1
+        ],
+        "detail": [
+          3,
+          4
         ]
-      }
+      },
+      "constraints": [
+        {
+          "type": "occlude",
+          "front": "front",
+          "rear": [
+            "rear-0",
+            "rear-1"
+          ]
+        },
+        {
+          "type": "repeat",
+          "parts": [
+            "front",
+            "rear-1",
+            "rear-0"
+          ],
+          "offset": [
+            2,
+            -2
+          ],
+          "same": [
+            "width",
+            "height"
+          ]
+        }
+      ],
+      "collection": {
+        "kind": "stack",
+        "items": [
+          "front",
+          "rear-0",
+          "rear-1"
+        ]
+      },
+      "fit": {
+        "brief": "Slide deck as a quiet slide/web mark.",
+        "decision": "create",
+        "rationale": "Original geometry supplies the requested physical object with explicit constraints.",
+        "references": [
+          {
+            "url": "https://github.com/JuanSync7/JuanSync7.github.io",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
+      ]
     },
     {
       "id": "person",
@@ -2023,7 +3955,15 @@
       "sha256": "9e5d536e689d5f11ebd5dd0a5537b71635461cce8cc8910cffc51faccb727e48",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/user.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 1,
@@ -2045,6 +3985,33 @@
             "r": "4"
           }
         }
+      ],
+      "name": "Person",
+      "group": "communication",
+      "tags": "person user",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Person as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/user.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -2053,7 +4020,15 @@
       "sha256": "8595f509f1cde7020df5e9d1c7a441903c7d7f03ea7b53f286e26b0bd1e3e4cf",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/calendar.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 0,
@@ -2092,6 +4067,35 @@
             "d": "M3 9h18"
           }
         }
+      ],
+      "name": "Calendar",
+      "group": "communication",
+      "tags": "calendar",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Calendar as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/calendar.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -2100,7 +4104,15 @@
       "sha256": "7c7172c4cfcf6d1459650d545e2f61711b8aff864a271ee7d330664a30cc3043",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/link.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 0,
@@ -2121,6 +4133,33 @@
             "d": "M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
           }
         }
+      ],
+      "name": "Link",
+      "group": "communication",
+      "tags": "link",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Link as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/link.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -2129,7 +4168,15 @@
       "sha256": "d471ab883af77c71783867995c23bcfbe2f33609d3d17913e9dcec39c214d2c0",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/globe.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 2,
@@ -2158,6 +4205,34 @@
             "d": "M2 12h20"
           }
         }
+      ],
+      "name": "Globe",
+      "group": "communication",
+      "tags": "globe",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0,
+          1,
+          2
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Globe as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/globe.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
       ]
     },
     {
@@ -2166,7 +4241,15 @@
       "sha256": "ab50a1b4a24108a3c9c98ece203f80f8c674059468e355cb58eb993e4a8e3f8c",
       "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/bookmark.svg",
       "license": "ISC + MIT (Feather-derived icons; see license)",
-      "view": "front",
+      "view": {
+        "projection": "flat",
+        "description": "front",
+        "visible": [
+          "mark"
+        ],
+        "hidden": [],
+        "rationale": "Retain the reviewed source view and its visible contour relationships."
+      },
       "plural": false,
       "accent": {
         "node": 0,
@@ -2181,7 +4264,321 @@
             "d": "M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z"
           }
         }
+      ],
+      "name": "Bookmark",
+      "group": "communication",
+      "tags": "bookmark",
+      "schema": "slide-icon/2",
+      "parts": {
+        "mark": [
+          0
+        ]
+      },
+      "constraints": [],
+      "fit": {
+        "brief": "Bookmark as a quiet slide/web mark.",
+        "decision": "reuse",
+        "rationale": "Retains a reviewed, recognizable source silhouette.",
+        "references": [
+          {
+            "url": "https://unpkg.com/lucide-static@1.70.0/icons/bookmark.svg",
+            "note": "Pinned source bytes and complete license are retained."
+          }
+        ],
+        "alternatives": []
+      },
+      "licenses": [
+        "lucide",
+        "original"
+      ]
+    },
+    {
+      "schema": "slide-icon/2",
+      "id": "bathtub",
+      "name": "Bathtub",
+      "group": "everyday",
+      "tags": "bath bathtub wash bathroom household hygiene",
+      "file": "lucide/bath.svg",
+      "license": "ISC + MIT (see LUCIDE-LICENSE.txt)",
+      "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/bath.svg",
+      "view": {
+        "projection": "flat",
+        "description": "side elevation with a shower fixture",
+        "visible": [
+          "shower-head",
+          "right-support",
+          "rim",
+          "left-support",
+          "tub-and-fixture"
+        ],
+        "hidden": [
+          "interior-drain",
+          "rear-supports"
+        ],
+        "rationale": "The familiar side silhouette communicates bathing without needing interior perspective."
+      },
+      "parts": {
+        "shower-head": [
+          0
+        ],
+        "right-support": [
+          1
+        ],
+        "rim": [
+          2
+        ],
+        "left-support": [
+          3
+        ],
+        "tub-and-fixture": [
+          4
+        ]
+      },
+      "plural": false,
+      "accent": {
+        "node": 2,
+        "kind": "line",
+        "segment": 1,
+        "from": 0.35,
+        "to": 0.65,
+        "meaning": "a short visible rim segment"
+      },
+      "constraints": [
+        {
+          "type": "attach",
+          "parts": [
+            "left-support",
+            "right-support"
+          ],
+          "to": "tub-and-fixture",
+          "ends": "start"
+        },
+        {
+          "type": "repeat",
+          "parts": [
+            "left-support",
+            "right-support"
+          ],
+          "offset": [
+            10,
+            0
+          ],
+          "same": [
+            "width",
+            "height"
+          ]
+        }
+      ],
+      "fit": {
+        "brief": "A generic bathtub icon for a slide about household facilities. A shower fixture is acceptable.",
+        "decision": "reuse",
+        "rationale": "The Lucide bath source is already an empty tub with a rim, supports and shower fixture; its existing silhouette fits the brief at slide size.",
+        "references": [
+          {
+            "url": "https://lucide.dev/icons/bath",
+            "note": "Inspected the pinned bath source: it contains a shower fixture and no person."
+          }
+        ],
+        "alternatives": []
+      },
+      "sha256": "355b1a15abe0c1325424c9b219924ff92cab9a9951ab0cf9a74ba276e63c379c",
+      "nodes": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M10 4 8 6"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M17 19v2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M2 12h20"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M7 19v2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M9 5 7.621 3.621A2.121 2.121 0 0 0 4 5v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"
+          }
+        }
+      ],
+      "licenses": [
+        "lucide",
+        "original"
+      ]
+    },
+    {
+      "schema": "slide-icon/2",
+      "id": "freestanding-bathtub",
+      "name": "Freestanding bathtub",
+      "group": "everyday",
+      "tags": "bath bathtub freestanding empty tub household bathroom",
+      "file": "original/freestanding-bathtub.svg",
+      "license": "MIT",
+      "upstream": "https://github.com/JuanSync7/JuanSync7.github.io",
+      "view": {
+        "projection": "flat",
+        "description": "side elevation of an empty freestanding tub",
+        "visible": [
+          "rim",
+          "vessel",
+          "left-support",
+          "right-support"
+        ],
+        "hidden": [
+          "interior-drain",
+          "rear-supports",
+          "interior-waterline"
+        ],
+        "rationale": "A side elevation keeps the tub recognizable while omitting concealed interior parts and fixed shower plumbing."
+      },
+      "parts": {
+        "rim": [
+          0
+        ],
+        "vessel": [
+          1
+        ],
+        "left-support": [
+          2
+        ],
+        "right-support": [
+          3
+        ]
+      },
+      "plural": false,
+      "accent": {
+        "node": 0,
+        "kind": "top",
+        "from": 0.35,
+        "to": 0.65,
+        "meaning": "a short upper rim segment"
+      },
+      "constraints": [
+        {
+          "type": "attach",
+          "parts": [
+            "vessel"
+          ],
+          "to": "rim",
+          "ends": "both"
+        },
+        {
+          "type": "attach",
+          "parts": [
+            "left-support",
+            "right-support"
+          ],
+          "to": "vessel",
+          "ends": "start"
+        },
+        {
+          "type": "repeat",
+          "parts": [
+            "left-support",
+            "right-support"
+          ],
+          "offset": [
+            6,
+            0
+          ],
+          "same": [
+            "width",
+            "height"
+          ]
+        },
+        {
+          "type": "parallel",
+          "edges": [
+            {
+              "part": "left-support",
+              "edge": 0
+            },
+            {
+              "part": "right-support",
+              "edge": 0
+            }
+          ]
+        }
+      ],
+      "fit": {
+        "brief": "An empty freestanding bathtub with no shower fixture, for a slide about portable or standalone facilities.",
+        "decision": "create",
+        "rationale": "The closest pinned library bath includes fixed shower plumbing. Redrawing a plain freestanding silhouette meets the specific brief and avoids an unrelated fixture.",
+        "references": [
+          {
+            "url": "https://lucide.dev/icons/bath",
+            "note": "Reference for a restrained side-elevation icon; fixed shower plumbing is unsuitable for this brief."
+          },
+          {
+            "url": "https://www.kohler.com/en/products/bathtubs/shop-freestanding-bathtubs",
+            "note": "Product reference for the freestanding form; the source is an original simplified silhouette."
+          }
+        ],
+        "alternatives": [
+          {
+            "source": "lucide-static@1.70.0/bath",
+            "reason": "Includes a floor-to-shower fixture, conflicting with the standalone brief."
+          }
+        ]
+      },
+      "sha256": "016414c1e5c44a8123f39f41e36479502bdadf101b056cc24a31456496e9ec44",
+      "nodes": [
+        {
+          "tag": "rect",
+          "attrs": {
+            "x": "2",
+            "y": "8",
+            "width": "20",
+            "height": "2",
+            "rx": "1"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M4 10v4a5 5 0 0 0 5 5h6a5 5 0 0 0 5-5v-4"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M9 19v2"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M15 19v2"
+          }
+        }
+      ],
+      "licenses": [
+        "original"
       ]
     }
-  ]
+  ],
+  "schema": "slide-library/2",
+  "licenses": {
+    "lucide": {
+      "file": "LUCIDE-LICENSE.txt",
+      "sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57"
+    },
+    "original": {
+      "file": "ORIGINAL-LICENSE.txt",
+      "sha256": "eaeb53ce9f09834553ac1bfd25359ee7dbd70c8dba5ef4ea23be2bac0f36926a"
+    }
+  }
 }

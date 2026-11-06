@@ -164,12 +164,13 @@ See the [reference card and implementation notes](docs/design/hardware-atlas.md)
 
 ## Slide icons
 
-`/lab/slide-icons/` has 48 flat marks for presentations, adapted from pinned Lucide
-sources plus four originals. Dark/light ink and teal-accent/monochrome treatments
-provide 192 transparent SVG variants, four sprites
-and overview sheets. `SlideIcon` appears in the design-system ledger.
+`/lab/slide-icons/` is an open collection of themed flat/2.5D marks for presentations
+and web pages. The playbook searches existing sources, judges fit, then reuses or
+creates the missing mark. Subjects and families are open; theme policy and declared
+physical relationships bound consistency. Inventories and export counts are generated.
 
-From `astro/`, `npm run slides:export` regenerates the downloads; the build runs
-this automatically. `npm run slides:check` checks vectors and ZIP integrity, and
-`npm run slides:browser` checks the collection and exports in the existing browser
-harness. See the [geometry, camera, accent and per-icon review rules](docs/design/slide-icons.md).
+From `astro/`, use `slides:find`, `slides:add`, `slides:import`, `slides:proof`, then
+`slides:export` and `slides:check`. The isolated `slides:extension` test verifies
+new subjects/families/licenses without engine edits. The [playbook and evaluation
+notes](docs/design/slide-icons.md) separate deterministic checks, visual attestations
+and independent behavioral trials.

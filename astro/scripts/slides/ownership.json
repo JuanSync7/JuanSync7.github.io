@@ -1,0 +1,8 @@
+{
+ "schema":"slide-ownership/1",
+ "assetPrefixes":["astro/vendor/slide-icons/","astro/src/data/slide-icons/","docs/design/slide-icons/runs/","docs/design/slide-icons/evaluation/runs/"],
+ "assetFiles":["astro/src/data/slide-icons.ts","astro/src/data/slide-stats.json","astro/src/figures/kit/slides/definitions.json","astro/src/figures/kit/slides/attribution.json","astro/src/figures/kit/slides/policy.json"],
+ "protectedPrefixes":["astro/scripts/slides/",".claude/skills/slide-icons/"],
+ "protectedFiles":["astro/src/figures/kit/slides/models.ts","astro/src/figures/kit/slides/svg.ts","astro/src/figures/kit/slides/types.ts","astro/src/components/ui/SlideIcon.tsx"],
+ "maintenanceRecord":"docs/design/slide-icons/maintenance-review.json"
+}

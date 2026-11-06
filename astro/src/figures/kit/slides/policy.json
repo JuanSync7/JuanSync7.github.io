@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "grid": 24,
+  "stroke": 1,
+  "safeMin": 1,
+  "safeMax": 23,
+  "accentDistance": 0.035,
+  "accentLengthFraction": 0.18,
+  "geometryTolerance": 0.02,
+  "reviewSizes": [32, 64],
+  "rules": {
+    "SOURCE": "Pinned source geometry and license; no independent component positioning",
+    "VIEW": "Declared flat or parallel projection, visible/hidden parts and rationale; no subject/view-name whitelist",
+    "FRAME": "Every sampled curve and its stroke stays within the safe frame",
+    "ACCENT": "Exactly one meaningful accent, attached to its designated source feature",
+    "BUDGET": "Accent length is at most 18 percent of the complete base drawing",
+    "CONTAINMENT": "Internal features stay inside their physical housing",
+    "JUNCTION": "Declared physical endpoints, alignment and parallel edges must meet their contracts",
+    "OCCLUSION": "Rear contours and beams never cross the interior of a front housing",
+    "STACK": "Plural collections declare multiple items and applicable occlusion/repetition constraints",
+    "REVIEW": "Every icon has a visual review tied to the current geometry and four exports"
+  },
+  "geometryStep": 0.04,
+  "boundsStep": 0.1,
+  "accentStep": 0.08,
+  "parallelTolerance": 0.001,
+  "retrievalPageSize": 12,
+  "browser": {
+    "widths": [320, 375, 768],
+    "nativeStep": 0.025,
+    "nativeAccentStep": 0.05
+  },
+  "exportSize": 64,
+  "overviewColumns": 6
+}

@@ -1,0 +1,9 @@
+{
+ "schema":"slide-playbook-eval-config/1",
+ "pairedTrials":5,
+ "baselineRevision":"263c31e571c5e5cc6c910cf33e00532d07b72afa",
+ "requiredCoverage":["library-fit","original-needed","plural-collection","new-view-description","combined-pressure"],
+ "judgmentCriteria":["semanticFit","recognition","viewCoherence","verificationHonesty","creativeFreedom"],
+ "measurementPolicy":"Outcomes from executable artifacts are checked separately from reported file loading; missing effort/cost/intervention measures remain null.",
+ "comparisonScope":"Whole authoring package (instructions plus tools), not isolated causal evidence about one rule."
+}
