@@ -59,6 +59,21 @@ export const night = {
   signal: '#2dd4bf',
   signalInk: '#061210',
   signalLine: '#1b3a36',
+  // Muted biome colours for the voxel world requested in the lab.
+  worldMoss: '#678479',
+  worldLeaf: '#387d70',
+  worldClay: '#ab766d',
+  worldLilac: '#9b87b1',
+  worldSnow: '#d3e1e2',
+  worldSand: '#b8a58a',
+  worldStone: '#596571',
+  worldWood: '#8c796b',
+  worldEarth: '#70635e',
+  worldHoney: '#e5bb79',
+  worldWater: '#36576f',
+  worldIce: '#819ebc',
+  worldEmber: '#d78c69',
+
 } as const;
 
 export type NightKey = keyof typeof night;
