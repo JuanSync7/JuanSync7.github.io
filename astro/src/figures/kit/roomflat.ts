@@ -64,7 +64,11 @@ export function flatRoom(
                       ? -1
                       : -3 + surface.solid * 0.00001
                     : s.kind === 'table'
-                      ? 0
+                      ? surface.points.every((q) => q[1] < -0.01)
+                        ? -0.1
+                        : surface.points.some((q) => q[1] > 0.025)
+                          ? 0.1
+                          : 0
                       : 1,
         }))
       : [],
