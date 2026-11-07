@@ -15,3 +15,6 @@ diagram exports, maintenance checks and the separation from private vault data.
 
 [Presentation pages](design/presentation-pages.md) describes the short-landing-to-guides pattern,
 text hierarchy, paper buttons, scoped motion and repeatable source, build and browser checks.
+
+[Voxel agent](voxel-agent/README.md) maps the seeded-world pipeline, seven playbooks, placement rules,
+replay commands, verification and private-vault feedback export.

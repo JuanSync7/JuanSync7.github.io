@@ -1,6 +1,29 @@
 # Changelog
 
+## 2026-11-07
+
+Voxel worlds gain wider terrain, layered ecological communities and themed places with related
+vegetation, supplies and static wildlife. All 135 live catalog types realize valid placements in
+the balanced cohort. Surface merging, shared GPU waves, supported cave roofs and exact 3D
+clearance keep the larger worlds coherent. Place focus, closer zoom, pan and touch gestures make
+the details inspectable. Focused cameras clear foreground terrain and keep their eyes outside
+solid voxels; full-turn profiles and an independent mesh-ray regression cover close views. One voxel agent operates the executable pipeline, eleven playbooks,
+regression checks and complete source snapshots that can reproduce earlier faults.
+
 ## 2026-11-06
+
+Voxel mainland edges gain eroded outlines, biome strata and a closed, stepped underside that
+shortens exposed walls without removing the terrain relief. Supporting catalogs add 37 detail
+types and birch, willow and bamboo. Seeds choose different local prop selections; geometry checks
+cover 75 archetypes and reject floating fragments, unknown names and open base surfaces.
+
+Voxel worlds now use independent seed streams for terrain, local biome transitions, variable
+component recipes, constrained placement, boats and ambience. Fourteen biomes span nine landforms,
+including mainland cuts, valleys, dunes, Alps and cutaway caves. Shelters and boats can be absent;
+accepted objects have measured clearance, support, headroom and reserved access. Drag, touch and
+keyboard camera controls retain their pose; sunlight controls and a pausable orbit complement
+exposed-face geometry and fitted framing. One voxel agent operates seven playbooks, with replay,
+negative fixtures, diversity checks and a hashed private-vault mirror for future feedback.
 
 The vault hero now uses a physical hairline filing cabinet: its drawer opens with scroll, three
 folders rise on hover or focus and native links open the matching guides. GSAP SplitText masks

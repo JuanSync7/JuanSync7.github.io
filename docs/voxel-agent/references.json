@@ -1,0 +1,126 @@
+{
+  "schema": "voxel-references/1",
+  "repositories": [
+    {
+      "id": "noa",
+      "repo": "fenomas/noa",
+      "branch": "master",
+      "commit": "bd74cd8add3abf216b53a995139276af665b1d52"
+    },
+    {
+      "id": "voxelize",
+      "repo": "voxelize/voxelize",
+      "branch": "main",
+      "commit": "38c8c812ed159ee3882f6b2788a3ebd4ea699404"
+    },
+    {
+      "id": "noise",
+      "repo": "Auburn/FastNoiseLite",
+      "branch": "master",
+      "commit": "785f37a9ad76e283586a379675085f2063ae03f7"
+    },
+    {
+      "id": "luanti",
+      "repo": "luanti-org/minetest_game",
+      "branch": "master",
+      "commit": "9e895af6e9feb98332fa1a778001442f5669bc20"
+    }
+  ],
+  "sources": [
+    {
+      "id": "noa-world",
+      "sha256": "d6eb6982b9c8cda01299f38bd58b7c8778719f04792e29f8eb17f22ba1ce8873",
+      "bytes": 33600,
+      "path": "src/lib/world.js",
+      "url": "https://github.com/fenomas/noa/blob/bd74cd8add3abf216b53a995139276af665b1d52/src/lib/world.js",
+      "pinVerified": true
+    },
+    {
+      "id": "voxelize-readme",
+      "sha256": "3ddea8753422be681f7bc34adfb567e45a31462655b1f766e6403e7628dff753",
+      "bytes": 10159,
+      "path": "README.md",
+      "url": "https://github.com/voxelize/voxelize/blob/38c8c812ed159ee3882f6b2788a3ebd4ea699404/README.md",
+      "pinVerified": true
+    },
+    {
+      "id": "noa-terrain",
+      "sha256": "c7a888168989b5b8aaf1ffa147ac988ce0da5c74b31ce9e760a12a2756a32838",
+      "bytes": 28707,
+      "path": "src/lib/terrainMesher.js",
+      "url": "https://github.com/fenomas/noa/blob/bd74cd8add3abf216b53a995139276af665b1d52/src/lib/terrainMesher.js",
+      "pinVerified": true
+    },
+    {
+      "id": "noa-readme",
+      "sha256": "faae8ee76d729127957ba065883e968dcf689f8b08a7cfffd96a40426c026b3d",
+      "bytes": 3604,
+      "path": "README.md",
+      "url": "https://github.com/fenomas/noa/blob/bd74cd8add3abf216b53a995139276af665b1d52/README.md",
+      "pinVerified": true
+    },
+    {
+      "id": "voxelize-gen",
+      "sha256": "d9bd4022120de49ae1b50895fb2bc1706897a37c98e8348b4513ad2e6aeb8d31",
+      "bytes": 3447,
+      "path": "crates/gen/src/lib.rs",
+      "url": "https://github.com/voxelize/voxelize/blob/38c8c812ed159ee3882f6b2788a3ebd4ea699404/crates/gen/src/lib.rs",
+      "pinVerified": true
+    },
+    {
+      "id": "noise-readme",
+      "sha256": "3b5a3207f327a57887dd0f7bec89c6c6e1dea24ca652705c749d7bcf6acffe74",
+      "bytes": 6154,
+      "path": "README.md",
+      "url": "https://github.com/Auburn/FastNoiseLite/blob/785f37a9ad76e283586a379675085f2063ae03f7/README.md",
+      "pinVerified": true
+    },
+    {
+      "id": "luanti-trees",
+      "sha256": "338e54bc95a72eecf96be6a2645029a3fcea9204471f3fda2785939610998b15",
+      "bytes": 16498,
+      "path": "mods/default/trees.lua",
+      "url": "https://github.com/luanti-org/minetest_game/blob/9e895af6e9feb98332fa1a778001442f5669bc20/mods/default/trees.lua",
+      "pinVerified": true
+    },
+    {
+      "id": "luanti-mapgen",
+      "sha256": "06a815b5b651e6533aebd4dbf80bbfaf3882a7564f73de193aff3381f487765e",
+      "bytes": 58722,
+      "path": "mods/default/mapgen.lua",
+      "url": "https://github.com/luanti-org/minetest_game/blob/9e895af6e9feb98332fa1a778001442f5669bc20/mods/default/mapgen.lua",
+      "pinVerified": true
+    },
+    {
+      "id": "luanti-game",
+      "sha256": "04d91c90a2fd33b300073c9e5de3b17702492731080ee81b4716b9d8685cb87e",
+      "bytes": 1558,
+      "path": "README.md",
+      "url": "https://github.com/luanti-org/minetest_game/blob/9e895af6e9feb98332fa1a778001442f5669bc20/README.md",
+      "pinVerified": true
+    }
+  ],
+  "images": [
+    {
+      "source": "https://raw.githubusercontent.com/voxelize/voxelize/main/assets/town-hub2-massif-4k.webp",
+      "sha256": "ffc800b5141c458f59b95c3a41d8a0cfc38660deed456af84054b118f7a9a0e2",
+      "bytes": 886158
+    },
+    {
+      "source": "https://raw.githubusercontent.com/voxelize/voxelize/main/assets/creature-axolotl-greenhouse-pond.webp",
+      "sha256": "4a047c9dde590af64690bc20a8c806ede250dd047cb98a6c52812fd9cb334496",
+      "bytes": 308738
+    },
+    {
+      "source": "https://raw.githubusercontent.com/voxelize/voxelize/main/assets/creature-ashen-dragon-volcano.webp",
+      "sha256": "ceee1d7c9072129e6e524e992ca53133405fffb671594b3311a798cbdd3728bd",
+      "bytes": 249336
+    },
+    {
+      "source": "https://raw.githubusercontent.com/voxelize/voxelize/main/assets/underwater-lantern-garden.webp",
+      "sha256": "44bdc5574b81c6a3cf9808b1a1438a4d6e1718cd0e28506f96df93c400c5b9ce",
+      "bytes": 73586
+    }
+  ],
+  "reuse": "Reference study only. No external source code, texture or image asset is bundled with the site."
+}
