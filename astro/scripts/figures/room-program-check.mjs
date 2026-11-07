@@ -60,6 +60,25 @@ try {
         r = roomPlan(p),
         b = tabletop(p).bounds,
         parts = roomModels(p);
+      if (theme.id === 'kitchen') {
+        const counter = parts.find((s) => s.label === 'Sink and preparation run'),
+          hood = parts.find((s) => s.label === 'Extractor hood and task lights'),
+          hob = counter.model.surfaces.filter((s) => s.finish === 'recess').flatMap((s) => s.points);
+        assert(hob.length > 0, 'Kitchen needs an actual cooktop beneath the extractor');
+        for (const axis of [0, 2]) {
+          const lo = Math.min(...hob.map((q) => q[axis])),
+            hi = Math.max(...hob.map((q) => q[axis]));
+          assert(
+            hood.model.bounds.lo[axis] <= lo && hood.model.bounds.hi[axis] >= hi,
+            'Extractor canopy must cover the cooktop footprint, not the sink',
+          );
+        }
+        const clearance = (hood.model.bounds.lo[1] - Math.max(...hob.map((q) => q[1]))) / limits.unitsPerMetre;
+        assert(
+          clearance >= limits.extractorClearanceMetresMin && clearance <= limits.extractorClearanceMetresMax,
+          'Extractor clearance must fit the cooking surface',
+        );
+      }
       const row = {
         theme: theme.id,
         variant,

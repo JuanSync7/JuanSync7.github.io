@@ -53,7 +53,7 @@ export function roomPracticals(scene: Scene, p: TableScene): PracticalLight[] {
   }
   if (p.theme.id === 'kitchen') {
     const task = new PointLight(roomHexOf('daylight'), 0, 3.5, 2);
-    task.position.set(-r.half + 0.55, r.floor + 3.6, r.serviceZ);
+    task.position.set(-r.half + 0.95, r.floor + 3.6, r.cookZ);
     add(task, 2.4, 'daylight');
   }
   return result;

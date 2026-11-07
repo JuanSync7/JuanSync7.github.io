@@ -13,6 +13,7 @@ export interface RoomPlan {
   variant: number;
   nookZ: number;
   serviceZ: number;
+  cookZ: number;
   lampZ: number;
   windowZ: number;
   bounds: Bounds;
@@ -34,6 +35,7 @@ export function roomPlan(p: TableScene): RoomPlan {
     variant: p.roomVariant,
     nookZ: back + 6.7,
     serviceZ: back + 5.8,
+    cookZ: back + 7.03,
     lampZ: front - 0.6,
     windowZ: back + 2.3,
     bounds: { lo: [-half - 0.18, floor - 0.18, back - 0.18], hi: [half + 0.18, top + 0.06, front + 0.06] },

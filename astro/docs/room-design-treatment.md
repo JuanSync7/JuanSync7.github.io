@@ -56,6 +56,7 @@ Failed IKEA and Dimensions reference requests were not used as evidence.
 | A cabinet faced away from the room and a clock approached the window | Reorient storage to the room and separate wall zones; use geometry checks and visual review |
 | A trolley narrowed the route to dining storage | Move it toward the entry side and check connected walking routes with clearance |
 | Architectural daylight had no actual opening | Build casement wall sections around an opening; preserve its space in tile/pattern geometry |
+| The kitchen hood was above a sink with no hob beneath it | Add an actual two-ring cooktop, align canopy and task light over it, and independently check the modelled cooking footprint and hood clearance |
 
 ## Declined to judge / not claimed
 

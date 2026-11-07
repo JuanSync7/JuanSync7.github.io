@@ -37,7 +37,7 @@ export function roomZones(p: TableScene): RoomPart[] {
         placedRoomPart('Extractor hood and task lights', 'left', 'wall', rangeHood, {
           x: -r.half + 0.3,
           y: r.floor + 3.7,
-          z: r.serviceZ,
+          z: r.cookZ,
           turn: Math.PI / 2,
         }),
       );

@@ -22,5 +22,6 @@ approved global vault guidance. Numeric limits belong in the scoped check config
 | “Shrink every prop by the same number.” | Check device sizes independently; monitors and towers need their own scale. |
 | “Rugs can overlap because they are supports.” | Permit furniture contact with a support, but test separate textiles against each other. |
 | “Move the lamp; its light can stay there.” | Use the shared `roomPlan` anchor for the fixture and its light. |
+| “An extractor makes it a kitchen.” | Model the cooking surface and align its hood and light; check their actual footprints and clearance. |
 | “The audit is green, so the design is done.” | Read all themed captures and answer the craft questions. |
 | “Change the threshold to pass.” | Fix geometry, composition, materials or lighting. |

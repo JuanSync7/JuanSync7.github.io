@@ -27,7 +27,25 @@ export function sinkCounter(p: TableDraft, laboratory: boolean): void {
     p.cylinder(0, h - 0.27, 0, 0.07, 0.025, 12);
   });
   accessory(p, laboratory ? 'beaker' : 'utensils', 1.2, h, 0, 0.5);
-  accessory(p, laboratory ? 'bottle' : 'spicejar', -1.2, h, 0, 0.45);
+  if (laboratory) accessory(p, 'bottle', -1.2, h, 0, 0.45);
+  else {
+    p.material('recess', () => p.box(-1.23, h + 0.005, 0, 1.02, 0.04, 0.92, 0.03));
+    p.material('metal', () => {
+      for (const z of [-0.23, 0.23])
+        p.lathe(
+          [
+            [0.18, h + 0.045],
+            [0.18, h + 0.065],
+            [0.13, h + 0.065],
+            [0.13, h + 0.045],
+          ],
+          -1.23,
+          z,
+          16,
+        );
+      for (const x of [-1.5, -0.96]) p.cylinder(x, h + 0.045, 0.58, 0.045, 0.045, 10);
+    });
+  }
 }
 export function refrigerator(p: TableDraft): void {
   p.material('panel', () => {
@@ -46,11 +64,11 @@ export function refrigerator(p: TableDraft): void {
 }
 export function rangeHood(p: TableDraft): void {
   p.material('metal', () => {
-    p.box(0, 0, 0.2, 1.9, 0.18, 0.95, 0.055);
+    p.box(0, 0, 0.5, 1.9, 0.18, 1.4, 0.055);
     p.box(0, 0.18, -0.1, 0.75, 1.25, 0.35, 0.035);
-    for (let i = 0; i < 8; i++) p.box(-0.65 + i * 0.185, 0.025, 0.7, 0.08, 0.055, 0.03, 0.005);
+    for (let i = 0; i < 8; i++) p.box(-0.65 + i * 0.185, 0.025, 1.15, 0.08, 0.055, 0.03, 0.005);
   });
   p.material('light', () => {
-    for (const x of [-0.6, 0.6]) p.cylinder(x, -0.02, 0.4, 0.11, 0.03, 12);
+    for (const x of [-0.6, 0.6]) p.cylinder(x, -0.02, 0.65, 0.11, 0.03, 12);
   });
 }

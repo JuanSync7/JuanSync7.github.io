@@ -9,7 +9,7 @@ separately in `astro/scripts/figures/` and judge the output, not the builder's i
 | `ROOM_METRICS`, `ROOM_NAMES` / `roommetrics.ts` | Converts the legacy tabletop grammar into human-scale furniture and chooses room dimensions. Original `TableTheme.w/d` are local grammar dimensions, not world placement bounds. |
 | `arrange(rng, theme?)` / `tabletop.ts` | Seeded world-space table inventory. Scales intents before placement; monitors/towers have independent device sizing. Never randomize a frame. |
 | `tabletop(p)`, `itemModel(it)` | Actual transformed geometry and bounds. Use these for room furniture placement, framing and collision checks. |
-| `roomPlan(p)` / `roomplan.ts` | Room envelope, floor/ceiling and shared `nookZ`, `serviceZ`, `lampZ`, `windowZ` anchors. Dining keeps rear seating clearance; task surfaces meet the back wall. |
+| `roomPlan(p)` / `roomplan.ts` | Room envelope, floor/ceiling and shared `nookZ`, `serviceZ`, `cookZ`, `lampZ`, `windowZ` anchors. Dining keeps rear seating clearance; task surfaces meet the back wall. |
 | `placedRoomPart(...)` / `roomcompose.ts` | Build one owned draft, transform once, then measure bounds. `support` is for thin textiles, not a collision exemption for arbitrary furniture. |
 | `roomModels(p)` / `tableroom.ts` | Three walls and floor, architectural fixtures and furnished zones. Cached by theme/room variant: builders must not depend on unkeyed inventory randomness. |
 | `roomZones`, `roomDressing` | Functional secondary zone, storage, chairs, textiles, trolley, lamps and wall art. Clinical utility and domestic lounge pieces have different programs. |
