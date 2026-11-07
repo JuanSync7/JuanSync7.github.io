@@ -18,3 +18,7 @@ text hierarchy, paper buttons, scoped motion and repeatable source, build and br
 
 [Voxel agent](voxel-agent/README.md) maps the seeded-world pipeline, seven playbooks, placement rules,
 replay commands, verification and private-vault feedback export.
+
+[Zoom-dive layouts](../astro/docs/deepdive.md) covers the chip, terrain, city and architectural
+kernels, reference-led layout rules, deterministic and browser checks, contact sheets and the
+maintained deep-dive agent.

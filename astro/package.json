@@ -72,7 +72,12 @@
     "voxel:vault-check": "node scripts/voxel/vault-selftest.mjs",
     "voxel:stress": "node scripts/voxel/stress.mjs",
     "voxel:island-check": "node scripts/voxel/island-check.mjs",
-    "voxel:island-browser": "node scripts/voxel/island-browser.mjs"
+    "voxel:island-browser": "node scripts/voxel/island-browser.mjs",
+    "deepdive:check": "node scripts/deepdive/check.mjs",
+    "deepdive:selftest": "node scripts/deepdive/selftest.mjs",
+    "deepdive:browser": "node scripts/deepdive/browser.mjs",
+    "deepdive:gallery": "node scripts/deepdive/gallery.mjs",
+    "deepdive:agent": "node scripts/deepdive/agent.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",

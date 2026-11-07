@@ -1,0 +1,20 @@
+[
+  {
+    "id": "wide-office-budget",
+    "chain": "city",
+    "era": "modern",
+    "n": 4,
+    "salt": 2858099656,
+    "rule": "DD-BUDGET",
+    "observation": "A rare wide office exceeded 12000 segments; simplify subpixel furniture curves while retaining its physical layout."
+  },
+  {
+    "id": "analog-terminal-escape",
+    "chain": "silicon",
+    "era": "testchip",
+    "n": 3,
+    "salt": 42,
+    "rule": "DD-CONNECT",
+    "observation": "The trim input had no legal escape channel; choose an available terminal access track before routing."
+  }
+]

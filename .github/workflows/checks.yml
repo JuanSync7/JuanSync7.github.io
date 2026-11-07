@@ -43,6 +43,8 @@ jobs:
         run: npm ci
       - name: Types, lint, figure source and post shape checks
         run: npm run check
+      - name: Deep-dive topology, layouts, handoffs and negative fixtures
+        run: npm run deepdive:selftest && npm run deepdive:check
       - name: Voxel generation, diversity, negative fixtures and motion
         run: npm run voxel:check
       - name: Post check selftest (every rule still catches its broken post)
@@ -57,6 +59,14 @@ jobs:
         run: npm run vault:page && npm run presentation:page
       - name: Install Chromium for the figure look
         run: npx playwright install --with-deps chromium
+      - name: Deep-dive full cycles, phone, reduced motion and layout sheets
+        run: npm run deepdive:browser && npm run deepdive:gallery
+      - name: Deep-dive layout and browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deepdive-review
+          path: astro/figures-out/deepdive
       - name: Themed tabletop browsing and fallback
         run: npm run tabletop:browser
       - name: Voxel GPU, controls, biome profiles and snapshot replay

@@ -9,6 +9,7 @@ export class Piece {
     private readonly cy: number,
     private readonly turn: number,
     private readonly m: number,
+    private readonly overview = false,
   ) {}
   private at(x: number, y: number): [number, number] {
     const [u, v] = [
@@ -30,7 +31,7 @@ export class Piece {
     this.seg(x0, y1, x0, y0, t);
   }
   circle(x: number, y: number, r: number, t: Tone = 2, a0 = 0, a1 = Math.PI * 2): void {
-    const n = r > 0.3 ? 16 : 10;
+    const n = this.overview ? 6 : r > 0.3 ? 16 : 10;
     for (let i = 0; i < n; i++) {
       const [a, b] = [a0 + ((a1 - a0) * i) / n, a0 + ((a1 - a0) * (i + 1)) / n];
       this.seg(x + Math.cos(a) * r, y + Math.sin(a) * r, x + Math.cos(b) * r, y + Math.sin(b) * r, t);
