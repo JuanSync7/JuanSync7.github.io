@@ -1,0 +1,92 @@
+{
+  "schema": "slide-icon/2",
+  "id": "bathtub",
+  "name": "Bathtub",
+  "group": "everyday",
+  "tags": "bath bathtub wash bathroom household hygiene",
+  "file": "lucide/bath.svg",
+  "license": "ISC + MIT (see LUCIDE-LICENSE.txt)",
+  "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/bath.svg",
+  "view": {
+    "projection": "flat",
+    "description": "side elevation with a shower fixture",
+    "visible": [
+      "shower-head",
+      "right-support",
+      "rim",
+      "left-support",
+      "tub-and-fixture"
+    ],
+    "hidden": [
+      "interior-drain",
+      "rear-supports"
+    ],
+    "rationale": "The familiar side silhouette communicates bathing without needing interior perspective."
+  },
+  "parts": {
+    "shower-head": [
+      0
+    ],
+    "right-support": [
+      1
+    ],
+    "rim": [
+      2
+    ],
+    "left-support": [
+      3
+    ],
+    "tub-and-fixture": [
+      4
+    ]
+  },
+  "plural": false,
+  "accent": {
+    "node": 2,
+    "kind": "line",
+    "segment": 1,
+    "meaning": "the complete visible rim"
+  },
+  "constraints": [
+    {
+      "type": "attach",
+      "parts": [
+        "left-support",
+        "right-support"
+      ],
+      "to": "tub-and-fixture",
+      "ends": "start"
+    },
+    {
+      "type": "repeat",
+      "parts": [
+        "left-support",
+        "right-support"
+      ],
+      "offset": [
+        10,
+        0
+      ],
+      "same": [
+        "width",
+        "height"
+      ]
+    }
+  ],
+  "fit": {
+    "brief": "A generic bathtub icon for a slide about household facilities. A shower fixture is acceptable.",
+    "decision": "reuse",
+    "rationale": "The Lucide bath source is already an empty tub with a rim, supports and shower fixture; its existing silhouette fits the brief at slide size.",
+    "references": [
+      {
+        "url": "https://lucide.dev/icons/bath",
+        "note": "Inspected the pinned bath source: it contains a shower fixture and no person."
+      }
+    ],
+    "alternatives": []
+  },
+  "licenses": [
+    "lucide",
+    "original"
+  ]
+}

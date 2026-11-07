@@ -1,4 +1,5 @@
-export type SlideTag = 'path' | 'rect' | 'circle' | 'ellipse' | 'line';
+import policy from './policy.json';
+export type SlideTag = 'path' | 'rect' | 'circle' | 'ellipse' | 'line' | 'polyline' | 'polygon';
 export interface SlideNode {
   tag: SlideTag;
   attrs: Record<string, string>;
@@ -12,6 +13,7 @@ export interface SlideOptions {
   tone: SlideTone;
   accent: boolean;
 }
-export const SLIDE_SIZE = 24;
-export const SLIDE_WEIGHT = 1;
+export const SLIDE_SIZE = policy.grid;
+export const SLIDE_EXPORT_SIZE = policy.exportSize;
+export const SLIDE_WEIGHT = policy.stroke;
 export const SLIDE_DEFAULT: SlideOptions = { tone: 'night', accent: true };
