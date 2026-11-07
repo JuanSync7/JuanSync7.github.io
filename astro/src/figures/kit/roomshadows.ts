@@ -31,7 +31,10 @@ float roomSoftShadow(sampler2D map, vec4 coord) {
 }
 `;
 export function roomShadows(material: MeshStandardMaterial): void {
-  material.onBeforeCompile = (shader) => {
+  const previous = material.onBeforeCompile,
+    key = material.customProgramCacheKey();
+  material.onBeforeCompile = (shader, renderer) => {
+    previous.call(material, shader, renderer);
     const chunk = ShaderChunk.shadowmap_pars_fragment
       .replace('#ifdef USE_SHADOWMAP', '#ifdef USE_SHADOWMAP\n' + PCSS)
       .replace(
@@ -40,5 +43,5 @@ export function roomShadows(material: MeshStandardMaterial): void {
       );
     shader.fragmentShader = shader.fragmentShader.replace('#include <shadowmap_pars_fragment>', chunk);
   };
-  material.customProgramCacheKey = () => 'tabletop-room-pcss-16-v1';
+  material.customProgramCacheKey = () => key + ':tabletop-room-pcss-16-v1';
 }

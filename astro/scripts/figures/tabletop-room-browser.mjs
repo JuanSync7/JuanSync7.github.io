@@ -3,6 +3,7 @@ import { writeFileSync } from 'node:fs';
 import { decode, measure, diff } from './pixels.mjs';
 
 export async function checkRoomCamera(page, fallback, thresholds) {
+  await page.getByRole('button', { name: 'Monochrome', exact: true }).click();
   const shots = [],
     canvas = page.locator('.lab-main canvas'),
     slider = page.getByRole('slider', { name: 'View angle' });

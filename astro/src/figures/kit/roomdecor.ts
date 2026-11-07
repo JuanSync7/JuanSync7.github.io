@@ -11,7 +11,7 @@ export function framed(p: TableDraft, x: number, y: number, width: number, heigh
 export function cupboard(p: TableDraft, x: number, y: number, width: number, height: number): void {
   p.material('frame', () => p.box(x, y, 0.25, width, height, 0.5, 0.035));
   p.material('recess', () => p.box(x, y + 0.06, 0.503, width - 0.12, height - 0.12, 0.025, 0.01));
-  p.material('inlay', () => {
+  p.material('cabinet', () => {
     for (const a of [-1, 1]) p.box(x + (a * width) / 4, y + 0.09, 0.535, width / 2 - 0.07, height - 0.18, 0.05, 0.025);
   });
   p.material('metal', () => {
@@ -32,7 +32,7 @@ export function accessory(p: TableDraft, kind: PropKind, x: number, y: number, z
 }
 export function windowFrame(p: TableDraft): void {
   framed(p, 0, 1.15, 2.5, 2.0, 0.15);
-  p.material('panel', () => p.box(0, 1.28, 0.09, 2.22, 1.72, 0.04, 0));
+  p.material('window', () => p.box(0, 1.28, 0.09, 2.22, 1.72, 0.04, 0));
   p.material('inlay', () => {
     p.box(0, 1.2, 0.15, 0.07, 1.88, 0.05, 0);
     p.box(0, 2.12, 0.15, 2.35, 0.06, 0.05, 0);

@@ -1,6 +1,10 @@
 import { roomClip } from './roomclip';
 import { poly } from './draw';
-import { ink, mix } from './ink';
+import { ink, mix, roomTone } from './ink';
+import { roomPaint } from './roompaint';
+import { ROOM_STYLES } from './roomstyles';
+import { LIGHT_MOODS } from './roomlightmoods';
+import { flatRoomTexture } from './roomflattexture';
 import { tableFinish } from './tablefinish';
 import { sceneModels } from './roomscene';
 import { roomProject, roomView, roomVisible } from './roomview';
@@ -65,7 +69,17 @@ export function flatRoom(
         }))
       : [],
   );
-  const clipped = surfaces.filter((s) => s.points.length >= (s.surface.face ? 3 : 2));
+  const clipped = surfaces.filter((s) => {
+    if (s.points.length < (s.surface.face ? 3 : 2)) return false;
+    if (!s.surface.face) return true;
+    // Outward normals give clockwise screen winding for a visible face. Omitting
+    // back faces keeps a curved underside from painting over its own tabletop.
+    const area = s.points.reduce((sum, a, i) => {
+      const b = s.points[(i + 1) % s.points.length];
+      return sum + (b ? a[0] * b[1] - b[0] * a[1] : 0);
+    }, 0);
+    return area < 0;
+  });
   clipped.sort(
     (a, b) =>
       a.layer - b.layer ||
@@ -100,10 +114,24 @@ export function flatRoom(
       finish = tableFinish(s.kind, surface.solid, p.theme.id, surface.finish);
     poly(ctx, points, surface.face);
     if (surface.face) {
+      const phase = Math.abs(
+        Math.floor(
+          (s.model.bounds.lo[0] + s.model.bounds.hi[0]) * 3 + (s.model.bounds.lo[2] + s.model.bounds.hi[2]) * 7,
+        ),
+      );
+      const paint = roomPaint(s.kind, p.theme.id, surface.finish, surface.solid, phase);
+      const coloured = view.controls.appearance === 'colour';
       ctx.fillStyle = active
         ? mix('signalLine', 'signal', shade(surface.points))
-        : mix('ground', finish.tone, shade(surface.points) * Math.sqrt(finish.strength));
+        : coloured
+          ? roomTone(
+              paint.tone,
+              paint.strength * (0.45 + shade(surface.points) * 0.65),
+              LIGHT_MOODS[ROOM_STYLES[p.theme.id].mood].key,
+            )
+          : mix('ground', finish.tone, shade(surface.points) * Math.sqrt(finish.strength));
       ctx.fill();
+      if (coloured && !active) flatRoomTexture(ctx, surface, view, paint.pattern);
     } else {
       ctx.strokeStyle = active ? ink.signal(0.85) : ink.faint(s.kind === 'room' ? 0.25 : 0.5);
       ctx.stroke();

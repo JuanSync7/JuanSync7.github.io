@@ -5,6 +5,7 @@ import { roomFloor } from './roomfloor';
 import { backFeature } from './roomfixtures';
 import { door, windowFrame } from './roomdecor';
 import { roomDressing } from './roomdressing';
+import { roomAccents } from './roomaccents';
 import { sideMoulding, windowDetails, wallSwitch } from './roomarchitecture';
 import type { TableScene } from './tabletop';
 
@@ -98,7 +99,7 @@ export function roomModels(p: TableScene): RoomPart[] {
     true,
     ([x, y, z]) => [r.half - z, y, r.front - 1.25 + x],
   );
-  parts.push(...roomDressing(p));
+  parts.push(...roomDressing(p), ...roomAccents(p));
   CACHE.set(key, parts);
   return parts;
 }
@@ -118,7 +119,7 @@ function backWall(p: TableDraft, r: RoomPlan, theme: string): void {
           hi = Math.min(r.half, x + width),
           y = r.floor + row * height;
         if (hi - lo > 0.04)
-          p.material(row % 4 ? 'wall' : 'tile', () =>
+          p.material(row % 4 ? (theme === 'messy' ? 'brick' : 'wall') : 'tile', () =>
             p.box((lo + hi) / 2, y, r.back - 0.028, hi - lo - 0.025, Math.min(height - 0.025, limit - y), 0.056, 0.008),
           );
       }

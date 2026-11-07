@@ -85,3 +85,15 @@ not a free-text category in one file. `npm run lessons:check` checks the whole c
 - Don't write comments that restate the code. Comments are for *why*, not *what*.
 - Don't add backwards-compat shims to legacy `*.jsx` files — they're being replaced wholesale.
 
+
+## Seeded tabletop-room work
+
+Changes to `pixel-still`, room controls, materials or lighting also use
+`.claude/skills/tabletop-room/SKILL.md` and `astro/docs/tabletop-rooms.md`.
+The user's 7 November 2026 request explicitly authorizes a full-colour room mode
+alongside monochrome. Its material/light tokens live in `roomTones` and the
+`--nt-room-*` family, mirrored in the design-system ledger and accessed through
+`figures/kit/ink.ts`. Other figures retain the night palette. Keep the generic
+monochrome audit strict and verify full colour with the dedicated room checks;
+never broaden the global palette or thresholds to accommodate this exception.
+Store new rules, verification scripts and playbook updates with the feature.

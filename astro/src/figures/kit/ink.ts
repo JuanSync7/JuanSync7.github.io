@@ -61,3 +61,17 @@ export function mix(a: NightKey, b: NightKey, t: number, alpha = 1): string {
 
 /** The room colour mode is an explicit, scoped extension of the figure palette. */
 export const roomHexOf = (key: RoomTone): string => roomTones[key];
+
+/** Palette-derived diffuse colour for the software room renderer. */
+export function roomTone(key: RoomTone, amount = 1, light: RoomTone = 'porcelain'): string {
+  const albedo = rgbOf(roomTones[key]),
+    illumination = rgbOf(roomTones[light]);
+  const linear = (value: number): number => (value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
+  const srgb = (value: number): number => (value <= 0.0031308 ? value * 12.92 : 1.055 * value ** (1 / 2.4) - 0.055);
+  const channels = albedo.map((v, i) =>
+    Math.round(
+      Math.min(1, srgb(linear(v / 255) * amount * (0.3 + 0.7 * linear((illumination[i] ?? 255) / 255)))) * 255,
+    ),
+  );
+  return `rgb(${channels.join(',')})`;
+}

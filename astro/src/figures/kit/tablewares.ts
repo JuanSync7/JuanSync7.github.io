@@ -117,26 +117,30 @@ export const WARES = {
     p.box(0.63, 0.025, -0.29, 0.09, 0.03, 0.3, 0.02);
   },
   plant: (p) => {
-    p.lathe([
-      [0, 0],
-      [0.19, 0],
-      [0.26, 0.36],
-      [0.29, 0.36],
-      [0.29, 0.41],
-      [0, 0.41],
-    ]);
-    p.rod([0, 0.4, 0], [0, 1.07, 0], 0.025);
-    for (let k = 0; k < 6; k++) {
-      const a = k * 2.4,
-        y = 0.56 + k * 0.085;
-      const tip: [number, number, number] = [Math.cos(a) * 0.42, y + 0.14, Math.sin(a) * 0.42];
-      p.face([
-        [0, y, 0],
-        [tip[0] - Math.sin(a) * 0.12, y + 0.07, tip[2] + Math.cos(a) * 0.12],
-        tip,
-        [tip[0] + Math.sin(a) * 0.12, y + 0.07, tip[2] - Math.cos(a) * 0.12],
-      ]);
-    }
+    p.material('ceramic', () =>
+      p.lathe([
+        [0, 0],
+        [0.19, 0],
+        [0.26, 0.36],
+        [0.29, 0.36],
+        [0.29, 0.41],
+        [0, 0.41],
+      ]),
+    );
+    p.material('leaf', () => {
+      p.rod([0, 0.4, 0], [0, 1.07, 0], 0.025);
+      for (let k = 0; k < 6; k++) {
+        const a = k * 2.4,
+          y = 0.56 + k * 0.085;
+        const tip: [number, number, number] = [Math.cos(a) * 0.42, y + 0.14, Math.sin(a) * 0.42];
+        p.face([
+          [0, y, 0],
+          [tip[0] - Math.sin(a) * 0.12, y + 0.07, tip[2] + Math.cos(a) * 0.12],
+          tip,
+          [tip[0] + Math.sin(a) * 0.12, y + 0.07, tip[2] - Math.cos(a) * 0.12],
+        ]);
+      }
+    });
   },
   prepboard: (p) => {
     p.box(0, 0, 0, 1.7, 0.06, 1.05, 0.12);

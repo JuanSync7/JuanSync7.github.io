@@ -32,7 +32,7 @@ export function backFeature(p: TableDraft, theme: ThemeId, variant: number, slot
     p.material('frame', () => {
       p.box(x, 1.8, 0.1, 2.4, 1.7, 0.16, 0.04);
     });
-    p.material('inlay', () => {
+    p.material('acoustic', () => {
       for (let i = 0; i < 6; i++) p.box(x - 1.02 + i * 0.4, 1.87, 0.21, 0.11, 1.55, 0.075, 0.015);
     });
     return 'Acoustic wall slats';

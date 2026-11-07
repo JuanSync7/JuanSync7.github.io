@@ -30,7 +30,7 @@ export function chair(p: TableDraft, theme: ThemeId): void {
         p.box(x, seat + 0.43, -0.02, 0.12, 0.06, 0.58, 0.035);
       }
   });
-  p.material(office ? 'inlay' : 'frame', () => {
+  p.material(office ? 'upholstery' : 'frame', () => {
     p.box(0, seat, 0, 1.08, 0.14, 1.0, 0.13);
     p.box(0, seat + (stool ? 0.33 : 0.2), 0.4, 0.96, stool ? 0.32 : 0.94, 0.16, 0.065);
     if (office) p.box(0, seat + 1.18, 0.42, 0.62, 0.26, 0.18, 0.07);
@@ -41,7 +41,7 @@ export function chair(p: TableDraft, theme: ThemeId): void {
     });
 }
 export function planter(p: TableDraft, variant: number): void {
-  p.material('frame', () =>
+  p.material('ceramic', () =>
     p.lathe(
       [
         [0, 0],
@@ -58,7 +58,7 @@ export function planter(p: TableDraft, variant: number): void {
     ),
   );
   p.material('recess', () => p.cylinder(0, 0.665, 0, 0.345, 0.025, 12));
-  p.material('inlay', () => {
+  p.material('leaf', () => {
     for (let i = 0; i < 7; i++) {
       const a = i * 2.399 + variant * 0.6,
         y = 1.2 + (i % 3) * 0.32;

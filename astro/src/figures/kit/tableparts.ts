@@ -17,7 +17,17 @@ export type FurnitureFinish =
   | 'rug'
   | 'stitch'
   | 'shade'
-  | 'light';
+  | 'light'
+  | 'leaf'
+  | 'ceramic'
+  | 'upholstery'
+  | 'window'
+  | 'floorAlt'
+  | 'brick'
+  | 'cabinet'
+  | 'acoustic'
+  | 'paper'
+  | 'book';
 export interface TableSurface extends Surface {
   finish?: FurnitureFinish;
 }

@@ -19,7 +19,7 @@ export function roomFloor(p: TableDraft, r: RoomPlan, theme: ThemeId): void {
         hi = Math.min(r.front, r.back + (j + 1) * length + shift);
       if (hi - lo < 0.04) continue;
       const light = (i + j + r.variant) % (theme === 'kitchen' ? 2 : 5) === 0;
-      p.material(light ? 'tile' : 'floor', () =>
+      p.material(light ? 'floorAlt' : 'floor', () =>
         p.box(-r.half + (i + 0.5) * width, r.floor - 0.07, (lo + hi) / 2, width - 0.02, 0.07, hi - lo - 0.02, 0.008),
       );
       if (wood)

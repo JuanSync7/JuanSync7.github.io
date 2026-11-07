@@ -22,12 +22,15 @@ export interface ThreeEnv {
   camera: PerspectiveCamera;
   rng: Rng;
   renderer: WebGLRenderer;
+  onDispose(dispose: () => void): void;
 }
 
 export interface ThreeFrame<S> extends FrameInput {
   scene: Scene;
   camera: PerspectiveCamera;
   selectCamera(projection: 'perspective' | 'orthographic'): PerspectiveCamera | OrthographicCamera;
+  /** Static scenes can retain their last frame until an input changes. */
+  renderWhen(changed: boolean): void;
   state: S;
   w: number;
   h: number;
@@ -91,29 +94,48 @@ export function defineThreeFigure<S>(spec: ThreeFigureSpec<S>): Figure {
       const camera = new PerspectiveCamera(30, 1, 0.1, 60);
       const parallel = new OrthographicCamera(-1, 1, 1, -1, 0.1, 120);
       let active: PerspectiveCamera | OrthographicCamera = camera;
-      const state = build({ scene, camera, renderer, rng: mulberry32(spec.seed) });
+      const cleanups: (() => void)[] = [];
+      const state = build({
+        scene,
+        camera,
+        renderer,
+        onDispose: (dispose) => cleanups.push(dispose),
+        rng: mulberry32(spec.seed),
+      });
       let w = 1;
       let h = 1;
+      let resized = true;
+      let renderedFrames = 0;
       return {
         resize(nw: number, nh: number, dpr: number): void {
           w = Math.max(1, nw);
           h = Math.max(1, nh);
           renderer.setPixelRatio(dpr);
           renderer.setSize(w, h, false);
+          resized = true;
           camera.aspect = w / h;
           camera.updateProjectionMatrix();
         },
         frame(input: FrameInput): string | void {
+          let changed = true;
           const selectCamera = (projection: 'perspective' | 'orthographic'): PerspectiveCamera | OrthographicCamera => {
             active = projection === 'orthographic' ? parallel : camera;
             return active;
           };
-          const read = update({ ...input, scene, camera, selectCamera, state, w, h });
-          if (!input.unseen) renderer.render(scene, active);
+          const renderWhen = (next: boolean): void => {
+            changed = next;
+          };
+          const read = update({ ...input, scene, camera, selectCamera, renderWhen, state, w, h });
+          if (!input.unseen && (changed || resized)) {
+            renderer.render(scene, active);
+            resized = false;
+            canvas.dataset.renderedFrames = String(++renderedFrames);
+          }
           return read;
         },
         dispose(): void {
           disposeTree(scene);
+          cleanups.forEach((dispose) => dispose());
           renderer.dispose();
           renderer.forceContextLoss();
         },

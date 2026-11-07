@@ -144,7 +144,7 @@ export default function TemplateLab({ template }: Props) {
               aria-label={`Seed ${s}: ${tpl.instance(s).variant}`}
             >
               <span className="lab-thumb-stage">
-                <FigureCanvas id={`${template}~${s}`} />
+                <FigureCanvas key={`${template}~${s}`} id={`${template}~${s}`} />
               </span>
               <span className="lab-thumb-label">
                 {s} · {tpl.instance(s).variant}

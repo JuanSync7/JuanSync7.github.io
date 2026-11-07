@@ -13,6 +13,9 @@ import {
   Vector2,
 } from 'three';
 import { hexOf } from './ink';
+import { applyRoomMaterial } from './roommaterial';
+import { setRoomLighting, type RoomLighting } from './roomlight';
+import type { RoomAppearance } from './roomstyles';
 import { roomShadows } from './roomshadows';
 import { solidMesh } from './tablemesh';
 import { sceneModels, type SceneModel } from './roomscene';
@@ -28,7 +31,11 @@ interface Entity {
   edges: { material: LineBasicMaterial; base: Color; opacity: number }[];
 }
 export interface RoomState {
+  drawKey?: string;
+  readout?: string;
   key?: DirectionalLight;
+  lighting?: RoomLighting;
+  appearance?: RoomAppearance;
   entities: Entity[];
   pickables: Mesh[];
   ray: Raycaster;
@@ -95,6 +102,12 @@ export function updateRoom(
   w: number,
   h: number,
 ): string {
+  if (state.appearance !== view.controls.appearance) {
+    state.appearance = view.controls.appearance;
+    if (state.lighting) setRoomLighting(state.lighting, state.appearance);
+    for (const entity of state.entities)
+      for (const face of entity.faces) face.base.copy(applyRoomMaterial(face.material, state.appearance === 'colour'));
+  }
   for (const entity of state.entities) {
     const s = entity.source;
     const visible =
@@ -130,7 +143,7 @@ export function updateRoom(
     const active = i === (selected < 0 ? p.lit : selected);
     for (const { material, base } of entity.faces) {
       material.color.copy(base);
-      if (active) material.color.lerp(SIGNAL, i === selected ? 1 : 0.7);
+      if (active) material.color.lerp(SIGNAL, i === selected ? 1 : state.appearance === 'colour' ? 0.15 : 0.7);
     }
     for (const { material, base, opacity } of entity.edges) {
       material.color.copy(base);

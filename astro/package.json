@@ -28,7 +28,11 @@
     "lessons:browser": "node scripts/lessons/browser-check.mjs",
     "hardware:export": "node scripts/hardware/export.mjs",
     "hardware:check": "node scripts/hardware/check.mjs",
-    "hardware:browser": "node scripts/hardware/browser-check.mjs"
+    "hardware:browser": "node scripts/hardware/browser-check.mjs",
+    "rooms:materials": "node scripts/figures/room-material-check.mjs",
+    "rooms:colour": "node scripts/figures/room-colour-browser.mjs",
+    "rooms:gallery": "node scripts/figures/room-gallery.mjs",
+    "rooms:verify": "node scripts/figures/room-verify.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",

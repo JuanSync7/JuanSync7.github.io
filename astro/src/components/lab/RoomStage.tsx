@@ -1,5 +1,7 @@
 import { useId, useRef, useState, type PointerEvent } from 'react';
 import FigureCanvas from '../ui/FigureCanvas';
+import RoomAppearanceSwitch from './RoomAppearanceSwitch';
+import type { RoomAppearance } from '../../figures/kit/roomstyles';
 import './room-stage.css';
 
 interface Props {
@@ -9,6 +11,7 @@ interface Props {
 const clampAngle = (angle: number): number => Math.max(0, Math.min(180, Math.round(angle)));
 
 export default function RoomStage({ id, aspect }: Props) {
+  const [appearance, setAppearance] = useState<RoomAppearance>('colour');
   const [angle, setAngle] = useState(90);
   const [view, setView] = useState<'eye' | 'isometric'>('eye');
   const [zoom, setZoom] = useState(1);
@@ -61,9 +64,10 @@ export default function RoomStage({ id, aspect }: Props) {
           }
         }}
       >
-        <FigureCanvas key={id} id={id} data={{ angle, view, zoom }} />
+        <FigureCanvas key={id} id={id} data={{ angle, view, zoom, appearance }} />
       </div>
       <div className="room-toolbar">
+        <RoomAppearanceSwitch value={appearance} onChange={setAppearance} />
         <label className="room-orbit" htmlFor={rangeId}>
           <span>View angle</span>
           <input

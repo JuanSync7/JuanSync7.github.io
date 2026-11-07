@@ -3,11 +3,13 @@ import { corners } from './tableparts';
 import { roomPlan, type RoomSide } from './roomplan';
 import { tabletop, type TableScene } from './tabletop';
 import { roomModels } from './tableroom';
+import type { RoomAppearance } from './roomstyles';
 
 export interface RoomControls {
   angle: number;
   view: 'eye' | 'isometric';
   zoom: number;
+  appearance: RoomAppearance;
 }
 export interface RoomView {
   position: Vec3;
@@ -19,10 +21,11 @@ export interface RoomView {
   controls: RoomControls;
 }
 export function roomControls(data: unknown): RoomControls {
-  const controls: RoomControls = { angle: 90, view: 'eye', zoom: 1 };
+  const controls: RoomControls = { angle: 90, view: 'eye', zoom: 1, appearance: 'monochrome' };
   if (typeof data !== 'object' || data === null) return controls;
   if ('angle' in data && typeof data.angle === 'number' && Number.isFinite(data.angle))
     controls.angle = Math.max(0, Math.min(180, data.angle));
+  if ('appearance' in data && data.appearance === 'colour') controls.appearance = 'colour';
   if ('view' in data && data.view === 'isometric') controls.view = 'isometric';
   if ('zoom' in data && typeof data.zoom === 'number' && Number.isFinite(data.zoom))
     controls.zoom = Math.max(0.8, Math.min(1.6, data.zoom));

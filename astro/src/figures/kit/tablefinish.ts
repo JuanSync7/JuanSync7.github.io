@@ -21,7 +21,7 @@ export function tableFinish(
     strength = 1;
   if (kind === 'room') {
     tone =
-      detail === 'wall'
+      detail === 'wall' || detail === 'brick'
         ? 'panel'
         : detail === 'floor'
           ? 'panel2'
@@ -29,7 +29,11 @@ export function tableFinish(
             ? 'line2'
             : detail === 'stitch'
               ? 'inkFaint'
-              : detail === 'shade'
+              : detail === 'shade' ||
+                  detail === 'ceramic' ||
+                  detail === 'leaf' ||
+                  detail === 'upholstery' ||
+                  detail === 'window'
                 ? 'inkFaint'
                 : detail === 'light'
                   ? 'inkStrong'
@@ -37,19 +41,19 @@ export function tableFinish(
                     ? 'ground2'
                     : detail === 'metal'
                       ? 'inkFaint'
-                      : detail === 'inlay'
+                      : detail === 'inlay' || detail === 'cabinet' || detail === 'acoustic' || detail === 'book'
                         ? 'line4'
-                        : detail === 'tile'
+                        : detail === 'tile' || detail === 'floorAlt'
                           ? 'line2'
                           : 'line3';
     roughness = detail === 'metal' ? 0.35 : 0.95;
     metalness = detail === 'metal' ? 0.2 : 0;
     strength =
-      detail === 'wall'
+      detail === 'wall' || detail === 'brick'
         ? 0.4
         : detail === 'floor'
           ? 0.2
-          : detail === 'tile'
+          : detail === 'tile' || detail === 'floorAlt'
             ? 0.32
             : detail === 'rug'
               ? 0.5
@@ -67,7 +71,7 @@ export function tableFinish(
     if (detail === 'top') tone = theme === 'lab' || theme === 'kitchen' ? 'inkSoft' : 'line4';
     if (detail === 'frame') tone = theme === 'lab' ? 'inkMuted' : 'line3';
     if (detail === 'panel') tone = 'inkFaint';
-    if (detail === 'inlay') {
+    if (detail === 'inlay' || detail === 'cabinet' || detail === 'acoustic' || detail === 'book') {
       tone = 'inkMuted';
       roughness = 0.9;
     }
@@ -81,7 +85,7 @@ export function tableFinish(
       roughness = 0.25;
       metalness = 0.5;
     }
-    if (detail === 'tile') {
+    if (detail === 'tile' || detail === 'floorAlt') {
       tone = 'ink2';
       roughness = 0.2;
     }
