@@ -33,7 +33,7 @@ export function tallCabinet(p: TableDraft, theme: ThemeId, variant: number): voi
     p.material('cabinet', () => {
       for (const x of [-w / 4, w / 4]) p.box(x, 0.3, 0.51, w / 2 - 0.08, h - 0.45, 0.06, 0.025);
     });
-  if (!open || theme === 'dining' || theme === 'bar')
+  if (!open)
     p.material('metal', () => {
       for (const x of [-0.11, 0.11]) p.tube([x, 1.65, 0.59], [x, 2.25, 0.59], 0.026, 8);
     });
