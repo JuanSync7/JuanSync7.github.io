@@ -6,6 +6,7 @@ import {pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
 import {build} from 'esbuild';
 import {kernelFingerprint} from './fingerprint.mjs';
+import {islandFingerprint} from './island-fingerprint.mjs';
 const hash=s=>createHash('sha256').update(s).digest('hex');
 
 export function validateSnapshot(snapshot){
@@ -19,6 +20,7 @@ export function validateSnapshot(snapshot){
  if(snapshot.schema==='voxel-historical-kernel/1')assert(snapshot.entries.every(e=>e.path.startsWith('astro/src/figures/kit/voxel-world/')),'VXL-VAULT: historical kernel contains unrelated source');
  assert(bytes<=16*1024*1024,'VXL-VAULT: source snapshot exceeds byte budget');
  assert(/^[a-f0-9]{64}$/.test(snapshot.kernelFingerprint),'VXL-VAULT: missing generator fingerprint');
+ if('islandFingerprint' in snapshot)assert(/^[a-f0-9]{64}$/.test(snapshot.islandFingerprint),'VXL-VAULT: invalid island fingerprint');
  return snapshot;
 }
 
@@ -30,6 +32,7 @@ export async function replaySnapshot({snapshot:input,support,seed=42,biome,expec
   for(const artifact of [base,snapshot].filter(Boolean)){if(artifact.schema==='voxel-historical-kernel/1')rmSync(join(dir,'astro/src/figures/kit/voxel-world'),{recursive:true,force:true});for(const entry of artifact.entries){const target=join(dir,entry.path);mkdirSync(dirname(target),{recursive:true});writeFileSync(target,entry.content);}}
   const astro=join(dir,'astro'),core=join(astro,'src/figures/kit/voxel-world');
   assert.equal(kernelFingerprint(core),snapshot.kernelFingerprint,'VXL-VAULT: reconstructed generator differs');
+  if(snapshot.islandFingerprint)assert.equal(islandFingerprint(astro),snapshot.islandFingerprint,'VXL-VAULT: reconstructed island differs');
   const modulePath=join(dir,'kernel.mjs');await build({stdin:{contents:`export {generateWorld} from './src/figures/kit/voxel-world/generate';export {planWorld} from './src/figures/kit/voxel-world/plan';`,resolveDir:astro},outfile:modulePath,bundle:true,platform:'node',format:'esm'});
   const kernel=await import(pathToFileURL(modulePath)),spec=snapshot.failure?.spec??kernel.planWorld(Number(seed),biome);
   process.chdir(astro);

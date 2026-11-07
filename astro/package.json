@@ -49,7 +49,9 @@
     "voxel:gpu": "node scripts/voxel/gpu-check.mjs",
     "voxel:gallery": "node scripts/voxel/gallery.mjs --all-models",
     "voxel:vault-check": "node scripts/voxel/vault-selftest.mjs",
-    "voxel:stress": "node scripts/voxel/stress.mjs"
+    "voxel:stress": "node scripts/voxel/stress.mjs",
+    "voxel:island-check": "node scripts/voxel/island-check.mjs",
+    "voxel:island-browser": "node scripts/voxel/island-browser.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",

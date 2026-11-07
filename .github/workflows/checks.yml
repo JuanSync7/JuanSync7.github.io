@@ -27,7 +27,7 @@ jobs:
       - name: Types, lint, figure source and post shape checks
         run: npm run check
       - name: Voxel generation, diversity, negative fixtures and motion
-        run: npm run voxel:check
+        run: npm run voxel:check && npm run voxel:island-check
       - name: Post check selftest (every rule still catches its broken post)
         run: npm run posts:selftest
       - name: Hardware geometry, seed and SVG checks
@@ -39,7 +39,7 @@ jobs:
       - name: Install Chromium for the figure look
         run: npx playwright install --with-deps chromium
       - name: Voxel GPU, controls, biome profiles and snapshot replay
-        run: npm run voxel:gpu && npm run voxel:browser && npm run voxel:gallery -- --profile && npm run voxel:vault-check
+        run: npm run voxel:gpu && npm run voxel:browser && npm run voxel:island-browser && npm run voxel:gallery -- --profile && npm run voxel:vault-check
       - name: Voxel evidence
         if: always()
         uses: actions/upload-artifact@v4
