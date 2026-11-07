@@ -1,23 +1,11 @@
-.vault-hero { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--hf-space-16); align-items: center; padding-block: var(--nt-section-y); }
-.vault-hero-copy { display: flex; flex-direction: column; align-items: flex-start; gap: var(--hf-space-6); }
+.vault-hero { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--hf-space-16); align-items: start; min-height: var(--vc-scene-length); padding-block: var(--nt-section-y); }
+.vault-hero-copy { position: sticky; top: var(--vc-sticky-top); display: flex; flex-direction: column; align-items: flex-start; gap: var(--hf-space-6); }
 .vault-hero h1 { font-size: var(--pr-hero-title-size); line-height: var(--nt-lh-tight); letter-spacing: var(--pr-title-tracking); }
 .vault-hero h1 span { text-decoration-line: underline; text-decoration-color: var(--pr-label); text-decoration-thickness: var(--pr-section-rule-height); text-underline-offset: var(--hf-space-3); }
+.vault-cabinet-stage { position: sticky; top: var(--vc-sticky-top); min-width: 0; }
 .vault-lead { max-width: var(--nt-measure); font-size: var(--pr-lead-size); }
 .vault-actions { display: flex; flex-wrap: wrap; gap: var(--hf-space-5); align-items: center; }
 .vault-boundary { margin-top: var(--hf-space-2) !important; max-width: var(--nt-measure); }
-.vault-stack-stage { min-width: 0; perspective: var(--pr-deck-perspective); }
-/* Transparent 3D container planes must not intercept their real paper links. */
-.vault-stack-stage, .vault-stack, .vault-stack-item { pointer-events: none; }
-.vault-stack { position: relative; list-style: none; width: min(100%, var(--pr-deck-width)); height: var(--pr-deck-height); margin: 0 auto; padding: 0; transform-style: preserve-3d; }
-.vault-stack-item { position: absolute; inset: 0 auto auto 0; width: 100%; transform: translateY(calc(var(--sheet-index) * var(--pr-deck-step))) translateZ(calc(var(--sheet-index) * var(--pr-deck-depth))) rotateX(var(--pr-deck-rotate-x)) rotateY(var(--pr-deck-rotate-y)) rotateZ(var(--pr-deck-tilt)); }
-.vault-stack-item:focus-within { z-index: var(--hf-z-content); }
-.vault-stack .vault-sheet { display: flex; width: 100%; min-height: var(--pr-deck-card-height); pointer-events: auto; }
-.vault-stack .pa-face { width: 100%; justify-content: space-between; align-items: flex-start; padding: var(--hf-space-5); }
-.vault-sheet-copy { display: flex; flex-direction: column; align-items: flex-start; gap: var(--hf-space-4); }
-.vault-sheet-meta { font-family: var(--nt-mono); font-size: var(--nt-fs-caption); }
-.vault-sheet-copy strong { font-family: var(--hf-hand); font-size: var(--pr-deck-title-size); font-weight: 600; text-align: left; line-height: var(--nt-lh-heading); }
-.vault-sheet .pa-icon { width: var(--hf-space-10); height: var(--hf-space-10); }
-.vault-stack-caption { text-align: center; margin-top: var(--hf-space-6) !important; }
 .vault-chapters { display: flex; flex-wrap: wrap; align-items: center; gap: var(--hf-space-4) var(--hf-space-8); padding-block: var(--hf-space-4); border-block: 1px solid var(--pr-rule); position: sticky; top: var(--hf-space-16); z-index: var(--hf-z-content); background: var(--nt-ground); }
 .vault-scroll-progress { position: absolute; bottom: 0; left: var(--nt-gutter); width: calc(100% - var(--nt-gutter) * 2); height: var(--pr-section-rule-height); background: var(--pr-label); transform: scaleX(0); transform-origin: left; pointer-events: none; }
 .pr-landing [data-presentation-section] { scroll-margin-top: var(--pr-scroll-inset); }
@@ -29,6 +17,7 @@ html:has(.pr-landing) { scroll-behavior: smooth; }
 .vault-heading { display: flex; flex-direction: column; gap: var(--hf-space-5); margin-bottom: var(--hf-space-12); max-width: var(--nt-measure); }
 .vault-section h2 { font-size: var(--pr-section-size); line-height: var(--nt-lh-heading); letter-spacing: var(--nt-tracking-heading); }
 .vault-benefits { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--hf-space-10); }
+.vault-benefit-mask { overflow: clip; }
 .vault-benefits article { display: flex; flex-direction: column; gap: var(--hf-space-4); border-left: 1px solid var(--pr-rule); padding-left: var(--hf-space-6); }
 .vault-benefits h3 { font-size: var(--nt-fs-h3); }
 .vault-small-note { margin-top: var(--hf-space-10) !important; max-width: var(--nt-measure); }
@@ -46,6 +35,8 @@ html:has(.pr-landing) { scroll-behavior: smooth; }
 .vault-ending { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: var(--hf-space-12); align-items: center; }
 .vault-ending > div { display: flex; flex-direction: column; align-items: flex-start; gap: var(--hf-space-5); }
 @media (max-width: 1000px) {
+  .vault-hero { min-height: 0; }
+  .vault-hero-copy, .vault-cabinet-stage { position: static; }
   .vault-hero { grid-template-columns: minmax(0, 1fr); gap: var(--hf-space-12); }
   .vault-hero-copy { max-width: var(--nt-measure); }
   .vault-benefits { gap: var(--hf-space-6); }
@@ -60,9 +51,8 @@ html:has(.pr-landing) { scroll-behavior: smooth; }
   .vault-chapters { gap: var(--hf-space-2) var(--hf-space-5); }
 }
 @media (prefers-reduced-motion: reduce) {
+  .vault-hero { min-height: 0; }
+  .vault-hero-copy, .vault-cabinet-stage { position: static; }
   html:has(.pr-landing) { scroll-behavior: auto; }
   .vault-scroll-progress { display: none; }
-  .vault-stack { height: auto; display: grid; gap: var(--hf-space-4); }
-  .vault-stack-item { position: static; transform: none; }
-  .vault-stack .vault-sheet { min-height: var(--nt-hit); }
 }

@@ -2,6 +2,14 @@
 
 ## 2026-11-06
 
+The vault hero now uses a physical hairline filing cabinet: its drawer opens with scroll, three
+folders rise on hover or focus and native links open the matching guides. GSAP SplitText masks
+heading words into view; staggered benefits and guide cards settle as the reader scrolls. Desktop
+uses a sticky hero, while phones and reduced-motion readers keep normal flow. A generated poster
+preserves the cabinet and links without JavaScript; source hashes make poster updates repeatable.
+Targeted figure sheets and browser captures cover the object, folder routes, responsive layout,
+scroll reversal, reduced motion and the static fallback.
+
 The vault landing now has reversible GSAP scroll motion: its paper stack moves with the hero,
 headings and feature cards settle into place, and section dividers draw with scroll progress. A
 sticky chapter bar tracks the page and keeps anchor headings clear of both navigation rows.

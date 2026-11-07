@@ -1,0 +1,47 @@
+name: Export cabinet poster
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/cabinet-poster.yml'
+      - 'astro/src/figures/vault-cabinet.ts'
+      - 'astro/src/figures/define.ts'
+      - 'astro/src/figures/kit/**'
+      - 'astro/src/styles/tokens/palette.ts'
+      - 'astro/src/styles/tokens/presentation.css'
+      - 'astro/src/hooks/useFigureLoop.ts'
+      - 'astro/src/components/ui/FigureCanvas.tsx'
+      - 'astro/src/components/figures/FigureBench.tsx'
+      - 'astro/src/figures/registry.ts'
+      - 'astro/scripts/presentation/cabinet-poster*.mjs'
+      - 'astro/scripts/presentation/browser-check.mjs'
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: astro
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: astro/package-lock.json
+      - run: npm ci
+      # Export independently of the freshness gate: a changed renderer must be able
+      # to produce its replacement image before Checks can accept that image.
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run presentation:browser -- --cabinet-poster-only
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cabinet-poster-export
+          path: |
+            astro/presentation-out/cabinet-poster.png
+            astro/presentation-out/cabinet-poster-source.json

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { checkCabinetPoster } from './cabinet-poster.mjs';
 import { readMotionToken } from '../../src/components/presentation/motion-values.ts';
 
 const site = fileURLToPath(new URL('../../', import.meta.url));
@@ -120,6 +121,7 @@ function selftest(tokens) {
 }
 
 function checkSource(tokens) {
+  checkCabinetPoster();
   const palette = checkPalette(tokens);
   assert.deepEqual(palette.errors, [], palette.errors.join('\n'));
   const template = read('src/layouts/PresentationLayout.astro');
@@ -178,8 +180,8 @@ function checkBuilt() {
     assert(guideHtml[owner].includes(`/vault/${id}.svg`), `${owner}: preserve the diagram download`);
     assert.equal(read(`dist/vault/${id}.svg`), read(`public/vault/${id}.svg`));
   }
-  const allowed = ['index.html', ...contract.guideSlugs, 'vault-architecture.svg', 'vault-knowledge-graph.svg', 'vault-search.svg'].sort();
-  assert.deepEqual(readdirSync(resolve(site, 'dist/vault')).sort(), allowed, 'Only curated pages and schematics belong in the public vault directory');
+  const allowed = ['index.html', ...contract.guideSlugs, 'vault-architecture.svg', 'vault-knowledge-graph.svg', 'vault-search.svg', 'vault-cabinet.png'].sort();
+  assert.deepEqual(readdirSync(resolve(site, 'dist/vault')).sort(), allowed, 'Only curated pages, schematics and the generated cabinet poster belong in the public vault directory');
   const pages = [landing, ...Object.values(guideHtml)].join('\n');
   assert(!/System\/Assets\/Vault|wiki-entities\.json|reference-state\.json|github\.com\/JuanSync7\/experience-vault/.test(pages),
     'Private machine indexes and repository links must not enter the public pages');

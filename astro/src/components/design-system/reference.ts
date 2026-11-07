@@ -11,6 +11,9 @@ const files = import.meta.glob<string>(
     '/src/styles/night*.css',
     '/src/styles/learn-paper.css',
     '/src/components/trackers/{_chrome,tracker-night}.css',
+    '/src/components/vault/{VaultFileCabinet.tsx,useCabinetPose.ts,vault-file-cabinet.css}',
+    '/src/components/presentation/{heading-reveals.ts,landing-scroll.ts,motion.ts,motion-values.ts}',
+    '/src/figures/vault-cabinet.ts',
   ],
   { query: '?raw', import: 'default', eager: true },
 );
