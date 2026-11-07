@@ -1,0 +1,10 @@
+{
+  "note": "Full-colour room mode is explicitly requested and uses its own declared material/light tokens. The global night palette and figure thresholds remain unchanged; monochrome still passes them.",
+  "coverageMin": 0.08,
+  "coverageMax": 0.94,
+  "colourShareMin": 0.03,
+  "contrastMin": 0.18,
+  "clippedHighlightsMax": 0.08,
+  "modeDifferenceMin": 0.02,
+  "stillDifferenceMax": 0.0004
+}

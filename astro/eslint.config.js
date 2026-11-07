@@ -55,7 +55,7 @@ export default tseslint.config(
   // Figures are measured by the figure audit (check.mjs `length`): 200 lines, or 350 for a
   // three.js scene, which this config cannot tell apart. The audit is the gate for them.
   {
-    files: ['src/figures/*.ts'],
+    files: ['src/figures/*.ts', 'src/figures/templates/*.ts'],
     rules: { 'max-lines': ['error', { max: 350, skipBlankLines: true, skipComments: true }] },
   },
 

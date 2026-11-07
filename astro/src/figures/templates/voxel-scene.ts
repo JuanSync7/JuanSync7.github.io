@@ -1,4 +1,5 @@
 import { defineTemplate } from '../defineTemplate';
+import { defineThreeFigure } from '../defineThree';
 import {
   planWorld,
   generateWorld,
@@ -25,6 +26,7 @@ export default defineTemplate<WorldSpec, World, WorldView>({
   setup: ({ params }) => generateWorld(params),
   draw: drawWorldFallback,
   three: {
+    renderer: defineThreeFigure,
     build: (env) => buildWorldView(env, env.params, env.params.layoutSeed),
     update: updateWorldView,
   },

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import FigureCanvas from '../ui/FigureCanvas';
+import RoomStage from './RoomStage';
 import VoxelWorldControls from './VoxelWorldControls';
 import VoxelStage from './VoxelStage';
 import { DEFAULT_VIEW } from './voxel-view';
@@ -102,6 +103,8 @@ export default function TemplateLab({ template }: Props) {
     <div className={`lab${voxel ? ' lab-voxel' : ''}`}>
       {voxel ? (
         <VoxelStage id={id} aspect={tpl.aspect} view={view} onView={setView} onWorldInfo={setWorldInfo} />
+      ) : template === 'pixel-still' ? (
+        <RoomStage id={id} aspect={tpl.aspect} />
       ) : (
         <div className="lab-main" style={{ aspectRatio: String(tpl.aspect) }}>
           <FigureCanvas key={id} id={id} />
@@ -176,7 +179,7 @@ export default function TemplateLab({ template }: Props) {
               aria-label={`Seed ${s}: ${tpl.instance(s).variant}`}
             >
               <span className="lab-thumb-stage">
-                <FigureCanvas key={voxel ? s : undefined} id={`${template}~${s}`} freezeAt={voxel ? 1.2 : undefined} />
+                <FigureCanvas key={`${template}~${s}`} id={`${template}~${s}`} freezeAt={voxel ? 1.2 : undefined} />
               </span>
               <span className="lab-thumb-label">
                 {s} · {tpl.instance(s).variant}

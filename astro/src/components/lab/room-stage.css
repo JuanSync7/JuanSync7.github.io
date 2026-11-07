@@ -1,0 +1,56 @@
+.room-viewer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hf-space-3);
+}
+.room-stage {
+  mask-image: none;
+  touch-action: pan-y;
+  cursor: grab;
+}
+.room-stage[data-dragging='true'] {
+  cursor: grabbing;
+}
+.room-stage:focus-visible {
+  outline: 2px solid var(--nt-signal);
+  outline-offset: var(--hf-space-1);
+}
+.room-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--hf-space-4);
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-meta);
+  color: var(--nt-ink-soft);
+}
+.room-orbit {
+  display: flex;
+  align-items: center;
+  gap: var(--hf-space-3);
+  flex: 1 1 var(--nt-col);
+  min-width: 0;
+}
+.room-orbit input {
+  flex: 1;
+  min-width: 0;
+  accent-color: var(--nt-signal);
+}
+.room-orbit output {
+  min-width: 5ch;
+  text-align: right;
+}
+.room-presets {
+  display: flex;
+  align-items: center;
+  gap: var(--hf-space-3);
+}
+.room-presets button[aria-pressed='true'] {
+  color: var(--nt-signal);
+}
+.room-help {
+  margin: 0;
+  color: var(--nt-ink-muted);
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-caption);
+}

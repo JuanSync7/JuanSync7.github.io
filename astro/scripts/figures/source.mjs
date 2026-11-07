@@ -27,15 +27,16 @@ export function readMeta(path) {
   const get = (k) => spec.match(new RegExp(`\\n\\s*${k}:\\s*('([^']*)'|[^,\\n]+)`));
   const str = (k) => get(k)?.[2];
   const bool = (k) => get(k)?.[1]?.trim() === 'true';
+  const three = /defineThreeFigure/.test(raw) || str('style') === 'three';
   return {
     id: basename(path, '.ts'),
     title: str('title') ?? basename(path, '.ts'),
     motion: str('motion') ?? 'still',
     answers: bool('answers'),
     bleed: bool('bleed'),
-    three: /defineThreeFigure/.test(raw),
+    three,
     template: /export default defineTemplate/.test(raw),
-    style: /defineThreeFigure/.test(raw) ? 'three' : str('style') ?? '',
+    style: three ? 'three' : str('style') ?? '',
     expectLook: raw.match(/^\/\/ expect-look:\s*(.*)$/m)?.[1],
   };
 }
