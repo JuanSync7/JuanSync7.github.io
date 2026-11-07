@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {mkdirSync,writeFileSync} from 'node:fs';
-import {kernelFingerprint} from './fingerprint.mjs';
+import {mkdirSync,writeFileSync,readFileSync} from 'node:fs';
+import {kernelFingerprint,verifiedFingerprint} from './fingerprint.mjs';
+const fingerprint=kernelFingerprint();
 import {loadKernel} from './load.mjs';
 import {auditWorld,rules} from './validate.mjs';
 import {auditDiversity} from './diversity.mjs';
@@ -19,6 +20,9 @@ for(let seed=0;seed<rules.atlasSeeds;seed++) {
   if(seed%31===0)assert.deepEqual(w,generateWorld(planWorld(seed)),`VXL-DETERMINISM: seed ${seed}`);
 }
 auditWorld(generateWorld(planWorld(81195841)));worlds++;
+auditWorld(generateWorld(planWorld(81195841,'city')));worlds++;
+auditWorld(generateWorld(planWorld(28983808)));worlds++;
+const originalFocal=JSON.parse(readFileSync('scripts/voxel/fixtures/focal-after-canopy.json','utf8'));auditWorld(generateWorld(originalFocal.spec));worlds++;
 for(const biome of BIOMES)for(let seed=0;seed<14;seed++){auditWorld(generateWorld(planWorld(seed,biome)));worlds++;}
 assert(sets.biomes.size>=rules.minBiomes,'VXL-DIVERSITY: biome coverage');assert(sets.landforms.size>=rules.minLandforms,'VXL-DIVERSITY: terrain-form coverage');
 assert(sets.houseCounts.size>=rules.minHouseCounts&&emptySettlements>0,'VXL-DIVERSITY: forced/same building counts');
@@ -28,7 +32,7 @@ assert(mixed>=rules.minMixedWorlds,'VXL-DIVERSITY: insufficient biome transition
 assert(sets.houseSites.size>=20,'VXL-DIVERSITY: fixed building coordinates');
 const one=stream(42,'terrain'),two=stream(42,'terrain');for(let i=0;i<100;i++){stream(42,'props')();assert.equal(one(),two(),'VXL-STREAMS: independent stream interference');}
 for(const bad of [-1,1.5,NaN,Infinity,1000000000])assert.throws(()=>planWorld(bad),'VXL-SEED: invalid seed accepted');
-const report={schema:'voxel-audit/2',kernelFingerprint:kernelFingerprint(),worlds,naturalSeeds:rules.atlasSeeds,regressions:[81195841],mixed,emptySettlements,zeroBoats,maxBlocks,diversity:Object.fromEntries(Object.entries(sets).map(([k,v])=>[k,v.size])),records};
+const report={schema:'voxel-audit/2',kernelFingerprint:verifiedFingerprint(fingerprint),worlds,naturalSeeds:rules.atlasSeeds,regressions:[{seed:81195841,biome:'natural'},{seed:81195841,biome:'city'},{seed:28983808,publicSeed:949283578,biome:'natural'},{seed:28983808,publicSeed:949283578,fixture:'focal-after-canopy.json'}],mixed,emptySettlements,zeroBoats,maxBlocks,diversity:Object.fromEntries(Object.entries(sets).map(([k,v])=>[k,v.size])),records};
 auditDiversity(report);
 report.sha256=createHash('sha256').update(JSON.stringify(report)).digest('hex');mkdirSync('figures-out',{recursive:true});writeFileSync('figures-out/voxel-agent-report.json',JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify({...report,records:undefined},null,2));

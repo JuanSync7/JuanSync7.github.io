@@ -2,6 +2,7 @@ import { Blocks } from './builder';
 import type { Recipe, Material } from './types';
 
 export const GEOLOGY_DETAILS = [
+  'obsidian shard',
   'sandstone arch',
   'sandstone pillar',
   'basalt cluster',
@@ -49,7 +50,7 @@ export function geologyDetail(r: Recipe, b: Blocks): boolean {
         ? 'worldLilac'
         : r.kind === 'ice cluster'
           ? 'worldIce'
-          : r.kind === 'basalt cluster'
+          : r.kind === 'basalt cluster' || r.kind === 'obsidian shard'
             ? 'line3'
             : 'worldStone';
     b.put(0, 0, 0, material);

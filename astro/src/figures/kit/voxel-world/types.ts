@@ -1,3 +1,4 @@
+import type { Environment, InterestPoint, PlacementAnchor, PlaceGroup } from './ecology-types';
 import type { NightKey } from '../../../styles/tokens/palette';
 
 export const BIOMES = [
@@ -31,7 +32,7 @@ export const LANDFORMS = [
 export type Landform = (typeof LANDFORMS)[number];
 export type Material = NightKey;
 export interface WorldSpec {
-  version: 2;
+  version: 3;
   layoutSeed: number;
   biome: Biome;
   secondary: Biome | null;
@@ -65,6 +66,7 @@ export interface Recipe {
   variant: number;
   turn: number;
   priority: number;
+  anchor?: PlacementAnchor;
 }
 export interface Prop {
   kind: string;
@@ -94,6 +96,8 @@ export interface Landmark {
   height: number;
 }
 export interface GenerationReport {
+  terrain: { roofColumnsRemoved: number };
+  stages: string[];
   planned: Record<string, number>;
   placed: Record<string, number>;
   rejected: Record<string, number>;
@@ -104,6 +108,10 @@ export interface World {
   spec: WorldSpec;
   heights: Map<string, number>;
   bottoms: Map<string, number>;
+  environment: Map<string, Environment>;
+  surface: Map<string, Material>;
+  points: InterestPoint[];
+  groups: PlaceGroup[];
   biomes: Map<string, Biome>;
   ceilings: Map<string, number>;
   roofs: Map<string, number>;
@@ -121,8 +129,39 @@ export interface World {
 export const cell = (x: number, z: number): string => `${x},${z}`;
 export const voxel = (x: number, y: number, z: number): string => `${x},${y},${z}`;
 export const COLD = new Set<Biome>(['snow', 'tundra', 'frozen']);
-export const BUILDINGS = new Set(['cottage', 'tower', 'hut', 'tent', 'ruin']);
-export const TREES = new Set(['tree', 'pine', 'palm', 'jungle tree', 'dead tree', 'birch', 'willow', 'bamboo']);
+export const BUILDINGS = new Set([
+  'cottage',
+  'tower',
+  'hut',
+  'tent',
+  'ruin',
+  'watchtower',
+  'windmill',
+  'jungle shrine',
+  'sandstone shrine',
+  'ruined gateway',
+  'greenhouse',
+  'townhouse',
+  'workshop',
+  'clock tower',
+  'forge',
+]);
+export const TREES = new Set([
+  'tree',
+  'pine',
+  'palm',
+  'jungle tree',
+  'dead tree',
+  'birch',
+  'willow',
+  'bamboo',
+  'ancient tree',
+  'baobab',
+  'acacia',
+  'mangrove',
+  'juniper',
+  'cedar',
+]);
 export interface Theme {
   ground: Material;
   leaf: Material;

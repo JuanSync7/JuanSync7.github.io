@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-11-07
+
+Voxel worlds gain wider terrain, layered ecological communities and themed places with related
+vegetation, supplies and static wildlife. All 135 live catalog types realize valid placements in
+the balanced cohort. Surface merging, shared GPU waves, supported cave roofs and exact 3D
+clearance keep the larger worlds coherent. Place focus, closer zoom, pan and touch gestures make
+the details inspectable. One voxel agent operates the executable pipeline, eleven playbooks,
+regression checks and complete source snapshots that can reproduce earlier faults.
+
 ## 2026-11-06
 
 Voxel mainland edges gain eroded outlines, biome strata and a closed, stepped underside that
@@ -14,6 +23,13 @@ accepted objects have measured clearance, support, headroom and reserved access.
 keyboard camera controls retain their pose; sunlight controls and a pausable orbit complement
 exposed-face geometry and fitted framing. One voxel agent operates seven playbooks, with replay,
 negative fixtures, diversity checks and a hashed private-vault mirror for future feedback.
+The vault hero now uses a physical hairline filing cabinet: its drawer opens with scroll, three
+folders rise on hover or focus and native links open the matching guides. GSAP SplitText masks
+heading words into view; staggered benefits and guide cards settle as the reader scrolls. Desktop
+uses a sticky hero, while phones and reduced-motion readers keep normal flow. A generated poster
+preserves the cabinet and links without JavaScript; source hashes make poster updates repeatable.
+Targeted figure sheets and browser captures cover the object, folder routes, responsive layout,
+scroll reversal, reduced motion and the static fallback.
 
 The vault landing now has reversible GSAP scroll motion: its paper stack moves with the hero,
 headings and feature cards settle into place, and section dividers draw with scroll progress. A

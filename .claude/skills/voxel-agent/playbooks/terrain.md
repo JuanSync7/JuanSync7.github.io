@@ -29,3 +29,5 @@ seabed and named geological features.
 missing declared transitions, unsupported liquid or a ceiling that clips objects.
 **Check:** terrain/transition/liquid/headroom checks and visual landform recognition.
 **Tools:** `terrain`, `edges`, `climate`, `ground`, `water-features`; numbered seed atlas.
+
+Cave support: after final foundations and per-column base shaping, seed roof reachability from actual rock contacts, flood through overlapping neighboring roof columns, then remove free fragments and their headroom entries before emitting geometry. Record removed columns in report.terrain. An independent connected-component checker verifies every retained ceiling component touches terrain and every declared roof voxel is emitted. Skylight noise must not leave floating cap fragments.

@@ -48,11 +48,20 @@ export function terrain(spec: WorldSpec) {
       if (ocean) height *= Math.min(1, Math.max(0.12, (1 - coast) * 5));
       if (spec.landform === 'cavern') {
         height = 3 + Math.floor(n * 3);
-        if (Math.abs(x) >= r - 4 || z <= -rz + 4) height = 17 + Math.floor(n * 3);
-        else if (z < -rz * 0.16 - Math.cos(x * 0.15) * 2) {
-          const arch = 10 + Math.floor(Math.cos(((x / r) * Math.PI) / 2) * 7 + n * 2);
-          roofs.set(cell(x, z), arch);
-          ceilings.set(cell(x, z), arch - (Math.abs(x * 17 + z * 29 + spec.layoutSeed) % 19 === 0 ? 3 : 0));
+        const wall = 4 + Math.round((noise(x * 0.1 + 7, z * 0.1) + 1) * 2),
+          vault = 13 + Math.floor(Math.cos(((x / r) * Math.PI) / 2) * 6 + Math.cos((z / rz) * 2) * 2 + n * 3);
+        if (Math.abs(x) >= r - wall || z <= -rz + wall) height = 19 + Math.floor(n * 4);
+        else if (z < -rz * 0.1 + Math.sin(x * 0.12) * 4 + noise(x * 0.08, z * 0.08) * 3) {
+          const skylight = Math.abs(x) < r * 0.65 && z > -rz * 0.74 && noise(x * 0.12 + 31, z * 0.12 - 19) > 0.34;
+          if (!skylight) {
+            roofs.set(cell(x, z), vault);
+            ceilings.set(cell(x, z), vault - (Math.abs(x * 17 + z * 29 + spec.layoutSeed) % 23 === 0 ? 3 : 0));
+          } else if (
+            landmarks.filter((l) => l.kind === 'cave skylight').length < 2 &&
+            Math.abs(x) % 13 === 0 &&
+            Math.abs(z) % 11 === 0
+          )
+            landmarks.push({ kind: 'cave skylight', x, z, height: height + 1 });
         }
       }
       heights.set(cell(x, z), Math.max(1, Math.min(40, Math.floor(height))));

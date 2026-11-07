@@ -1,3 +1,5 @@
+import { publishWorldInfo } from './interests';
+import { orbitState, orbitPhase, viewBounds } from './pose';
 import { viewOf } from './view';
 import { Vector3 } from 'three';
 import type { TemplateFrame } from '../../defineTemplate';
@@ -13,6 +15,7 @@ interface Face {
   normal: Point;
   material: Material;
 }
+const orbits = new WeakMap<World, ReturnType<typeof orbitState>>();
 const surfaces = new WeakMap<World, Face[]>();
 
 function worldFaces(world: World): Face[] {
@@ -119,12 +122,17 @@ export function drawWorldFallback({
   data,
   t,
   unseen,
+  still,
 }: TemplateFrame<WorldSpec, World>): string {
   if (unseen) return `${params.biome} · ${state.props.length} objects`;
+  publishWorldInfo(state, data);
   const view = viewOf(data),
-    bounds = worldBounds(state),
+    orbit = orbits.get(state) ?? orbitState();
+  orbits.set(state, orbit);
+  const yaw =
+    Math.PI / 4 + params.turn + view.turn + orbitPhase(orbit, t, view.orbit, still) + (pointer.x - 0.5) * hover * 0.08;
+  const bounds = viewBounds(state, worldBounds(state), view, yaw),
     center = bounds.getCenter(new Vector3());
-  const yaw = Math.PI / 4 + params.turn + view.turn + (view.orbit ? t * 0.045 : 0) + (pointer.x - 0.5) * hover * 0.08;
   const sy = Math.sin(yaw),
     cy = Math.cos(yaw),
     sp = Math.sin(Math.max(0.28, Math.min(1.2, view.pitch + params.cameraPitch - 0.67))),

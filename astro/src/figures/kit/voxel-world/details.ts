@@ -1,3 +1,6 @@
+import { NATURE_DETAILS, natureDetail } from './nature-details';
+import { EXPEDITION_DETAILS, expeditionDetail } from './expedition-details';
+import { ANIMALS, animal } from './animals';
 import { Blocks } from './builder';
 import { THEMES, type Recipe, type Block } from './types';
 import { FLORA_DETAILS, floraDetail } from './flora-details';
@@ -5,6 +8,9 @@ import { GEOLOGY_DETAILS, geologyDetail } from './geology-details';
 import { SETTLEMENT_DETAILS, settlementDetail } from './settlement-details';
 
 export const DETAIL_KINDS = new Set([
+  ...NATURE_DETAILS,
+  ...EXPEDITION_DETAILS,
+  ...ANIMALS,
   ...FLORA_DETAILS,
   ...GEOLOGY_DETAILS,
   ...SETTLEMENT_DETAILS,
@@ -40,6 +46,7 @@ export function detail(r: Recipe): Block[] {
   const b = new Blocks(),
     theme = THEMES[r.biome],
     h = r.height;
+  if (natureDetail(r, b) || expeditionDetail(r, b) || animal(r, b)) return b.result(r.turn);
   if (floraDetail(r, b) || geologyDetail(r, b) || settlementDetail(r, b)) return b.result(r.turn);
   if (r.kind === 'giant mushroom' || r.kind === 'mushroom') {
     const size = r.kind === 'mushroom' ? 1 : r.width;

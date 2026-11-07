@@ -1,3 +1,5 @@
+import { publishWorldInfo } from './interests';
+import { orbitState, orbitPhase, viewBounds } from './pose';
 import { viewOf } from './view';
 import { Group } from 'three';
 import type { ThreeEnv, ThreeFrame } from '../../defineThree';
@@ -25,7 +27,7 @@ export function buildWorldView({ scene, camera }: ThreeEnv, spec: WorldSpec, see
   const buildings = world.props.filter((p) => BUILDINGS.has(p.kind)).length,
     trees = world.props.filter((p) => TREES.has(p.kind)).length;
   const readout = `${spec.biome} · ${spec.landform} · ${buildings} shelters · ${trees} trees · ${world.boats.length} boats`;
-  return { world, root, solid, bounds, waterView, effects, light, readout, poseKey: '' };
+  return { world, root, solid, bounds, waterView, effects, light, readout, orbit: orbitState(), poseKey: '' };
 }
 export type WorldView = ReturnType<typeof buildWorldView>;
 export function updateWorldView({
@@ -38,16 +40,23 @@ export function updateWorldView({
   hover,
   data,
   unseen,
+  still,
 }: ThreeFrame<WorldView>): string {
   if (unseen) return state.readout;
+  publishWorldInfo(state.world, data);
   const view = viewOf(data),
     spec = state.world.spec;
-  const yaw = Math.PI / 4 + spec.turn + view.turn + (view.orbit ? t * 0.045 : 0) + (pointer.x - 0.5) * hover * 0.08;
-  const poseKey = `${yaw},${view.pitch},${view.zoom},${w / h}`;
+  const yaw =
+    Math.PI / 4 +
+    spec.turn +
+    view.turn +
+    orbitPhase(state.orbit, t, view.orbit, still) +
+    (pointer.x - 0.5) * hover * 0.08;
+  const poseKey = `${yaw},${view.pitch},${view.zoom},${view.focus},${view.panX},${view.panY},${w / h}`;
   if (poseKey !== state.poseKey) {
     frameWorld(
       camera,
-      state.bounds,
+      viewBounds(state.world, state.bounds, view, yaw),
       yaw,
       Math.max(0.28, Math.min(1.2, view.pitch + spec.cameraPitch - 0.67)),
       view.zoom,

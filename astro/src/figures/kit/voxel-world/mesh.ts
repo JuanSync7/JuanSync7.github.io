@@ -1,96 +1,47 @@
 import { BufferGeometry, Color, Float32BufferAttribute, Mesh, MeshLambertMaterial } from 'three';
 import { hexOf } from '../ink';
-import { voxel, type Block, type Material, type World } from './types';
-import { terrainSolid } from './edges';
+import { surfaceQuads } from './surfaces';
+import type { Block, Material, World } from './types';
 
-const faces: { normal: [number, number, number]; corners: [number, number, number][] }[] = [
-  {
-    normal: [1, 0, 0],
-    corners: [
-      [1, -1, -1],
-      [1, 1, -1],
-      [1, 1, 1],
-      [1, -1, 1],
-    ],
-  },
-  {
-    normal: [-1, 0, 0],
-    corners: [
-      [-1, -1, 1],
-      [-1, 1, 1],
-      [-1, 1, -1],
-      [-1, -1, -1],
-    ],
-  },
-  {
-    normal: [0, 1, 0],
-    corners: [
-      [-1, 1, 1],
-      [1, 1, 1],
-      [1, 1, -1],
-      [-1, 1, -1],
-    ],
-  },
-  {
-    normal: [0, -1, 0],
-    corners: [
-      [-1, -1, -1],
-      [1, -1, -1],
-      [1, -1, 1],
-      [-1, -1, 1],
-    ],
-  },
-  {
-    normal: [0, 0, 1],
-    corners: [
-      [1, -1, 1],
-      [1, 1, 1],
-      [-1, 1, 1],
-      [-1, -1, 1],
-    ],
-  },
-  {
-    normal: [0, 0, -1],
-    corners: [
-      [-1, -1, -1],
-      [-1, 1, -1],
-      [1, 1, -1],
-      [1, -1, -1],
-    ],
-  },
-];
-
-/** Cull against the implicit terrain volume, not just the boundary voxel list. */
+/** Greedy geometry preserves the exact exposed unit faces and shades actual solid contacts. */
 export function blockMesh(blocks: Block[], world?: World): Mesh {
-  const occupied = new Set(blocks.map((b) => voxel(b.x, b.y, b.z)));
-  const solid = (x: number, y: number, z: number): boolean => {
-    if (occupied.has(voxel(x, y, z))) return true;
-    if (!world) return false;
-    return terrainSolid(world, x, y, z);
-  };
   const positions: number[] = [],
     normals: number[] = [],
     colors: number[] = [],
     indices: number[] = [];
-  const palette = new Map<Material, Color>();
-  for (const b of blocks) {
-    let color = palette.get(b.material);
+  const palette = new Map<Material, Color>(),
+    quads = surfaceQuads(blocks, world);
+  let unitFaces = 0;
+  for (const q of quads) {
+    const u = (q.axis + 1) % 3,
+      v = (q.axis + 2) % 3,
+      index = positions.length / 3;
+    let color = palette.get(q.material);
     if (!color) {
-      color = new Color(hexOf(b.material));
-      palette.set(b.material, color);
+      color = new Color(hexOf(q.material));
+      palette.set(q.material, color);
     }
-    const brightness = 0.85 + (Math.abs(b.x * 17 + b.z * 29 + b.y * 13) % 7) / 180;
-    for (const face of faces) {
-      const [dx, dy, dz] = face.normal;
-      if (solid(b.x + dx, b.y + dy, b.z + dz)) continue;
-      const index = positions.length / 3;
-      for (const [x, y, z] of face.corners) {
-        positions.push(b.x + x / 2, b.y + y / 2, b.z + z / 2);
-        normals.push(dx, dy, dz);
-        colors.push(color.r * brightness, color.g * brightness, color.b * brightness);
-      }
-      indices.push(index, index + 1, index + 2, index, index + 2, index + 3);
+    for (let i = 0; i < 4; i++) {
+      const p = [0, 0, 0],
+        n = [0, 0, 0];
+      p[q.axis] = q.plane;
+      n[q.axis] = q.sign;
+      p[u] = q.u - 0.5 + (i === 1 || i === 2 ? q.width : 0);
+      p[v] = q.v - 0.5 + (i >= 2 ? q.height : 0);
+      const brightness = 0.92 * (1 - (q.ao[i] ?? 0) * 0.12);
+      positions.push(...p);
+      normals.push(...n);
+      colors.push(color.r * brightness, color.g * brightness, color.b * brightness);
     }
+    const flip = (q.ao[0] ?? 0) + (q.ao[2] ?? 0) > (q.ao[1] ?? 0) + (q.ao[3] ?? 0);
+    const triangles = flip ? [0, 1, 3, 1, 2, 3] : [0, 1, 2, 0, 2, 3];
+    for (let t = 0; t < triangles.length; t += 3) {
+      const a = triangles[t] ?? 0,
+        b = triangles[t + 1] ?? 0,
+        c = triangles[t + 2] ?? 0;
+      indices.push(index + a, index + (q.sign > 0 ? b : c), index + (q.sign > 0 ? c : b));
+    }
+    unitFaces += q.width * q.height;
   }
   const geometry = new BufferGeometry();
   geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
@@ -98,6 +49,7 @@ export function blockMesh(blocks: Block[], world?: World): Mesh {
   geometry.setAttribute('color', new Float32BufferAttribute(colors, 3));
   geometry.setIndex(indices);
   geometry.computeBoundingSphere();
+  geometry.userData.surface = { unitFaces, quads: quads.length };
   const mesh = new Mesh(geometry, new MeshLambertMaterial({ vertexColors: true }));
   mesh.name = 'voxel-solids';
   return mesh;

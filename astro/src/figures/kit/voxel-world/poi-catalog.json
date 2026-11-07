@@ -1,0 +1,186 @@
+{
+  "woodland": {
+    "parents": ["ancient tree", "standing stones", "hollow log"],
+    "label": "Woodland glade",
+    "companions": [
+      "fern",
+      "berry bush",
+      "moss carpet",
+      "leaf litter",
+      "fungus stump",
+      "hollow log",
+      "deer",
+      "boar",
+      "pinecone"
+    ]
+  },
+  "rainforest": {
+    "parents": ["ancient tree", "mangrove", "crystal geode"],
+    "label": "Rainforest hollow",
+    "companions": [
+      "tree fern",
+      "bromeliad",
+      "orchid",
+      "banana plant",
+      "moss carpet",
+      "hollow log",
+      "frog",
+      "turtle",
+      "cup mushroom"
+    ]
+  },
+  "mushroom": {
+    "parents": ["giant mushroom", "crystal geode", "fungus stump"],
+    "label": "Spore garden",
+    "companions": [
+      "cup mushroom",
+      "spore cluster",
+      "mushroom",
+      "fern",
+      "lichen",
+      "moss carpet",
+      "fungus stump",
+      "cauldron"
+    ]
+  },
+  "snow": {
+    "parents": ["ice arch", "cedar", "standing stones"],
+    "label": "Alpine refuge",
+    "companions": ["snowdrift", "frost shrub", "ice cluster", "snow tuft", "cairn", "rabbit", "fox", "snowman"]
+  },
+  "volcanic": {
+    "parents": ["basalt spire", "crystal geode", "lava vent"],
+    "label": "Volcanic outcrop",
+    "companions": [
+      "basalt cluster",
+      "obsidian shard",
+      "sulfur mound",
+      "charred stump",
+      "ore boulder",
+      "slag heap",
+      "lava vent",
+      "crystal"
+    ]
+  },
+  "oasis": {
+    "parents": ["baobab", "acacia", "standing stones"],
+    "label": "Oasis grove",
+    "companions": [
+      "agave",
+      "water urn",
+      "banana plant",
+      "cattails",
+      "flowering shrub",
+      "camel",
+      "turtle",
+      "barrel cactus"
+    ]
+  },
+  "village": {
+    "parents": ["ancient tree", "standing stones", "fountain"],
+    "label": "Village green",
+    "companions": [
+      "wildflower patch",
+      "beehive",
+      "berry bush",
+      "signpost",
+      "woodpile",
+      "sheep",
+      "watering trough",
+      "fence segment"
+    ]
+  },
+  "tundra": {
+    "parents": ["standing stones", "juniper", "ice arch"],
+    "label": "Tundra shelter",
+    "companions": [
+      "heather",
+      "lichen",
+      "cotton grass",
+      "dwarf shrub",
+      "frost shrub",
+      "snowdrift",
+      "cairn",
+      "sheep",
+      "rabbit"
+    ]
+  },
+  "desert": {
+    "parents": ["giant fossil", "sandstone arch", "sandstone pillar"],
+    "label": "Desert discovery",
+    "companions": [
+      "agave",
+      "barrel cactus",
+      "cactus",
+      "dry grass",
+      "bones",
+      "skull",
+      "lizard",
+      "sandstone pillar",
+      "toppled column"
+    ]
+  },
+  "plains": {
+    "parents": ["ancient tree", "standing stones", "acacia"],
+    "label": "Meadow landmark",
+    "companions": [
+      "wildflower patch",
+      "grass clump",
+      "flowering shrub",
+      "beehive",
+      "rabbit",
+      "deer",
+      "sheep",
+      "hay bale"
+    ]
+  },
+  "frozen": {
+    "parents": ["ice arch", "crystal geode", "giant fossil"],
+    "label": "Frozen landmark",
+    "companions": ["ice cluster", "ice spire", "snowdrift", "frost shrub", "cairn", "polar bear", "penguin", "bones"]
+  },
+  "wasteland": {
+    "parents": ["giant fossil", "dead tree", "rusted pipe"],
+    "label": "Forgotten remains",
+    "companions": [
+      "scrap heap",
+      "rusted pipe",
+      "toppled column",
+      "charred stump",
+      "bones",
+      "skull",
+      "dry grass",
+      "supply chest",
+      "crate stack"
+    ]
+  },
+  "city": {
+    "parents": ["fountain", "standing stones", "street planter"],
+    "label": "City square",
+    "companions": [
+      "park bench",
+      "street planter",
+      "street bollard",
+      "mailbox",
+      "hydrant",
+      "lantern",
+      "crate stack",
+      "signpost"
+    ]
+  },
+  "caves": {
+    "parents": ["crystal geode", "giant mushroom", "standing stones"],
+    "label": "Hidden cavern",
+    "companions": [
+      "crystal cluster",
+      "ore boulder",
+      "spore cluster",
+      "cup mushroom",
+      "tool rack",
+      "torch post",
+      "supply chest",
+      "minecart",
+      "rail track"
+    ]
+  }
+}

@@ -14,7 +14,7 @@ repeated houses, trees, boats or biome props.
 3. Select a seeded subset of the local supporting catalog. Different worlds can emphasize
    berries, deadwood, flowers, geological formations, camp equipment or urban fixtures.
    Keep every catalog kind tied to a distinct model; unknown names fail instead of drawing
-   a generic plant. The catalog and realized population are both checked.
+   a generic plant. The catalog and realized population are both checked. Every type referenced by live habitat/place/building catalogs must appear in the balanced cohort, or have an explicit valid regression case. Keep direct-only legacy models distinct from reachable population types. Repair the owning ecology/site rule rather than flooding a scene to force appearance.
 4. Draw dimensions, roof/body variant, height and quarter-turn from each recipe's
    own stream. Size affects geometry and placement cost, not only metadata.
 5. Realize the entire local model before placement. Include eaves, branches, vines,

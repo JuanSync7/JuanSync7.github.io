@@ -1,3 +1,4 @@
+import { entrance } from './entrance';
 import { BUILDINGS, cell, type World } from './types';
 import type { Placement } from './layout';
 
@@ -5,9 +6,7 @@ import type { Placement } from './layout';
 export function connectSettlements(world: World, layout: Placement): void {
   const network = new Set<string>();
   for (const prop of world.props.filter((p) => BUILDINGS.has(p.kind))) {
-    let dx = 0,
-      dz = prop.recipe.depth + 2;
-    for (let i = 0; i < prop.recipe.turn; i++) [dx, dz] = [-dz, dx];
+    const [dx, dz] = entrance(prop.recipe, prop.rx, prop.rz);
     const start = cell(prop.x + dx, prop.z + dz);
     const startHeight = world.heights.get(start);
     if (startHeight === undefined || world.liquids.has(start) || layout.occupied.has(start)) continue;

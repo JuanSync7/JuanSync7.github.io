@@ -1,3 +1,4 @@
+import { forestTree } from './forest-models';
 import { Blocks } from './builder';
 import { COLD, THEMES, type Recipe, type Block } from './types';
 
@@ -6,6 +7,7 @@ export function plant(r: Recipe): Block[] {
     h = r.height,
     radius = r.width,
     theme = THEMES[r.biome];
+  if (forestTree(r, b)) return b.result(r.turn);
   b.box(0, 0, 0, h, 0, 0, r.kind === 'birch' ? 'worldSnow' : r.kind === 'bamboo' ? 'worldMoss' : 'worldWood');
   if (r.kind === 'birch') for (let y = 1; y < h; y += 3) b.put(0, y, 0, 'worldWood');
   if (r.kind === 'dead tree') {

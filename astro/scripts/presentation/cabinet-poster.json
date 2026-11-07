@@ -1,0 +1,21 @@
+{
+  "schema": "cabinet-poster/1",
+  "width": 1000,
+  "height": 1120,
+  "pose": "DEFAULT_CABINET_POSE",
+  "sources": {
+    "src/figures/vault-cabinet.ts": "d30ef50e7d6b8add1dc1bf45f54df8a7d8943ae6730ae53a766573503bde44e5",
+    "src/figures/kit/camera.ts": "b916f9b6d61ca1aaa4a0f0454558f70df7a47b5b6d5b0fd45e419ec9ac943d8a",
+    "src/figures/kit/draw.ts": "ff1513a0f8db0b2cf95208593e8643693f3afbdfc4395cc0acefe748d14662ae",
+    "src/figures/kit/ink.ts": "388ba6abc6db628b676dbd45212c53401af51566309f457c79614a8a98da86fb",
+    "src/figures/kit/motion.ts": "14769f492e2e5d8b760d9b35cb0e266cb5ffe327df283c1af763c561b46a1eb4",
+    "src/figures/define.ts": "8e8a080c3a79789f84e9540d160ab01980d3266bb655fdf15ce889105c5d09fe",
+    "src/styles/tokens/palette.ts": "710bcf12856a3f5bb0ca803a27c4b0b8fb31dc9fe8462cd2d4a6d78496b3d8bf",
+    "src/hooks/useFigureLoop.ts": "499b9f457a0e29fea0f0b9164806cb89497d6eed59f190973ae4b8040ca86b90",
+    "src/components/ui/FigureCanvas.tsx": "1a9e818fad25d49eed52961d81b7ae647e0b031d1cd869abe7f0031ca525148a",
+    "src/components/figures/FigureBench.tsx": "9c0669f67229b7f825fa74ee3e4f5c88b936e8d47d3be0e7ac44eb4d49d701c9",
+    "src/figures/registry.ts": "0c053d46f590c0f6737a606ba94fd55772400ec1554df6d817a2ad4a78e9f482",
+    "scripts/presentation/cabinet-poster-capture.mjs": "fc2e2a64edcddb6c23cd93e7a1471847559867761a812a62990b7549ef936433"
+  },
+  "pngSha256": "f73e9e10f68134ab9b7e46018967bd1400f6f09cd8204d4141760fefe9587029"
+}

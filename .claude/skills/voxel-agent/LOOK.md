@@ -27,3 +27,11 @@ Record the exact public seed, layout seed, engine version and screenshot path.
 
 A geometric pass does not settle recognition, clutter or taste. File an uncertain answer
 with its seed and evidence instead of turning it into a machine-approved claim.
+
+- Does canopy have an understory, with coherent gaps and enough small groundcover on slopes?
+- Are supplies related to a camp, garden, farm, forge or settlement, and fossils/arches rare enough to read as discoveries?
+- Do wildlife proportions and botanical shapes remain recognizable in close-ups, rather than only in labels?
+- Does each Explore option focus accepted geometry? Can pan/pinch/close zoom reveal detail, with a usable whole-world reset?
+- Do the model sheet and reference card support each stated visual claim? Keep any remaining primitive silhouettes or finite-world limits explicit.
+
+- Does water read as ripples and shoreline foam rather than a regularly stamped grid? Check that submerged beds are not treated as banks and lava/ice do not acquire white foam.

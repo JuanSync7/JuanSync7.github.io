@@ -9,8 +9,8 @@ at the same coordinates.
 1. Sample a bounded set of seeded candidates in the recipe's habitat. Score usable
    candidates by foundation cost and layout context; do not place from a fixed anchor.
 2. Test the complete footprint plus clearance against terrain bounds, liquid,
-   existing envelopes and reserved access cells. Test actual voxel bottoms against
-   terrain and cave headroom as a second, narrower check.
+   protected building lots, canopy-to-canopy/focal envelopes and reserved access cells. Use real 3D solid clearance for layered dressing. Test actual voxel bottoms against
+   terrain and cave headroom as a second, narrower check. Only declared loose groundcover may conform to slopes; verify every resulting column and fragment against actual supporting ground.
 3. Buildings can grade only within the configured foundation budget. Prepare the
    change, validate it and the entrance, then commit it atomically. A rejected site
    cannot leave an edited terrace behind.

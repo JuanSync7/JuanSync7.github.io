@@ -28,3 +28,5 @@ motion, a random draw call or different geometry when lighting changes.
 
 The default camera orbits slowly; dragging or keyboard navigation pauses it and retains the
 chosen pose. The orbit toggle resumes motion. Reduced motion freezes the figure clock.
+
+Water detail review: shoreline tests exclude submerged terrain columns, not merely missing height cells. Otherwise every pond bed suppresses its waves and receives shore foam. Foam uses seeded irregular samples on open water only; ice and lava do not receive white foam. The real GPU probe includes submerged beds, fixed ice, a cascade join and a true bank.

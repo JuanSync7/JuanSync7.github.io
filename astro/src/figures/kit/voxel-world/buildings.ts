@@ -1,3 +1,5 @@
+import { adventureBuilding } from './adventure-buildings';
+import { townBuilding } from './town-buildings';
 import { Blocks } from './builder';
 import { COLD, THEMES, type Recipe, type Material, type Block } from './types';
 
@@ -8,6 +10,7 @@ export function building(r: Recipe): Block[] {
     h = r.height,
     theme = THEMES[r.biome];
   const wall: Material = r.variant % 3 === 0 ? 'worldWood' : r.variant % 3 === 1 ? 'worldStone' : 'worldSand';
+  if (adventureBuilding(r, b) || townBuilding(r, b)) return b.result(r.turn);
   b.box(-w, w, 0, 0, -d, d, 'worldStone');
   if (r.kind === 'tent') {
     const canvas: Material = r.variant % 2 ? 'worldClay' : 'worldSnow';

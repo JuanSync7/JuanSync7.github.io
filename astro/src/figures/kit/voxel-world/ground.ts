@@ -1,3 +1,4 @@
+import { stabilizeRoofs } from './roofs';
 import { cell, COLD, THEMES, type Biome, type Material, type World } from './types';
 import { BASE_LEVEL, neighbours, shapeBase } from './edges';
 
@@ -22,6 +23,7 @@ export function groundMaterial(biome: Biome, x: number, y: number, z: number, h:
 /** Emit the closed surface of solid columns; buried voxels never enter GPU buffers. */
 export function buildGround(world: World): void {
   shapeBase(world);
+  world.report.terrain.roofColumnsRemoved = stabilizeRoofs(world);
   const floors = new Map([...world.seabed, ...world.heights]);
   for (const [k, h] of floors) {
     const [x = 0, z = 0] = k.split(',').map(Number),
@@ -44,7 +46,10 @@ export function buildGround(world: World): void {
         x,
         y,
         z,
-        material: world.paths.has(k) && y === h ? 'worldSand' : groundMaterial(biome, x, y, z, h),
+        material:
+          world.paths.has(k) && y === h
+            ? 'worldSand'
+            : ((y === h ? world.surface.get(k) : undefined) ?? groundMaterial(biome, x, y, z, h)),
       });
     };
     for (const y of exposed) put(y);
@@ -52,6 +57,11 @@ export function buildGround(world: World): void {
   for (const [k, y] of world.roofs) {
     const [x = 0, z = 0] = k.split(',').map(Number);
     for (let dy = (world.ceilings.get(k) ?? y) - y; dy < 3; dy++)
-      world.blocks.push({ x, y: y + dy, z, material: dy === 2 ? 'worldStone' : 'line4' });
+      world.blocks.push({
+        x,
+        y: y + dy,
+        z,
+        material: dy === 2 ? ((x * 7 + z * 11) % 17 === 0 ? 'worldMoss' : 'worldStone') : 'line4',
+      });
   }
 }

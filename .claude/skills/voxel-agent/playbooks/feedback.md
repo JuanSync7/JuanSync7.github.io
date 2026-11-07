@@ -16,10 +16,11 @@ or when a run finishes and its evidence should support the next iteration.
    fixture before the full suite. Keep the original observation after the fix.
 4. Generate a record with `voxel:agent feedback`. Keep source fingerprints, checks,
    artifacts and actual outcome. An unmeasured field stays unknown.
-5. Run `voxel:agent vault --vault=/path/to/experience-vault`. It writes only the
-   curated Voxel agent notes and a source manifest. The site workflow remains the
+5. Preserve failing source as well as the plan. `replay-snapshot --snapshot=FILE --support=FILE --expect=VXL-ID` reconstructs the historical kernel with archived support/checks in a temporary directory; verify the original fault and the current passing result. Each snapshot entry and the reconstructed generator must match their hashes.
+6. Finish checks and visual inspection before exporting stale evidence. Run `voxel:agent vault --vault=/path/to/experience-vault`. It writes only the
+   curated Voxel agent notes, an immutable full source/script snapshot, the canonical pipeline, references, run evidence and a hash/ownership manifest. The site workflow remains the
    source of truth; mirrors carry hashes so drift can be detected.
-6. The exporter writes local files; it does not push or bypass the vault's privacy checks.
+7. The exporter writes local files; it does not push or bypass the vault's privacy checks.
    Save the run's report and feedback in the private vault. Mark the authored guidance
    unreviewed until the owner reviews it. Do not edit generated `Chats/` or promote
    one session's interpretation into approved personal guidance.

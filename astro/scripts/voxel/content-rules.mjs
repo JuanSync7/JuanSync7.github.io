@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
-export function auditAttachment(blocks, label='component') {
+export function auditAttachment(blocks, label='component',isRoot=b=>b.y===0) {
  const key=(x,y,z)=>`${x},${y},${z}`,solid=new Set(blocks.map(b=>key(b.x,b.y,b.z)));
  assert(solid.size===blocks.length&&blocks.length>0,`VXL-CONTENT: ${label}: empty or duplicate geometry`);
- const roots=blocks.filter(b=>b.y===0),seen=new Set(roots.map(b=>key(b.x,b.y,b.z))),queue=[...roots];
+ const roots=blocks.filter(isRoot),seen=new Set(roots.map(b=>key(b.x,b.y,b.z))),queue=[...roots];
  assert(roots.length>0,`VXL-ATTACHMENT: ${label}: no grounded cell`);
  for(let i=0;i<queue.length;i++) {
   const b=queue[i];
@@ -13,3 +13,5 @@ export function auditAttachment(blocks, label='component') {
  }
  assert(seen.size===solid.size,`VXL-ATTACHMENT: ${label}: ${solid.size-seen.size} floating voxels`);
 }
+
+export function auditReachability(reachable,placed){assert.deepEqual([...reachable].filter(kind=>!(placed[kind]>0)),[],'VXL-CONTENT: catalog types never realized in balanced cohort');}

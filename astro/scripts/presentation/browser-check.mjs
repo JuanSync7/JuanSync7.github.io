@@ -7,6 +7,7 @@ import { spawn } from 'node:child_process';
 import { createServer } from 'node:net';
 import { chromium } from 'playwright';
 import { contract, color, composite, luminance, separation } from './check.mjs';
+import { captureCabinetPoster } from './cabinet-poster-capture.mjs';
 import { checkScrollJourney } from './scroll-check.mjs';
 
 if (process.env.SITES_MANAGED_LINUX_CONTAINER === '1' && !process.env.CI) {
@@ -121,36 +122,37 @@ async function roleContrast(page) {
 }
 
 async function heroGeometry(page, width) {
-  await page.locator('.vault-stack-stage').scrollIntoViewIfNeeded();
-  const geometry = await page.locator('.vault-stack-stage').evaluate((stage) => {
-    const actions = [...stage.querySelectorAll('[data-paper-action]')];
-    return {
-      actions: actions.map((action) => {
-        const label = action.querySelector('strong');
-        const bounds = label?.getBoundingClientRect();
-        const hit = bounds && document.elementFromPoint(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
-        return {
-          label: label?.textContent, reachable: Boolean(hit && action.contains(hit)), bottom: action.getBoundingClientRect().bottom,
-          labelBounds: bounds?.toJSON(), hit: hit && `${hit.tagName}.${hit.className}`,
-          hitStack: bounds && document.elementsFromPoint(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2)
-            .slice(0, 6).map((node) => `${node.tagName}.${node.className}`),
-        };
-      }),
-      captionTop: stage.querySelector('.vault-stack-caption')?.getBoundingClientRect().top,
-      scrollY, viewportHeight: innerHeight,
-    };
-  });
-  assert.equal(geometry.actions.length, 3, `${width}px: all three paper links are present`);
-  for (const action of geometry.actions) assert(action.reachable, `${width}px: the ${action.label} label is exposed and hits its own action: ${JSON.stringify(geometry)}`);
-  assert(Number.isFinite(geometry.captionTop), 'The stack has a readable caption');
-  assert(geometry.captionTop >= Math.max(...geometry.actions.map((action) => action.bottom)), `${width}px: the caption stays below every paper-link box`);
+  const cabinet = page.locator('[data-cabinet]');
+  await cabinet.scrollIntoViewIfNeeded();
+  await page.waitForFunction(() => document.querySelector('[data-cabinet]')?.dataset.cabinetReady === 'true');
+  await page.locator('[data-cabinet] canvas[data-ready="1"]').waitFor();
+  assert.equal(await page.locator('[data-cabinet] canvas').getAttribute('data-error'), null);
+  assert.equal(await cabinet.locator('[data-cabinet-link]').count(), 3);
+  for (const action of await cabinet.locator('[data-cabinet-link]').all()) {
+    const box = await action.locator('[data-folder-label]').boundingBox();
+    assert(box && box.width > 0 && box.height > 0);
+    assert(await action.locator('[data-folder-label]').evaluate((label) => {
+      const box = label.getBoundingClientRect();
+      const hit = document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2);
+      return Boolean(hit && label.closest('a').contains(hit));
+    }), `${width}px: each folder label hits its own real link`);
+  }
   const lines = await page.locator('.vault-hero h1').evaluate((heading) => Math.round(heading.getBoundingClientRect().height / parseFloat(getComputedStyle(heading).lineHeight)));
-  assert(lines > 0 && lines <= contract.maxHeroHeadlineLines, `${width}px: headline uses ${lines} lines; maximum is ${contract.maxHeroHeadlineLines}`);
+  assert(lines > 0 && lines <= contract.maxHeroHeadlineLines);
 }
+
+const cabinetSelected = (page, index) => page.waitForFunction((expected) => {
+  const cabinet = document.querySelector('[data-cabinet]');
+  return Number(cabinet.dataset.cabinetFolder) === expected && Number(cabinet.dataset.cabinetLift) > 0.95;
+}, index);
 
 try {
   browser = await chromium.launch();
-  const context = await browser.newContext({ viewport: { width: 1360, height: 960 }, reducedMotion: 'no-preference' });
+  const context = await browser.newContext({ viewport: { width: 1360, height: 960 }, deviceScaleFactor: 2, reducedMotion: 'no-preference' });
+  if (process.argv.includes('--cabinet-poster-only')) {
+    await captureCabinetPoster(context, base, output);
+    console.log('Cabinet poster and source manifest exported.');
+  } else {
   const page = watch(await context.newPage());
   await page.goto(`${base}/vault/`);
   await ready(page, 'ready');
@@ -175,9 +177,13 @@ try {
     await page.mouse.move(0, 0);
     await heroGeometry(page, width);
     await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
-    await page.waitForFunction(() => Math.abs(new DOMMatrix(getComputedStyle(document.querySelector('[data-scroll-stack]')).transform).m42) < 0.2);
+    await page.waitForFunction(() => Number(document.querySelector('[data-cabinet]').dataset.cabinetDrawer) < 0.75);
     await page.screenshot({ path: join(output, `vault-${width}.png`), fullPage: true });
   }
+
+  await page.locator('[data-cabinet] canvas').screenshot({ path: join(output, 'cabinet-rest.png') });
+
+  await captureCabinetPoster(context, base, output);
 
   // A scoped Astro swap must release the previous page, not leave its motion owners alive.
   await checkScrollJourney(page, output, [contract.viewports[0], contract.viewports.at(-1)]);
@@ -191,6 +197,33 @@ try {
   await page.locator('main a[href="/vault/"]').first().click();
   await page.waitForURL('**/vault/');
   await ready(page, 'ready');
+
+  for (const [index, slug] of ['architecture', 'knowledge-graph', 'search'].entries()) {
+    const folder = page.locator(`[data-cabinet-link="${index}"]`);
+    await page.keyboard.press('Tab');
+    await folder.scrollIntoViewIfNeeded();
+    await folder.focus();
+    await cabinetSelected(page, index);
+    assert(await folder.locator('[data-folder-label]').evaluate((label) => getComputedStyle(label).outlineStyle !== 'none'), 'A keyboard-selected folder has a visible focus ring');
+    await page.keyboard.press('Enter');
+    await page.waitForURL(`**/vault/${slug}/`);
+    await ready(page);
+    await page.locator('main a[href="/vault/"]').first().click();
+    await page.waitForURL('**/vault/');
+    await ready(page, 'ready');
+  }
+
+  // Pointer selection must release back to the folder that still owns keyboard focus.
+  const systemFolder = page.locator('[data-cabinet-link="0"]');
+  await systemFolder.scrollIntoViewIfNeeded();
+  await systemFolder.focus();
+  await cabinetSelected(page, 0);
+  await page.locator('[data-cabinet-link="1"]').hover();
+  await cabinetSelected(page, 1);
+  await page.mouse.move(0, 0);
+  await cabinetSelected(page, 0);
+  assert(await systemFolder.evaluate((node) => node === document.activeElement), 'Leaving pointer hover restores the focused folder without moving focus');
+  await systemFolder.evaluate((node) => node.blur());
 
   for (const slug of contract.guideSlugs) {
     const guideLink = page.locator(`main a[href="/vault/${slug}/"]`).first();
@@ -288,6 +321,7 @@ try {
   const still = watch(await reduced.newPage());
   await still.goto(`${base}/vault/`);
   await ready(still, 'reduced');
+  await still.locator('[data-cabinet] canvas[data-ready="1"]').waitFor();
   assert(await still.locator('[data-reveal]').evaluateAll((nodes) => nodes.every((node) => Number(getComputedStyle(node).opacity) > 0 && getComputedStyle(node).visibility !== 'hidden')));
   await noOverflow(still, 'Reduced-motion landing');
   await still.screenshot({ path: join(output, 'vault-reduced-390.png'), fullPage: true });
@@ -297,8 +331,17 @@ try {
   assert(await staticPage.locator('h1').isVisible());
   assert(await staticPage.locator('[data-reveal]').evaluateAll((nodes) => nodes.every((node) => Number(getComputedStyle(node).opacity) > 0 && getComputedStyle(node).visibility !== 'hidden')));
   assert(await staticPage.locator('main a[data-paper-action]').first().isVisible());
+  assert(await staticPage.locator('.vc-poster').isVisible(), 'A missing script retains the physical cabinet');
+  assert(await staticPage.locator('.vc-poster').evaluate((image) => image.complete && image.naturalWidth === 1000 && image.naturalHeight === 1120));
+  for (const link of await staticPage.locator('[data-cabinet-link]').all()) {
+    assert(await link.isVisible(), 'Static folder links remain available');
+    assert.notEqual(await link.getAttribute('tabindex'), '-1');
+  }
   await noOverflow(staticPage, 'No-JavaScript landing');
   await staticPage.screenshot({ path: join(output, 'vault-nojs-390.png'), fullPage: true });
+  await staticPage.locator('[data-cabinet-link="1"]').click();
+  await staticPage.waitForURL('**/vault/knowledge-graph/');
+  assert(await staticPage.locator('h1').isVisible(), 'The static folder reaches its guide');
   await staticPage.goto(`${base}/vault/search/`);
   assert(await staticPage.locator('.vsd-context h3').isVisible());
   assert(await staticPage.locator('noscript p').last().isVisible());
@@ -308,6 +351,7 @@ try {
     return parsed.origin === new URL(base).origin || ['fonts.googleapis.com', 'fonts.gstatic.com'].includes(parsed.hostname);
   }), 'Presentation visits request only site assets and the existing public webfonts');
   console.log('Presentation browser checks: responsive pages, computed hierarchy, scoped motion disposal, paper actions, graph focus, reduced motion and no-JavaScript content passed.');
+  }
 } catch (error) {
   if (currentPage && !currentPage.isClosed()) await currentPage.screenshot({ path: join(output, 'failure.png'), fullPage: true }).catch(() => {});
   throw error;

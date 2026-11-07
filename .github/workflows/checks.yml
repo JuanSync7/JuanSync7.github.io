@@ -39,13 +39,23 @@ jobs:
       - name: Install Chromium for the figure look
         run: npx playwright install --with-deps chromium
       - name: Voxel controls, camera, biome atlas and fallback
-        run: npm run voxel:browser
+        run: npm run voxel:gpu && npm run voxel:browser && npm run voxel:vault-check
       - name: Voxel evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: voxel-agent
           path: astro/figures-out
+      - name: Cabinet figure audit and six-frame sheet
+        run: npm run figure -- vault-cabinet
+      - name: Cabinet figure evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vault-cabinet-figure
+          path: |
+            astro/figures-out/vault-cabinet*
+            astro/figures-out/report.json
       - name: Presentation pages, paper actions and motion
         run: npm run presentation:browser
       - name: Presentation screenshots

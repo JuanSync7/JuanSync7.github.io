@@ -1,6 +1,9 @@
 import policy from './policy.json';
 
 export interface CameraView {
+  focus: string;
+  panX: number;
+  panY: number;
   turn: number;
   pitch: number;
   zoom: number;
@@ -9,6 +12,9 @@ export interface CameraView {
   sunlight: string;
 }
 export const DEFAULT_VIEW: CameraView = {
+  focus: '',
+  panX: 0,
+  panY: 0,
   turn: 0,
   pitch: 0.67,
   zoom: 1,
@@ -18,7 +24,12 @@ export const DEFAULT_VIEW: CameraView = {
 };
 export function viewOf(data: unknown): CameraView {
   const d = typeof data === 'object' && data !== null ? data : {};
+  const pan = (value: unknown): number =>
+    typeof value === 'number' && Number.isFinite(value) ? Math.max(-1, Math.min(1, value)) : 0;
   return {
+    focus: 'focus' in d && typeof d.focus === 'string' ? d.focus : '',
+    panX: pan('panX' in d ? d.panX : 0),
+    panY: pan('panY' in d ? d.panY : 0),
     turn: 'turn' in d && typeof d.turn === 'number' && Number.isFinite(d.turn) ? d.turn : 0,
     pitch:
       'pitch' in d && typeof d.pitch === 'number' && Number.isFinite(d.pitch)

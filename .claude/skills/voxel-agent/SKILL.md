@@ -11,8 +11,10 @@ playbook at once. `RULES.md` maps failures to checks; `LOOK.md` holds visual que
 
 1. Record the requested change and acceptance cases with the existing generator version.
    Reproduce a failing seed or composition before editing.
-2. Follow `playbooks/seed-plan.md`, `terrain.md`, `components.md`, `placement.md`, then
-   `ambience.md`. A change may enter at its owning stage; retain upstream outputs.
+2. Research visual/scale changes with `playbooks/research.md`. Follow `pipeline.json`
+   for the executable stage order. Use `terrain.md`, `ecology.md`, `components.md`,
+   `placement.md`, `places.md`, `ambience.md` and `performance.md` at their owning stages.
+   Retain upstream outputs; the manifest and run trace must agree.
 3. Run `npm run voxel:check`. New checks need a broken fixture that fails for the
    intended reason. Use `npm run voxel:agent -- replay --seed=N` to inspect a run.
 4. Build and run `npm run voxel:browser`. Inspect the numbered atlas and phone view.

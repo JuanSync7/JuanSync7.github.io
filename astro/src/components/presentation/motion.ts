@@ -1,5 +1,6 @@
 import { readMotionToken } from './motion-values';
 import { createLandingScroll } from './landing-scroll';
+import { createHeadingReveals } from './heading-reveals';
 
 /** Motion belongs to the presentation root; its content is readable before this module runs. */
 const loadEngine = async () => {
@@ -61,7 +62,10 @@ export function mountPresentation(root: HTMLElement): () => void {
     }
     root.dataset.presentationMotion = 'loading';
     try {
-      const { gsap, CustomEase } = await loadEngine();
+      const [{ gsap, CustomEase }, words] = await Promise.all([
+        loadEngine(), root.dataset.pageKind === 'landing' ? import('gsap/SplitText') : Promise.resolve(null),
+      ]);
+      if (words) { gsap.registerPlugin(words.SplitText); await document.fonts.ready; }
       if (controller.signal.aborted || attempt !== generation || !root.isConnected) return;
       const duration = readMotionToken(style, '--pr-reveal-duration', ['ms', 's']);
       const stagger = readMotionToken(style, '--pr-reveal-stagger', ['ms', 's']);
@@ -73,12 +77,18 @@ export function mountPresentation(root: HTMLElement): () => void {
       const context = gsap.context(() => {}, root);
       const refreshers: (() => void)[] = [];
       let destroyLanding = (): void => {};
-      removeMotion = (): void => { context.revert(); destroyLanding(); };
+      let destroyHeadings = (): void => {};
+      removeMotion = (): void => { context.revert(); destroyHeadings(); destroyLanding(); };
       context.add(() => {
         if (root.dataset.pageKind === 'landing') {
           const landing = createLandingScroll(gsap, root, style);
           destroyLanding = landing.destroy;
           refreshers.push(landing.refresh);
+          if (words) {
+            const headings = createHeadingReveals(gsap, words.SplitText, root, style);
+            destroyHeadings = headings.destroy;
+            refreshers.push(headings.refresh);
+          }
           return;
         }
         for (const section of sections) {

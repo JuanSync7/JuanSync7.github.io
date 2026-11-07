@@ -1,3 +1,4 @@
+import {replaySnapshot} from './replay-snapshot.mjs';
 import {parseArgs} from 'node:util';
 import {spawnSync} from 'node:child_process';
 import {mkdirSync,writeFileSync,readFileSync} from 'node:fs';
@@ -7,10 +8,12 @@ import {loadKernel} from './load.mjs';
 import {auditWorld} from './validate.mjs';
 import {kernelFingerprint} from './fingerprint.mjs';
 import {exportVault} from './vault.mjs';
-const {positionals,values}=parseArgs({allowPositionals:true,options:{seed:{type:'string'},biome:{type:'string'},rule:{type:'string'},note:{type:'string'},evidence:{type:'string'},vault:{type:'string'},check:{type:'boolean',default:false},public:{type:'boolean',default:false}}});
+const {positionals,values}=parseArgs({allowPositionals:true,options:{snapshot:{type:'string'},support:{type:'string'},expect:{type:'string'},seed:{type:'string'},biome:{type:'string'},rule:{type:'string'},note:{type:'string'},evidence:{type:'string'},vault:{type:'string'},check:{type:'boolean',default:false},public:{type:'boolean',default:false}}});
 const command=positionals[0]??'help';
 if(command==='check'){
- for(const file of ['workflow','selftest','content','check','motion']){const r=spawnSync(process.execPath,[`scripts/voxel/${file}.mjs`],{stdio:'inherit'});if(r.status!==0)process.exit(r.status??1);}
+ for(const file of ['workflow','selftest','content','mesh-check','check','motion']){const r=spawnSync(process.execPath,[`scripts/voxel/${file}.mjs`],{stdio:'inherit'});if(r.status!==0)process.exit(r.status??1);}
+}else if(command==='replay-snapshot'){
+ assert(values.snapshot,'--snapshot is required');assert(!values.public,'Snapshot replay uses a layout seed or its stored exact plan; --public is unsupported');console.log(JSON.stringify(await replaySnapshot({snapshot:values.snapshot,support:values.support,seed:values.seed?Number(values.seed):42,biome:values.biome,expect:values.expect}),null,2));
 }else if(command==='vault'){
  assert(values.vault,'--vault is required');console.log(JSON.stringify(exportVault(values.vault,values.check),null,2));
 }else if(command==='replay'||command==='feedback'){
@@ -26,6 +29,6 @@ if(command==='check'){
   const id=createHash('sha256').update(JSON.stringify(record)).digest('hex').slice(0,16),file=`figures-out/voxel-feedback/${id}.json`;mkdirSync('figures-out/voxel-feedback',{recursive:true});writeFileSync(file,JSON.stringify(record,null,2)+'\n');console.log(JSON.stringify({file,id,verification:record.verification}));
  }
 }else{
- console.log('Voxel agent: check | replay --seed=N [--biome=B] [--public] | feedback --seed=N --rule=VXL-ID --note=TEXT [--evidence=PATH] | vault --vault=PATH [--check]');
+ console.log('Voxel agent: check | replay-snapshot --snapshot=FILE [--support=FILE] [--expect=VXL-ID] [--seed=N] | replay --seed=N [--biome=B] [--public] | feedback --seed=N --rule=VXL-ID --note=TEXT [--evidence=PATH] | vault --vault=PATH [--check]');
  if(command!=='help')process.exitCode=2;
 }
