@@ -68,3 +68,5 @@ variants and the shared UI dependencies; prior snapshots remain immutable.
 `voxel:vault-check` compiles the island from archived bytes, generates its pinned
 public seed and reconstructs the world kernel. The exporter records each variant's
 fingerprint and keeps island evidence under `Reports/Island/`.
+`.github/workflows/voxel-island.yml` runs the island generation, browser and snapshot
+checks separately from the maintained shared Checks workflow.

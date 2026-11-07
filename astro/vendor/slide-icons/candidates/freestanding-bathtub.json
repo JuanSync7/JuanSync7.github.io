@@ -1,0 +1,117 @@
+{
+  "schema": "slide-icon/2",
+  "id": "freestanding-bathtub",
+  "name": "Freestanding bathtub",
+  "group": "everyday",
+  "tags": "bath bathtub freestanding empty tub household bathroom",
+  "file": "original/freestanding-bathtub.svg",
+  "license": "MIT",
+  "upstream": "https://github.com/JuanSync7/JuanSync7.github.io",
+  "view": {
+    "projection": "flat",
+    "description": "side elevation of an empty freestanding tub",
+    "visible": [
+      "rim",
+      "vessel",
+      "left-support",
+      "right-support"
+    ],
+    "hidden": [
+      "interior-drain",
+      "rear-supports",
+      "interior-waterline"
+    ],
+    "rationale": "A side elevation keeps the tub recognizable while omitting concealed interior parts and fixed shower plumbing."
+  },
+  "parts": {
+    "rim": [
+      0
+    ],
+    "vessel": [
+      1
+    ],
+    "left-support": [
+      2
+    ],
+    "right-support": [
+      3
+    ]
+  },
+  "plural": false,
+  "accent": {
+    "node": 0,
+    "kind": "top",
+    "meaning": "the complete straight upper rim edge"
+  },
+  "constraints": [
+    {
+      "type": "attach",
+      "parts": [
+        "vessel"
+      ],
+      "to": "rim",
+      "ends": "both"
+    },
+    {
+      "type": "attach",
+      "parts": [
+        "left-support",
+        "right-support"
+      ],
+      "to": "vessel",
+      "ends": "start"
+    },
+    {
+      "type": "repeat",
+      "parts": [
+        "left-support",
+        "right-support"
+      ],
+      "offset": [
+        6,
+        0
+      ],
+      "same": [
+        "width",
+        "height"
+      ]
+    },
+    {
+      "type": "parallel",
+      "edges": [
+        {
+          "part": "left-support",
+          "edge": 0
+        },
+        {
+          "part": "right-support",
+          "edge": 0
+        }
+      ]
+    }
+  ],
+  "fit": {
+    "brief": "An empty freestanding bathtub with no shower fixture, for a slide about portable or standalone facilities.",
+    "decision": "create",
+    "rationale": "The closest pinned library bath includes fixed shower plumbing. Redrawing a plain freestanding silhouette meets the specific brief and avoids an unrelated fixture.",
+    "references": [
+      {
+        "url": "https://lucide.dev/icons/bath",
+        "note": "Reference for a restrained side-elevation icon; fixed shower plumbing is unsuitable for this brief."
+      },
+      {
+        "url": "https://www.kohler.com/en/products/bathtubs/shop-freestanding-bathtubs",
+        "note": "Product reference for the freestanding form; the source is an original simplified silhouette."
+      }
+    ],
+    "alternatives": [
+      {
+        "source": "lucide-static@1.70.0/bath",
+        "reason": "Includes a floor-to-shower fixture, conflicting with the standalone brief."
+      }
+    ]
+  },
+  "licenses": [
+    "original"
+  ]
+}

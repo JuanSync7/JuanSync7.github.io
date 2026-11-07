@@ -1,9 +1,8 @@
-import attribution from './attribution.json';
 import { SLIDE_ICONS, type SlideIconId } from '../../../data/slide-icons';
 import { paper } from '../../../styles/tokens/palette';
 import { hexOf } from '../ink';
-import { slideDrawing } from './models';
-import { SLIDE_SIZE, SLIDE_WEIGHT, type SlideOptions, type SlideStroke } from './types';
+import { slideDrawing, slideLicense, slideLicenses } from './models';
+import { SLIDE_SIZE, SLIDE_EXPORT_SIZE, SLIDE_WEIGHT, type SlideOptions, type SlideStroke } from './types';
 
 export function slidePalette(options: SlideOptions): Record<SlideStroke['role'] | 'ground', string> {
   const main = options.tone === 'paper' ? paper.ink : hexOf('ink');
@@ -29,10 +28,10 @@ const paths = (id: SlideIconId, options: SlideOptions): string => {
 const attributes = `viewBox="0 0 ${SLIDE_SIZE} ${SLIDE_SIZE}" fill="none" stroke-width="${SLIDE_WEIGHT}" stroke-linecap="round" stroke-linejoin="round"`;
 export function slideSvg(id: SlideIconId, options: SlideOptions): string {
   const name = SLIDE_ICONS.find((icon) => icon.id === id)?.name ?? id;
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" ${attributes} role="img"><title>${xml(name)}</title><metadata>${xml(attribution.lucide + '\n' + attribution.original)}</metadata>${paths(id, options)}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${SLIDE_EXPORT_SIZE}" height="${SLIDE_EXPORT_SIZE}" ${attributes} role="img"><title>${xml(name)}</title><metadata>${xml(slideLicense(id))}</metadata>${paths(id, options)}</svg>`;
 }
 export function slideSprite(options: SlideOptions): string {
-  return `<svg xmlns="http://www.w3.org/2000/svg"><title>Juan Kok · slide icons</title><metadata>${xml(attribution.lucide + '\n' + attribution.original)}</metadata><defs>${SLIDE_ICONS.map(
+  return `<svg xmlns="http://www.w3.org/2000/svg"><title>Juan Kok · slide icons</title><metadata>${xml(slideLicenses())}</metadata><defs>${SLIDE_ICONS.map(
     (icon) =>
       `<symbol id="slide-${icon.id}" ${attributes}><title>${xml(icon.name)}</title>${paths(icon.id, options)}</symbol>`,
   ).join('')}</defs></svg>`;

@@ -1,7 +1,14 @@
 {
   "processor": {
-    "fingerprint": "c0cf87ebdb8ca4d8755e50415e2b960f353ca0c5d4ac20f0287fc12ffc336513",
+    "schema": "slide-review/2",
+    "fingerprint": "ee1a2189042c1915669c95dca4819d3ae357187a759090261bd6cacbdb1eb9db",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -12,11 +19,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "All twelve pins meet the housing. The core stays centered; the teal top edge sits on the core at both sizes."
+    "proof": {
+      "path": "proofs/icons/processor.svg",
+      "sha256": "d23a5a797b0ff60464892c0bfa2b21c70a0cd36b4dc0ba6ab0bf432c2f03fac6"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "All twelve pins meet the housing. The core stays centered; the teal top edge sits on the core at both sizes."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "All twelve pins meet the housing. The core stays centered; the teal top edge sits on the core at both sizes."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete active core edge in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Processor remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "All twelve pins meet the housing. The core stays centered; the teal top edge sits on the core at both sizes.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "memory": {
-    "fingerprint": "a8bbee65ae1751bb9fbf625ab696b965f361be1c0723b1656439b86a9b40f104",
+    "schema": "slide-review/2",
+    "fingerprint": "3231673655b842c1c35972a70a2e9c1678134265624d56b5ebc850f17d8edef0",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -27,11 +68,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "Contacts share a baseline and meet the board. One contact carries teal; the slim board remains distinct at 32px."
+    "proof": {
+      "path": "proofs/icons/memory.svg",
+      "sha256": "dc62359a99d633bc44cb3d84a2a37342b8fb70280b185274491ab7b9e783c0b3"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "Contacts share a baseline and meet the board. One contact carries teal; the slim board remains distinct at 32px."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "Contacts share a baseline and meet the board. One contact carries teal; the slim board remains distinct at 32px."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete one electrical contact in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Memory remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "Contacts share a baseline and meet the board. One contact carries teal; the slim board remains distinct at 32px.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "wafer": {
-    "fingerprint": "d68bd4662b9f17750b11700a093629f198ef5cd74c6876084c4ca4c854fb1dea",
+    "schema": "slide-review/2",
+    "fingerprint": "adcdb68f1973b96ad61129f43f57930ba9b2ad14661a2ef82b65591cb9204109",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -42,11 +117,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The nine-die grid fits inside the circular blank. Teal follows one existing die boundary; no grid edge escapes the wafer."
+    "proof": {
+      "path": "proofs/icons/wafer.svg",
+      "sha256": "2475f924ea996b58348be3ccb18bf5b9713f0bbafd94cd3eab9c75f7a3d7c453"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The nine-die grid fits inside the circular blank. Teal follows one existing die boundary; no grid edge escapes the wafer."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The nine-die grid fits inside the circular blank. Teal follows one existing die boundary; no grid edge escapes the wafer."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete central die boundary in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Wafer remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The nine-die grid fits inside the circular blank. Teal follows one existing die boundary; no grid edge escapes the wafer.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "accelerator": {
-    "fingerprint": "6eb060f4e932c47d69e8d7114f0f20fee88ab474f284e86d4c9afec674bf76b8",
+    "schema": "slide-review/2",
+    "fingerprint": "89429d51fbcaca3a7db0631f59ef6c658a0d324ab6971926a9529853aaa95d79",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -57,11 +166,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The bracket meets the card and the connector sits below it. Both fan rims are contained; teal follows one fan rim."
+    "proof": {
+      "path": "proofs/icons/accelerator.svg",
+      "sha256": "c351e87c5b0a0cbb9f4010128941f17bfb68b13d611f85a4a645a71f2bb4e6f3"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The bracket meets the card and the connector sits below it. Both fan rims are contained; teal follows one fan rim."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The bracket meets the card and the connector sits below it. Both fan rims are contained; teal follows one fan rim."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete fan rim in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Accelerator remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The bracket meets the card and the connector sits below it. Both fan rims are contained; teal follows one fan rim.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "circuit-board": {
-    "fingerprint": "9e35fd632d416fd9c8295a694f88c936db6637bd4cbc3aae9a1223616c842b18",
+    "schema": "slide-review/2",
+    "fingerprint": "eaa3c01e15b57e1fe7505eef3158a1d223731422e63ab729afb816b0c0f044ac",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -72,11 +215,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "Both terminals and the bent traces remain inside the board. The accented terminal rim stays attached at 32px."
+    "proof": {
+      "path": "proofs/icons/circuit-board.svg",
+      "sha256": "284ec555f4a5cc541173499943bace90515275d39198e5968c2760c7fe8e816a"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "Both terminals and the bent traces remain inside the board. The accented terminal rim stays attached at 32px."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "Both terminals and the bent traces remain inside the board. The accented terminal rim stays attached at 32px."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete one component terminal in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Circuit board remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "Both terminals and the bent traces remain inside the board. The accented terminal rim stays attached at 32px.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "chiplets": {
-    "fingerprint": "25703a3d95b2407deb288ba4f6f21c8cc12fa38447799c25ae05966ff205836b",
+    "schema": "slide-review/2",
+    "fingerprint": "a1516a019fff4d9de08efaa0131c955004557745b1bf6531dfaea62d5758c0e7",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -87,11 +264,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The top rhombus closes cleanly. Two lower contours imply a parallel stack and never cross the front layer; one front edge is teal."
+    "proof": {
+      "path": "proofs/icons/chiplets.svg",
+      "sha256": "3ba06a5aabaf10c99daef32378cbed5bf705840c94c0dfd03367bf4efb3932e6"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The top rhombus closes cleanly. Two lower contours imply a parallel stack and never cross the front layer; one front edge is teal."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "parallel layers; front rhombus, rear contours only: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The top rhombus closes cleanly. Two lower contours imply a parallel stack and never cross the front layer; one front edge is teal."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete front layer edge in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Layer stack remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The top rhombus closes cleanly. Two lower contours imply a parallel stack and never cross the front layer; one front edge is teal.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "ai-model": {
-    "fingerprint": "fa85a7f7de2fdbf2cc2ffd380798d4853d3826b6a98bbbfc53a2ebfc61213442",
+    "schema": "slide-review/2",
+    "fingerprint": "3bad8b201cdfe3bd6d108aa72120ed55673c9d1a4216ef06702f6f437618c08d",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -102,11 +313,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The brain contour and circuit traces read as one hybrid mark. Endpoint circles stay aligned; one existing trace is accented."
+    "proof": {
+      "path": "proofs/icons/ai-model.svg",
+      "sha256": "b3053c7cdbc08e6d42eb796188c3cd31e237aef775d44de84ffc2eccb807240e"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The brain contour and circuit traces read as one hybrid mark. Endpoint circles stay aligned; one existing trace is accented."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The brain contour and circuit traces read as one hybrid mark. Endpoint circles stay aligned; one existing trace is accented."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete active circuit trace in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "AI model remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The brain contour and circuit traces read as one hybrid mark. Endpoint circles stay aligned; one existing trace is accented.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "camera": {
-    "fingerprint": "d4de69e17128b49089ddf24639bfa925d395b0ec1c9015c9e99a76017e9fd368",
+    "schema": "slide-review/2",
+    "fingerprint": "45ea67409c5d917b5417f51991733a0ef35b383cd8fd309d21745bd89b49ab65",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -117,11 +362,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The lens is centered in the camera body. Its teal arc follows the lens rim without adding a floating feature."
+    "proof": {
+      "path": "proofs/icons/camera.svg",
+      "sha256": "e4c5293956d80e65d9f8cd738138ee90e35fd50727a7567ae1c18b667b0f37eb"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The lens is centered in the camera body. Its complete teal circle follows the lens rim without adding a floating feature."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The lens is centered in the camera body. Its complete teal circle follows the lens rim without adding a floating feature."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete lens rim in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Camera remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The lens is centered in the camera body. Its complete teal circle follows the lens rim without adding a floating feature.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "server": {
-    "fingerprint": "27082d768a07056acb09170d392f824f555f1c3dc718a4efbbd4d8758a2f37f8",
+    "schema": "slide-review/2",
+    "fingerprint": "7a4472d61192fb7d52ac353b3be8352772a67468af2f403fb5027ed86652d8ee",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -132,11 +411,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "Two equal server units align vertically with a consistent gap. Only the upper status indicator is teal; both units remain distinct at 32px."
+    "proof": {
+      "path": "proofs/icons/server.svg",
+      "sha256": "c862182ca1b20f17ac2102d8a0599f719d214b192f41b3dba6349db3bec27e8c"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "Two equal server units align vertically with a consistent gap. Only the upper status indicator is teal; both units remain distinct at 32px."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "Two equal server units align vertically with a consistent gap. Only the upper status indicator is teal; both units remain distinct at 32px."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete one status indicator in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Server stack remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "Two equal server units align vertically with a consistent gap. Only the upper status indicator is teal; both units remain distinct at 32px.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "switch": {
-    "fingerprint": "7f8001c117672e39f263e635aa1e9a7238aa17cf58cd5b25ec713b97245f4b1c",
+    "schema": "slide-review/2",
+    "fingerprint": "b4b3e7ffb035134272a3130bafecab991d71d7efa10b0a4c9b93c63d50fdfc5f",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -147,11 +460,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "Three equal ports share a baseline and pitch. Each indicator sits above its port; the first indicator alone is teal."
+    "proof": {
+      "path": "proofs/icons/switch.svg",
+      "sha256": "e0340e65657a6671de35d2100cf0b2757246d2f82adf886dfa261fd809d81ef2"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "Three equal ports share a baseline and pitch. Each indicator sits above its port; the first indicator alone is teal."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "Three equal ports share a baseline and pitch. Each indicator sits above its port; the first indicator alone is teal."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete one port status light in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Network switch remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "Three equal ports share a baseline and pitch. Each indicator sits above its port; the first indicator alone is teal.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "storage": {
-    "fingerprint": "064bd046c1b63e943b32c86b85efac48cf136ab08ff8cbc580adf17cf63afe4b",
+    "schema": "slide-review/2",
+    "fingerprint": "ab682d901e09a11da294f8deb944457571a6897b384f0b74d3f573e75c782af5",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -162,11 +509,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The upper trapezoid terminates at the front panel seam. No rear edge crosses the panel; the drive indicator is a small accent."
+    "proof": {
+      "path": "proofs/icons/storage.svg",
+      "sha256": "571dd117dfb1111b2dea050653eb4d11b7dc22efdce9fe28e2a9312629d41492"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The upper trapezoid terminates at the front panel seam. No rear edge crosses the panel; the drive indicator is a small accent."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "parallel front/top; closed upper and front faces: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The upper trapezoid terminates at the front panel seam. No rear edge crosses the panel; the drive indicator is a small accent."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete drive status light in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Storage remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The upper trapezoid terminates at the front panel seam. No rear edge crosses the panel; the drive indicator is a small accent.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "cloud": {
-    "fingerprint": "5bb0a4f141c39c0b004fdb4b7c25389ae3c42bf3c51022c7b9a4c0a4f171049c",
+    "schema": "slide-review/2",
+    "fingerprint": "8771fc4b1ac1f78f012e83b5934fe578e0da8e8b965c508df5f703fd424250d8",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -177,11 +558,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The contour stays continuous through the cloud lobes. Teal overlays a short lower edge; the silhouette remains clear in monochrome."
+    "proof": {
+      "path": "proofs/icons/cloud.svg",
+      "sha256": "50b66cb24b1fdc70ffd315394a7e68709ad583d494d491e111d2c5e03e0818a7"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The contour stays continuous through the cloud lobes. Teal overlays the complete straight lower edge; the silhouette remains clear in monochrome."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The contour stays continuous through the cloud lobes. Teal overlays the complete straight lower edge; the silhouette remains clear in monochrome."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete lower cloud contour in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Cloud remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The contour stays continuous through the cloud lobes. Teal overlays the complete straight lower edge; the silhouette remains clear in monochrome.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "power": {
-    "fingerprint": "20eac73f4e3c97fb4b8f9f6dbf2bd855fa1c9047a7255463b60adb5f0718ccae",
+    "schema": "slide-review/2",
+    "fingerprint": "d82600702f006ec61693256a5146464c5c84ea32171b6df0502b9acc565ad92d",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -192,11 +607,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The vertical actuator and interrupted circular ring stay separate by design. Teal marks the actuator tip rather than an invented light."
+    "proof": {
+      "path": "proofs/icons/power.svg",
+      "sha256": "25c26cb85782dfd8171e9825a1c1b73e2fb4034ca5b744b8722d171d4ffc534f"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The vertical actuator and interrupted circular ring stay separate by design. Teal marks the complete actuator rather than an invented light."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The vertical actuator and interrupted circular ring stay separate by design. Teal marks the complete actuator rather than an invented light."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete power actuator in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Power remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The vertical actuator and interrupted circular ring stay separate by design. Teal marks the complete actuator rather than an invented light.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "satellite": {
-    "fingerprint": "7df5001cc22255f6946a9c456170a2bd5f09caffd88a300d7f296787370b1521",
+    "schema": "slide-review/2",
+    "fingerprint": "a10bf3412a8bcdb679252dfe8d2079e924e1839da0d9ec66c79ae054d8e0be1d",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -207,11 +656,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The two panel contours meet the central body in the source view. Teal follows the antenna connection; the signal arc remains separate."
+    "proof": {
+      "path": "proofs/icons/satellite.svg",
+      "sha256": "abf88e24ed8f0dc078dcd0bdc563310613541a0b69600377a25a178731c41d27"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The two panel contours meet the central body in the source view. Teal follows the antenna connection; the signal arc remains separate."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The two panel contours meet the central body in the source view. Teal follows the antenna connection; the signal arc remains separate."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete antenna connection in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Satellite remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The two panel contours meet the central body in the source view. Teal follows the antenna connection; the signal arc remains separate.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "router": {
-    "fingerprint": "d5e9e3cf051de8ee92c2bcdac29d04238b2386ccbaa8dae8517563f0e5aa4b7e",
+    "schema": "slide-review/2",
+    "fingerprint": "90ddd447deda01cb7c272c52bd0881ec0dcbe26419928e356225a882f928643d",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -222,11 +705,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The antenna meets the enclosure. Two source status lights stay aligned; only one is teal, with the radio arcs centered above."
+    "proof": {
+      "path": "proofs/icons/router.svg",
+      "sha256": "254de72ab9db319e26e59d2bb72ef3aaa327f9989a521ecea9bed19914df5510"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The antenna meets the enclosure. Two source status lights stay aligned; only one is teal, with the radio arcs centered above."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The antenna meets the enclosure. Two source status lights stay aligned; only one is teal, with the radio arcs centered above."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete router status light in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Router remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The antenna meets the enclosure. Two source status lights stay aligned; only one is teal, with the radio arcs centered above.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "network": {
-    "fingerprint": "3c7b10153669b6e2b57de005cfd750c0a3fc635606f493d47a217566a2e9483f",
+    "schema": "slide-review/2",
+    "fingerprint": "106e776899ba02396070b82db79d6a23500ab55629fe109a2bfec220ce2d11b7",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -237,11 +754,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The source uplink meets the top node and the lower bus. All three nodes align on the shared routes; teal follows the uplink."
+    "proof": {
+      "path": "proofs/icons/network.svg",
+      "sha256": "35af1db30c0f09bbc6aa3982df34ccc0aa56da278c0fea117b9c2a2aeeb290f6"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The source uplink meets the top node and the lower bus. All three nodes align on the shared routes; teal follows the uplink."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The source uplink meets the top node and the lower bus. All three nodes align on the shared routes; teal follows the uplink."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete uplink connection in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Network remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The source uplink meets the top node and the lower bus. All three nodes align on the shared routes; teal follows the uplink.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "database": {
-    "fingerprint": "e0a7e11649a12c3b47b0a8d3da477cfa45c7be56ce1ce8509f2ade170160bca0",
+    "schema": "slide-review/2",
+    "fingerprint": "920b51150d77852a0ab227f48819404db9971009efe7531142b20a9e5e4ab6b1",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -252,11 +803,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The top ellipse and side edges join cleanly. Middle and lower rims share the cylinder width; teal follows the top rim."
+    "proof": {
+      "path": "proofs/icons/database.svg",
+      "sha256": "5557ddde371be0c52caa148a84de37d9c5e7a2fb2015ceda9975106453f3ea8a"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The top ellipse and side edges join cleanly. Middle and lower rims share the cylinder width; teal follows the top rim."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The top ellipse and side edges join cleanly. Middle and lower rims share the cylinder width; teal follows the top rim."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete top record rim in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Database remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The top ellipse and side edges join cleanly. Middle and lower rims share the cylinder width; teal follows the top rim.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "dataset": {
-    "fingerprint": "a840fc05a961be3d32d40aa78a2661f15d65a5dac3b0ae167170f539f8662240",
+    "schema": "slide-review/2",
+    "fingerprint": "4ca5e7e9d90ac4b204727bb7277ff1fd70a5881b822a0951f7cc1180870a8bc5",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -267,11 +852,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "Rows and the central divider meet the table enclosure. Teal marks the header divider without changing the cell alignment."
+    "proof": {
+      "path": "proofs/icons/dataset.svg",
+      "sha256": "225edc409a27d2ce51310f9c43cef039f9966db53ae992386a8c7edd2839eb37"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "Rows and the central divider meet the table enclosure. Teal marks the header divider without changing the cell alignment."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "Rows and the central divider meet the table enclosure. Teal marks the header divider without changing the cell alignment."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete header divider in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Dataset remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "Rows and the central divider meet the table enclosure. Teal marks the header divider without changing the cell alignment.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "document": {
-    "fingerprint": "83ecc69db88fd07c1ad20b1a0c5b0859ad82fef42358447268719d87b67f96a5",
+    "schema": "slide-review/2",
+    "fingerprint": "1d49722450603a727bd8daa407e50462f85042d268b9b1e60d666c67ffc321d2",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -282,11 +901,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The folded corner meets the page outline. Text rows fit inside the page; one existing row carries the small accent."
+    "proof": {
+      "path": "proofs/icons/document.svg",
+      "sha256": "19ed8c8df0ddf632a7acfc54e5c70519410316b3148814305b04146b931031b5"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The folded corner meets the page outline. Text rows fit inside the page; one existing row carries the small accent."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The folded corner meets the page outline. Text rows fit inside the page; one existing row carries the small accent."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete one text row in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Document remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The folded corner meets the page outline. Text rows fit inside the page; one existing row carries the small accent.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "folder": {
-    "fingerprint": "84361eb14681b9d186e928a801885270b3a121b1a9d64f8280ddfe4a9ecd7622",
+    "schema": "slide-review/2",
+    "fingerprint": "39e533f1d5f06785ad1a3fa939629c0399b1dc3a95bf75ccda26030701490042",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -297,11 +950,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The tab joins the folder contour cleanly. Teal follows the tab edge and stays visible without becoming an extra loose dash."
+    "proof": {
+      "path": "proofs/icons/folder.svg",
+      "sha256": "e84f91b2aedbd07f11ef38355535fb9ff5e37e988f406631001ece0d95e7fda4"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The tab joins the folder contour cleanly. Teal follows the tab edge and stays visible without becoming an extra loose dash."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The tab joins the folder contour cleanly. Teal follows the tab edge and stays visible without becoming an extra loose dash."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete folder tab edge in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Folder remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The tab joins the folder contour cleanly. Teal follows the tab edge and stays visible without becoming an extra loose dash.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "archive": {
-    "fingerprint": "311bd733af7d59fe827eaf892c8d327a5cf469c03c6f8d7b4162f698eed4eb47",
+    "schema": "slide-review/2",
+    "fingerprint": "cf6da2e31668755dc194c0ed117b1bc5985371e3608b9604545f999d5acea488",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -312,11 +999,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The box sides meet the lid. The centered handle is the only accented feature; the box remains clear at 32px."
+    "proof": {
+      "path": "proofs/icons/archive.svg",
+      "sha256": "11945d9de436dca8210621de699c569e8f32356133d8bd44c75bf8bd14af3c78"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The box sides meet the lid. The centered handle is the only accented feature; the box remains clear at 32px."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The box sides meet the lid. The centered handle is the only accented feature; the box remains clear at 32px."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete handle in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Archive remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The box sides meet the lid. The centered handle is the only accented feature; the box remains clear at 32px.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "terminal": {
-    "fingerprint": "16c27295c95ae03b7592c57f47fc84854dcf319639dca39c037e7bc73202ac98",
+    "schema": "slide-review/2",
+    "fingerprint": "bce5bf4c1390c5629a78821b78fa4daa78493c81771b6c4ca5a14f0e99c45ced",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -327,11 +1048,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The prompt and cursor fit inside the terminal frame. Teal follows the cursor and monochrome removes the redundant overlay."
+    "proof": {
+      "path": "proofs/icons/terminal.svg",
+      "sha256": "4bc09fce9f1e66a85826b9bf83e1fb3424bad3e211a656f0cef39052f7214445"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The prompt and cursor fit inside the terminal frame. Teal follows the cursor and monochrome removes the redundant overlay."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The prompt and cursor fit inside the terminal frame. Teal follows the cursor and monochrome removes the redundant overlay."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete cursor in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Terminal remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The prompt and cursor fit inside the terminal frame. Teal follows the cursor and monochrome removes the redundant overlay.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "files": {
-    "fingerprint": "a410982d9ecbe901e394fc30cd7e61aeacd342564ad862ec0ca181e0b2a1c6b5",
+    "schema": "slide-review/2",
+    "fingerprint": "c9deb45e0b8b7e5d2fae4f2150c1d56d3825b3aaa46afcb7f7c8bf53a4fd086a",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -342,11 +1097,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "A partial rear page sits behind the front page. Rear strokes remain outside the front silhouette; the front fold carries teal."
+    "proof": {
+      "path": "proofs/icons/files.svg",
+      "sha256": "c107f6105ca4646bbb0da4aa70865c86a1955a8171c7c592b0e0bc1a06aeab01"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "A partial rear page sits behind the front page. Rear strokes remain outside the front silhouette; the front fold carries teal."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "A partial rear page sits behind the front page. Rear strokes remain outside the front silhouette; the front fold carries teal."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete front page fold in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Files remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "A partial rear page sits behind the front page. Rear strokes remain outside the front silhouette; the front fold carries teal.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "folders": {
-    "fingerprint": "22ab192899ee2839d09f36f1651da2d91ffadcc428f8e8d73ce71034fc5675de",
+    "schema": "slide-review/2",
+    "fingerprint": "f6803e7396ecd11044fb20529597ed30c4eee8d6d7b608a88a3dc64e9fd58ff8",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -357,11 +1146,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "A partial rear folder sits behind the closed front folder. The tab carries teal; neither rear contour crosses the front face."
+    "proof": {
+      "path": "proofs/icons/folders.svg",
+      "sha256": "cc1688bf54df175cf11c9f2125e43b92c4d122b6367255413c704a1497ff8dd9"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "A partial rear folder sits behind the closed front folder. The tab carries teal; neither rear contour crosses the front face."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "A partial rear folder sits behind the closed front folder. The tab carries teal; neither rear contour crosses the front face."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete front folder tab in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Folders remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "A partial rear folder sits behind the closed front folder. The tab carries teal; neither rear contour crosses the front face.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "notebook": {
-    "fingerprint": "8f4587c3ac327c7f83dc6e3a4621607cb5dff1bcc21206b25d981023c3b8993a",
+    "schema": "slide-review/2",
+    "fingerprint": "a8677152f2f7c5919c9c493dafb514929bb9730cba4663b08183d81c30ec73fb",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -372,11 +1195,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "Four binding strokes share their pitch and meet the cover edge. One binding is accented; the spine remains straight."
+    "proof": {
+      "path": "proofs/icons/notebook.svg",
+      "sha256": "494c621302304517bc3f888e12def90ede3da85e92434e6cc3e48c8ea210db3d"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "Four binding strokes share their pitch and meet the cover edge. One binding is accented; the spine remains straight."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "Four binding strokes share their pitch and meet the cover edge. One binding is accented; the spine remains straight."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete one binding loop in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Notebook remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "Four binding strokes share their pitch and meet the cover edge. One binding is accented; the spine remains straight.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "chart": {
-    "fingerprint": "ffb9013e5f0902101f7d83844f8a3e07a15e2683b06a7f1f0bf9a8fe294d2ba8",
+    "schema": "slide-review/2",
+    "fingerprint": "29334ca6bf8e283ce474cc5f0e1f2209e7df999994633bfde22afcdf3bf75c83",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -387,11 +1244,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "Three bars share a baseline with distinct heights. Teal stays on the tip of the tallest bar and does not imply an extra data series."
+    "proof": {
+      "path": "proofs/icons/chart.svg",
+      "sha256": "ad07033ed7498881ae5fa118c225339ac454a4074e98ba0edef40f3eca152758"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "Three bars share a baseline with distinct heights. Teal stays on the complete tallest bar and does not imply an extra data series."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "Three bars share a baseline with distinct heights. Teal stays on the complete tallest bar and does not imply an extra data series."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete the complete leading bar in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Chart remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "Three bars share a baseline with distinct heights. Teal stays on the complete tallest bar and does not imply an extra data series.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "flask": {
-    "fingerprint": "cb3acc21035ac5bd75936e59e081136d11d439fc409255f6a890041c6a685946",
+    "schema": "slide-review/2",
+    "fingerprint": "45e348e21af785dd14294da3f6fa0f9fecd4d937b09ef6480aae84bd344633ba",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -402,11 +1293,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The neck and sloped sides form a closed flask. The liquid line terminates on both walls; only its central portion is teal."
+    "proof": {
+      "path": "proofs/icons/flask.svg",
+      "sha256": "451aa2cd16dbadaf3e159a34a0220f749aba20d1bf75ff1ea0312be0f3a5325e"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The neck and sloped sides form a closed flask. The liquid line terminates on both walls; only its central portion is teal."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The neck and sloped sides form a closed flask. The liquid line terminates on both walls; only its central portion is teal."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete liquid level in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Flask remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The neck and sloped sides form a closed flask. The liquid line terminates on both walls; only its central portion is teal.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "microscope": {
-    "fingerprint": "27b9c5652442b976872f04a33c12e75a9f3886aae808b669c0a9ac60e24e6185",
+    "schema": "slide-review/2",
+    "fingerprint": "bc40b38b19ee022addf488a019219801ad746da080144a2e648c64882d0abc63",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -417,11 +1342,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The objective, arm, stage and base retain their source relationships. Teal follows the stage; the objective stays above it."
+    "proof": {
+      "path": "proofs/icons/microscope.svg",
+      "sha256": "cc223684f43bea2ecfc07c1eafb56ace21ae788f7f6cdd1df97449e1dee8b8a2"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The objective, arm, stage and base retain their source relationships. Teal follows the stage; the objective stays above it."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The objective, arm, stage and base retain their source relationships. Teal follows the stage; the objective stays above it."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete specimen stage in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Microscope remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The objective, arm, stage and base retain their source relationships. Teal follows the stage; the objective stays above it.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "calipers": {
-    "fingerprint": "2bb9c3f9aa78e39fa08bec7f9219406bf9d21f0f10e3acb084c7238a9802f90d",
+    "schema": "slide-review/2",
+    "fingerprint": "954f0a75048fa46877cc2637363f601322bba4ddd908a55930dd65f9346fdc2f",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -432,11 +1391,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "Revised the jaws to opposing faces with a clear gap. Both lower jaws are parallel; beam segments stop at the slider; the display fits inside."
+    "proof": {
+      "path": "proofs/icons/calipers.svg",
+      "sha256": "8397b793f9492f6bc0598621252301e3a32515ed3a0f19cf0b2041b5e97b7dda"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "Revised the jaws to opposing faces with a clear gap. Both lower jaws are parallel; beam segments stop at the slider; the display fits inside."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "Revised the jaws to opposing faces with a clear gap. Both lower jaws are parallel; beam segments stop at the slider; the display fits inside."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete slider display edge in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Calipers remains readable in all four treatments at 32 and 64 pixels. The jaw/display detail is dense at the smaller size, but the opposing measuring faces and beam remain distinguishable."
+      }
+    },
+    "notes": "Revised the jaws to opposing faces with a clear gap. Both lower jaws are parallel; beam segments stop at the slider; the display fits inside.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "compass": {
-    "fingerprint": "d3a4f44434c51e446df5c308f1e2d63a82a4b99c1163141ef49ce8ac1d8593e9",
+    "schema": "slide-review/2",
+    "fingerprint": "7917eebb7f80f2c299a5bd9c9193b640df5e5ef31e6390d1c346a467e8f1e131",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -447,11 +1440,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The pivot anchors the two leg directions. The interrupted right leg and measurement arc retain the source geometry; teal follows the pivot."
+    "proof": {
+      "path": "proofs/icons/compass.svg",
+      "sha256": "76ac41339c76daf18636801e8bf6bd485ed3af560068b71de7fa7d01db9cb1be"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The pivot anchors the two leg directions. The interrupted right leg and measurement arc retain the source geometry; teal follows the pivot."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The pivot anchors the two leg directions. The interrupted right leg and measurement arc retain the source geometry; teal follows the pivot."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete pivot rim in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Drafting compass remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The pivot anchors the two leg directions. The interrupted right leg and measurement arc retain the source geometry; teal follows the pivot.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "target": {
-    "fingerprint": "78ed0b61af174d3ea2a85c51cef26550dca56aebf647b31d4f69a456311d93a7",
+    "schema": "slide-review/2",
+    "fingerprint": "f65428b4b8956077504a428e77cc18308c091346a1f3b5c1cdf57b8469dd6136",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -462,11 +1489,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "Three concentric circles share one center. The small inner rim carries teal; all rings remain distinct at 32px."
+    "proof": {
+      "path": "proofs/icons/target.svg",
+      "sha256": "a5d15d248f94352b5d734df482b5f9a52e8846f41e570779c420b4294b7eaeed"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "Three concentric circles share one center. The small inner rim carries teal; all rings remain distinct at 32px."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "Three concentric circles share one center. The small inner rim carries teal; all rings remain distinct at 32px."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete bullseye rim in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Target remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "Three concentric circles share one center. The small inner rim carries teal; all rings remain distinct at 32px.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "idea": {
-    "fingerprint": "82857cad9d58cf2a7257f5dbff6b99aec1f623009054f9fb28267ba86f26cb9f",
+    "schema": "slide-review/2",
+    "fingerprint": "59278025f5b5f8f440b4ead1fe2cb21cfcc94a75e7a477f1d7efe5d2f2e3530a",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -477,11 +1538,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The bulb contour narrows toward the base. The two base strokes stay centered and separated; the upper base stroke has a restrained accent."
+    "proof": {
+      "path": "proofs/icons/idea.svg",
+      "sha256": "d16f7d521b316c1fe96b664ebcffe3245f5def1ed9c381a02a789861ecca3437"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The bulb contour narrows toward the base. The two base strokes stay centered and separated; the upper base stroke has a restrained accent."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The bulb contour narrows toward the base. The two base strokes stay centered and separated; the upper base stroke has a restrained accent."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete lamp base in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Idea remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The bulb contour narrows toward the base. The two base strokes stay centered and separated; the upper base stroke has a restrained accent.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "search": {
-    "fingerprint": "750f9181899fcb87604e0678e9227bac78d13b1111ade0913d28b3f19021beed",
+    "schema": "slide-review/2",
+    "fingerprint": "65b7675c574781d9a6bc85de2335a95aad6aad64be6920a77a1d448ef7c823ca",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -492,11 +1587,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "Reduced the lens accent to a 45-degree arc after the first budget failure. The handle meets the lens at the source junction."
+    "proof": {
+      "path": "proofs/icons/search.svg",
+      "sha256": "c67da83093f8f668916eacc9b971dffffcf61de3c3fd62b1d4edf1bf994eeffc"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The complete lens circle is teal; the separate handle stays in the base ink. The handle meets the lens at the source junction."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The complete lens circle is teal; the separate handle stays in the base ink. The handle meets the lens at the source junction."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete lens rim in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Search remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The complete lens circle is teal; the separate handle stays in the base ink. The handle meets the lens at the source junction.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "filter": {
-    "fingerprint": "8f3a173aac738d34d67843078d682a28cb5fe91a36a56922f86db628df0dc622",
+    "schema": "slide-review/2",
+    "fingerprint": "42aa8619a151a0fb811c1178a9c2aa96570124e60c6a22c5e80e4c36240d38ae",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -507,11 +1636,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "Three descending line lengths share their center. Only the middle of the shortest result line is teal; no added decorative dot."
+    "proof": {
+      "path": "proofs/icons/filter.svg",
+      "sha256": "d35b716c68dcaa1bab7949d46b58ce7ca9382ba00609581644761296dbd491e0"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "Three descending line lengths share their center. The complete shortest result line is teal; no added decorative dot."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "Three descending line lengths share their center. The complete shortest result line is teal; no added decorative dot."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete selected result in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Filter remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "Three descending line lengths share their center. The complete shortest result line is teal; no added decorative dot.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "settings": {
-    "fingerprint": "0e4fbc538b8b9f9d71f64aca967cce2c91f2e274950a3490d543d13e2926eb35",
+    "schema": "slide-review/2",
+    "fingerprint": "3a822ef418a1c709784e47b62c10f13d493cadbb42bad92c277f2efec5ef7537",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -522,11 +1685,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The hub stays centered inside the gear contour. The small accent follows the hub rim and keeps the teeth in one ink colour."
+    "proof": {
+      "path": "proofs/icons/settings.svg",
+      "sha256": "e7b62c962c2fb51cc8bb409491e6aaed44a67fe67ee93401129ab366ef18eddf"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The hub stays centered inside the gear contour. The small accent follows the hub rim and keeps the teeth in one ink colour."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The hub stays centered inside the gear contour. The small accent follows the hub rim and keeps the teeth in one ink colour."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete central hub in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Settings remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The hub stays centered inside the gear contour. The small accent follows the hub rim and keeps the teeth in one ink colour.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "branch": {
-    "fingerprint": "7749d8823efc10f9ba353fe5a7cdb3c2895d1a647ba74ae61a628fa6e4b2a4d0",
+    "schema": "slide-review/2",
+    "fingerprint": "42e11694fa2020b8ca1bfd60c5542cd429b543153067f0604c5ea57ec7111c55",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -537,11 +1734,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The curved branch meets both circular endpoints in the source geometry. Teal follows the upper endpoint rim; the trunk remains continuous."
+    "proof": {
+      "path": "proofs/icons/branch.svg",
+      "sha256": "76c4c91cd31ef6656aca190b0a3c75c6bb3d45ec55b5e92713f511924f0c5a9d"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The curved branch meets both circular endpoints in the source geometry. Teal follows the upper endpoint rim; the trunk remains continuous."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The curved branch meets both circular endpoints in the source geometry. Teal follows the upper endpoint rim; the trunk remains continuous."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete branch endpoint in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Branch remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The curved branch meets both circular endpoints in the source geometry. Teal follows the upper endpoint rim; the trunk remains continuous.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "checklist": {
-    "fingerprint": "44b4d3feacac7530f795516dfffdbc418a9fd896cde786322896dadb4cf93283",
+    "schema": "slide-review/2",
+    "fingerprint": "0517215796ddf118d0c9f157545c8da9240d386852321b6ee7d312db110d02f0",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -552,11 +1783,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "Two checks align with their list rows. The lower check has one accented stroke segment; line spacing remains consistent at 32px."
+    "proof": {
+      "path": "proofs/icons/checklist.svg",
+      "sha256": "6263363ae91514e91648ae1841a3260902e66ef175993f5207b9da70c23fa82a"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "Two checks align with their list rows. The lower check has one accented stroke segment; line spacing remains consistent at 32px."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "Two checks align with their list rows. The lower check has one accented stroke segment; line spacing remains consistent at 32px."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete completed check in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Checklist remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "Two checks align with their list rows. The lower check has one accented stroke segment; line spacing remains consistent at 32px.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "shield-check": {
-    "fingerprint": "2dca5428421ba14cdbea69748f5c65ac84a921f2e135be6b09ef281a06a77c92",
+    "schema": "slide-review/2",
+    "fingerprint": "6cf3247400c59217e6332e396f0989af1604f2d9097f2b5c80058e2a9f896a98",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -567,11 +1832,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The check sits inside the shield with clear margins. Teal follows a check segment; the outer contour stays continuous."
+    "proof": {
+      "path": "proofs/icons/shield-check.svg",
+      "sha256": "c663f79ba1519609fa20d76a11b30d48559d66450c0d2a1c6f4936606f1b23e7"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The check sits inside the shield with clear margins. Teal follows a check segment; the outer contour stays continuous."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The check sits inside the shield with clear margins. Teal follows a check segment; the outer contour stays continuous."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete verification check in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Verified remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The check sits inside the shield with clear margins. Teal follows a check segment; the outer contour stays continuous.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "clock": {
-    "fingerprint": "529a3b59a74a45a73cee75c6283871c157ecf5955ecb4c6de3efc1c299118413",
+    "schema": "slide-review/2",
+    "fingerprint": "22581088053287b29bc525c7ec1828af679ab70c9f2440d1fe319e4c5464dd2d",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -582,11 +1881,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "Both hands meet at the circle center. Teal lies on the minute hand; the outer rim and short hand remain legible in both palettes."
+    "proof": {
+      "path": "proofs/icons/clock.svg",
+      "sha256": "4d3b818cae1f5228ccdd36fbbbef1be21dd13e7d2bb93e499cc38cb5a7c6030f"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "Both hands meet at the circle center. Teal lies on the minute hand; the outer rim and short hand remain legible in both palettes."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "Both hands meet at the circle center. Teal lies on the minute hand; the outer rim and short hand remain legible in both palettes."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete minute hand in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Clock remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "Both hands meet at the circle center. Teal lies on the minute hand; the outer rim and short hand remain legible in both palettes.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "rocket": {
-    "fingerprint": "a189bd4222750b137796dcb10c195c3f1f6d8152bfbf7f2b485926ba09554be1",
+    "schema": "slide-review/2",
+    "fingerprint": "3d73f9b1eb931dc7f557ecd0495a2d3f006572c6a3a5b4703dcc2ba4f0167980",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -597,11 +1930,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The fins join the body at the source seams. The exhaust is intentionally separate; teal follows one existing fin edge."
+    "proof": {
+      "path": "proofs/icons/rocket.svg",
+      "sha256": "7ec83f3317b375c0e1cda6681c4219a23b526606efa41f657c7e0021bade0686"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The fins join the body at the source seams. The exhaust is intentionally separate; teal follows one existing fin edge."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The fins join the body at the source seams. The exhaust is intentionally separate; teal follows one existing fin edge."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete fin edge in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Launch remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The fins join the body at the source seams. The exhaust is intentionally separate; teal follows one existing fin edge.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "message": {
-    "fingerprint": "6253f9590ebb895937b84e4ba76055349e50aac14a7166ea0355e6d32977efd3",
+    "schema": "slide-review/2",
+    "fingerprint": "8bed1d7a9d31fba8ef8cb8a94077802aa39273f286b7e89dc59e06f77dccd1ae",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -612,11 +1979,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The tail joins the message outline. A short top-edge accent stays attached; no text or added internal detail competes at 32px."
+    "proof": {
+      "path": "proofs/icons/message.svg",
+      "sha256": "d9a177314f5a5d536c6e2374cf8f831ad9b539efc7e7b9aed653111e358c8f03"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The tail joins the message outline. The complete straight top edge is teal; no text or added internal detail competes at 32px."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The tail joins the message outline. The complete straight top edge is teal; no text or added internal detail competes at 32px."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete message edge in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Message remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The tail joins the message outline. The complete straight top edge is teal; no text or added internal detail competes at 32px.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "mail": {
-    "fingerprint": "17c91dc7d94544fbbe2d90406a7db272c84bcbf4b95a947b6504ffcfb4eea60c",
+    "schema": "slide-review/2",
+    "fingerprint": "10564e4b674902fc469739f413854ef31dcaebcc8e89c185f88f224961a723cd",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -627,11 +2028,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The envelope fold meets the side edges within the frame. Teal follows one diagonal fold segment and remains distinct from the outer box."
+    "proof": {
+      "path": "proofs/icons/mail.svg",
+      "sha256": "16d103610f76d7c35ba9682cfdae8eb09bfc9e1efd4186593230320768b1e154"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The envelope fold meets the side edges within the frame. Teal follows one diagonal fold segment and remains distinct from the outer box."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The envelope fold meets the side edges within the frame. Teal follows one diagonal fold segment and remains distinct from the outer box."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete envelope fold in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Mail remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The envelope fold meets the side edges within the frame. Teal follows one diagonal fold segment and remains distinct from the outer box.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "slide-deck": {
-    "fingerprint": "f86412c5af37c9738790a12d0f33a7c6c44291edd6d6750e42b61613bf2f5436",
+    "schema": "slide-review/2",
+    "fingerprint": "316af619ec9f34dae8e6aef18e987bb981a18be87c6bcc49ca383b9ec64d213a",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -642,11 +2077,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "All three sheets retain the same height and two-unit offsets. Rear top/right edges stay outside the front sheet; the front title line alone is teal. Rechecked at 32/64px in all four treatments."
+    "proof": {
+      "path": "proofs/icons/slide-deck.svg",
+      "sha256": "9047313894198fb1ba0ef5ade7e2735de93a9fb3647d802a5a020e1c4c0819a5"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "All three sheets retain the same height and two-unit offsets. Rear top/right edges stay outside the front sheet; the front title line alone is teal. Rechecked at 32/64px in all four treatments."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "All three sheets retain the same height and two-unit offsets. Rear top/right edges stay outside the front sheet; the front title line alone is teal. Rechecked at 32/64px in all four treatments."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete front slide title line in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Slide deck remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "All three sheets retain the same height and two-unit offsets. Rear top/right edges stay outside the front sheet; the front title line alone is teal. Rechecked at 32/64px in all four treatments.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "person": {
-    "fingerprint": "2b8e3d88141e506e6315a15666f34b1de3e864ad737bd6275b3d49d51298863d",
+    "schema": "slide-review/2",
+    "fingerprint": "07df99045909e867f8e5a38ceb3a1da201a0055ebcd7b735aa2c55a0438f6cdc",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -657,11 +2126,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The head is centered over the shoulder contour. Teal follows a small head arc; the intentionally open lower profile remains clean."
+    "proof": {
+      "path": "proofs/icons/person.svg",
+      "sha256": "c2f8f79b20205a957ba7281ec9e7d48267a648b569264f20f2264bea632d0770"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The head is centered over the shoulder contour. Teal follows the complete head circle; the intentionally open lower profile remains clean."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The head is centered over the shoulder contour. Teal follows the complete head circle; the intentionally open lower profile remains clean."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete profile rim in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Person remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The head is centered over the shoulder contour. Teal follows the complete head circle; the intentionally open lower profile remains clean.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "calendar": {
-    "fingerprint": "c4a8263af899679b26be87bbb0528bb2b5cd5796b3520affbf09b06e779f4cdf",
+    "schema": "slide-review/2",
+    "fingerprint": "cfc6a4b556623a7a5c39ffb69a36150709bb80dfcff1cbfbce3f8393def08772",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -672,11 +2175,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "Two bindings align across the header. The divider meets both sides; one binding carries teal without adding a date glyph."
+    "proof": {
+      "path": "proofs/icons/calendar.svg",
+      "sha256": "09a44c340590b710a91e1c11b49ec2c996294ea3106fdceb75a79b05c002b325"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "Two bindings align across the header. The divider meets both sides; one binding carries teal without adding a date glyph."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "Two bindings align across the header. The divider meets both sides; one binding carries teal without adding a date glyph."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete one binding in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Calendar remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "Two bindings align across the header. The divider meets both sides; one binding carries teal without adding a date glyph.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "link": {
-    "fingerprint": "3e02e63ce203253553159ee18ad72f91ec4a5283542b2b9488eb585f72cc2160",
+    "schema": "slide-review/2",
+    "fingerprint": "9d809c88d923cc54ade46c1283cf18ea1cef860ed9d971415a71309e622baafc",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -687,11 +2224,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "Both curved link halves retain the source overlap and open ends. Teal follows one straight end segment; no false crossing was introduced."
+    "proof": {
+      "path": "proofs/icons/link.svg",
+      "sha256": "331e3ffa41c8f71c12e4f7cd75a8ce72bc748b858f1c32fdc3e783abd68fb05c"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "Both curved link halves retain the source overlap and open ends. Teal follows one straight end segment; no false crossing was introduced."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "Both curved link halves retain the source overlap and open ends. Teal follows one straight end segment; no false crossing was introduced."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete link end in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Link remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "Both curved link halves retain the source overlap and open ends. Teal follows one straight end segment; no false crossing was introduced.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "globe": {
-    "fingerprint": "b668a974ad4e876d4bcec64fa8f1443b29b8f1b70f788657b2f6f874c53096dc",
+    "schema": "slide-review/2",
+    "fingerprint": "3d73878c3fda33970711f3c10d7116714108f6c1cc76ba3f977d18726082426a",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -702,11 +2273,45 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The latitude line meets the outer rim and the meridian closes symmetrically. Teal follows a short equator segment through the center."
+    "proof": {
+      "path": "proofs/icons/globe.svg",
+      "sha256": "bf24886bee9f02f3e9008a1511ce875d98afb27a60cd1f53588249d93b597368"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The latitude line meets the outer rim and the meridian closes symmetrically. Teal follows the complete equator through the center."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The latitude line meets the outer rim and the meridian closes symmetrically. Teal follows the complete equator through the center."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete equator in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Globe remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The latitude line meets the outer rim and the meridian closes symmetrically. Teal follows the complete equator through the center.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   },
   "bookmark": {
-    "fingerprint": "7b265603f794b7da4b1a8437f86d66c1f868305855537398391e1b1c8aea4ee6",
+    "schema": "slide-review/2",
+    "fingerprint": "d192e0e433353cffa535b395cd42142787d75a99a0ef37dbda81097e419f8ac4",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
     "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
     "sizes": [
       32,
       64
@@ -717,6 +2322,131 @@
       "paper/accent",
       "paper/mono"
     ],
-    "notes": "The crown and notched bottom close cleanly. Teal follows a short side edge, leaving the silhouette recognizable in every treatment."
+    "proof": {
+      "path": "proofs/icons/bookmark.svg",
+      "sha256": "75a2f7830753e91f2c642d3671baae9190acb2a8f283639859178d4cdc2524e6"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The crown and notched bottom close cleanly. Teal follows the complete straight side edge, leaving the silhouette recognizable in every treatment."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "front: the visible silhouette matches this declaration."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The crown and notched bottom close cleanly. Teal follows the complete straight side edge, leaving the silhouette recognizable in every treatment."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete bookmark side edge in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Bookmark remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The crown and notched bottom close cleanly. Teal follows the complete straight side edge, leaving the silhouette recognizable in every treatment.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
+  },
+  "bathtub": {
+    "schema": "slide-review/2",
+    "fingerprint": "55b7e5457e4c0b8bed75fd2d6892b677f9ae7554a3047388a300fe6950a0b162",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
+    "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "proof": {
+      "path": "proofs/icons/bathtub.svg",
+      "sha256": "d95a0c03a001058fba1b86c26d1393ee10bb79db6a861a083cc8ff8086ed5a79"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The tub silhouette includes a permitted shower fixture. Both supports meet the vessel at the same baseline; the complete straight rim is teal. All four treatments remain clear at both sizes."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "side elevation with a shower fixture: the visible silhouette matches this declaration. Concealed interior-drain, rear-supports are omitted."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The tub silhouette includes a permitted shower fixture. Both supports meet the vessel at the same baseline; the complete straight rim is teal. All four treatments remain clear at both sizes."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete the complete visible rim in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Bathtub remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The tub silhouette includes a permitted shower fixture. Both supports meet the vessel at the same baseline; the complete straight rim is teal. All four treatments remain clear at both sizes.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
+  },
+  "freestanding-bathtub": {
+    "schema": "slide-review/2",
+    "fingerprint": "5795175a8af87ef5b1f486d0d22cead43318111d4db3849681abf672f083a989",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
+    "reviewed": "2026-11-06",
+    "reviewer": {
+      "id": "/root",
+      "kind": "agent",
+      "role": "author self-review; not independent"
+    },
+    "sizes": [
+      32,
+      64
+    ],
+    "treatments": [
+      "night/accent",
+      "night/mono",
+      "paper/accent",
+      "paper/mono"
+    ],
+    "proof": {
+      "path": "proofs/icons/freestanding-bathtub.svg",
+      "sha256": "ca17f49296dc904812594b17ac2028a9fd9f3a94857a2baaeedd85d1f330f5d8"
+    },
+    "judgments": {
+      "recognition": {
+        "verdict": "pass",
+        "evidence": "The empty freestanding tub has a rounded vessel, a rim and two attached parallel supports. No shower, interior drain or rear supports appear. The small upper-rim accent is attached and the silhouette remains clear at both sizes."
+      },
+      "view": {
+        "verdict": "pass",
+        "evidence": "side elevation of an empty freestanding tub: the visible silhouette matches this declaration. Concealed interior-drain, rear-supports, interior-waterline are omitted."
+      },
+      "alignment": {
+        "verdict": "pass",
+        "evidence": "The empty freestanding tub has a rounded vessel, a rim and two attached parallel supports. No shower, interior drain or rear supports appear. The small upper-rim accent is attached and the silhouette remains clear at both sizes."
+      },
+      "accent": {
+        "verdict": "pass",
+        "evidence": "Inspected the complete the complete straight upper rim edge in teal at 32/64px on night and paper. The selected straight edge reaches both endpoints or the selected round feature closes in full; monochrome remains in the base ink."
+      },
+      "smallSize": {
+        "verdict": "pass",
+        "evidence": "Freestanding bathtub remains readable in all four treatments at 32 and 64 pixels. The main silhouette and its internal gaps remain distinguishable."
+      }
+    },
+    "notes": "The empty freestanding tub has a rounded vessel, a rim and two attached parallel supports. No shower, interior drain or rear supports appear. The small upper-rim accent is attached and the silhouette remains clear at both sizes.",
+    "revalidation": "Fresh full-feature proofs rasterized and inspected after the user\u2019s accent correction. Author self-review only; independent maintainer review remains pending."
   }
 }

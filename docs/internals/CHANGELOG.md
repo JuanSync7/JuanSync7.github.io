@@ -7,7 +7,6 @@ Its original terrain and object models remain separate from Voxel Worlds, while 
 controls and a matching fallback support drag, tilt, pan and zoom. Seed, placement, harbour,
 framing and browser checks protect the restored scene.
 
-
 Voxel worlds gain wider terrain, layered ecological communities and themed places with related
 vegetation, supplies and static wildlife. All 135 live catalog types realize valid placements in
 the balanced cohort. Surface merging, shared GPU waves, supported cave roofs and exact 3D
@@ -17,6 +16,10 @@ solid voxels; full-turn profiles and an independent mesh-ray regression cover cl
 regression checks and complete source snapshots that can reproduce earlier faults.
 
 ## 2026-11-06
+
+Slide accents now cover their complete selected straight edge or circle/ellipse. Partial spans and arc selectors are rejected; complete-feature coverage replaces the old percentage cap, following the user’s correction.
+
+The icon workflow now discovers existing sources, judges their fit, and either reuses or creates a source through staged instructions. Catalog counts, families, view descriptions, license registries and export inventories grow from specifications. Shared relationship checks replace icon-id branches. The bathtub examples exercise reuse and creation; an isolated test checks new subjects/families/licenses and catalog contraction with no engine edits. Reviewer attestations, deterministic checks and independent behavioral evaluation have separate evidence and status.
 
 Voxel mainland edges gain eroded outlines, biome strata and a closed, stepped underside that
 shortens exposed walls without removing the terrain relief. Supporting catalogs add 37 detail

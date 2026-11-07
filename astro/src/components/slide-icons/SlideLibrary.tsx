@@ -111,7 +111,7 @@ export default function SlideLibrary() {
                 Copy
               </button>
               <a
-                href={`/downloads/slide-icons/proofs/${icon.id}.svg`}
+                href={`/downloads/slide-icons/proofs/icons/${icon.id}.svg`}
                 aria-label={`View ${icon.name} size proof`}
                 target="_blank"
                 rel="noreferrer"

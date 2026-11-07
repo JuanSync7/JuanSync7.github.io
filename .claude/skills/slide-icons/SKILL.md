@@ -1,38 +1,46 @@
 ---
 name: slide-icons
-description: Use when adding or changing the static SVG slide/web icon library, its accents, geometry, exports, or review system. Follow the pinned sources, fixed views, per-icon geometry checks and visual reviews.
+description: Use when a slide or web page needs an icon, an existing icon does not fit, or a static SVG icon needs adding, revising or reviewing.
 ---
 
-# Static slide icons
+# Slide and web icons
 
-Read `docs/design/slide-icons.md` and `astro/scripts/slides/rules.json` first. These
-are the user's explicitly requested static assets, presented by `SlideIcon`, under
-CLAUDE.md's icon exception. They are separate from animated explanatory figures.
+The subject is open. Follow the slide's meaning and the site's taste. A bathtub,
+instrument, household object or new metaphor is as valid as a processor. The
+library is a starting point, not a list of permitted concepts.
 
-1. Name the object and choose its view. Prefer an existing Lucide flat source.
-   Preserve source coordinates and primitives; pin the version, source bytes,
-   SHA-256 and license in `astro/vendor/slide-icons/`. Do not improvise isometric
-   boxes or hand-position separate faces. An original source must use a front view
-   unless an explicit projection and visibility contract is supplied.
-2. Plural collections use a stack. Declare its front and rear contours or vertical
-   units. Rear strokes must stop outside the front silhouette. Repeated units share
-   size, alignment and pitch. Avoid duplicating full outlines through front faces.
-3. Choose one meaningful existing feature for teal. Derive its segment or arc from
-   the source node using the selector, never an unrelated coordinate. Limit the
-   accent to 18% of base stroke length. Use existing night/paper tokens only.
-4. Add physical contracts for original geometry: containment, connections,
-   alignment and occlusion. Preserve the canonical geometry in every renderer.
-   Run `npm run slides:import` after changing sources or selectors.
-5. Run `npm run slides:proof`. Inspect **every changed icon** at 32px and 64px, in
-   night/paper and accent/mono. Check recognition, joins, part alignment, hidden
-   edges, small-size clarity, and accent meaning/attachment. Fix the icon when a
-   rule fails. Never relax a rule to make an icon pass.
-6. Only after looking, record the current fingerprint from the proof report,
-   date, sizes, treatments and a specific judgment in `reviews.json`. There is no
-   automatic accept-all command. A changed fingerprint invalidates the review.
-7. Run `npm run slides:export`, `npm run slides:check`, `npm run check`, build,
-   and the CI browser checks. Inspect desktop, phone and small-size screenshots.
-   New audit rules need a deliberately broken fixture caught by that exact rule.
-8. Keep `/lab/slide-icons/`, the design-system component ledger, licenses,
-   documentation and downloadable pack consistent. Do not call the work reviewed
-   without actually inspecting its proofs and browser screenshots.
+## Route by stage
+
+| Stage | Load now | Do / exit |
+| --- | --- | --- |
+| Find and judge | [Fit](stages/fit.md) | Search themed icons and library references. Exit with a recorded reuse/create decision for the actual brief. |
+| Reuse fits | [Reuse](stages/reuse.md) | Preserve the selected source, license and useful silhouette. Exit with a pinned source/spec. |
+| Create is needed | [Create](stages/create.md), [craft rules](RULES.md) | Choose a view, visible parts and relevant physical constraints. Exit with an original source/spec. |
+| Check and look | [Review](stages/review.md), [LOOK](LOOK.md) | Run deterministic checks and inspect the configured size proofs. Exit with evidence tied to the exact revision. |
+| Integrate | [Ship](stages/ship.md) | Update generated assets and run the affected integration checks. Exit with a report of what passed and what remains unknown. |
+
+Use `npm run slides:brief -- --stage=fit --task="slide meaning"` from `astro/`
+for a versioned packet of the current stage. Change `--stage` as work advances;
+add `--id` when reviewing an existing candidate. The receipt records supplied
+context, not proof that it was read or followed.
+
+Read only the current stage and its links. Retain the brief, chosen source and
+specification; iterate the failing part instead of restarting the concept.
+
+## Boundaries
+
+Icon authors own source SVGs, source specifications, fit decisions and review
+records. The maintained [kernel API](../../../astro/scripts/slides/kernel/README.md)
+and [checks](../../../astro/scripts/slides/checks/README.md) are read-only to an
+asset task. The repository guard enforces the change boundary in CI.
+
+Theme dimensions and tolerances come from `astro/scripts/slides/rules.json`.
+Catalog size, family names, subject names and camera descriptions are never caps.
+A new normal subject uses existing constraint types without a validator edit.
+A genuinely new geometric operation goes through the maintainer lane with a
+failing example, a passing example and an independent review. Keep its asset
+unapproved while that capability is unresolved; do not weaken a check.
+
+Playbook maintainers load [EVAL](EVAL.md). Asset authors do not need the evaluation
+suite. This skill implements the user's current request; its later behavioral
+results are evidence, not automatic adoption into the vault's rule package.
