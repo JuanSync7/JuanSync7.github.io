@@ -28,7 +28,10 @@ export default function VaultFileCabinet() {
   const layout = cabinetLayout(size.w, size.h, displayed);
   const rest = cabinetLayout(size.w, size.h, DEFAULT_CABINET_POSE);
   const raised = cabinetLayout(size.w, size.h, { drawer: 1, selected: 1, lifts: [1, 1, 1] });
-  const leave = () => { if (!root.current?.contains(document.activeElement)) choose(null); };
+  const leave = () => {
+    const focused = root.current?.querySelector<HTMLAnchorElement>('[data-cabinet-link]:focus');
+    choose(focused ? Number(focused.dataset.cabinetLink) : null);
+  };
   return (
     <div className="vault-cabinet" data-cabinet data-cabinet-ready={ready} ref={root} onPointerLeave={leave}>
       <div className="vc-heading pr-comment"><span>// the experience cabinet</span><span aria-hidden="true">01—03</span></div>

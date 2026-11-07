@@ -141,6 +141,11 @@ async function heroGeometry(page, width) {
   assert(lines > 0 && lines <= contract.maxHeroHeadlineLines);
 }
 
+const cabinetSelected = (page, index) => page.waitForFunction((expected) => {
+  const cabinet = document.querySelector('[data-cabinet]');
+  return Number(cabinet.dataset.cabinetFolder) === expected && Number(cabinet.dataset.cabinetLift) > 0.95;
+}, index);
+
 try {
   browser = await chromium.launch();
   const context = await browser.newContext({ viewport: { width: 1360, height: 960 }, deviceScaleFactor: 2, reducedMotion: 'no-preference' });
@@ -198,10 +203,7 @@ try {
     await page.keyboard.press('Tab');
     await folder.scrollIntoViewIfNeeded();
     await folder.focus();
-    await page.waitForFunction((expected) => {
-      const cabinet = document.querySelector('[data-cabinet]');
-      return Number(cabinet.dataset.cabinetFolder) === expected && Number(cabinet.dataset.cabinetLift) > 0.95;
-    }, index);
+    await cabinetSelected(page, index);
     assert(await folder.locator('[data-folder-label]').evaluate((label) => getComputedStyle(label).outlineStyle !== 'none'), 'A keyboard-selected folder has a visible focus ring');
     await page.keyboard.press('Enter');
     await page.waitForURL(`**/vault/${slug}/`);
@@ -210,6 +212,18 @@ try {
     await page.waitForURL('**/vault/');
     await ready(page, 'ready');
   }
+
+  // Pointer selection must release back to the folder that still owns keyboard focus.
+  const systemFolder = page.locator('[data-cabinet-link="0"]');
+  await systemFolder.scrollIntoViewIfNeeded();
+  await systemFolder.focus();
+  await cabinetSelected(page, 0);
+  await page.locator('[data-cabinet-link="1"]').hover();
+  await cabinetSelected(page, 1);
+  await page.mouse.move(0, 0);
+  await cabinetSelected(page, 0);
+  assert(await systemFolder.evaluate((node) => node === document.activeElement), 'Leaving pointer hover restores the focused folder without moving focus');
+  await systemFolder.evaluate((node) => node.blur());
 
   for (const slug of contract.guideSlugs) {
     const guideLink = page.locator(`main a[href="/vault/${slug}/"]`).first();

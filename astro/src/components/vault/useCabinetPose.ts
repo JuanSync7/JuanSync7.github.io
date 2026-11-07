@@ -29,7 +29,7 @@ export function useCabinetPose(root: RefObject<HTMLDivElement>) {
       setPose(next);
       element.dataset.cabinetFolder = String(next.selected);
       element.dataset.cabinetDrawer = next.drawer.toFixed(3);
-      element.dataset.cabinetLift = Math.max(...next.lifts).toFixed(3);
+      element.dataset.cabinetLift = (next.lifts[next.selected] ?? 0).toFixed(3);
     };
     const select = (index: number) => {
       moving.selected = index;

@@ -88,8 +88,8 @@ can disturb the rest of the site.
 The vault landing uses `landing-scroll.ts` for reversible ScrollTrigger motion. On wide screens,
 the hero copy and cabinet stay in view while native scrolling opens the drawer and introduces its
 three folders. A phone uses normal document flow and drives the same story while the cabinet passes
-through the viewport. Hover/focus takes priority over that story; leaving returns to its current
-chapter. The controls work independently of the scroll engine.
+through the viewport. Hover/focus takes priority over that story; pointer exit restores the focused folder when one
+still has keyboard focus, or returns to the current chapter. The controls work independently of the scroll engine.
 
 `heading-reveals.ts` moves heading words through masks; guide cards rise, turn and settle. Benefit
 articles rise inside clipped wrappers so they cannot overlap the following note. Section dividers
