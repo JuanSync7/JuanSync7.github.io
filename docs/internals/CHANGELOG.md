@@ -2,6 +2,14 @@
 
 ## 2026-11-07
 
+Hardware atlas seed thumbnails become still previews while the main viewer stays
+interactive. Repeated solids in a selected assembly each receive a teal accent.
+Board and interposer traces use separate lanes; server laminate markings follow
+their translated board; hollow rims omit radial tessellation seams and opaque
+walls hide their rear markings. Routing,
+repeated-selection and idle-gallery regressions accompany a reusable hardware
+playbook, built kernel index, visual review questions and complete verification command.
+
 Voxel worlds gain wider terrain, layered ecological communities and themed places with related
 vegetation, supplies and static wildlife. All 135 live catalog types realize valid placements in
 the balanced cohort. Surface merging, shared GPU waves, supported cave roofs and exact 3D

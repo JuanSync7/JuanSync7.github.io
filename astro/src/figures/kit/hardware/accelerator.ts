@@ -28,13 +28,10 @@ export function accelerator(p: Draft, n: number): void {
   for (const side of [-1, 1])
     for (const cx of [-0.78, -0.26, 0.26, 0.78])
       for (let i = 0; i < n + 3; i++) {
-        const x = cx - 0.12 + (i * 0.24) / (n + 2);
-        const source = cx - 0.08 + (i * 0.16) / (n + 2);
+        const x = cx - 0.08 + (i * 0.16) / (n + 2);
         p.trace(
           [
-            [source, 0.187, side * 0.35],
-            [source, 0.187, side * 0.385],
-            [x, 0.187, side * 0.385],
+            [x, 0.187, side * 0.35],
             [x, 0.187, side * 0.42],
           ],
           'Compute die',

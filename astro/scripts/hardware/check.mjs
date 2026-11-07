@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import { createServer } from 'vite';
 import { checkTransitions } from './transitions.mjs';
+import { checkRouting, checkSignals } from './contracts.mjs';
+import { checkPlaybook } from './playbook-check.mjs';
+
+await checkPlaybook();
 
 const server = await createServer({ server: { middlewareMode: true, ws: false }, appType: 'custom', logLevel: 'error' });
 try {
@@ -9,6 +13,8 @@ try {
   const { hardwareSvg, hardwareSprite } = await server.ssrLoadModule('/src/figures/kit/hardware/svg.ts');
   const { HARDWARE_KINDS, DEFAULT_OPTIONS, VIEWS } = await server.ssrLoadModule('/src/figures/kit/hardware/types.ts');
   const { Draft } = await server.ssrLoadModule('/src/figures/kit/hardware/primitives.ts');
+  const { visibleStrokes } = await server.ssrLoadModule('/src/figures/kit/hardware/occlusion.ts');
+  const { ink } = await server.ssrLoadModule('/src/figures/kit/ink.ts');
   const reversed = new Draft();
   reversed.part('Reversed outline', 'Face normals stay outward for either outline winding.');
   reversed.extrude([[-1,-1],[-1,1],[1,1],[1,-1]],0,1);
@@ -29,7 +35,9 @@ try {
           assert.ok(surface.points.length >= 2 && surface.points.flat().every(Number.isFinite), `${kind}: finite geometry`);
         }
       }
-      if (kind === 'board' || kind === 'accelerator') {
+      const routingCount = checkRouting(model);
+      if (kind === 'board' || kind === 'accelerator') assert.ok(routingCount > 0, `${kind}: routing check is nonempty`);
+      if (routingCount > 0) {
         const footprints = (part) => {
           const groups = new Map();
           for (const surface of part.surfaces.filter((s) => s.face)) {
@@ -60,6 +68,7 @@ try {
         const options = { ...DEFAULT_OPTIONS, mode, view, open, detail: fine };
         for (const [width, height] of [[256, 256], [358, 269], [640, 320]]) {
           const drawing = hardwareDrawing(model, options, width, height);
+          checkSignals(drawing, model.parts.length - 1, ink.signal(.95));
           assert.ok(drawing.paths.length > 20, `${kind}: recognisable detail`);
           for (const path of drawing.paths) for (const [x, y] of path.points) {
             assert.ok(x >= width * 0.11 && x <= width * 0.89 && y >= height * 0.11 && y <= height * 0.89,
@@ -74,6 +83,11 @@ try {
         const solo=hardwareDrawing(model,{...DEFAULT_OPTIONS,pick:part,isolate:true,view},640,480);
         assert.ok(solo.paths.length>0, `${kind}: every part can be inspected`);
         assert.ok(solo.paths.every(path=>path.part===part), `${kind}: isolation contains only the selected assembly`);
+        checkSignals(solo, part, ink.signal(.95));
+        for (const mode of ['isometric', 'wireframe']) {
+          const whole = hardwareDrawing(model, {...DEFAULT_OPTIONS, mode, pick:part, open:1, view},640,480);
+          checkSignals(whole, part, ink.signal(.95));
+        }
         for(const path of solo.paths) for(const [x,y] of path.points)
           assert.ok(Number.isFinite(x)&&Number.isFinite(y)&&x>=70&&x<=570&&y>=50&&y<=430, `${kind}: isolated part stays whole in frame`);
       }
@@ -83,6 +97,35 @@ try {
     assert.ok(!/NaN|Infinity|<script|href=|foreignObject|rgba\(/.test(svg), `${kind}: portable, self-contained SVG 1.1`);
     assert.equal(svg, hardwareSvg(hardwareModel(kind), DEFAULT_OPTIONS), `${kind}: repeat export is deterministic`);
   }
+  // The laminate belongs to the translated mainboard, not to a plate at the origin.
+  const mainboard = hardwareModel('server').parts.find(p => p.name === 'Mainboard and processors');
+  const edgeMarks = mainboard.surfaces.filter(s => !s.face && s.points.every(p => p[1] > .09 && p[1] < .125));
+  assert.ok(edgeMarks.length > 0);
+  assert.ok(edgeMarks.every(s => s.points.every(p => p[2] >= -.86 - 1e-8 && p[2] <= .28 + 1e-8)), 'Server laminate stays on its translated board');
+  const tube = new Draft();
+  tube.part('Tube', 'No radial tessellation seams'); tube.tube(0,0,0,1,.8,.2);
+  assert.ok(tube.parts[0].surfaces.filter(s => s.face && s.points.every(p => p[1] === .2)).every(s => s.outline === false), 'Tube annulus tessellation has no radial outlines');
+  const face = {solid:1,part:0,face:true,outline:true,area:1,top:false,depth:1,points:[[0,0],[1,0],[1,1],[0,1]],depths:[1,1,1,1]};
+  const stroke = {solid:1,part:0,face:false,outline:true,area:0,top:false,depth:0,points:[[-1,.5],[2,.5]],depths:[0,0]};
+  const clipped = visibleStrokes([face,stroke]).filter(s => !s.face);
+  assert.equal(clipped.length,2,'A crossing stroke splits at an opaque face boundary');
+  assert.ok(clipped.every(s => s.points.every(([x]) => x <= 0 || x >= 1)), 'A rear stroke cannot draw through its own wall');
+  assert.equal(visibleStrokes([face,{...stroke,depths:[1,1]}]).filter(s=>!s.face).length,1,'Coplanar markings remain visible');
+  assert.equal(visibleStrokes([face,{...stroke,depths:[2,2]}]).filter(s=>!s.face).length,1,'Foreground markings remain visible');
+  const tilted = visibleStrokes([{...face,depths:[1,2,2,1]},{...stroke,points:[[-2,.5],[2,.5]]}]).filter(s=>!s.face);
+  assert.ok(tilted.every(s=>s.points.length===2),'Unoccluded straight intervals have no camera-dependent redundant cut vertices');
+  // Prove the new guards bite without altering production models or thresholds.
+  const brokenLane = structuredClone(hardwareModel('board'));
+  const boardPart = brokenLane.parts[0];
+  boardPart.surfaces.push(structuredClone(boardPart.surfaces.find(s => s.connection)));
+  assert.throws(() => checkRouting(brokenLane), assert.AssertionError);
+  const brokenSupport = structuredClone(hardwareModel('board'));
+  brokenSupport.parts[0].surfaces.find(s => s.connection).points[1][0] = 100;
+  assert.throws(() => checkRouting(brokenSupport), assert.AssertionError);
+  const repeated = hardwareDrawing(hardwareModel('accelerator'), {...DEFAULT_OPTIONS, open:1, pick:3},640,480);
+  const firstSignal = repeated.paths.find(p => p.stroke === ink.signal(.95));
+  const single = {...repeated, paths: repeated.paths.map(p => p.stroke === ink.signal(.95) && p !== firstSignal ? {...p, stroke:ink.line(.3)} : p)};
+  assert.throws(() => checkSignals(single,3,ink.signal(.95)), assert.AssertionError);
   for (let seed=0;seed<100;seed++) {
     const rng=mulberry32(seed);
     const solids=Array.from({length:24},(_,i)=>({ id:i,lo:[-.5+rng(),i*.08,-.5+rng()],hi:[.7+rng(),i*.08+.07,.7+rng()],depth:rng()*10 }));

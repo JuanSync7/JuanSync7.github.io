@@ -1,0 +1,12 @@
+{
+  "routing": {
+    "epsilon": 1e-8,
+    "surfaceTolerance": 0.006,
+    "samplesPerSegment": 20
+  },
+  "gallery": {
+    "idleWindowMs": 1200,
+    "scrollFrames": 90,
+    "percentile": 0.95
+  }
+}

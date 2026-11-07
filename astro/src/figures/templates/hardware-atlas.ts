@@ -64,7 +64,9 @@ export default defineTemplate<Params, State>({
     yaw: VIEWS['three-quarter'][0],
     pitch: VIEWS['three-quarter'][1],
   }),
-  draw: ({ ctx, w, h, dt, pointer, still, data, params, state }) => {
+  draw: ({ ctx, w, h, dt, pointer, still, unseen, data, params, state }) => {
+    // Responsive hardware has no elapsed-time simulation to warm up in a still capture.
+    if (unseen) return;
     const o = options(data, params);
     const detail = data === undefined ? params.detail : 4;
     if (state.model.kind !== o.kind || state.detail !== detail) {
@@ -105,7 +107,10 @@ export default defineTemplate<Params, State>({
       ...state.framing,
       scale: Math.min(state.framing.scale, (w * 0.46) / reachX, (h * 0.46) / reachY),
     };
-    const selected = pointer.active ? nearestPart(drawing, [pointer.x * w, pointer.y * h, 0]) : o.pick;
+    const picking = pointer.active
+      ? hardwareDrawing(state.model, { ...frame, isolate: state.isolated }, w, h, cam, false, state.framing)
+      : drawing;
+    const selected = pointer.active ? nearestPart(picking, [pointer.x * w, pointer.y * h, 0]) : o.pick;
     const lift = pointer.active ? 0.14 : 0;
     state.lift = still ? lift : follow(state.lift, lift, dt, 5);
     drawing = hardwareDrawing(

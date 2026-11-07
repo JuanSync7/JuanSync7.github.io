@@ -55,8 +55,14 @@ export class Draft {
         b = ((i + 1) / n) * Math.PI * 2;
       this.surface([point(outer, a, y), point(outer, b, y), point(outer, b, y + h), point(outer, a, y + h)]);
       this.surface([point(inner, b, y), point(inner, a, y), point(inner, a, y + h), point(inner, b, y + h)]);
-      this.surface([point(outer, a, y + h), point(outer, b, y + h), point(inner, b, y + h), point(inner, a, y + h)]);
+      this.surface(
+        [point(outer, a, y + h), point(outer, b, y + h), point(inner, b, y + h), point(inner, a, y + h)],
+        true,
+        false,
+      );
     }
+    this.ring(x, y + h, z, outer, 'top', n);
+    this.ring(x, y + h, z, inner, 'top', n);
   }
   box(x: number, y: number, z: number, w: number, h: number, d: number, bevel = 0.025): void {
     const b = Math.min(bevel, w / 4, d / 4);

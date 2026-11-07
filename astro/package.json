@@ -31,6 +31,8 @@
     "hardware:export": "node scripts/hardware/export.mjs",
     "hardware:check": "node scripts/hardware/check.mjs",
     "hardware:browser": "node scripts/hardware/browser-check.mjs",
+    "hardware:verify": "node scripts/hardware/verify.mjs",
+    "hardware:archive": "node scripts/hardware/archive.mjs",
     "vault:search": "node scripts/vault/search-check.mjs",
     "vault:diagrams": "node scripts/vault/export.mjs --check && node scripts/vault/diagram-check.mjs",
     "vault:diagrams:build": "node scripts/vault/export.mjs",

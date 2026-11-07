@@ -106,6 +106,7 @@ try {
     await page.locator('.atlas-stage').screenshot({ path: `hardware-out/${object}-engineering.png` });
   }
   for (const args of [
+    ['scripts/hardware/gallery-profile.mjs',`--url=${base}`,'--name=gallery-after','--check'],
     ['scripts/figures/seeds.mjs','hardware-atlas','12',`--url=${base}`],
     ['scripts/figures/look.mjs','hardware-atlas',`--url=${base}`],
   ]) {
