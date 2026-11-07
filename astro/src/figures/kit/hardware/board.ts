@@ -16,13 +16,15 @@ export function board(p: Draft, n: number): void {
       p.ring(x, 0.092, z, 0.025, 'top', 12);
     }
   for (let k = 0; k < n + 2; k++) {
-    const z = -0.3 + (k * 0.5) / (n + 1);
+    const t = k / (n + 1),
+      z = -0.3 + t * 0.5;
+    const left = -0.48 - (1 - t) * 0.13,
+      right = 0.28 + (1 - t) * 0.09;
     p.trace(
       [
         [-0.43, 0.092, z],
-        [-0.58, 0.092, z],
-        [-0.58, 0.092, 0.57],
-        [-0.68, 0.092, 0.57],
+        [left, 0.092, z],
+        [left, 0.092, 0.32],
       ],
       'Processor and memory',
       'Connectors',
@@ -30,8 +32,9 @@ export function board(p: Draft, n: number): void {
     p.trace(
       [
         [0.19, 0.092, z],
-        [0.59 + k * 0.025, 0.092, z],
-        [0.59 + k * 0.025, 0.092, 0.49],
+        [right, 0.092, z],
+        [right, 0.092, 0.36 + t * 0.18],
+        [0.48, 0.092, 0.36 + t * 0.18],
       ],
       'Processor and memory',
       'Connectors',

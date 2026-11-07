@@ -39,16 +39,23 @@ projection, depth ordering, canvas painting and SVG serialization. The flat `kit
 entry point keeps the figure audit's import boundary intact. `HardwareIcon` only renders
 the projected paths; the figure paints those same points through `FigureCanvas`.
 
-Solids across all assemblies form a dependency order: a lower overlapping solid paints before the one above it, with projected depth as the tie-breaker. A comparator alone cannot preserve these constraints. Surface markings are attached to the surface they occupy, even when the builder added another solid first. Internal mesh seams of the vented panel are not stroked. A single visible face outlines the selected part in teal. Wireframes intentionally
+Solids across all assemblies form a dependency order: a lower overlapping solid paints before the one above it, with projected depth as the tie-breaker. A comparator alone cannot preserve these constraints. Surface markings are attached to the surface they occupy, even when the builder added another solid first. Internal mesh seams of the vented panel and hollow rims are not stroked. One visible face per physical solid outlines the selected semantic assembly in teal, so repeated dies, stacks and connectors all respond. Nearer opaque faces still occlude the accents. Wireframes intentionally
 show the internal and rear edges at lower opacity.
 
-Pointer inspection hits the frontmost projected face, then lifts only that part using its unlifted position for picking. Individual explosion vectors keep peer components together. Isolation hides other assemblies and eases the selected part into view; returning to the whole assembly reveals it after the view fits.
+Pointer inspection hits the frontmost projected face, then lifts that named assembly using its unlifted position at the painted framing for picking. Individual explosion vectors keep peer components together. Isolation hides other assemblies and eases the selected part into view; returning to the whole assembly reveals it after the view fits.
 Camera presets interpolate through the existing clock's `follow`; they never spin with
 time. Transitional framing stays inside the viewport as the camera turns, and uses the currently visible part bounds while leaving isolation. Reduced motion snaps to the requested pose. Each camera fits every point of the
 whole assembly, including all lifted parts. Canvas avoids SVG path-string formatting in
 its frame loop. Changing data does not remount the clock. Immutable model geometry, prepared solid bounds and a bounded projection cache avoid recalculating static rest frames.
 
 ## Reuse and exports
+
+Within each solid, projected strokes split at face and depth-plane boundaries;
+intervals behind a nearer opaque face are omitted. This prevents rear rings or
+markings from drawing through their own walls. Wireframe retains those intervals.
+Face bounds and depth reject irrelevant occluders before intersection work. A
+bounded local-pose cache reuses the clipped geometry through lift and explosion
+translations, so changing a part's position does not reclip its markings.
 
 Use `<HardwareIcon kind="processor" mode="wireframe" />`. Optional `view`, `open` (0–1),
 `pick` (part index), `detail` and `decorative` props select the composition and accessible treatment.
@@ -67,9 +74,30 @@ pose individually; its pack always contains all 24 assembled three-quarter symbo
 
 ## Verification
 
+The [hardware playbook](../../.claude/skills/hardware-atlas/SKILL.md) is the agent entry
+point. Its kernel index describes the built API, its check map separates mechanical
+invariants from visual judgment, and its examples reproduce known failure classes.
+[Treatment](hardware-atlas-treatment.md) records acceptance and the user's corrections.
+`npm run hardware:verify` runs the repository checks, hardware checks, build, exports
+and browser gate, stopping at the first failed command.
+
+The seeded strip retains eight still previews. It skips unseen warm-up geometry and
+does no ongoing thumbnail frame work; choosing a seed opens the responsive main viewer.
+The collection remains server-rendered SVG. `scripts/hardware/gallery-profile.mjs`
+measures idle frame growth and scroll intervals with the same seed and viewport before
+and after changes. Timing is local evidence, not a universal frame-rate guarantee.
+
 `npm run hardware:check` exercises 3,888 combinations of object, detail, look, view,
 opening and viewport; checks the frame margins and equal SVG/canvas points; samples
 1,000 deterministic seeds; checks every isolated part in each camera view; validates trace endpoints against named source and destination footprints; tests depth dependencies across 100 seeded layouts; checks outward extrusion winding; exercises 19,200 actual camera and isolation transition frames at desktop and phone sizes, including return to the whole assembly; and checks the 24 unique symbol names.
+
+Declared traces also have planar, nonzero Manhattan segments, sampled support
+containment and separate lanes without perpendicular crossings. Every selected
+front-facing outlined solid is checked for its own accent. Negative fixtures remove
+a repeated accent, duplicate a lane and move a route off its support; each must fail.
+Server laminate bounds and hollow-rim seams have dedicated regressions. General
+decorative-wire attachment, intersecting meshes and all possible occlusion remain
+visual review responsibilities.
 
 `npm run hardware:browser` checks the built page's selection, filters, SVG/XML downloads,
 clipboard, sprite, isolation, detail levels, URL restoration, reduced motion, phone/tablet overflow and server-rendered

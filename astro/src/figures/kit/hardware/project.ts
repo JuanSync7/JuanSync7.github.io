@@ -10,6 +10,8 @@ export interface HardwarePath {
   fill: string;
   stroke: string;
   part: number;
+  solid: number;
+  front: boolean;
 }
 export interface HardwareFraming {
   x: number;
@@ -93,12 +95,19 @@ export function hardwareDrawing(
     if (s.n) centres[i] = point([s.x / s.n, s.y / s.n]);
   });
   const selected = o.pick < 0 ? model.parts.length - 1 : o.pick;
-  const signal = surfaces
-    .filter((s) => s.part === selected && s.area > 0 && s.outline)
-    .sort((a, b) => (Math.abs(b.area - a.area) > 0.00001 ? b.area - a.area : b.depth - a.depth))[0];
-  const strokeSignal = signal
-    ? undefined
-    : surfaces.filter((s) => s.part === selected && !s.face).sort((a, b) => b.points.length - a.points.length)[0];
+  // A semantic part can contain many repeated solids. Each gets one restrained accent,
+  // in painter order, so nearer opaque faces still hide accents behind them.
+  const signals = new Map<number, (typeof surfaces)[number]>();
+  for (const s of surfaces) {
+    if (s.part !== selected || !s.outline || (s.face && s.area <= 0.00001)) continue;
+    const previous = signals.get(s.solid);
+    if (
+      !previous ||
+      (s.face && !previous.face) ||
+      (s.face === previous.face && (s.face ? s.area > previous.area : s.points.length > previous.points.length))
+    )
+      signals.set(s.solid, s);
+  }
   const wire = o.mode === 'wireframe';
   const paths = surfaces
     .filter((s) => !s.face || ((s.outline || !wire) && (s.area > 0.00001 || wire)))
@@ -108,12 +117,14 @@ export function hardwareDrawing(
       return {
         points,
         part: s.part,
+        solid: s.solid,
+        front: s.area > 0.00001,
         closed: s.face,
         d: vector ? pathData(points, s.face) : '',
         fill: s.face && !wire ? mix('ground', s.top ? 'panel2' : 'panel', s.top ? 1 : 0.7) : 'none',
         stroke: !s.outline
           ? 'none'
-          : s === signal || s === strokeSignal
+          : signals.get(s.solid) === s
             ? ink.signal(0.95)
             : ink.line(s.face && s.area <= 0 ? 0.075 : s.face ? 0.26 + weight * 0.3 : 0.16 + weight * 0.2),
       };

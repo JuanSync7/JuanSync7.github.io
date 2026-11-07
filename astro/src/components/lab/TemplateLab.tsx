@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import FigureCanvas from '../ui/FigureCanvas';
+import { REST_T } from '../../hooks/useFigureLoop';
 import VoxelWorldControls from './VoxelWorldControls';
 import VoxelStage from './VoxelStage';
 import { DEFAULT_VIEW } from './voxel-view';
@@ -176,7 +177,7 @@ export default function TemplateLab({ template }: Props) {
               aria-label={`Seed ${s}: ${tpl.instance(s).variant}`}
             >
               <span className="lab-thumb-stage">
-                <FigureCanvas key={voxel ? s : undefined} id={`${template}~${s}`} freezeAt={voxel ? 1.2 : undefined} />
+                <FigureCanvas key={voxel ? s : undefined} id={`${template}~${s}`} freezeAt={voxel || template === 'hardware-atlas' ? REST_T : undefined} />
               </span>
               <span className="lab-thumb-label">
                 {s} · {tpl.instance(s).variant}
