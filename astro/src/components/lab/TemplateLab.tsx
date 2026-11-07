@@ -4,6 +4,7 @@ import RoomStage from './RoomStage';
 import type { RoomAppearance } from '../../figures/kit/roomstyles';
 import VoxelWorldControls from './VoxelWorldControls';
 import VoxelStage from './VoxelStage';
+import IslandControls from './IslandControls';
 import { DEFAULT_VIEW } from './voxel-view';
 import type { WorldInfo } from '../../figures/kit/voxel-world/ecology-types';
 import type { Biome, Landform } from '../../figures/kit/voxel-world/types';
@@ -43,7 +44,9 @@ export default function TemplateLab({ template }: Props) {
   const [view, setView] = useState({ ...DEFAULT_VIEW });
   const [worldInfo, setWorldInfo] = useState<WorldInfo | null>(null);
   const [roomAppearance, setRoomAppearance] = useState<RoomAppearance>('colour');
-  const voxel = template === 'voxel-scene';
+  const worlds = template === 'voxel-scene';
+  const island = template === 'voxcel-island';
+  const voxel = worlds || island;
   const room = template === 'pixel-still';
   const gpuPreviews = voxel || room;
 
@@ -98,7 +101,10 @@ export default function TemplateLab({ template }: Props) {
     for (let i = 0; i < 10000; i++) {
       const candidate = (start + i) % (MAX_SEED + 1);
       const variant = tpl.instance(candidate).variant;
-      if (variant.startsWith(`${wanted} · `) && (!landform || variant.endsWith(` · ${landform}`))) {
+      if (
+        (worlds && variant.startsWith(`${wanted} · `) && (!landform || variant.endsWith(` · ${landform}`))) ||
+        (island && variant === `${wanted} island`)
+      ) {
         go(candidate);
         return;
       }
@@ -162,7 +168,7 @@ export default function TemplateLab({ template }: Props) {
           </button>
         </form>
       </div>
-      {voxel && (
+      {worlds && (
         <VoxelWorldControls
           info={worldInfo}
           view={view}
@@ -171,6 +177,7 @@ export default function TemplateLab({ template }: Props) {
           onGenerate={generate}
         />
       )}
+      {island && <IslandControls view={view} onView={setView} onGenerate={generate} />}
       <p className="lab-alt" aria-live="polite">
         {inst.alt}
       </p>
