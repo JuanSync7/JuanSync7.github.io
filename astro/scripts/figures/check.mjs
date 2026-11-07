@@ -107,15 +107,16 @@ function overLength(raw, isThree) {
   return raw.split('\n').filter((l) => l.trim()).length > (isThree ? LENGTH.scene : LENGTH.figure);
 }
 
-function checkFile(path, fixture, template = false) {
-  const raw = readFileSync(path, 'utf8');
+function checkFile(path, fixture, template = false, raw = readFileSync(path, 'utf8')) {
   const id = basename(path, '.ts');
   const s = { raw, code: bare(raw, false), withStrings: bare(raw, true) };
   const out = [];
   const fail = (code, msg) => out.push({ id, code, msg });
   const broken = parseError(raw);
   if (broken) fail('parse', broken);
-  const isThree = !template && /export default defineThreeFigure\s*(<[^>]*>)?\s*\(/.test(s.code);
+  const isThree = template
+    ? /\n\s*style:\s*'three'/.test(s.withStrings)
+    : /export default defineThreeFigure\s*(<[^>]*>)?\s*\(/.test(s.code);
   if (template && !/export default defineTemplate\s*(<[^>]*>)?\s*\(/.test(s.code)) fail('define', 'default export is not defineTemplate(...)');
   if (!template && !isThree && !/export default defineCanvasFigure\s*(<[^>]*>)?\s*\(/.test(s.code)) fail('define', 'default export is not defineCanvasFigure(...) or defineThreeFigure(...)');
   // Meta lives in the default export's object, so read fields only after it: an interface
@@ -125,6 +126,15 @@ function checkFile(path, fixture, template = false) {
   const str = (k) => field(k)?.[2];
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(id) || str('id') !== id) fail('id', `id must be '${id}', the file name, in kebab-case`);
   const missing = [];
+  if (template && isThree) {
+    const configured = /\n\s*three:\s*\{/.test(spec);
+    const required = configured ? ['setup', 'draw', 'renderer', 'build', 'update'] : ['renderer', 'build', 'update', 'fallback'];
+    for (const k of required) {
+      const value = field(k)?.[1]?.trim() ?? '';
+      const reference = /^[A-Za-z_$][\w$]*$/.test(value) && !['true', 'false', 'null', 'undefined'].includes(value);
+      if (!reference && !new RegExp(`\\n\\s*${k}(:\\s*\\(|\\s*\\()`).test(spec)) missing.push(`${k} (three.js template)`);
+    }
+  }
   if (!str('title')) missing.push('title');
   // A template's alt depends on the variant, so it is a function: `alt: (p) => ...` or `alt(p) {`.
   if (template ? !/\n\s*alt(:\s*\(|\s*\()/.test(spec) : (str('alt') ?? '').length < 30) missing.push(template ? 'alt (a function of the params)' : 'alt (30+ characters)');
@@ -228,7 +238,42 @@ if (selftest) {
   const set = [fig('a', 'pixel'), fig('b', 'pixel'), fig('c', 'pixel'), fig('d', 'ink'), tpl('t', 'trace')];
   const post = (slug, date, cover) => ({ slug, date, cover });
   const codes = (r) => [...new Set(r.map((p) => p.code))].join();
+  const threeTemplate = `export default defineTemplate({
+    id: 'test',
+    title: 'Test scene',
+    idea: 'A seeded three-dimensional scene with a canvas fallback.',
+    style: 'three',
+    motion: 'still',
+    answers: false,
+    aspect: 2,
+    grammar: () => ({}),
+    name: () => 'test',
+    alt: () => 'A seeded test scene.',
+    renderer: defineThreeFigure,
+    build: () => ({}),
+    update: () => {},
+    fallback: () => {},
+  });`;
+  const configuredTemplate = threeTemplate.replace(
+    'renderer: defineThreeFigure,\n    build: () => ({}),\n    update: () => {},\n    fallback: () => {},',
+    `setup: () => ({}),
+    draw: drawFallback,
+    three: {
+      renderer: defineThreeFigure,
+      build: () => ({}),
+      update: updateWorld,
+    },`,
+  );
+  const templateProblems = (raw) => checkFile('test.ts', false, true, raw).problems;
   const proofs = [
+    ['(three template)', templateProblems(threeTemplate), ''],
+    ['(configured GPU template)', templateProblems(configuredTemplate), ''],
+    ['(configured missing update)', templateProblems(configuredTemplate.replace('update: updateWorld,', '')), 'meta'],
+    ['(configured missing fallback)', templateProblems(configuredTemplate.replace('draw: drawFallback,', '')), 'meta'],
+    ['(configured invalid build)', templateProblems(configuredTemplate.replace('build: () => ({}),', 'build: false,')), 'meta'],
+    ['(configured missing renderer)', templateProblems(configuredTemplate.replace('renderer: defineThreeFigure,', '')), 'meta'],
+    ['(missing fallback)', templateProblems(threeTemplate.replace('fallback: () => {},', '')), 'meta'],
+    ['(three length)', templateProblems(threeTemplate + '\n// padding'.repeat(350)), 'length'],
     ['(inline variety)', crossChecks(set, []), 'variety'],
     ['(inline covers)', crossChecks([fig('a', 'pixel'), fig('d', 'ink'), tpl('t', 'trace')], [post('p1', '2026-01-03', 'a'), post('p2', '2026-01-02', 'a'), post('p3', '2026-01-01', 'nope')]), 'covers'],
     ['(inline instance)', crossChecks([fig('a', 'pixel'), tpl('t', 'trace')], [post('p1', '2026-01-02', 't~7'), post('p2', '2026-01-01', 'a')]), ''],

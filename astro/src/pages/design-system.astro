@@ -22,6 +22,34 @@ import '../styles/learn-paper.css';
 
 const tokenFiles = [...foundationTokenFiles, 'presentation', 'buttons'];
 const colors = tokens('colors');
+const roomTokenNames = [
+  '--nt-room-ivory',
+  '--nt-room-plaster',
+  '--nt-room-sage',
+  '--nt-room-forest',
+  '--nt-room-oak',
+  '--nt-room-walnut',
+  '--nt-room-graphite',
+  '--nt-room-steel',
+  '--nt-room-brass',
+  '--nt-room-navy',
+  '--nt-room-blue',
+  '--nt-room-teal',
+  '--nt-room-clay',
+  '--nt-room-burgundy',
+  '--nt-room-lavender',
+  '--nt-room-linen',
+  '--nt-room-glass',
+  '--nt-room-rust',
+  '--nt-room-amber',
+  '--nt-room-daylight',
+  '--nt-room-porcelain',
+  '--nt-room-ink',
+];
+const paletteGroups = [
+  { title: 'Themed rooms · materials & light', test: (name: string) => roomTokenNames.includes(name) },
+  ...colorGroups,
+];
 const sizes = tokens('typography').filter((t) => t.name.startsWith('--nt-fs'));
 const sections = [ ['overview', 'Overview'], ['foundations', 'Foundations'], ['type', 'Typography'], ['layout', 'Layout & motion'], ['patterns', 'Page patterns'], ['components', 'Components'], ['legacy', 'Legacy library'] ];
 const pages = [
@@ -80,7 +108,7 @@ const postRecipe = `---\nimport PostGrid from '../components/writing/PostGrid';\
         <section id="foundations" data-ds-section class="ds-section">
           <SectionHead label="// 02 · foundations" title="Colour has a job." lead="Grounds recede, ink stays readable, teal marks an action or a point of attention. Hairlines separate content without turning every section into a filled card." />
           <p class="ds-note">Each swatch copies its CSS variable. Values and token lists come directly from the production token files at build time.</p>
-          {colorGroups.map((group) => <div class="ds-token-group"><h3>{group.title}</h3><div class="ds-swatches">{colors.filter((t) => group.test(t.name)).map((t) => <button type="button" class="ds-swatch" data-copy-token={`var(${t.name})`} aria-label={`Copy var(${t.name})`}><span class="ds-chip" style={`background: var(${t.name})`} aria-hidden="true"></span><span class="ds-token-name">{t.name}</span><span class="ds-token-value">{t.value}</span><span class="ds-copy-hint">Copy variable ↗</span></button>)}</div></div>)}
+          {paletteGroups.map((group) => <div class="ds-token-group"><h3>{group.title}</h3><div class="ds-swatches">{colors.filter((t) => group.test(t.name)).map((t) => <button type="button" class="ds-swatch" data-copy-token={`var(${t.name})`} aria-label={`Copy var(${t.name})`}><span class="ds-chip" style={`background: var(${t.name})`} aria-hidden="true"></span><span class="ds-token-name">{t.name}</span><span class="ds-token-value">{t.value}</span><span class="ds-copy-hint">Copy variable ↗</span></button>)}</div></div>)}
           <CodeExample title="colors.css · all definitions" code={source('styles/tokens/colors.css')} />
         </section>
 

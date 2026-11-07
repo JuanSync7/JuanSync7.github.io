@@ -1,0 +1,77 @@
+{
+  "revision": "5baabe9cc240be7052cf2250c14e4578c362c421",
+  "rooms": [
+    {
+      "theme": "dining",
+      "width": 9.2,
+      "depth": 5.4,
+      "height": 1.6864817277961741,
+      "roomWidth": 11.7,
+      "roomDepth": 9.8
+    },
+    {
+      "theme": "work",
+      "width": 9.2,
+      "depth": 5.2,
+      "height": 1.65,
+      "roomWidth": 11.7,
+      "roomDepth": 9.6
+    },
+    {
+      "theme": "computer",
+      "width": 9.6,
+      "depth": 5.2,
+      "height": 1.7,
+      "roomWidth": 12.1,
+      "roomDepth": 9.6
+    },
+    {
+      "theme": "storage",
+      "width": 9.2,
+      "depth": 5.2,
+      "height": 1.75,
+      "roomWidth": 11.7,
+      "roomDepth": 9.6
+    },
+    {
+      "theme": "messy",
+      "width": 9.2,
+      "depth": 5.632,
+      "height": 1.6444399454590308,
+      "roomWidth": 11.7,
+      "roomDepth": 10
+    },
+    {
+      "theme": "study",
+      "width": 8.8,
+      "depth": 5.25,
+      "height": 1.65,
+      "roomWidth": 11.3,
+      "roomDepth": 9.625
+    },
+    {
+      "theme": "kitchen",
+      "width": 9.2,
+      "depth": 5.625,
+      "height": 1.9,
+      "roomWidth": 11.7,
+      "roomDepth": 10
+    },
+    {
+      "theme": "bar",
+      "width": 10,
+      "depth": 3.8,
+      "height": 2.3,
+      "roomWidth": 12.5,
+      "roomDepth": 8.200000000000001
+    },
+    {
+      "theme": "lab",
+      "width": 9.2,
+      "depth": 5.4,
+      "height": 1.8,
+      "roomWidth": 11.7,
+      "roomDepth": 9.8
+    }
+  ]
+}

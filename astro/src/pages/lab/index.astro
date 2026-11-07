@@ -39,7 +39,11 @@ const templates = await Promise.all(
           <li class="lab-card">
             <a href={`/lab/${t.id}/`}>
               <div class="lab-stage">
-                <FigureCanvas client:visible id={t.instance} />
+                <FigureCanvas
+                  client:visible
+                  id={t.instance}
+                  data={t.id === 'pixel-still' ? { appearance: 'colour', view: 'isometric', angle: 135 } : undefined}
+                />
               </div>
               <span class="lab-meta">
                 {t.style} · {t.instance} · {t.variant}

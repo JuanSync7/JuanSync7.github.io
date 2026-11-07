@@ -10,6 +10,11 @@ walls hide their rear markings. Routing,
 repeated-selection and idle-gallery regressions accompany a reusable hardware
 playbook, built kernel index, visual review questions and complete verification command.
 
+Voxcel Island restores the compact six-theme cottage-and-harbour scene as its own lab entry.
+Its original terrain and object models remain separate from Voxel Worlds, while safe camera
+controls and a matching fallback support drag, tilt, pan and zoom. Seed, placement, harbour,
+framing and browser checks protect the restored scene.
+
 Voxel worlds gain wider terrain, layered ecological communities and themed places with related
 vegetation, supplies and static wildlife. All 135 live catalog types realize valid placements in
 the balanced cohort. Surface merging, shared GPU waves, supported cave roofs and exact 3D

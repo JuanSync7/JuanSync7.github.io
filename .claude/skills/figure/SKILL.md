@@ -119,3 +119,11 @@ passed" without reading the sheet is not done. Never describe a figure you did n
   clock, not the figure). `fixtures/structural-sins.ts` proves imports, length and meta;
   `fixtures/templates/same-every-seed.ts` proves the look's `seed` check; parse, variety,
   covers and template instances are proven inline. Run it after any change to the audit.
+
+## Explicit room-colour exception
+
+For `pixel-still` room work, also read
+[`tabletop-room`](../tabletop-room/SKILL.md). The user requested themed full colour
+and a monochrome switch on 7 November 2026. Only this scene's colour mode uses the
+separate room material/light palette and its dedicated checks. The night palette,
+other figures and their global thresholds retain the rules above.

@@ -73,11 +73,37 @@ export const night = {
   worldWater: '#36576f',
   worldIce: '#819ebc',
   worldEmber: '#d78c69',
-
 } as const;
 
 export type NightKey = keyof typeof night;
 
+/** Material and light tokens for the explicitly requested full-colour tabletop rooms.
+ * Kept outside `night`: other figures retain their existing palette contract. */
+export const roomTones = {
+  ivory: '#eee4cd',
+  plaster: '#b9b2a0',
+  sage: '#748b6c',
+  forest: '#284d3b',
+  oak: '#9e7245',
+  walnut: '#503326',
+  graphite: '#202931',
+  steel: '#7f929d',
+  brass: '#a8854e',
+  navy: '#273d59',
+  blue: '#5187a6',
+  teal: '#307f82',
+  clay: '#ba7051',
+  burgundy: '#6b3448',
+  lavender: '#7b719c',
+  linen: '#b9a994',
+  glass: '#639ba0',
+  rust: '#8f4c36',
+  amber: '#ffce89',
+  daylight: '#c9e2fa',
+  porcelain: '#f2f0e9',
+  ink: '#101b24',
+} as const;
+export type RoomTone = keyof typeof roomTones;
 /** Existing paper tokens, mirrored for portable slide SVGs as well as CSS previews. */
 export const paper = {
   ground: '#dcd8cc',
@@ -90,6 +116,8 @@ export const paper = {
  *  8-digit hex (#rrggbbaa). Drop-in for the legacy `${color}44` concatenation. */
 export function alpha(hex: string, a: number): string {
   const clamped = a < 0 ? 0 : a > 1 ? 1 : a;
-  const aa = Math.round(clamped * 255).toString(16).padStart(2, '0');
+  const aa = Math.round(clamped * 255)
+    .toString(16)
+    .padStart(2, '0');
   return `${hex}${aa}`;
 }

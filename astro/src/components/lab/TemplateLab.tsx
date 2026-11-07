@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import FigureCanvas from '../ui/FigureCanvas';
 import { REST_T } from '../../hooks/useFigureLoop';
+import RoomStage from './RoomStage';
+import type { RoomAppearance } from '../../figures/kit/roomstyles';
 import VoxelWorldControls from './VoxelWorldControls';
 import VoxelStage from './VoxelStage';
+import IslandControls from './IslandControls';
 import { DEFAULT_VIEW } from './voxel-view';
 import type { WorldInfo } from '../../figures/kit/voxel-world/ecology-types';
 import type { Biome, Landform } from '../../figures/kit/voxel-world/types';
@@ -32,7 +35,7 @@ function roll(): number {
 }
 
 /** One template, any seed: the instance large, its id and variant, steps to the next and
- *  previous seed, a dice roll, and the next eight seeds as thumbnails to jump to. The seed
+ *  previous seed, a dice roll, and neighbouring seeds as thumbnails to jump to. The seed
  *  lives in the address (?seed=), so a picture can be shared by its link. */
 export default function TemplateLab({ template }: Props) {
   const [tpl, setTpl] = useState<Template | null>(null);
@@ -41,7 +44,12 @@ export default function TemplateLab({ template }: Props) {
   const [copied, setCopied] = useState(false);
   const [view, setView] = useState({ ...DEFAULT_VIEW });
   const [worldInfo, setWorldInfo] = useState<WorldInfo | null>(null);
-  const voxel = template === 'voxel-scene';
+  const [roomAppearance, setRoomAppearance] = useState<RoomAppearance>('colour');
+  const worlds = template === 'voxel-scene';
+  const island = template === 'voxcel-island';
+  const voxel = worlds || island;
+  const room = template === 'pixel-still';
+  const gpuPreviews = voxel || room;
 
   useEffect(() => {
     let live = true;
@@ -77,7 +85,9 @@ export default function TemplateLab({ template }: Props) {
     setDraft(String(next));
   };
   // The next seeds, stopping at the last one rather than repeating it.
-  const ahead = Array.from({ length: voxel ? 4 : NEIGHBOURS }, (_, k) => seed + 1 + k).filter((s) => s <= MAX_SEED);
+  const ahead = Array.from({ length: gpuPreviews ? 4 : NEIGHBOURS }, (_, k) => seed + 1 + k).filter(
+    (s) => s <= MAX_SEED,
+  );
   const id = `${template}~${seed}`;
   const inst = tpl.instance(seed);
   const copy = (): void => {
@@ -92,7 +102,10 @@ export default function TemplateLab({ template }: Props) {
     for (let i = 0; i < 10000; i++) {
       const candidate = (start + i) % (MAX_SEED + 1);
       const variant = tpl.instance(candidate).variant;
-      if (variant.startsWith(`${wanted} · `) && (!landform || variant.endsWith(` · ${landform}`))) {
+      if (
+        (worlds && variant.startsWith(`${wanted} · `) && (!landform || variant.endsWith(` · ${landform}`))) ||
+        (island && variant === `${wanted} island`)
+      ) {
         go(candidate);
         return;
       }
@@ -103,6 +116,8 @@ export default function TemplateLab({ template }: Props) {
     <div className={`lab${voxel ? ' lab-voxel' : ''}`}>
       {voxel ? (
         <VoxelStage id={id} aspect={tpl.aspect} view={view} onView={setView} onWorldInfo={setWorldInfo} />
+      ) : room ? (
+        <RoomStage id={id} aspect={tpl.aspect} appearance={roomAppearance} onAppearanceChange={setRoomAppearance} />
       ) : (
         <div className="lab-main" style={{ aspectRatio: String(tpl.aspect) }}>
           <FigureCanvas key={id} id={id} />
@@ -154,7 +169,7 @@ export default function TemplateLab({ template }: Props) {
           </button>
         </form>
       </div>
-      {voxel && (
+      {worlds && (
         <VoxelWorldControls
           info={worldInfo}
           view={view}
@@ -163,6 +178,7 @@ export default function TemplateLab({ template }: Props) {
           onGenerate={generate}
         />
       )}
+      {island && <IslandControls view={view} onView={setView} onGenerate={generate} />}
       <p className="lab-alt" aria-live="polite">
         {inst.alt}
       </p>
@@ -177,7 +193,12 @@ export default function TemplateLab({ template }: Props) {
               aria-label={`Seed ${s}: ${tpl.instance(s).variant}`}
             >
               <span className="lab-thumb-stage">
-                <FigureCanvas key={voxel ? s : undefined} id={`${template}~${s}`} freezeAt={voxel || template === 'hardware-atlas' ? REST_T : undefined} />
+                <FigureCanvas
+                  key={`${template}~${s}`}
+                  id={`${template}~${s}`}
+                  freezeAt={gpuPreviews || template === 'hardware-atlas' ? REST_T : undefined}
+                  data={room ? { appearance: roomAppearance, view: 'isometric', angle: 135 } : undefined}
+                />
               </span>
               <span className="lab-thumb-label">
                 {s} · {tpl.instance(s).variant}
