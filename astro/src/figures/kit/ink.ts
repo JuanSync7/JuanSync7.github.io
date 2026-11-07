@@ -1,4 +1,4 @@
-import { night, type NightKey } from '../../styles/tokens/palette';
+import { night, roomTones, type RoomTone, type NightKey } from '../../styles/tokens/palette';
 
 /** The only way a figure gets a colour. Every value comes from the night tokens, so a
  *  figure can't drift off-palette; the audit rejects any colour literal in a figure.
@@ -58,3 +58,6 @@ export function mix(a: NightKey, b: NightKey, t: number, alpha = 1): string {
   const c = x.map((v, i) => Math.round(v + ((y[i] ?? v) - v) * k));
   return `rgba(${c[0]},${c[1]},${c[2]},${alpha.toFixed(3)})`;
 }
+
+/** The room colour mode is an explicit, scoped extension of the figure palette. */
+export const roomHexOf = (key: RoomTone): string => roomTones[key];

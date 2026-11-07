@@ -98,6 +98,30 @@
 
   /* Night system (2026 redesign): near-black ground, cool greys, one teal signal.
      Mirrored in palette.ts as `night`; figures read colours only through that object. */
+  /* Tabletop-room material and lighting palette (colour mode only). */
+  --nt-room-ivory: #eee4cd;
+  --nt-room-plaster: #b9b2a0;
+  --nt-room-sage: #748b6c;
+  --nt-room-forest: #284d3b;
+  --nt-room-oak: #9e7245;
+  --nt-room-walnut: #503326;
+  --nt-room-graphite: #202931;
+  --nt-room-steel: #7f929d;
+  --nt-room-brass: #a8854e;
+  --nt-room-navy: #273d59;
+  --nt-room-blue: #5187a6;
+  --nt-room-teal: #307f82;
+  --nt-room-clay: #ba7051;
+  --nt-room-burgundy: #6b3448;
+  --nt-room-lavender: #7b719c;
+  --nt-room-linen: #b9a994;
+  --nt-room-glass: #639ba0;
+  --nt-room-rust: #8f4c36;
+  --nt-room-amber: #ffce89;
+  --nt-room-daylight: #c9e2fa;
+  --nt-room-porcelain: #f2f0e9;
+  --nt-room-ink: #101b24;
+
   --nt-ground: #07080c;
   --nt-ground-2: #090a0f;
   --nt-panel: #0b0d13;
