@@ -64,7 +64,17 @@ npm run check        # astro check + eslint
 npm run lint
 ```
 
-Requires Node 20 (matches CI).
+Requires Node 22 (matches CI; the data checks use native TypeScript loading).
+
+## Vault system overview
+
+`/vault/` explains the private experience vault without publishing or connecting its records.
+The short landing page links to five guides: purpose, architecture, knowledge graph, search and
+guardrails. These hold three downloadable diagrams, a synthetic local search example, metadata,
+rules, checks and development status. The [maintainer guide](docs/design/vault-overview.md) owns its
+public boundary and diagram workflow. The [presentation pattern](docs/design/presentation-pages.md)
+covers shared typography, paper actions, the interactive hairline cabinet, GSAP scroll motion,
+the generated static poster and source/build/browser checks. The design-system ledger demonstrates the reusable components.
 
 ## Deployment
 
@@ -141,7 +151,7 @@ See `LICENSE`.
 ## Hardware atlas
 
 `/lab/icon-kit/` has twelve assemblies in isometric and wireframe, with camera presets,
-part selection, exploded views and SVG downloads. `/lab/hardware-atlas/` is the seeded
+part selection, exploded views, engineering detail, isolated-part inspection and SVG downloads. `/lab/hardware-atlas/` is the seeded
 figure template; `HardwareIcon` is demonstrated in `/design-system/`.
 
 From `astro/`:
@@ -154,3 +164,15 @@ npm run hardware:browser # interaction/export checks; requires the existing Play
 ```
 
 See the [reference card and implementation notes](docs/design/hardware-atlas.md).
+
+## Slide icons
+
+`/lab/slide-icons/` has 48 flat marks for presentations, adapted from pinned Lucide
+sources plus four originals. Dark/light ink and teal-accent/monochrome treatments
+provide 192 transparent SVG variants, four sprites
+and overview sheets. `SlideIcon` appears in the design-system ledger.
+
+From `astro/`, `npm run slides:export` regenerates the downloads; the build runs
+this automatically. `npm run slides:check` checks vectors and ZIP integrity, and
+`npm run slides:browser` checks the collection and exports in the existing browser
+harness. See the [geometry, camera, accent and per-icon review rules](docs/design/slide-icons.md).

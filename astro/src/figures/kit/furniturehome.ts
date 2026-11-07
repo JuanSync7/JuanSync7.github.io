@@ -50,8 +50,8 @@ export function homeDetails(p: TableDraft, t: TableTheme): void {
           p.box(-x + ((i + 0.5) * t.w) / 12, 0.025 + j * 0.235, -z + 0.15, t.w / 12 - 0.025, 0.205, 0.03, 0.008);
     });
     p.material('metal', () => {
-      for (const at of [-0.65, 0.65]) p.tube([x - 0.25, -0.7, at], [x - 0.07, -0.7, at], 0.035);
-      p.tube([x - 0.07, -0.7, -0.65], [x - 0.07, -0.7, 0.65], 0.04);
+      for (const at of [-0.65, 0.65]) p.roundRod([x - 0.25, -0.7, at], [x - 0.07, -0.7, at], 0.035);
+      p.roundRod([x - 0.07, -0.7, -0.65], [x - 0.07, -0.7, 0.65], 0.04);
     });
   } else if (t.id === 'bar') {
     p.material('frame', () => {
@@ -63,9 +63,9 @@ export function homeDetails(p: TableDraft, t: TableTheme): void {
       for (const a of [-1, 1]) {
         p.cylinder(a * x * 0.58, -0.33, 0, 0.37, 0.1, 20);
         p.cylinder(a * x * 0.58, -h + 0.06, 0, 0.5, 0.09, 24);
-        p.tube([a * x * 0.58, -h * 0.72, 0], [a * x * 0.58, -h * 0.72, z - 0.12], 0.045);
+        p.roundRod([a * x * 0.58, -h * 0.72, 0], [a * x * 0.58, -h * 0.72, z - 0.12], 0.045);
       }
-      p.tube([-x + 0.3, -h * 0.72, z - 0.12], [x - 0.3, -h * 0.72, z - 0.12], 0.065, 16);
+      p.roundRod([-x + 0.3, -h * 0.72, z - 0.12], [x - 0.3, -h * 0.72, z - 0.12], 0.065, 16);
     });
   }
 }

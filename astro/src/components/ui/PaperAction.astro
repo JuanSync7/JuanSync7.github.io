@@ -1,0 +1,55 @@
+---
+import './paper-action.css';
+
+interface CommonProps {
+  variant?: 'paper' | 'signal' | 'outline';
+  class?: string;
+  id?: string;
+  'aria-label'?: string;
+  'aria-describedby'?: string;
+}
+interface LinkProps extends CommonProps {
+  href: string;
+  target?: string;
+  rel?: string;
+  type?: never;
+  disabled?: never;
+  popovertarget?: never;
+  popovertargetaction?: never;
+}
+interface ButtonProps extends CommonProps {
+  href?: never;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
+  target?: never;
+  rel?: never;
+  popovertarget?: string;
+  popovertargetaction?: 'toggle' | 'show' | 'hide';
+}
+type Props = LinkProps | ButtonProps;
+
+const { href, variant = 'paper', class: className, id, type = 'button', disabled, target, rel } = Astro.props;
+const Tag = href === undefined ? 'button' : 'a';
+const linkRel = [rel, target === '_blank' ? 'noopener noreferrer' : undefined].filter(Boolean).join(' ') || undefined;
+const hasIcon = Astro.slots.has('icon') || href !== undefined;
+---
+
+<Tag
+  class:list={['paper-action', className]}
+  data-paper-action={variant}
+  id={id}
+  href={href}
+  type={href === undefined ? type : undefined}
+  disabled={href === undefined ? disabled : undefined}
+  target={target}
+  rel={href === undefined ? undefined : linkRel}
+  aria-label={Astro.props['aria-label']}
+  aria-describedby={Astro.props['aria-describedby']}
+  popovertarget={href === undefined ? Astro.props.popovertarget : undefined}
+  popovertargetaction={href === undefined ? Astro.props.popovertargetaction : undefined}
+>
+  <span class="pa-face">
+    <span class="pa-label"><slot /></span>
+    {hasIcon && <span class="pa-icon" aria-hidden="true"><slot name="icon">↗</slot></span>}
+  </span>
+</Tag>

@@ -42,13 +42,17 @@ export interface ThreeFigureSpec<S> extends Omit<FigureMeta, 'style'> {
   fallback(frame: CanvasFrame<null>): string | void;
 }
 
+let webglSupport: boolean | undefined;
+
 export function webglAvailable(): boolean {
+  if (webglSupport !== undefined) return webglSupport;
   try {
     const probe = document.createElement('canvas');
     const context = probe.getContext('webgl2') ?? probe.getContext('webgl');
-    // A seed gallery mounts several renderers: probes must not consume their context slots.
+    webglSupport = Boolean(context);
+    // A capability probe must not consume one of the browser's limited scene contexts.
     context?.getExtension('WEBGL_lose_context')?.loseContext();
-    return Boolean(context);
+    return webglSupport;
   } catch {
     return false;
   }

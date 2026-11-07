@@ -35,7 +35,7 @@ export function tallCabinet(p: TableDraft, theme: ThemeId, variant: number): voi
     });
   if (!open)
     p.material('metal', () => {
-      for (const x of [-0.11, 0.11]) p.tube([x, 1.65, 0.59], [x, 2.25, 0.59], 0.026, 8);
+      for (const x of [-0.11, 0.11]) p.roundRod([x, 1.65, 0.59], [x, 2.25, 0.59], 0.026, 8);
     });
   if (theme === 'lab') {
     p.material('window', () => p.box(0, 2.8, 0.55, w - 0.3, 1.45, 0.025, 0.015));
@@ -57,7 +57,7 @@ export function filingCabinet(p: TableDraft): void {
     for (const y of [0.15, 0.85, 1.55]) p.box(0, y, 0.65, 1.42, 0.61, 0.055, 0.025);
   });
   p.material('metal', () => {
-    for (const y of [0.52, 1.22, 1.92]) p.tube([-0.22, y, 0.72], [0.22, y, 0.72], 0.025, 8);
+    for (const y of [0.52, 1.22, 1.92]) p.roundRod([-0.22, y, 0.72], [0.22, y, 0.72], 0.025, 8);
   });
   p.material('paper', () => {
     for (const y of [0.35, 1.05, 1.75]) p.box(0, y, 0.69, 0.25, 0.1, 0.025, 0.005);

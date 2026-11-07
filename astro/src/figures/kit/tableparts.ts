@@ -126,7 +126,7 @@ export class TableDraft extends Draft {
     }
   }
 
-  tube(a: Vec3, b: Vec3, radius: number, n = 12): void {
+  roundRod(a: Vec3, b: Vec3, radius: number, n = 12): void {
     const length = Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]);
     if (length < 0.00001) return;
     const d: Vec3 = [(b[0] - a[0]) / length, (b[1] - a[1]) / length, (b[2] - a[2]) / length];

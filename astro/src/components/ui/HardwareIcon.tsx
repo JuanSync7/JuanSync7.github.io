@@ -11,11 +11,12 @@ interface Props {
   open?: number;
   pick?: number;
   decorative?: boolean;
+  detail?: boolean;
 }
 /** SVG presentation only. All object geometry and projection live in the figure kit. */
-export default function HardwareIcon({ kind, mode = 'isometric', view = 'three-quarter', open = 0, pick = -1, decorative = false }: Props) {
+export default function HardwareIcon({ kind, mode = 'isometric', view = 'three-quarter', open = 0, pick = -1, decorative = false, detail = false }: Props) {
   const title = useId();
-  const drawing = hardwareDrawing(hardwareModel(kind), { ...DEFAULT_OPTIONS, mode, view, open, pick }, 256, 256);
+  const drawing = hardwareDrawing(hardwareModel(kind), { ...DEFAULT_OPTIONS, mode, view, open, pick, detail }, 256, 256);
   return (
     <svg viewBox="0 0 256 256" fill="none" strokeWidth="1" strokeLinejoin="round" strokeLinecap="round"
       width="100%" height="100%" role={decorative ? undefined : 'img'}

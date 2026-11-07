@@ -1,0 +1,15 @@
+{
+  "schema": "voxel-camera-pose/1",
+  "capturedKernel": "110090d259c6b8be395b4e05e90a79479ec646088ab677cff32920dd9ac4f7e9",
+  "layoutSeed": 42,
+  "biome": "frozen",
+  "point": "place/landmark/tundra/0",
+  "zoom": 1.2,
+  "aspect": 1.5,
+  "position": [
+    12.214772599085208,
+    37.10435474475115,
+    -6.469393663891083
+  ],
+  "observation": "Exact hash-matched center-ray solver pose. Center is clear while other subject rays hit the foreground peak."
+}

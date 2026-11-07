@@ -1,0 +1,24 @@
+{
+  "schema": "voxel-regression/1",
+  "publicSeed": 949283578,
+  "originalKernel": "21e17d245e5998fe3834793b44622737c8c87ef9d8f388dc8528a70e6f88aaa9",
+  "reason": "A focal standing-stone object added after a natural acacia must preserve canopy clearance. Keep this exact plan even if later plan grammar changes counts.",
+  "spec": {
+    "version": 3,
+    "layoutSeed": 28983808,
+    "biome": "city",
+    "secondary": "plains",
+    "landform": "valley",
+    "radius": 53,
+    "stretch": 0.7678771271137521,
+    "turn": -0.11862521008588374,
+    "density": 0.7012169493362308,
+    "relief": 0.8898562549147755,
+    "settlementCount": 10,
+    "boatCount": 4,
+    "daylight": "noon",
+    "sunAngle": 0.5197817643682695,
+    "cameraPitch": 0.7490906536579132,
+    "wet": false
+  }
+}

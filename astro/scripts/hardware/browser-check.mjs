@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFile, mkdir } from 'node:fs/promises';
+import { readFile, mkdir, copyFile } from 'node:fs/promises';
 import { spawn } from 'node:child_process';
 import { chromium } from 'playwright';
 
@@ -27,6 +27,20 @@ try {
   assert.equal(await page.locator('.atlas-card').count(), 12);
   assert.equal(await page.locator('#atlas-object-title').textContent(), 'Processor package');
   await page.locator('.atlas-inspector').screenshot({ path: 'hardware-out/workbench-desktop.png' });
+  const wholePaths = await page.locator('.atlas-grid svg path').count();
+  assert.ok(wholePaths > 1000, 'The gallery contains the detailed structural drawings');
+  await page.getByRole('button', { name: 'Isolate part ↗', exact: true }).click();
+  await page.waitForFunction(() => new URL(location.href).searchParams.get('isolate') === '1');
+  await page.locator('.atlas-parts button').nth(3).click();
+  await page.waitForFunction(() => document.querySelector('.atlas-stage canvas')?.getAttribute('data-readout') === 'Silicon die');
+  await page.locator('.atlas-stage').screenshot({ path: 'hardware-out/processor-die-isolated.png' });
+  const isolatedDownload = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Download SVG ↓', exact: true }).click();
+  assert.equal((await isolatedDownload).suggestedFilename(), 'processor-isometric-part-4.svg');
+  await page.getByRole('button', { name: 'icon', exact: true }).click();
+  await page.waitForFunction(() => new URL(location.href).searchParams.get('detail') === '0');
+  await page.getByRole('button', { name: 'engineering', exact: true }).click();
+  await page.getByRole('button', { name: 'View assembly ↙', exact: true }).click();
 
   await page.getByRole('searchbox').fill('no-such-hardware');
   assert.equal(await page.locator('.atlas-card').count(), 0);
@@ -79,11 +93,35 @@ try {
   }
   assert.equal(await canvas.getAttribute('data-error'), null);
   assert.deepEqual(errors, []);
+  await page.setViewportSize({ width: 1360, height: 1000 });
+  for (const object of ['processor','memory','board','server','storage','switch','rack','cooler','power','accelerator','sensor','optics']) {
+    await page.goto(`${base}/lab/icon-kit/?object=${object}&open=1&detail=1`);
+    await page.locator('.atlas-stage canvas[data-ready="1"]').waitFor();
+    const label = ({ storage: 'hard disk', sensor: 'camera module', optics: 'optical transceiver' })[object] ?? object;
+    await page.waitForFunction((name) => document.querySelector('.atlas-stage canvas')?.getAttribute('aria-label')?.toLowerCase().includes(name), label);
+    await page.waitForFunction(() => {
+      const read = document.querySelector('.atlas-stage canvas')?.getAttribute('data-readout');
+      return read && document.querySelector('.atlas-parts button[aria-pressed="true"]')?.textContent?.includes(read);
+    });
+    await page.locator('.atlas-stage').screenshot({ path: `hardware-out/${object}-engineering.png` });
+  }
+  for (const args of [
+    ['scripts/figures/seeds.mjs','hardware-atlas','12',`--url=${base}`],
+    ['scripts/figures/look.mjs','hardware-atlas',`--url=${base}`],
+  ]) {
+    await new Promise((resolve,reject) => {
+      const job=spawn(process.execPath,args,{stdio:'inherit'});
+      job.on('error',reject);
+      job.on('exit',code=>code===0?resolve():reject(new Error(`Hardware contact sheet check exited ${code}`)));
+    });
+  }
+  for (const name of ['hardware-atlas.seeds.png','hardware-atlas.png','hardware-atlas~7.png','hardware-atlas~42.png','hardware-atlas~2026.png'])
+    await copyFile(`figures-out/${name}`,`hardware-out/${name}`);
   const plain = await browser.newContext({ javaScriptEnabled: false });
   const staticPage = await plain.newPage();
   await staticPage.goto(`${base}/lab/icon-kit/`);
   assert.equal(await staticPage.locator('.atlas-grid svg').count(), 12, 'The collection renders without JavaScript');
-  console.log('Hardware browser: selection, search, category filters, camera, assembly, download, clipboard, sprite, sharing, reduced motion, mobile and no-JS passed.');
+  console.log('Hardware browser: isolation, engineering detail, selection, search, category filters, camera, assembly, download, clipboard, sprite, sharing, reduced motion, mobile and no-JS passed.');
 } finally {
   await browser?.close();
   child?.kill();

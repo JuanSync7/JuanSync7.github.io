@@ -9,3 +9,12 @@ and their maintained vocabulary.
 
 [Hardware atlas](design/hardware-atlas.md) documents the SVG collection, figure template,
 reference card, exports and checks.
+
+[Vault overview](design/vault-overview.md) describes the public landing page, synthetic graph search,
+diagram exports, maintenance checks and the separation from private vault data.
+
+[Presentation pages](design/presentation-pages.md) describes the short-landing-to-guides pattern,
+text hierarchy, paper buttons, scoped motion and repeatable source, build and browser checks.
+
+[Voxel agent](voxel-agent/README.md) maps the seeded-world pipeline, seven playbooks, placement rules,
+replay commands, verification and private-vault feedback export.

@@ -46,8 +46,9 @@ export const NAV = [
   { label: 'lab', href: '/lab/' },
   { label: 'anatomy', href: '/anatomy/chip-package/' },
   { label: 'learn', href: '/learn/' },
-  // Last, because a narrow screen keeps only the last link in the top bar (the footer
-  // carries them all).
+  { label: 'vault', href: '/vault/' },
+  // A narrow screen keeps the current page, or writing when no page is selected.
+  // The footer carries every destination.
   { label: 'writing', href: '/blog/' },
 ] as const;
 

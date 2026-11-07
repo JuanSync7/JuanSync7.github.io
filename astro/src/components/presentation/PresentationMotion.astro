@@ -1,0 +1,6 @@
+<script>
+  import { installPresentationMotion } from './motion';
+
+  const dispose = installPresentationMotion();
+  if (import.meta.hot) import.meta.hot.dispose(dispose);
+</script>

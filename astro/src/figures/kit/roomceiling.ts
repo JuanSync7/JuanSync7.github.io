@@ -15,7 +15,7 @@ export function roomCeiling(p: TableScene): RoomPart[] {
         if (t === 'dining' || t === 'bar') {
           q.material('metal', () => {
             q.box(0, r.top - 0.15, 0, 3.5, 0.08, 0.25, 0.025);
-            for (const x of [-1.45, 0, 1.45]) q.tube([x, r.top - 0.15, 0], [x, 2.55, 0], 0.018, 8);
+            for (const x of [-1.45, 0, 1.45]) q.roundRod([x, r.top - 0.15, 0], [x, 2.55, 0], 0.018, 8);
           });
           for (const x of [-1.45, 0, 1.45]) {
             q.material(t === 'bar' ? 'metal' : 'shade', () =>

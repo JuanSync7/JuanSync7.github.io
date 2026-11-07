@@ -1,0 +1,9 @@
+---
+import CodeExample from './CodeExample.astro';
+import { source } from './reference';
+interface Props { paths: string[]; }
+const { paths } = Astro.props;
+---
+<div class="ds-source-files">
+  {paths.map((path) => <CodeExample title={`Source · src/${path}`} code={source(path)} />)}
+</div>

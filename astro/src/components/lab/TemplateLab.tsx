@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import FigureCanvas from '../ui/FigureCanvas';
 import RoomStage from './RoomStage';
+import VoxelWorldControls from './VoxelWorldControls';
+import VoxelStage from './VoxelStage';
+import { DEFAULT_VIEW } from './voxel-view';
+import type { WorldInfo } from '../../figures/kit/voxel-world/ecology-types';
+import type { Biome, Landform } from '../../figures/kit/voxel-world/types';
 import { loadTemplate } from '../../figures/registry';
 import type { Template } from '../../figures/defineTemplate';
 import './template-lab.css';
@@ -34,6 +39,9 @@ export default function TemplateLab({ template }: Props) {
   const [seed, setSeed] = useState<number | null>(null);
   const [draft, setDraft] = useState('');
   const [copied, setCopied] = useState(false);
+  const [view, setView] = useState({ ...DEFAULT_VIEW });
+  const [worldInfo, setWorldInfo] = useState<WorldInfo | null>(null);
+  const voxel = template === 'voxel-scene';
 
   useEffect(() => {
     let live = true;
@@ -61,11 +69,15 @@ export default function TemplateLab({ template }: Props) {
   const go = (s: number): void => {
     const next = clampSeed(s);
     setSeed(next);
+    if (next !== seed) {
+      setWorldInfo(null);
+      setView((v) => ({ ...v, focus: '', panX: 0, panY: 0, zoom: 1 }));
+    }
     // The draft resyncs even when the seed does not change (a cleared box, a leading zero).
     setDraft(String(next));
   };
   // The next seeds, stopping at the last one rather than repeating it.
-  const ahead = Array.from({ length: NEIGHBOURS }, (_, k) => seed + 1 + k).filter((s) => s <= MAX_SEED);
+  const ahead = Array.from({ length: voxel ? 4 : NEIGHBOURS }, (_, k) => seed + 1 + k).filter((s) => s <= MAX_SEED);
   const id = `${template}~${seed}`;
   const inst = tpl.instance(seed);
   const copy = (): void => {
@@ -75,12 +87,26 @@ export default function TemplateLab({ template }: Props) {
       .catch(() => setCopied(false));
   };
 
+  const generate = (wanted: Biome, landform?: Landform): void => {
+    const start = roll();
+    for (let i = 0; i < 10000; i++) {
+      const candidate = (start + i) % (MAX_SEED + 1);
+      const variant = tpl.instance(candidate).variant;
+      if (variant.startsWith(`${wanted} · `) && (!landform || variant.endsWith(` · ${landform}`))) {
+        go(candidate);
+        return;
+      }
+    }
+  };
+
   return (
-    <div className="lab">
-      {template === 'pixel-still' ? (
+    <div className={`lab${voxel ? ' lab-voxel' : ''}`}>
+      {voxel ? (
+        <VoxelStage id={id} aspect={tpl.aspect} view={view} onView={setView} onWorldInfo={setWorldInfo} />
+      ) : template === 'pixel-still' ? (
         <RoomStage id={id} aspect={tpl.aspect} />
       ) : (
-        <div className="lab-main" style={{ aspectRatio: tpl.aspect }}>
+        <div className="lab-main" style={{ aspectRatio: String(tpl.aspect) }}>
           <FigureCanvas key={id} id={id} />
         </div>
       )}
@@ -130,6 +156,15 @@ export default function TemplateLab({ template }: Props) {
           </button>
         </form>
       </div>
+      {voxel && (
+        <VoxelWorldControls
+          info={worldInfo}
+          view={view}
+          biome={inst.variant.split(' · ')[0] as Biome}
+          onView={setView}
+          onGenerate={generate}
+        />
+      )}
       <p className="lab-alt" aria-live="polite">
         {inst.alt}
       </p>
@@ -144,7 +179,7 @@ export default function TemplateLab({ template }: Props) {
               aria-label={`Seed ${s}: ${tpl.instance(s).variant}`}
             >
               <span className="lab-thumb-stage">
-                <FigureCanvas key={`${template}~${s}`} id={`${template}~${s}`} />
+                <FigureCanvas key={`${template}~${s}`} id={`${template}~${s}`} freezeAt={voxel ? 1.2 : undefined} />
               </span>
               <span className="lab-thumb-label">
                 {s} · {tpl.instance(s).variant}

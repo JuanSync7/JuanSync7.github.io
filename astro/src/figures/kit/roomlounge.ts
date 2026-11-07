@@ -6,7 +6,7 @@ export function loungeSeat(p: TableDraft, theme: ThemeId, sofa: boolean): void {
   const w = sofa ? 2.8 : 1.65;
   p.material('frame', () => {
     for (const x of [-w / 2 + 0.18, w / 2 - 0.18])
-      for (const z of [-0.45, 0.45]) p.tube([x, 0, z], [x * 0.92, 0.4, z * 0.9], 0.065, 8);
+      for (const z of [-0.45, 0.45]) p.roundRod([x, 0, z], [x * 0.92, 0.4, z * 0.9], 0.065, 8);
   });
   p.material('upholstery', () => {
     p.box(0, 0.35, 0, w, 0.35, 1.45, 0.13);
@@ -29,7 +29,7 @@ export function loungeSeat(p: TableDraft, theme: ThemeId, sofa: boolean): void {
 export function sideTable(p: TableDraft, theme: ThemeId): void {
   p.material('metal', () => {
     p.cylinder(0, 0, 0, 0.46, 0.06, 16);
-    p.tube([0, 0.06, 0], [0, 0.95, 0], 0.045, 8);
+    p.roundRod([0, 0.06, 0], [0, 0.95, 0], 0.045, 8);
   });
   p.material('top', () => p.cylinder(0, 0.95, 0, 0.68, 0.07, 24));
   p.material('book', () => accessory(p, theme === 'bar' ? 'bottle' : 'books', -0.17, 1.02, 0, 0.4));
@@ -44,7 +44,7 @@ export function sideboard(p: TableDraft, theme: ThemeId): void {
     for (const x of [-1.0, 0, 1.0]) p.box(x, 0.34, 0.54, 0.92, 1.0, 0.06, 0.025);
   });
   p.material('metal', () => {
-    for (const x of [-1.0, 0, 1.0]) p.tube([x - 0.12, 1.13, 0.59], [x + 0.12, 1.13, 0.59], 0.025, 8);
+    for (const x of [-1.0, 0, 1.0]) p.roundRod([x - 0.12, 1.13, 0.59], [x + 0.12, 1.13, 0.59], 0.025, 8);
   });
   p.material('top', () => p.box(0, 1.45, 0, 3.12, 0.1, 1.16, 0.035));
   accessory(p, theme === 'dining' ? 'bowl' : 'books', -0.7, 1.55, 0, 0.65);

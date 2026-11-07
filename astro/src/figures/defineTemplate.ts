@@ -31,9 +31,15 @@ interface TemplateMeta<P> extends Omit<FigureMeta, 'group' | 'seed' | 'alt' | 't
   alt(params: P): string;
 }
 
-export interface TemplateSpec<P, S> extends TemplateMeta<P> {
+export interface TemplateSpec<P, S, T = S> extends TemplateMeta<P> {
   setup(env: TemplateEnv<P>): S;
   draw(frame: TemplateFrame<P, S>): string | void;
+  /** GPU templates supply their renderer so canvas templates keep a light bundle. */
+  three?: {
+    renderer: typeof defineThreeFigure;
+    build(env: ThreeEnv & { params: P }): T;
+    update(frame: ThreeFrame<T> & { params: P }): string | void;
+  };
 }
 
 export interface ThreeTemplateSpec<P, S> extends TemplateMeta<P> {
@@ -48,6 +54,8 @@ export interface ThreeTemplateSpec<P, S> extends TemplateMeta<P> {
 export interface Instance extends Figure {
   template: string;
   variant: string;
+  /** Seeded grammar output for inspectable/replayable template diagnostics. */
+  params: unknown;
 }
 
 export interface Template extends Omit<FigureMeta, 'group' | 'seed' | 'alt'> {
@@ -59,8 +67,8 @@ export interface Template extends Omit<FigureMeta, 'group' | 'seed' | 'alt'> {
 const GRAMMAR_SALT = 0x9e3779b9;
 
 export function defineTemplate<P, S>(spec: ThreeTemplateSpec<P, S>): Template;
-export function defineTemplate<P, S>(spec: TemplateSpec<P, S>): Template;
-export function defineTemplate<P, S>(spec: TemplateSpec<P, S> | ThreeTemplateSpec<P, S>): Template {
+export function defineTemplate<P, S, T = S>(spec: TemplateSpec<P, S, T>): Template;
+export function defineTemplate<P, S, T = S>(spec: TemplateSpec<P, S, T> | ThreeTemplateSpec<P, S>): Template {
   const { grammar, name, alt, ...rest } = spec;
   // Keep renderer callbacks off the catalog metadata for either kind of template.
   const { id, title, idea, style, motion, answers, aspect, bleed } = rest;
@@ -80,20 +88,34 @@ export function defineTemplate<P, S>(spec: TemplateSpec<P, S> | ThreeTemplateSpe
         group: 'template',
         seed: s,
       };
-      const figure =
-        'build' in spec
-          ? spec.renderer<S>({
+      let figure: Figure;
+      if ('build' in spec) {
+        figure = spec.renderer<S>({
+          ...instanceMeta,
+          build: (env) => spec.build({ ...env, params }),
+          update: (frame) => spec.update({ ...frame, params }),
+          fallback: (frame) => spec.fallback({ ...frame, params }),
+        });
+      } else {
+        const gpu = spec.three;
+        let fallbackState: S | undefined;
+        figure = gpu
+          ? gpu.renderer<T>({
               ...instanceMeta,
-              build: (env) => spec.build({ ...env, params }),
-              update: (frame) => spec.update({ ...frame, params }),
-              fallback: (frame) => spec.fallback({ ...frame, params }),
+              build: (env) => gpu.build({ ...env, params }),
+              update: (frame) => gpu.update({ ...frame, params }),
+              fallback: (frame) => {
+                fallbackState ??= spec.setup({ ...frame, params });
+                return spec.draw({ ...frame, params, state: fallbackState });
+              },
             })
           : defineCanvasFigure<S>({
               ...instanceMeta,
               setup: (env) => spec.setup({ ...env, params }),
               draw: (frame) => spec.draw({ ...frame, params }),
             });
-      return { ...figure, template: spec.id, variant };
+      }
+      return { ...figure, template: spec.id, variant, params };
     },
   };
 }

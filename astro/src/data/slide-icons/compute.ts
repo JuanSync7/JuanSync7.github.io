@@ -1,0 +1,50 @@
+export const compute = [
+  {
+    id: 'processor',
+    name: 'Processor',
+    group: 'compute',
+    tags: 'processor cpu silicon core chip',
+  },
+  {
+    id: 'memory',
+    name: 'Memory',
+    group: 'compute',
+    tags: 'memory stick dram ram contact hbm layers stack',
+  },
+  {
+    id: 'wafer',
+    name: 'Wafer',
+    group: 'compute',
+    tags: 'wafer fabrication silicon manufacturing',
+  },
+  {
+    id: 'accelerator',
+    name: 'Accelerator',
+    group: 'compute',
+    tags: 'accelerator gpu ai compute card',
+  },
+  {
+    id: 'circuit-board',
+    name: 'Circuit board',
+    group: 'compute',
+    tags: 'circuit board pcb electronics embedded',
+  },
+  {
+    id: 'chiplets',
+    name: 'Layer stack',
+    group: 'compute',
+    tags: 'chiplets layers 3 plural stack package interposer integration dies',
+  },
+  {
+    id: 'ai-model',
+    name: 'AI model',
+    group: 'compute',
+    tags: 'ai model brain circuit',
+  },
+  {
+    id: 'camera',
+    name: 'Camera',
+    group: 'compute',
+    tags: 'camera',
+  },
+] as const;

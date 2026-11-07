@@ -21,11 +21,16 @@ export interface Surface {
   solid: number;
   points: Vec3[];
   face: boolean;
+  detail?: boolean;
+  outline?: boolean;
+  connection?: { from: string; to: string };
 }
 export interface HardwarePart {
   name: string;
   note: string;
   surfaces: Surface[];
+  explode?: Vec3;
+  hiddenWhenClosed?: boolean;
 }
 export interface HardwareModel {
   kind: HardwareKind;
@@ -38,9 +43,13 @@ export interface HardwareOptions {
   pick: number;
   /** A local inspection lift, separate from the assembly opening. */
   lift?: number;
+  detail?: boolean;
+  isolate?: boolean;
 }
 export const DEFAULT_OPTIONS: HardwareOptions = {
   mode: 'isometric',
+  detail: true,
+  isolate: false,
   view: 'three-quarter',
   open: 0,
   pick: -1,

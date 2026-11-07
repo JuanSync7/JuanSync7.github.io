@@ -13,8 +13,8 @@ export function craftBench(p: TableDraft): void {
   accessory(p, 'penholder', 0.8, 1.81, 0, 0.65);
   p.material('metal', () => {
     p.box(1.25, 1.67, 0.55, 0.35, 0.4, 0.48, 0.035);
-    p.tube([1.25, 1.73, 0.55], [1.25, 1.73, 0.95], 0.035, 8);
-    p.tube([1.25, 1.52, 0.95], [1.25, 1.95, 0.95], 0.025, 8);
+    p.roundRod([1.25, 1.73, 0.55], [1.25, 1.73, 0.95], 0.035, 8);
+    p.roundRod([1.25, 1.52, 0.95], [1.25, 1.95, 0.95], 0.025, 8);
   });
 }
 export function pegTools(p: TableDraft): void {
@@ -22,13 +22,13 @@ export function pegTools(p: TableDraft): void {
   p.material('recess', () => {
     for (let i = 0; i < 12; i++)
       for (let j = 0; j < 6; j++)
-        p.tube([-1.16 + i * 0.21, 0.18 + j * 0.26, 0.11], [-1.16 + i * 0.21, 0.18 + j * 0.26, 0.125], 0.018, 6);
+        p.roundRod([-1.16 + i * 0.21, 0.18 + j * 0.26, 0.11], [-1.16 + i * 0.21, 0.18 + j * 0.26, 0.125], 0.018, 6);
   });
   p.material('metal', () => {
     for (let i = 0; i < 5; i++) {
       const x = -1.05 + i * 0.52;
-      p.tube([x, 1.2, 0.14], [x, 1.2, 0.24], 0.022, 6);
-      p.tube([x, 0.42, 0.23], [x, 1.23, 0.23], 0.035, 8);
+      p.roundRod([x, 1.2, 0.14], [x, 1.2, 0.24], 0.022, 6);
+      p.roundRod([x, 0.42, 0.23], [x, 1.23, 0.23], 0.035, 8);
       p.box(x, 1.1, 0.23, 0.26, 0.13, 0.08, 0.018);
     }
   });

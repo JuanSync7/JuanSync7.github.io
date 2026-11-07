@@ -3,8 +3,9 @@ import type { TableTheme } from './tablethemes';
 
 export function pull(p: TableDraft, x: number, y: number, z: number, width = 0.36): void {
   p.material('metal', () => {
-    for (const side of [-1, 1]) p.tube([x + (side * width) / 2, y, z], [x + (side * width) / 2, y, z + 0.11], 0.028, 8);
-    p.tube([x - width / 2, y, z + 0.11], [x + width / 2, y, z + 0.11], 0.035);
+    for (const side of [-1, 1])
+      p.roundRod([x + (side * width) / 2, y, z], [x + (side * width) / 2, y, z + 0.11], 0.028, 8);
+    p.roundRod([x - width / 2, y, z + 0.11], [x + width / 2, y, z + 0.11], 0.035);
   });
 }
 export function panel(p: TableDraft, x: number, y: number, z: number, width: number, height: number): void {
@@ -51,6 +52,6 @@ export function legs(p: TableDraft, t: TableTheme, metal = false): void {
 export function bolts(p: TableDraft, x: number, y: number, z: number, spacing = 0.24): void {
   p.material('metal', () => {
     for (const side of [-1, 1])
-      p.tube([x + (side * spacing) / 2, y, z], [x + (side * spacing) / 2, y, z + 0.025], 0.04, 6);
+      p.roundRod([x + (side * spacing) / 2, y, z], [x + (side * spacing) / 2, y, z + 0.025], 0.04, 6);
   });
 }

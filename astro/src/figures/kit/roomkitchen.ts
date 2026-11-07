@@ -20,10 +20,10 @@ export function sinkCounter(p: TableDraft, laboratory: boolean): void {
     p.box(0, h - 0.32, 0, 1.32, 0.04, 0.65, 0.08);
     for (const x of [-0.64, 0.64]) p.box(x, h - 0.29, 0, 0.035, 0.3, 0.65, 0.01);
     for (const z of [-0.31, 0.31]) p.box(0, h - 0.29, z, 1.32, 0.3, 0.035, 0.01);
-    p.tube([0, h, -0.5], [0, h + 0.65, -0.5], 0.045, 10);
-    p.tube([0, h + 0.65, -0.5], [0, h + 0.72, -0.24], 0.045, 10);
-    p.tube([0, h + 0.72, -0.24], [0, h + 0.55, -0.05], 0.045, 10);
-    for (const x of [-0.9, 0.9]) p.tube([x - 0.12, h - 0.36, 0.77], [x + 0.12, h - 0.36, 0.77], 0.025, 8);
+    p.roundRod([0, h, -0.5], [0, h + 0.65, -0.5], 0.045, 10);
+    p.roundRod([0, h + 0.65, -0.5], [0, h + 0.72, -0.24], 0.045, 10);
+    p.roundRod([0, h + 0.72, -0.24], [0, h + 0.55, -0.05], 0.045, 10);
+    for (const x of [-0.9, 0.9]) p.roundRod([x - 0.12, h - 0.36, 0.77], [x + 0.12, h - 0.36, 0.77], 0.025, 8);
     p.cylinder(0, h - 0.27, 0, 0.07, 0.025, 12);
   });
   accessory(p, laboratory ? 'beaker' : 'utensils', 1.2, h, 0, 0.5);
@@ -57,7 +57,7 @@ export function refrigerator(p: TableDraft): void {
     p.box(0, 2.72, 0.78, 1.5, 1.42, 0.08, 0.04);
   });
   p.material('metal', () => {
-    for (const y of [1.8, 3.35]) p.tube([0.58, y - 0.3, 0.9], [0.58, y + 0.3, 0.9], 0.035, 8);
+    for (const y of [1.8, 3.35]) p.roundRod([0.58, y - 0.3, 0.9], [0.58, y + 0.3, 0.9], 0.035, 8);
     for (let i = 0; i < 7; i++) p.box(-0.6 + i * 0.2, 0.08, 0.8, 0.1, 0.07, 0.015, 0.003);
   });
   p.material('paper', () => p.box(-0.2, 2.1, 0.84, 0.44, 0.38, 0.015, 0.005));

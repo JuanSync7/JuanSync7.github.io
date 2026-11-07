@@ -1,0 +1,50 @@
+export const communication = [
+  {
+    id: 'message',
+    name: 'Message',
+    group: 'communication',
+    tags: 'message square',
+  },
+  {
+    id: 'mail',
+    name: 'Mail',
+    group: 'communication',
+    tags: 'mail',
+  },
+  {
+    id: 'slide-deck',
+    name: 'Slide deck',
+    group: 'communication',
+    tags: 'slide-deck presentation slides plural stack',
+  },
+  {
+    id: 'person',
+    name: 'Person',
+    group: 'communication',
+    tags: 'person user',
+  },
+  {
+    id: 'calendar',
+    name: 'Calendar',
+    group: 'communication',
+    tags: 'calendar',
+  },
+  {
+    id: 'link',
+    name: 'Link',
+    group: 'communication',
+    tags: 'link',
+  },
+  {
+    id: 'globe',
+    name: 'Globe',
+    group: 'communication',
+    tags: 'globe',
+  },
+  {
+    id: 'bookmark',
+    name: 'Bookmark',
+    group: 'communication',
+    tags: 'bookmark',
+  },
+] as const;

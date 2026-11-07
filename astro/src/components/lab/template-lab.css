@@ -139,3 +139,53 @@
 .lab-thumb:hover .lab-thumb-label {
   color: var(--nt-signal);
 }
+
+
+.lab-voxel .lab-main {
+  mask-image: none;
+}
+
+.voxel-controls,
+.voxel-view {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--hf-space-4);
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-meta);
+}
+
+.voxel-controls {
+  justify-content: space-between;
+  padding-block: var(--hf-space-3);
+  border-block: 1px solid var(--nt-line);
+}
+
+.voxel-controls select {
+  min-height: var(--nt-hit);
+  padding-inline: var(--hf-space-2);
+  border: 1px solid var(--nt-line-2);
+  border-radius: 0;
+  background: var(--nt-panel);
+  color: var(--nt-ink);
+  font: inherit;
+}
+
+.voxel-controls input[type='range'] {
+  width: var(--hf-space-20);
+  padding: 0;
+  accent-color: var(--nt-signal);
+  border: none;
+}
+
+.voxel-controls [aria-pressed='true'] {
+  color: var(--nt-signal);
+}
+
+.voxel-stage { touch-action: none; cursor: grab; }
+.voxel-stage:active { cursor: grabbing; }
+.voxel-stage:focus-visible { outline: 1px solid var(--nt-signal); outline-offset: var(--hf-space-2); }
+
+.voxel-controls .lab-seed { min-width: 0; }
+.voxel-controls select { max-width: min(100%, 24rem); }
+.voxel-hint { flex-basis: 100%; margin: 0; color: var(--nt-ink-muted); font-size: var(--nt-fs-caption); }

@@ -1,0 +1,38 @@
+---
+import VaultGuide from '../../../layouts/VaultGuide.astro';
+---
+
+<VaultGuide slug="purpose" intro="Keep the reasoning behind the work, then make it possible to find, inspect and reuse.">
+  <section data-presentation-section id="problem">
+    <p class="pr-comment">// the problem</p>
+    <h2>A result survives more easily than its reason.</h2>
+    <p>Work leaves a scattered record: conversations, changes, experiments and decisions. I may remember the result while losing the reason for it, the dead end that mattered or the check that settled it.</p>
+    <p>When a similar problem comes back, I want to start from that experience. An agent helping me should be able to find it too, without loading the whole history or guessing what I believe.</p>
+  </section>
+  <section data-presentation-section id="purpose">
+    <p class="pr-comment">// the purpose</p>
+    <h2>Turn experience into useful context.</h2>
+    <p>The vault connects what I built, how I approached it, why I chose a path and what the work taught me. A short account provides the way in. The sources remain available when a question needs more depth.</p>
+    <p>A small visible surface can have a lot beneath it. Start with an overview, follow a group, open a topic, then read the work behind it. Each step should earn the next layer of detail.</p>
+    <p>That is why the public landing page stays short. The guides hold the system explanation, and the actual private records remain outside this website.</p>
+  </section>
+  <section data-presentation-section id="principles">
+    <p class="pr-comment">// design principles</p>
+    <h2>A record I can explain and correct.</h2>
+    <ul>
+      <li><strong>Keep ownership clear.</strong> Authored context and generated accounts have different owners. The model can propose an account; an interpretation must retain its attribution.</li>
+      <li><strong>Keep a route to evidence.</strong> A useful summary leads back to the context behind it. Reaching a source still requires reading it before relying on its claim.</li>
+      <li><strong>Show uncertainty.</strong> Unknown facts, ambiguous names and unfinished references stay visible as work to review.</li>
+      <li><strong>Make repetition ordinary.</strong> Explicit schemas, bounded operations and consistent checks make the next run inspectable.</li>
+      <li><strong>Use depth deliberately.</strong> Give a reader or agent the context the task needs, with links for deeper discovery.</li>
+    </ul>
+  </section>
+  <section data-presentation-section id="direction">
+    <p class="pr-comment">// current direction</p>
+    <h2>Measure whether a later question gets a better start.</h2>
+    <p>Source collection and page generation, authored/generated boundaries, versioned metadata, scoped rules and privacy checks form the foundation. Connected navigation, identity resolution, lexical search, reference maintenance and component diagrams have been implemented; the newer wiki work remains under review.</p>
+    <p>Cached summaries of discovered themes and cross-project agreement or conflict suggestions are further work. They need bounded inputs, source trails and review before becoming trusted guidance. Code being present is separate from a host running it.</p>
+    <p>The measure I care about is whether a later question reaches useful, inspectable context. More notes and more links help when they improve that outcome.</p>
+    <p><a href="/blog/second-brain-from-my-chats/">Read the origin story: “A second brain built from my chats” →</a></p>
+  </section>
+</VaultGuide>

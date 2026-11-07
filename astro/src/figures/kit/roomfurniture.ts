@@ -26,7 +26,7 @@ export function planter(p: TableDraft, variant: number): void {
         y = 1.2 + (i % 3) * 0.32;
       const x = Math.cos(a) * (0.35 + (i % 2) * 0.12),
         z = Math.sin(a) * (0.35 + (i % 2) * 0.12);
-      p.tube([0, 0.69, 0], [x, y, z], 0.018, 6);
+      p.roundRod([0, 0.69, 0], [x, y, z], 0.018, 6);
       const sideX = Math.cos(a + Math.PI / 2) * 0.16,
         sideZ = Math.sin(a + Math.PI / 2) * 0.16;
       const base: [number, number, number] = [x * 0.55, y - 0.25, z * 0.55],
@@ -40,11 +40,11 @@ export function cart(p: TableDraft, theme: ThemeId, variant: number): void {
   p.material('metal', () => {
     for (const x of [-0.5, 0.5])
       for (const z of [-0.42, 0.42]) {
-        p.tube([x, 0.13, z], [x, 1.55, z], 0.035, 8);
+        p.roundRod([x, 0.13, z], [x, 1.55, z], 0.035, 8);
         p.box(x, 0, z, 0.13, 0.15, 0.13, 0.03);
       }
     for (const y of [0.25, 0.87, 1.5]) p.box(0, y, 0, 1.15, 0.065, 1.05, 0.04);
-    p.tube([-0.5, 1.58, 0.42], [0.5, 1.58, 0.42], 0.035, 8);
+    p.roundRod([-0.5, 1.58, 0.42], [0.5, 1.58, 0.42], 0.035, 8);
   });
   const kind =
     theme === 'bar'
@@ -66,7 +66,7 @@ export function cart(p: TableDraft, theme: ThemeId, variant: number): void {
 export function floorLamp(p: TableDraft): void {
   p.material('metal', () => {
     p.cylinder(0, 0, 0, 0.4, 0.08, 16);
-    p.tube([0, 0.08, 0], [0, 3.35, 0], 0.035);
+    p.roundRod([0, 0.08, 0], [0, 3.35, 0], 0.035);
   });
   p.material('shade', () =>
     p.lathe(

@@ -37,8 +37,8 @@ export function workDetails(p: TableDraft, t: TableTheme): void {
       for (const a of [-1, 1]) p.box(a * (x - 0.07), 0, -z + 0.14, 0.14, 0.88, 0.08, 0.015);
       for (const y of [0.02, 0.84]) p.box(0, y, -z + 0.14, t.w, 0.055, 0.08, 0.01);
       for (const a of [-1, 1]) {
-        p.tube([a * 2.2, 0.6, -z + 0.16], [a * 2.2, 0.6, -z + 0.255], 0.027, 8);
-        p.tube([a * 2.2, 0.6, -z + 0.255], [a * 2.2, 0.66, -z + 0.255], 0.027, 8);
+        p.roundRod([a * 2.2, 0.6, -z + 0.16], [a * 2.2, 0.6, -z + 0.255], 0.027, 8);
+        p.roundRod([a * 2.2, 0.6, -z + 0.255], [a * 2.2, 0.66, -z + 0.255], 0.027, 8);
       }
     });
     p.material('recess', () => {
@@ -52,15 +52,20 @@ export function workDetails(p: TableDraft, t: TableTheme): void {
       for (const a of [-1, 1]) p.box(a * (x - 0.35), -h * 0.76, 0, 0.055, 0.17, t.d - 0.65, 0.01);
       p.box(0, -h * 0.76, z - 0.35, t.w - 0.65, 0.17, 0.055, 0.01);
       for (const a of [-1, 1]) p.box(a * (x - 0.65), 0.045, -z + 0.22, 0.55, 0.22, 0.025, 0.025);
-      p.tube([2.5, 0.3, -z + 0.13], [2.5, 0.72, -z + 0.13], 0.04);
-      p.tube([2.5, 0.72, -z + 0.13], [2.5, 0.72, -z + 0.235], 0.04);
+      p.roundRod([2.5, 0.3, -z + 0.13], [2.5, 0.72, -z + 0.13], 0.04);
+      p.roundRod([2.5, 0.72, -z + 0.13], [2.5, 0.72, -z + 0.235], 0.04);
     });
     p.material('recess', () => {
       for (const at of [-2.6, 0, 2.6])
         for (let i = 0; i < 4; i++) p.box(at + (i - 1.5) * 0.2, -0.41, z - 0.24, 0.13, 0.045, 0.015, 0.012);
       for (const a of [-1, 1])
         for (const offset of [-0.12, 0.12])
-          p.tube([a * (x - 0.65) + offset, 0.15, -z + 0.237], [a * (x - 0.65) + offset, 0.15, -z + 0.248], 0.028, 8);
+          p.roundRod(
+            [a * (x - 0.65) + offset, 0.15, -z + 0.237],
+            [a * (x - 0.65) + offset, 0.15, -z + 0.248],
+            0.028,
+            8,
+          );
     });
     for (const a of [-1, 1]) bolts(p, a * (x - 0.55), -0.35, z - 0.23, 0.22);
   }

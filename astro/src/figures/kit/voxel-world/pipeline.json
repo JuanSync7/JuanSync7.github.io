@@ -1,0 +1,110 @@
+{
+  "schema": "voxel-pipeline/1",
+  "version": 3,
+  "entry": "One voxel agent researches, reproduces, runs these stages, verifies and records feedback.",
+  "preflight": [
+    "Record acceptance and failed seed",
+    "Study pinned references",
+    "planWorld: independent seed streams choose biome, transitions, landform, size, density, settlements, boats and light"
+  ],
+  "stages": [
+    {
+      "id": "terrain",
+      "module": "terrain.ts",
+      "playbook": "terrain",
+      "output": "Heights, biomes, cave roof, water beds, shores and landmarks"
+    },
+    {
+      "id": "ecology",
+      "module": "ecology.ts",
+      "playbook": "ecology",
+      "output": "Moisture, substrate, coherent patches and distance to water"
+    },
+    {
+      "id": "population",
+      "module": "recipes.ts",
+      "playbook": "components",
+      "output": "Stable shape recipes, global canopy and dressing quotas"
+    },
+    {
+      "id": "settlements",
+      "module": "layout.ts",
+      "playbook": "placement",
+      "output": "Measured buildings on supported lots with safe entrances"
+    },
+    {
+      "id": "places",
+      "module": "places.ts",
+      "playbook": "places",
+      "output": "Accepted natural parents and bounded companion recipes"
+    },
+    {
+      "id": "paths",
+      "module": "paths.ts",
+      "playbook": "placement",
+      "output": "Supported walking routes and protected headroom"
+    },
+    {
+      "id": "related-canopy",
+      "module": "layout.ts",
+      "playbook": "places",
+      "output": "Companion trees placed before ambient canopy"
+    },
+    {
+      "id": "canopy",
+      "module": "layout.ts",
+      "playbook": "ecology",
+      "output": "Large-first canopy, habitat patches and clearings"
+    },
+    {
+      "id": "shade",
+      "module": "ecology.ts",
+      "playbook": "ecology",
+      "output": "Actual canopy cover for groundcover placement"
+    },
+    {
+      "id": "related-floor",
+      "module": "layout.ts",
+      "playbook": "places",
+      "output": "Related supplies, vegetation, landmarks and static wildlife"
+    },
+    {
+      "id": "floor",
+      "module": "layout.ts",
+      "playbook": "ecology",
+      "output": "Layered groundcover with exact 3D separation"
+    },
+    {
+      "id": "ground",
+      "module": "ground.ts",
+      "playbook": "terrain",
+      "output": "Closed, beveled geological boundary, foundations and cave roofs connected to actual rock"
+    },
+    {
+      "id": "harbour",
+      "module": "harbour.ts",
+      "playbook": "placement",
+      "output": "Optional boats on equal-level navigable water"
+    },
+    {
+      "id": "interests",
+      "module": "interests.ts",
+      "playbook": "places",
+      "output": "Camera destinations bounded by accepted geometry"
+    },
+    {
+      "id": "budget",
+      "module": "generate.ts",
+      "playbook": "performance",
+      "output": "Fail closed if geometry exceeds policy"
+    }
+  ],
+  "postflight": [
+    "Mesh exact exposed faces with contact AO",
+    "Build GPU water and batched weather",
+    "Fit camera and actual place bounds; keep eyes outside solids and clear the focused subject region",
+    "Run fixtures, content, volume/mesh, ecology, groups, diversity and motion checks",
+    "Build; run real browser, GPU and figure audits; inspect overview/detail/phone/model sheets",
+    "Keep failed seeds and judgments; export full source, scripts, pipeline, rules and evidence to the vault"
+  ]
+}

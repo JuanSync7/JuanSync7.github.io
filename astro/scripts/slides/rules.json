@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "grid": 24,
+  "stroke": 1,
+  "safeMin": 1,
+  "safeMax": 23,
+  "accentDistance": 0.035,
+  "accentLengthFraction": 0.18,
+  "geometryTolerance": 0.02,
+  "reviewSizes": [32, 64],
+  "rules": {
+    "SOURCE": "Pinned source geometry and license; no independent component positioning",
+    "VIEW": "One declared front view, or approved parallel stack with hidden rear edges",
+    "FRAME": "Every sampled curve and its stroke stays within the safe frame",
+    "ACCENT": "Exactly one meaningful accent, attached to its designated source feature",
+    "BUDGET": "Accent length is at most 18 percent of the complete base drawing",
+    "CONTAINMENT": "Internal features stay inside their physical housing",
+    "JUNCTION": "Connected parts meet at their specified physical boundaries",
+    "OCCLUSION": "Rear contours and beams never cross the interior of a front housing",
+    "STACK": "Plural collections have a declared aligned stack",
+    "REVIEW": "Every icon has a visual review tied to the current geometry and four exports"
+  }
+}

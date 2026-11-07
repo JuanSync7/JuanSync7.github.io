@@ -10,6 +10,7 @@ separately in `astro/scripts/figures/` and judge the output, not the builder's i
 | `arrange(rng, theme?)` / `tabletop.ts` | Seeded world-space table inventory. Scales intents before placement; monitors/towers have independent device sizing. Never randomize a frame. |
 | `tabletop(p)`, `itemModel(it)` | Actual transformed geometry and bounds. Use these for room furniture placement, framing and collision checks. |
 | `roomPlan(p)` / `roomplan.ts` | Room envelope, floor/ceiling and shared `nookZ`, `serviceZ`, `cookZ`, `lampZ`, `windowZ` anchors. Dining keeps rear seating clearance; task surfaces meet the back wall. |
+| `TableDraft.roundRod(a, b, radius)` / `tableparts.ts` | A solid rod between endpoints; distinct from the base `Draft.tube(x, y, z, outer, inner, height)` hollow tube. The names must remain separate. |
 | `placedRoomPart(...)` / `roomcompose.ts` | Build one owned draft, transform once, then measure bounds. `support` is for thin textiles, not a collision exemption for arbitrary furniture. |
 | `roomModels(p)` / `tableroom.ts` | Three walls and floor, architectural fixtures and furnished zones. Cached by theme/room variant: builders must not depend on unkeyed inventory randomness. |
 | `roomZones`, `roomDressing` | Functional secondary zone, storage, chairs, textiles, trolley, lamps and wall art. Clinical utility and domestic lounge pieces have different programs. |

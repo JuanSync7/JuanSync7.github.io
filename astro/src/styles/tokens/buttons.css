@@ -1,0 +1,42 @@
+/* Paper actions: existing cream/night inks, a printed edge and a shallow physical step. */
+:root {
+  --pa-paper-face: var(--nt-paper-panel);
+  --pa-paper-ink: var(--nt-paper-ink-strong);
+  --pa-paper-line: var(--nt-paper-ink-2);
+  --pa-paper-edge: var(--nt-paper-line);
+  --pa-signal-face: var(--nt-panel-signal);
+  --pa-signal-ink: var(--nt-signal);
+  --pa-signal-line: var(--nt-signal-line-2);
+  --pa-signal-edge: var(--nt-signal-line);
+  --pa-outline-face: var(--nt-ground);
+  --pa-outline-ink: var(--nt-ink-strong);
+  --pa-outline-line: var(--nt-line-4);
+  --pa-outline-edge: var(--nt-line-2);
+  --pa-disabled-face: var(--nt-panel-2);
+  --pa-disabled-ink: var(--nt-ink-muted);
+  --pa-disabled-line: var(--nt-line-3);
+  --pa-disabled-edge: var(--nt-line);
+  --pa-font: var(--nt-mono);
+  --pa-font-size: var(--nt-fs-small);
+  --pa-weight: 500;
+  --pa-tracking: 0.025em;
+  --pa-min-height: var(--nt-hit);
+  --pa-padding-y: var(--hf-space-3);
+  --pa-padding-x: var(--hf-space-5);
+  --pa-gap: var(--hf-space-5);
+  --pa-line-width: 1px;
+  --pa-radius: var(--hf-radius-xs);
+  --pa-edge-x: 3px;
+  --pa-edge-y: 5px;
+  --pa-shadow-offset: var(--pa-edge-x) var(--pa-edge-y) 0 0;
+  --pa-hover-shadow-offset: var(--pa-edge-x) var(--hf-space-2) 0 0;
+  --pa-pressed-shadow-offset: 1px 1px 0 0;
+  --pa-rest-transform: translate3d(0, 0, 0);
+  --pa-hover-transform: translate3d(0, -3px, 0) rotate(-0.5deg);
+  --pa-pressed-transform: translate3d(2px, 4px, 0);
+  --pa-motion-duration: 180ms;
+  --pa-motion-ease: var(--nt-ease-out);
+  --pa-focus: var(--nt-signal);
+  --pa-focus-width: 2px;
+  --pa-focus-offset: 6px;
+}

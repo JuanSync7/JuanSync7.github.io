@@ -14,6 +14,8 @@ export default function HardwareAtlas() {
   const [mode, setMode] = useState<HardwareMode>('isometric');
   const [view, setView] = useState<HardwareView>('three-quarter');
   const [open, setOpen] = useState(true);
+  const [detail, setDetail] = useState(true);
+  const [isolate, setIsolate] = useState(false);
   const [pick, setPick] = useState(-1);
   const [status, setStatus] = useState('');
   const [ready, setReady] = useState(false);
@@ -28,6 +30,8 @@ export default function HardwareAtlas() {
     const v = q.get('view');
     if (v === 'front' || v === 'plan') setView(v);
     if (q.get('open') === '0') setOpen(false);
+    if (q.get('detail') === '0') setDetail(false);
+    if (q.get('isolate') === '1') setIsolate(true);
     setReady(true);
   }, []);
   useEffect(() => {
@@ -38,29 +42,31 @@ export default function HardwareAtlas() {
     url.searchParams.set('view', view);
     url.searchParams.set('open', open ? '1' : '0');
     url.searchParams.set('part', String(pick));
+    url.searchParams.set('detail', detail ? '1' : '0');
+    url.searchParams.set('isolate', isolate ? '1' : '0');
     window.history.replaceState(null, '', url);
     setStatus('');
-  }, [kind, mode, view, open, pick, ready]);
+  }, [kind, mode, view, open, pick, detail, isolate, ready]);
   const model = hardwareModel(kind);
   const selected = pick < 0 ? model.parts.length - 1 : pick;
   const current = model.parts[selected];
-  const options = { ...DEFAULT_OPTIONS, mode, view, open: open ? 1 : 0, pick: selected };
-  const select = (id: HardwareKind): void => { setKind(id); setPick(-1); setStatus(''); };
+  const options = { ...DEFAULT_OPTIONS, mode, view, detail, isolate, open: open ? 1 : 0, pick: selected };
+  const select = (id: HardwareKind): void => { setKind(id); setPick(-1); setIsolate(false); setStatus(''); };
   const copy = async (): Promise<void> => {
     try { await navigator.clipboard.writeText(hardwareSvg(model, options)); setStatus('SVG copied.'); }
     catch { setStatus('Clipboard unavailable. Use Download SVG to save this drawing.'); }
   };
   const exportOne = (): void => {
-    downloadSvg(hardwareSvg(model, options), `${kind}-${mode}${open ? '-exploded' : ''}.svg`);
+    downloadSvg(hardwareSvg(model, options), `${kind}-${mode}${isolate ? `-part-${selected + 1}` : open ? '-exploded' : ''}.svg`);
     setStatus('SVG downloaded.');
   };
   return (
     <div className="atlas">
       <section id="atlas-inspector" className="atlas-inspector" aria-labelledby="atlas-object-title">
         <div className="atlas-stage-wrap">
-          <div className="atlas-stage-meta"><span>// 01 · inspect the assembly</span><span>12 objects / 24 symbols</span></div>
+          <div className="atlas-stage-meta"><span>// 01 · inspect the assembly</span><span>{isolate ? current?.name : `${model.parts.length} parts / ${detail ? 'engineering' : 'icon'} detail`}</span></div>
           <div className="atlas-stage">
-            <FigureCanvas id="hardware-atlas~7" label={`${HARDWARE_INFO[kind].title}, ${open ? 'exploded' : 'assembled'}, ${mode}. ${current?.name ?? ''} selected.`}
+            <FigureCanvas id="hardware-atlas~7" label={`${HARDWARE_INFO[kind].title}, ${isolate ? 'isolated part' : open ? 'exploded' : 'assembled'}, ${mode}. ${current?.name ?? ''} selected.`}
               data={{ kind, ...options }} onReadout={(name) => {
                 const index = model.parts.findIndex((part) => part.name === name);
                 if (index >= 0) setPick(index);
@@ -72,10 +78,10 @@ export default function HardwareAtlas() {
           <span className="atlas-eyebrow">{HARDWARE_INFO[kind].category} · {String(Object.keys(HARDWARE_INFO).indexOf(kind) + 1).padStart(2, '0')}</span>
           <h2 id="atlas-object-title" tabIndex={-1}>{HARDWARE_INFO[kind].title}</h2>
           <p>{HARDWARE_INFO[kind].note}</p>
-          <AtlasControls mode={mode} view={view} open={open} onMode={setMode} onView={setView} onOpen={() => setOpen((value) => !value)} />
+          <AtlasControls mode={mode} view={view} open={open} detail={detail} isolate={isolate} onDetail={() => setDetail((value) => !value)} onIsolate={() => setIsolate((value) => !value)} onMode={setMode} onView={setView} onOpen={() => setOpen((value) => !value)} />
           <ol className="atlas-parts" aria-label="Assembly parts">
             {model.parts.map((part, i) => <li key={part.name}>
-              <button type="button" aria-pressed={i === selected} onClick={() => { setPick(i); setStatus(''); }}>
+              <button type="button" aria-pressed={i === selected} onClick={() => { setPick(i); setOpen(true); setStatus(''); }}>
                 <span>{String(i + 1).padStart(2, '0')}</span>{part.name}<span aria-hidden="true">{i === selected ? '●' : '·'}</span>
               </button>
             </li>)}
@@ -85,7 +91,7 @@ export default function HardwareAtlas() {
             <button className="atlas-action atlas-primary" type="button" onClick={exportOne}>Download SVG ↓</button>
             <button className="atlas-action" type="button" onClick={() => { void copy(); }}>Copy SVG</button>
           </div>
-          <p className="atlas-status" role="status">{status || '256 × 256 · scalable paths · no external assets'}</p>
+          <p className="atlas-status" role="status">{status || `${detail ? 'Engineering detail' : 'Icon detail'} · ${isolate ? 'selected part' : `${model.parts.length} assemblies`} · SVG export`}</p>
         </div>
       </section>
       <AtlasLibrary kind={kind} mode={mode} onSelect={(id) => {
@@ -99,7 +105,7 @@ export default function HardwareAtlas() {
         <div><span className="atlas-eyebrow">// 03 · take the set</span><h2 id="atlas-pack-title">Built to be reused.</h2>
           <p>Both looks of every object in one SVG sprite. Each symbol has a stable name, from processor-isometric to optics-wireframe.</p></div>
         <button className="atlas-action" type="button" onClick={() => {
-          downloadSvg(hardwareSprite({ ...options, view: 'three-quarter' }), 'hardware-atlas-24.svg');
+          downloadSvg(hardwareSprite({ ...options, view: 'three-quarter', isolate: false, detail: true }), 'hardware-atlas-24.svg');
           setStatus('24-symbol SVG sprite downloaded.');
         }}>Download all 24 symbols ↓</button>
       </section>

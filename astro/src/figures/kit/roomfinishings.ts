@@ -88,7 +88,7 @@ export function roomSideGallery(p: TableScene): RoomPart[] {
                 for (let i = 0; i < 4; i++)
                   q.box(x - 0.3 + i * 0.2, 0.2, 0.15, 0.12, 0.45 + (i % 2) * 0.35, 0.025, 0.025);
               } else {
-                q.tube([x, 0.22, 0.15], [x, 1.15, 0.15], 0.018, 6);
+                q.roundRod([x, 0.22, 0.15], [x, 1.15, 0.15], 0.018, 6);
                 for (let i = 0; i < 3; i++)
                   for (const sign of [-1, 1]) q.box(x + sign * 0.17, 0.35 + i * 0.24, 0.15, 0.22, 0.12, 0.025, 0.035);
               }

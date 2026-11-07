@@ -1,0 +1,64 @@
+---
+import PresentationLayout from '../../layouts/PresentationLayout.astro';
+import PaperAction from '../../components/ui/PaperAction.astro';
+import VaultFileCabinet from '../../components/vault/VaultFileCabinet';
+import SlideIcon from '../../components/ui/SlideIcon';
+import { VAULT_GUIDES } from '../../data/vault-pages';
+import type { SlideIconId } from '../../data/slide-icons';
+import '../../components/vault/vault-overview.css';
+
+const icons: Record<string, SlideIconId> = { architecture: 'database', 'knowledge-graph': 'branch', search: 'search', guardrails: 'shield-check' };
+const benefits = [
+  ['Keep the why', 'Decisions, alternatives and lessons stay beside the work that taught them.'],
+  ['Follow a connection', 'Move from a broad theme to the topic, lesson and source you need.'],
+  ['Read before relying', 'Keep the source and its trust label in view when using the account.'],
+];
+---
+
+<PresentationLayout title="The experience vault · Juan Kok" description="A connected memory for what I build, why I chose it and what I learned. Explore the experience vault's purpose, architecture, knowledge graph, search and safeguards." kind="landing">
+  <header id="overview" class="vault-hero nt-wrap" data-presentation-section>
+    <div class="vault-hero-copy">
+      <p class="pr-comment" data-reveal>// the experience vault</p>
+      <h1 class="pr-title" data-reveal>Give experience<br /><span>a way back.</span></h1>
+      <p class="vault-lead pr-body" data-reveal>A private memory of what I build, why I chose it and what I learned—connected so the next question has a place to start.</p>
+      <div class="vault-actions" data-reveal>
+        <PaperAction href="/vault/architecture/">See how it works</PaperAction>
+        <PaperAction href="/vault/search/#search-example" variant="outline">Try the graph</PaperAction>
+      </div>
+      <p class="vault-boundary pr-comment" data-reveal>A public tour with made-up examples. The private vault stays private.</p>
+    </div>
+    <div class="vault-cabinet-stage" data-reveal><VaultFileCabinet client:load /></div>
+  </header>
+
+  <nav class="vault-chapters nt-wrap pr-comment" aria-label="The overview" data-scroll-chapters>
+    <span class="vault-scroll-progress" data-scroll-progress aria-hidden="true"></span>
+    <a href="#overview" data-section-link>01 · the idea</a><a href="#value" data-section-link>02 · the value</a><a href="#explore" data-section-link>03 · go deeper</a><a href="#purpose" data-section-link>04 · the reason</a><a href="#try-it" data-section-link>05 · try it</a>
+  </nav>
+
+  <section id="value" class="vault-section nt-wrap" data-presentation-section>
+    <span data-section-rule aria-hidden="true"></span>
+    <header class="vault-heading" data-reveal><p class="pr-comment">// 02 · useful memory</p><h2 class="pr-title">A record worth<br />returning to.</h2></header>
+    <div class="vault-benefits">{benefits.map(([title, text], i) => <div class="vault-benefit-mask"><article data-reveal><span class="pr-label">0{i + 1}</span><h3 class="pr-title">{title}</h3><p class="pr-body">{text}</p></article></div>)}</div>
+    <p class="vault-small-note pr-comment" data-reveal>For me and the agents I work with: bounded context, with a route back to its evidence.</p>
+  </section>
+
+  <section id="explore" class="vault-section nt-wrap" data-presentation-section>
+    <span data-section-rule aria-hidden="true"></span>
+    <header class="vault-heading" data-reveal><p class="pr-comment">// 03 · open the system</p><h2 class="pr-title">The overview is<br />only the entrance.</h2><p class="pr-body">Choose the part you want to understand. The diagrams, explanations and working example live one level deeper.</p></header>
+    <div class="vault-guide-grid">{VAULT_GUIDES.filter((guide) => guide.slug !== 'purpose').map((guide) => <a class="vault-guide-card" href={`/vault/${guide.slug}/`} data-reveal data-scroll-card>
+      <span class="vault-guide-card-top"><span class="pr-comment">{guide.kicker}</span><SlideIcon id={icons[guide.slug]} decorative /></span><h3 class="pr-title">{guide.title}</h3><p class="pr-body">{guide.summary}</p><span class="vault-guide-open pr-label">Read the guide <span aria-hidden="true">↗</span></span>
+    </a>)}</div>
+  </section>
+
+  <section id="purpose" class="vault-section vault-reason nt-wrap" data-presentation-section>
+    <span data-section-rule aria-hidden="true"></span>
+    <div class="vault-reason-copy" data-reveal><p class="pr-comment">// 04 · why I’m building it</p><h2 class="pr-title">Let past work help<br />with the next thing.</h2><p class="pr-body">The result is easier to remember than the reasoning behind it. I want to keep both, without making every new question start from the beginning.</p><p class="pr-body">The machine can help write the account. My own words, the evidence and the review still matter.</p><PaperAction href="/vault/purpose/" variant="signal">The thinking behind it</PaperAction></div>
+    <aside class="vault-reason-note" data-reveal><p class="pr-comment">// keep the distinction</p><p class="pr-title">A useful connection opens a source to inspect.</p><p class="pr-body">It gives the next question somewhere to go.</p><a href="/blog/second-brain-from-my-chats/" class="pr-comment">Read the origin story ↗</a></aside>
+  </section>
+
+  <section id="try-it" class="vault-section vault-ending nt-wrap" data-presentation-section>
+    <span data-section-rule aria-hidden="true"></span>
+    <div data-reveal><p class="pr-comment">// start with a question</p><h2 class="pr-title">Follow one thread.</h2><p class="pr-body">Try a small synthetic graph: find a topic, open its connections and reach a source.</p></div>
+    <div data-reveal><PaperAction href="/vault/search/#search-example">Try the example</PaperAction><p class="vault-boundary pr-comment">No account. No private data connection.</p></div>
+  </section>
+</PresentationLayout>

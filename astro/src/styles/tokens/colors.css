@@ -173,3 +173,20 @@
   --nt-term-amber: #febc2e;
   --nt-term-green: #28c840;
 }
+
+:root {
+  /* Voxel-world biome palette: the night theme with natural material colours. */
+  --nt-world-moss: #678479;
+  --nt-world-leaf: #387d70;
+  --nt-world-clay: #ab766d;
+  --nt-world-lilac: #9b87b1;
+  --nt-world-snow: #d3e1e2;
+  --nt-world-sand: #b8a58a;
+  --nt-world-stone: #596571;
+  --nt-world-wood: #8c796b;
+  --nt-world-earth: #70635e;
+  --nt-world-honey: #e5bb79;
+  --nt-world-water: #36576f;
+  --nt-world-ice: #819ebc;
+  --nt-world-ember: #d78c69;
+}

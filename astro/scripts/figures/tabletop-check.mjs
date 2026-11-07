@@ -70,7 +70,7 @@ try {
     TABLE_ASPECT,
     PROP_KINDS,
   } = sceneModule;
-  for (const primitive of ['box', 'extrude-reversed', 'lathe', 'lathe-reversed', 'tube', 'rod']) {
+  for (const primitive of ['box', 'extrude-reversed', 'lathe', 'lathe-reversed', 'roundRod', 'rod']) {
     const draft = new sceneModule.TableDraft();
     if (primitive === 'box') draft.box(0, 0, 0, 2, 2, 2, 0.1);
     else if (primitive === 'extrude-reversed')
@@ -84,7 +84,7 @@ try {
         0,
         2,
       );
-    else if (primitive === 'tube') draft.tube([0, 0, 0], [0, 2, 0], 1, 16);
+    else if (primitive === 'roundRod') draft.roundRod([0, 0, 0], [0, 2, 0], 1, 16);
     else if (primitive === 'rod') draft.rod([0, 0, 0], [0, 2, 0], 2);
     else {
       const profile = [
@@ -110,19 +110,28 @@ try {
     }
   }
   const originalDocument = globalThis.document;
-  let released = 0;
+  let released = 0,
+    probes = 0;
   try {
     globalThis.document = {
-      createElement: () => ({
-        getContext: () => ({
-          getExtension: () => ({ loseContext: () => released++ }),
-        }),
-      }),
+      createElement: () => {
+        probes++;
+        return { getContext: () => ({ getExtension: () => ({ loseContext: () => released++ }) }) };
+      },
     };
     for (let i = 0; i < 18; i++) assert(webglAvailable());
-    assert.equal(released, 18, 'Every capability probe must release its WebGL context');
-    globalThis.document = { createElement: () => ({ getContext: () => null }) };
-    assert.equal(webglAvailable(), false);
+    assert.equal(probes, 1, 'Gallery mounts must reuse the cached capability result');
+    assert.equal(released, probes, 'Every created capability probe must release its WebGL context');
+    let unsupportedProbes = 0;
+    globalThis.document = {
+      createElement: () => {
+        unsupportedProbes++;
+        return { getContext: () => null };
+      },
+    };
+    const unsupported = await import(pathToFileURL(out).href + '?unsupported');
+    for (let i = 0; i < 18; i++) assert.equal(unsupported.webglAvailable(), false);
+    assert.equal(unsupportedProbes, 1, 'Unavailable capability results must also be cached');
   } finally {
     globalThis.document = originalDocument;
   }

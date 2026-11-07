@@ -9,3 +9,9 @@ figures-out/
 
 # Generated hardware SVGs and contact sheets
 hardware-out/
+
+# Generated slide icon downloads and review artifacts
+public/downloads/slide-icons/
+slides-out/
+# Design system browser captures
+design-system-out/
