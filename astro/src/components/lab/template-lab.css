@@ -181,3 +181,11 @@
 .voxel-controls [aria-pressed='true'] {
   color: var(--nt-signal);
 }
+
+.voxel-stage { touch-action: none; cursor: grab; }
+.voxel-stage:active { cursor: grabbing; }
+.voxel-stage:focus-visible { outline: 1px solid var(--nt-signal); outline-offset: var(--hf-space-2); }
+
+.voxel-controls .lab-seed { min-width: 0; }
+.voxel-controls select { max-width: min(100%, 24rem); }
+.voxel-hint { flex-basis: 100%; margin: 0; color: var(--nt-ink-muted); font-size: var(--nt-fs-caption); }

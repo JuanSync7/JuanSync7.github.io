@@ -1,6 +1,6 @@
 import { defineTemplate } from '../defineTemplate';
 import {
-  BIOMES,
+  planWorld,
   generateWorld,
   buildWorldView,
   updateWorldView,
@@ -9,33 +9,20 @@ import {
   type WorldSpec,
   type WorldView,
 } from '../kit/voxelworld';
-import { pick } from '../kit/rng';
 
-interface Params extends WorldSpec {
-  layoutSeed: number;
-}
-
-export default defineTemplate<Params, World, WorldView>({
+export default defineTemplate<WorldSpec, World, WorldView>({
   id: 'voxel-scene',
-  title: 'Voxel world',
-  idea: 'A voxel world grown from a seed: biome-shaped mountains, cliffs, rivers and craters, with cottages, vegetation, sailing boats and rolling waves.',
+  title: 'Voxel worlds',
+  idea: 'A seed chooses the terrain, biome transitions, settlements, vegetation and light: from empty dunes and alpine valleys to dense rainforest, caves and cities.',
   style: 'three',
   motion: 'ambient',
   answers: true,
   aspect: 1.6,
-  grammar: (rng) => ({
-    biome: pick(rng, BIOMES),
-    radius: 17 + Math.floor(rng() * 4),
-    stretch: 0.86 + rng() * 0.2,
-    turn: (rng() - 0.5) * 1.1,
-    density: rng(),
-    anchor: Math.floor(rng() * 5) - 2,
-    layoutSeed: Math.floor(rng() * 999_999_999),
-  }),
-  name: (p) => `${p.biome} island`,
+  grammar: (rng) => planWorld(Math.floor(rng() * 999_999_999)),
+  name: (p) => `${p.biome} · ${p.landform}`,
   alt: (p) =>
-    `A miniature ${p.biome} voxel island with sculpted ridges, layered stone cliffs, a cottage, clear paths and boats on voxel water${p.biome === 'volcanic' ? ' and lava' : ''}. Trees, plants and props occupy separate, supported spaces.`,
-  setup: ({ params }) => generateWorld(params, params.layoutSeed),
+    `A generated ${p.landform} of ${p.biome}${p.secondary ? ` transitioning into ${p.secondary}` : ''}, in ${p.daylight} light. Object numbers, shapes, sizes and positions follow the seed. Drag to turn the view.`,
+  setup: ({ params }) => generateWorld(params),
   draw: drawWorldFallback,
   three: {
     build: (env) => buildWorldView(env, env.params, env.params.layoutSeed),

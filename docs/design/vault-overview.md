@@ -31,9 +31,12 @@ Three abstract diagrams live in `src/data/diagrams/vault.ts`: `vault-architectur
 `vault-knowledge-graph` and `vault-search`. Existing `Diagram.astro` renders real DOM text over wires;
 the same story becomes an ordered list below the established narrow-container threshold. The page
 uses the existing night palette and spacing tokens. The existing diagrams are unchanged. The
-landing page adds functional paper links arranged with CSS depth, rather than a second illustration
-source. Scoped GSAP reveals and section highlights follow the shared
-[presentation-page pattern](presentation-pages.md), including reduced-motion and static fallbacks.
+landing page adds a physical hairline filing cabinet with three native folder links. Shared
+projection keeps labels attached as the drawer opens and folders rise. Reversible GSAP scroll
+motion coordinates that story, masked heading words, feature cards and dividers;
+a sticky chapter bar shows reading progress. These effects follow the shared
+[presentation-page pattern](presentation-pages.md), including reduced-motion and a generated static cabinet poster with working links.
+The poster and its source manifest are refreshed through `npm run cabinet:poster -- <artifact.png>`.
 
 `scripts/vault/export.mjs` generates the downloadable SVGs from those same diagrams and the site's
 night palette. It escapes text and includes accessible titles and descriptions. Edit the diagram

@@ -50,10 +50,16 @@
     "presentation:selftest": "node scripts/presentation/check.mjs --selftest",
     "presentation:page": "node scripts/presentation/check.mjs --built",
     "presentation:browser": "node scripts/presentation/browser-check.mjs",
-    "voxel:check": "node scripts/voxel/check.mjs && node scripts/voxel/motion.mjs",
+    "voxel:check": "node scripts/voxel/agent.mjs check",
     "voxel:browser": "node scripts/voxel/browser.mjs",
     "slides:use": "node scripts/slides/use.mjs",
-    "slides:reuse-check": "python3 scripts/slides/checks/reuse.py"
+    "slides:reuse-check": "python3 scripts/slides/checks/reuse.py",
+    "cabinet:poster": "node scripts/presentation/cabinet-poster.mjs",
+    "voxel:agent": "node scripts/voxel/agent.mjs",
+    "voxel:gpu": "node scripts/voxel/gpu-check.mjs",
+    "voxel:gallery": "node scripts/voxel/gallery.mjs --all-models",
+    "voxel:vault-check": "node scripts/voxel/vault-selftest.mjs",
+    "voxel:stress": "node scripts/voxel/stress.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",

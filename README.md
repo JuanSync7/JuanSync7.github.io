@@ -73,8 +73,8 @@ The short landing page links to five guides: purpose, architecture, knowledge gr
 guardrails. These hold three downloadable diagrams, a synthetic local search example, metadata,
 rules, checks and development status. The [maintainer guide](docs/design/vault-overview.md) owns its
 public boundary and diagram workflow. The [presentation pattern](docs/design/presentation-pages.md)
-covers shared typography, paper actions, GSAP motion and source/build/browser checks; the
-design-system ledger demonstrates the reusable components.
+covers shared typography, paper actions, the interactive hairline cabinet, GSAP scroll motion,
+the generated static poster and source/build/browser checks. The design-system ledger demonstrates the reusable components.
 
 ## Deployment
 

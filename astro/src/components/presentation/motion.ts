@@ -1,3 +1,7 @@
+import { readMotionToken } from './motion-values';
+import { createLandingScroll } from './landing-scroll';
+import { createHeadingReveals } from './heading-reveals';
+
 /** Motion belongs to the presentation root; its content is readable before this module runs. */
 const loadEngine = async () => {
   const [{ gsap }, { ScrollTrigger }, { CustomEase }] = await Promise.all([
@@ -6,16 +10,6 @@ const loadEngine = async () => {
   gsap.registerPlugin(ScrollTrigger, CustomEase);
   return { gsap, CustomEase };
 };
-
-export function readMotionToken(style: CSSStyleDeclaration, name: string, units: readonly string[]): number {
-  const value = style.getPropertyValue(name).trim();
-  // Production CSS serializes 650ms as .65s; both are valid values of the same token.
-  const match = /^((?:\d+(?:\.\d+)?|\.\d+))(ms|s|px|%)$/.exec(value);
-  if (!match || !units.includes(match[2])) throw new Error(`Invalid presentation token ${name}`);
-  const number = Number(match[1]);
-  if (!Number.isFinite(number)) throw new Error(`Non-finite presentation token ${name}`);
-  return number / (match[2] === 'ms' ? 1000 : 1);
-}
 
 export function mountPresentation(root: HTMLElement): () => void {
   const controller = new AbortController();
@@ -68,7 +62,10 @@ export function mountPresentation(root: HTMLElement): () => void {
     }
     root.dataset.presentationMotion = 'loading';
     try {
-      const { gsap, CustomEase } = await loadEngine();
+      const [{ gsap, CustomEase }, words] = await Promise.all([
+        loadEngine(), root.dataset.pageKind === 'landing' ? import('gsap/SplitText') : Promise.resolve(null),
+      ]);
+      if (words) { gsap.registerPlugin(words.SplitText); await document.fonts.ready; }
       if (controller.signal.aborted || attempt !== generation || !root.isConnected) return;
       const duration = readMotionToken(style, '--pr-reveal-duration', ['ms', 's']);
       const stagger = readMotionToken(style, '--pr-reveal-stagger', ['ms', 's']);
@@ -79,8 +76,21 @@ export function mountPresentation(root: HTMLElement): () => void {
       const ease = CustomEase.create('', curve[1]);
       const context = gsap.context(() => {}, root);
       const refreshers: (() => void)[] = [];
-      removeMotion = (): void => { context.revert(); };
+      let destroyLanding = (): void => {};
+      let destroyHeadings = (): void => {};
+      removeMotion = (): void => { context.revert(); destroyHeadings(); destroyLanding(); };
       context.add(() => {
+        if (root.dataset.pageKind === 'landing') {
+          const landing = createLandingScroll(gsap, root, style);
+          destroyLanding = landing.destroy;
+          refreshers.push(landing.refresh);
+          if (words) {
+            const headings = createHeadingReveals(gsap, words.SplitText, root, style);
+            destroyHeadings = headings.destroy;
+            refreshers.push(headings.refresh);
+          }
+          return;
+        }
         for (const section of sections) {
           const items = [...section.querySelectorAll<HTMLElement>('[data-reveal]')]
             .filter((item) => item.closest('[data-presentation-section]') === section);

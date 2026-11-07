@@ -1,10 +1,47 @@
 # Changelog
 
+## 2026-11-07
+
+Voxel worlds gain wider terrain, layered ecological communities and themed places with related
+vegetation, supplies and static wildlife. All 135 live catalog types realize valid placements in
+the balanced cohort. Surface merging, shared GPU waves, supported cave roofs and exact 3D
+clearance keep the larger worlds coherent. Place focus, closer zoom, pan and touch gestures make
+the details inspectable. Focused cameras clear foreground terrain and keep their eyes outside
+solid voxels; full-turn profiles and an independent mesh-ray regression cover close views. One voxel agent operates the executable pipeline, eleven playbooks,
+regression checks and complete source snapshots that can reproduce earlier faults.
+
 ## 2026-11-06
 
 Slide accents now cover their complete selected straight edge or circle/ellipse. Partial spans and arc selectors are rejected; complete-feature coverage replaces the old percentage cap, following the user’s correction.
 
 The icon workflow now discovers existing sources, judges their fit, and either reuses or creates a source through staged instructions. Catalog counts, families, view descriptions, license registries and export inventories grow from specifications. Shared relationship checks replace icon-id branches. The bathtub examples exercise reuse and creation; an isolated test checks new subjects/families/licenses and catalog contraction with no engine edits. Reviewer attestations, deterministic checks and independent behavioral evaluation have separate evidence and status.
+
+Voxel mainland edges gain eroded outlines, biome strata and a closed, stepped underside that
+shortens exposed walls without removing the terrain relief. Supporting catalogs add 37 detail
+types and birch, willow and bamboo. Seeds choose different local prop selections; geometry checks
+cover 75 archetypes and reject floating fragments, unknown names and open base surfaces.
+
+Voxel worlds now use independent seed streams for terrain, local biome transitions, variable
+component recipes, constrained placement, boats and ambience. Fourteen biomes span nine landforms,
+including mainland cuts, valleys, dunes, Alps and cutaway caves. Shelters and boats can be absent;
+accepted objects have measured clearance, support, headroom and reserved access. Drag, touch and
+keyboard camera controls retain their pose; sunlight controls and a pausable orbit complement
+exposed-face geometry and fitted framing. One voxel agent operates seven playbooks, with replay,
+negative fixtures, diversity checks and a hashed private-vault mirror for future feedback.
+
+The vault hero now uses a physical hairline filing cabinet: its drawer opens with scroll, three
+folders rise on hover or focus and native links open the matching guides. GSAP SplitText masks
+heading words into view; staggered benefits and guide cards settle as the reader scrolls. Desktop
+uses a sticky hero, while phones and reduced-motion readers keep normal flow. A generated poster
+preserves the cabinet and links without JavaScript; source hashes make poster updates repeatable.
+Targeted figure sheets and browser captures cover the object, folder routes, responsive layout,
+scroll reversal, reduced motion and the static fallback.
+
+The vault landing now has reversible GSAP scroll motion: its paper stack moves with the hero,
+headings and feature cards settle into place, and section dividers draw with scroll progress. A
+sticky chapter bar tracks the page and keeps anchor headings clear of both navigation rows.
+Native scrolling, opaque reading text, reduced-motion switching and Astro cleanup remain intact;
+browser checks exercise forward/back movement, progress, anchor clearance and clickable paper links.
 
 The vault introduction now leads with its promise and benefits, with five focused guides for the
 details. Functional paper links add restrained depth; shared paper, signal and outline buttons
