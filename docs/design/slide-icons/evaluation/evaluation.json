@@ -1,0 +1,26 @@
+{
+  "schema": "slide-playbook-evaluation/1",
+  "status": "pending",
+  "implementer": "/root",
+  "baseline": {
+    "revision": "263c31e571c5e5cc6c910cf33e00532d07b72afa"
+  },
+  "candidate": {
+    "revision": null,
+    "revisionMeaning": "content-addressed working candidate; commit id will be recorded with actual trials",
+    "playbookDigest": "ac97e21ef1b3ccaee2b4b547c610e4fa8a6a7acbb3d0d40ff7f5a0b160aebcb9",
+    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
+    "playbookDigestMeaning": "SHA-256 of sorted skill Markdown paths and bytes, followed by stages.json, NUL-delimited."
+  },
+  "pending": [
+    "Explicit host authorization for fresh sub-agent evaluation has not been received.",
+    "Paired baseline/candidate sessions and an independent judge have not run.",
+    "A distinct maintainer reviewer has not assessed the exact engine candidate."
+  ],
+  "cases": [],
+  "limits": [
+    "The deterministic extension test measures extensibility, not LLM creativity or instruction adherence.",
+    "Author size-proof reviews are self-reviews, not independent reviews.",
+    "Vault rule-package adoption and later use have not been recorded."
+  ]
+}

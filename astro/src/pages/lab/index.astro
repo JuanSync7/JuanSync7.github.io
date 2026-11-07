@@ -1,4 +1,5 @@
 ---
+import slideStats from '../../data/slide-stats.json';
 import NightPage from '../../layouts/NightPage.astro';
 import NightNav from '../../components/layout/NightNav.astro';
 import NightFooter from '../../components/layout/NightFooter.astro';
@@ -28,7 +29,7 @@ const templates = await Promise.all(
         parts), seeded noise shapes the detail, and the template's grammar keeps every combination deliberate. Open one to walk its seeds.
       </p>
       <p class="lab-count">{templates.length} templates · 1,000,000,000 seeds each</p>
-      <p class="lab-also"><a href="/lab/slide-icons/">Slide icons · 48 flat marks for presentations →</a></p>
+      <p class="lab-also"><a href="/lab/slide-icons/">Slide icons · {slideStats.count} flat marks for presentations →</a></p>
       <p class="lab-also"><a href="/lab/icon-kit/">New: the hardware atlas · 12 assemblies, 24 SVG icons →</a></p>
       <p class="lab-also"><a href="/anatomy/chip-package/">Also: inside a chip package, taken apart one layer at a time →</a></p>
     </header>

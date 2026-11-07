@@ -1,0 +1,109 @@
+{
+  "schema": "slide-proof-review/1",
+  "reviewer": "/root",
+  "scope": "Actual rasterized family sheets inspected through view_image; author self-review only.",
+  "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
+  "families": [
+    {
+      "group": "compute",
+      "path": "slides-out/review/all/proofs/families/compute.png",
+      "sha256": "3e25d46fcedd4cbd7a91cb287aad7ed40ea6364878bb0cec3a9818240b052779",
+      "icons": [
+        "processor",
+        "memory",
+        "wafer",
+        "accelerator",
+        "circuit-board",
+        "chiplets",
+        "ai-model",
+        "camera"
+      ]
+    },
+    {
+      "group": "systems",
+      "path": "slides-out/review/all/proofs/families/systems.png",
+      "sha256": "357f11601b2e4f67db4bd56d0c2c02ac8479a6db734ce91011e1c622ff4c5990",
+      "icons": [
+        "server",
+        "switch",
+        "storage",
+        "cloud",
+        "power",
+        "satellite",
+        "router",
+        "network"
+      ]
+    },
+    {
+      "group": "data",
+      "path": "slides-out/review/all/proofs/families/data.png",
+      "sha256": "d0cf8e91bcba701a6835f56d452e8131d9a67bc16bab2e93b37ccfb9f936412f",
+      "icons": [
+        "database",
+        "dataset",
+        "document",
+        "folder",
+        "archive",
+        "terminal",
+        "files",
+        "folders"
+      ]
+    },
+    {
+      "group": "research",
+      "path": "slides-out/review/all/proofs/families/research.png",
+      "sha256": "7191c2b9612b090009be88e84442f4dea8928d9b45a2c751e8f935c6bf0a136f",
+      "icons": [
+        "notebook",
+        "chart",
+        "flask",
+        "microscope",
+        "calipers",
+        "compass",
+        "target",
+        "idea"
+      ]
+    },
+    {
+      "group": "workflow",
+      "path": "slides-out/review/all/proofs/families/workflow.png",
+      "sha256": "701445388a93fedf8fadc248f63b54c8e84bd3d5ee4ccb4b8c66813f69d3a13c",
+      "icons": [
+        "search",
+        "filter",
+        "settings",
+        "branch",
+        "checklist",
+        "shield-check",
+        "clock",
+        "rocket"
+      ]
+    },
+    {
+      "group": "communication",
+      "path": "slides-out/review/all/proofs/families/communication.png",
+      "sha256": "cde77436673d9bfcb4c75878c4157e7439077ba373275a622344d3e4b62505c9",
+      "icons": [
+        "message",
+        "mail",
+        "slide-deck",
+        "person",
+        "calendar",
+        "link",
+        "globe",
+        "bookmark"
+      ]
+    },
+    {
+      "group": "everyday",
+      "path": "slides-out/review/all/proofs/families/everyday.png",
+      "sha256": "22a40f4c1363e6019ed96848d72941ddeee20e7427ee6d814104e0f8fb8ab647",
+      "icons": [
+        "bathtub",
+        "freestanding-bathtub"
+      ]
+    }
+  ],
+  "independentReview": "not claimed",
+  "revalidation": "Fresh size proofs with full line/circle/ellipse accents rasterized and inspected for all icons in every treatment. Author self-review only."
+}

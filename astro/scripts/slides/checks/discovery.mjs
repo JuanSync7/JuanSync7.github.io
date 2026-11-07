@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {packet} from '../brief.mjs';
+const sample=JSON.parse(readFileSync('vendor/slide-icons/sources.json')).icons[0];
+const task='An unseen household object for a slide',fit=packet({stage:'fit',task}),create=packet({stage:'create',task}),review=packet({stage:'review',task,id:sample.id});
+assert.equal(fit.id,packet({stage:'fit',task}).id,'The same stage/context produces the same immutable receipt identity');
+assert.ok(fit.sources.every(s=>!s.path.includes('checks/')&&!s.path.includes('LOOK')&&!s.path.includes('EVAL')),'Fit must not load irrelevant implementation/evaluation');
+assert.ok(create.sources.some(s=>s.path.endsWith('RULES.md'))&&!create.sources.some(s=>s.path.endsWith('LOOK.md')),'Create gets craft now, look later');
+assert.ok(review.sources.some(s=>s.path.endsWith('LOOK.md'))&&review.icon.id===sample.id);
+assert.ok(!review.sources.some(s=>s.path.includes('EVAL')),'Asset review does not load playbook-maintenance evaluation');
+assert.notEqual(packet({stage:'fit',task:'A different meaning'}).id,fit.id);
+assert.throws(()=>packet({stage:'unregistered',task}));
+assert.throws(()=>packet({stage:'constructor',task}));
+console.log('Slide discovery: deterministic stage receipts, task-specific context, relevant craft/look loading and no maintenance-source spill passed.');

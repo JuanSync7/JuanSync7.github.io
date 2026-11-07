@@ -1,0 +1,42 @@
+{
+  "schema": "slide-deterministic-evaluation/1",
+  "verification": "checked by executable source/geometry/extension/reuse/archive checks; not a behavioral LLM evaluation",
+  "icons": 50,
+  "variants": 200,
+  "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
+  "extensibility": {
+    "schema": "slide-extension-test/1",
+    "catalogBefore": 50,
+    "catalogAfterAddition": 52,
+    "catalogAfterContraction": 1,
+    "newFamily": true,
+    "newLicense": true,
+    "unknownViewName": true,
+    "protectedEngineUnchanged": true,
+    "badCandidateRolledBack": true,
+    "duplicateRejected": true,
+    "unreviewedPreviewOnly": true,
+    "resourceNameCollisionsAvoided": true,
+    "behavioralEvaluation": "not measured by this test"
+  },
+  "unchangedReuse": {
+    "schema": "slide-reuse-test/1",
+    "canonicalUnchanged": true,
+    "deterministicReceipt": true,
+    "exactCopy": true,
+    "staleExportRejected": true,
+    "semanticFit": "not measured by this test"
+  },
+  "negativeFixtures": 18,
+  "geometryFailures": [],
+  "reviewScope": "Author-inspected size proofs, with exact proof hashes; independent review not claimed",
+  "behavioralEvaluation": "pending delegation authorization and actual fresh trials",
+  "accentCoverage": {
+    "completeLine": "pass",
+    "completeCircle": "pass",
+    "partialLineRejected": true,
+    "partialCircleRejected": true,
+    "partialSelectorsRejected": true,
+    "formerPercentageCap": "removed per user correction"
+  }
+}
