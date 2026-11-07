@@ -21,6 +21,7 @@ human-approved exemplar.
    materials retain detail, white surfaces retain highlights and metal retain sheen?
 8. **Views:** Do eye level, both orbit ends and true isometric hold the room's important
    furniture? Are near-wall cutaways and hidden fixtures coherent in both renderers?
+   Inspect fallback shelf contents: a correct physical model can still look broken when a case face paints over its books.
 9. **Modes and sizes:** Does monochrome retain structure? Is colour coordinated rather
    than arbitrary? Do materials stay quiet at phone size and still at rest?
    Does the gallery open in colour, and do seed previews follow the selected appearance?

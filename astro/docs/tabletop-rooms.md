@@ -74,7 +74,7 @@ Eye-level framing includes the room's interactive fittings, not only its table.
 Isometric uses a true orthographic camera at 45° yaw and `atan(1/sqrt(2))`
 elevation. An off-axis frustum fits the whole room without changing equal axis scale.
 The near wall and its attached fittings cut away; a low cap retains the footprint.
-Native and fallback projections share the same camera, clipping and visibility rules.
+Native and fallback projections share the same camera, clipping and visibility rules. Compound fallback furniture uses cached BSP plane splitting and back-to-front traversal; the split fragments also bound texture clipping. Independent pixel-centre rays check that case panels cannot hide their contents.
 
 ## Materials and light
 
