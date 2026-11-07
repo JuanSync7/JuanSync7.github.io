@@ -22,6 +22,7 @@ human-approved exemplar.
    furniture? Are near-wall cutaways and hidden fixtures coherent in both renderers?
 9. **Modes and sizes:** Does monochrome retain structure? Is colour coordinated rather
    than arbitrary? Do materials stay quiet at phone size and still at rest?
+   Does the gallery open in colour, and do seed previews follow the selected appearance?
 
 Required evidence: targeted figure sheet; twelve-seed sheet; all nine colour and
 monochrome rooms; WebGL/fallback comparison; 0°, 90°, 135° and 180° camera captures;

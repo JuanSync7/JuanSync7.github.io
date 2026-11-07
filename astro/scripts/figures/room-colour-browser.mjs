@@ -57,6 +57,13 @@ try {
       await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
       return canvas.screenshot();
     };
+    const previewShot = async () => {
+      const preview = page.locator('.lab-strip canvas').first();
+      await preview.scrollIntoViewIfNeeded();
+      await page.waitForFunction(() => document.querySelector('.lab-strip canvas')?.dataset.ready === '1');
+      await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
+      return preview.screenshot();
+    };
     for (const [theme, seed] of themes) {
       await page.locator('.lab-seed input').fill(String(seed));
       await page.locator('.lab-seed input').press('Enter');
@@ -80,11 +87,20 @@ try {
         label = `${theme} · ${fallback ? 'fallback' : 'WebGL'}`;
       writeFileSync(`figures-out/room-colour-${fallback ? 'fallback' : 'webgl'}-${theme}.png`, colour);
       assertColour(metrics, limits, label);
+      const previewColour = theme === 'dining' ? await previewShot() : null;
       const repeat = await shot();
       assert(diff(decode(colour), decode(repeat)) <= limits.stillDifferenceMax, `${label}: texture shimmer at rest`);
       await page.getByRole('button', { name: 'Monochrome', exact: true }).click();
       const mono = await shot(),
         monoMetrics = measure(decode(mono), night);
+      if (previewColour) {
+        const previewMono = await previewShot();
+        assert(
+          diff(decode(previewColour), decode(previewMono)) > limits.modeDifferenceMin,
+          `${label}: seed previews did not follow the appearance switch`,
+        );
+        assert((await page.locator('.lab-strip canvas').count()) <= limits.previewCountMax, 'Too many room previews');
+      }
       assert(monoMetrics.offPalette <= night.offPaletteMax, `${label}: monochrome palette was not restored`);
       assert(monoMetrics.coverage <= night.coverageMax, `${label}: monochrome frame coverage`);
       assert(diff(decode(colour), decode(mono)) > limits.modeDifferenceMin, `${label}: colour switch has no effect`);
@@ -115,6 +131,15 @@ try {
     await page.getByRole('button', { name: 'Monochrome', exact: true }).click();
     await page.getByRole('button', { name: 'Full colour', exact: true }).click();
     await ready();
+    await page.goto(`${url}/lab/`);
+    const gallery = page.locator('a[href="/lab/pixel-still/"] canvas');
+    await gallery.scrollIntoViewIfNeeded();
+    await page.waitForFunction(
+      () => document.querySelector('a[href="/lab/pixel-still/"] canvas')?.dataset.ready === '1',
+    );
+    const galleryColour = await gallery.screenshot();
+    assertColour(colourMetrics(galleryColour, night), limits, `Room gallery · ${fallback ? 'fallback' : 'WebGL'}`);
+    writeFileSync(`figures-out/room-gallery-colour-${fallback ? 'fallback' : 'webgl'}.png`, galleryColour);
     await writeSheet(
       browser,
       `figures-out/room-colour-${fallback ? 'fallback' : 'webgl'}.png`,
@@ -133,7 +158,7 @@ try {
   assert.deepEqual(errors, []);
   writeFileSync('figures-out/room-colour-report.json', JSON.stringify(report, null, 2) + '\n');
   console.log(
-    'Room colour passed: nine themes × WebGL/fallback × eye/isometric, reversible colour/monochrome controls, stable textures, contrast/highlight guards and mobile width.',
+    'Room colour passed: nine themes × WebGL/fallback × eye/isometric, reversible colour/monochrome controls, appearance-synced previews, a colour gallery, stable textures, contrast/highlight guards and mobile width.',
   );
 } finally {
   await browser.close();

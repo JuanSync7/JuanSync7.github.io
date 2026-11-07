@@ -58,7 +58,7 @@ jobs:
       - name: Install Chromium for the figure look
         run: npx playwright install --with-deps chromium
       - name: Themed tabletop browsing and fallback
-        run: npm run tabletop:browser
+        run: npm run tabletop:browser && npm run rooms:colour
       - name: Voxel GPU, controls, biome profiles and snapshot replay
         run: npm run voxel:gpu && npm run voxel:browser && npm run voxel:gallery -- --profile && npm run voxel:vault-check
       - name: Voxel evidence

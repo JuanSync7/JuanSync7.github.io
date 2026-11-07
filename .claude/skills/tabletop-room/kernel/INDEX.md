@@ -6,6 +6,7 @@ separately in `astro/scripts/figures/` and judge the output, not the builder's i
 
 | API / module | Contract and gotcha |
 | --- | --- |
+| `TemplateLab`, `RoomStage` / `components/lab/` | The parent owns appearance for the main room and frozen seed previews. The gallery supplies an explicit colour/isometric preset. GPU preview count is bounded by the scoped appearance check. |
 | `ROOM_METRICS`, `ROOM_NAMES` / `roommetrics.ts` | Converts the legacy tabletop grammar into human-scale furniture and chooses room dimensions. Original `TableTheme.w/d` are local grammar dimensions, not world placement bounds. |
 | `arrange(rng, theme?)` / `tabletop.ts` | Seeded world-space table inventory. Scales intents before placement; monitors/towers have independent device sizing. Never randomize a frame. |
 | `tabletop(p)`, `itemModel(it)` | Actual transformed geometry and bounds. Use these for room furniture placement, framing and collision checks. |
