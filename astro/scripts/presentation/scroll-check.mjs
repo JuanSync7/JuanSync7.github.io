@@ -67,6 +67,19 @@ export async function checkScrollJourney(page, output, widths) {
     await first.focus();
     await page.waitForFunction(() => Number(document.querySelector('[data-cabinet]').dataset.cabinetLift) > 0.95);
     assert.equal(await first.evaluate((node) => node === document.activeElement), true);
+    // Tab can scroll from the previously focused chapter. Frame this visual proof
+    // explicitly after focus settles, without altering the product's native scrolling.
+    const cabinetTop = await page.locator('[data-cabinet]').evaluate((cabinet) => {
+      const stage = cabinet.closest('.vault-cabinet-stage');
+      return getComputedStyle(stage).position === 'sticky' ? 0
+        : cabinet.getBoundingClientRect().top + scrollY - document.querySelector('body > header.nav').getBoundingClientRect().height;
+    });
+    await position(page, cabinetTop);
+    await page.waitForFunction(() => {
+      const label = document.querySelector('[data-cabinet-link="1"] [data-folder-label]').getBoundingClientRect();
+      const header = document.querySelector('body > header.nav').getBoundingClientRect();
+      return label.top >= header.height && label.bottom <= innerHeight;
+    });
     const label = await first.locator('[data-folder-label]').boundingBox();
     assert(label && label.y >= header.height && label.y + label.height <= page.viewportSize().height, 'The focused folder stays in the visible cabinet viewport');
     await page.screenshot({ path: join(output, `cabinet-${width}-raised.png`) });
