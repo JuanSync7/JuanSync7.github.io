@@ -12,6 +12,8 @@ export interface SceneModel {
   side?: RoomSide;
   cutaway?: boolean;
   mount?: 'floor' | 'wall';
+  support?: boolean;
+  transmitsLight?: boolean;
 }
 const CACHE = new WeakMap<TableScene, SceneModel[]>();
 export function sceneModels(p: TableScene): SceneModel[] {

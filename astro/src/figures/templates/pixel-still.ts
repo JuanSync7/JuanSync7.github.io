@@ -6,23 +6,24 @@ import { buildRoom, applyRoomView, updateRoom, type RoomState } from '../kit/roo
 import { roomControls, roomView } from '../kit/roomview';
 import { roomLighting } from '../kit/roomlight';
 import { flatRoom } from '../kit/roomflat';
+import { ROOM_NAMES } from '../kit/roommetrics';
 
 export const object = (it: TableItem) => solidMesh(itemModel(it), it.kind, 'work');
 export { arrange };
 
 export default defineTemplate<TableScene, RoomState>({
   id: 'pixel-still',
-  title: 'Tabletop rooms',
-  idea: 'A seed chooses a furnished three-wall room and a matching table against its back wall; the camera explores a 180-degree arc, with cutaway walls revealing the interior.',
+  title: 'Themed rooms',
+  idea: 'A seed chooses a complete themed room with human-scale furniture, functional zones, coordinated architecture and lighting; an entrance camera and cutaway walls reveal the interior.',
   style: 'three',
   renderer: defineThreeFigure,
   motion: 'responsive',
   answers: true,
   aspect: TABLE_ASPECT,
   grammar: (rng) => arrange(rng),
-  name: (p) => `${p.theme.name} room · ${p.items.length} objects`,
+  name: (p) => `${ROOM_NAMES[p.theme.id]} · ${p.items.length} tabletop objects`,
   alt: (p) =>
-    `A three-wall room themed as a ${p.theme.name.toLowerCase()}, with its detailed table flush against the back wall, matching floors, seating, room storage and wall fittings, and ${p.items.length} seeded tabletop objects.`,
+    `A complete ${ROOM_NAMES[p.theme.id].toLowerCase()} built around a ${p.theme.name.toLowerCase()}, with proportionate furniture, functional seating and storage zones, coordinated wall finishes, windows, textiles, light fixtures and ${p.items.length} seeded tabletop objects.`,
   build: ({ scene, renderer, onDispose, params: p }) => {
     const { group, state } = buildRoom(p);
     state.lighting = roomLighting(scene, renderer, p, onDispose);

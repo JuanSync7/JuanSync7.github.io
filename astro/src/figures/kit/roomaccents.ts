@@ -25,7 +25,7 @@ export function roomAccents(p: TableScene): RoomPart[] {
         for (const y of [0.035, 0.4]) q.box(0, y, 0.08, 0.012, 0.012, 0.01, 0.002);
       });
     },
-    ([x, y, z]) => [-r.half + z, r.floor + 0.4 + y, r.back + 4.4 + x],
+    ([x, y, z]) => [-r.half + z, r.floor + 2.9 + y, r.back + 4.3 + x],
   );
   add(
     'Gallery wall light',
@@ -41,13 +41,13 @@ export function roomAccents(p: TableScene): RoomPart[] {
     ([x, y, z]) => [r.half - z, 3.32 + y, r.front - 3.6 + x],
   );
   if (['kitchen', 'bar', 'lab'].includes(p.theme.id))
-    for (const x of [-2.8, 0, 2.8])
+    for (const x of [-2, 0, 2])
       add(
         'Under-shelf light',
         'back',
         (q) => {
-          q.material('metal', () => q.box(x, 1.65, 0.28, 2.0, 0.035, 0.15, 0.01));
-          q.material('light', () => q.box(x, 1.642, 0.28, 1.85, 0.008, 0.1, 0.005));
+          q.material('metal', () => q.box(x, p.theme.id === 'bar' ? 1.7 : 1.8, 0.28, 1.45, 0.035, 0.15, 0.01));
+          q.material('light', () => q.box(x, p.theme.id === 'bar' ? 1.692 : 1.792, 0.28, 1.3, 0.008, 0.1, 0.005));
         },
         ([x, y, z]) => [x, y, r.back + z],
       );

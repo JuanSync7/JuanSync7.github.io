@@ -7,7 +7,7 @@ export function roomFloor(p: TableDraft, r: RoomPlan, theme: ThemeId): void {
     p.box(0, r.floor - 0.18, (r.back + r.front) / 2, 2 * r.half + 0.32, 0.1, r.front - r.back + 0.28, 0.03),
   );
   p.material('recess', () => p.box(0, r.floor - 0.085, (r.back + r.front) / 2, 2 * r.half, 0.015, r.front - r.back, 0));
-  const wood = ['dining', 'study', 'messy'].includes(theme);
+  const wood = ['dining', 'study', 'messy', 'work'].includes(theme);
   const nx = (wood ? 14 : 10) + r.variant,
     nz = wood ? 4 : theme === 'storage' ? 4 : 7;
   const width = (2 * r.half) / nx,

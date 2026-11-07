@@ -1,0 +1,72 @@
+{
+  "unitsPerMetre": 2.2,
+  "primaryFloorShareMax": 0.22,
+  "primaryFloorShareMin": 0.04,
+  "deskDepthMetresMax": 1.2,
+  "deskWidthMetresMin": 1.6,
+  "deskWidthMetresMax": 2.5,
+  "floorFurnitureMin": 6,
+  "walkGridStep": 0.2,
+  "walkRadius": 0.65,
+  "required": {
+    "dining": [
+      "Serving sideboard",
+      "China display cabinet",
+      "Upholstered dining chair",
+      "Suspended pendant cluster"
+    ],
+    "work": [
+      "Visitor armchair",
+      "Reading side table",
+      "Office filing cabinet",
+      "Swivel task chair"
+    ],
+    "computer": [
+      "Media lounge sofa",
+      "Game storage cabinet",
+      "Controller display shelf",
+      "High-back ergonomic chair",
+      "Blackout roller window"
+    ],
+    "storage": [
+      "Steel supply shelving",
+      "Labelled filing drawers",
+      "Packing stool",
+      "High frosted clerestory window"
+    ],
+    "messy": [
+      "Craft bench with vice and supplies",
+      "Tool pegboard",
+      "Workshop parts cabinet",
+      "Swivel task chair"
+    ],
+    "study": [
+      "Wingback reading chair",
+      "Library bookcase",
+      "Reading side table",
+      "Timber study chair"
+    ],
+    "kitchen": [
+      "Sink and preparation run",
+      "Refrigerator with freezer",
+      "Extractor hood and task lights",
+      "Cafe-curtain window"
+    ],
+    "bar": [
+      "Velvet lounge booth",
+      "Cocktail side table",
+      "Leather footrest bar stool",
+      "Arched casement window"
+    ],
+    "lab": [
+      "Stainless wash-up station",
+      "Ventilated chemical cabinet",
+      "Adjustable laboratory stool",
+      "Secured gas cylinders"
+    ]
+  },
+  "monitorWidthMetresMin": 0.45,
+  "monitorWidthMetresMax": 0.8,
+  "towerHeightMetresMin": 0.3,
+  "towerHeightMetresMax": 0.65
+}

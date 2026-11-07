@@ -27,7 +27,14 @@ export type FurnitureFinish =
   | 'cabinet'
   | 'acoustic'
   | 'paper'
-  | 'book';
+  | 'book'
+  | 'wallpaper'
+  | 'walltile'
+  | 'wallband'
+  | 'glass'
+  | 'porcelain'
+  | 'equipment'
+  | 'kraft';
 export interface TableSurface extends Surface {
   finish?: FurnitureFinish;
 }

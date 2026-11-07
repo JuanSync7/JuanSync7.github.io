@@ -4,6 +4,7 @@ import { cabinet, legs } from './furnitureparts';
 import { top, woodGrain } from './furnituretops';
 import { homeDetails } from './furniturehome';
 import { workDetails } from './furniturework';
+import { ROOM_METRICS } from './roommetrics';
 
 const CACHE = new Map<string, PropModel>();
 export function tableModel(t: TableTheme): PropModel {
@@ -84,13 +85,19 @@ export function tableModel(t: TableTheme): PropModel {
   });
   homeDetails(p, t);
   workDetails(p, t);
+  const m = ROOM_METRICS[t.id];
+  for (const surface of p.parts[0]?.surfaces ?? [])
+    surface.points = surface.points.map(([x, y, z]) => [x * m.x, y > 0 ? y * 0.75 : y, z * m.z]);
   const result = finish(p);
   CACHE.set(t.id, result);
   return result;
 }
 /** The top may be oval or chamfered; its bounding rectangle alone is insufficient. */
 export function surfaceContains(t: TableTheme, b: Bounds): boolean {
-  return corners(b).every(([x, , z]) => {
+  const m = ROOM_METRICS[t.id];
+  return corners(b).every(([worldX, , worldZ]) => {
+    const x = worldX / m.x,
+      z = worldZ / m.z;
     const hx = t.w / 2 - 0.08,
       hz = t.d / 2 - 0.08;
     if (Math.abs(x) > hx || Math.abs(z) > hz) return false;

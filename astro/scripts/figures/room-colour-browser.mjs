@@ -101,6 +101,15 @@ try {
         'true',
       );
     }
+    await page.getByRole('button', { name: 'Monochrome', exact: true }).click();
+    await page.getByRole('button', { name: 'Next seed', exact: true }).click();
+    await ready();
+    assert.equal(
+      await page.getByRole('button', { name: 'Monochrome', exact: true }).getAttribute('aria-pressed'),
+      'true',
+      'Seed change reset appearance',
+    );
+    await page.getByRole('button', { name: 'Full colour', exact: true }).click();
     await page.setViewportSize({ width: 390, height: 844 });
     assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
     await page.getByRole('button', { name: 'Monochrome', exact: true }).click();

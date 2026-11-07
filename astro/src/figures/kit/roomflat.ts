@@ -52,24 +52,23 @@ export function flatRoom(
           surface,
           index,
           points: roomClip(view, surface.points, surface.face).map((v) => roomProject(view, v)),
-          layer:
-            s.label === 'Woven area rug'
-              ? -3.5
-              : s.mount === 'floor'
-                ? 2
-                : s.side === 'floor'
-                  ? -4 + surface.solid * 0.00001
-                  : s.kind === 'room'
-                    ? s.interactive
-                      ? -1
-                      : -3 + surface.solid * 0.00001
-                    : s.kind === 'table'
-                      ? surface.points.every((q) => q[1] < -0.01)
-                        ? -0.1
-                        : surface.points.some((q) => q[1] > 0.025)
-                          ? 0.1
-                          : 0
-                      : 1,
+          layer: s.support
+            ? -3.5
+            : s.mount === 'floor'
+              ? 2
+              : s.side === 'floor'
+                ? -4 + surface.solid * 0.00001
+                : s.kind === 'room'
+                  ? s.interactive
+                    ? -1
+                    : -3 + surface.solid * 0.00001
+                  : s.kind === 'table'
+                    ? surface.points.every((q) => q[1] < -0.01)
+                      ? -0.1
+                      : surface.points.some((q) => q[1] > 0.025)
+                        ? 0.1
+                        : 0
+                    : 1,
         }))
       : [],
   );

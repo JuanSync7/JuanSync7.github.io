@@ -6,7 +6,10 @@ export function checkRoom(p, { roomPlan, roomModels, roomView, roomProject, room
   const plan = roomPlan(p),
     parts = roomModels(p),
     table = tabletop(p).bounds;
-  assert.equal(plan.back, table.lo[2], 'Table must meet the middle wall');
+  assert(
+    Math.abs(table.lo[2] - plan.back - (p.theme.id === 'dining' ? 2.8 : 0)) < 1e-9,
+    'Themed table anchor: dining seats on both sides; task surfaces meet the back wall',
+  );
   assert.equal(plan.floor, table.lo[1], 'Furniture must stand on the floor');
   assert.equal(parts.filter((s) => !s.interactive && !s.cutaway && s.side !== 'floor').length, 3);
   const floor = parts.find((s) => s.side === 'floor');
@@ -26,7 +29,17 @@ export function checkRoom(p, { roomPlan, roomModels, roomView, roomProject, room
       );
     }
   const fittings = parts.filter((s) => s.interactive);
+  const entry = parts.find((part) => part.entrance);
+  assert(entry, 'Room needs an entry door');
+  const doorSpan = entry.model.bounds.hi[2] - entry.model.bounds.lo[2];
   const disjoint = (a, b) => [0, 1, 2].some((k) => a.hi[k] <= b.lo[k] + 1e-8 || a.lo[k] >= b.hi[k] - 1e-8);
+  const textiles = fittings.filter((part) => part.support);
+  for (const [i, part] of textiles.entries())
+    for (const other of textiles.slice(i + 1))
+      assert(
+        disjoint(part.model.bounds, other.model.bounds),
+        `Overlapping textiles: ${p.theme.id}/${part.label}/${other.label}`,
+      );
   for (const [i, part] of fittings.entries()) {
     const b = part.model.bounds;
     assert(
@@ -37,7 +50,7 @@ export function checkRoom(p, { roomPlan, roomModels, roomView, roomProject, room
       `Fitting outside room: ${p.theme.id}/${part.label} ${JSON.stringify(b)} plan:${JSON.stringify(plan.bounds)}`,
     );
     assert(b.lo[1] >= plan.floor - 1e-8 && b.hi[1] <= plan.top + 1e-8, `Fitting outside room height: ${part.label}`);
-    if (part.label === 'Woven area rug') continue;
+    if (part.support) continue;
     assert(disjoint(b, table), `Fitting intersects the table: ${p.theme.id}/${part.label}`);
     if (part.mount === 'floor') {
       const aisle = {
@@ -45,14 +58,14 @@ export function checkRoom(p, { roomPlan, roomModels, roomView, roomProject, room
         hi: [plan.half * 0.35, plan.top, plan.front],
       };
       const doorway = {
-        lo: [plan.half - 0.75, plan.floor, plan.front - 2.2],
-        hi: [plan.half, plan.top, plan.front - 0.25],
+        lo: [plan.half - doorSpan, plan.floor, entry.model.bounds.lo[2] - 0.1],
+        hi: [plan.half, plan.top, entry.model.bounds.hi[2] + 0.1],
       };
       assert(disjoint(b, aisle), `Blocked entrance aisle: ${part.label}`);
       assert(disjoint(b, doorway), `Blocked door approach: ${part.label}`);
     }
     for (const other of fittings.slice(i + 1)) {
-      if (other.label === 'Woven area rug') continue;
+      if (other.support) continue;
       assert(disjoint(b, other.model.bounds), `Room fittings intersect: ${p.theme.id}/${part.label}/${other.label}`);
     }
   }

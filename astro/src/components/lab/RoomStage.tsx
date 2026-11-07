@@ -12,8 +12,8 @@ const clampAngle = (angle: number): number => Math.max(0, Math.min(180, Math.rou
 
 export default function RoomStage({ id, aspect }: Props) {
   const [appearance, setAppearance] = useState<RoomAppearance>('colour');
-  const [angle, setAngle] = useState(90);
-  const [view, setView] = useState<'eye' | 'isometric'>('eye');
+  const [angle, setAngle] = useState(135);
+  const [view, setView] = useState<'eye' | 'isometric'>('isometric');
   const [zoom, setZoom] = useState(1);
   const [dragging, setDragging] = useState(false);
   const drag = useRef<{ id: number; x: number; y: number; angle: number } | null>(null);

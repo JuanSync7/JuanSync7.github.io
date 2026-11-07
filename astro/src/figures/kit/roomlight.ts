@@ -39,8 +39,11 @@ export function roomLighting(
 ): RoomLighting {
   const r = roomPlan(p),
     key = new DirectionalLight(hexOf('inkStrong'), 3.1);
-  key.position.set(-r.half + 0.7, 7, 4);
-  key.target.position.set(0, r.floor, -0.3);
+  const mood = ROOM_STYLES[p.theme.id].mood;
+  if (mood === 'bar') key.position.set(0, r.top + 2, 0);
+  else if (mood === 'clean') key.position.set(-1.5, r.top + 2.5, 2);
+  else key.position.set(-r.half - 3, r.floor + 6.8, r.windowZ - 0.8);
+  key.target.position.set(0, r.floor + 0.4, mood === 'bar' ? 0.2 : mood === 'clean' ? 2 : (r.back + r.front) / 2);
   key.castShadow = true;
   key.shadow.mapSize.set(2048, 2048);
   Object.assign(key.shadow.camera, { left: -10, right: 10, top: 9, bottom: -9, near: 0.5, far: 30 });
@@ -55,9 +58,9 @@ export function roomLighting(
   const accent = new PointLight(hexOf('inkStrong'), 0, 4, 2);
   accent.position.set(r.half - 0.45, 3.35, r.front - 3.6);
   let lamp: PointLight | undefined;
-  if (!['lab', 'storage', 'kitchen'].includes(p.theme.id)) {
+  if (!['lab', 'storage', 'kitchen', 'messy'].includes(p.theme.id)) {
     lamp = new PointLight(hexOf('inkStrong'), 2.2, 4, 2);
-    lamp.position.set(-r.half + 1.1, r.floor + 2.9, r.front - 1.8);
+    lamp.position.set(-r.half + 0.65, r.floor + 2.94, r.lampZ);
     scene.add(lamp);
   }
   scene.add(key, key.target, bounce, sky, accent);

@@ -56,7 +56,7 @@ export function buildRoom(p: TableScene): { group: Group; state: RoomState } {
         o.material.shadowSide = BackSide;
         roomShadows(o.material);
         o.receiveShadow = true;
-        o.castShadow = source.kind !== 'room' || source.interactive;
+        o.castShadow = !source.support && !source.transmitsLight;
         o.userData.target = source.interactive ? i : -1;
         o.userData.entity = i;
         pickables.push(o);

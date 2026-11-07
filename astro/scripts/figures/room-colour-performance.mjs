@@ -49,7 +49,8 @@ try {
       metrics.average <= limits.msAvgMaxThree,
       `${theme}: average ${metrics.average}ms exceeds ${limits.msAvgMaxThree}ms`,
     );
-    await page.getByRole('button', { name: 'Isometric', exact: true }).click();
+    const projection = await page.getByRole('button', { name: 'Isometric', exact: true }).getAttribute('aria-pressed');
+    await page.getByRole('button', { name: projection === 'true' ? 'Eye level' : 'Isometric', exact: true }).click();
     await page.waitForFunction(
       (before) => Number(document.querySelector('.lab-main canvas')?.dataset.renderedFrames) > before,
       rendered,

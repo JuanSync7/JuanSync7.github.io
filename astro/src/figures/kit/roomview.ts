@@ -35,7 +35,10 @@ export function roomView(p: TableScene, w: number, h: number, data?: unknown): R
   const r = roomPlan(p),
     controls = roomControls(data),
     arc = ((controls.angle - 90) * Math.PI) / 180;
-  const target: Vec3 = controls.view === 'isometric' ? [0, (r.floor + r.top) / 2, r.front] : [0, 0.45, 0.3];
+  const target: Vec3 =
+    controls.view === 'isometric'
+      ? [0, (r.floor + r.top) / 2, r.front]
+      : [0, r.floor + 2.25, (r.back + r.front) / 2 - 0.8];
   // The semicircle belongs to the entrance, so its ends meet the side-wall starts.
   const x = Math.sin(arc) * r.half,
     z = r.front + Math.cos(arc) * r.half;
@@ -59,7 +62,7 @@ export function roomView(p: TableScene, w: number, h: number, data?: unknown): R
       tabletop(p).bounds,
       ...p.items.map((it) => it.bounds),
       ...roomModels(p)
-        .filter((s) => s.mount === 'floor' && visibleSide(controls, s.side, s.mount))
+        .filter((s) => s.interactive && visibleSide(controls, s.side, s.mount))
         .map((s) => s.model.bounds),
       { lo: [-r.half, r.floor, r.back] as Vec3, hi: [r.half, r.top, r.back + 0.6] as Vec3 },
     ];

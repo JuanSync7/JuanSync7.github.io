@@ -32,7 +32,8 @@
     "rooms:materials": "node scripts/figures/room-material-check.mjs",
     "rooms:colour": "node scripts/figures/room-colour-browser.mjs",
     "rooms:gallery": "node scripts/figures/room-gallery.mjs",
-    "rooms:verify": "node scripts/figures/room-verify.mjs"
+    "rooms:verify": "node scripts/figures/room-verify.mjs",
+    "rooms:program": "node scripts/figures/room-program-check.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",

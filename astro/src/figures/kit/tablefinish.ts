@@ -21,7 +21,11 @@ export function tableFinish(
     strength = 1;
   if (kind === 'room') {
     tone =
-      detail === 'wall' || detail === 'brick'
+      detail === 'wall' ||
+      detail === 'brick' ||
+      detail === 'wallpaper' ||
+      detail === 'walltile' ||
+      detail === 'wallband'
         ? 'panel'
         : detail === 'floor'
           ? 'panel2'
@@ -33,7 +37,10 @@ export function tableFinish(
                   detail === 'ceramic' ||
                   detail === 'leaf' ||
                   detail === 'upholstery' ||
-                  detail === 'window'
+                  detail === 'window' ||
+                  detail === 'glass' ||
+                  detail === 'porcelain' ||
+                  detail === 'kraft'
                 ? 'inkFaint'
                 : detail === 'light'
                   ? 'inkStrong'
@@ -49,7 +56,11 @@ export function tableFinish(
     roughness = detail === 'metal' ? 0.35 : 0.95;
     metalness = detail === 'metal' ? 0.2 : 0;
     strength =
-      detail === 'wall' || detail === 'brick'
+      detail === 'wall' ||
+      detail === 'brick' ||
+      detail === 'wallpaper' ||
+      detail === 'walltile' ||
+      detail === 'wallband'
         ? 0.4
         : detail === 'floor'
           ? 0.2

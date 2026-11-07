@@ -48,7 +48,7 @@ try {
   await build({
     stdin: {
       contents:
-        "export { default, arrange, object } from './src/figures/templates/pixel-still'; export { webglAvailable } from './src/figures/defineThree'; export {THEMES,GAP,tabletop,tableView,TABLE_ASPECT} from './src/figures/kit/tabletop'; export {PROP_KINDS} from './src/figures/kit/tableprops'; export {TableDraft,finish} from './src/figures/kit/tableparts'; export {roomPlan} from './src/figures/kit/roomplan'; export {roomModels} from './src/figures/kit/tableroom'; export {roomView,roomProject,roomVisible,roomControls} from './src/figures/kit/roomview';",
+        "export { default, arrange, object } from './src/figures/templates/pixel-still'; export { webglAvailable } from './src/figures/defineThree'; export {THEMES,GAP,tabletop,tableView,TABLE_ASPECT} from './src/figures/kit/tabletop'; export {PROP_KINDS} from './src/figures/kit/tableprops'; export {TableDraft,finish} from './src/figures/kit/tableparts'; export {roomPlan} from './src/figures/kit/roomplan'; export {ROOM_METRICS} from './src/figures/kit/roommetrics'; export {roomModels} from './src/figures/kit/tableroom'; export {roomView,roomProject,roomVisible,roomControls} from './src/figures/kit/roomview';",
       resolveDir: process.cwd(),
       loader: 'ts',
     },
@@ -130,14 +130,19 @@ try {
     ...sample.map((seed) => ({ seed, theme: undefined })),
     ...THEMES.flatMap((theme) => Array.from({ length: 40 }, (_, seed) => ({ seed, theme: theme.id }))),
   ];
-  for (const theme of THEMES) for (const value of [0, 0.5, 0.999999]) semanticCheck(arrange(() => value, theme.id));
+  for (const theme of THEMES)
+    for (const value of [0, 0.5, 0.999999])
+      semanticCheck(
+        arrange(() => value, theme.id),
+        sceneModule.ROOM_METRICS[theme.id],
+      );
   const orientations = new Map(THEMES.map((t) => [t.id, new Set()]));
   const themeCounts = new Map();
   const fixtures = new Map();
   for (const { seed, theme } of cases) {
     const p = arrange(rng(seed ^ 0x9e3779b9), theme);
     themeCounts.set(p.theme.id, (themeCounts.get(p.theme.id) ?? 0) + 1);
-    semanticCheck(p);
+    semanticCheck(p, sceneModule.ROOM_METRICS[p.theme.id]);
     checkRoom(p, sceneModule);
     orientations.get(p.theme.id).add(p.mirror);
     assert.deepEqual(p, arrange(rng(seed ^ 0x9e3779b9), theme), `non-deterministic seed ${seed}`);
@@ -283,7 +288,7 @@ try {
   assert(layouts.size > 1300);
   assert(occlusions > 1000, 'Eye-level density should allow natural visual occlusion');
   console.log(
-    `Tabletop passed: ${cases.length} layouts, ${objects} objects, ${kinds.size} props, ${checkedRooms.size} seeded rooms; deterministic, flush to back wall, no physical overlaps, with the tabletop framed across the 0–180° entrance arc and equal-axis isometric projection.`,
+    `Tabletop passed: ${cases.length} layouts, ${objects} objects, ${kinds.size} props, ${checkedRooms.size} seeded rooms; deterministic, themed room anchors, no physical overlaps, with the tabletop framed across the 0–180° entrance arc and equal-axis isometric projection.`,
   );
 } finally {
   rmSync(dir, { recursive: true, force: true });

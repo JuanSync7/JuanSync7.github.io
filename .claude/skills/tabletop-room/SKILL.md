@@ -1,68 +1,57 @@
 ---
 name: tabletop-room
-description: Build, refine and validate the seeded Three.js tabletop rooms in the Astro lab, including themed geometry, physical clearances, procedural materials, monochrome/full-colour appearance, lighting and fallback rendering. Use when changing pixel-still or its room controls, kits, palette or verification scripts.
+description: Use when creating or refining the seeded themed rooms in pixel-still, including room proportions, functional layouts, furniture, architectural finishes, lighting, materials, camera controls or verification.
 ---
 
-# Seeded tabletop rooms
+# Complete themed rooms
 
-Read `CLAUDE.md`, the `figure` and `site-taste` skills, then
-`astro/docs/tabletop-rooms.md` and this skill's
-[material and lighting rules](references/materials-and-lighting.md).
+Read the project `CLAUDE.md`, the `figure` and `site-taste` skills, then
+`RULES.md`, `LOOK.md` and `kernel/INDEX.md` here. The current implementation and
+commands are described in `astro/docs/tabletop-rooms.md`.
 
-The user explicitly requested full colour and a monochrome switch on 7 November
-2026. This is a scoped exception to the figure skill's single-accent rule for
-`pixel-still`. Keep every other figure's palette and thresholds unchanged.
+## Workflow
 
-## Build rules
+1. **Brief.** State the room's purpose and the defining activities it must support.
+   Read the reference card and treatment. Preserve the seed URLs, colour switch,
+   eye-height camera and 0–180° entrance arc.
+2. **Scale first.** Use `ROOM_METRICS` and `roomPlan`. The table grammar's original
+   dimensions are local coordinates, not room furniture dimensions. Run
+   `npm run rooms:program` before polishing. A desk must leave a room around it.
+3. **Plan activities.** Choose primary work/dining, secondary use, storage and
+   entrance zones. The dining table permits seats on both sides; task surfaces
+   meet the back wall. Use the plan's shared position anchors for fixtures and lights.
+4. **Build specific things.** Use `placedRoomPart`, measured post-transform bounds,
+   and the relevant furniture builders. Add the parts that identify an object:
+   cupboard doors and shelves, sink basin and tap, chair structure and upholstery.
+   Materials preserve the semantic finish of inserted room accessories.
+5. **Finish the room.** Coordinate windows, coverings, door hardware, wall and floor
+   treatment, textiles and fixtures with the same theme. Apply seeded variants to
+   real design choices. Stop filling when the space supports its activities.
+6. **Light actual sources.** Fit daylight to the casement opening, clinical light to
+   ceiling/task fixtures and bar light to pendants. Keep the single shadow key,
+   fill and practicals distinct. Compose texture and PCSS hooks locally and dispose
+   GPU resources. Static rooms use the shared clock and render on demand.
+7. **Check.** Run `npm run rooms:verify -- --url=http://127.0.0.1:4410` in `astro/`
+   with the dev server running. It records a failing placeholder first, stops on
+   failure and writes `figures-out/room-validation.json`. The independent geometry,
+   program and material checks live in `scripts/figures/`, apart from scene kits.
+8. **Look.** Read the targeted audit, twelve-seed sheet, nine colour/monochrome
+   pairs, fallback images and camera captures. Answer `LOOK.md`. Fix the cause of
+   a failed check or visible defect; keep the figure skill's six-pass cap.
+9. **Handoff.** Save code, playbook, rules, reference/treatment, kernel index, checks
+   and actual preview evidence. State what remains unverified. When the user asks
+   for vault feedback, use its `agent-feedback/1` inbox and archive the exact
+   supporting package. A project report does not adopt global guidance.
 
-1. Work in `astro/`. Drawing code lives in `src/figures/`; React only passes controls
-   through `FigureCanvas.data`. No private animation loop, DOM queries, timers or
-   per-frame random choices in figures or their geometry.
-2. Keep kit files below 200 nonblank lines and the Three.js figure below 350.
-   Use strict types. Geometry, materials, lighting and rendering have separate jobs.
-3. Preserve the seed's theme and object placement. Appearance changes must not
-   change geometry, selection, camera angle, zoom or the seed. A new seed must
-   preserve the chosen appearance while the viewer remains mounted.
-4. Keep the 0–180° entrance camera contract, eye height and true orthographic
-   isometric preset. Fit visible furniture, keep the table flush to the back wall,
-   and cut away the near return wall with its hidden fixtures.
-5. Distinct objects need distinct physical footprints. Feet meet their support;
-   rugs are explicit supports. Clear the central entrance aisle and door approach.
-   Check actual model bounds and outward normals, including reversed profiles.
-6. Materials and lights take colours through `kit/ink.ts`. Room colour values live
-   in `roomTones`, mirrored by `--nt-room-*` CSS tokens and the design-system ledger.
-   Do not put room colours in the `night` palette or widen its audit band.
-7. Texture belongs to the material. Use deterministic world-space coordinates,
-   consistent grain direction and derivative filtering. Bump changes lighting,
-   never the collision geometry. Avoid visible random speckles or moiré at phone size.
-8. Choose materials and lighting from the theme. Give each visible light an actual
-   fixture or emitting object. Use a single shadow key, restrained fill, practical
-   lights and a prefiltered reflection environment. Preserve highlight detail.
-9. Compose material-detail and shadow shader hooks locally. Never mutate global
-   Three.js shader chunks. Dispose reflection targets, geometry, materials, shadow
-   maps and renderer resources when a scene is unmounted.
-10. Update both WebGL and the 2D fallback. The fallback uses the same geometry,
-    clearances, camera, cutaways and palette, with simpler material detail.
-11. Static rooms use `ThreeFrame.renderWhen` to redraw when camera, appearance,
-    pointer selection or size changes. Keep the shared clock. Generate reflection
-    maps only when colour is first used, and remount preview canvases by seed so
-    released WebGL contexts are never reused. Preserve outer-button focus.
+The user's 7 November 2026 requests authorize full colour for this room and the
+whole-room redesign. Other figures keep the existing night palette and thresholds.
+Room material/light values live in the separate mirrored `roomTones` token family
+and enter geometry through `kit/ink.ts`. See `references/materials-and-lighting.md`.
 
-## Verification and handoff
+## Tools and limits
 
-Run `npm run rooms:verify -- --url=http://127.0.0.1:4410` from `astro/` with the
-Astro dev server running. The script runs the source/type/lint checks, production
-build, geometry/material checks, targeted figure audit, both browser suites, the
-full-colour frame budget and idle-redraw checks, seed
-sheet, compact galleries and the whole-site figure audit. It writes
-`figures-out/room-validation.json`; a failed stage stops the run.
-
-Read the targeted audit sheet, twelve-seed sheet, all nine colour/monochrome
-pairs and the camera captures. The audit numbers do not replace visual review.
-If the shared audit code is changed, run `figures:selftest` too. Do not loosen a
-threshold to get a pass. Fix the cause and rerun the affected stage, then complete
-the final verification.
-
-Save the playbook, new rules, scripts and skill updates with the code. Hand over
-actual scene previews and the validation result. `rooms:verify` never publishes,
-pushes a branch or sends external messages; publication is a separate action.
+`checks/README.md` maps each acceptance rule to its command. `kernel/INDEX.md`
+names the public geometry/material/view functions and their coordinate gotchas.
+Keep strict TypeScript, kit files below 200 nonblank lines and the Three.js figure
+below 350. No figure-owned DOM, clocks, animation loops or per-frame randomness.
+No public push or deployment is part of `rooms:verify`.

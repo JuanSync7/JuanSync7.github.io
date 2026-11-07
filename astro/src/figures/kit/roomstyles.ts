@@ -27,7 +27,7 @@ export const ROOM_STYLES: Record<ThemeId, RoomStyle> = {
     wall: 'plaster',
     wood: 'oak',
     top: 'oak',
-    floor: 'graphite',
+    floor: 'oak',
     accent: 'blue',
     textile: 'teal',
     metal: 'steel',

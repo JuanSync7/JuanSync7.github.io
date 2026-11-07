@@ -51,7 +51,7 @@ const OPTIONAL = {
   bar: ['tumbler', 'bowl', 'fruitbowl', 'napkins', 'spoon', 'towel', 'plate'],
   lab: ['pipette', 'box', 'bottle', 'notebook', 'penholder', 'labels', 'jar'],
 };
-export function semanticCheck(p) {
+export function semanticCheck(p, metric = { x: 1, z: 1 }) {
   const minimum = {
     dining: 16,
     work: 19,
@@ -77,8 +77,9 @@ export function semanticCheck(p) {
     );
   }
   assert.equal(remaining.length, 0, `${theme} lost defining objects: ${remaining}`);
-  const one = (kind) => p.items.find((it) => it.kind === kind);
-  const all = (kind) => p.items.filter((it) => it.kind === kind);
+  const local = p.items.map((it) => ({ ...it, x: it.x / metric.x, z: it.z / metric.z }));
+  const one = (kind) => local.find((it) => it.kind === kind);
+  const all = (kind) => local.filter((it) => it.kind === kind);
   if (theme === 'computer') {
     assert(one('keyboard').z > one('monitor').z + 1);
     assert(Math.abs(one('keyboard').x - one('monitor').x) < 0.65);
@@ -88,7 +89,13 @@ export function semanticCheck(p) {
   }
   if (theme === 'dining')
     for (const setting of all('setting'))
-      assert(all('wineglass').some((glass) => Math.abs(glass.x - setting.x) < 1 && glass.z < setting.z - 0.8));
+      assert(
+        all('wineglass').some(
+          (glass) =>
+            Math.abs(glass.x - setting.x) < 1 &&
+            (setting.z > 0 ? glass.z < setting.z - 0.8 : glass.z > setting.z + 0.8),
+        ),
+      );
   if (theme === 'work') assert(one('notebook').z > one('laptop').z + 1);
   if (theme === 'study') {
     assert(one('openbook').z > one('tasklamp').z + 1);

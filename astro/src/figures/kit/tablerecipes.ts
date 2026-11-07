@@ -20,12 +20,14 @@ export function recipe(theme: ThemeId, rng: Rng, mirror: number): Intent[] {
     if (rng() < 0.8) slot(kind, x, z, kind, false, 0.28, 0.16);
   };
   if (theme === 'dining') {
-    for (const x of [-2.05, 2.05]) {
-      slot('setting', x, 0.5, 'place setting');
-      slot('wineglass', x + 0.4, -1, 'drink');
-    }
-    slot('bowl', 0, 0.55, 'serving dish');
-    extra(rng() < 0.5 ? 'candle' : 'bottle', 0, -1.2);
+    for (const x of [-2.4, 0, 2.4])
+      for (const sign of [-1, 1]) {
+        slot('setting', x, sign * 1.15, 'place setting', true, 0.05, 0.025);
+        slot('wineglass', x + sign * 0.8, sign * 0.1, 'drink', true, 0.03, 0.025);
+      }
+    slot('bowl', 0, -0.15, 'serving dish', true, 0.06, 0.03);
+    extra('candle', -3.55, 0);
+    extra('bread', 3.55, 0);
   } else if (theme === 'computer') {
     slot('monitor', -0.3, -1, 'display');
     slot('keyboard', -0.3, 0.85, 'input');

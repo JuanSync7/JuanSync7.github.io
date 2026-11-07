@@ -4,6 +4,7 @@ import type { TableObject } from './tablefinish';
 import type { ThemeId } from './tablethemes';
 import { ROOM_STYLES } from './roomstyles';
 import { propPaint } from './roomproppaint';
+import { decorPaint } from './roomdecorpaint';
 
 const BOOKS: readonly RoomTone[] = ['navy', 'clay', 'sage', 'burgundy'];
 export const MATERIAL_PATTERNS = ['none', 'wood', 'stone', 'metal', 'fabric', 'plaster', 'ceramic'] as const;
@@ -25,6 +26,8 @@ export function roomPaint(
   solid: number,
   phase = 0,
 ): RoomPaint {
+  const detail = decorPaint(theme, finish);
+  if (detail && (kind === 'table' || kind === 'room')) return detail;
   const style = ROOM_STYLES[theme];
   let tone: RoomTone = style.accent,
     pattern: MaterialPattern = 'none',
@@ -48,7 +51,14 @@ export function roomPaint(
     }
     if (finish === 'floor' || finish === 'floorAlt') {
       tone = style.floor;
-      pattern = ['dining', 'study', 'messy'].includes(theme) ? 'wood' : 'stone';
+      pattern = ['dining', 'study', 'messy', 'work'].includes(theme)
+        ? 'wood'
+        : theme === 'lab'
+          ? 'ceramic'
+          : theme === 'computer'
+            ? 'fabric'
+            : 'stone';
+      if (theme === 'kitchen' && finish === 'floorAlt') tone = 'porcelain';
       strength = finish === 'floorAlt' ? 0.94 : 0.75;
       roughness = 0.88;
     }
@@ -127,7 +137,7 @@ export function roomPaint(
     }
     if (finish === 'light') {
       tone = 'ivory';
-      emission = 'amber';
+      emission = style.mood === 'clean' ? 'daylight' : 'amber';
       pattern = 'none';
       roughness = 0.25;
     }

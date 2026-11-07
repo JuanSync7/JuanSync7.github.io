@@ -4,6 +4,7 @@ const url = process.argv.find((a) => a.startsWith('--url='))?.slice(6) ?? 'http:
 const stages = [
   ['types, lint, source and site rules', 'npm', ['run', 'check']],
   ['physical room geometry', 'npm', ['run', 'tabletop:check']],
+  ['room proportions, functional programs and circulation', 'node', ['scripts/figures/room-program-check.mjs']],
   ['materials and tokens', 'node', ['scripts/figures/room-material-check.mjs']],
   ['production build', 'npm', ['run', 'build']],
   ['room visual audit', 'node', ['scripts/figures/figure.mjs', 'pixel-still', `--url=${url}`]],
@@ -23,6 +24,7 @@ const report = {
   passed: false,
 };
 mkdirSync('figures-out', { recursive: true });
+writeFileSync('figures-out/room-validation.json', JSON.stringify(report, null, 2) + '\n');
 for (const [name, command, args] of stages) {
   console.log(`\nRoom verification: ${name}`);
   const start = Date.now(),

@@ -40,10 +40,21 @@ export function roomPracticals(scene: Scene, p: TableScene): PracticalLight[] {
     }
   }
   if (['kitchen', 'bar', 'lab'].includes(p.theme.id))
-    for (const x of [-2.8, 0, 2.8]) {
+    for (const x of [-2, 0, 2]) {
       const light = new PointLight(roomHexOf(cool ? 'daylight' : 'amber'), 0, 3, 2);
-      light.position.set(x, 1.61, r.back + 0.42);
+      light.position.set(x, p.theme.id === 'bar' ? 1.66 : 1.76, r.back + 0.42);
       add(light, cool ? 2.0 : 2.5, cool ? 'daylight' : 'amber');
     }
+  const pendant = ['dining', 'bar'].includes(p.theme.id);
+  for (const x of pendant ? [-1.45, 0, 1.45] : [0]) {
+    const light = new PointLight(roomHexOf(cool ? 'daylight' : 'amber'), 0, 7, 2);
+    light.position.set(x, pendant ? 2.22 : r.top - 0.35, pendant ? 0 : 1.1);
+    add(light, pendant ? 3.4 : cool ? 6 : 3.5, cool ? 'daylight' : 'amber');
+  }
+  if (p.theme.id === 'kitchen') {
+    const task = new PointLight(roomHexOf('daylight'), 0, 3.5, 2);
+    task.position.set(-r.half + 0.55, r.floor + 3.6, r.serviceZ);
+    add(task, 2.4, 'daylight');
+  }
   return result;
 }

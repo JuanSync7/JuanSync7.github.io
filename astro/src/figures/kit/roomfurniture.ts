@@ -2,44 +2,6 @@ import { TableDraft } from './tableparts';
 import { accessory } from './roomdecor';
 import type { ThemeId } from './tablethemes';
 
-export function chair(p: TableDraft, theme: ThemeId): void {
-  const office = ['work', 'computer', 'messy'].includes(theme),
-    stool = ['bar', 'lab', 'kitchen'].includes(theme);
-  const seat = theme === 'bar' ? 1.45 : 0.95;
-  p.material('metal', () => {
-    if (office) {
-      p.tube([0, 0.12, 0], [0, seat, 0], 0.075);
-      for (let i = 0; i < 5; i++) {
-        const a = (i * Math.PI * 2) / 5,
-          x = Math.cos(a) * 0.54,
-          z = Math.sin(a) * 0.54;
-        p.tube([0, 0.16, 0], [x, 0.12, z], 0.045, 8);
-        p.box(x, 0, z, 0.14, 0.13, 0.12, 0.035);
-      }
-    } else
-      for (const x of [-0.4, 0.4])
-        for (const z of [-0.38, 0.38]) {
-          p.cylinder(x * 1.12, 0, z * 1.12, 0.055, 0.04, 8);
-          p.tube([x * 1.12, 0.04, z * 1.12], [x, seat, z], 0.045, 8);
-          if (z > 0) p.tube([x, seat, z], [x, seat + (stool ? 0.55 : 1.1), z], 0.04, 8);
-        }
-    if (stool) for (const z of [-0.38, 0.38]) p.tube([-0.4, seat * 0.45, z], [0.4, seat * 0.45, z], 0.035, 8);
-    if (office)
-      for (const x of [-0.52, 0.52]) {
-        p.tube([x, seat, 0.15], [x, seat + 0.45, 0.15], 0.035);
-        p.box(x, seat + 0.43, -0.02, 0.12, 0.06, 0.58, 0.035);
-      }
-  });
-  p.material(office ? 'upholstery' : 'frame', () => {
-    p.box(0, seat, 0, 1.08, 0.14, 1.0, 0.13);
-    p.box(0, seat + (stool ? 0.33 : 0.2), 0.4, 0.96, stool ? 0.32 : 0.94, 0.16, 0.065);
-    if (office) p.box(0, seat + 1.18, 0.42, 0.62, 0.26, 0.18, 0.07);
-  });
-  if (!office && !stool)
-    p.material('panel', () => {
-      for (const x of [-0.26, 0, 0.26]) p.box(x, seat + 0.31, 0.495, 0.035, 0.68, 0.025, 0.008);
-    });
-}
 export function planter(p: TableDraft, variant: number): void {
   p.material('ceramic', () =>
     p.lathe(

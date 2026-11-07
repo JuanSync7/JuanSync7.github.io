@@ -4,6 +4,7 @@ import { prop, type PropKind } from './tableprops';
 import { corners, world, type Bounds, type PropModel } from './tableparts';
 import { THEMES, TABLE_ASPECT, type Intent, type TableTheme, type ThemeId } from './tablethemes';
 import { recipe } from './tablerecipes';
+import { ROOM_METRICS } from './roommetrics';
 import { tableModel, surfaceContains } from './tableframes';
 
 export interface TableItem {
@@ -67,7 +68,7 @@ function place(p: TableScene, intent: Intent, rng: Rng): boolean {
   for (let k = 0; k < 100; k++) {
     const px = x + between(rng, -jitter, jitter),
       pz = z + between(rng, -jitter, jitter),
-      turn = between(rng, -angle, angle);
+      turn = between(rng, -angle, angle) + (p.theme.id === 'dining' && kind === 'setting' && pz < 0 ? Math.PI : 0);
     const bounds = footprint(kind, px, pz, s, turn);
     if (!surfaceContains(p.theme, bounds)) continue;
     // A lower viewpoint permits natural occlusion; the solids still cannot touch.
@@ -101,7 +102,14 @@ function compose(rng: Rng, theme: TableTheme): TableScene | null {
       mirror,
       roomVariant: 0,
     };
-    const intents = recipe(theme.id, rng, mirror);
+    const metric = ROOM_METRICS[theme.id];
+    const intents = recipe(theme.id, rng, mirror).map((intent) => ({
+      ...intent,
+      x: intent.x * metric.x,
+      z: intent.z * metric.z,
+      jitter: intent.jitter * Math.min(metric.x, metric.z),
+      scale: intent.scale * metric.prop * (intent.kind === 'monitor' ? 1.6 : intent.kind === 'tower' ? 1.3 : 1),
+    }));
     let valid = true;
     for (const intent of intents.filter((i) => i.required))
       if (!place(p, intent, rng)) {
@@ -120,7 +128,7 @@ function compose(rng: Rng, theme: TableTheme): TableScene | null {
     if (p.items.length < theme.minItems) continue;
     // Fit the table's feet and every prop, not just the tabletop.
     const boxes = [tabletop(p).bounds, ...p.items.map((i) => i.bounds)];
-    p.dist = 11;
+    p.dist = 13;
     while (
       p.dist < 20 &&
       boxes.some((b) => {
