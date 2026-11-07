@@ -82,13 +82,31 @@ export function checkRoomSupports(p, parts, plan) {
   }
   const wall = parts.filter((s) => s.mount === 'wall');
   const anchored = new Set(
-    wall.filter((s) => {
-      const b = s.model.bounds;
-      return s.side === 'back'
-        ? b.lo[2] - plan.back <= limits.wallStandOffMax + EPS
-        : s.side === 'left'
-          ? b.lo[0] + plan.half <= limits.wallStandOffMax + EPS
-          : s.side === 'right' && plan.half - b.hi[0] <= limits.wallStandOffMax + EPS;
+    wall.filter((part) => {
+      const axis = part.side === 'back' ? 2 : 0,
+        sign = part.side === 'right' ? -1 : 1,
+        other = axis === 2 ? [0, 1] : [1, 2],
+        b = part.model.bounds;
+      return parts
+        .filter((s) => !s.interactive && !s.cutaway && s.side === part.side)
+        .some((host) =>
+          host.model.surfaces.some((face) => {
+            if (!face.face || !face.points.every((p) => Math.abs(p[axis] - face.points[0][axis]) < EPS)) return false;
+            const [u, v] = other,
+              area = face.points.reduce((sum, p, i, points) => {
+                const q = points[(i + 1) % points.length];
+                return sum + p[u] * q[v] - q[u] * p[v];
+              }, 0);
+            if (area * sign <= EPS) return false;
+            const rear = sign > 0 ? b.lo[axis] : b.hi[axis],
+              gap = sign * (rear - face.points[0][axis]),
+              h = bounds([face]);
+            return (
+              gap <= limits.wallStandOffMax + EPS &&
+              other.every((k) => b.hi[k] > h.lo[k] + EPS && b.lo[k] < h.hi[k] - EPS)
+            );
+          }),
+        );
     }),
   );
   const touch = (a, b) =>

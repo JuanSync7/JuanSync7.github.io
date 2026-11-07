@@ -8,7 +8,7 @@ Never change the site's global thresholds to accommodate this room.
 | --- | --- |
 | `npm run check` | Types, lint, file/figure rules, formatting and existing site checks |
 | `npm run tabletop:check` | Many seeded layouts; measured prop/room bounds; contacts; separate textile clearance; measured door approach; native/fallback projection agreement and true isometric axes |
-| `npm run rooms:supports` | Actual book/box base support, wall attachment paths and five rejected floating/buried/detached output mutations; also runs in `tabletop:check` and CI |
+| `npm run rooms:supports` | Actual book/box base support, wall attachment paths and six rejected floating/buried/detached output mutations; also runs in `tabletop:check` and CI |
 | `npm run rooms:program` | Actual primary floor share, human furniture/device scale, mandatory theme furnishings, grounded supports and connected walking routes |
 | `room-program-limits.json` | Scoped design criteria, separate from global figure thresholds |
 | `room-program-check.mjs --baseline` | Intentionally fails the captured pre-redesign proportions; not part of the passing production sequence |

@@ -17,7 +17,7 @@ separately in `astro/scripts/figures/` and judge the output, not the builder's i
 | `roomZones`, `roomDressing` | Functional secondary zone, storage, chairs, textiles, trolley, lamps and wall art. Clinical utility and domestic lounge pieces have different programs. |
 | `chair`, `loungeSeat`, `sideboard`, `tallCabinet`, `sinkCounter`, `refrigerator`, `craftBench` | Specific geometry builders in `roomseats`, `roomlounge`, `roomstorage`, `roomkitchen`, `roomworkshop`. Their local back is −z; turn the whole model toward the room. |
 | `themedWindow`, `roomDoor`, `roomWallShell`, `wallFinish` | Window treatment, door hardware and architectural surfaces. Casements have real shell openings; avoid tiles/patterns covering those openings. |
-| `shelf`, `shelvedAccessory` / `roomdecor.ts` | A wall case has a rear panel, full-depth sides and real boards. Returned elevations are board tops. Place each prop using its measured base; do not invent row offsets. |
+| `shelf`, `shelvedAccessory` / `roomdecor.ts` | A wall case has a rear panel, full-depth sides and real boards; cupboards include fixing cleats for recessed wall surfaces. Returned elevations are board tops. Place each prop using its measured base; do not invent row offsets. |
 | `shelfLightMounts`, `roomCeiling` | Under-cabinet lamps and light sources share the actual unit anchors. Ceiling fixtures contact separate wall-connected mounting rails; keep their measured bounds at touching faces. |
 | `accessory` / `roomdecor.ts` | Inserts a scaled prop and preserves its material semantics: paper, cover, glass, ceramic, metal or equipment. |
 | `roomPaint`, `propPaint`, `decorPaint` | Typed material recipes. Colour values enter through `ink.ts` and the separate mirrored room token family. |

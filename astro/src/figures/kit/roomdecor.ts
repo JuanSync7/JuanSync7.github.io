@@ -15,6 +15,7 @@ export function cupboard(p: TableDraft, x: number, y: number, width: number, hei
     for (const a of [-1, 1]) p.box(x + (a * width) / 4, y + 0.09, 0.535, width / 2 - 0.07, height - 0.18, 0.05, 0.025);
   });
   p.material('metal', () => {
+    p.box(x, y + height - 0.18, -0.03, width - 0.24, 0.1, 0.06, 0.005);
     for (const a of [-1, 1]) p.roundRod([x + a * 0.13, y + 0.3, 0.6], [x + a * 0.13, y + 0.65, 0.6], 0.025, 8);
   });
 }

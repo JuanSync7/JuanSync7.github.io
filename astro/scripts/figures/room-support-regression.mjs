@@ -63,6 +63,16 @@ try {
   unit.model.surfaces = unit.model.surfaces.filter((s) => s.finish === 'book' || s.finish === 'paper');
   assert.throws(() => checkRoomSupports(p, unsupported, plan), /Unsupported shelf contents/);
   report.negativeFixtures++;
+  const kitchen = { ...arrange(() => 0.5, 'kitchen'), roomVariant: 1 },
+    kitchenPlan = roomPlan(kitchen),
+    withoutCleat = structuredClone(roomModels(kitchen)),
+    cabinet = withoutCleat.find((s) => s.label === 'Kitchen wall cupboards');
+  cabinet.model.surfaces = cabinet.model.surfaces.filter(
+    (s) => !(s.finish === 'metal' && s.points.every((q) => q[2] <= kitchenPlan.back + 1e-7)),
+  );
+  cabinet.model.bounds.lo[2] = Math.min(...cabinet.model.surfaces.flatMap((s) => s.points.map((q) => q[2])));
+  assert.throws(() => checkRoomSupports(kitchen, withoutCleat, kitchenPlan), /Floating wall fixture/);
+  report.negativeFixtures++;
   report.passed = true;
   writeFileSync('figures-out/room-support-report.json', JSON.stringify(report, null, 2) + '\n');
   console.log(
