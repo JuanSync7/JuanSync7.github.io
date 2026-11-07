@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import FigureCanvas from '../ui/FigureCanvas';
+import { REST_T } from '../../hooks/useFigureLoop';
 import RoomStage from './RoomStage';
 import type { RoomAppearance } from '../../figures/kit/roomstyles';
 import VoxelWorldControls from './VoxelWorldControls';
@@ -195,7 +196,7 @@ export default function TemplateLab({ template }: Props) {
                 <FigureCanvas
                   key={`${template}~${s}`}
                   id={`${template}~${s}`}
-                  freezeAt={gpuPreviews ? 1.2 : undefined}
+                  freezeAt={gpuPreviews || template === 'hardware-atlas' ? REST_T : undefined}
                   data={room ? { appearance: roomAppearance, view: 'isometric', angle: 135 } : undefined}
                 />
               </span>

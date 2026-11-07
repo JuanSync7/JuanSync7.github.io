@@ -2,6 +2,14 @@
 
 ## 2026-11-07
 
+Hardware atlas seed thumbnails become still previews while the main viewer stays
+interactive. Repeated solids in a selected assembly each receive a teal accent.
+Board and interposer traces use separate lanes; server laminate markings follow
+their translated board; hollow rims omit radial tessellation seams and opaque
+walls hide their rear markings. Routing,
+repeated-selection and idle-gallery regressions accompany a reusable hardware
+playbook, built kernel index, visual review questions and complete verification command.
+
 Voxcel Island restores the compact six-theme cottage-and-harbour scene as its own lab entry.
 Its original terrain and object models remain separate from Voxel Worlds, while safe camera
 controls and a matching fallback support drag, tilt, pan and zoom. Seed, placement, harbour,
