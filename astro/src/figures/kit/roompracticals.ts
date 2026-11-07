@@ -5,6 +5,7 @@ import { world } from './tableparts';
 import { ROOM_STYLES } from './roomstyles';
 import type { RoomTone } from '../../styles/tokens/palette';
 import type { TableScene } from './tabletop';
+import { shelfLightMounts } from './roomfixtures';
 export interface PracticalLight {
   light: PointLight | SpotLight;
   power: number;
@@ -39,12 +40,11 @@ export function roomPracticals(scene: Scene, p: TableScene): PracticalLight[] {
       add(light, 1.7, 'blue');
     }
   }
-  if (['kitchen', 'bar', 'lab'].includes(p.theme.id))
-    for (const x of [-2, 0, 2]) {
-      const light = new PointLight(roomHexOf(cool ? 'daylight' : 'amber'), 0, 3, 2);
-      light.position.set(x, p.theme.id === 'bar' ? 1.66 : 1.76, r.back + 0.42);
-      add(light, cool ? 2.0 : 2.5, cool ? 'daylight' : 'amber');
-    }
+  for (const { x, y, z } of shelfLightMounts(p.theme.id)) {
+    const light = new PointLight(roomHexOf(cool ? 'daylight' : 'amber'), 0, 3, 2);
+    light.position.set(x, y - 0.09, r.back + z);
+    add(light, cool ? 2.0 : 2.5, cool ? 'daylight' : 'amber');
+  }
   const pendant = ['dining', 'bar'].includes(p.theme.id);
   for (const x of pendant ? [-1.45, 0, 1.45] : [0]) {
     const light = new PointLight(roomHexOf(cool ? 'daylight' : 'amber'), 0, 7, 2);

@@ -41,7 +41,7 @@ export function roomModels(p: TableScene): RoomPart[] {
     const q = new TableDraft();
     q.material('frame', () => build(q));
     if (transform) for (const part of q.parts) for (const s of part.surfaces) s.points = s.points.map(transform);
-    parts.push({ label, side, interactive, model: finish(q) });
+    parts.push({ label, side, interactive, mount: interactive ? 'wall' : undefined, model: finish(q) });
   };
   add('Floor', 'floor', (q) => roomFloor(q, r, p.theme.id));
   add('Back wall', 'back', (q) => backWall(q, r, p.theme.id));

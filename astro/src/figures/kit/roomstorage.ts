@@ -1,30 +1,36 @@
 import { TableDraft } from './tableparts';
-import { accessory } from './roomdecor';
+import { accessory, shelvedAccessory } from './roomdecor';
 import type { ThemeId } from './tablethemes';
 
 export function tallCabinet(p: TableDraft, theme: ThemeId, variant: number): void {
   const open = theme === 'study' || theme === 'dining' || theme === 'bar' || theme === 'storage';
   const w = theme === 'storage' ? 2.9 : 1.75,
     h = 4.8;
+  const boards = [
+    [0.12, 0.12],
+    [1.2, 0.08],
+    [2.3, 0.08],
+    [3.4, 0.08],
+  ] as const;
   p.material(theme === 'storage' || theme === 'lab' ? 'metal' : 'frame', () => {
     for (const x of [-w / 2 + 0.12, w / 2 - 0.12])
       for (const z of [-0.34, 0.34]) p.box(x, 0, z, 0.12, 0.12, 0.12, 0.01);
-    p.box(0, 0.12, 0, w, 0.12, 0.95, 0.025);
     for (const x of [-w / 2 + 0.06, w / 2 - 0.06]) p.box(x, 0.24, 0, 0.12, h - 0.24, 0.95, 0.025);
     p.box(0, 0.24, -0.43, w, h - 0.24, 0.08, 0.015);
     p.box(0, h - 0.12, 0, w, 0.12, 0.95, 0.025);
-    for (const y of [1.2, 2.3, 3.4]) p.box(0, y, 0, w - 0.16, 0.08, 0.92, 0.015);
+    for (const [y, thickness] of boards)
+      p.box(0, y, 0, y === 0.12 ? w : w - 0.16, thickness, y === 0.12 ? 0.95 : 0.92, 0.015);
   });
   if (open)
-    for (let row = 0; row < 4; row++)
+    for (const [y, thickness] of boards)
       for (let col = 0; col < (theme === 'storage' ? 3 : 2); col++) {
         const n = theme === 'storage' ? 3 : 2;
         const kind = theme === 'bar' ? 'bottle' : theme === 'dining' ? 'plate' : theme === 'storage' ? 'box' : 'files';
-        accessory(
+        shelvedAccessory(
           p,
           kind,
           ((col - (n - 1) / 2) * (w - 0.35)) / n,
-          0.26 + row * 1.1,
+          y + thickness,
           0.05,
           (theme === 'storage' ? 0.55 : 0.58) + (variant === 1 ? 0.02 : 0),
         );

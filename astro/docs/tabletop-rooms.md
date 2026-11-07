@@ -53,6 +53,8 @@ then measured. Distinct furniture must have disjoint physical bounds. Thin rugs
 are declared supports for furniture contact; that declaration does not permit two
 separate textiles to overlap. Textile bounds include borders and fringe.
 
+Wall shelves have solid rear panels, side stiles and board tops shared with their content placement. Books and boxes use measured prop bases; upper rows do not use approximate vertical increments. Under-shelf fixtures share cabinet anchors with their light sources. Ceiling lights contact visible mounting rails that reach the back wall. The support check inspects rendered geometry faces and measured attachment contacts, and rejects lifted, buried, detached and missing-support mutations.
+
 Feet meet the floor or a declared thin support. The door approach is checked using
 the actual modelled door span, not a smaller placeholder rectangle. A grid search
 checks a connected entrance route to the primary work/seating zone and storage.

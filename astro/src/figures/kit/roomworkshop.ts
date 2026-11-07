@@ -18,6 +18,9 @@ export function craftBench(p: TableDraft): void {
   });
 }
 export function pegTools(p: TableDraft): void {
+  p.material('metal', () => {
+    for (const x of [-1.15, 1.15]) for (const y of [0.1, 1.6]) p.box(x, y, -0.015, 0.12, 0.1, 0.05, 0.005);
+  });
   p.material('panel', () => p.box(0, 0, 0.05, 2.8, 1.8, 0.08, 0.025));
   p.material('recess', () => {
     for (let i = 0; i < 12; i++)

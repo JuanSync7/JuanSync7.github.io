@@ -1,5 +1,5 @@
 import { TableDraft } from './tableparts';
-import { framed, accessory } from './roomdecor';
+import { framed, shelf, shelvedAccessory } from './roomdecor';
 import { placedRoomPart } from './roomcompose';
 import { roomPlan, type RoomPlan } from './roomplan';
 import type { TableScene } from './tabletop';
@@ -71,14 +71,10 @@ export function roomSideGallery(p: TableScene): RoomPart[] {
       'wall',
       (q) => {
         if (t === 'computer') {
-          q.material('frame', () => {
-            q.box(0, 0, 0.2, 2.8, 0.08, 0.5, 0.015);
-            q.box(0, 1.2, 0.2, 2.8, 0.08, 0.5, 0.015);
-            for (const x of [-1.34, 0, 1.34]) q.box(x, 0, 0.2, 0.08, 1.28, 0.5, 0.015);
-          });
-          accessory(q, 'headphones', -0.65, 0.08, 0.22, 0.65);
-          accessory(q, 'gamepad', 0.6, 0.08, 0.22, 0.65);
-          accessory(q, 'books', 0.6, 0.3, 0.22, 0.45);
+          const [lower, upper] = shelf(q, 0, 0, 2.8, 1.28);
+          shelvedAccessory(q, 'headphones', -0.65, lower, 0.3, 0.65);
+          shelvedAccessory(q, 'gamepad', 0.6, lower, 0.3, 0.65);
+          shelvedAccessory(q, 'books', 0.6, upper, 0.3, 0.45);
         } else
           for (const x of [-0.78, 0.78]) {
             framed(q, x, 0, 1.15, 1.5, 0.08);

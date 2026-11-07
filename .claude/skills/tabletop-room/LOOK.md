@@ -15,7 +15,8 @@ human-approved exemplar.
 5. **Architecture:** Are the wall finish, floor pattern, window covering, door and
    textiles plausible for this theme? Are frames, trim, recesses and hardware visible?
 6. **Contact:** Do feet meet floor or a declared textile support? Are distinct rugs
-   separated, and are distant edges correctly hidden by nearer faces?
+   separated, and are distant edges correctly hidden by nearer faces? Do books and boxes sit
+   on boards, do wall cases have backs/sides, and do projecting lights visibly connect to the room?
 7. **Light:** Are pools and shadows consistent with windows and fixtures? Do dark
    materials retain detail, white surfaces retain highlights and metal retain sheen?
 8. **Views:** Do eye level, both orbit ends and true isometric hold the room's important
