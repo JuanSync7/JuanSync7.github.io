@@ -1,0 +1,12 @@
+{
+  "schema": "slide-maintenance-review/1",
+  "verdict": "pass",
+  "base": "41d24892d3743e1030baf240aec48f8ef6fdeca9",
+  "candidate": "7d62e99fafdb216daa76ff3ca7ffd7d14c2a8a755bdc65fd8f754dc2291567a7",
+  "author": "root",
+  "reviewer": "independent_audit",
+  "evidence": {
+    "path": "docs/design/slide-icons/runs/deepdive-workflow-maintenance-review.md",
+    "sha256": "41894dd3bc028f4a29b383d1e1fc1eb59db15afb80cfc13a4613a3d47f137e64"
+  }
+}

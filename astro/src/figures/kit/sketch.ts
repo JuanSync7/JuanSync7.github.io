@@ -1,3 +1,5 @@
+export { finish } from './sketch-finish';
+export { outside, inside } from './sketch-clip';
 import { between, type Rng } from './rng';
 
 /** Flat line drawings in three weights (bold, mid, fine) on a 4 × 2 plane, for plans that
@@ -18,11 +20,21 @@ export type Seg = [number, number, number, number];
 /** 0 bold, 1 mid, 2 fine. */
 export type Tone = 0 | 1 | 2;
 
-export interface Plan {
+export interface Linework {
   segs: [Seg[], Seg[], Seg[]];
   dots: Pt[];
+}
+
+export interface Plan extends Linework {
   /** The window's centre; it is 2·WX by 2·WY. */
   w: Pt;
+  /** Domain geometry, retained for deterministic layout checks and seed replay. */
+  model?: unknown;
+  selectedKind?: string;
+  /** At the end of a journey the selected part has its own physical detail. */
+  detail?: Linework;
+  /** Registered connections landing on actual child contacts inside the inspection frame. */
+  interfaces?: Linework;
 }
 
 /** The area a plan draws in, inside the frame the dive draws round it. */
@@ -36,18 +48,31 @@ export const within = (a: Box, b: Box): boolean => a[0] >= b[0] && a[1] >= b[1] 
 export class Sketch {
   readonly segs: [Seg[], Seg[], Seg[]] = [[], [], []];
   readonly dots: Pt[] = [];
-  readonly win: Box;
+  /** A plan chooses a real part before it draws, rather than cutting an arbitrary hole. */
+  get win(): Box {
+    return [this.w[0] - WX, this.w[1] - WY, this.w[0] + WX, this.w[1] + WY];
+  }
   /** Boxes already used, for `place`; the window is always one. */
   readonly taken: Box[];
   /** The style the plans of one dive share (a silicon dive's era), set by the dive. */
   era = 'modern';
+  model: unknown;
+  selectedKind?: string;
+  keepDetail = false;
+  nextPlan?: Plan;
+  readonly interfaceLinework: [Seg[], Seg[], Seg[]] = [[], [], []];
 
   constructor(
     readonly rng: Rng,
     readonly w: Pt,
   ) {
-    this.win = [w[0] - WX, w[1] - WY, w[0] + WX, w[1] + WY];
     this.taken = [this.win];
+  }
+  select(center: Pt, kind?: string): void {
+    this.w[0] = center[0];
+    this.w[1] = center[1];
+    this.taken[0] = this.win;
+    this.selectedKind = kind;
   }
   r(lo: number, hi: number): number {
     return between(this.rng, lo, hi);
@@ -121,6 +146,8 @@ export class Sketch {
   }
   /** A free w × h box inside `bound`, clear of everything taken by `gap`, or null. */
   place(w: number, h: number, bound: Box = BOUND, gap = 0.04): Box | null {
+    if (![w, h, gap, ...bound].every(Number.isFinite) || gap < 0) return null;
+    if (w <= 0 || h <= 0 || w > bound[2] - bound[0] || h > bound[3] - bound[1]) return null;
     for (let k = 0; k < 60; k++) {
       const x = this.r(bound[0], bound[2] - w);
       const y = this.r(bound[1], bound[3] - h);
@@ -188,39 +215,4 @@ export function partition(S: Sketch, bound: Box, keep: Box | null, size: number)
     split([keep[0], keep[3], keep[2], bound[3]]);
   }
   return out;
-}
-
-/** The parts of a segment outside a box (Liang–Barsky): none, one or two pieces. */
-function outside(s: Seg, [X0, Y0, X1, Y1]: Box): Seg[] {
-  const [x0, y0, x1, y1] = s;
-  const [dx, dy] = [x1 - x0, y1 - y0];
-  let [t0, t1] = [0, 1];
-  for (const [p, q] of [
-    [-dx, x0 - X0],
-    [dx, X1 - x0],
-    [-dy, y0 - Y0],
-    [dy, Y1 - y0],
-  ] as const) {
-    if (p === 0) {
-      if (q < 0) return [s];
-    } else if (p < 0) t0 = Math.max(t0, q / p);
-    else t1 = Math.min(t1, q / p);
-  }
-  if (t0 >= t1) return [s];
-  const at = (t: number): Pt => [x0 + dx * t, y0 + dy * t];
-  const out: Seg[] = [];
-  if (t0 > 1e-6) out.push([x0, y0, ...at(t0)]);
-  if (t1 < 1 - 1e-6) out.push([...at(t1), x1, y1]);
-  return out;
-}
-
-/** The finished plan: everything inside the window cut away, for the next plan to fill. */
-export function finish(S: Sketch): Plan {
-  const clip = (l: Seg[]): Seg[] => l.flatMap((s) => outside(s, S.win));
-  const [x0, y0, x1, y1] = S.win;
-  return {
-    segs: [clip(S.segs[0]), clip(S.segs[1]), clip(S.segs[2])],
-    dots: S.dots.filter(([x, y]) => x < x0 || x > x1 || y < y0 || y > y1),
-    w: S.w,
-  };
 }

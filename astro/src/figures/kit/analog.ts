@@ -41,26 +41,37 @@ export function pads(S: Sketch, sides: readonly number[], size: number, gsg = fa
 
 /** An octagonal spiral inductor at (x, y), r across its outer turn, `turns` turns in, with
  *  the underpass out from its centre. */
-export function spiral(S: Sketch, x: number, y: number, r: number, turns: number): void {
+export function spiral(S: Sketch, x: number, y: number, r: number, turns: number): [Pt, Pt] {
   const pitch = (r * 0.55) / turns;
   const pts: Pt[] = [];
   for (let k = 0; k <= turns * 8; k++) {
     const rad = (r - (k / 8) * pitch) / Math.cos(Math.PI / 8);
-    const a = Math.PI / 8 + (k * Math.PI) / 4;
+    const a = Math.PI + Math.PI / 8 + (k * Math.PI) / 4;
     pts.push([x + Math.cos(a) * rad, y + Math.sin(a) * rad]);
   }
-  for (const w of [0, pitch * 0.45])
-    S.poly(
-      pts.map(([px, py]): Pt => [x + (px - x) * (1 - w / r), y + (py - y) * (1 - w / r)]),
-      1,
-    );
-  const last = pts[pts.length - 1] ?? [x, y];
-  S.seg(last[0], last[1], x + r * 1.15, last[1], 2);
-  S.seg(x + r * 1.15, last[1], x + r * 1.15, y, 2);
+  const edges = [0, pitch * 0.45].map((w) =>
+    pts.map(([px, py]): Pt => [x + (px - x) * (1 - w / r), y + (py - y) * (1 - w / r)]),
+  );
+  for (const edge of edges) S.poly(edge, 1);
+  const a0: Pt = edges[0]?.[0] ?? [x - r, y],
+    a1: Pt = edges[1]?.[0] ?? [x - r, y];
+  const b0: Pt = edges[0]?.at(-1) ?? [x, y],
+    b1: Pt = edges[1]?.at(-1) ?? [x, y];
+  S.seg(...a0, ...a1, 1);
+  S.seg(...b0, ...b1, 1);
+  const first: Pt = [(a0[0] + a1[0]) / 2, (a0[1] + a1[1]) / 2];
+  const last: Pt = [(b0[0] + b1[0]) / 2, (b0[1] + b1[1]) / 2];
+  const terminal: Pt = [x + r, y - r * 0.7];
+  // A different metal layer carries the inner turn underneath the winding. The pair of
+  // contacts identifies the layer change; it never protrudes beyond its reserved box.
+  S.poly([last, [last[0], terminal[1]], terminal], 2);
+  contact(S, last[0], last[1], r * 0.035);
+  contact(S, terminal[0], terminal[1], r * 0.035);
+  return [first, terminal];
 }
 
 /** A resistor meander filling box b: n legs, up and down, joined at alternate ends. */
-export function meander(S: Sketch, b: Box, n: number): void {
+export function meander(S: Sketch, b: Box, n: number): [Pt, Pt] {
   const [x0, y0, x1, y1] = b;
   const pts: Pt[] = [];
   for (let i = 0; i < n; i++) {
@@ -78,15 +89,24 @@ export function meander(S: Sketch, b: Box, n: number): void {
     );
   }
   S.poly(pts, 1);
-  contact(S, pts[0]?.[0] ?? x0, (pts[0]?.[1] ?? y0) - 0.015, 0.008);
+  const terminals: [Pt, Pt] = [pts[0] ?? [x0, y0], pts[pts.length - 1] ?? [x1, y1]];
+  for (const p of terminals) contact(S, ...p, Math.min(0.008, ((x1 - x0) / n) * 0.15));
+  return terminals;
 }
 
 /** A capacitor: a top plate over a larger bottom plate, a grid of vias on the top. */
-export function capacitor(S: Sketch, b: Box): void {
-  S.rect(inset(b, -0.015), 2);
-  S.rect(b, 1);
+export function capacitor(S: Sketch, b: Box): [Pt, Pt] {
+  S.rect(b, 2);
+  S.rect(inset(b, 0.015), 1);
   for (let x = b[0] + 0.03; x < b[2] - 0.01; x += 0.04)
-    for (let y = b[1] + 0.03; y < b[3] - 0.01; y += 0.04) S.dot(x, y);
+    for (let y = b[1] + 0.03; y < b[3] - 0.03; y += 0.04) S.dot(x, y);
+  const mid = (b[1] + b[3]) / 2;
+  const terminals: [Pt, Pt] = [
+    [b[0], mid],
+    [b[2], mid],
+  ];
+  S.seg(b[0], mid, b[0] + 0.015, mid, 1);
+  return terminals;
 }
 
 /** A bipolar transistor, s across: the collector, the base inside it, the emitter inside
@@ -102,22 +122,8 @@ export function bjt(S: Sketch, x: number, y: number, s: number): [Pt, Pt, Pt] {
   return [c, b, e];
 }
 
-/** Transistor fingers in box b, n of them, gates shared in a common-centroid order (A B B
- *  A ...): A's gates strapped above, B's below, contacts between. */
-export function fingers(S: Sketch, b: Box, n: number): void {
-  const [x0, y0, x1, y1] = b;
-  const d: Box = [x0, y0 + (y1 - y0) * 0.25, x1, y1 - (y1 - y0) * 0.25];
-  S.rect(d, 2);
-  const pitch = (x1 - x0) / n;
-  for (let i = 0; i < n; i++) {
-    const x = x0 + pitch * (i + 0.5);
-    const a = [0, 3].includes(i % 4);
-    S.seg(x, a ? y0 : d[1], x, a ? d[3] : y1, 1);
-    if (i < n - 1) contact(S, x + pitch / 2, (d[1] + d[3]) / 2, Math.min(0.01, pitch * 0.15));
-  }
-  S.seg(x0, y0, x1, y0, 0);
-  S.seg(x0, y1, x1, y1, 0);
-}
+export { fingers } from './chip-matched-fingers';
+export type { MatchedFingers } from './chip-matched-fingers';
 
 /** A guard ring round box b: two rings with a row of contacts between. */
 export function guard(S: Sketch, b: Box): void {

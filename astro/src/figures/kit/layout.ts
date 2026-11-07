@@ -23,6 +23,8 @@ const shift = (b: Box, dx: number, dy: number): Box => [b[0] + dx, b[1] + dy, b[
 export class Layout {
   /** Every box committed so far, keep-outs first; read by tests. */
   readonly placed: Box[] = [];
+  /** Physical obstacles only; rugs and floor inlays may sit below another piece. */
+  readonly solids: Box[] = [];
   private readonly keep: Box[];
 
   constructor(
@@ -67,7 +69,10 @@ export class Layout {
     });
     const at = shift(b, dx, dy);
     this.placed.push(at);
-    if (solid) this.keep.push(at);
+    if (solid) {
+      this.keep.push(at);
+      this.solids.push(at);
+    }
     return at;
   }
 }

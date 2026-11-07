@@ -103,3 +103,17 @@ alongside monochrome. Its material/light tokens live in `roomTones` and the
 monochrome audit strict and verify full colour with the dedicated room checks;
 never broaden the global palette or thresholds to accommodate this exception.
 Store new rules, verification scripts and playbook updates with the feature.
+
+## Seeded zoom-dive work
+
+For `zoom-dive` and its chip, map, architectural and transition kernels, read
+`.claude/skills/deepdive-agent/SKILL.md` and `astro/docs/deepdive.md` alongside
+the figure skill. The 7 November 2026 request explicitly authorizes updating the
+kit, creating domain kernels and maintaining their agent/playbooks/checks.
+Generate physical structure before drawing: terminals and nets, streets and
+parcels, rooms and circulation, one terrain elevation field. Select a complete
+part for the next view. Run `npm run deepdive:selftest`, `deepdive:check`,
+`deepdive:browser` and `deepdive:gallery`; read the contact sheets. A generated
+sheet is evidence to review, not an automatic visual pass. Do not loosen the
+generic figure thresholds. Record failures with their public seed or isolated
+plan salt and add a regression before calling them fixed.

@@ -98,9 +98,28 @@ export const PIECES = {
     p.rect(-0.2, -0.35, 0.2, -0.15, 1);
     p.circle(0, 0.08, 0.2);
   },
+  cubicle: (p: Piece, width: number): void => {
+    const h = width / 2;
+    p.seg(-h, -0.75, h, -0.75, 1);
+    p.seg(-h, -0.75, -h, 0.75, 1);
+    p.seg(h, -0.75, h, 0.75, 1);
+    p.seg(-h, 0.75, -0.32, 0.75, 1);
+    p.seg(0.32, 0.75, h, 0.75, 1);
+    p.seg(-0.32, 0.75, -0.32, 0.11, 1);
+    p.circle(-0.32, 0.75, 0.64, 2, -Math.PI / 2, 0);
+    p.rect(-0.2, -0.65, 0.2, -0.45, 1);
+    p.circle(0, -0.22, 0.2);
+  },
   basin: (p: Piece): void => {
     p.rect(-0.3, -0.25, 0.3, 0.2, 1);
     p.circle(0, -0.02, 0.14);
+  },
+  shower: (p: Piece): void => {
+    p.rect(-0.48, -0.48, 0.48, 0.48, 1);
+    p.rect(-0.4, -0.4, 0.4, 0.4);
+    p.circle(0.22, -0.22, 0.035);
+    p.seg(-0.4, 0.4, 0.4, -0.4);
+    p.seg(-0.32, -0.45, -0.08, -0.45, 1);
   },
   desk: (p: Piece): void => {
     p.rect(-0.7, -0.35, 0.7, 0.35, 1);
@@ -127,14 +146,21 @@ export const PIECES = {
 /** Lay out room r for what it is for, M plan units to a metre, keeping every piece clear
  *  of the boxes in `keepOut` (the door's swing) and of each other (`kit/layout.ts`).
  *  Returns the layout, so a test can check what it placed. */
-export function furnish(S: Sketch, r: Box, room: Room, M = METRE, keepOut: readonly Box[] = []): Layout {
+export function furnish(
+  S: Sketch,
+  r: Box,
+  room: Room,
+  M = METRE,
+  keepOut: readonly Box[] = [],
+  overview = false,
+): Layout {
   const [x0, y0, x1, y1] = r;
   const [w, h] = [(x1 - x0) / M, (y1 - y0) / M];
   const [cx, cy] = [(x0 + x1) / 2, (y0 + y1) / 2];
   const L = new Layout(S, r, keepOut);
   /** Place a piece at (x, y), turned, drawn by `draw`. */
   const put = (x: number, y: number, turn: number, draw: (p: Piece) => void, solid = true): void => {
-    L.put((B) => draw(new Piece(B, x, y, turn, M)), solid);
+    L.put((B) => draw(new Piece(B, x, y, turn, M, overview)), solid);
   };
   const fits = (mw: number, mh: number): boolean => w >= mw && h >= mh;
   if (room === 'bedroom') {
@@ -155,19 +181,23 @@ export function furnish(S: Sketch, r: Box, room: Room, M = METRE, keepOut: reado
     put(cx, room === 'kitchen' ? cy + 0.5 * M : cy, 0, (p) => PIECES.table(p, seats, round));
   } else if (room === 'bath' || room === 'wc') {
     if (room === 'bath' && fits(2, 1.6)) put(cx, y0 + 0.45 * M, 0, PIECES.bath);
-    const n = room === 'wc' ? Math.max(1, Math.floor(w / 0.9)) : 1;
+    const n = room === 'wc' ? Math.min(6, Math.max(1, Math.floor(w))) : 1;
     for (let i = 0; i < n; i++) {
       const x = x0 + (i + 0.5) * (w / n) * M;
-      put(x, y1 - 0.4 * M, 2, PIECES.toilet);
-      if (room === 'wc' && i < n - 1)
-        L.put((B) => B.seg(x + (w / n / 2) * M, y1, x + (w / n / 2) * M, y1 - 1.2 * M, 2));
+      if (room === 'wc') put(x, y1 - 0.8 * M, 2, (p) => PIECES.cubicle(p, w / n - 0.05));
+      else put(x, y1 - 0.4 * M, 2, PIECES.toilet);
     }
     put(x0 + 0.4 * M, cy, 3, PIECES.basin);
+    if (room === 'bath' && fits(2.8, 3.3)) {
+      put(x1 - 0.6 * M, y1 - 0.6 * M, 0, PIECES.shower);
+      L.put((B) => B.rect([x1 - 0.4 * M, y0 + 1.4 * M, x1 - 0.1 * M, y0 + 2.2 * M], 2));
+    }
   } else if (room === 'study' || room === 'office') {
-    const cols = room === 'study' ? 1 : Math.max(1, Math.floor((w - 0.6) / 1.6));
-    const rows = room === 'study' ? 1 : Math.max(1, Math.floor((h - 0.6) / 1.6));
+    // A workstation includes its chair and an aisle: a desk pitch alone is not circulation.
+    const cols = room === 'study' ? 1 : Math.max(1, Math.floor((w - 0.8) / 2.25));
+    const rows = room === 'study' ? 1 : Math.max(1, Math.floor((h - 1) / 2.4));
     for (let i = 0; i < cols; i++)
-      for (let j = 0; j < rows; j++) put(x0 + (0.9 + i * 1.6) * M, y0 + (0.6 + j * 1.6) * M, 0, PIECES.desk);
+      for (let j = 0; j < rows; j++) put(x0 + (1.05 + i * 2.25) * M, y0 + (0.6 + j * 2.4) * M, 0, PIECES.desk);
     if (room === 'study') L.put((B) => B.rect([x1 - 0.35 * M, y0 + 0.1 * M, x1 - 0.05 * M, y1 - 0.1 * M], 1));
   } else if (room === 'meeting') {
     const seats = Math.max(4, Math.min(10, Math.floor((w - 1.4) / 0.64) * 2));

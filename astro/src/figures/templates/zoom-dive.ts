@@ -1,12 +1,18 @@
 import { defineTemplate } from '../defineTemplate';
-import { ink } from '../kit/ink';
-import { city, district, region } from '../kit/maps';
-import { block, building, floor } from '../kit/rooms';
-import { smoothstep } from '../kit/motion';
-import { between, mulberry32, pick } from '../kit/rng';
-import { cell, core, die, pkg } from '../kit/dies';
-import { board, rack } from '../kit/silicon';
-import { A, finish, R, Sketch, type Plan, type Pt } from '../kit/sketch';
+import {
+  diveCamera,
+  journeyOpacity,
+  paintDiveLevel,
+  CHAINS,
+  levelKind,
+  makeDivePlan,
+  nestConnections,
+  type NestConnection,
+  type DiveChain,
+  type DiveEra,
+} from '../kit/dive';
+import { between, pick } from '../kit/rng';
+import { R, type Plan } from '../kit/sketch';
 
 /** Powers of ten without scrolling: an endless dive through nested plans drawn as traces.
  *  Each level is a drawing of the real thing, seeded: a row of racks, a motherboard, a
@@ -16,28 +22,8 @@ import { A, finish, R, Sketch, type Plan, type Pt } from '../kit/sketch';
  *  until it fills the frame, which is then the next level, and the chain loops. Fine detail
  *  fades in as a level grows. The pointer slows the dive. */
 
-const CHAINS = {
-  silicon: [
-    ['rack', rack],
-    ['board', board],
-    ['package', pkg],
-    ['die', die],
-    ['core', core],
-    ['cell', cell],
-  ],
-  city: [
-    ['region', region],
-    ['city', city],
-    ['district', district],
-    ['block', block],
-    ['building', building],
-    ['floor', floor],
-  ],
-} as const;
-type Chain = keyof typeof CHAINS;
-
 /** The silicon dive's era: a sparse analog or RF test chip, a bipolar die like the 741, a
- *  1970s NMOS die like the 4004, or a modern one; the test chip, the simplest, most often. */
+ *  1970s NMOS die like the 6502, or a modern one; the test chip, the simplest, most often. */
 const ERAS = ['testchip', 'testchip', 'bipolar', 'nmos', 'modern', 'modern'] as const;
 
 const ERA_ALT: Record<(typeof ERAS)[number], string> = {
@@ -48,8 +34,8 @@ const ERA_ALT: Record<(typeof ERAS)[number], string> = {
 };
 
 interface P {
-  chain: Chain;
-  era: (typeof ERAS)[number];
+  chain: DiveChain;
+  era: DiveEra;
   /** Which level of the chain the dive starts at. */
   start: number;
   speed: number;
@@ -58,22 +44,7 @@ interface P {
 interface S {
   u: number;
   cache: Map<number, Plan>;
-}
-
-const at = (chain: Chain, n: number): (typeof CHAINS)[Chain][number] => {
-  const kinds = CHAINS[chain];
-  return kinds[((n % kinds.length) + kinds.length) % kinds.length] ?? kinds[0];
-};
-
-/** Level n's plan, the same every time it is asked for. The window sits off-centre so each
- *  dive drifts, never straight down the middle. */
-function plan(chain: Chain, n: number, salt: number, era: string): Plan {
-  const rng = mulberry32((salt + n * 7919) >>> 0);
-  const w: Pt = [between(rng, -A * 0.45, A * 0.45), between(rng, -0.45, 0.45)];
-  const S = new Sketch(rng, w);
-  S.era = era;
-  at(chain, n)[1](S);
-  return finish(S);
+  links: Map<number, NestConnection | null>;
 }
 
 export default defineTemplate<P, S>({
@@ -93,68 +64,39 @@ export default defineTemplate<P, S>({
   }),
   name: (p) => (p.chain === 'silicon' ? `${p.era} silicon dive` : 'city dive'),
   alt: (p) =>
-    `An endless zoom through nested line drawings${p.chain === 'silicon' ? ` of ${ERA_ALT[p.era]}` : ''}, ${CHAINS[p.chain].map((k) => k[0]).join(', ')}, each with one part outlined in teal that opens into the next level.`,
-  setup: ({ params }) => ({ u: params.start + 0.35, cache: new Map() }),
-  draw: ({ ctx, w, h, dt, hover, pointer, params, state }) => {
+    `An endless zoom through nested line drawings${p.chain === 'silicon' ? ` of ${ERA_ALT[p.era]}` : ''}, ${CHAINS[p.chain].map((k) => k[0]).join(', ')}, each with one part outlined in teal that opens into the next level. The smallest view finishes its own physical detail, then dissolves into a fresh journey.`,
+  setup: ({ params }) => ({ u: params.start + 0.35, cache: new Map(), links: new Map() }),
+  draw: ({ ctx, w, h, dt, hover, pointer, params, state, unseen }) => {
     state.u += dt * params.speed * (1 - 0.85 * hover);
+    if (unseen) return;
     const n = Math.floor(state.u);
-    const f = state.u - n;
     const level = (k: number): Plan => {
       const hit = state.cache.get(k);
       if (hit) return hit;
-      const made = plan(params.chain, k, params.salt, params.era);
-      if (state.cache.size > 12) state.cache.clear();
+      const made = makeDivePlan(params.chain, k, params.salt, params.era);
+      for (const key of state.cache.keys()) if (key < n - 2 || key > n + 3) state.cache.delete(key);
       state.cache.set(k, made);
       return made;
     };
-    // Zoom about the fixed point that carries level n's window onto the whole frame.
-    const S = Math.pow(R, f);
-    const here = level(n);
-    const [qx, qy] = [(here.w[0] * R) / (R - 1), (here.w[1] * R) / (R - 1)];
-    const U = Math.min(w / (2 * A), h / 2) * 0.92;
-    // Level n + d's points map into level n's frame through each window in turn.
-    const toScreen = (d: number, x: number, y: number): Pt => {
-      let [px, py] = [x, y];
-      for (let k = d - 1; k >= 0; k--) {
-        const lk = level(n + k);
-        [px, py] = [lk.w[0] + px / R, lk.w[1] + py / R];
-      }
-      if (d < 0) {
-        const up = level(n - 1);
-        [px, py] = [(px - up.w[0]) * R, (py - up.w[1]) * R];
-      }
-      return [w / 2 + (qx + (px - qx) * S) * U, h / 2 + (qy + (py - qy) * S) * U];
+    const { scale, toScreen } = diveCamera(level, state.u, w, h);
+    const link = (k: number): NestConnection | null => {
+      if (params.chain !== 'city' || !['block', 'building'].includes(levelKind(params.chain, k)[0])) return null;
+      const hit = state.links.get(k);
+      if (hit !== undefined) return hit;
+      const made = nestConnections(level(k), level(k + 1));
+      for (const key of state.links.keys()) if (key < n - 2 || key > n + 3) state.links.delete(key);
+      state.links.set(k, made);
+      return made;
     };
     for (let d = -1; d <= 2; d++) {
-      const size = S * Math.pow(R, -d);
-      const a = smoothstep(0.04, 0.3, size) * (1 - smoothstep(3, 7, size));
-      if (a <= 0.01) continue;
-      const L = level(n + d);
-      // Bold, mid and fine lines; the fine ones only once the level is near full size.
-      const near = smoothstep(0.25, 0.8, size);
-      const tones = [0.5 * a, 0.34 * a * (0.55 + 0.45 * near), 0.2 * a * near];
-      L.segs.forEach((segs, k) => {
-        if ((tones[k] ?? 0) < 0.01) return;
-        ctx.strokeStyle = ink.line(tones[k] ?? 0);
-        ctx.beginPath();
-        for (const [x0, y0, x1, y1] of segs) {
-          const [p0, p1] = [toScreen(d, x0, y0), toScreen(d, x1, y1)];
-          ctx.moveTo(p0[0], p0[1]);
-          ctx.lineTo(p1[0], p1[1]);
-        }
-        ctx.stroke();
-      });
-      ctx.fillStyle = ink.line(0.4 * a * near);
-      for (const [x, y] of L.dots) {
-        const p = toScreen(d, x, y);
-        ctx.fillRect(Math.round(p[0]) - 1, Math.round(p[1]) - 1, 2, 2);
-      }
-      // The window into the next level: the one lit part of each plan.
-      const [wx, wy] = L.w;
-      const [p0, p1] = [toScreen(d, wx - A / R, wy - 1 / R), toScreen(d, wx + A / R, wy + 1 / R)];
-      ctx.strokeStyle = d === 0 ? ink.signal(0.95) : ink.signal(0.35 * a);
-      ctx.strokeRect(p0[0], p0[1], p1[0] - p0[0], p1[1] - p0[1]);
+      const size = scale * Math.pow(R, -d);
+      const opacity = journeyOpacity(n + d, state.u);
+      if (opacity <= 0) continue;
+      ctx.save();
+      ctx.globalAlpha = opacity;
+      paintDiveLevel(ctx, level(n + d), d, size, toScreen, link(n + d));
+      ctx.restore();
     }
-    return pointer.active ? at(params.chain, n)[0] : 'rest';
+    return pointer.active ? `${levelKind(params.chain, n)[0]} · ${level(n).selectedKind ?? 'detail'}` : 'rest';
   },
 });

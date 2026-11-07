@@ -1,3 +1,6 @@
+import { chipDetails } from './chip-detail';
+import { chipFrame, chipPart, chipPlan, chipWire, type ChipPlan } from './chip-plan';
+import { chipDecoupling, wireDecoupling } from './chip-power';
 import { BOUND, inset, WX, type Box, type Sketch } from './sketch';
 
 /** The outer half of the silicon chain of plans for a zoom dive (`kit/sketch.ts`), each the
@@ -5,7 +8,8 @@ import { BOUND, inset, WX, type Box, type Sketch } from './sketch';
  *  rest is `kit/dies.ts`. Every part is seeded, so no two dives draw the same rack. */
 
 /** One unit on a rack's front: drive bays, vents, ports or fans, by kind. */
-function unit(S: Sketch, b: Box, kind: number): void {
+function unit(S: Sketch, b: Box, kind: number, plan: ChipPlan, id: string): void {
+  chipPart(plan, id, ['drive-bays', 'vent', 'switch', 'fans', 'blank-panel'][kind] ?? 'server', b);
   const [x0, y0, x1, y1] = b;
   const h = y1 - y0;
   S.rect(b, kind === 4 ? 2 : 1);
@@ -35,9 +39,12 @@ function unit(S: Sketch, b: Box, kind: number): void {
 
 /** A row of racks seen from the front; the window is one server in the middle one. */
 export function rack(S: Sketch): void {
+  S.select([0, 0.05], 'board');
+  const plan = chipPlan(S, 'rack');
+  chipPart(plan, 'server', 'server', S.win, true);
   const wx = S.w[0];
   const rw = WX * 2 + 0.16;
-  const U = 0.044;
+  const U = 0.05;
   for (let k = -3; k <= 3; k++) {
     const [x0, x1] = [wx - rw / 2 + k * (rw + 0.06), wx + rw / 2 + k * (rw + 0.06)];
     if (x1 < BOUND[0] + 0.16 || x0 > BOUND[2] - 0.16) continue;
@@ -67,115 +74,60 @@ export function rack(S: Sketch): void {
         y = top + 0.006;
         continue;
       }
-      unit(S, [x0 + 0.06, y, x1 - 0.06, y + units * U - 0.006], kind);
+      unit(S, [x0 + 0.06, y, x1 - 0.06, y + units * U - 0.006], kind, plan, `rack${k}-unit${Math.round(y * 1000)}`);
       y += units * U;
     }
   }
 }
 
-/** A small part on a board: a QFP with legs, or a BGA with balls, with pin 1 marked. */
-function part(S: Sketch, b: Box): void {
-  S.rect(b, 1);
-  const [x0, y0, x1, y1] = b;
-  S.dot(x0 + 0.02, y0 + 0.02);
-  if (S.chance(0.5))
-    for (let u = 0.15; u < 0.9; u += 0.12) {
-      S.seg(x0 + (x1 - x0) * u, y0, x0 + (x1 - x0) * u, y0 - 0.015, 2);
-      S.seg(x0 + (x1 - x0) * u, y1, x0 + (x1 - x0) * u, y1 + 0.015, 2);
-    }
-  else S.rect(inset(b, 0.02), 2);
-}
-
-/** A motherboard: the processor socket is the window, memory slots on its roomy side, power
- *  stages above or below it, expansion slots, rear I/O and smaller parts placed clear of each
- *  other, with buses running into the socket. */
+/** A motherboard uses a deliberate architecture: processor socket, memory channels,
+ * VRM bank, edge IO, chipset and expansion connectors. Every drawn bus is a routed net
+ * between corresponding boundary contacts, rather than an anonymous dangling bundle. */
 export function board(S: Sketch): void {
-  const [x0, y0, x1, y1] = BOUND;
-  const c = 0.08;
-  S.poly(
-    [
-      [x0 + c, y0],
-      [x1 - c, y0],
-      [x1, y0 + c],
-      [x1, y1 - c],
-      [x1 - c, y1],
-      [x0 + c, y1],
-      [x0, y1 - c],
-      [x0, y0 + c],
-    ],
-    0,
-    true,
-  );
+  S.select([S.r(-0.37, -0.22), S.r(-0.12, -0.04)], 'package');
+  const plan = chipPlan(S, 'board');
+  chipFrame(S);
+  const socket = chipPart(plan, 'socket', 'socket', S.win, true);
+  socket.pinGroups = [['socket:n2', 'socket:s3']];
+  S.rect(inset(S.win, -0.045), 1);
   for (const [x, y] of [
-    [x0 + 0.1, y0 + 0.1],
-    [x1 - 0.1, y0 + 0.1],
-    [x0 + 0.1, y1 - 0.1],
-    [x1 - 0.1, y1 - 0.1],
+    [-1.73, -0.77],
+    [1.73, -0.77],
+    [-1.73, 0.77],
+    [1.73, 0.77],
   ] as const)
-    S.circle(x, y, 0.03, 1);
-  const sock = inset(S.win, -0.05);
-  S.rect(sock, 1);
-  S.taken[0] = inset(sock, -0.03);
-  for (const [x, y] of [
-    [sock[0], sock[1]],
-    [sock[2], sock[1]],
-    [sock[0], sock[3]],
-    [sock[2], sock[3]],
-  ] as const)
-    S.circle(x, y, 0.02, 2);
-  // Memory: slots on whichever side has more room, a bus from the socket to them.
-  const right = S.w[0] < 0;
-  const n = S.int(4, 8);
-  const yA = Math.max(y0 + 0.06, S.w[1] - 0.45);
-  const yB = Math.min(y1 - 0.06, S.w[1] + 0.45);
-  for (let i = 0; i < n; i++) {
-    const x = right ? sock[2] + 0.2 + i * 0.07 : sock[0] - 0.2 - i * 0.07;
-    S.rect([x - 0.016, yA, x + 0.016, yB], 1);
-    S.seg(x - 0.016, yA + (yB - yA) * 0.4, x + 0.016, yA + (yB - yA) * 0.4, 2);
-    S.taken.push([x - 0.03, yA, x + 0.03, yB]);
+    S.circle(x, y, 0.025, 1);
+  const count = S.int(2, 4);
+  for (let i = 0; i < count; i++) {
+    const y = -0.63 + i * 0.17;
+    chipPart(plan, `dimm${i}`, 'dimm', [0.65, y, 1.55, y + 0.065]);
   }
-  for (let i = 0; i < 8; i++) {
-    const y = S.w[1] - 0.14 + i * 0.04;
-    S.seg(right ? sock[2] : sock[0], y, right ? sock[2] + 0.184 : sock[0] - 0.184, y, 2);
-  }
-  // Power stages: chokes and capacitors in a row along the socket.
-  const up = S.win[1] - 0.24 > y0;
-  const vy = up ? sock[1] - 0.12 : sock[3] + 0.06;
-  for (let x = sock[0]; x < sock[2] - 0.06; x += 0.09) {
-    S.rect([x, vy, x + 0.06, vy + 0.06], 1);
-    S.circle(x + 0.03, vy + 0.03, 0.018, 2);
-    S.circle(x + 0.03, up ? vy - 0.04 : vy + 0.1, 0.016, 2);
-  }
-  S.taken.push([sock[0], up ? vy - 0.06 : vy, sock[2], up ? vy + 0.06 : vy + 0.12]);
-  for (let i = 0; i < 3; i++) {
-    const b = S.place(S.r(0.8, 1.2), 0.04);
-    if (!b) continue;
-    S.rect(b, 1);
-    S.seg(b[0] + (b[2] - b[0]) * 0.3, b[1], b[0] + (b[2] - b[0]) * 0.3, b[3], 2);
-  }
-  for (let i = 0; i < S.int(5, 10); i++) {
-    const s = S.r(0.08, 0.24);
-    const b = S.place(s, s * S.r(0.7, 1.3));
-    if (!b) continue;
-    part(S, b);
-    // Its bus: along x towards the socket, then down or up into it.
-    const [cx, cy] = [(b[0] + b[2]) / 2, (b[1] + b[3]) / 2];
-    for (let k = -1; k <= 1; k++) {
-      const [ex, ey] = [cx + k * 0.016, cy + k * 0.016];
-      const tx = S.w[0] + (ex - S.w[0]) * 0.2;
-      S.poly(
-        [
-          [cx < S.w[0] ? b[2] : b[0], ey],
-          [tx, ey],
-          [tx, S.w[1]],
-        ],
-        2,
-      );
-    }
-    S.dot(cx < S.w[0] ? b[2] + 0.02 : b[0] - 0.02, cy);
-  }
-  for (let i = 0; i < 40; i++) {
-    const b = S.place(0.03, 0.016, BOUND, 0.01);
-    if (b) S.rect(b, 2);
-  }
+  const parts: [string, string, Box][] = [
+    ['vrm', 'vrm', [-1.12, -0.72, 0.2, -0.53]],
+    ['power', 'io', [0.7, 0.15, 1.55, 0.25]],
+    ['chipset', 'logic', [-1.18, 0.3, -0.65, 0.71]],
+    ['io0', 'io', [-1.67, -0.65, -1.47, -0.1]],
+    ['io1', 'io', [-1.67, 0.05, -1.47, 0.6]],
+    ['pcie0', 'pcie', [-0.35, 0.52, 1.35, 0.61]],
+    ['pcie1', 'pcie', [-0.35, 0.72, 1.35, 0.81]],
+  ];
+  for (const [id, kind, box] of parts) chipPart(plan, id, kind, box);
+  const vrm = plan.components.find((c) => c.id === 'vrm');
+  if (vrm) vrm.pinGroups = [['vrm:s1', 'vrm:s2', 'vrm:s3']];
+  const caps = plan.lanes === 8 ? 8 : 6;
+  chipDecoupling(plan, 'core-power', [-0.5, 0.27, 0.47, 0.45], caps);
+  for (let i = 0; i < count; i++) chipWire(S, plan, `socket:e${i % 2 ? 3 : 1}`, `dimm${i}:w2`, 2);
+  chipWire(S, plan, 'power:w2', 'vrm:e2', 1);
+  chipWire(S, plan, 'vrm:s2', 'socket:n2', 1);
+  chipWire(S, plan, 'io0:e2', 'socket:w1', 2);
+  chipWire(S, plan, 'io1:e2', 'chipset:w2', 2);
+  chipWire(S, plan, 'chipset:n2', 'socket:s1', 2);
+  chipWire(S, plan, 'chipset:e1', 'pcie0:w2', 2);
+  chipWire(S, plan, 'chipset:e3', 'pcie1:w2', 2);
+  chipWire(S, plan, 'vrm:s3', 'core-power-vdd:w2', 1);
+  chipWire(S, plan, 'power:e2', 'core-power-vss:e2', 1);
+  chipWire(S, plan, 'socket:s3', 'core-power-vdd:n2', 1);
+  chipWire(S, plan, 'socket:s2', 'core-power-vss:w2', 1);
+  wireDecoupling(S, plan, 'core-power', caps);
+  chipDetails(S, plan);
 }
