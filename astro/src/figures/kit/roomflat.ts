@@ -1,4 +1,3 @@
-import { roomClip } from './roomclip';
 import { poly } from './draw';
 import { ink, mix, roomTone } from './ink';
 import { roomPaint } from './roompaint';
@@ -8,6 +7,7 @@ import { flatRoomTexture } from './roomflattexture';
 import { tableFinish } from './tablefinish';
 import { sceneModels } from './roomscene';
 import { roomProject, roomView, roomVisible } from './roomview';
+import { flatRoomSurfaces } from './roomflatorder';
 import type { TableScene } from './tabletop';
 import type { Vec3 } from './camera';
 import type { Pointer } from '../types';
@@ -43,52 +43,7 @@ export function flatRoom(
 ): string {
   const view = roomView(p, w, h, data),
     models = sceneModels(p);
-  const visible = models.map(
-    (s) => !s.side || (s.cutaway ? !roomVisible(p, s.side, view, s.mount) : roomVisible(p, s.side, view, s.mount)),
-  );
-  const surfaces = models.flatMap((s, index) =>
-    visible[index]
-      ? s.model.surfaces.map((surface) => ({
-          surface,
-          index,
-          points: roomClip(view, surface.points, surface.face).map((v) => roomProject(view, v)),
-          layer: s.support
-            ? -3.5
-            : s.mount === 'floor'
-              ? 2
-              : s.side === 'floor'
-                ? -4 + surface.solid * 0.00001
-                : s.kind === 'room'
-                  ? s.interactive
-                    ? -1
-                    : -3 + surface.solid * 0.00001
-                  : s.kind === 'table'
-                    ? surface.points.every((q) => q[1] < -0.01)
-                      ? -0.1
-                      : surface.points.some((q) => q[1] > 0.025)
-                        ? 0.1
-                        : 0
-                    : 1,
-        }))
-      : [],
-  );
-  const clipped = surfaces.filter((s) => {
-    if (s.points.length < (s.surface.face ? 3 : 2)) return false;
-    if (!s.surface.face) return true;
-    // Outward normals give clockwise screen winding for a visible face. Omitting
-    // back faces keeps a curved underside from painting over its own tabletop.
-    const area = s.points.reduce((sum, a, i) => {
-      const b = s.points[(i + 1) % s.points.length];
-      return sum + (b ? a[0] * b[1] - b[0] * a[1] : 0);
-    }, 0);
-    return area < 0;
-  });
-  clipped.sort(
-    (a, b) =>
-      a.layer - b.layer ||
-      a.points.reduce((n, q) => n + q[2] / a.points.length, 0) -
-        b.points.reduce((n, q) => n + q[2] / b.points.length, 0),
-  );
+  const clipped = flatRoomSurfaces(p, models, view);
   const pick = (x: number, y: number): number => {
     const hit = clipped.findLast((s) => s.surface.face && inside(s.points, x, y));
     return hit && models[hit.index]?.interactive ? hit.index : -1;
@@ -97,7 +52,11 @@ export function flatRoom(
   if (pointer.active && selected < 0) {
     const candidates = models
       .flatMap((s, i) => {
-        if (!s.interactive || !visible[i]) return [];
+        if (
+          !s.interactive ||
+          (s.side && !(s.cutaway ? !roomVisible(p, s.side, view, s.mount) : roomVisible(p, s.side, view, s.mount)))
+        )
+          return [];
         const { lo, hi } = s.model.bounds,
           q = roomProject(view, [(lo[0] + hi[0]) / 2, (lo[1] + hi[1]) / 2, (lo[2] + hi[2]) / 2]);
         return [{ i, q, distance: Math.hypot(q[0] - pointer.x * w, q[1] - pointer.y * h) }];
@@ -134,7 +93,13 @@ export function flatRoom(
             )
           : mix('ground', finish.tone, shade(surface.points) * Math.sqrt(finish.strength));
       ctx.fill();
-      if (coloured && !active) flatRoomTexture(ctx, surface, view, paint.pattern);
+      if (coloured && !active) {
+        ctx.save();
+        poly(ctx, points, true);
+        ctx.clip();
+        flatRoomTexture(ctx, surface, view, paint.pattern);
+        ctx.restore();
+      }
     } else {
       ctx.strokeStyle = active ? ink.signal(0.85) : ink.faint(s.kind === 'room' ? 0.25 : 0.5);
       ctx.stroke();

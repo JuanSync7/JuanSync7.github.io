@@ -6,7 +6,22 @@ import type { RoomPart } from './tableroom';
 export function roomCeiling(p: TableScene): RoomPart[] {
   const r = roomPlan(p),
     t = p.theme.id;
+  const pendant = t === 'dining' || t === 'bar';
+  const clinical = t === 'lab' || t === 'kitchen' || t === 'storage';
+  const mountTop = r.top - (pendant ? 0.07 : 0.1);
+  const end = pendant ? 0.125 : 1.1 + (clinical ? 1.5 : 0.19);
   return [
+    placedRoomPart(
+      'Ceiling fixture mounting rails',
+      'back',
+      'wall',
+      (q) =>
+        q.material('metal', () => {
+          for (const x of [-1.45, 1.45])
+            q.box(x, mountTop, (r.back + end) / 2, 0.085, r.top - mountTop, end - r.back, 0.008);
+        }),
+      { x: 0, y: 0, z: 0 },
+    ),
     placedRoomPart(
       ['dining', 'bar'].includes(t) ? 'Suspended pendant cluster' : 'Architectural task luminaire',
       'back',
@@ -34,7 +49,6 @@ export function roomCeiling(p: TableScene): RoomPart[] {
             q.material('light', () => q.cylinder(x, 2.27, 0, 0.16, 0.025, 12));
           }
         } else {
-          const clinical = t === 'lab' || t === 'kitchen' || t === 'storage';
           q.material('metal', () => {
             const n = clinical ? 2 : 1;
             for (let i = 0; i < n; i++)

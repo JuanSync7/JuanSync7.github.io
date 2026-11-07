@@ -1,3 +1,11 @@
+## 2026-11-07 — Shelf support correction
+
+- Rebuilt wall shelves as backed cases and placed book/box contents from actual shelf tops, including tall cabinets and the controller display.
+- Added cupboard fixing cleats against the actual recessed wall surface, attached cabinet lights to their units, added wall-connected ceiling-light rails, and modelled pegboard standoffs and dining plant ledges.
+- Added independent support-face and attachment-path checks with six mutations that must fail; wired them into the existing geometry CI command.
+- Corrected fallback assembly occlusion with cached BSP geometry, fragment-clipped textures and independent native-ray visibility checks; the old mean-depth painter is a rejected fixture.
+- Updated the room rules, visual checklist, kernel index and documentation for the reported floating shelves.
+
 # Changelog
 
 ## 2026-11-07 — Apply room appearance to previews

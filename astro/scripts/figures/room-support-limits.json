@@ -1,0 +1,5 @@
+{
+  "note": "Shelf bases must touch actual upward faces within numeric tolerance. Thin picture/window/door mounting details may stand off at most 0.04 model units (about 18 mm); projecting fixtures need an attached support. Added for the reported floating shelves and unsupported ceiling fittings.",
+  "contactTolerance": 0.0000001,
+  "wallStandOffMax": 0.04
+}

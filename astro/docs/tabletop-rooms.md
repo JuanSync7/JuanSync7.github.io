@@ -53,6 +53,8 @@ then measured. Distinct furniture must have disjoint physical bounds. Thin rugs
 are declared supports for furniture contact; that declaration does not permit two
 separate textiles to overlap. Textile bounds include borders and fringe.
 
+Wall shelves have solid rear panels, side stiles and board tops shared with their content placement. Books and boxes use measured prop bases; upper rows do not use approximate vertical increments. Under-shelf fixtures share cabinet anchors with their light sources. Ceiling lights contact visible mounting rails that reach the back wall. Cupboard fixing cleats bridge the recessed kitchen plaster surface. The support check inspects actual inward wall faces, content support faces and attachment contacts; it rejects lifted, buried, detached, missing-support and removed-cleat mutations.
+
 Feet meet the floor or a declared thin support. The door approach is checked using
 the actual modelled door span, not a smaller placeholder rectangle. A grid search
 checks a connected entrance route to the primary work/seating zone and storage.
@@ -72,7 +74,7 @@ Eye-level framing includes the room's interactive fittings, not only its table.
 Isometric uses a true orthographic camera at 45° yaw and `atan(1/sqrt(2))`
 elevation. An off-axis frustum fits the whole room without changing equal axis scale.
 The near wall and its attached fittings cut away; a low cap retains the footprint.
-Native and fallback projections share the same camera, clipping and visibility rules.
+Native and fallback projections share the same camera, clipping and visibility rules. Compound fallback furniture uses cached BSP plane splitting and back-to-front traversal; the split fragments also bound texture clipping. Independent pixel-centre rays check that case panels cannot hide their contents.
 
 ## Materials and light
 

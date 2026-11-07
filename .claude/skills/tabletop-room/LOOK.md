@@ -15,11 +15,13 @@ human-approved exemplar.
 5. **Architecture:** Are the wall finish, floor pattern, window covering, door and
    textiles plausible for this theme? Are frames, trim, recesses and hardware visible?
 6. **Contact:** Do feet meet floor or a declared textile support? Are distinct rugs
-   separated, and are distant edges correctly hidden by nearer faces?
+   separated, and are distant edges correctly hidden by nearer faces? Do books and boxes sit
+   on boards, do wall cases have backs/sides, and do projecting lights visibly connect to the room?
 7. **Light:** Are pools and shadows consistent with windows and fixtures? Do dark
    materials retain detail, white surfaces retain highlights and metal retain sheen?
 8. **Views:** Do eye level, both orbit ends and true isometric hold the room's important
    furniture? Are near-wall cutaways and hidden fixtures coherent in both renderers?
+   Inspect fallback shelf contents: a correct physical model can still look broken when a case face paints over its books.
 9. **Modes and sizes:** Does monochrome retain structure? Is colour coordinated rather
    than arbitrary? Do materials stay quiet at phone size and still at rest?
    Does the gallery open in colour, and do seed previews follow the selected appearance?

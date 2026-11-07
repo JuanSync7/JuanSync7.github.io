@@ -3,6 +3,7 @@ import { roomPlan, type RoomSide } from './roomplan';
 import type { RoomPart } from './tableroom';
 import type { TableScene } from './tabletop';
 import type { Vec3 } from './camera';
+import { shelfLightMounts } from './roomfixtures';
 
 export function roomAccents(p: TableScene): RoomPart[] {
   const r = roomPlan(p),
@@ -40,16 +41,15 @@ export function roomAccents(p: TableScene): RoomPart[] {
     },
     ([x, y, z]) => [r.half - z, 3.32 + y, r.front - 3.6 + x],
   );
-  if (['kitchen', 'bar', 'lab'].includes(p.theme.id))
-    for (const x of [-2, 0, 2])
-      add(
-        'Under-shelf light',
-        'back',
-        (q) => {
-          q.material('metal', () => q.box(x, p.theme.id === 'bar' ? 1.7 : 1.8, 0.28, 1.45, 0.035, 0.15, 0.01));
-          q.material('light', () => q.box(x, p.theme.id === 'bar' ? 1.692 : 1.792, 0.28, 1.3, 0.008, 0.1, 0.005));
-        },
-        ([x, y, z]) => [x, y, r.back + z],
-      );
+  for (const { x, y, z } of shelfLightMounts(p.theme.id))
+    add(
+      'Under-shelf light',
+      'back',
+      (q) => {
+        q.material('metal', () => q.box(x, y - 0.035, z, 1.45, 0.035, 0.15, 0.01));
+        q.material('light', () => q.box(x, y - 0.043, z, 1.3, 0.008, 0.1, 0.005));
+      },
+      ([x, y, z]) => [x, y, r.back + z],
+    );
   return parts;
 }
