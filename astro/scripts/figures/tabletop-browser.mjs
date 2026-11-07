@@ -1,6 +1,6 @@
 /** Exercise every theme and seed controls with both real WebGL and forced fallback. */
 import assert from 'node:assert/strict';
-import { spawn } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { mkdtempSync, rmSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -192,6 +192,16 @@ try {
     [],
   );
   assert.deepEqual(errors, []);
+  if (process.argv.includes('--appearance')) {
+    await browser.close();
+    browser = undefined;
+    const colour = spawnSync(process.execPath, ['scripts/figures/room-colour-browser.mjs', `--url=${url}`], {
+      stdio: 'inherit',
+      env: process.env,
+    });
+    if (colour.error) throw colour.error;
+    assert.equal(colour.status, 0, 'Room appearance regression failed');
+  }
   console.log(
     'All 9 rooms, WebGL/fallback, 180° sweep, true isometric projection, drag, keyboard, zoom, seed controls and mobile width passed. Wrote figures-out/tabletop-themes.png and room-camera-views.png',
   );

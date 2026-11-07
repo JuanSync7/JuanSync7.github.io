@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-07 — Apply room appearance to previews
+
+The public gallery opens the room in full colour. The viewer owns one appearance
+choice for its main scene and neighbouring seed previews. Room previews use the
+same four-canvas frozen preview budget as voxel scenes. The colour browser check
+now covers rendered preview changes and the gallery, and runs in CI.
+
 ## 2026-11-07 — Whole-room design
 
 The seeded room viewer now opens with a complete isometric room at human furniture

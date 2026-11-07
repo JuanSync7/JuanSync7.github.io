@@ -1,4 +1,5 @@
 import { defineTemplate } from '../defineTemplate';
+import { defineThreeFigure } from '../defineThree';
 import {
   BIOMES,
   generateWorld,
@@ -38,6 +39,7 @@ export default defineTemplate<Params, World, WorldView>({
   setup: ({ params }) => generateWorld(params, params.layoutSeed),
   draw: drawWorldFallback,
   three: {
+    renderer: defineThreeFigure,
     build: (env) => buildWorldView(env, env.params, env.params.layoutSeed),
     update: updateWorldView,
   },

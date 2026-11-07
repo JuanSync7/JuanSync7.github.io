@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import FigureCanvas from '../ui/FigureCanvas';
 import RoomStage from './RoomStage';
+import type { RoomAppearance } from '../../figures/kit/roomstyles';
 import VoxelWorldControls from './VoxelWorldControls';
 import VoxelStage from './VoxelStage';
 import IslandControls from './IslandControls';
@@ -33,7 +34,7 @@ function roll(): number {
 }
 
 /** One template, any seed: the instance large, its id and variant, steps to the next and
- *  previous seed, a dice roll, and the next eight seeds as thumbnails to jump to. The seed
+ *  previous seed, a dice roll, and neighbouring seeds as thumbnails to jump to. The seed
  *  lives in the address (?seed=), so a picture can be shared by its link. */
 export default function TemplateLab({ template }: Props) {
   const [tpl, setTpl] = useState<Template | null>(null);
@@ -42,9 +43,12 @@ export default function TemplateLab({ template }: Props) {
   const [copied, setCopied] = useState(false);
   const [view, setView] = useState({ ...DEFAULT_VIEW });
   const [worldInfo, setWorldInfo] = useState<WorldInfo | null>(null);
+  const [roomAppearance, setRoomAppearance] = useState<RoomAppearance>('colour');
   const worlds = template === 'voxel-scene';
   const island = template === 'voxcel-island';
   const voxel = worlds || island;
+  const room = template === 'pixel-still';
+  const gpuPreviews = voxel || room;
 
   useEffect(() => {
     let live = true;
@@ -80,7 +84,9 @@ export default function TemplateLab({ template }: Props) {
     setDraft(String(next));
   };
   // The next seeds, stopping at the last one rather than repeating it.
-  const ahead = Array.from({ length: voxel ? 4 : NEIGHBOURS }, (_, k) => seed + 1 + k).filter((s) => s <= MAX_SEED);
+  const ahead = Array.from({ length: gpuPreviews ? 4 : NEIGHBOURS }, (_, k) => seed + 1 + k).filter(
+    (s) => s <= MAX_SEED,
+  );
   const id = `${template}~${seed}`;
   const inst = tpl.instance(seed);
   const copy = (): void => {
@@ -109,8 +115,8 @@ export default function TemplateLab({ template }: Props) {
     <div className={`lab${voxel ? ' lab-voxel' : ''}`}>
       {voxel ? (
         <VoxelStage id={id} aspect={tpl.aspect} view={view} onView={setView} onWorldInfo={setWorldInfo} />
-      ) : template === 'pixel-still' ? (
-        <RoomStage id={id} aspect={tpl.aspect} />
+      ) : room ? (
+        <RoomStage id={id} aspect={tpl.aspect} appearance={roomAppearance} onAppearanceChange={setRoomAppearance} />
       ) : (
         <div className="lab-main" style={{ aspectRatio: String(tpl.aspect) }}>
           <FigureCanvas key={id} id={id} />
@@ -186,7 +192,12 @@ export default function TemplateLab({ template }: Props) {
               aria-label={`Seed ${s}: ${tpl.instance(s).variant}`}
             >
               <span className="lab-thumb-stage">
-                <FigureCanvas key={`${template}~${s}`} id={`${template}~${s}`} freezeAt={voxel ? 1.2 : undefined} />
+                <FigureCanvas
+                  key={`${template}~${s}`}
+                  id={`${template}~${s}`}
+                  freezeAt={gpuPreviews ? 1.2 : undefined}
+                  data={room ? { appearance: roomAppearance, view: 'isometric', angle: 135 } : undefined}
+                />
               </span>
               <span className="lab-thumb-label">
                 {s} · {tpl.instance(s).variant}

@@ -7,11 +7,12 @@ import './room-stage.css';
 interface Props {
   id: string;
   aspect: number;
+  appearance: RoomAppearance;
+  onAppearanceChange: (appearance: RoomAppearance) => void;
 }
 const clampAngle = (angle: number): number => Math.max(0, Math.min(180, Math.round(angle)));
 
-export default function RoomStage({ id, aspect }: Props) {
-  const [appearance, setAppearance] = useState<RoomAppearance>('colour');
+export default function RoomStage({ id, aspect, appearance, onAppearanceChange }: Props) {
   const [angle, setAngle] = useState(135);
   const [view, setView] = useState<'eye' | 'isometric'>('isometric');
   const [zoom, setZoom] = useState(1);
@@ -67,7 +68,7 @@ export default function RoomStage({ id, aspect }: Props) {
         <FigureCanvas key={id} id={id} data={{ angle, view, zoom, appearance }} />
       </div>
       <div className="room-toolbar">
-        <RoomAppearanceSwitch value={appearance} onChange={setAppearance} />
+        <RoomAppearanceSwitch value={appearance} onChange={onAppearanceChange} />
         <label className="room-orbit" htmlFor={rangeId}>
           <span>View angle</span>
           <input

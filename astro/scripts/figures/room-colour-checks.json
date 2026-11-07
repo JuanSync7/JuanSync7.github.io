@@ -6,5 +6,6 @@
   "contrastMin": 0.18,
   "clippedHighlightsMax": 0.08,
   "modeDifferenceMin": 0.02,
+  "previewCountMax": 4,
   "stillDifferenceMax": 0.0004
 }
