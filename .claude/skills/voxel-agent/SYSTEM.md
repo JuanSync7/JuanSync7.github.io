@@ -46,6 +46,7 @@ Read this index first; inspect a module's implementation only for the stage bein
 | `populateHarbour(world)` | optional boats on navigable water | No guaranteed boats, fixed coordinates or mandatory docks. |
 | `buildWorldView / updateWorldView` | static mesh and frame state | Geometry is built once; time changes only ambience and motion. |
 | `frameWorld` | bounds-aware camera | Default zoom fits all bounds; deliberate zoom can crop the edges. |
+| `frameTerrain` | focused foreground and eye clearance | Bounded exact grid traversal; preserve yaw, refine a clear elevation and keep the eye out of solid voxels. Mesh-ray regression is independent of the solver. |
 
 ## Ownership and limits
 

@@ -6,7 +6,8 @@ Voxel worlds gain wider terrain, layered ecological communities and themed place
 vegetation, supplies and static wildlife. All 135 live catalog types realize valid placements in
 the balanced cohort. Surface merging, shared GPU waves, supported cave roofs and exact 3D
 clearance keep the larger worlds coherent. Place focus, closer zoom, pan and touch gestures make
-the details inspectable. One voxel agent operates the executable pipeline, eleven playbooks,
+the details inspectable. Focused cameras clear foreground terrain and keep their eyes outside
+solid voxels; full-turn profiles and an independent mesh-ray regression cover close views. One voxel agent operates the executable pipeline, eleven playbooks,
 regression checks and complete source snapshots that can reproduce earlier faults.
 
 ## 2026-11-06
@@ -23,6 +24,7 @@ accepted objects have measured clearance, support, headroom and reserved access.
 keyboard camera controls retain their pose; sunlight controls and a pausable orbit complement
 exposed-face geometry and fitted framing. One voxel agent operates seven playbooks, with replay,
 negative fixtures, diversity checks and a hashed private-vault mirror for future feedback.
+
 The vault hero now uses a physical hairline filing cabinet: its drawer opens with scroll, three
 folders rise on hover or focus and native links open the matching guides. GSAP SplitText masks
 heading words into view; staggered benefits and guide cards settle as the reader scrolls. Desktop

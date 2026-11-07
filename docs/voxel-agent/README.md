@@ -66,14 +66,14 @@ paths, habitat conditions, groups, camera bounds, accounting and distribution.
 ## Rendering and exploration
 
 Greedy surface merging preserves exposed volume, material and corner contact shading.
-A bounded transient solid volume supports culling/AO; buried blocks do not enter the
+A bounded solid volume supports culling/AO and camera clearance; buried blocks do not enter the
 rendered mesh. Continuous water uses shared GPU waves; CPU boat motion uses the same
 wave terms. Foam and weather are instanced, and static geometry stays fixed.
 
 Drag to rotate; Shift-drag or right-drag pans. Two fingers pan and pinch to zoom.
 Arrow keys rotate/tilt, Shift-arrows pan, plus/minus zoom, and Home resets. Explore
 selects actual accepted places; the zoom range reaches 3.5×. Orbit pauses/resumes
-without a live azimuth jump. Default framing fits the whole world; deliberate close
+without a live azimuth jump. Focused views lift over foreground terrain while preserving yaw, and camera eyes retreat out of solid geometry. Default framing fits the whole world; deliberate close
 zoom can crop. Sunlight/weather controls, reduced motion and a 2D fallback remain available.
 
 ## Verification and feedback

@@ -29,7 +29,7 @@ on a deliberately broken case. Taste questions live in `LOOK.md`, not in pass fl
 | VXL-TERMINATION | When candidate search exceeds its retry budget. | `validate.mjs`; runaway-attempt fixture. |
 | VXL-BUDGET | When emitted geometry or component count exceeds its cap. | `validate.mjs`; batch atlas and policy limits. |
 | VXL-FRAME | When the default camera clips the world at a supported pose/aspect. | `motion.mjs`; projection of every bounds corner. |
-| VXL-CAMERA | When invalid control input escapes pitch/zoom limits, or dragging fails to retain the new view. | `motion.mjs`, `browser.mjs`. |
+| VXL-CAMERA | When invalid control input escapes limits, dragging loses its pose, an eye enters solid geometry, or foreground hides the frozen regression destination. | `motion.mjs`, `browser.mjs`. |
 | VXL-LIGHT | When changing sunlight has no measured lighting effect. | `motion.mjs`, `browser.mjs`. |
 | VXL-MOTION | When time sampling changes static solids or fails to repeat at the same time. | `motion.mjs`. |
 | VXL-HABITAT | When moisture/substrate/elevation, coherent bamboo patches, riparian proximity or cultivated-place context is invalid. | `ecology-check.mjs`; corrupted environment fixture. |
@@ -37,7 +37,7 @@ on a deliberately broken case. Taste questions live in `LOOK.md`, not in pass fl
 | VXL-INTEREST | When a destination invents members, omits an accepted group, has invalid bounds or clips its actual members at default focus. | `ecology-check.mjs`, `motion.mjs`, `browser.mjs`; phantom/clipped destination fixtures. |
 | VXL-PIPELINE | When execution differs from the canonical manifest or stage ownership/order is invalid. | `workflow.mjs`, `validate.mjs`; reversed stage trace fixture. |
 | VXL-MESH | When merged faces change exposed volume/material, duplicate faces, lose contact AO or wind triangles inward. | `mesh-check.mjs`; deleted/flipped quad fixtures and exact naive-face equivalence. |
-| VXL-VOLUME | When transient dense solidity exceeds the bounded cell budget. | `mesh-check.mjs`; huge sparse-envelope fixture. |
+| VXL-VOLUME | When a dense solidity lookup exceeds the bounded cell budget. | `mesh-check.mjs`; huge sparse-envelope fixture. |
 | VXL-WATER-GPU | When the actual water shader fails to move/replay, shares discontinuous edge weights or mutates CPU geometry. | `gpu-check.mjs`; unchanged-frame/discontinuous-edge negative fixtures. |
 | VXL-VAULT | When a snapshot omits executable source, loses exact bytes, accepts unsafe paths, drifts or overwrites an owner edit. | `vault-selftest.mjs`; corrupt source, edited mirror and no-partial-write fixtures. |
 | VXL-SOURCE | When generator bytes change between a verification run's start and report publication. | `fingerprint.mjs`; real temporary-source mutation fixture. |

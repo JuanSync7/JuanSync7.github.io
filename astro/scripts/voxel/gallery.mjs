@@ -20,7 +20,7 @@ try{
  await page.goto(`http://127.0.0.1:${server.address().port}`);await page.waitForFunction(()=>!!window.gallery);
  for(const biome of k.BIOMES){const row=await page.evaluate(b=>window.gallery.world(b),biome);row.render=await page.evaluate(()=>window.gallery.frame());await page.locator('canvas').screenshot({path:`${dir}/${biome}-overview.png`});
   for(const point of row.points.filter(p=>p.category==='place').slice(0,2)){await page.evaluate(id=>window.gallery.frame({focus:id,zoom:1.2,orbit:false}),point.id);await page.locator('canvas').screenshot({path:`${dir}/${biome}-${row.points.indexOf(point)}-detail.png`});}
-  if(process.argv.includes('--profile')){row.profile=await page.evaluate(()=>window.gallery.profile());assert(row.profile.updateAndSubmitAvgMs<=budget,'VXL-BUDGET: '+biome+' exceeds unchanged '+budget+'ms frame budget');}
+  if(process.argv.includes('--profile')){row.profile=await page.evaluate(()=>window.gallery.profile());assert(row.profile.updateAndSubmitAvgMs<=budget,'VXL-BUDGET: '+biome+' exceeds unchanged '+budget+'ms frame budget');const place=row.points.find(p=>p.category==='place');if(place){row.focusProfile=await page.evaluate(id=>window.gallery.profile({focus:id,zoom:1.2}),place.id);assert(row.focusProfile.updateAndSubmitAvgMs<=budget,'VXL-BUDGET: focused '+biome+' exceeds unchanged '+budget+'ms frame budget');}}
   worlds.push(row);
  }
  const kinds=process.argv.includes('--all-models')?[...k.DETAIL_KINDS,...k.TREES,...k.BUILDINGS]:['ancient tree','mangrove','cedar','giant fossil','ice arch','crystal geode','hollow log','toppled column','camel','deer','watchtower','windmill','jungle shrine','sandstone shrine','greenhouse','townhouse','workshop','clock tower','forge'];

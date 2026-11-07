@@ -12,7 +12,7 @@ for(const rule of new Set(declared))assert(scripts.includes(rule),`VXL-WORKFLOW:
 const pkg=JSON.parse(readFileSync('package.json','utf8'));
 for(const name of['voxel:agent','voxel:check','voxel:browser','voxel:gpu','voxel:gallery'])assert(pkg.scripts[name],`VXL-WORKFLOW: missing command ${name}`);
 const flow=readFileSync(resolve(root,'.github/workflows/checks.yml'),'utf8');
-assert(flow.includes('npm run voxel:check')&&flow.includes('npm run voxel:browser')&&flow.includes('npm run voxel:gpu'),'VXL-WORKFLOW: voxel checks absent from CI');
+assert(flow.includes('npm run voxel:check')&&flow.includes('npm run voxel:browser')&&flow.includes('npm run voxel:gpu')&&flow.includes('npm run voxel:gallery -- --profile')&&flow.includes('npm run voxel:vault-check'),'VXL-WORKFLOW: voxel checks absent from CI');
 const prompt=readFileSync(resolve(base,'examples/prompt.md'),'utf8');
 for(const token of ['single voxel agent','Acceptance cases','Known failed case','Do not spawn','vault'])assert(prompt.includes(token),`VXL-WORKFLOW: prompt missing ${token}`);
 console.log('Passed: one voxel-agent entry, eleven playbooks, rule/check links, prompt, scripts and CI wiring.');

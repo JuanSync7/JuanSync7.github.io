@@ -8,7 +8,9 @@ import { blockMesh } from './mesh';
 import { buildWater } from './water-view';
 import { buildEffects } from './effects';
 import { sunlight } from './lighting';
-import { frameWorld, worldBounds } from './camera';
+import { worldBounds } from './camera';
+import { frameTerrain } from './camera-clearance';
+import { solidVolume } from './volume';
 import { BUILDINGS, TREES, type WorldSpec } from './types';
 
 export function buildWorldView({ scene, camera }: ThreeEnv, spec: WorldSpec, seed = spec.layoutSeed) {
@@ -27,7 +29,19 @@ export function buildWorldView({ scene, camera }: ThreeEnv, spec: WorldSpec, see
   const buildings = world.props.filter((p) => BUILDINGS.has(p.kind)).length,
     trees = world.props.filter((p) => TREES.has(p.kind)).length;
   const readout = `${spec.biome} · ${spec.landform} · ${buildings} shelters · ${trees} trees · ${world.boats.length} boats`;
-  return { world, root, solid, bounds, waterView, effects, light, readout, orbit: orbitState(), poseKey: '' };
+  return {
+    world,
+    root,
+    solid,
+    bounds,
+    waterView,
+    effects,
+    light,
+    readout,
+    orbit: orbitState(),
+    poseKey: '',
+    cameraVolume: solidVolume(world.blocks, world),
+  };
 }
 export type WorldView = ReturnType<typeof buildWorldView>;
 export function updateWorldView({
@@ -54,13 +68,15 @@ export function updateWorldView({
     (pointer.x - 0.5) * hover * 0.08;
   const poseKey = `${yaw},${view.pitch},${view.zoom},${view.focus},${view.panX},${view.panY},${w / h}`;
   if (poseKey !== state.poseKey) {
-    frameWorld(
+    frameTerrain(
       camera,
       viewBounds(state.world, state.bounds, view, yaw),
       yaw,
       Math.max(0.28, Math.min(1.2, view.pitch + spec.cameraPitch - 0.67)),
       view.zoom,
       w / h,
+      state.cameraVolume,
+      state.world.points.some((point) => point.id === view.focus),
     );
     state.poseKey = poseKey;
   }

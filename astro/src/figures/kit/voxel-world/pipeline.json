@@ -102,7 +102,7 @@
   "postflight": [
     "Mesh exact exposed faces with contact AO",
     "Build GPU water and batched weather",
-    "Fit camera and actual place bounds",
+    "Fit camera and actual place bounds; keep eyes outside solids and clear the focused subject region",
     "Run fixtures, content, volume/mesh, ecology, groups, diversity and motion checks",
     "Build; run real browser, GPU and figure audits; inspect overview/detail/phone/model sheets",
     "Keep failed seeds and judgments; export full source, scripts, pipeline, rules and evidence to the vault"

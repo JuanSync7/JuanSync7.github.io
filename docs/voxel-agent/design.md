@@ -13,7 +13,7 @@ actual report distributions and images; object count alone does not establish qu
 | Steep terrain shed most small dressing. | Only declared loose groundcover follows the actual surface, with grade four maximum and independently checked supporting roots. Rigid objects never gain flexible geometry. |
 | Reeds could be horizontally close to water above a cliff. | Check both horizontal range and elevation against real open liquid water; ice is excluded. |
 | Geological discoveries were repeated as often as grass. | Rare landmark weight is 0.06 versus floor dressing weight five; related discoveries may deliberately form a local group. Realized composition remains a visual judgment. |
-| Increasing area raised mesh and water costs. | Exact greedy surface equivalence with contact AO, bounded transient volume, GPU surface waves and instanced particle families. Keep the official figure audit thresholds unchanged. |
+| Increasing area raised mesh and water costs. | Exact greedy surface equivalence with contact AO, bounded solid volume, GPU surface waves and instanced particle families. Keep the official figure audit thresholds unchanged. |
 | More area made details too small at default view. | Fit overview bounds, then focus actual accepted groups, zoom to 3.5× and pan with mouse/touch/keyboard. Verify production controls, fallback and projected place bounds. |
 | Notes could drift from implementation. | One executable stage manifest, report traces, one voxel agent, eleven playbooks, independent checks and immutable full source/script snapshots in the vault. Owner-edited mirrors fail closed. |
 
@@ -31,6 +31,8 @@ and rerun the entire cohort after the fix; do not substitute a forced-biome plan
 consumes a different plan stream.
 
 A separate structural pass found isolated ceiling lips around skylights. Roof reachability now starts at actual rock contact after base shaping; disconnected fragments and their headroom entries are removed before meshing. An independent component walk verifies retained roof support and emitted geometry. The exact pre-fix kernel was also hash-matched, compiled and reproduced with VXL-ROOF for later feedback.
+
+A final frozen-place close-up exposed a camera view blocked by a nearby ice peak: fitting destination bounds alone did not check intervening terrain. Focus now uses bounded solid lookup queries to lift above foreground while retaining yaw, and retreats the eye out of solids. The old center ray hits terrain 4.15 cells away. A center-only correction still left much of the place behind a peak, so the solver now scores nine rays over the subject region and refines the first clear angle; partial improvement is preferred when no full opening exists. A first fixed-step ray also missed a grazing corner; exact grid traversal replaced it. Two actual mesh-ray regressions (including the exact archived center-only pose), 1,512 focused eye checks over three zoom levels and focused-orbit profiles preserve this case. Cave walls can still hide a destination when the user rotates behind the cutaway.
 
 ## Scope and limits
 
