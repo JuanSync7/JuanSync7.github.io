@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';
+import {build} from 'esbuild';
+import {mkdtempSync,writeFileSync,rmSync,mkdirSync} from 'node:fs';
+import {join} from 'node:path';
+import {tmpdir} from 'node:os';
+import {pathToFileURL} from 'node:url';
+import {kernelFingerprint} from './fingerprint.mjs';
+import {islandFingerprint} from './island-fingerprint.mjs';
+const dir=mkdtempSync(join(tmpdir(),'voxcel-island-')),fingerprint=islandFingerprint();
+try{
+ const file=join(dir,'island.mjs');await build({stdin:{contents:"export {default as template} from './src/figures/templates/voxcel-island';export * from './src/figures/kit/voxcel-island/generate';export * from './src/figures/kit/voxcel-island/pose';export {BIOMES} from './src/figures/kit/voxcel-island/types';export {PerspectiveCamera,Vector3} from 'three';",resolveDir:process.cwd()},outfile:file,bundle:true,format:'esm',platform:'node'});
+ const k=await import(pathToFileURL(file));let worlds=0,maxProps=0,maxBlocks=0,framing=0,eyes=0;const seen=new Set(),kinds=new Set();
+ function audit(w){
+  assert(w.spec.radius>=17&&w.spec.radius<=20,'VXI-SCALE: compact radius');assert(w.heights.size>300,'VXI-TERRAIN: empty island');
+  assert(w.props.some(p=>p.kind==='cottage'),'VXI-COTTAGE: classic composition lost');assert(w.boats.length<=2,'VXI-NAVIGATION: harbour capacity');
+  const occupied=new Set();for(const p of w.props){kinds.add(p.kind);for(const b of p.blocks){const x=p.x+b.x,y=p.y+b.y,z=p.z+b.z,ground=w.heights.get(`${x},${z}`),key=`${x},${y},${z}`;assert(ground!==undefined&&y>ground&&(b.y!==0||ground===p.y-1),'VXI-SUPPORT: unsupported or buried component');assert(!occupied.has(key),'VXI-CLEARANCE: overlapping props');occupied.add(key);}}
+  for(let i=0;i<w.props.length;i++)for(let j=0;j<i;j++){const a=w.props[i],b=w.props[j];assert(Math.abs(a.x-b.x)>a.rx+b.rx||Math.abs(a.z-b.z)>a.rz+b.rz,'VXI-CLEARANCE: overlapping spacing envelopes');}
+  const staticCells=new Set(w.blocks.map(b=>`${b.x},${b.y},${b.z}`));assert.equal(staticCells.size,w.blocks.length,'VXI-CLEARANCE: duplicate solid cells');
+  for(const boat of w.boats){for(let dx=-boat.rx-1;dx<=boat.rx+1;dx++)for(let dz=-boat.rz-1;dz<=boat.rz+1;dz++){const water=w.liquids.get(`${boat.x+dx},${boat.z+dz}`);assert(water?.kind==='water'&&water.level===0&&!w.heights.has(`${boat.x+dx},${boat.z+dz}`),'VXI-NAVIGATION: boat outside navigable water');}for(const b of boat.blocks)assert(!staticCells.has(`${boat.x+b.x},${boat.y+b.y},${boat.z+b.z}`),'VXI-NAVIGATION: boat intersects terrain or pier');}
+  for(let i=0;i<w.boats.length;i++){const a=w.boats[i];for(const b of w.boats.slice(0,i))assert(Math.abs(a.x-b.x)>a.rx+b.rx+3||Math.abs(a.z-b.z)>a.rz+b.rz+3,'VXI-NAVIGATION: overlapping boat motion envelopes');for(const b of w.structures)assert(Math.abs(a.x-b.x)>a.rx+b.rx+2||Math.abs(a.z-b.z)>a.rz+b.rz+2,'VXI-NAVIGATION: boat motion intersects pier');}
+  seen.add(w.spec.biome);maxProps=Math.max(maxProps,w.props.length);maxBlocks=Math.max(maxBlocks,w.blocks.length);return w;
+ }
+ for(let seed=0;seed<256;seed++){const spec=k.template.instance(seed).params,w=audit(k.generateWorld(spec,spec.layoutSeed));if(seed%32===0)assert.deepEqual(w,k.generateWorld(spec,spec.layoutSeed),'VXI-SEED: non-deterministic island');worlds++;}
+ for(const biome of k.BIOMES)for(let seed=0;seed<16;seed++){const spec={...k.template.instance(seed).params,biome},w=audit(k.generateWorld(spec,spec.layoutSeed));worlds++;if(seed!==0)continue;const pose=k.buildIslandPose(w),camera=new k.PerspectiveCamera();for(const turn of[0,Math.PI/2,Math.PI,Math.PI*1.5])for(const pitch of[.28,.67,1.2])for(const aspect of[.75,1.6,2.4]){for(const zoom of[.75,1,3.5]){k.updateIslandPose(camera,pose,w,{w:aspect*500,h:500,t:1.2,dt:0,hover:0,pointer:{x:.5,y:.5},pulses:[],still:true,data:{turn,pitch,zoom,orbit:false}});const cells=new Set(w.blocks.map(b=>`${b.x},${b.y},${b.z}`));for(const [dx,dy,dz]of[[0,0,0],[.65,0,0],[-.65,0,0],[0,.65,0],[0,-.65,0],[0,0,.65],[0,0,-.65]])assert(!cells.has(`${Math.round(camera.position.x+dx)},${Math.round(camera.position.y+dy)},${Math.round(camera.position.z+dz)}`),'VXI-CAMERA: eye intersects solid geometry');eyes++;if(zoom!==1)continue;for(const x of[pose.bounds.min.x,pose.bounds.max.x])for(const y of[pose.bounds.min.y,pose.bounds.max.y])for(const z of[pose.bounds.min.z,pose.bounds.max.z]){const p=new k.Vector3(x,y,z).project(camera);assert(Math.abs(p.x)<=1.001&&Math.abs(p.y)<=1.001&&p.z<1,'VXI-FRAME: default island clipped');}framing++;}}}
+ const spec=k.template.instance(7).params,base=k.generateWorld(spec,spec.layoutSeed),overlap=structuredClone(base),floating=structuredClone(base),flooded=structuredClone(base);overlap.props.push(overlap.props[0]);assert.throws(()=>audit(overlap),/VXI-CLEARANCE/);floating.props[0].y++;assert.throws(()=>audit(floating),/VXI-SUPPORT/);assert(flooded.boats.length);flooded.boats[0].x=base.spec.anchor;flooded.boats[0].z=3;assert.throws(()=>audit(flooded),/VXI-NAVIGATION/);const sameBoat=structuredClone(base);sameBoat.boats=[sameBoat.boats[0],sameBoat.boats[0]];assert.throws(()=>audit(sameBoat),/VXI-NAVIGATION/);
+ assert.equal(islandFingerprint(),fingerprint,'VXI-SOURCE: source changed during check');
+ const report={schema:'voxcel-island-audit/1',islandFingerprint:fingerprint,worldsKernelFingerprint:kernelFingerprint(),restoredFrom:'d78373abf9d53fa4318b845764e764605942435e',worlds,publicSeeds:256,forcedContexts:96,biomes:[...seen],componentKinds:[...kinds],maxProps,maxBlocks,framingPoses:framing,cameraEyePoses:eyes,negativeFixtures:4};mkdirSync('figures-out',{recursive:true});writeFileSync('figures-out/voxcel-island-audit.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));
+}finally{rmSync(dir,{recursive:true,force:true});}

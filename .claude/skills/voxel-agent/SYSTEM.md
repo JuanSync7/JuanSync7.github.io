@@ -14,6 +14,13 @@ figure grammar. CLI seeds are layout seeds unless `--public` is given: record bo
 to the CLI. An engine-version change may change old pictures; repeatability is within
 a version, not a promise that old seed pictures survive a new grammar.
 
+## Scene variants
+
+`/lab/voxcel-island/` is the separate compact restoration. Read the [island guide](../../../docs/voxel-agent/island.md)
+for its pinned six-theme generator, island checks and camera adapters. Its intentional
+cottage-and-small-harbour composition does not use the larger world's population/diversity
+thresholds. Changes to one variant must retain the other and its source fingerprint.
+
 ## Executable sequence
 
 `astro/src/figures/kit/voxel-world/pipeline.json` owns the stage order. `runPipeline`

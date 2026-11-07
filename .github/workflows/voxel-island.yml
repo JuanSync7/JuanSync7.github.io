@@ -1,0 +1,42 @@
+name: Voxcel Island
+
+on:
+  pull_request:
+  push:
+    branches-ignore: ["main"]
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: astro
+
+jobs:
+  island:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: astro/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Island generation, clearance and negative fixtures
+        run: npm run voxel:island-check
+      - name: Build
+        run: npm run build
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Island controls, seed replay, phone and fallback
+        run: npm run voxel:island-browser
+      - name: Reconstruct both archived scenes
+        run: npm run voxel:vault-check
+      - name: Island evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: voxcel-island
+          path: astro/figures-out/voxcel-island*
