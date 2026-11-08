@@ -21,7 +21,7 @@ for child in svg:
  attrs=dict(child.attrib);fill=attrs.pop('fill',None)
  if fill is not None and not (fill=='currentColor' and child.tag.endswith('circle') and attrs.get('r')=='0.5'):raise SystemExit('Unreviewed filled source feature')
  nodes.append({'tag':child.tag.rsplit('}',1)[-1],'attrs':attrs})
-candidate.update(schema='slide-icon/2',sha256=hashlib.sha256(raw).hexdigest(),nodes=nodes)
+candidate.update(schema='slide-icon/3',sha256=hashlib.sha256(raw).hexdigest(),nodes=nodes)
 pending_notice=None
 if args.license_file:
  if not args.license_id or not re.fullmatch('[a-z][a-z0-9-]*',args.license_id):raise SystemExit('A new license needs a safe --license-id')

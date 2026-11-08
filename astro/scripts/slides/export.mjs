@@ -3,10 +3,12 @@ import {mkdirSync,readFileSync,rmSync,writeFileSync} from 'node:fs';
 import {dirname,join} from 'node:path';
 import {createServer} from 'vite';
 import {checkReview} from './checks/reviews.mjs';
+import {checkKnownSelections} from './checks/semantic-cases.mjs';
 import {zip} from './zip.mjs';
 import {auditIcon,fingerprint,manifest,rules,engine} from './audit.mjs';
 
 const proofOnly=process.argv.includes('--proof'),selected=process.argv.find(a=>a.startsWith('--id='))?.slice(5);
+checkKnownSelections(manifest.icons);
 if(selected&&!proofOnly)throw Error('--id selects a preview; publishable export covers the full reviewed library');
 const root=proofOnly?`slides-out/review/${selected??'all'}`:'public/downloads/slide-icons';
 const reviews=JSON.parse(readFileSync('vendor/slide-icons/reviews.json','utf8'));
@@ -25,7 +27,7 @@ try {
   const report=auditIcon(icon,definitions[icon.id]);assert.deepEqual(report.failures,[],`${icon.id}: geometry audit`);
   const digest=fingerprint(icon,options.map(o=>slideSvg(icon.id,o)));
   if(!proofOnly)assert.equal(reviews[icon.id]?.fingerprint,digest,`${icon.id}: missing or stale visual review; inspect the proof before recording approval`);
-  return {...report,fingerprint:digest,engine,source:icon.file,accent:icon.accent.meaning,review:reviews[icon.id]??null};
+  return {...report,fingerprint:digest,engine,source:icon.file,accent:icon.accent.meaning,accentIntent:icon.accent,review:reviews[icon.id]??null};
  });
  rmSync(root,{force:true,recursive:true});const entries=[];
  const save=(name,source)=>{const f=join(root,name);mkdirSync(dirname(f),{recursive:true});writeFileSync(f,source);entries.push({name,source});};
@@ -58,9 +60,9 @@ try {
   save(`proofs/families/${group}.svg`,`<svg xmlns="http://www.w3.org/2000/svg" width="${proofWidth}" height="${height}" viewBox="0 0 ${proofWidth} ${height}">${cards}</svg>`);
  }
  for(const notice of Object.values(manifest.licenses))save(notice.file,readFileSync('vendor/slide-icons/'+notice.file,'utf8'));
- save('README.txt',`Juan Kok — slide and web icons\n\n${SLIDE_ICONS.length} marks, ${SLIDE_ICONS.length*options.length} transparent SVG variants.\n${manifest.icons.filter(i=>i.fit.decision==='reuse').length} reused library sources; ${manifest.icons.filter(i=>i.fit.decision==='create').length} original sources.\nPinned reference library: ${manifest.version}.\nGrid: ${rules.grid}; stroke: ${rules.stroke}; proofs: ${caption}.\n\nnight/: light ink on dark slides. paper/: dark ink on light slides.\naccent/: one source-attached teal feature. mono/: one ink, no duplicate overlay.\nInsert individual SVGs in PowerPoint, Keynote or Figma; resize proportionally.\n\nThe catalog and families grow from source specifications; their counts are not limits.\nSource/fit decisions, relevant physical constraints, license notices and per-icon\nreview records are preserved. Each standalone SVG carries its license metadata.\nThe quality report combines deterministic results and reviewer attestations.\nGeometry checks do not establish recognition or authenticate visual judgment.\n\nhttps://juansync.dev/lab/slide-icons/\n`);
- save('manifest.json',JSON.stringify({grid:rules.grid,stroke:rules.stroke,version:3,upstream:manifest.version,licenses:manifest.licenses,icons:SLIDE_ICONS,sources:manifest.icons.map(({nodes,...i})=>i)},null,2)+'\n');
+ save('README.txt',`Juan Kok — slide and web icons\n\n${SLIDE_ICONS.length} marks, ${SLIDE_ICONS.length*options.length} transparent SVG files.\n${manifest.icons.filter(i=>i.fit.decision==='reuse').length} reused library sources; ${manifest.icons.filter(i=>i.fit.decision==='create').length} original sources.\nPinned reference library: ${manifest.version}.\nGrid: ${rules.grid}; stroke: ${rules.stroke}; proofs: ${caption}.\n\nnight/: light ink on dark slides. paper/: dark ink on light slides.\naccent/: complete semantic parts; neutral icons stay neutral. mono/: one ink, no duplicate overlay.\nInsert individual SVGs in PowerPoint, Keynote or Figma; resize proportionally.\n\nThe catalog and families grow from source specifications; their counts are not limits.\nSource/fit decisions, relevant physical constraints, license notices and per-icon\nreview records are preserved. Each standalone SVG carries its license metadata.\nThe quality report combines deterministic results and reviewer attestations.\nGeometry checks do not establish recognition or authenticate visual judgment.\n\nhttps://juansync.dev/lab/slide-icons/\n`);
+ save('manifest.json',JSON.stringify({grid:rules.grid,stroke:rules.stroke,version:4,upstream:manifest.version,licenses:manifest.licenses,icons:SLIDE_ICONS,sources:manifest.icons.map(({nodes,...i})=>i)},null,2)+'\n');
  save('quality-report.json',JSON.stringify({rules,engine,icons:reports},null,2)+'\n');
- if(!proofOnly){for(const report of reports)checkReview({id:report.id},reviews[report.id],report.fingerprint,engine,root);writeFileSync(join(root,'slide-icons.zip'),zip(entries));}
- console.log(`${proofOnly?'Review proofs':'Portable set'}: ${icons.length} icons; ${icons.length*options.length} SVG variants; ${entries.length} files; ${root}/`);
+ if(!proofOnly){for(const report of reports)checkReview(specs.find(icon=>icon.id===report.id),reviews[report.id],report.fingerprint,engine,root);writeFileSync(join(root,'slide-icons.zip'),zip(entries));}
+ console.log(`${proofOnly?'Review proofs':'Portable set'}: ${icons.length} icons; ${icons.length*options.length} SVG exports; ${entries.length} files; ${root}/`);
 }finally{await server.close();}

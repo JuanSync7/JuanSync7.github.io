@@ -13,9 +13,11 @@ For a fitting external source that is not yet in the themed library:
 2. Name visible parts in `parts`. Declare the view's projection, description,
    visible/hidden parts and rationale. A view name is descriptive, not an enum of
    allowed objects. Flat and parallel projections are the current taste boundary.
-3. Select one meaningful existing source feature for the teal treatment. Cover
-   its full straight edge or complete circle/ellipse; never trim it to a dash or arc. Use a
-   kernel selector; use monochrome when placing an icon without signal colour.
+3. Name the semantic accent unit and its role before coloring. Use `accent.mode`
+   `part` with a named entry in `parts`, `none` when no useful subcomponent exists,
+   or `whole` with an explicit rationale. Reuse every source primitive of that
+   unit; never choose a convenient edge merely because it is easy to isolate.
+   Equivalent role sets, such as terminal dots, include all their members.
 4. Add applicable constraints. Preserve intentional gaps; a detached endpoint is
    a defect only when a physical connection was declared. Collections declare a
    stack and applicable occlusion/repetition constraints.

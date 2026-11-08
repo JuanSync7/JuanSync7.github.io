@@ -8,14 +8,18 @@
     "original-needed",
     "plural-collection",
     "new-view-description",
-    "combined-pressure"
+    "combined-pressure",
+    "semantic-accent-selection",
+    "neutral-glyph",
+    "functional-set"
   ],
   "judgmentCriteria": [
     "semanticFit",
     "recognition",
     "viewCoherence",
     "verificationHonesty",
-    "creativeFreedom"
+    "creativeFreedom",
+    "accentMeaning"
   ],
   "measurementPolicy": "Outcomes from executable artifacts are checked separately from reported file loading; missing effort/cost/intervention measures remain null.",
   "comparisonScope": "Whole authoring package (instructions plus tools), not isolated causal evidence about one rule."

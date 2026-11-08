@@ -1,5 +1,5 @@
 {
-  "schema": "slide-icon/2",
+  "schema": "slide-icon/3",
   "id": "bathtub",
   "name": "Bathtub",
   "group": "everyday",
@@ -42,10 +42,11 @@
   },
   "plural": false,
   "accent": {
-    "node": 2,
-    "kind": "line",
-    "segment": 1,
-    "meaning": "the complete visible rim"
+    "mode": "part",
+    "part": "rim",
+    "meaning": "the complete visible rim",
+    "rationale": "The full visible rim is a meaningful tub opening boundary.",
+    "basis": "author-proposal"
   },
   "constraints": [
     {

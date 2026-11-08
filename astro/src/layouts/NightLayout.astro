@@ -18,6 +18,8 @@ const { title, description = 'Juan Kok: Senior Design & AI Engineer. AI platform
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <!-- Browsers otherwise request a nonexistent /favicon.ico on every full load. -->
+    <link rel="icon" href="data:," />
     {noindex ? <meta name="robots" content="noindex" /> : null}
     <title>{title}</title>
     <slot name="head" />

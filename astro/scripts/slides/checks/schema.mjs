@@ -5,12 +5,12 @@ const schema=JSON.parse(readFileSync('scripts/slides/checks/icon.schema.json','u
 const validate=ajv.compile(schema);
 const validateNode=ajv.compile(schema.properties.nodes.items);
 export function validateDefinition(definition){
- if(!definition||!Array.isArray(definition.nodes)||!definition.nodes.length||!validateNode(definition.accent)||!definition.nodes.every(n=>validateNode(n)))throw Error('Invalid generated SVG primitive');
- for(const node of [...definition.nodes,definition.accent]){
+ if(!definition||!Array.isArray(definition.nodes)||!definition.nodes.length||!Array.isArray(definition.accents)||![...definition.nodes,...definition.accents].every(n=>validateNode(n)))throw Error('Invalid generated SVG primitive');
+ for(const node of [...definition.nodes,...definition.accents]){
   const dimensions={rect:['width','height'],circle:['r'],ellipse:['rx','ry']}[node.tag]??[];
   if(dimensions.some(key=>!(Number(node.attrs[key])>0)))throw Error('A visible primitive needs positive dimensions');
  }
- for(const node of [...definition.nodes,definition.accent])for(const [key,value] of Object.entries(node.attrs)){
+ for(const node of [...definition.nodes,...definition.accents])for(const [key,value] of Object.entries(node.attrs)){
   if(!['d','points'].includes(key)&&!Number.isFinite(Number(value)))throw Error(`Non-finite coordinate ${key}`);
   if(['width','height','r'].includes(key)&&Number(value)<=0)throw Error(`Nonpositive dimension ${key}`);
   if(['rx','ry'].includes(key)&&Number(value)<0)throw Error(`Negative radius ${key}`);
@@ -27,16 +27,13 @@ export function validateIcon(icon){
  const assigned=Object.values(icon.parts).flat();
  if(assigned.some(n=>n>=icon.nodes.length)||new Set(assigned).size!==icon.nodes.length)throw Error(`${icon.id}: every visible primitive must belong to a part`);
  if(new Set(icon.view.visible).size!==parts.size||icon.view.visible.some(p=>!parts.has(p)))throw Error(`${icon.id}: visible parts must match the view declaration`);
- if(icon.accent.node>=icon.nodes.length)throw Error(`${icon.id}: accent feature does not exist`);
- const accentSource=icon.nodes[icon.accent.node];
- if(['circle','ellipse','line'].includes(accentSource.tag)&&icon.accent.kind!=='whole')throw Error(`${icon.id}: accent the full source circle, ellipse or line`);
- if(icon.accent.kind==='top'&&accentSource.tag!=='rect')throw Error(`${icon.id}: top selects a rectangle edge`);
+ if(icon.accent.mode==='part'&&!parts.has(icon.accent.part))throw Error(`${icon.id}: missing semantic accent part`);
  if(icon.plural&&!icon.collection)throw Error(`${icon.id}: plural requires a declared stack`);
  if(icon.fit.decision==='create'&&!icon.constraints.length)throw Error(`${icon.id}: original geometry requires a physical constraint`);
  return icon;
 }
 export function validateManifest(manifest){
- if(manifest.schema!=='slide-library/2'||!Array.isArray(manifest.icons)||!manifest.icons.length)throw Error('Invalid or empty slide library');
+ if(manifest.schema!=='slide-library/3'||!Array.isArray(manifest.icons)||!manifest.icons.length)throw Error('Invalid or empty slide library');
  if(!manifest.licenses||!Object.keys(manifest.licenses).length)throw Error('Missing license registry');
  const ids=new Set();for(const icon of manifest.icons){validateIcon(icon);if(icon.licenses.some(ref=>!Object.hasOwn(manifest.licenses,ref)))throw Error(`${icon.id}: unknown license notice`);if(ids.has(icon.id))throw Error(`Duplicate icon ${icon.id}`);ids.add(icon.id);}
  return manifest;

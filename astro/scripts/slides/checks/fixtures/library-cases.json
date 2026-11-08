@@ -25,16 +25,19 @@
             "pin-8",
             "pin-9",
             "pin-10",
-            "pin-11"
+            "pin-11",
+            "fixture-component"
           ],
           "hidden": [],
           "rationale": "Retain the reviewed source view and its visible contour relationships."
         },
         "plural": false,
         "accent": {
-          "node": 13,
-          "kind": "top",
-          "meaning": "active core edge"
+          "mode": "part",
+          "part": "fixture-component",
+          "meaning": "complete fixture component",
+          "rationale": "Synthetic geometry fixture; semantic judgments are not inferred.",
+          "basis": "author-proposal"
         },
         "nodes": [
           {
@@ -133,7 +136,7 @@
         "name": "Processor",
         "group": "compute",
         "tags": "processor cpu silicon core chip",
-        "schema": "slide-icon/2",
+        "schema": "slide-icon/3",
         "parts": {
           "housing": [
             12
@@ -176,6 +179,9 @@
           ],
           "pin-11": [
             11
+          ],
+          "fixture-component": [
+            13
           ]
         },
         "constraints": [
@@ -318,15 +324,21 @@
             }
           }
         ],
-        "accent": {
-          "tag": "path",
-          "attrs": {
-            "d": "M9 8H15"
-          }
-        },
         "licenses": [
           "lucide",
           "original"
+        ],
+        "accents": [
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "8",
+              "y": "8",
+              "width": "8",
+              "height": "8",
+              "rx": "1"
+            }
+          }
         ]
       }
     },
@@ -342,17 +354,19 @@
           "description": "front",
           "visible": [
             "blank",
-            "grid"
+            "grid",
+            "fixture-component"
           ],
           "hidden": [],
           "rationale": "Retain the reviewed source view and its visible contour relationships."
         },
         "plural": false,
         "accent": {
-          "node": 5,
-          "kind": "line",
-          "meaning": "central die boundary",
-          "segment": 1
+          "mode": "part",
+          "part": "fixture-component",
+          "meaning": "complete fixture component",
+          "rationale": "Synthetic geometry fixture; semantic judgments are not inferred.",
+          "basis": "author-proposal"
         },
         "nodes": [
           {
@@ -400,7 +414,7 @@
         "name": "Wafer",
         "group": "compute",
         "tags": "wafer fabrication silicon manufacturing",
-        "schema": "slide-icon/2",
+        "schema": "slide-icon/3",
         "parts": {
           "blank": [
             0
@@ -410,6 +424,9 @@
             2,
             3,
             4,
+            5
+          ],
+          "fixture-component": [
             5
           ]
         },
@@ -483,15 +500,17 @@
             }
           }
         ],
-        "accent": {
-          "tag": "path",
-          "attrs": {
-            "d": "M6 14L18 14"
-          }
-        },
         "licenses": [
           "lucide",
           "original"
+        ],
+        "accents": [
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M6 14H18"
+            }
+          }
         ]
       }
     },
@@ -509,16 +528,19 @@
             "upper",
             "lower",
             "indicator-upper",
-            "indicator-lower"
+            "indicator-lower",
+            "fixture-component"
           ],
           "hidden": [],
           "rationale": "Retain the reviewed source view and its visible contour relationships."
         },
         "plural": true,
         "accent": {
-          "node": 2,
-          "kind": "whole",
-          "meaning": "one status indicator"
+          "mode": "part",
+          "part": "fixture-component",
+          "meaning": "complete fixture component",
+          "rationale": "Synthetic geometry fixture; semantic judgments are not inferred.",
+          "basis": "author-proposal"
         },
         "nodes": [
           {
@@ -565,7 +587,7 @@
         "name": "Server stack",
         "group": "systems",
         "tags": "server compute infrastructure machine",
-        "schema": "slide-icon/2",
+        "schema": "slide-icon/3",
         "parts": {
           "upper": [
             0
@@ -578,6 +600,9 @@
           ],
           "indicator-lower": [
             3
+          ],
+          "fixture-component": [
+            2
           ]
         },
         "constraints": [
@@ -664,18 +689,20 @@
             }
           }
         ],
-        "accent": {
-          "tag": "line",
-          "attrs": {
-            "x1": "6",
-            "x2": "6.01",
-            "y1": "6",
-            "y2": "6"
-          }
-        },
         "licenses": [
           "lucide",
           "original"
+        ],
+        "accents": [
+          {
+            "tag": "line",
+            "attrs": {
+              "x1": "6",
+              "x2": "6.01",
+              "y1": "6",
+              "y2": "6"
+            }
+          }
         ]
       }
     },
@@ -692,17 +719,19 @@
           "visible": [
             "front",
             "rear-0",
-            "detail"
+            "detail",
+            "fixture-component"
           ],
           "hidden": [],
           "rationale": "Retain the reviewed source view and its visible contour relationships."
         },
         "plural": true,
         "accent": {
-          "node": 1,
-          "kind": "line",
-          "meaning": "front page fold",
-          "segment": 2
+          "mode": "part",
+          "part": "fixture-component",
+          "meaning": "complete fixture component",
+          "rationale": "Synthetic geometry fixture; semantic judgments are not inferred.",
+          "basis": "author-proposal"
         },
         "nodes": [
           {
@@ -727,7 +756,7 @@
         "name": "Files",
         "group": "data",
         "tags": "files documents plural stack",
-        "schema": "slide-icon/2",
+        "schema": "slide-icon/3",
         "parts": {
           "front": [
             0
@@ -736,6 +765,9 @@
             2
           ],
           "detail": [
+            1
+          ],
+          "fixture-component": [
             1
           ]
         },
@@ -793,15 +825,17 @@
             }
           }
         ],
-        "accent": {
-          "tag": "path",
-          "attrs": {
-            "d": "M15 2L15 7"
-          }
-        },
         "licenses": [
           "lucide",
           "original"
+        ],
+        "accents": [
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M16.706 2.706A2.4 2.4 0 0 0 15 2v5a1 1 0 0 0 1 1h5a2.4 2.4 0 0 0-.706-1.706z"
+            }
+          }
         ]
       }
     },
@@ -825,16 +859,19 @@
             "moving-lower",
             "tick-left",
             "tick-right",
-            "display"
+            "display",
+            "fixture-component"
           ],
           "hidden": [],
           "rationale": "Retain the reviewed source view and its visible contour relationships."
         },
         "plural": false,
         "accent": {
-          "node": 9,
-          "kind": "top",
-          "meaning": "slider display edge"
+          "mode": "part",
+          "part": "fixture-component",
+          "meaning": "complete fixture component",
+          "rationale": "Synthetic geometry fixture; semantic judgments are not inferred.",
+          "basis": "author-proposal"
         },
         "nodes": [
           {
@@ -909,7 +946,7 @@
         "name": "Calipers",
         "group": "research",
         "tags": "calipers measure dimension precision",
-        "schema": "slide-icon/2",
+        "schema": "slide-icon/3",
         "parts": {
           "beam-left": [
             0
@@ -939,6 +976,9 @@
             8
           ],
           "display": [
+            9
+          ],
+          "fixture-component": [
             9
           ]
         },
@@ -1103,15 +1143,21 @@
             }
           }
         ],
-        "accent": {
-          "tag": "path",
-          "attrs": {
-            "d": "M14.2 9H16.8"
-          }
-        },
         "licenses": [
           "lucide",
           "original"
+        ],
+        "accents": [
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "14",
+              "y": "9",
+              "width": "3",
+              "height": "2",
+              "rx": "0.2"
+            }
+          }
         ]
       }
     },
@@ -1129,17 +1175,19 @@
             "front",
             "rear-0",
             "rear-1",
-            "detail"
+            "detail",
+            "fixture-component"
           ],
           "hidden": [],
           "rationale": "Retain the reviewed source view and its visible contour relationships."
         },
         "plural": true,
         "accent": {
-          "node": 3,
-          "kind": "line",
-          "meaning": "front slide title line",
-          "segment": 1
+          "mode": "part",
+          "part": "fixture-component",
+          "meaning": "complete fixture component",
+          "rationale": "Synthetic geometry fixture; semantic judgments are not inferred.",
+          "basis": "author-proposal"
         },
         "nodes": [
           {
@@ -1180,7 +1228,7 @@
         "name": "Slide deck",
         "group": "communication",
         "tags": "slide-deck presentation slides plural stack",
-        "schema": "slide-icon/2",
+        "schema": "slide-icon/3",
         "parts": {
           "front": [
             2
@@ -1194,6 +1242,9 @@
           "detail": [
             3,
             4
+          ],
+          "fixture-component": [
+            3
           ]
         },
         "constraints": [
@@ -1284,15 +1335,17 @@
             }
           }
         ],
-        "accent": {
-          "tag": "path",
-          "attrs": {
-            "d": "M6 11L14 11"
-          }
-        },
         "licenses": [
           "lucide",
           "original"
+        ],
+        "accents": [
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M6 11H14"
+            }
+          }
         ]
       }
     }

@@ -11,7 +11,14 @@ fails JUNCTION without an icon-id branch. Reproducible fixture:
 OCCLUSION even though source consistency also fails. This calibrates VIEW and
 COLLECTION rather than imposing one arrangement on every new subject.
 
-**Accept:** teal covers a straight rim from endpoint to endpoint, or the entire lens circle.
-**Reject:** teal covers only a centered dash on that rim or one quadrant of the circle.
-Being attached is insufficient: coverage and length must match the full selected feature.
-A large circle is not shortened to meet a percentage budget.
+**Accept:** the complete verification tick, rocket flame, inner processor core,
+wafer die, layer outline, terminal-dot set or network node.
+**Reject:** a full tick arm, fin, core edge, grid divider, circuit trace or uplink
+that substitutes a different geometric feature for the intended semantic unit.
+
+**Accept:** folder/cloud with no accent, or explicitly chosen complete-glyph color.
+**Reject:** a decorative folder tab or cloud edge. `none` emits no colored strokes.
+
+The frozen cases in `checks/fixtures/semantic-accents.json` retain both the corrected
+source contract and the formerly passing wrong accent. They protect known choices;
+they do not establish that a future noun has been understood.

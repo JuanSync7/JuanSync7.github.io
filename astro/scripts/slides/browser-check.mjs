@@ -18,12 +18,13 @@ try {
     await new Promise(resolve=>setTimeout(resolve,200));
   }
   await mkdir('slides-out',{recursive:true});
-  browser=await chromium.launch();
+  const executablePath=process.argv.find(arg=>arg.startsWith('--browser='))?.slice(10);
+  browser=await chromium.launch({executablePath});
   const context=await browser.newContext({viewport:{width:1360,height:1000},reducedMotion:'reduce',acceptDownloads:true});
   await context.grantPermissions(['clipboard-read','clipboard-write']);
   const page=await context.newPage(),errors=[];
   page.on('pageerror',error=>errors.push(error.message));
-  page.on('console',message=>{if(message.type()==='error')errors.push(message.text());});
+  page.on('console',message=>{if(message.type()==='error')errors.push(`${message.text()} (${message.location().url})`);});
   await page.goto(`${base}/lab/slide-icons/`);
   await page.waitForFunction(()=>new URL(location.href).searchParams.has('tone'));
   assert.equal(await page.locator('.slide-card').count(),catalog.length);

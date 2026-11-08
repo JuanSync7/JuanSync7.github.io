@@ -26,3 +26,5 @@ have separate results. A green icon does not establish that the skill generalize
 Configured case set and runner instructions live under `astro/scripts/slides/evals/`.
 Fresh agents require explicit session authorization when the host requires it.
 Without independent runs, mark that lane pending; never substitute role-play.
+
+Fixed user corrections are output regressions, not held-out behavioral trials. Fresh blind trials must also cover choosing a semantic component instead of a convenient edge, leaving a glyph neutral, and including every member of an equivalent functional set. Keep judgments about meaning separate from exact rendering fidelity. Do not reuse the fixed examples as evidence of generalization.
