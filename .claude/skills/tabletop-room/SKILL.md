@@ -13,7 +13,8 @@ commands are described in `astro/docs/tabletop-rooms.md`.
 
 1. **Brief.** State the room's purpose and the defining activities it must support.
    Read the reference card and treatment. Preserve the seed URLs, colour switch,
-   eye-height camera and 0–180° entrance arc.
+   eye-height camera and 0–180° entrance arc. Eye view keeps a level sightline and
+   one natural lens across the arc; the overview fits the complete envelope.
 2. **Scale first.** Use `ROOM_METRICS` and `roomPlan`. The table grammar's original
    dimensions are local coordinates, not room furniture dimensions. Run
    `npm run rooms:program` before polishing. A desk must leave a room around it.
@@ -26,7 +27,8 @@ commands are described in `astro/docs/tabletop-rooms.md`.
    Materials preserve the semantic finish of inserted room accessories.
 5. **Finish the room.** Coordinate windows, coverings, door hardware, wall and floor
    treatment, textiles and fixtures with the same theme. Apply seeded variants to
-   real design choices. Stop filling when the space supports its activities.
+   real design choices, including a continuous themed ceiling visible at eye level
+   and cut away in overview. Keep ceiling sources inside that closed envelope. Stop filling when the space supports its activities.
 6. **Light actual sources.** Fit daylight to the casement opening, clinical light to
    ceiling/task fixtures and bar light to pendants. Keep the single shadow key,
    fill and practicals distinct. Compose texture and PCSS hooks locally and dispose

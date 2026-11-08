@@ -1,0 +1,7 @@
+{
+  "_": "Scoped natural eye-lens bounds over allowed zoom; opaque black is a floor/ceiling rendering defect, distinct from the nonzero night ground and dark material tokens.",
+  "eyeFovMin": 35,
+  "eyeFovMax": 68,
+  "opaqueBlackComponentMax": 2,
+  "opaqueBlackShareMax": 0.05
+}

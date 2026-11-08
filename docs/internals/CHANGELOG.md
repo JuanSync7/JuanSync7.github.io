@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-11-08
+
+Themed rooms retain one level eye-height lens across their entrance orbit, removing
+the extreme asymmetric field of view caused by nearby furniture at 0°. Solid themed
+ceilings close the wall tops at eye level, with seeded coffers, beams, panels and
+acoustic slats; the isometric overview cuts them away. Ceiling/pendant shadow keys
+remain inside the roof. Independent camera/ceiling regression checks preserve the
+old failures, mirrored projections, source placement and fallback visibility.
+
 ## 2026-11-07
 
 Hardware atlas seed thumbnails become still previews while the main viewer stays

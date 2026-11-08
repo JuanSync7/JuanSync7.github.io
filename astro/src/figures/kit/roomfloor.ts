@@ -6,7 +6,27 @@ export function roomFloor(p: TableDraft, r: RoomPlan, theme: ThemeId): void {
   p.material('frame', () =>
     p.box(0, r.floor - 0.18, (r.back + r.front) / 2, 2 * r.half + 0.32, 0.1, r.front - r.back + 0.28, 0.03),
   );
-  p.material('recess', () => p.box(0, r.floor - 0.085, (r.back + r.front) / 2, 2 * r.half, 0.015, r.front - r.back, 0));
+  // A continuous upward grout bed over the plinth. Small quads stay stable
+  // when the entrance camera meets its boundary; a room-wide fan can write
+  // through the boards and rugs at an exact endpoint near-plane corner.
+  const cellsX = Math.ceil((2 * r.half) / 1.5),
+    cellsZ = Math.ceil((r.front - r.back) / 1.5);
+  p.material('recess', () => {
+    for (let i = 0; i < cellsX; i++)
+      for (let j = 0; j < cellsZ; j++) {
+        const x0 = -r.half + (2 * r.half * i) / cellsX,
+          x1 = -r.half + (2 * r.half * (i + 1)) / cellsX,
+          z0 = r.back + ((r.front - r.back) * j) / cellsZ,
+          z1 = r.back + ((r.front - r.back) * (j + 1)) / cellsZ,
+          y = r.floor - 0.07;
+        p.surface([
+          [x0, y, z1],
+          [x1, y, z1],
+          [x1, y, z0],
+          [x0, y, z0],
+        ]);
+      }
+  });
   const wood = ['dining', 'study', 'messy', 'work'].includes(theme);
   const nx = (wood ? 14 : 10) + r.variant,
     nz = wood ? 4 : theme === 'storage' ? 4 : 7;

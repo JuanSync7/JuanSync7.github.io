@@ -3,7 +3,7 @@ import type { Bounds } from './tableparts';
 import type { TableScene } from './tabletop';
 import { ROOM_METRICS } from './roommetrics';
 
-export type RoomSide = 'floor' | 'back' | 'left' | 'right';
+export type RoomSide = 'floor' | 'ceiling' | 'back' | 'left' | 'right';
 export interface RoomPlan {
   half: number;
   back: number;
@@ -38,6 +38,6 @@ export function roomPlan(p: TableScene): RoomPlan {
     cookZ: back + 7.03,
     lampZ: front - 0.6,
     windowZ: back + 2.3,
-    bounds: { lo: [-half - 0.18, floor - 0.18, back - 0.18], hi: [half + 0.18, top + 0.06, front + 0.06] },
+    bounds: { lo: [-half - 0.18, floor - 0.18, back - 0.18], hi: [half + 0.18, top + 0.18, front + 0.06] },
   };
 }

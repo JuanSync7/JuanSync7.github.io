@@ -1,8 +1,7 @@
 import { camera, project, type Camera, type Vec3 } from './camera';
 import { corners } from './tableparts';
 import { roomPlan, type RoomSide } from './roomplan';
-import { tabletop, type TableScene } from './tabletop';
-import { roomModels } from './tableroom';
+import type { TableScene } from './tabletop';
 import type { RoomAppearance } from './roomstyles';
 
 export interface RoomControls {
@@ -36,15 +35,13 @@ export function roomView(p: TableScene, w: number, h: number, data?: unknown): R
     controls = roomControls(data),
     arc = ((controls.angle - 90) * Math.PI) / 180;
   const target: Vec3 =
-    controls.view === 'isometric'
-      ? [0, (r.floor + r.top) / 2, r.front]
-      : [0, r.floor + 2.25, (r.back + r.front) / 2 - 0.8];
+    controls.view === 'isometric' ? [0, (r.floor + r.top) / 2, r.front] : [0, p.eye, (r.back + r.front) / 2 - 0.8];
   // The semicircle belongs to the entrance, so its ends meet the side-wall starts.
   const x = Math.sin(arc) * r.half,
     z = r.front + Math.cos(arc) * r.half;
   const horizontal = Math.hypot(x, z - target[2]),
     yaw = Math.atan2(x, z - target[2]);
-  const pitch = controls.view === 'isometric' ? Math.atan(1 / Math.sqrt(2)) : Math.atan2(p.eye - target[1], horizontal);
+  const pitch = controls.view === 'isometric' ? Math.atan(1 / Math.sqrt(2)) : 0;
   const dist = horizontal / Math.cos(pitch),
     aspect = w / h;
   let height: number;
@@ -57,20 +54,9 @@ export function roomView(p: TableScene, w: number, h: number, data?: unknown): R
     offset = [(Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2];
     height = Math.max((Math.max(...ys) - Math.min(...ys)) / 0.9, (Math.max(...xs) - Math.min(...xs)) / (aspect * 0.92));
   } else {
-    const view = camera({ cx: 0, cy: 0, scale: 1, dist, yaw, pitch });
-    const bounds = [
-      tabletop(p).bounds,
-      ...p.items.map((it) => it.bounds),
-      ...roomModels(p)
-        .filter((s) => s.interactive && visibleSide(controls, s.side, s.mount))
-        .map((s) => s.model.bounds),
-      { lo: [-r.half, r.floor, r.back] as Vec3, hi: [r.half, r.top, r.back + 0.6] as Vec3 },
-    ];
-    const points = bounds.flatMap(corners).map((q) => project(view, q[0], q[1] - target[1], q[2] - target[2]));
-    height = Math.max(
-      2 * Math.tan(Math.PI / 8) * dist,
-      ...points.map((q) => Math.max(Math.abs(q[1]) / 0.43, Math.abs(q[0]) / (aspect * 0.44))),
-    );
+    // A human view uses one lens, never a fit to angle-dependent furniture bounds.
+    // Near objects may leave the frame; they must not widen the entire room.
+    height = 2 * Math.tan((55 * Math.PI) / 360) * dist;
   }
   height /= controls.zoom;
   const projection = camera({
@@ -95,6 +81,7 @@ export function roomProject(v: RoomView, point: Vec3) {
   return project(v.projection, point[0] - v.target[0], point[1] - v.target[1], point[2] - v.target[2]);
 }
 function visibleSide(controls: RoomControls, side: RoomSide, mount?: 'floor' | 'wall'): boolean {
+  if (side === 'ceiling') return controls.view === 'eye';
   const cut = controls.view === 'isometric' && mount !== 'floor' ? 85 : 35;
   if (side === 'left') return controls.angle > cut;
   if (side === 'right') return controls.angle < 180 - cut;
