@@ -19,7 +19,8 @@ human-approved exemplar.
    on boards, do wall cases have backs/sides, and do projecting lights visibly connect to the room?
 7. **Light:** Are pools and shadows consistent with windows and fixtures? Do dark
    materials retain detail, white surfaces retain highlights and metal retain sheen?
-8. **Views:** Do eye level, both orbit ends and true isometric hold the room's important
+8. **Views:** Compare 0° and 180° at the same zoom: lens and eye height stay consistent even though furniture differs. The eye-level horizon stays level. Inspect the ceiling underside, wall joints, seed-dependent finish and fixture attachment; the isometric roof cuts away.
+   Do eye level, both orbit ends and true isometric hold the room's important
    furniture? Are near-wall cutaways and hidden fixtures coherent in both renderers?
    Inspect fallback shelf contents: a correct physical model can still look broken when a case face paints over its books.
 9. **Modes and sizes:** Does monochrome retain structure? Is colour coordinated rather

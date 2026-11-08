@@ -40,8 +40,8 @@ export function roomLighting(
   const r = roomPlan(p),
     key = new DirectionalLight(hexOf('inkStrong'), 3.1);
   const mood = ROOM_STYLES[p.theme.id].mood;
-  if (mood === 'bar') key.position.set(0, r.top + 2, 0);
-  else if (mood === 'clean') key.position.set(-1.5, r.top + 2.5, 2);
+  if (mood === 'bar') key.position.set(0, 2.22, 0);
+  else if (mood === 'clean') key.position.set(0, r.top - 0.3, 0);
   else key.position.set(-r.half - 3, r.floor + 6.8, r.windowZ - 0.8);
   key.target.position.set(0, r.floor + 0.4, mood === 'bar' ? 0.2 : mood === 'clean' ? 2 : (r.back + r.front) / 2);
   key.castShadow = true;

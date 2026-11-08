@@ -43,6 +43,12 @@ export function roomPaint(
       pattern = theme === 'kitchen' ? 'stone' : theme === 'lab' ? 'ceramic' : 'wood';
       roughness = theme === 'kitchen' ? 0.3 : theme === 'lab' ? 0.28 : 0.5;
     }
+    if (finish === 'ceiling') {
+      tone = theme === 'bar' ? 'walnut' : theme === 'computer' ? 'graphite' : theme === 'storage' ? 'steel' : 'ivory';
+      pattern = theme === 'bar' ? 'wood' : 'plaster';
+      roughness = 0.95;
+      strength = 0.82;
+    }
     if (finish === 'wall') {
       tone = style.wall;
       pattern = 'plaster';

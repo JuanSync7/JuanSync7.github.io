@@ -68,8 +68,24 @@ ceramic and storage-object finishes remain distinct when inserted into room furn
 
 The entrance semicircle has center `(0, room.front)` and radius `room.half`.
 At 0° and 180° the camera meets the side-wall starts; 90° faces into the room.
-Eye height is fixed during orbit and resizing. Zoom changes the lens, not the path.
-Eye-level framing includes the room's interactive fittings, not only its table.
+Eye height is 3.7 world units above the floor (about 1.68 m), fixed during orbit and resizing. Zoom changes the lens, not the path.
+Eye level has a horizontal sightline and a 55° base vertical field of view. Its lens
+does not change with angle, theme furniture or cutaway visibility. Mirrored endpoint
+positions have matching projection and magnification. The primary activity remains
+in view; nearby peripheral furniture can crop naturally. The isometric overview
+frames the complete room instead of distorting the human view to fit every lamp.
+Eye interiors may fill the canvas: their colour check requires substantial interior
+coverage plus the same contrast/highlight guards, camera and subject projection,
+and floor/ceiling image checks. The overview retains its original coverage margin.
+The global sparse night-figure thresholds remain unchanged.
+The floor has a continuous tessellated grout bed over its structural plinth. A redundant
+closed underlay caused opaque WebGL patches at the near-plane endpoint corner;
+colour browser checks now inspect actual floor pixels at both ends in every theme.
+
+A continuous solid ceiling closes the wall tops in eye view. Domestic coffers,
+workshop/bar beams, clinical/office panel grids and studio acoustic slats follow
+the theme, with three seeded construction variants. The overview cuts away this
+roof in both renderers; wall-connected rails retain support for exposed fixtures.
 
 Isometric uses a true orthographic camera at 45° yaw and `atan(1/sqrt(2))`
 elevation. An off-axis frustum fits the whole room without changing equal axis scale.
@@ -90,8 +106,8 @@ its long axis; timber floor grain follows the boards. Shelved accessories preser
 paper, book, glass, ceramic, equipment and metal semantics.
 
 Daylit rooms use their casement as the key direction; the left wall has a real
-opening behind the frame. Clinical keys come from above and bar keys align with
-pendants. Ambient fill, neutral prefiltered reflections and actual task/practical
+opening behind the frame. Clinical keys sit below the ceiling diffusers and bar keys align with
+pendant openings, inside the closed room. The roof casts and receives shadows. Ambient fill, neutral prefiltered reflections and actual task/practical
 lights support the single shadow key. Screen spill, candles, pendants, under-shelf
 strips, floor lamps and the kitchen hood have corresponding modelled sources.
 Thin textiles receive shadows without casting noisy self-shadow patterns.

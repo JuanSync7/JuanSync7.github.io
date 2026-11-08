@@ -297,7 +297,7 @@ try {
   assert(layouts.size > 1300);
   assert(occlusions > 1000, 'Eye-level density should allow natural visual occlusion');
   console.log(
-    `Tabletop passed: ${cases.length} layouts, ${objects} objects, ${kinds.size} props, ${checkedRooms.size} seeded rooms; deterministic, themed room anchors, no physical overlaps, with the tabletop framed across the 0–180° entrance arc and equal-axis isometric projection.`,
+    `Tabletop passed: ${cases.length} layouts, ${objects} objects, ${kinds.size} props, ${checkedRooms.size} seeded rooms; deterministic, themed room anchors, no physical overlaps, with a stable eye camera on the 0–180° entrance arc and full-room equal-axis isometric projection.`,
   );
 } finally {
   rmSync(dir, { recursive: true, force: true });
