@@ -68,7 +68,7 @@ ceramic and storage-object finishes remain distinct when inserted into room furn
 
 The entrance semicircle has center `(0, room.front)` and radius `room.half`.
 At 0° and 180° the camera meets the side-wall starts; 90° faces into the room.
-Eye height is fixed during orbit and resizing. Zoom changes the lens, not the path.
+Eye height is 3.7 world units above the floor (about 1.68 m), fixed during orbit and resizing. Zoom changes the lens, not the path.
 Eye level has a horizontal sightline and a 55° base vertical field of view. Its lens
 does not change with angle, theme furniture or cutaway visibility. Mirrored endpoint
 positions have matching projection and magnification. The primary activity remains

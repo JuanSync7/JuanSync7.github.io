@@ -35,7 +35,9 @@ export function roomView(p: TableScene, w: number, h: number, data?: unknown): R
     controls = roomControls(data),
     arc = ((controls.angle - 90) * Math.PI) / 180;
   const target: Vec3 =
-    controls.view === 'isometric' ? [0, (r.floor + r.top) / 2, r.front] : [0, p.eye, (r.back + r.front) / 2 - 0.8];
+    controls.view === 'isometric'
+      ? [0, (r.floor + r.top) / 2, r.front]
+      : [0, r.floor + 3.7, (r.back + r.front) / 2 - 0.8];
   // The semicircle belongs to the entrance, so its ends meet the side-wall starts.
   const x = Math.sin(arc) * r.half,
     z = r.front + Math.cos(arc) * r.half;

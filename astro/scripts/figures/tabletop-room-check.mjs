@@ -110,7 +110,11 @@ export function checkRoom(p, { roomPlan, roomModels, roomView, roomProject, room
           assert(Math.abs(v.position[0] - (angle === 0 ? -plan.half : plan.half)) < 1e-9);
           assert(Math.abs(v.position[2] - plan.front) < 1e-9, 'Orbit end must meet the side-wall start');
         }
-        if (view === 'eye') assert(Math.abs(v.position[1] - p.eye) < 1e-9, 'Eye height changes during orbit');
+        if (view === 'eye')
+          assert(
+            v.position[1] - plan.floor >= 3.5 && v.position[1] - plan.floor <= 3.95,
+            'Human eye height must be measured from the room floor',
+          );
         if (view === 'isometric') {
           assert.equal(v.projection.dist, Infinity, 'Overview must use parallel projection');
           assert(Math.abs(yaw - ((angle - 90) * Math.PI) / 180) < 1e-9);

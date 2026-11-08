@@ -25,6 +25,15 @@ function checkLens(views) {
     assert(v.fov >= limits.eyeFovMin && v.fov <= limits.eyeFovMax, 'Eye lens must retain a natural perspective');
   }
 }
+function checkHeight(views, r) {
+  for (const v of views) {
+    near(v.position[1], views[0].position[1], 'Human eye height must remain fixed');
+    assert(
+      v.position[1] - r.floor >= limits.eyeHeightMin && v.position[1] - r.floor <= limits.eyeHeightMax,
+      'Eye must be a human standing height above the floor',
+    );
+  }
+}
 function roofFace(part, plan) {
   assert(part && part.side === 'ceiling', 'Room needs a real ceiling');
   const underside = part.model.surfaces.find((s) => {
@@ -126,11 +135,11 @@ try {
             roomView(p, 960, 960 / aspect, { angle: i * 5, view: 'eye', zoom }),
           );
           checkLens(views);
+          checkHeight(views, r);
           for (const [i, v] of views.entries()) {
             const mirror = views[36 - i];
             near(v.position[0], -mirror.position[0], 'Entrance path must mirror');
             near(v.position[2], mirror.position[2], 'Entrance path must mirror');
-            near(v.position[1], p.eye, 'Human eye height must remain fixed');
             const a = roomProject(v, [1, r.floor + 1, r.back + 1]),
               b = roomProject(mirror, [-1, r.floor + 1, r.back + 1]);
             near(a[0] + b[0], 960, 'Mirrored eye projections must agree');
@@ -226,6 +235,13 @@ try {
   const lifted = structuredClone(roof);
   for (const s of lifted.model.surfaces) for (const q of s.points) q[1] += 0.05;
   assert.throws(() => roofFace(lifted, r));
+  report.negativeFixtures++;
+  const elevated = structuredClone(views);
+  for (const v of elevated) {
+    v.position[1] += 1;
+    v.target[1] += 1;
+  }
+  assert.throws(() => checkHeight(elevated, r), /standing height/);
   report.negativeFixtures++;
   const collapsed = structuredClone(roomModels(p).find((s) => s.side === 'floor'));
   const face = collapsed.model.surfaces.find((s) => s.face && s.finish === 'recess');

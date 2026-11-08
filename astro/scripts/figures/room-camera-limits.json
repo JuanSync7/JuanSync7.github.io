@@ -3,5 +3,7 @@
   "eyeFovMin": 35,
   "eyeFovMax": 68,
   "opaqueBlackComponentMax": 2,
-  "opaqueBlackShareMax": 0.05
+  "opaqueBlackShareMax": 0.05,
+  "eyeHeightMin": 3.5,
+  "eyeHeightMax": 3.95
 }

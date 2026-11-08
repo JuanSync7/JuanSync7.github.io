@@ -2,7 +2,7 @@
 
 ## 2026-11-08
 
-Themed rooms retain one level eye-height lens across their entrance orbit, removing
+Themed rooms retain one level lens at a floor-relative human eye height across their entrance orbit, removing
 the extreme asymmetric field of view caused by nearby furniture at 0°. Solid themed
 ceilings close the wall tops at eye level, with seeded coffers, beams, panels and
 acoustic slats; the isometric overview cuts them away. Ceiling/pendant shadow keys

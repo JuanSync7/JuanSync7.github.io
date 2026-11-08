@@ -8,7 +8,7 @@ Never change the site's global thresholds to accommodate this room.
 | --- | --- |
 | `npm run check` | Types, lint, file/figure rules, formatting and existing site checks |
 | `npm run tabletop:check` | Many seeded layouts; measured prop/room bounds; contacts; separate textile clearance; measured door approach; native/fallback projection agreement and true isometric axes |
-| `npm run rooms:camera` | 27 themed ceilings, 8,991 eye poses, mirrored endpoint projections, level sightline, bounded constant lens, primary activity framing, native/fallback roof visibility, physical source positions, continuous tessellated grout, six broken mutations and nine captured old-camera failures; runs in `tabletop:check` and CI |
+| `npm run rooms:camera` | 27 themed ceilings, 8,991 eye poses, mirrored endpoint projections, level sightline, floor-relative standing height, bounded constant lens, primary activity framing, native/fallback roof visibility, physical source positions, continuous tessellated grout, seven broken mutations and nine captured old-camera failures; runs in `tabletop:check` and CI |
 | `npm run rooms:supports` | Actual book/box base support, wall attachment paths and six rejected floating/buried/detached output mutations; also runs in `tabletop:check` and CI |
 | `npm run rooms:depth` | Pixel-centre visibility against independent native triangle rays in nine themes, three variants, two projections and three angles; the legacy painter remains a rejected fixture |
 | `npm run rooms:program` | Actual primary floor share, human furniture/device scale, mandatory theme furnishings, grounded supports and connected walking routes |
