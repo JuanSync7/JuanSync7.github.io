@@ -8,6 +8,8 @@ import { checkEyeImage } from './room-eye-image.mjs';
 const url = (process.argv.find((a) => a.startsWith('--url='))?.slice(6) ?? 'http://127.0.0.1:4410').replace(/\/$/, '');
 const night = JSON.parse(readFileSync('scripts/figures/thresholds.json', 'utf8'));
 const limits = JSON.parse(readFileSync('scripts/figures/room-colour-checks.json', 'utf8'));
+const cameraLimits = JSON.parse(readFileSync('scripts/figures/room-camera-limits.json', 'utf8'));
+const eyeLimits = { ...limits, coverageMin: cameraLimits.eyeCoverageMin, coverageMax: cameraLimits.eyeCoverageMax };
 const themes = [
   ['dining', 38],
   ['work', 1],
@@ -19,8 +21,8 @@ const themes = [
   ['bar', 10],
   ['lab', 3],
 ];
-const browser = await chromium.launch(),
-  errors = [],
+let browser;
+const errors = [],
   report = [];
 mkdirSync('figures-out', { recursive: true });
 writeFileSync(
@@ -28,6 +30,7 @@ writeFileSync(
   JSON.stringify({ schema: 'room-colour-check/1', passed: false, rooms: [] }, null, 2) + '\n',
 );
 try {
+  browser = await chromium.launch();
   for (const fallback of [false, true]) {
     const context = await browser.newContext({ viewport: { width: 1200, height: 1000 }, reducedMotion: 'reduce' }),
       page = await context.newPage(),
@@ -118,7 +121,7 @@ try {
       await page.getByRole('button', { name: 'Eye level', exact: true }).click();
       const eye = await shot();
       writeFileSync(`figures-out/room-ceiling-${fallback ? 'fallback' : 'webgl'}-${theme}.png`, eye);
-      assertColour(colourMetrics(eye, night), limits, `${label} eye level`);
+      assertColour(colourMetrics(eye, night), eyeLimits, `${label} eye level`);
       eyeShots.push({ label: `${theme} · 90°`, png: eye });
       const eyeResult = { angle: 90, ...checkEyeImage(decode(eye), `${label} eye 90`) };
       report.at(-1).eye = [eyeResult];
@@ -147,6 +150,7 @@ try {
         await page.waitForFunction((n) => document.querySelector('.room-orbit output')?.textContent === `${n}°`, angle);
         const endpoint = await shot();
         writeFileSync(`figures-out/room-ceiling-${fallback ? 'fallback' : 'webgl'}-${theme}-${angle}.png`, endpoint);
+        assertColour(colourMetrics(endpoint, night), eyeLimits, `${label} eye ${angle}`);
         eyeShots.push({ label: `${theme} · ${angle}°`, png: endpoint });
         report.at(-1).eye.push({ angle, ...checkEyeImage(decode(endpoint), `${label} eye ${angle}`) });
       }
@@ -215,5 +219,5 @@ try {
     'Room colour passed: nine themes × WebGL/fallback × eye 0°/90°/180° and isometric, themed ceilings and floor-hole regressions, reversible colour/monochrome controls, appearance-synced previews, a colour gallery, stable textures, contrast/highlight guards and mobile width.',
   );
 } finally {
-  await browser.close();
+  await browser?.close();
 }

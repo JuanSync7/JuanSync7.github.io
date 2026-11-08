@@ -17,7 +17,7 @@ Never change the site's global thresholds to accommodate this room.
 | `room-proportion-before.json` | Actual measurements from source revision `5baabe9`; the negative regression case |
 | `npm run rooms:materials` | Material recipes, mirrored tokens, exact mode restoration and local shader composition |
 | `npm run tabletop:browser -- --url=…` | Native/fallback camera sweep, mouse, keyboard, touch, zoom, seed and phone checks |
-| `npm run rooms:colour -- --url=…` | Nine themes, native/fallback, 0°/90°/180° eye ceilings and isometric, opaque floor/ceiling-hole regressions with mutated real-image fixtures, reversible appearance, stable detail, contrast and highlights |
+| `npm run rooms:colour -- --url=…` | Nine themes, native/fallback, 0°/90°/180° eye ceilings and isometric, opaque floor/ceiling-hole regressions with mutated real-image fixtures, reversible appearance, stable detail, contrast and highlights; eye interiors have a separate occupancy contract while overview/global margins stay unchanged |
 | `room-colour-performance.mjs --url=…` | Existing Three.js frame budget, retained idle image and redraws after input |
 | `npm run figure -- pixel-still --url=…` | Three full audit seeds; read the output sheet |
 | `npm run figure:seeds -- pixel-still 12 --url=…` | Wider seeded composition sheet |

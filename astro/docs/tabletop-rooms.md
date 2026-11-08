@@ -74,6 +74,10 @@ does not change with angle, theme furniture or cutaway visibility. Mirrored endp
 positions have matching projection and magnification. The primary activity remains
 in view; nearby peripheral furniture can crop naturally. The isometric overview
 frames the complete room instead of distorting the human view to fit every lamp.
+Eye interiors may fill the canvas: their colour check requires substantial interior
+coverage plus the same contrast/highlight guards, camera and subject projection,
+and floor/ceiling image checks. The overview retains its original coverage margin.
+The global sparse night-figure thresholds remain unchanged.
 The floor has a continuous tessellated grout bed over its structural plinth. A redundant
 closed underlay caused opaque WebGL patches at the near-plane endpoint corner;
 colour browser checks now inspect actual floor pixels at both ends in every theme.
