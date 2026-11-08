@@ -1,4 +1,5 @@
 import type { Draft } from './primitives';
+import type { Vec3 } from '../camera';
 
 export function rect(p: Draft, x: number, y: number, z: number, w: number, d: number): void {
   p.line(
@@ -48,20 +49,33 @@ export function packageChip(p: Draft, x: number, y: number, z: number, w: number
     p.ring(x - w * 0.28, y + 0.067, z - d * 0.25, 0.009, 'top', 8);
   });
 }
-export function laminate(p: Draft, w: number, d: number, y: number, h: number): void {
+export function laminate(p: Draft): void {
+  const host = p.profile();
+  const point = (index: number, t: number): Vec3 => {
+    const a = host.bottom.points.at(-1 - index),
+      b = host.top.points[index];
+    if (!a || !b) throw new Error('Laminate needs corresponding extrusion caps.');
+    return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+  };
   for (const t of [0.25, 0.65])
-    p.line([
-      [-w / 2, y + h * t, d / 2],
-      [w / 2, y + h * t, d / 2],
-      [w / 2, y + h * t, -d / 2],
-    ]);
+    p.line(
+      host.top.points.map((_, i) => point(i, t)),
+      true,
+      host.solid,
+    );
+  const edge = host.top.points
+    .map((a, i) => ({ i, z: (a[2] + host.top.points[(i + 1) % host.top.points.length]![2]) / 2 }))
+    .sort((a, b) => b.z - a.z)[0]?.i;
+  if (edge === undefined) throw new Error('Laminate needs a host perimeter.');
   p.detail(() => {
     for (let i = 0; i < 12; i++) {
-      const x = (i / 11 - 0.5) * w * 0.9;
-      p.line([
-        [x, y + h * 0.15, d / 2],
-        [x, y + h * 0.75, d / 2],
-      ]);
+      const u = (i + 0.5) / 12;
+      const at = (t: number): Vec3 => {
+        const a = point(edge, t),
+          b = point((edge + 1) % host.top.points.length, t);
+        return [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u];
+      };
+      p.line([at(0.15), at(0.75)], false, host.solid);
     }
   });
 }

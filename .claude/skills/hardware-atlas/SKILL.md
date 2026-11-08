@@ -22,6 +22,9 @@ Use this playbook in the existing coding agent. Read the site's `figure` skill,
    physical piece, and a surface belongs to a solid. Repeat solids inside a part
    when all copies should lift, isolate and highlight together. Use `Draft` and
    the shared builders. Do not make separate canvas and SVG geometry.
+   Use `laminate(p)` immediately after its host extrusion: it reads the emitted
+   profile, including chamfers and transforms. Do not redraw a rectangular seam
+   from the host's width/depth bounds.
 4. **Route on a support.** Use `Draft.trace(points, from, to)` on the board or
    interposer that carries it. Derive every source, sink and lane from the actual
    footprints. Independent conductors need separate lanes. A line that represents

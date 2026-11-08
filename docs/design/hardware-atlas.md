@@ -50,6 +50,11 @@ its frame loop. Changing data does not remount the clock. Immutable model geomet
 
 ## Reuse and exports
 
+Laminate seams interpolate the actual emitted extrusion profile. Their corners,
+translations and rotations therefore follow the body rather than a separately
+specified bounding rectangle. Explicitly supported markings remain bound to their
+own solid; the judge checks every segment against an actual planar host face.
+
 Within each solid, projected strokes split at face and depth-plane boundaries;
 intervals behind a nearer opaque face are omitted. This prevents rear rings or
 markings from drawing through their own walls. Wireframe retains those intervals.

@@ -56,3 +56,53 @@ export function checkSignals(drawing, selected, signal) {
   assert.ok(signals.every(p => p.part === selected), 'Accent belongs only to the selected assembly');
   for (const solid of visible) assert.ok(signals.some(p => p.solid === solid), `Repeated solid ${solid} has its own accent`);
 }
+
+// A supported marking must lie on actual faces, not merely inside a bounding box.
+function segmentOnFace(from, to, face) {
+  const a = face.points[0];
+  for (let i = 1; i + 1 < face.points.length; i++) {
+    const u = face.points[i].map((v, axis) => v - a[axis]);
+    const v = face.points[i + 1].map((value, axis) => value - a[axis]);
+    const n = [u[1]*v[2]-u[2]*v[1], u[2]*v[0]-u[0]*v[2], u[0]*v[1]-u[1]*v[0]];
+    const length = Math.hypot(...n);
+    if (length <= limits.epsilon) continue;
+    if ([from,to].some(point => Math.abs(n.reduce((sum, value, axis) => sum + value * (point[axis] - a[axis]), 0)) > limits.epsilon * length)) return false;
+    // Choose the dominant normal axis explicitly, including negative-facing faces.
+    const dominant = n.map(Math.abs).indexOf(Math.max(...n.map(Math.abs)));
+    const [x,z] = [0,1,2].filter(axis => axis !== dominant);
+    const polygon = face.points.map(p => [p[x],0,p[z]]);
+    const start = [from[x],0,from[z]], end = [to[x],0,to[z]];
+    if (!inside(start,polygon) || !inside(end,polygon)) return false;
+    const dx = end[0]-start[0], dz = end[2]-start[2], cuts = [0,1];
+    for (let j=0;j<polygon.length;j++) {
+      const c=polygon[j],d=polygon[(j+1)%polygon.length], ex=d[0]-c[0],ez=d[2]-c[2];
+      const det=dx*ez-dz*ex;
+      if(Math.abs(det)>limits.epsilon) {
+        const t=((c[0]-start[0])*ez-(c[2]-start[2])*ex)/det;
+        const u=((c[0]-start[0])*dz-(c[2]-start[2])*dx)/det;
+        if(t>0&&t<1&&u>=0&&u<=1) cuts.push(t);
+      } else if(Math.abs((c[0]-start[0])*dz-(c[2]-start[2])*dx)<=limits.epsilon) {
+        const axis=Math.abs(dx)>=Math.abs(dz)?0:2,delta=end[axis]-start[axis];
+        if(Math.abs(delta)>limits.epsilon) for(const point of [c,d]) {
+          const t=(point[axis]-start[axis])/delta;if(t>0&&t<1)cuts.push(t);
+        }
+      }
+    }
+    cuts.sort((a,b)=>a-b);
+    return cuts.slice(1).every((high,i)=>{
+      const t=(cuts[i]+high)/2;return inside([start[0]+dx*t,0,start[2]+dz*t],polygon);
+    });
+  }
+  return false;
+}
+export function checkSupportedMarkings(model) {
+  let count = 0;
+  for (const part of model.parts) for (const mark of part.surfaces.filter(s => s.support !== undefined)) {
+    const faces = part.surfaces.filter(s => s.face && s.solid === mark.support);
+    assert.ok(!mark.face && mark.solid === mark.support && faces.length > 0, `${model.kind}: supported marking has its own solid host`);
+    for (let i = 1; i < mark.points.length; i++)
+      assert.ok(faces.some(face => segmentOnFace(mark.points[i-1],mark.points[i],face)), `${model.kind}: marking segment stays on an actual host face, including chamfers`);
+    count++;
+  }
+  return count;
+}

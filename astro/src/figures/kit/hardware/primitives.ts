@@ -1,23 +1,38 @@
 import type { Vec3 } from '../camera';
 import type { HardwarePart, Surface } from './types';
 
+export interface SolidProfile {
+  solid: number;
+  bottom: Surface;
+  top: Surface;
+}
+
 /** Model-space geometry is shared by SVG exports and the figure clock's canvas renderer. */
 export class Draft {
   readonly parts: HardwarePart[] = [];
   private surfaces: Surface[] = [];
   private solid = 0;
   private fine = false;
+  private extrusion?: SolidProfile;
   part(name: string, note: string, explode?: Vec3, hiddenWhenClosed = false): void {
     this.surfaces = [];
+    this.extrusion = undefined;
     this.parts.push({ name, note, surfaces: this.surfaces, hiddenWhenClosed, explode });
   }
-  line(points: Vec3[], closed = false): void {
+  line(points: Vec3[], closed = false, support?: number): void {
     this.surfaces.push({
-      solid: this.solid,
+      solid: support ?? this.solid,
       points: closed && points[0] ? [...points, points[0]] : points,
       face: false,
       detail: this.fine,
+      support,
     });
+  }
+  /** Uses the emitted cap faces, so chamfers and completed transforms cannot drift. */
+  profile(): SolidProfile {
+    if (!this.extrusion || this.extrusion.solid !== this.solid)
+      throw new Error('Current solid has no extrusion profile.');
+    return this.extrusion;
   }
   detail(draw: () => void): void {
     const previous = this.fine;
@@ -87,7 +102,8 @@ export class Draft {
     const loop = area < 0 ? [...outline].reverse() : outline;
     const bottom = loop.map(([x, z]): Vec3 => [x, low, z]);
     const top = loop.map(([x, z]): Vec3 => [x, high, z]);
-    this.surfaces.push({ solid: this.solid, points: [...bottom].reverse(), face: true, detail: this.fine });
+    const base = { solid: this.solid, points: [...bottom].reverse(), face: true, detail: this.fine };
+    this.surfaces.push(base);
     bottom.forEach((p, i) => {
       const j = (i + 1) % bottom.length;
       const q = bottom[j],
@@ -95,7 +111,9 @@ export class Draft {
         b = top[i];
       if (q && a && b) this.surfaces.push({ solid: this.solid, points: [p, q, a, b], face: true, detail: this.fine });
     });
-    this.surfaces.push({ solid: this.solid, points: top, face: true, detail: this.fine });
+    const cap = { solid: this.solid, points: top, face: true, detail: this.fine };
+    this.surfaces.push(cap);
+    this.extrusion = { solid: this.solid, bottom: base, top: cap };
   }
   ring(x: number, y: number, z: number, radius: number, plane: 'top' | 'front' = 'top', n = 24): void {
     this.line(

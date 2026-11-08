@@ -116,6 +116,12 @@ try {
       job.on('exit',code=>code===0?resolve():reject(new Error(`Hardware contact sheet check exited ${code}`)));
     });
   }
+  await page.goto(`${base}/lab/hardware-atlas/?seed=1`);
+  await page.locator('.lab-main canvas[data-ready="1"]').waitFor();
+  for (const width of [1360,375]) {
+    await page.setViewportSize({width,height:1000});
+    await page.locator('.lab-main').screenshot({path:`hardware-out/seed1-outline-${width}.png`});
+  }
   for (const name of ['hardware-atlas.seeds.png','hardware-atlas.png','hardware-atlas~7.png','hardware-atlas~42.png','hardware-atlas~2026.png'])
     await copyFile(`figures-out/${name}`,`hardware-out/${name}`);
   const plain = await browser.newContext({ javaScriptEnabled: false });

@@ -8,7 +8,7 @@ export function accelerator(p: Draft, n: number): void {
     [0, 0, 0],
   );
   p.box(0, 0, 0, 2.3, 0.12, 1.9, 0.06);
-  laminate(p, 2.3, 1.9, 0, 0.12);
+  laminate(p);
   for (let i = 0; i < 10; i++)
     for (const s of [-1, 1]) {
       const x = (i / 9 - 0.5) * 1.85;
