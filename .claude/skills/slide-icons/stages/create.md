@@ -6,8 +6,8 @@
    that should be visible and those intentionally concealed. Creativity belongs
    in subject, metaphor, silhouette, arrangement and useful detail.
 3. Draw one source SVG on the configured theme grid. Use the site's stroke family.
-   Show visible edges only. Choose one meaningful existing feature and accent it in full. Straight edges run endpoint to endpoint; circles/ellipses use the complete outline.
-4. Write a `slide-icon/2` specification. The routed freestanding-tub source/spec
+   Show visible edges only. Before coloring, name the semantic accent unit and record why it serves the brief. Use a complete named part, a coherent set of equivalent parts, no accent, or explicitly justified whole-glyph color. A part may contain several source primitives.
+4. Write a `slide-icon/3` specification. The routed freestanding-tub source/spec
    demonstrates the record shape; copy its structure, not its subject or geometry. Use arbitrary meaningful part names and
    only relevant constraints from the [constraint API](../../../../astro/scripts/slides/checks/README.md).
    Examples: supports attach to a tub; ports fit inside a housing; repeated sheets

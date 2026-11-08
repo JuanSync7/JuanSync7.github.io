@@ -3,7 +3,7 @@
   "verification": "checked by executable source/geometry/extension/reuse/archive checks; not a behavioral LLM evaluation",
   "icons": 50,
   "variants": 200,
-  "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
+  "engine": "2b5b355368a562f6868ee25df7d7ba1ada7cb6456025b9649daa44a6d25d740e",
   "extensibility": {
     "schema": "slide-extension-test/1",
     "catalogBefore": 50,
@@ -32,11 +32,19 @@
   "reviewScope": "Author-inspected size proofs, with exact proof hashes; independent review not claimed",
   "behavioralEvaluation": "pending delegation authorization and actual fresh trials",
   "accentCoverage": {
-    "completeLine": "pass",
-    "completeCircle": "pass",
-    "partialLineRejected": true,
-    "partialCircleRejected": true,
-    "partialSelectorsRejected": true,
-    "formerPercentageCap": "removed per user correction"
+    "completeNamedUnit": "pass",
+    "multipleSourcePrimitives": "pass",
+    "noneAndWholeModes": "pass",
+    "missingEquivalentMembersRejected": true,
+    "wrongCompletePrimitiveRejected": true,
+    "knownUserSelectionsHeld": true,
+    "unprovidedMeaning": "not deterministically inferred"
+  },
+  "semanticCases": 10,
+  "nativeBrowser": {
+    "engine": "installed Chromium via Playwright",
+    "icons": 50,
+    "failures": [],
+    "verified": "semantic primitive membership, actual stroke roles, bidirectional native coverage, neutral and monochrome cases"
   }
 }

@@ -27,7 +27,7 @@ export function slideDrawing(id: SlideIconId, accent = true): SlideDrawing {
   const source = definitions[id];
   return [
     ...source.nodes.map((value) => ({ ...node(value), role: 'line' as const })),
-    ...(accent ? [{ ...node(source.accent), role: 'signal' as const }] : []),
+    ...(accent ? source.accents.map((value) => ({ ...node(value), role: 'signal' as const })) : []),
   ];
 }
 

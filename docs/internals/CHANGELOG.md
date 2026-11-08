@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-08
+
+Slide accents now follow named semantic components or coherent functional sets rather than individual edges. The user’s tick, flame, core, die, layer, dot-set, node and folder/cloud corrections have retained wrong-versus-correct regression cases. Complete-unit, neutral and whole-glyph modes replace primitive selectors; new choices retain their rationale and author-proposal status until reviewed.
+
 ## 2026-11-07
 
 Hardware atlas seed thumbnails become still previews while the main viewer stays

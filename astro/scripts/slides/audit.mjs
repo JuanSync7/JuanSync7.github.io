@@ -1,6 +1,6 @@
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
-import {distance,lengthOf,pointsOf} from './checks/geometry.mjs';
+import {lengthOf,pointsOf} from './checks/geometry.mjs';
 import {checkContracts} from './checks/contracts.mjs';
 import {checkAccentCoverage} from './checks/accent.mjs';
 import {engineRevision} from './checks/engine.mjs';
@@ -14,18 +14,15 @@ export function auditIcon(icon,definition){
  const failures=[],fail=(rule,message)=>failures.push({rule,message});
  try{validateIcon(icon);}catch(error){fail('SPEC',error.message);return {id:icon.id,failures,metrics:{}};}
  try{validateDefinition(definition);}catch(error){fail('GEOMETRY',error.message);return {id:icon.id,failures,metrics:{}};}
- const {nodes,accent}=definition;
+ const {nodes,accents}=definition;
  if(JSON.stringify(nodes)!==JSON.stringify(icon.nodes))fail('SOURCE','Generated geometry differs from the pinned source');
  if(!icon.license||!icon.upstream)fail('SOURCE','Missing license or provenance');
  let samples;
- try{samples=[...nodes,accent].map(n=>pointsOf(n,rules.boundsStep));}catch(error){fail('GEOMETRY',`Invalid SVG geometry: ${error.message}`);return {id:icon.id,failures,metrics:{}};}
+ try{samples=[...nodes,...accents].map(n=>pointsOf(n,rules.boundsStep));}catch(error){fail('GEOMETRY',`Invalid SVG geometry: ${error.message}`);return {id:icon.id,failures,metrics:{}};}
  const half=rules.stroke/2;
  for(const points of samples)for(const p of points)if(!Number.isFinite(p.x+p.y)||p.x-half<rules.safeMin||p.y-half<rules.safeMin||p.x+half>rules.safeMax||p.y+half>rules.safeMax){fail('FRAME','A curve or stroke leaves the safe frame');break;}
- const support=pointsOf(nodes[icon.accent.node],rules.geometryStep);
- const gap=Math.max(...pointsOf(accent,rules.accentStep).map(a=>Math.min(...support.map(b=>distance(a,b)))));
- if(gap>rules.accentDistance)fail('ACCENT',`Accent floats ${gap.toFixed(3)} units off its designated feature`);
- const fraction=lengthOf(accent)/nodes.reduce((sum,n)=>sum+lengthOf(n),0);
- try{failures.push(...checkAccentCoverage(icon,accent,rules));}catch(error){fail('ACCENT',error.message);}
+ const fraction=accents.reduce((sum,n)=>sum+lengthOf(n),0)/nodes.reduce((sum,n)=>sum+lengthOf(n),0);
+ try{failures.push(...checkAccentCoverage(icon,accents));}catch(error){fail('ACCENT',error.message);}
  failures.push(...checkContracts(icon,nodes,rules));
- return {id:icon.id,failures,metrics:{accentGap:Number(gap.toFixed(4)),accentFraction:Number(fraction.toFixed(4)),view:icon.view,plural:icon.plural}};
+ return {id:icon.id,failures,metrics:{accentMode:icon.accent.mode,accentPart:icon.accent.part??null,accentPrimitives:accents.length,accentFraction:Number(fraction.toFixed(4)),view:icon.view,plural:icon.plural}};
 }

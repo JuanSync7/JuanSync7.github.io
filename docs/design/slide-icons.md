@@ -27,8 +27,8 @@ See the [fit examples](../../.claude/skills/slide-icons/examples/fit-decisions.m
 
 ## Per-icon specification
 
-`astro/vendor/slide-icons/sources.json` contains `slide-icon/2` records: identity,
-family, source hash, license references, fit decision/evidence, accent selector,
+`astro/vendor/slide-icons/sources.json` contains `slide-icon/3` records: identity,
+family, source hash, license references, fit decision/evidence, semantic accent contract,
 view, arbitrary named parts and applicable physical constraints. The schema is
 `astro/scripts/slides/checks/icon.schema.json`. It validates data, not taste.
 
@@ -40,10 +40,19 @@ visual review judges whether that view is physically convincing.
 Supported relationships are inside, attach, occlude, repeat, align, parallel and
 separate. Numbers such as support spacing belong to the icon's own geometry.
 The checker applies declared relationships to every subject with the same code.
-The accent covers exactly one complete selected feature: an entire straight source edge
-or a full circle/ellipse. Partial ranges and arc selectors are rejected. The former
-percentage cap is removed; accent proportion is a descriptive metric, not permission
-to truncate a feature. Visual review still judges which feature best fits the icon.
+The accent contract names a complete semantic component or coherent functional set.
+`mode: part` references one named `parts` entry, which can contain several source
+primitives; `none` leaves the glyph neutral; `whole` colors every primitive with an
+explicit rationale. `meaning`, `rationale` and `basis` record why the unit was chosen
+and distinguish user requests from author proposals. A complete primitive is not
+necessarily a complete component: a tick has two arms, a layer has a full contour,
+and a terminal-dot set has several members.
+
+The independent checker compares the complete source-unit multiset against the
+actual highlights. Frozen user cases protect the stated tick, flame, core, die,
+layer, terminal, node and folder/cloud choices. Adding a new subject does not add
+an id branch to the checker. A new semantic choice still needs visual judgment;
+tests prove fidelity to its declaration, not that its meaning is correct.
 
 Original geometry needs an explicit physical constraint. New mathematical
 operations require a maintained checker extension, fixtures and independent
@@ -70,6 +79,7 @@ npm run slides:reuse-check
 npm run check
 npm run build
 npm run slides:browser
+# Use -- --browser=/path/to/chromium when testing with an installed browser.
 ```
 
 `slides:add` preflights schema and geometry before publishing the source/registry

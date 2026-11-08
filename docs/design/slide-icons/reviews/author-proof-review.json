@@ -1,13 +1,13 @@
 {
   "schema": "slide-proof-review/1",
   "reviewer": "/root",
-  "scope": "Actual rasterized family sheets inspected through view_image; author self-review only.",
-  "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
+  "scope": "All semantic-unit family sheets at 32/64px and all four treatments inspected through view_image; author self-review only.",
+  "engine": "2b5b355368a562f6868ee25df7d7ba1ada7cb6456025b9649daa44a6d25d740e",
   "families": [
     {
       "group": "compute",
       "path": "slides-out/review/all/proofs/families/compute.png",
-      "sha256": "3e25d46fcedd4cbd7a91cb287aad7ed40ea6364878bb0cec3a9818240b052779",
+      "sha256": "95b18221e11a389f2ea93be31e84fe2c37fc07ae4d49ea18e1076d7f2533e228",
       "icons": [
         "processor",
         "memory",
@@ -22,7 +22,7 @@
     {
       "group": "systems",
       "path": "slides-out/review/all/proofs/families/systems.png",
-      "sha256": "357f11601b2e4f67db4bd56d0c2c02ac8479a6db734ce91011e1c622ff4c5990",
+      "sha256": "4f4aa7f46c2f4469debc8f6a60f20eeff9f40af68fccc1f57713921725799dbe",
       "icons": [
         "server",
         "switch",
@@ -37,7 +37,7 @@
     {
       "group": "data",
       "path": "slides-out/review/all/proofs/families/data.png",
-      "sha256": "d0cf8e91bcba701a6835f56d452e8131d9a67bc16bab2e93b37ccfb9f936412f",
+      "sha256": "c920066960d0411c73677895980b64631b668bb2f5437c980c084873f25692b0",
       "icons": [
         "database",
         "dataset",
@@ -52,7 +52,7 @@
     {
       "group": "research",
       "path": "slides-out/review/all/proofs/families/research.png",
-      "sha256": "7191c2b9612b090009be88e84442f4dea8928d9b45a2c751e8f935c6bf0a136f",
+      "sha256": "73bf5a701fddf0f587f25e4be3761e62378d6aba1f45d6bbede403cb7e62edce",
       "icons": [
         "notebook",
         "chart",
@@ -67,7 +67,7 @@
     {
       "group": "workflow",
       "path": "slides-out/review/all/proofs/families/workflow.png",
-      "sha256": "701445388a93fedf8fadc248f63b54c8e84bd3d5ee4ccb4b8c66813f69d3a13c",
+      "sha256": "f6edbf1bc9f2ce84d975fdf9b7284380ff3bbfeccdd26fd04a09896b76183b07",
       "icons": [
         "search",
         "filter",
@@ -82,7 +82,7 @@
     {
       "group": "communication",
       "path": "slides-out/review/all/proofs/families/communication.png",
-      "sha256": "cde77436673d9bfcb4c75878c4157e7439077ba373275a622344d3e4b62505c9",
+      "sha256": "9ace36ef5fda80f220d99cb482e0c3cf523876485d4becf26556c7e490862e2f",
       "icons": [
         "message",
         "mail",
@@ -97,7 +97,7 @@
     {
       "group": "everyday",
       "path": "slides-out/review/all/proofs/families/everyday.png",
-      "sha256": "22a40f4c1363e6019ed96848d72941ddeee20e7427ee6d814104e0f8fb8ab647",
+      "sha256": "04f70004563fb294b7dd1525a8e4f1b2ddcb1380c5b321281ad2931d041f2446",
       "icons": [
         "bathtub",
         "freestanding-bathtub"
@@ -105,5 +105,12 @@
     }
   ],
   "independentReview": "not claimed",
-  "revalidation": "Fresh size proofs with full line/circle/ellipse accents rasterized and inspected for all icons in every treatment. Author self-review only."
+  "revalidation": "Final validator changes preserve every actually inspected proof SVG hash. User directions and remaining author proposals stay distinct; no independent review claimed.",
+  "reviewed": "2026-11-08",
+  "comparison": {
+    "path": "slides-out/semantic-accent-comparison.png",
+    "sha256": "416712d6a3768988e676e5183100e11da36c48f2e8a831225fd8aa17af9b7116",
+    "scope": "Ten user-directed corrections, before/after; inspected"
+  },
+  "baselineRevision": "0f0565b55f0f9659b3e02fd2115f0cb29a3aaa8a"
 }

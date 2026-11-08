@@ -94,12 +94,18 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M9 8H15"
+    "accents": [
+      {
+        "tag": "rect",
+        "attrs": {
+          "x": "8",
+          "y": "8",
+          "width": "8",
+          "height": "8",
+          "rx": "1"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "memory": {
@@ -175,12 +181,38 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M12 18L12 16"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M12 18v-2"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M16 18v-2"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M20 18v-2"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M4 18v-2"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M8 18v-2"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "wafer": {
@@ -203,36 +235,50 @@
         }
       },
       {
-        "tag": "path",
+        "tag": "rect",
         "attrs": {
-          "d": "M10 6V18"
+          "x": "10",
+          "y": "10",
+          "width": "4",
+          "height": "4"
         }
       },
       {
         "tag": "path",
         "attrs": {
-          "d": "M14 6V18"
+          "d": "M10 6V10M10 14V18"
         }
       },
       {
         "tag": "path",
         "attrs": {
-          "d": "M6 10H18"
+          "d": "M14 6V10M14 14V18"
         }
       },
       {
         "tag": "path",
         "attrs": {
-          "d": "M6 14H18"
+          "d": "M6 10H10M14 10H18"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M6 14H10M14 14H18"
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M6 14L18 14"
+    "accents": [
+      {
+        "tag": "rect",
+        "attrs": {
+          "x": "10",
+          "y": "10",
+          "width": "4",
+          "height": "4"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "accelerator": {
@@ -272,14 +318,16 @@
         }
       }
     ],
-    "accent": {
-      "tag": "circle",
-      "attrs": {
-        "cx": "16",
-        "cy": "11",
-        "r": "2"
+    "accents": [
+      {
+        "tag": "circle",
+        "attrs": {
+          "cx": "16",
+          "cy": "11",
+          "r": "2"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "circuit-board": {
@@ -323,14 +371,16 @@
         }
       }
     ],
-    "accent": {
-      "tag": "circle",
-      "attrs": {
-        "cx": "15",
-        "cy": "15",
-        "r": "2"
+    "accents": [
+      {
+        "tag": "circle",
+        "attrs": {
+          "cx": "15",
+          "cy": "15",
+          "r": "2"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "chiplets": {
@@ -354,12 +404,14 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M2.6 7.91L11.18 11.82"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "ai-model": {
@@ -445,12 +497,40 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M12 13L16 13"
+    "accents": [
+      {
+        "tag": "circle",
+        "attrs": {
+          "cx": "16",
+          "cy": "13",
+          "r": "0.5"
+        }
+      },
+      {
+        "tag": "circle",
+        "attrs": {
+          "cx": "18",
+          "cy": "3",
+          "r": "0.5"
+        }
+      },
+      {
+        "tag": "circle",
+        "attrs": {
+          "cx": "20",
+          "cy": "21",
+          "r": "0.5"
+        }
+      },
+      {
+        "tag": "circle",
+        "attrs": {
+          "cx": "20",
+          "cy": "8",
+          "r": "0.5"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "camera": {
@@ -470,14 +550,16 @@
         }
       }
     ],
-    "accent": {
-      "tag": "circle",
-      "attrs": {
-        "cx": "12",
-        "cy": "13",
-        "r": "3"
+    "accents": [
+      {
+        "tag": "circle",
+        "attrs": {
+          "cx": "12",
+          "cy": "13",
+          "r": "3"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "server": {
@@ -523,15 +605,28 @@
         }
       }
     ],
-    "accent": {
-      "tag": "line",
-      "attrs": {
-        "x1": "6",
-        "x2": "6.01",
-        "y1": "6",
-        "y2": "6"
+    "accents": [
+      {
+        "tag": "rect",
+        "attrs": {
+          "width": "20",
+          "height": "8",
+          "x": "2",
+          "y": "2",
+          "rx": "2",
+          "ry": "2"
+        }
+      },
+      {
+        "tag": "line",
+        "attrs": {
+          "x1": "6",
+          "x2": "6.01",
+          "y1": "6",
+          "y2": "6"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "switch": {
@@ -601,14 +696,26 @@
         }
       }
     ],
-    "accent": {
-      "tag": "circle",
-      "attrs": {
-        "cx": "6",
-        "cy": "9",
-        "r": "0.4"
+    "accents": [
+      {
+        "tag": "rect",
+        "attrs": {
+          "x": "4",
+          "y": "11",
+          "width": "4",
+          "height": "4",
+          "rx": "0.5"
+        }
+      },
+      {
+        "tag": "circle",
+        "attrs": {
+          "cx": "6",
+          "cy": "9",
+          "r": "0.4"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "storage": {
@@ -638,12 +745,20 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M6 16h.01"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M10 16h.01"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M6 16h.01"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "cloud": {
@@ -655,12 +770,7 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M17.5 19L9 19"
-      }
-    },
+    "accents": [],
     "licenses": ["lucide", "original"]
   },
   "power": {
@@ -678,12 +788,14 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M12 2L12 12"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M12 2v10"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "satellite": {
@@ -719,12 +831,14 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M16.5 7.5L19 5"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M9 21a6 6 0 0 0-6-6"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "router": {
@@ -770,12 +884,20 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M6.01 18H6"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M6.01 18H6"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M10.01 18H10"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "network": {
@@ -823,12 +945,18 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M12 12L12 8"
+    "accents": [
+      {
+        "tag": "rect",
+        "attrs": {
+          "x": "9",
+          "y": "2",
+          "width": "6",
+          "height": "6",
+          "rx": "1"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "database": {
@@ -855,15 +983,17 @@
         }
       }
     ],
-    "accent": {
-      "tag": "ellipse",
-      "attrs": {
-        "cx": "12",
-        "cy": "5",
-        "rx": "9",
-        "ry": "3"
+    "accents": [
+      {
+        "tag": "ellipse",
+        "attrs": {
+          "cx": "12",
+          "cy": "5",
+          "rx": "9",
+          "ry": "3"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "dataset": {
@@ -897,12 +1027,7 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M3 9L21 9"
-      }
-    },
+    "accents": [],
     "licenses": ["lucide", "original"]
   },
   "document": {
@@ -938,12 +1063,26 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M16 13L8 13"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M10 9H8"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M16 13H8"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M16 17H8"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "folder": {
@@ -955,12 +1094,7 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M7.93 3L4 3"
-      }
-    },
+    "accents": [],
     "licenses": ["lucide", "original"]
   },
   "archive": {
@@ -988,12 +1122,14 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M10 12L14 12"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M10 12h4"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "terminal": {
@@ -1022,12 +1158,20 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M11 13L15 13"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "m7 11 2-2-2-2"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M11 13h4"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "files": {
@@ -1051,12 +1195,20 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M15 2L15 7"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M15 2h-4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M16.706 2.706A2.4 2.4 0 0 0 15 2v5a1 1 0 0 0 1 1h5a2.4 2.4 0 0 0-.706-1.706z"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "folders": {
@@ -1074,12 +1226,14 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M9 3L11.5 3"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M20 5a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2.5a1.5 1.5 0 0 1 1.2.6l.6.8a1.5 1.5 0 0 0 1.2.6z"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "notebook": {
@@ -1125,12 +1279,32 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M2 10L6 10"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M2 6h4"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M2 10h4"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M2 14h4"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M2 18h4"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "chart": {
@@ -1154,12 +1328,14 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M12 21L12 3"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M12 21V3"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "flask": {
@@ -1183,12 +1359,14 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M6.453 15L17.547 15"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M6.453 15h11.094"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "microscope": {
@@ -1230,12 +1408,20 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M6 18L14 18"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2Z"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "calipers": {
@@ -1309,12 +1495,18 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M14.2 9H16.8"
+    "accents": [
+      {
+        "tag": "rect",
+        "attrs": {
+          "x": "14",
+          "y": "9",
+          "width": "3",
+          "height": "2",
+          "rx": "0.2"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "compass": {
@@ -1352,14 +1544,16 @@
         }
       }
     ],
-    "accent": {
-      "tag": "circle",
-      "attrs": {
-        "cx": "12",
-        "cy": "5",
-        "r": "2"
+    "accents": [
+      {
+        "tag": "circle",
+        "attrs": {
+          "cx": "12",
+          "cy": "5",
+          "r": "2"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "target": {
@@ -1389,14 +1583,16 @@
         }
       }
     ],
-    "accent": {
-      "tag": "circle",
-      "attrs": {
-        "cx": "12",
-        "cy": "12",
-        "r": "2"
+    "accents": [
+      {
+        "tag": "circle",
+        "attrs": {
+          "cx": "12",
+          "cy": "12",
+          "r": "2"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "idea": {
@@ -1420,12 +1616,14 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M9 18L15 18"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "search": {
@@ -1445,14 +1643,16 @@
         }
       }
     ],
-    "accent": {
-      "tag": "circle",
-      "attrs": {
-        "cx": "11",
-        "cy": "11",
-        "r": "8"
+    "accents": [
+      {
+        "tag": "circle",
+        "attrs": {
+          "cx": "11",
+          "cy": "11",
+          "r": "8"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "filter": {
@@ -1476,12 +1676,14 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M9 19L15 19"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M9 19h6"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "settings": {
@@ -1501,14 +1703,16 @@
         }
       }
     ],
-    "accent": {
-      "tag": "circle",
-      "attrs": {
-        "cx": "12",
-        "cy": "12",
-        "r": "3"
+    "accents": [
+      {
+        "tag": "circle",
+        "attrs": {
+          "cx": "12",
+          "cy": "12",
+          "r": "3"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "branch": {
@@ -1536,14 +1740,16 @@
         }
       }
     ],
-    "accent": {
-      "tag": "circle",
-      "attrs": {
-        "cx": "18",
-        "cy": "6",
-        "r": "3"
+    "accents": [
+      {
+        "tag": "circle",
+        "attrs": {
+          "cx": "18",
+          "cy": "6",
+          "r": "3"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "checklist": {
@@ -1579,12 +1785,20 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M3 17L5 19"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "m3 17 2 2 4-4"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "m3 7 2 2 4-4"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "shield-check": {
@@ -1602,12 +1816,14 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M9 12L11 14"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "m9 12 2 2 4-4"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "clock": {
@@ -1627,12 +1843,14 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M12 6L12 12"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M12 6v6l4 2"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "rocket": {
@@ -1662,12 +1880,14 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M9 12L4 12"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "message": {
@@ -1679,12 +1899,7 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M4 3L20 3"
-      }
-    },
+    "accents": [],
     "licenses": ["lucide", "original"]
   },
   "mail": {
@@ -1706,12 +1921,14 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M22 7L13.009 12.727"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "slide-deck": {
@@ -1751,12 +1968,30 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M6 11L14 11"
+    "accents": [
+      {
+        "tag": "rect",
+        "attrs": {
+          "x": "3",
+          "y": "7",
+          "width": "14",
+          "height": "14",
+          "rx": "1"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M6 11H14"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M6 15H11"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "person": {
@@ -1776,14 +2011,16 @@
         }
       }
     ],
-    "accent": {
-      "tag": "circle",
-      "attrs": {
-        "cx": "12",
-        "cy": "7",
-        "r": "4"
+    "accents": [
+      {
+        "tag": "circle",
+        "attrs": {
+          "cx": "12",
+          "cy": "7",
+          "r": "4"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "calendar": {
@@ -1817,12 +2054,20 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M8 2L8 5"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M8 2v3"
+        }
+      },
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M16 2v3"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "link": {
@@ -1840,12 +2085,14 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M17.54 13.54L20.54 10.54"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "globe": {
@@ -1871,12 +2118,14 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M2 12L22 12"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "bookmark": {
@@ -1888,12 +2137,7 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M19 5L19 20"
-      }
-    },
+    "accents": [],
     "licenses": ["lucide", "original"]
   },
   "bathtub": {
@@ -1929,12 +2173,14 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M2 12L22 12"
+    "accents": [
+      {
+        "tag": "path",
+        "attrs": {
+          "d": "M2 12h20"
+        }
       }
-    },
+    ],
     "licenses": ["lucide", "original"]
   },
   "freestanding-bathtub": {
@@ -1968,12 +2214,18 @@
         }
       }
     ],
-    "accent": {
-      "tag": "path",
-      "attrs": {
-        "d": "M3 8H21"
+    "accents": [
+      {
+        "tag": "rect",
+        "attrs": {
+          "x": "2",
+          "y": "8",
+          "width": "20",
+          "height": "2",
+          "rx": "1"
+        }
       }
-    },
+    ],
     "licenses": ["original"]
   }
 }

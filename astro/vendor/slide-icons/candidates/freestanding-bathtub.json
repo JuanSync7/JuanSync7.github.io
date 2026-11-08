@@ -1,5 +1,5 @@
 {
-  "schema": "slide-icon/2",
+  "schema": "slide-icon/3",
   "id": "freestanding-bathtub",
   "name": "Freestanding bathtub",
   "group": "everyday",
@@ -39,9 +39,11 @@
   },
   "plural": false,
   "accent": {
-    "node": 0,
-    "kind": "top",
-    "meaning": "the complete straight upper rim edge"
+    "mode": "part",
+    "part": "rim",
+    "meaning": "the complete rim",
+    "rationale": "The full rim includes both straight sides and rounded ends; the upper edge alone is incomplete.",
+    "basis": "author-proposal"
   },
   "constraints": [
     {

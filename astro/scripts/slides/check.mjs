@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {createServer} from 'vite';
 import {selftest} from './checks/selftest.mjs';
+import {checkKnownSelections} from './checks/semantic-cases.mjs';
 import {checkReview} from './checks/reviews.mjs';
 import {auditIcon,fingerprint,manifest,engine,rules} from './audit.mjs';
 
@@ -17,6 +18,7 @@ try {
   assert.equal(new Set(SLIDE_ICONS.map(i=>i.id)).size,SLIDE_ICONS.length);
   assert.deepEqual(SLIDE_ICONS.map(i=>i.id),manifest.icons.map(i=>i.id));
   selftest(definitions);
+  checkKnownSelections(manifest.icons);
   const variants=new Set();
   for(const icon of manifest.icons){
     assert.deepEqual(auditIcon(icon,definitions[icon.id]).failures,[],icon.id);
@@ -25,15 +27,17 @@ try {
     assert.notEqual(fingerprint(icon,options.map(o=>slideSvg(icon.id,o)+' ')),digest,'Changed export must invalidate the visual review');
     for(const o of options){
       const look=`${o.tone}/${o.accent?'accent':'mono'}`,drawing=slideDrawing(icon.id,o.accent),svg=slideSvg(icon.id,o);
-      assert.equal(drawing.filter(n=>n.role==='signal').length,o.accent?1:0);
+      const highlighted=icon.accent.mode==='none'?0:icon.accent.mode==='whole'?icon.nodes.length:icon.parts[icon.accent.part].length;
+      assert.equal(drawing.filter(n=>n.role==='signal').length,o.accent?highlighted:0);
       assert.equal(svg,readFileSync(`public/downloads/slide-icons/${look}/${icon.id}.svg`,'utf8'));
       assert.ok(!/NaN|Infinity|<script|<image|<text|href=|foreignObject|filter=|style=|rgba\(/.test(svg));
       assert.ok(svg.includes(`viewBox="0 0 ${rules.grid} ${rules.grid}"`)&&svg.includes(`stroke-width="${rules.stroke}"`));
       assert.match(svg,/<title>[^<]+<\/title><metadata>[^<]+<\/metadata>/);
       const colors=new Set([...svg.matchAll(/stroke="([^"]+)"/g)].map(m=>m[1]));
-      assert.equal(colors.size,o.accent?2:1);
+      assert.equal(colors.size,o.accent&&highlighted?2:1);
+      if(!highlighted)assert.equal(svg,slideSvg(icon.id,{...o,accent:false}),'Neutral icons must remain neutral in accent mode');
       assert.ok(svg.includes(slidePalette(o).line));
-      variants.add(svg);
+      variants.add(`${look}/${icon.id}.svg`);
     }
   }
   for(const o of options)assert.equal([...slideSprite(o).matchAll(/<symbol id="slide-[^"]+"/g)].length,SLIDE_ICONS.length);

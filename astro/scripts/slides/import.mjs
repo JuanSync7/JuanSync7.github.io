@@ -3,8 +3,10 @@ import {readFileSync,writeFileSync,mkdirSync,rmSync,readdirSync} from 'node:fs';
 import prettier from 'prettier';
 import {accentOf} from './kernel/geometry.mjs';
 import {auditIcon,manifest,rules} from './audit.mjs';
+import {checkKnownSelections} from './checks/semantic-cases.mjs';
+checkKnownSelections(manifest.icons);
 const definitions=Object.fromEntries(manifest.icons.map(icon=>{
- const definition={nodes:icon.nodes,accent:accentOf(icon),licenses:icon.licenses},report=auditIcon(icon,definition);
+ const definition={nodes:icon.nodes,accents:accentOf(icon),licenses:icon.licenses},report=auditIcon(icon,definition);
  if(report.failures.length)throw Error(`${icon.id}: ${JSON.stringify(report.failures)}`);
  return [icon.id,definition];
 }));

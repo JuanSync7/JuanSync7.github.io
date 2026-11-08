@@ -4,7 +4,7 @@
   "type": "object",
   "properties": {
     "schema": {
-      "const": "slide-icon/2"
+      "const": "slide-icon/3"
     },
     "id": {
       "type": "string",
@@ -359,32 +359,74 @@
     "accent": {
       "type": "object",
       "properties": {
-        "node": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "kind": {
+        "mode": {
           "enum": [
-            "whole",
-            "top",
-            "line"
+            "none",
+            "part",
+            "whole"
           ]
+        },
+        "part": {
+          "type": "string",
+          "minLength": 1
         },
         "meaning": {
           "type": "string",
           "minLength": 1
         },
-        "segment": {
-          "type": "integer",
-          "minimum": 0
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "basis": {
+          "enum": [
+            "user-request",
+            "author-proposal"
+          ]
         }
       },
       "required": [
-        "node",
-        "kind",
-        "meaning"
+        "mode",
+        "meaning",
+        "rationale",
+        "basis"
       ],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "part"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "part"
+            ],
+            "properties": {
+              "part": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "else": {
+            "not": {
+              "required": [
+                "part"
+              ],
+              "properties": {
+                "part": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        }
+      ]
     },
     "nodes": {
       "type": "array",

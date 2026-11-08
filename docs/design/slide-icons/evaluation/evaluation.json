@@ -8,8 +8,8 @@
   "candidate": {
     "revision": null,
     "revisionMeaning": "content-addressed working candidate; commit id will be recorded with actual trials",
-    "playbookDigest": "ac97e21ef1b3ccaee2b4b547c610e4fa8a6a7acbb3d0d40ff7f5a0b160aebcb9",
-    "engine": "b311b276e08c1ead3ae004fa4622bb3bc1313d2dd9ff0bb06d4b10e5debebaf2",
+    "playbookDigest": "a7f7b396d1b095af0a30694818af8d20635f302b9ce8383f8bb583893ce662b8",
+    "engine": "2b5b355368a562f6868ee25df7d7ba1ada7cb6456025b9649daa44a6d25d740e",
     "playbookDigestMeaning": "SHA-256 of sorted skill Markdown paths and bytes, followed by stages.json, NUL-delimited."
   },
   "pending": [
@@ -21,6 +21,8 @@
   "limits": [
     "The deterministic extension test measures extensibility, not LLM creativity or instruction adherence.",
     "Author size-proof reviews are self-reviews, not independent reviews.",
-    "Vault rule-package adoption and later use have not been recorded."
+    "Vault rule-package adoption and later use have not been recorded.",
+    "Known semantic regression cases protect the stated examples; they do not infer the anatomy or meaning of a new subject.",
+    "Remaining accent choices are author proposals with explicit rationales, not newly adopted user preferences."
   ]
 }

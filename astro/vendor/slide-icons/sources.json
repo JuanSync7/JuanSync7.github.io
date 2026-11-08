@@ -31,9 +31,11 @@
       },
       "plural": false,
       "accent": {
-        "node": 13,
-        "kind": "top",
-        "meaning": "active core edge"
+        "mode": "part",
+        "part": "core",
+        "meaning": "the complete inner core",
+        "rationale": "The inner square is the processor core; its entire outline is the meaningful unit.",
+        "basis": "user-request"
       },
       "nodes": [
         {
@@ -132,7 +134,7 @@
       "name": "Processor",
       "group": "compute",
       "tags": "processor cpu silicon core chip",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "housing": [
           12
@@ -232,17 +234,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "contacts"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 1,
-        "kind": "line",
-        "meaning": "one electrical contact",
-        "segment": 1
+        "mode": "part",
+        "part": "contacts",
+        "meaning": "the electrical contacts",
+        "rationale": "The equivalent lower electrical contacts form one complete interface set.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -319,7 +323,7 @@
       "name": "Memory",
       "group": "compute",
       "tags": "memory stick dram ram contact hbm layers stack",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
@@ -333,6 +337,13 @@
           8,
           9,
           10
+        ],
+        "contacts": [
+          1,
+          3,
+          5,
+          7,
+          9
         ]
       },
       "constraints": [],
@@ -356,7 +367,7 @@
     {
       "id": "wafer",
       "file": "original/wafer.svg",
-      "sha256": "ea3ffefd824c10ddd71df990bb086adf9bcf8f49abc0a89256dbf47c1f60d777",
+      "sha256": "2c3c524b24f03b3a620ab505d9c6ecc6aa3077a8718170d7826bf7a77b819c54",
       "upstream": "https://github.com/JuanSync7/JuanSync7.github.io",
       "license": "MIT",
       "view": {
@@ -364,17 +375,19 @@
         "description": "front",
         "visible": [
           "blank",
-          "grid"
+          "grid",
+          "selected-die"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 5,
-        "kind": "line",
-        "meaning": "central die boundary",
-        "segment": 1
+        "mode": "part",
+        "part": "selected-die",
+        "meaning": "one complete die",
+        "rationale": "One small square represents one complete die; a grid divider does not.",
+        "basis": "user-request"
       },
       "nodes": [
         {
@@ -395,34 +408,43 @@
           }
         },
         {
-          "tag": "path",
+          "tag": "rect",
           "attrs": {
-            "d": "M10 6V18"
+            "x": "10",
+            "y": "10",
+            "width": "4",
+            "height": "4"
           }
         },
         {
           "tag": "path",
           "attrs": {
-            "d": "M14 6V18"
+            "d": "M10 6V10M10 14V18"
           }
         },
         {
           "tag": "path",
           "attrs": {
-            "d": "M6 10H18"
+            "d": "M14 6V10M14 14V18"
           }
         },
         {
           "tag": "path",
           "attrs": {
-            "d": "M6 14H18"
+            "d": "M6 10H10M14 10H18"
+          }
+        },
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M6 14H10M14 14H18"
           }
         }
       ],
       "name": "Wafer",
       "group": "compute",
       "tags": "wafer fabrication silicon manufacturing",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "blank": [
           0
@@ -432,7 +454,11 @@
           2,
           3,
           4,
-          5
+          5,
+          6
+        ],
+        "selected-die": [
+          2
         ]
       },
       "constraints": [
@@ -471,16 +497,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "fan"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 3,
-        "kind": "whole",
-        "meaning": "fan rim"
+        "mode": "part",
+        "part": "fan",
+        "meaning": "one cooling fan",
+        "rationale": "The complete circular fan is a distinct functional component.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -521,7 +550,7 @@
       "name": "Accelerator",
       "group": "compute",
       "tags": "accelerator gpu ai compute card",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
@@ -529,6 +558,9 @@
           2,
           3,
           4
+        ],
+        "fan": [
+          3
         ]
       },
       "constraints": [],
@@ -559,16 +591,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "terminal"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 4,
-        "kind": "whole",
-        "meaning": "one component terminal"
+        "mode": "part",
+        "part": "terminal",
+        "meaning": "one circuit terminal",
+        "rationale": "The lower circular terminal is a complete electrical endpoint.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -613,13 +648,16 @@
       "name": "Circuit board",
       "group": "compute",
       "tags": "circuit board pcb electronics embedded",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
           1,
           2,
           3,
+          4
+        ],
+        "terminal": [
           4
         ]
       },
@@ -653,17 +691,19 @@
         "visible": [
           "front",
           "rear-0",
-          "rear-1"
+          "rear-1",
+          "layer"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": true,
       "accent": {
-        "node": 0,
-        "kind": "line",
-        "meaning": "front layer edge",
-        "segment": 4
+        "mode": "part",
+        "part": "layer",
+        "meaning": "the complete front layer",
+        "rationale": "The top layer is a complete visible object; one diagonal edge is not a layer.",
+        "basis": "user-request"
       },
       "nodes": [
         {
@@ -688,7 +728,7 @@
       "name": "Layer stack",
       "group": "compute",
       "tags": "chiplets layers 3 plural stack package interposer integration dies",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "front": [
           0
@@ -698,6 +738,9 @@
         ],
         "rear-1": [
           2
+        ],
+        "layer": [
+          0
         ]
       },
       "constraints": [
@@ -745,17 +788,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "terminals"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 0,
-        "kind": "line",
-        "meaning": "active circuit trace",
-        "segment": 1
+        "mode": "part",
+        "part": "terminals",
+        "meaning": "all terminal dots",
+        "rationale": "The dots are equivalent terminal endpoints; highlight every dot in that functional set.",
+        "basis": "user-request"
       },
       "nodes": [
         {
@@ -842,7 +887,7 @@
       "name": "AI model",
       "group": "compute",
       "tags": "ai model brain circuit",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
@@ -853,6 +898,12 @@
           5,
           6,
           7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "terminals": [
           8,
           9,
           10,
@@ -887,16 +938,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "lens"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 1,
-        "kind": "whole",
-        "meaning": "lens rim"
+        "mode": "part",
+        "part": "lens",
+        "meaning": "the complete lens",
+        "rationale": "The lens is the camera\u2019s distinct optical component.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -917,10 +971,13 @@
       "name": "Camera",
       "group": "compute",
       "tags": "camera",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
+          1
+        ],
+        "lens": [
           1
         ]
       },
@@ -955,16 +1012,19 @@
           "upper",
           "lower",
           "indicator-upper",
-          "indicator-lower"
+          "indicator-lower",
+          "selected-server"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": true,
       "accent": {
-        "node": 2,
-        "kind": "whole",
-        "meaning": "one status indicator"
+        "mode": "part",
+        "part": "selected-server",
+        "meaning": "one complete server",
+        "rationale": "A stack member includes its enclosure and status indicator; highlight the whole visible member.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -1011,7 +1071,7 @@
       "name": "Server stack",
       "group": "systems",
       "tags": "server compute infrastructure machine",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "upper": [
           0
@@ -1024,6 +1084,10 @@
         ],
         "indicator-lower": [
           3
+        ],
+        "selected-server": [
+          0,
+          2
         ]
       },
       "constraints": [
@@ -1083,16 +1147,19 @@
           "port-2",
           "light-0",
           "light-1",
-          "light-2"
+          "light-2",
+          "port"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 4,
-        "kind": "whole",
-        "meaning": "one port status light"
+        "mode": "part",
+        "part": "port",
+        "meaning": "one complete port assembly",
+        "rationale": "The socket and its associated status light form one functional port.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -1163,7 +1230,7 @@
       "name": "Network switch",
       "group": "systems",
       "tags": "switch ethernet ports networking",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "housing": [
           0
@@ -1185,6 +1252,10 @@
         ],
         "light-2": [
           6
+        ],
+        "port": [
+          1,
+          4
         ]
       },
       "constraints": [
@@ -1244,16 +1315,19 @@
         "projection": "parallel",
         "description": "parallel front/top; closed upper and front faces",
         "visible": [
-          "mark"
+          "mark",
+          "status-lights"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 3,
-        "kind": "whole",
-        "meaning": "drive status light"
+        "mode": "part",
+        "part": "status-lights",
+        "meaning": "the drive status lights",
+        "rationale": "The two status indicators form one equivalent functional set.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -1284,12 +1358,16 @@
       "name": "Storage",
       "group": "systems",
       "tags": "storage hard drive ssd disk persistent",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
           1,
           2,
+          3
+        ],
+        "status-lights": [
+          0,
           3
         ]
       },
@@ -1328,10 +1406,10 @@
       },
       "plural": false,
       "accent": {
-        "node": 0,
-        "kind": "line",
-        "meaning": "lower cloud contour",
-        "segment": 1
+        "mode": "none",
+        "meaning": "no accent",
+        "rationale": "The user allowed neutral or whole-glyph treatment; choose neutral because there is no distinct internal component.",
+        "basis": "user-request"
       },
       "nodes": [
         {
@@ -1344,7 +1422,7 @@
       "name": "Cloud",
       "group": "systems",
       "tags": "cloud remote distributed infrastructure",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0
@@ -1378,17 +1456,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "actuator"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 0,
-        "kind": "line",
-        "meaning": "power actuator",
-        "segment": 1
+        "mode": "part",
+        "part": "actuator",
+        "meaning": "the complete actuator",
+        "rationale": "The full actuator is the recognizable control; the surrounding ring stays neutral.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -1407,11 +1487,14 @@
       "name": "Power",
       "group": "systems",
       "tags": "power energy supply efficiency",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
           1
+        ],
+        "actuator": [
+          0
         ]
       },
       "constraints": [],
@@ -1442,17 +1525,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "radio-wave"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 1,
-        "kind": "line",
-        "meaning": "antenna connection",
-        "segment": 1
+        "mode": "part",
+        "part": "radio-wave",
+        "meaning": "the complete radio wave",
+        "rationale": "The source\u2019s wave is a complete signal feature; an antenna stub would be an arbitrary edge.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -1489,7 +1574,7 @@
       "name": "Satellite",
       "group": "systems",
       "tags": "satellite space communications orbit",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
@@ -1497,6 +1582,9 @@
           2,
           3,
           4
+        ],
+        "radio-wave": [
+          3
         ]
       },
       "constraints": [],
@@ -1527,16 +1615,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "status-lights"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 1,
-        "kind": "whole",
-        "meaning": "router status light"
+        "mode": "part",
+        "part": "status-lights",
+        "meaning": "the router status lights",
+        "rationale": "Equivalent status lights form a complete indicator set.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -1583,7 +1674,7 @@
       "name": "Router",
       "group": "systems",
       "tags": "router",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
@@ -1592,6 +1683,10 @@
           3,
           4,
           5
+        ],
+        "status-lights": [
+          1,
+          2
         ]
       },
       "constraints": [],
@@ -1622,17 +1717,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "root-node"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 4,
-        "kind": "line",
-        "meaning": "uplink connection",
-        "segment": 1
+        "mode": "part",
+        "part": "root-node",
+        "meaning": "one complete network node",
+        "rationale": "Use the complete root square, rather than a segment of its connecting wire.",
+        "basis": "user-request"
       },
       "nodes": [
         {
@@ -1681,7 +1778,7 @@
       "name": "Network",
       "group": "systems",
       "tags": "network",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
@@ -1689,6 +1786,9 @@
           2,
           3,
           4
+        ],
+        "root-node": [
+          2
         ]
       },
       "constraints": [],
@@ -1719,16 +1819,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "record-rim"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 0,
-        "kind": "whole",
-        "meaning": "top record rim"
+        "mode": "part",
+        "part": "record-rim",
+        "meaning": "the complete record rim",
+        "rationale": "The closed ellipse is the complete visible top record boundary.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -1756,12 +1859,15 @@
       "name": "Database",
       "group": "data",
       "tags": "database records query store",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
           1,
           2
+        ],
+        "record-rim": [
+          0
         ]
       },
       "constraints": [],
@@ -1799,10 +1905,10 @@
       },
       "plural": false,
       "accent": {
-        "node": 2,
-        "kind": "line",
-        "meaning": "header divider",
-        "segment": 1
+        "mode": "none",
+        "meaning": "no accent",
+        "rationale": "This source contains a continuous table grid, not a separately represented record or cell. Keep it neutral.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -1837,7 +1943,7 @@
       "name": "Dataset",
       "group": "data",
       "tags": "dataset table samples training records",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
@@ -1874,17 +1980,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "content"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 3,
-        "kind": "line",
-        "meaning": "one text row",
-        "segment": 1
+        "mode": "part",
+        "part": "content",
+        "meaning": "the complete text content",
+        "rationale": "All text rows together express document content; do not crop a random row segment.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -1921,11 +2029,16 @@
       "name": "Document",
       "group": "data",
       "tags": "document file text report specification",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
           1,
+          2,
+          3,
+          4
+        ],
+        "content": [
           2,
           3,
           4
@@ -1966,10 +2079,10 @@
       },
       "plural": false,
       "accent": {
-        "node": 0,
-        "kind": "line",
-        "meaning": "folder tab edge",
-        "segment": 8
+        "mode": "none",
+        "meaning": "no accent",
+        "rationale": "The user allowed neutral or whole-glyph treatment; choose neutral instead of highlighting a tab edge.",
+        "basis": "user-request"
       },
       "nodes": [
         {
@@ -1982,7 +2095,7 @@
       "name": "Folder",
       "group": "data",
       "tags": "folder directory project collection",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0
@@ -2016,17 +2129,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "handle"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 2,
-        "kind": "line",
-        "meaning": "handle",
-        "segment": 1
+        "mode": "part",
+        "part": "handle",
+        "meaning": "the complete handle",
+        "rationale": "The handle is a distinct retrieval affordance and already has a complete source stroke.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -2055,11 +2170,14 @@
       "name": "Archive",
       "group": "data",
       "tags": "archive package backup repository box",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
           1,
+          2
+        ],
+        "handle": [
           2
         ]
       },
@@ -2091,17 +2209,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "command"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 1,
-        "kind": "line",
-        "meaning": "cursor",
-        "segment": 1
+        "mode": "part",
+        "part": "command",
+        "meaning": "the complete command prompt",
+        "rationale": "The complete chevron and cursor form the command-entry unit.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -2131,12 +2251,16 @@
       "name": "Terminal",
       "group": "data",
       "tags": "terminal square code cli command software",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
           1,
           2
+        ],
+        "command": [
+          0,
+          1
         ]
       },
       "constraints": [],
@@ -2169,17 +2293,19 @@
         "visible": [
           "front",
           "rear-0",
-          "detail"
+          "detail",
+          "selected-file"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": true,
       "accent": {
-        "node": 1,
-        "kind": "line",
-        "meaning": "front page fold",
-        "segment": 2
+        "mode": "part",
+        "part": "selected-file",
+        "meaning": "one complete front file",
+        "rationale": "A complete front file includes its visible outline and fold; the rear file stays neutral.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -2204,7 +2330,7 @@
       "name": "Files",
       "group": "data",
       "tags": "files documents plural stack",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "front": [
           0
@@ -2213,6 +2339,10 @@
           2
         ],
         "detail": [
+          1
+        ],
+        "selected-file": [
+          0,
           1
         ]
       },
@@ -2260,17 +2390,19 @@
         "description": "front",
         "visible": [
           "front",
-          "rear-0"
+          "rear-0",
+          "selected-folder"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": true,
       "accent": {
-        "node": 0,
-        "kind": "line",
-        "meaning": "front folder tab",
-        "segment": 8
+        "mode": "part",
+        "part": "selected-folder",
+        "meaning": "one complete front folder",
+        "rationale": "Select a complete folder from the collection, rather than only its tab.",
+        "basis": "user-request"
       },
       "nodes": [
         {
@@ -2289,13 +2421,16 @@
       "name": "Folders",
       "group": "data",
       "tags": "folders directories plural stack",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "front": [
           0
         ],
         "rear-0": [
           1
+        ],
+        "selected-folder": [
+          0
         ]
       },
       "constraints": [
@@ -2341,17 +2476,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "binding"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 1,
-        "kind": "line",
-        "meaning": "one binding loop",
-        "segment": 1
+        "mode": "part",
+        "part": "binding",
+        "meaning": "the complete binding set",
+        "rationale": "All equivalent binding loops form one physical assembly.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -2398,7 +2535,7 @@
       "name": "Notebook",
       "group": "research",
       "tags": "notebook notes journal experiment",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
@@ -2407,6 +2544,12 @@
           3,
           4,
           5
+        ],
+        "binding": [
+          0,
+          1,
+          2,
+          3
         ]
       },
       "constraints": [],
@@ -2437,17 +2580,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "leading-bar"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 1,
-        "kind": "line",
+        "mode": "part",
+        "part": "leading-bar",
         "meaning": "the complete leading bar",
-        "segment": 1
+        "rationale": "The leading data bar is one complete plotted value.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -2472,12 +2617,15 @@
       "name": "Chart",
       "group": "research",
       "tags": "chart no axes column benchmark measurement results",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
           1,
           2
+        ],
+        "leading-bar": [
+          1
         ]
       },
       "constraints": [],
@@ -2508,17 +2656,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "liquid-surface"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 1,
-        "kind": "line",
-        "meaning": "liquid level",
-        "segment": 1
+        "mode": "part",
+        "part": "liquid-surface",
+        "meaning": "the complete liquid surface",
+        "rationale": "The surface is a meaningful fluid boundary, not decorative trimming of the vessel.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -2543,12 +2693,15 @@
       "name": "Flask",
       "group": "research",
       "tags": "flask conical lab experiment chemistry",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
           1,
           2
+        ],
+        "liquid-surface": [
+          1
         ]
       },
       "constraints": [],
@@ -2579,17 +2732,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "optics"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 0,
-        "kind": "line",
-        "meaning": "specimen stage",
-        "segment": 1
+        "mode": "part",
+        "part": "optics",
+        "meaning": "the complete optical assembly",
+        "rationale": "The eyepiece and objective barrel form the optical assembly; base and support remain neutral.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -2632,13 +2787,17 @@
       "name": "Microscope",
       "group": "research",
       "tags": "microscope inspect analysis research",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
           1,
           2,
           3,
+          4,
+          5
+        ],
+        "optics": [
           4,
           5
         ]
@@ -2687,9 +2846,11 @@
       },
       "plural": false,
       "accent": {
-        "node": 9,
-        "kind": "top",
-        "meaning": "slider display edge"
+        "mode": "part",
+        "part": "display",
+        "meaning": "the complete display",
+        "rationale": "The complete inner display rectangle is the readout component.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -2764,7 +2925,7 @@
       "name": "Calipers",
       "group": "research",
       "tags": "calipers measure dimension precision",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "beam-left": [
           0
@@ -2897,16 +3058,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "pivot"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 4,
-        "kind": "whole",
-        "meaning": "pivot rim"
+        "mode": "part",
+        "part": "pivot",
+        "meaning": "the complete pivot",
+        "rationale": "The circular pivot is the hinge that joins the two legs.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -2945,13 +3109,16 @@
       "name": "Drafting compass",
       "group": "research",
       "tags": "compass drafting design geometry plan",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
           1,
           2,
           3,
+          4
+        ],
+        "pivot": [
           4
         ]
       },
@@ -2983,16 +3150,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "bullseye"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 2,
-        "kind": "whole",
-        "meaning": "bullseye rim"
+        "mode": "part",
+        "part": "bullseye",
+        "meaning": "the complete bullseye",
+        "rationale": "The innermost ring is the target\u2019s focal component.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -3023,11 +3193,14 @@
       "name": "Target",
       "group": "research",
       "tags": "target",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
           1,
+          2
+        ],
+        "bullseye": [
           2
         ]
       },
@@ -3059,17 +3232,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "bulb"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 1,
-        "kind": "line",
-        "meaning": "lamp base",
-        "segment": 1
+        "mode": "part",
+        "part": "bulb",
+        "meaning": "the complete bulb",
+        "rationale": "The glass bulb expresses illumination; a short base line does not.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -3094,12 +3269,15 @@
       "name": "Idea",
       "group": "research",
       "tags": "idea lightbulb",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
           1,
           2
+        ],
+        "bulb": [
+          0
         ]
       },
       "constraints": [],
@@ -3130,16 +3308,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "lens"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 1,
-        "kind": "whole",
-        "meaning": "lens rim"
+        "mode": "part",
+        "part": "lens",
+        "meaning": "the complete lens",
+        "rationale": "The complete magnifying lens is the optical component.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -3160,10 +3341,13 @@
       "name": "Search",
       "group": "workflow",
       "tags": "search",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
+          1
+        ],
+        "lens": [
           1
         ]
       },
@@ -3195,17 +3379,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "result"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 2,
-        "kind": "line",
-        "meaning": "selected result",
-        "segment": 1
+        "mode": "part",
+        "part": "result",
+        "meaning": "the complete narrowed result",
+        "rationale": "The shortest full output bar represents the narrowed result.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -3230,11 +3416,14 @@
       "name": "Filter",
       "group": "workflow",
       "tags": "filter list",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
           1,
+          2
+        ],
+        "result": [
           2
         ]
       },
@@ -3266,16 +3455,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "hub"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 1,
-        "kind": "whole",
-        "meaning": "central hub"
+        "mode": "part",
+        "part": "hub",
+        "meaning": "the complete hub",
+        "rationale": "The central hub is a complete component within the gear.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -3296,10 +3488,13 @@
       "name": "Settings",
       "group": "workflow",
       "tags": "settings",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
+          1
+        ],
+        "hub": [
           1
         ]
       },
@@ -3331,16 +3526,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "branch-end"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 1,
-        "kind": "whole",
-        "meaning": "branch endpoint"
+        "mode": "part",
+        "part": "branch-end",
+        "meaning": "the complete branch endpoint",
+        "rationale": "The new branch endpoint is one complete node.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -3369,12 +3567,15 @@
       "name": "Branch",
       "group": "workflow",
       "tags": "branch git",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
           1,
           2
+        ],
+        "branch-end": [
+          1
         ]
       },
       "constraints": [],
@@ -3405,17 +3606,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "completed-checks"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 3,
-        "kind": "line",
-        "meaning": "completed check",
-        "segment": 1
+        "mode": "part",
+        "part": "completed-checks",
+        "meaning": "all complete checks",
+        "rationale": "Both complete ticks form the same completion-state set; neither tick is split into arms.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -3452,12 +3655,16 @@
       "name": "Checklist",
       "group": "workflow",
       "tags": "checklist list checks",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
           1,
           2,
+          3,
+          4
+        ],
+        "completed-checks": [
           3,
           4
         ]
@@ -3490,17 +3697,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "tick"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 1,
-        "kind": "line",
-        "meaning": "verification check",
-        "segment": 1
+        "mode": "part",
+        "part": "tick",
+        "meaning": "the complete verification tick",
+        "rationale": "Both arms together express verification; one arm alone is not the tick.",
+        "basis": "user-request"
       },
       "nodes": [
         {
@@ -3519,10 +3728,13 @@
       "name": "Verified",
       "group": "workflow",
       "tags": "shield check",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
+          1
+        ],
+        "tick": [
           1
         ]
       },
@@ -3554,17 +3766,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "hands"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 1,
-        "kind": "line",
-        "meaning": "minute hand",
-        "segment": 1
+        "mode": "part",
+        "part": "hands",
+        "meaning": "the complete clock hands",
+        "rationale": "The source groups both hands into the time-indicating assembly.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -3585,10 +3799,13 @@
       "name": "Clock",
       "group": "workflow",
       "tags": "clock",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
+          1
+        ],
+        "hands": [
           1
         ]
       },
@@ -3620,17 +3837,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "flame"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 3,
-        "kind": "line",
-        "meaning": "fin edge",
-        "segment": 1
+        "mode": "part",
+        "part": "flame",
+        "meaning": "the complete rocket flame",
+        "rationale": "The flame expresses launching; the fin is a different component.",
+        "basis": "user-request"
       },
       "nodes": [
         {
@@ -3661,13 +3880,16 @@
       "name": "Launch",
       "group": "workflow",
       "tags": "rocket",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
           1,
           2,
           3
+        ],
+        "flame": [
+          1
         ]
       },
       "constraints": [],
@@ -3705,10 +3927,10 @@
       },
       "plural": false,
       "accent": {
-        "node": 0,
-        "kind": "line",
-        "meaning": "message edge",
-        "segment": 8
+        "mode": "none",
+        "meaning": "no accent",
+        "rationale": "The glyph contains only its speech-bubble outline; there is no separate internal semantic feature.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -3721,7 +3943,7 @@
       "name": "Message",
       "group": "communication",
       "tags": "message square",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0
@@ -3755,17 +3977,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "flap"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 0,
-        "kind": "line",
-        "meaning": "envelope fold",
-        "segment": 1
+        "mode": "part",
+        "part": "flap",
+        "meaning": "the complete envelope flap",
+        "rationale": "Both diagonals and their fold turn belong to the same flap feature.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -3788,11 +4012,14 @@
       "name": "Mail",
       "group": "communication",
       "tags": "mail",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
           1
+        ],
+        "flap": [
+          0
         ]
       },
       "constraints": [],
@@ -3826,17 +4053,19 @@
           "front",
           "rear-0",
           "rear-1",
-          "detail"
+          "detail",
+          "selected-slide"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": true,
       "accent": {
-        "node": 3,
-        "kind": "line",
-        "meaning": "front slide title line",
-        "segment": 1
+        "mode": "part",
+        "part": "selected-slide",
+        "meaning": "one complete front slide",
+        "rationale": "The selected slide includes its frame and content; rear slides stay neutral.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -3877,7 +4106,7 @@
       "name": "Slide deck",
       "group": "communication",
       "tags": "slide-deck presentation slides plural stack",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "front": [
           2
@@ -3889,6 +4118,11 @@
           1
         ],
         "detail": [
+          3,
+          4
+        ],
+        "selected-slide": [
+          2,
           3,
           4
         ]
@@ -3954,16 +4188,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "head"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 1,
-        "kind": "whole",
-        "meaning": "profile rim"
+        "mode": "part",
+        "part": "head",
+        "meaning": "the complete head",
+        "rationale": "The head is a complete anatomical component.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -3984,10 +4221,13 @@
       "name": "Person",
       "group": "communication",
       "tags": "person user",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
+          1
+        ],
+        "head": [
           1
         ]
       },
@@ -4019,17 +4259,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "bindings"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 0,
-        "kind": "line",
-        "meaning": "one binding",
-        "segment": 1
+        "mode": "part",
+        "part": "bindings",
+        "meaning": "the complete binding set",
+        "rationale": "Both binding loops form one physical calendar assembly.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -4064,13 +4306,17 @@
       "name": "Calendar",
       "group": "communication",
       "tags": "calendar",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
           1,
           2,
           3
+        ],
+        "bindings": [
+          0,
+          1
         ]
       },
       "constraints": [],
@@ -4101,17 +4347,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "selected-link"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 0,
-        "kind": "line",
-        "meaning": "link end",
-        "segment": 2
+        "mode": "part",
+        "part": "selected-link",
+        "meaning": "one complete visible link",
+        "rationale": "The full visible chain-link contour is the unit, including its curved section.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -4130,11 +4378,14 @@
       "name": "Link",
       "group": "communication",
       "tags": "link",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
           1
+        ],
+        "selected-link": [
+          0
         ]
       },
       "constraints": [],
@@ -4165,17 +4416,19 @@
         "projection": "flat",
         "description": "front",
         "visible": [
-          "mark"
+          "mark",
+          "meridian"
         ],
         "hidden": [],
         "rationale": "Retain the reviewed source view and its visible contour relationships."
       },
       "plural": false,
       "accent": {
-        "node": 2,
-        "kind": "line",
-        "meaning": "equator",
-        "segment": 1
+        "mode": "part",
+        "part": "meridian",
+        "meaning": "the complete meridian",
+        "rationale": "The closed meridian is a complete projected great circle.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -4202,12 +4455,15 @@
       "name": "Globe",
       "group": "communication",
       "tags": "globe",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0,
           1,
           2
+        ],
+        "meridian": [
+          1
         ]
       },
       "constraints": [],
@@ -4245,10 +4501,10 @@
       },
       "plural": false,
       "accent": {
-        "node": 0,
-        "kind": "line",
-        "meaning": "bookmark side edge",
-        "segment": 2
+        "mode": "none",
+        "meaning": "no accent",
+        "rationale": "The source contains a single bookmark silhouette; keep it neutral instead of decorating one side.",
+        "basis": "author-proposal"
       },
       "nodes": [
         {
@@ -4261,7 +4517,7 @@
       "name": "Bookmark",
       "group": "communication",
       "tags": "bookmark",
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "parts": {
         "mark": [
           0
@@ -4286,7 +4542,7 @@
       ]
     },
     {
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "id": "bathtub",
       "name": "Bathtub",
       "group": "everyday",
@@ -4329,10 +4585,11 @@
       },
       "plural": false,
       "accent": {
-        "node": 2,
-        "kind": "line",
-        "segment": 1,
-        "meaning": "the complete visible rim"
+        "mode": "part",
+        "part": "rim",
+        "meaning": "the complete visible rim",
+        "rationale": "The full visible rim is a meaningful tub opening boundary.",
+        "basis": "author-proposal"
       },
       "constraints": [
         {
@@ -4411,7 +4668,7 @@
       ]
     },
     {
-      "schema": "slide-icon/2",
+      "schema": "slide-icon/3",
       "id": "freestanding-bathtub",
       "name": "Freestanding bathtub",
       "group": "everyday",
@@ -4451,9 +4708,11 @@
       },
       "plural": false,
       "accent": {
-        "node": 0,
-        "kind": "top",
-        "meaning": "the complete straight upper rim edge"
+        "mode": "part",
+        "part": "rim",
+        "meaning": "the complete rim",
+        "rationale": "The full rim includes both straight sides and rounded ends; the upper edge alone is incomplete.",
+        "basis": "author-proposal"
       },
       "constraints": [
         {
@@ -4559,7 +4818,7 @@
       ]
     }
   ],
-  "schema": "slide-library/2",
+  "schema": "slide-library/3",
   "licenses": {
     "lucide": {
       "file": "LUCIDE-LICENSE.txt",

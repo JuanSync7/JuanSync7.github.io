@@ -1,0 +1,1307 @@
+{
+  "schema": "slide-semantic-cases/1",
+  "scope": "Reviewed corrections for existing glyphs, not an allowed-subject list",
+  "cases": [
+    {
+      "id": "processor",
+      "basis": "User correction, 2026-11-08",
+      "spec": {
+        "id": "processor",
+        "file": "lucide/cpu.svg",
+        "sha256": "7a76f59d53fa26e78cbba938eae5584f4b93f0378aa5a785343ff0b48eca9c45",
+        "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/cpu.svg",
+        "license": "ISC + MIT (Feather-derived icons; see license)",
+        "view": {
+          "projection": "flat",
+          "description": "front",
+          "visible": [
+            "housing",
+            "core",
+            "pin-0",
+            "pin-1",
+            "pin-2",
+            "pin-3",
+            "pin-4",
+            "pin-5",
+            "pin-6",
+            "pin-7",
+            "pin-8",
+            "pin-9",
+            "pin-10",
+            "pin-11"
+          ],
+          "hidden": [],
+          "rationale": "Retain the reviewed source view and its visible contour relationships."
+        },
+        "plural": false,
+        "accent": {
+          "mode": "part",
+          "part": "core",
+          "meaning": "the complete inner core",
+          "rationale": "The inner square is the processor core; its entire outline is the meaningful unit.",
+          "basis": "user-request"
+        },
+        "nodes": [
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M12 20v2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M12 2v2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M17 20v2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M17 2v2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M2 12h2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M2 17h2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M2 7h2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M20 12h2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M20 17h2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M20 7h2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M7 20v2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M7 2v2"
+            }
+          },
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "4",
+              "y": "4",
+              "width": "16",
+              "height": "16",
+              "rx": "2"
+            }
+          },
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "8",
+              "y": "8",
+              "width": "8",
+              "height": "8",
+              "rx": "1"
+            }
+          }
+        ],
+        "name": "Processor",
+        "group": "compute",
+        "tags": "processor cpu silicon core chip",
+        "schema": "slide-icon/3",
+        "parts": {
+          "housing": [
+            12
+          ],
+          "core": [
+            13
+          ],
+          "pin-0": [
+            0
+          ],
+          "pin-1": [
+            1
+          ],
+          "pin-2": [
+            2
+          ],
+          "pin-3": [
+            3
+          ],
+          "pin-4": [
+            4
+          ],
+          "pin-5": [
+            5
+          ],
+          "pin-6": [
+            6
+          ],
+          "pin-7": [
+            7
+          ],
+          "pin-8": [
+            8
+          ],
+          "pin-9": [
+            9
+          ],
+          "pin-10": [
+            10
+          ],
+          "pin-11": [
+            11
+          ]
+        },
+        "constraints": [
+          {
+            "type": "attach",
+            "parts": [
+              "pin-0",
+              "pin-1",
+              "pin-2",
+              "pin-3",
+              "pin-4",
+              "pin-5",
+              "pin-6",
+              "pin-7",
+              "pin-8",
+              "pin-9",
+              "pin-10",
+              "pin-11"
+            ],
+            "to": "housing",
+            "ends": "either"
+          },
+          {
+            "type": "inside",
+            "parts": [
+              "core"
+            ],
+            "within": "housing"
+          }
+        ],
+        "fit": {
+          "brief": "Processor as a quiet slide/web mark.",
+          "decision": "reuse",
+          "rationale": "Retains a reviewed, recognizable source silhouette.",
+          "references": [
+            {
+              "url": "https://unpkg.com/lucide-static@1.70.0/icons/cpu.svg",
+              "note": "Pinned source bytes and complete license are retained."
+            }
+          ],
+          "alternatives": []
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      },
+      "expected": [
+        {
+          "tag": "rect",
+          "attrs": {
+            "x": "8",
+            "y": "8",
+            "width": "8",
+            "height": "8",
+            "rx": "1"
+          }
+        }
+      ],
+      "rejected": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M9 8H15"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wafer",
+      "basis": "User correction, 2026-11-08",
+      "spec": {
+        "id": "wafer",
+        "file": "original/wafer.svg",
+        "sha256": "2c3c524b24f03b3a620ab505d9c6ecc6aa3077a8718170d7826bf7a77b819c54",
+        "upstream": "https://github.com/JuanSync7/JuanSync7.github.io",
+        "license": "MIT",
+        "view": {
+          "projection": "flat",
+          "description": "front",
+          "visible": [
+            "blank",
+            "grid",
+            "selected-die"
+          ],
+          "hidden": [],
+          "rationale": "Retain the reviewed source view and its visible contour relationships."
+        },
+        "plural": false,
+        "accent": {
+          "mode": "part",
+          "part": "selected-die",
+          "meaning": "one complete die",
+          "rationale": "One small square represents one complete die; a grid divider does not.",
+          "basis": "user-request"
+        },
+        "nodes": [
+          {
+            "tag": "circle",
+            "attrs": {
+              "cx": "12",
+              "cy": "12",
+              "r": "10"
+            }
+          },
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "6",
+              "y": "6",
+              "width": "12",
+              "height": "12"
+            }
+          },
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "10",
+              "y": "10",
+              "width": "4",
+              "height": "4"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M10 6V10M10 14V18"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M14 6V10M14 14V18"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M6 10H10M14 10H18"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M6 14H10M14 14H18"
+            }
+          }
+        ],
+        "name": "Wafer",
+        "group": "compute",
+        "tags": "wafer fabrication silicon manufacturing",
+        "schema": "slide-icon/3",
+        "parts": {
+          "blank": [
+            0
+          ],
+          "grid": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "selected-die": [
+            2
+          ]
+        },
+        "constraints": [
+          {
+            "type": "inside",
+            "parts": [
+              "grid"
+            ],
+            "within": "blank"
+          }
+        ],
+        "fit": {
+          "brief": "Wafer as a quiet slide/web mark.",
+          "decision": "create",
+          "rationale": "Original geometry supplies the requested physical object with explicit constraints.",
+          "references": [
+            {
+              "url": "https://github.com/JuanSync7/JuanSync7.github.io",
+              "note": "Pinned source bytes and complete license are retained."
+            }
+          ],
+          "alternatives": []
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      },
+      "expected": [
+        {
+          "tag": "rect",
+          "attrs": {
+            "x": "10",
+            "y": "10",
+            "width": "4",
+            "height": "4"
+          }
+        }
+      ],
+      "rejected": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M6 14L18 14"
+          }
+        }
+      ]
+    },
+    {
+      "id": "chiplets",
+      "basis": "User correction, 2026-11-08",
+      "spec": {
+        "id": "chiplets",
+        "file": "lucide/layers-3.svg",
+        "sha256": "c2a76bb098f761ff4e9cb109b0f53a338f57a810ae028c773ef7e82686746b6a",
+        "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/layers-3.svg",
+        "license": "ISC + MIT (Feather-derived icons; see license)",
+        "view": {
+          "projection": "parallel",
+          "description": "parallel layers; front rhombus, rear contours only",
+          "visible": [
+            "front",
+            "rear-0",
+            "rear-1",
+            "layer"
+          ],
+          "hidden": [],
+          "rationale": "Retain the reviewed source view and its visible contour relationships."
+        },
+        "plural": true,
+        "accent": {
+          "mode": "part",
+          "part": "layer",
+          "meaning": "the complete front layer",
+          "rationale": "The top layer is a complete visible object; one diagonal edge is not a layer.",
+          "basis": "user-request"
+        },
+        "nodes": [
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"
+            }
+          }
+        ],
+        "name": "Layer stack",
+        "group": "compute",
+        "tags": "chiplets layers 3 plural stack package interposer integration dies",
+        "schema": "slide-icon/3",
+        "parts": {
+          "front": [
+            0
+          ],
+          "rear-0": [
+            1
+          ],
+          "rear-1": [
+            2
+          ],
+          "layer": [
+            0
+          ]
+        },
+        "constraints": [
+          {
+            "type": "occlude",
+            "front": "front",
+            "rear": [
+              "rear-0",
+              "rear-1"
+            ]
+          }
+        ],
+        "collection": {
+          "kind": "stack",
+          "items": [
+            "front",
+            "rear-0",
+            "rear-1"
+          ]
+        },
+        "fit": {
+          "brief": "Layer stack as a quiet slide/web mark.",
+          "decision": "reuse",
+          "rationale": "Retains a reviewed, recognizable source silhouette.",
+          "references": [
+            {
+              "url": "https://unpkg.com/lucide-static@1.70.0/icons/layers-3.svg",
+              "note": "Pinned source bytes and complete license are retained."
+            }
+          ],
+          "alternatives": []
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      },
+      "expected": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"
+          }
+        }
+      ],
+      "rejected": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M2.6 7.91L11.18 11.82"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ai-model",
+      "basis": "User correction, 2026-11-08",
+      "spec": {
+        "id": "ai-model",
+        "file": "lucide/brain-circuit.svg",
+        "sha256": "5eb5800717f982d879e6aef6371fe0d14462ac135117a07484bc6b6e91b9ccd6",
+        "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/brain-circuit.svg",
+        "license": "ISC + MIT (Feather-derived icons; see license)",
+        "view": {
+          "projection": "flat",
+          "description": "front",
+          "visible": [
+            "mark",
+            "terminals"
+          ],
+          "hidden": [],
+          "rationale": "Retain the reviewed source view and its visible contour relationships."
+        },
+        "plural": false,
+        "accent": {
+          "mode": "part",
+          "part": "terminals",
+          "meaning": "all terminal dots",
+          "rationale": "The dots are equivalent terminal endpoints; highlight every dot in that functional set.",
+          "basis": "user-request"
+        },
+        "nodes": [
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M12 13h4"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M12 18h6a2 2 0 012 2v1"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M12 8h8"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M12 9a4.17 4.17 0 01-3 4"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M16 8V5a2 2 0 012-2"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M6 18a4 4 0 01-2-7.465"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M6.004 5.125a4 4 0 00-2.526 5.77"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M6.294 6.294A3 3 0 1112 5v13a4 4 0 11-7.967-.518"
+            }
+          },
+          {
+            "tag": "circle",
+            "attrs": {
+              "cx": "16",
+              "cy": "13",
+              "r": "0.5"
+            }
+          },
+          {
+            "tag": "circle",
+            "attrs": {
+              "cx": "18",
+              "cy": "3",
+              "r": "0.5"
+            }
+          },
+          {
+            "tag": "circle",
+            "attrs": {
+              "cx": "20",
+              "cy": "21",
+              "r": "0.5"
+            }
+          },
+          {
+            "tag": "circle",
+            "attrs": {
+              "cx": "20",
+              "cy": "8",
+              "r": "0.5"
+            }
+          }
+        ],
+        "name": "AI model",
+        "group": "compute",
+        "tags": "ai model brain circuit",
+        "schema": "slide-icon/3",
+        "parts": {
+          "mark": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "terminals": [
+            8,
+            9,
+            10,
+            11
+          ]
+        },
+        "constraints": [],
+        "fit": {
+          "brief": "AI model as a quiet slide/web mark.",
+          "decision": "reuse",
+          "rationale": "Retains a reviewed, recognizable source silhouette.",
+          "references": [
+            {
+              "url": "https://unpkg.com/lucide-static@1.70.0/icons/brain-circuit.svg",
+              "note": "Pinned source bytes and complete license are retained."
+            }
+          ],
+          "alternatives": []
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      },
+      "expected": [
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "16",
+            "cy": "13",
+            "r": "0.5"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "18",
+            "cy": "3",
+            "r": "0.5"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "20",
+            "cy": "21",
+            "r": "0.5"
+          }
+        },
+        {
+          "tag": "circle",
+          "attrs": {
+            "cx": "20",
+            "cy": "8",
+            "r": "0.5"
+          }
+        }
+      ],
+      "rejected": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M12 13L16 13"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cloud",
+      "basis": "User correction, 2026-11-08",
+      "spec": {
+        "id": "cloud",
+        "file": "lucide/cloud.svg",
+        "sha256": "14dce47d659275bf0e028bd89f619aec4f4c8fb4d2bcb20d96dc54fc402ee937",
+        "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/cloud.svg",
+        "license": "ISC + MIT (Feather-derived icons; see license)",
+        "view": {
+          "projection": "flat",
+          "description": "front",
+          "visible": [
+            "mark"
+          ],
+          "hidden": [],
+          "rationale": "Retain the reviewed source view and its visible contour relationships."
+        },
+        "plural": false,
+        "accent": {
+          "mode": "none",
+          "meaning": "no accent",
+          "rationale": "The user allowed neutral or whole-glyph treatment; choose neutral because there is no distinct internal component.",
+          "basis": "user-request"
+        },
+        "nodes": [
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"
+            }
+          }
+        ],
+        "name": "Cloud",
+        "group": "systems",
+        "tags": "cloud remote distributed infrastructure",
+        "schema": "slide-icon/3",
+        "parts": {
+          "mark": [
+            0
+          ]
+        },
+        "constraints": [],
+        "fit": {
+          "brief": "Cloud as a quiet slide/web mark.",
+          "decision": "reuse",
+          "rationale": "Retains a reviewed, recognizable source silhouette.",
+          "references": [
+            {
+              "url": "https://unpkg.com/lucide-static@1.70.0/icons/cloud.svg",
+              "note": "Pinned source bytes and complete license are retained."
+            }
+          ],
+          "alternatives": []
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      },
+      "expected": [],
+      "rejected": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M17.5 19L9 19"
+          }
+        }
+      ],
+      "wholeGlyphAlternative": true
+    },
+    {
+      "id": "network",
+      "basis": "User requests one complete square; the root node is the default author choice, not a required position.",
+      "spec": {
+        "id": "network",
+        "file": "lucide/network.svg",
+        "sha256": "329405d18640a0b03dc7fee707e71d3b94d05ba88ee42164eab319b90313ea98",
+        "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/network.svg",
+        "license": "ISC + MIT (Feather-derived icons; see license)",
+        "view": {
+          "projection": "flat",
+          "description": "front",
+          "visible": [
+            "mark",
+            "root-node"
+          ],
+          "hidden": [],
+          "rationale": "Retain the reviewed source view and its visible contour relationships."
+        },
+        "plural": false,
+        "accent": {
+          "mode": "part",
+          "part": "root-node",
+          "meaning": "one complete network node",
+          "rationale": "Use the complete root square, rather than a segment of its connecting wire.",
+          "basis": "user-request"
+        },
+        "nodes": [
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "16",
+              "y": "16",
+              "width": "6",
+              "height": "6",
+              "rx": "1"
+            }
+          },
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "2",
+              "y": "16",
+              "width": "6",
+              "height": "6",
+              "rx": "1"
+            }
+          },
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "9",
+              "y": "2",
+              "width": "6",
+              "height": "6",
+              "rx": "1"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M12 12V8"
+            }
+          }
+        ],
+        "name": "Network",
+        "group": "systems",
+        "tags": "network",
+        "schema": "slide-icon/3",
+        "parts": {
+          "mark": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "root-node": [
+            2
+          ]
+        },
+        "constraints": [],
+        "fit": {
+          "brief": "Network as a quiet slide/web mark.",
+          "decision": "reuse",
+          "rationale": "Retains a reviewed, recognizable source silhouette.",
+          "references": [
+            {
+              "url": "https://unpkg.com/lucide-static@1.70.0/icons/network.svg",
+              "note": "Pinned source bytes and complete license are retained."
+            }
+          ],
+          "alternatives": []
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      },
+      "expected": [
+        {
+          "tag": "rect",
+          "attrs": {
+            "x": "9",
+            "y": "2",
+            "width": "6",
+            "height": "6",
+            "rx": "1"
+          }
+        }
+      ],
+      "rejected": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M12 12L12 8"
+          }
+        }
+      ],
+      "alternatives": [
+        [
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "16",
+              "y": "16",
+              "width": "6",
+              "height": "6",
+              "rx": "1"
+            }
+          }
+        ],
+        [
+          {
+            "tag": "rect",
+            "attrs": {
+              "x": "2",
+              "y": "16",
+              "width": "6",
+              "height": "6",
+              "rx": "1"
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "id": "folder",
+      "basis": "User correction, 2026-11-08",
+      "spec": {
+        "id": "folder",
+        "file": "lucide/folder.svg",
+        "sha256": "c67f53e0e26cb88c6030fc43d8c02591eaea5c48643a98693a706f7208f0e631",
+        "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/folder.svg",
+        "license": "ISC + MIT (Feather-derived icons; see license)",
+        "view": {
+          "projection": "flat",
+          "description": "front",
+          "visible": [
+            "mark"
+          ],
+          "hidden": [],
+          "rationale": "Retain the reviewed source view and its visible contour relationships."
+        },
+        "plural": false,
+        "accent": {
+          "mode": "none",
+          "meaning": "no accent",
+          "rationale": "The user allowed neutral or whole-glyph treatment; choose neutral instead of highlighting a tab edge.",
+          "basis": "user-request"
+        },
+        "nodes": [
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"
+            }
+          }
+        ],
+        "name": "Folder",
+        "group": "data",
+        "tags": "folder directory project collection",
+        "schema": "slide-icon/3",
+        "parts": {
+          "mark": [
+            0
+          ]
+        },
+        "constraints": [],
+        "fit": {
+          "brief": "Folder as a quiet slide/web mark.",
+          "decision": "reuse",
+          "rationale": "Retains a reviewed, recognizable source silhouette.",
+          "references": [
+            {
+              "url": "https://unpkg.com/lucide-static@1.70.0/icons/folder.svg",
+              "note": "Pinned source bytes and complete license are retained."
+            }
+          ],
+          "alternatives": []
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      },
+      "expected": [],
+      "rejected": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M7.93 3L4 3"
+          }
+        }
+      ],
+      "wholeGlyphAlternative": true
+    },
+    {
+      "id": "folders",
+      "basis": "User correction, 2026-11-08",
+      "spec": {
+        "id": "folders",
+        "file": "lucide/folders.svg",
+        "sha256": "b7d142e994ef838c7cf2bb384879a313d5e96366e46a9bc5105dce38660f2ec8",
+        "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/folders.svg",
+        "license": "ISC + MIT (Feather-derived icons; see license)",
+        "view": {
+          "projection": "flat",
+          "description": "front",
+          "visible": [
+            "front",
+            "rear-0",
+            "selected-folder"
+          ],
+          "hidden": [],
+          "rationale": "Retain the reviewed source view and its visible contour relationships."
+        },
+        "plural": true,
+        "accent": {
+          "mode": "part",
+          "part": "selected-folder",
+          "meaning": "one complete front folder",
+          "rationale": "Select a complete folder from the collection, rather than only its tab.",
+          "basis": "user-request"
+        },
+        "nodes": [
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M20 5a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2.5a1.5 1.5 0 0 1 1.2.6l.6.8a1.5 1.5 0 0 0 1.2.6z"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M3 8.268a2 2 0 0 0-1 1.738V19a2 2 0 0 0 2 2h11a2 2 0 0 0 1.732-1"
+            }
+          }
+        ],
+        "name": "Folders",
+        "group": "data",
+        "tags": "folders directories plural stack",
+        "schema": "slide-icon/3",
+        "parts": {
+          "front": [
+            0
+          ],
+          "rear-0": [
+            1
+          ],
+          "selected-folder": [
+            0
+          ]
+        },
+        "constraints": [
+          {
+            "type": "occlude",
+            "front": "front",
+            "rear": [
+              "rear-0"
+            ]
+          }
+        ],
+        "collection": {
+          "kind": "stack",
+          "items": [
+            "front",
+            "rear-0"
+          ]
+        },
+        "fit": {
+          "brief": "Folders as a quiet slide/web mark.",
+          "decision": "reuse",
+          "rationale": "Retains a reviewed, recognizable source silhouette.",
+          "references": [
+            {
+              "url": "https://unpkg.com/lucide-static@1.70.0/icons/folders.svg",
+              "note": "Pinned source bytes and complete license are retained."
+            }
+          ],
+          "alternatives": []
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      },
+      "expected": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M20 5a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2.5a1.5 1.5 0 0 1 1.2.6l.6.8a1.5 1.5 0 0 0 1.2.6z"
+          }
+        }
+      ],
+      "rejected": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M9 3L11.5 3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "shield-check",
+      "basis": "User correction, 2026-11-08",
+      "spec": {
+        "id": "shield-check",
+        "file": "lucide/shield-check.svg",
+        "sha256": "4472323e4d46471c0e7e6448d5bd042cd66bc8e11b65108be6321e7cb76541af",
+        "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/shield-check.svg",
+        "license": "ISC + MIT (Feather-derived icons; see license)",
+        "view": {
+          "projection": "flat",
+          "description": "front",
+          "visible": [
+            "mark",
+            "tick"
+          ],
+          "hidden": [],
+          "rationale": "Retain the reviewed source view and its visible contour relationships."
+        },
+        "plural": false,
+        "accent": {
+          "mode": "part",
+          "part": "tick",
+          "meaning": "the complete verification tick",
+          "rationale": "Both arms together express verification; one arm alone is not the tick.",
+          "basis": "user-request"
+        },
+        "nodes": [
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "m9 12 2 2 4-4"
+            }
+          }
+        ],
+        "name": "Verified",
+        "group": "workflow",
+        "tags": "shield check",
+        "schema": "slide-icon/3",
+        "parts": {
+          "mark": [
+            0,
+            1
+          ],
+          "tick": [
+            1
+          ]
+        },
+        "constraints": [],
+        "fit": {
+          "brief": "Verified as a quiet slide/web mark.",
+          "decision": "reuse",
+          "rationale": "Retains a reviewed, recognizable source silhouette.",
+          "references": [
+            {
+              "url": "https://unpkg.com/lucide-static@1.70.0/icons/shield-check.svg",
+              "note": "Pinned source bytes and complete license are retained."
+            }
+          ],
+          "alternatives": []
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      },
+      "expected": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "m9 12 2 2 4-4"
+          }
+        }
+      ],
+      "rejected": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M9 12L11 14"
+          }
+        }
+      ]
+    },
+    {
+      "id": "rocket",
+      "basis": "User correction, 2026-11-08",
+      "spec": {
+        "id": "rocket",
+        "file": "lucide/rocket.svg",
+        "sha256": "5b9777b51eecaf49f40ac12af95e2c4881cae207e73d7c7f1a4f0290c88eca6a",
+        "upstream": "https://unpkg.com/lucide-static@1.70.0/icons/rocket.svg",
+        "license": "ISC + MIT (Feather-derived icons; see license)",
+        "view": {
+          "projection": "flat",
+          "description": "front",
+          "visible": [
+            "mark",
+            "flame"
+          ],
+          "hidden": [],
+          "rationale": "Retain the reviewed source view and its visible contour relationships."
+        },
+        "plural": false,
+        "accent": {
+          "mode": "part",
+          "part": "flame",
+          "meaning": "the complete rocket flame",
+          "rationale": "The flame expresses launching; the fin is a different component.",
+          "basis": "user-request"
+        },
+        "nodes": [
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"
+            }
+          },
+          {
+            "tag": "path",
+            "attrs": {
+              "d": "M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"
+            }
+          }
+        ],
+        "name": "Launch",
+        "group": "workflow",
+        "tags": "rocket",
+        "schema": "slide-icon/3",
+        "parts": {
+          "mark": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "flame": [
+            1
+          ]
+        },
+        "constraints": [],
+        "fit": {
+          "brief": "Launch as a quiet slide/web mark.",
+          "decision": "reuse",
+          "rationale": "Retains a reviewed, recognizable source silhouette.",
+          "references": [
+            {
+              "url": "https://unpkg.com/lucide-static@1.70.0/icons/rocket.svg",
+              "note": "Pinned source bytes and complete license are retained."
+            }
+          ],
+          "alternatives": []
+        },
+        "licenses": [
+          "lucide",
+          "original"
+        ]
+      },
+      "expected": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"
+          }
+        }
+      ],
+      "rejected": [
+        {
+          "tag": "path",
+          "attrs": {
+            "d": "M9 12L4 12"
+          }
+        }
+      ]
+    }
+  ]
+}

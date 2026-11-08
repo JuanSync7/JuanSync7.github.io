@@ -5,10 +5,13 @@ parses source XML; Node samples actual generated geometry; Chromium independentl
 measures native primitives. Shared specifications are data, not a shared verdict.
 Sampling checks have configured resolution and do not prove physical meaning.
 
-Accent coverage checks both directions against the independently reconstructed
-source feature and compares total lengths. An attached partial line or circle
-still fails. Straight accents cover their full selected edge; circular/elliptical
-accents cover the full outline. No percentage budget truncates these features.
+Accent checks compare the exact multiset of highlighted primitives with the source
+primitives of the named semantic unit. They reject missing members, partial paths,
+extra parts and any color under `none`. `whole` requires the complete glyph.
+Frozen user corrections additionally reject the wrong fin, grid line, square edge
+or folder tab even when it is geometrically attached and complete. New subjects
+remain open. The checker cannot infer anatomy from a name: LOOK must judge and
+record the meaning of a new choice before its proof can be approved.
 
 Standard path, line, circle, ellipse, rect, polyline and polygon primitives are supported,
 so common outline libraries do not require a new validator for a different source format.
