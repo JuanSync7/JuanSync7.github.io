@@ -35,6 +35,23 @@ function tones(png, label) {
   assert(m.coverage <= night.coverageMax, `${label}: isometric frame coverage`);
   return { contrast: m.contrast, bins };
 }
+function changedRoomShare(a, b) {
+  assert.equal(a.data.length, b.data.length);
+  let room = 0,
+    changed = 0;
+  for (let i = 0; i < a.data.length; i += 4) {
+    const occupied = [0, 1, 2].some(
+      (k) =>
+        Math.abs(a.data[i + k] - [7, 8, 12][k]) > night.inkDelta ||
+        Math.abs(b.data[i + k] - [7, 8, 12][k]) > night.inkDelta,
+    );
+    if (occupied) {
+      room++;
+      if ([0, 1, 2].some((k) => Math.abs(a.data[i + k] - b.data[i + k]) > night.inkDelta)) changed++;
+    }
+  }
+  return changed / Math.max(1, room);
+}
 let browser;
 try {
   browser = await chromium.launch();
@@ -81,20 +98,23 @@ try {
       const label = `${renderer}/${f.theme}/${f.seed}`,
         colour = await shot();
       assertColour(colourMetrics(colour, night), limits, label);
-      if (first.has(f.theme))
-        assert(diff(decode(first.get(f.theme)), decode(colour)) > 0.02, `${label}: seed variants render identically`);
-      else first.set(f.theme, colour);
+      writeFileSync(`figures-out/room-variant-${renderer}-${f.theme}-${f.paletteVariant}-colour.png`, colour);
+      if (first.has(f.theme)) {
+        const share = changedRoomShare(decode(first.get(f.theme)), decode(colour));
+        assert(share > 0.15, `${label}: variants change too little of the room (${share})`);
+      } else first.set(f.theme, colour);
       await page.getByRole('button', { name: 'Monochrome', exact: true }).click();
       const mono = await shot(),
         tonal = tones(mono, label);
       if (report.rooms.length === 0) {
         const flat = decode(mono);
         for (let i = 0; i < flat.data.length; i += 4) {
-          const maximum = Math.max(...flat.data.subarray(i, i + 3));
-          if (maximum > 30) flat.data.fill(80, i, i + 3);
+          const occupied = [0, 1, 2].some((k) => Math.abs(flat.data[i + k] - [7, 8, 12][k]) > night.inkDelta);
+          if (occupied) flat.data.fill(80, i, i + 3);
         }
         assert.throws(() => tones(PNG.sync.write(flat), 'mutated flat room'), /crushed monochrome/);
-        report.negativeFixture = 'flattened actual monochrome image';
+        assert.equal(changedRoomShare(decode(colour), decode(colour)), 0, 'Identical room fixture');
+        report.negativeFixture = 'flattened actual monochrome image and identical room';
       }
       await page.getByRole('button', { name: 'Full colour', exact: true }).click();
       const restored = await shot();
