@@ -75,6 +75,9 @@ try {
         report.errors.push(m.text());
     });
     await page.goto(`${url}/lab/pixel-still/?seed=${fixtures[0].seed}`);
+    await page.addStyleTag({
+      content: '.lab-main{max-width:640px;width:100%;margin-inline:auto}.lab-strip{display:none}',
+    });
     await page.waitForFunction(() => document.querySelector('.lab-main canvas')?.dataset.ready === '1', null, {
       timeout: 90000,
     });
@@ -135,6 +138,7 @@ try {
         mono,
       });
       report.rooms.push({ ...f, renderer, tonal });
+      if (f.paletteVariant === 3) console.log(`Reviewed fixtures captured: ${renderer}/${f.theme}`);
       save();
     }
     for (const mode of ['colour', 'mono']) {
