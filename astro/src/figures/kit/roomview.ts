@@ -20,12 +20,12 @@ export interface RoomView {
   controls: RoomControls;
 }
 export function roomControls(data: unknown): RoomControls {
-  const controls: RoomControls = { angle: 90, view: 'eye', zoom: 1, appearance: 'monochrome' };
+  const controls: RoomControls = { angle: 135, view: 'isometric', zoom: 1, appearance: 'monochrome' };
   if (typeof data !== 'object' || data === null) return controls;
   if ('angle' in data && typeof data.angle === 'number' && Number.isFinite(data.angle))
     controls.angle = Math.max(0, Math.min(180, data.angle));
   if ('appearance' in data && data.appearance === 'colour') controls.appearance = 'colour';
-  if ('view' in data && data.view === 'isometric') controls.view = 'isometric';
+  if ('view' in data && (data.view === 'isometric' || data.view === 'eye')) controls.view = data.view;
   if ('zoom' in data && typeof data.zoom === 'number' && Number.isFinite(data.zoom))
     controls.zoom = Math.max(0.8, Math.min(1.6, data.zoom));
   return controls;

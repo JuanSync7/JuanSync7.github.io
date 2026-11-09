@@ -7,8 +7,9 @@ import { workDetails } from './furniturework';
 import { ROOM_METRICS } from './roommetrics';
 
 const CACHE = new Map<string, PropModel>();
-export function tableModel(t: TableTheme): PropModel {
-  const cached = CACHE.get(t.id);
+export function tableModel(t: TableTheme, design = 0): PropModel {
+  const key = `${t.id}:${design}`,
+    cached = CACHE.get(key);
   if (cached) return cached;
   const p = new TableDraft(),
     x = t.w / 2,
@@ -83,13 +84,18 @@ export function tableModel(t: TableTheme): PropModel {
       );
     }
   });
+  if (design === 1) p.material('panel', () => p.box(0, -h * 0.7, 0, t.w * 0.65, h * 0.35, 0.1, 0.025));
+  if (design === 2)
+    p.material('metal', () => {
+      for (const sign of [-1, 1]) p.rod([sign * x * 0.65, -h * 0.8, 0], [-sign * x * 0.65, -0.3, 0], 0.055);
+    });
   homeDetails(p, t);
   workDetails(p, t);
   const m = ROOM_METRICS[t.id];
   for (const surface of p.parts[0]?.surfaces ?? [])
     surface.points = surface.points.map(([x, y, z]) => [x * m.x, y > 0 ? y * 0.75 : y, z * m.z]);
   const result = finish(p);
-  CACHE.set(t.id, result);
+  CACHE.set(key, result);
   return result;
 }
 /** The top may be oval or chamfered; its bounding rectangle alone is insufficient. */

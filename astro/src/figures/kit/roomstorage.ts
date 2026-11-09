@@ -43,6 +43,10 @@ export function tallCabinet(p: TableDraft, theme: ThemeId, variant: number): voi
     p.material('metal', () => {
       for (const x of [-0.11, 0.11]) p.roundRod([x, 1.65, 0.59], [x, 2.25, 0.59], 0.026, 8);
     });
+  if (!open && variant === 2)
+    p.material('metal', () => {
+      for (let i = 0; i < 8; i++) p.box(-w / 2 + 0.2 + (i * (w - 0.4)) / 7, h - 0.45, 0.56, 0.04, 0.15, 0.02, 0.005);
+    });
   if (theme === 'lab') {
     p.material('window', () => p.box(0, 2.8, 0.55, w - 0.3, 1.45, 0.025, 0.015));
     p.material('recess', () => {
@@ -54,19 +58,21 @@ export function tallCabinet(p: TableDraft, theme: ThemeId, variant: number): voi
       for (let i = 0; i < 8; i++) p.box(-0.64 + i * 0.18, 0.5, 0.55, 0.06, 3.7, 0.035, 0.01);
     });
 }
-export function filingCabinet(p: TableDraft): void {
+export function filingCabinet(p: TableDraft, variant = 0): void {
   p.material('metal', () => {
     p.box(0, 0, 0, 1.45, 0.08, 1.12, 0.025);
     p.box(0, 0.08, 0, 1.6, 2.2, 1.25, 0.05);
   });
   p.material('cabinet', () => {
-    for (const y of [0.15, 0.85, 1.55]) p.box(0, y, 0.65, 1.42, 0.61, 0.055, 0.025);
+    for (const y of variant === 1 ? [0.15, 1.2] : [0.15, 0.85, 1.55])
+      p.box(0, y, 0.65, 1.42, variant === 1 ? 0.95 : 0.61, 0.055, 0.025);
   });
   p.material('metal', () => {
-    for (const y of [0.52, 1.22, 1.92]) p.roundRod([-0.22, y, 0.72], [0.22, y, 0.72], 0.025, 8);
+    for (const y of variant === 1 ? [0.65, 1.7] : [0.52, 1.22, 1.92])
+      p.roundRod([-0.22, y, 0.72], [0.22, y, 0.72], 0.025, 8);
   });
   p.material('paper', () => {
-    for (const y of [0.35, 1.05, 1.75]) p.box(0, y, 0.69, 0.25, 0.1, 0.025, 0.005);
+    for (const y of variant === 1 ? [0.4, 1.45] : [0.35, 1.05, 1.75]) p.box(0, y, 0.69, 0.25, 0.1, 0.025, 0.005);
   });
   accessory(p, 'files', 0, 2.28, 0, 0.6);
 }

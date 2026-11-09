@@ -10,6 +10,11 @@ const stages = [
   ['room visual audit', 'node', ['scripts/figures/figure.mjs', 'pixel-still', `--url=${url}`]],
   ['camera and monochrome browser checks', 'node', ['scripts/figures/tabletop-browser.mjs', `--url=${url}`]],
   ['full-colour and appearance checks', 'node', ['scripts/figures/room-colour-browser.mjs', `--url=${url}`]],
+  [
+    'within-theme seed variation and tonal depth',
+    'node',
+    ['scripts/figures/room-variation-browser.mjs', `--url=${url}`],
+  ],
   ['full-colour frame budget', 'node', ['scripts/figures/room-colour-performance.mjs', `--url=${url}`]],
   ['twelve-seed sheet', 'node', ['scripts/figures/seeds.mjs', 'pixel-still', '12', `--url=${url}`]],
   ['compact room galleries', 'node', ['scripts/figures/room-gallery.mjs']],

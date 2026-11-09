@@ -61,8 +61,8 @@ export function checkRoom(p, { roomPlan, roomModels, roomView, roomProject, room
         hi: [plan.half * 0.35, plan.top, plan.front],
       };
       const doorway = {
-        lo: [plan.half - doorSpan, plan.floor, entry.model.bounds.lo[2] - 0.1],
-        hi: [plan.half, plan.top, entry.model.bounds.hi[2] + 0.1],
+        lo: [entry.side === 'left' ? -plan.half : plan.half - doorSpan, plan.floor, entry.model.bounds.lo[2] - 0.1],
+        hi: [entry.side === 'left' ? -plan.half + doorSpan : plan.half, plan.top, entry.model.bounds.hi[2] + 0.1],
       };
       assert(disjoint(b, aisle), `Blocked entrance aisle: ${part.label}`);
       assert(disjoint(b, doorway), `Blocked door approach: ${part.label}`);
@@ -72,7 +72,7 @@ export function checkRoom(p, { roomPlan, roomModels, roomView, roomProject, room
       assert(disjoint(b, other.model.bounds), `Room fittings intersect: ${p.theme.id}/${part.label}/${other.label}`);
     }
   }
-  const key = `${p.theme.id}:${p.roomVariant}`;
+  const key = `${p.theme.id}:${p.roomVariant}:${p.layoutVariant}:${p.furnitureVariant}`;
   if (checkedRooms.has(key)) return;
   checkedRooms.add(key);
   const diagonal = roomView(p, 640, 640 / 1.8, { view: 'isometric', angle: 135 });
@@ -80,7 +80,7 @@ export function checkRoom(p, { roomPlan, roomModels, roomView, roomProject, room
   assert(roomVisible(p, 'right', diagonal, 'floor'), 'Cutting away a wall must preserve its visible floor furniture');
   assert.equal(roomControls({ angle: 999 }).angle, 180);
   assert.equal(roomControls({ angle: -999 }).angle, 0);
-  assert.equal(roomControls({ angle: NaN }).angle, 90);
+  assert.equal(roomControls({ angle: NaN }).angle, 135);
   for (const view of ['eye', 'isometric'])
     for (const angle of [0, 30, 60, 90, 120, 135, 150, 180])
       for (const aspect of [1, 1.8, 2.4]) {

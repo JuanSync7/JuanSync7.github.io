@@ -2,7 +2,7 @@ import type { RoomTone } from '../../styles/tokens/palette';
 import type { FurnitureFinish } from './tableparts';
 import type { TableObject } from './tablefinish';
 import type { ThemeId } from './tablethemes';
-import { ROOM_STYLES } from './roomstyles';
+import { roomStyle } from './roompalettes';
 import { propPaint } from './roomproppaint';
 import { decorPaint } from './roomdecorpaint';
 
@@ -25,10 +25,11 @@ export function roomPaint(
   finish: FurnitureFinish | undefined,
   solid: number,
   phase = 0,
+  palette = 0,
 ): RoomPaint {
-  const detail = decorPaint(theme, finish);
+  const style = roomStyle(theme, palette),
+    detail = decorPaint(theme, finish, style);
   if (detail && (kind === 'table' || kind === 'room')) return detail;
-  const style = ROOM_STYLES[theme];
   let tone: RoomTone = style.accent,
     pattern: MaterialPattern = 'none',
     roughness = 0.72,
@@ -84,7 +85,7 @@ export function roomPaint(
       pattern = 'none';
     }
     if (finish === 'panel') {
-      tone = theme === 'kitchen' ? 'sage' : theme === 'lab' ? 'steel' : style.wood;
+      tone = theme === 'kitchen' ? style.accent : theme === 'lab' ? 'steel' : style.wood;
     }
     if (finish === 'cabinet') {
       tone = style.accent;
@@ -152,7 +153,7 @@ export function roomPaint(
       pattern = 'none';
       roughness = 1;
     }
-  } else return propPaint(kind, theme, finish, solid, phase);
+  } else return propPaint(kind, theme, finish, solid, phase, style);
   if (finish === 'leaf') {
     tone = 'forest';
     pattern = 'none';

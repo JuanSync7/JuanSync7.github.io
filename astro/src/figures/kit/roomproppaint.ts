@@ -3,7 +3,7 @@ import type { FurnitureFinish } from './tableparts';
 import type { PropKind } from './tableprops';
 import type { ThemeId } from './tablethemes';
 import type { RoomPaint, MaterialPattern } from './roompaint';
-import { ROOM_STYLES } from './roomstyles';
+import { ROOM_STYLES, type RoomStyle } from './roomstyles';
 const SPINES: readonly RoomTone[] = ['navy', 'clay', 'sage', 'burgundy', 'oak', 'teal'];
 export function propPaint(
   kind: PropKind,
@@ -11,8 +11,8 @@ export function propPaint(
   finish: FurnitureFinish | undefined,
   solid: number,
   phase: number,
+  style: RoomStyle = ROOM_STYLES[theme],
 ): RoomPaint {
-  const style = ROOM_STYLES[theme];
   let tone: RoomTone = 'graphite',
     pattern: MaterialPattern = 'none',
     roughness = 0.72,

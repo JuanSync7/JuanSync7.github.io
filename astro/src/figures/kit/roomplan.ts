@@ -11,6 +11,7 @@ export interface RoomPlan {
   floor: number;
   top: number;
   variant: number;
+  mirror: number;
   nookZ: number;
   serviceZ: number;
   cookZ: number;
@@ -19,7 +20,7 @@ export interface RoomPlan {
   bounds: Bounds;
 }
 export function roomPlan(p: TableScene): RoomPlan {
-  const table = tableModel(p.theme).bounds;
+  const table = tableModel(p.theme, p.furnitureVariant).bounds;
   const m = ROOM_METRICS[p.theme.id];
   const half = m.half,
     back = table.lo[2] - m.rearGap,
@@ -33,8 +34,9 @@ export function roomPlan(p: TableScene): RoomPlan {
     floor,
     top,
     variant: p.roomVariant,
-    nookZ: back + 6.7,
-    serviceZ: back + 5.8,
+    mirror: p.layoutVariant === 1 ? -1 : 1,
+    nookZ: back + 6.7 + (p.layoutVariant === 2 ? 0.25 : 0),
+    serviceZ: back + 5.8 + (p.layoutVariant === 2 ? 0.3 : 0),
     cookZ: back + 7.03,
     lampZ: front - 0.6,
     windowZ: back + 2.3,

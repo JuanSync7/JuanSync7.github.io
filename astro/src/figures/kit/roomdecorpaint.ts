@@ -1,10 +1,13 @@
 import type { FurnitureFinish } from './tableparts';
 import type { ThemeId } from './tablethemes';
 import type { RoomPaint } from './roompaint';
-import { ROOM_STYLES } from './roomstyles';
+import { ROOM_STYLES, type RoomStyle } from './roomstyles';
 
-export function decorPaint(theme: ThemeId, finish?: FurnitureFinish): RoomPaint | undefined {
-  const style = ROOM_STYLES[theme];
+export function decorPaint(
+  theme: ThemeId,
+  finish?: FurnitureFinish,
+  style: RoomStyle = ROOM_STYLES[theme],
+): RoomPaint | undefined {
   const base: RoomPaint = { tone: style.accent, pattern: 'none', roughness: 0.72, metalness: 0, strength: 1 };
   switch (finish) {
     case 'wallpaper':

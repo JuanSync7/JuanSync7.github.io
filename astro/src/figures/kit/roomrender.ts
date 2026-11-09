@@ -47,7 +47,7 @@ export function buildRoom(p: TableScene): { group: Group; state: RoomState } {
   const group = new Group(),
     pickables: Mesh[] = [];
   const entities = sceneModels(p).map((source, i): Entity => {
-    const model = solidMesh(source.model, source.kind, p.theme.id);
+    const model = solidMesh(source.model, source.kind, p.theme.id, p.paletteVariant);
     const faces: Entity['faces'] = [],
       edges: Entity['edges'] = [];
     model.traverse((o) => {

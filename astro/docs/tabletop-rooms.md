@@ -22,10 +22,14 @@ clearance and six chairs facing their place settings. `roomPlan` owns the envelo
 ceiling height and shared nook, service, window and lamp anchors. These anchors
 keep moved fixtures and their practical lights together.
 
-The seed chooses a theme, tabletop arrangement and one of three room variants.
-Variants affect architectural detail, window subdivisions, seating detail, textiles
-and contents. The room builders cache by theme and variant; they must not depend
-on unkeyed per-item randomness. The full inventory is seeded once, never per frame.
+The seed chooses a theme, tabletop arrangement and one of three architectural room
+variants, then independent palette (four), layout (three), furniture design (three)
+and lighting (three) choices. Palettes coordinate material roles within each theme.
+Layouts keep the table fixed while mirroring the whole room or deepening secondary
+zones. Chairs, sofa cushions, side-table shapes, drawer fronts and table supports
+also vary. Geometry caches include theme, architecture, layout and furniture design;
+paint and light choices do not change cached geometry. The full inventory is seeded
+once, never per frame. These are curated arrangements, not arbitrary continuous placement.
 
 ## Room programs
 
@@ -105,8 +109,8 @@ fine detail. Bump changes surface lighting, never physical bounds. Table grain f
 its long axis; timber floor grain follows the boards. Shelved accessories preserve
 paper, book, glass, ceramic, equipment and metal semantics.
 
-Daylit rooms use their casement as the key direction; the left wall has a real
-opening behind the frame. Clinical keys sit below the ceiling diffusers and bar keys align with
+Daylit rooms use their casement as the key direction; the window wall has a real
+opening behind the frame and follows the mirrored architectural layout. Clinical keys sit below the ceiling diffusers and bar keys align with
 pendant openings, inside the closed room. The roof casts and receives shadows. Ambient fill, neutral prefiltered reflections and actual task/practical
 lights support the single shadow key. Screen spill, candles, pendants, under-shelf
 strips, floor lamps and the kitchen hood have corresponding modelled sources.
@@ -117,6 +121,15 @@ its MIT notice is in `licenses/drei-room-shadows.txt`. Texture and shadow shader
 hooks compose per material and never mutate global Three.js chunks. Reflection
 maps are created only when colour is first used. All geometry, materials, shadow
 maps and reflection targets are disposed on unmount.
+
+The 9 November lighting pass lowers broad fill relative to the key, separates
+monochrome wall/floor/material values, retains texture, and adds neutral practical
+pools. Seeded daylight, evening, overcast, clinical and low-light variations share
+physical source anchors. Small depth-tested source halos support lamps; selected
+atmospheric computer/bar variants add light distance haze. These are emitter
+sprites and fog, not fullscreen HDR bloom or volumetric shafts. Both effects have
+bounded budgets and cleanup. The Canvas renderer shares palette and signed
+directional shading but does not reproduce GPU shadows, reflections, halos or haze.
 
 The static room renders on demand through `ThreeFrame.renderWhen`; camera,
 appearance, selection and size changes draw a new image. Idle frames retain the
@@ -129,7 +142,7 @@ under-table supports paint before the work surface, and raised fittings after it
 
 ## Verification and saved guidance
 
-Run from `astro/` with the dev server running:
+Run from `astro/` with a production preview running:
 
 ```bash
 npm run rooms:verify -- --url=http://127.0.0.1:4410
@@ -137,7 +150,8 @@ npm run rooms:verify -- --url=http://127.0.0.1:4410
 
 The ordered verifier runs types/lint/site rules, physical layouts, room programs,
 materials, production build, targeted visual audit, camera/input browser checks,
-colour/fallback checks, performance, twelve seeds, galleries and the whole-site audit.
+colour/fallback checks, 36 within-theme public palette seeds in both renderers,
+performance, twelve seeds, galleries and the whole-site audit.
 It writes `figures-out/room-validation.json`, starting incomplete and marking passed
 only after all stages succeed. A failed stage stops the run.
 
@@ -146,7 +160,12 @@ The room program's measured pre-redesign fixture is
 `--baseline` intentionally rejects that old oversized furniture. New scoped criteria
 live in `room-program-limits.json`; global audit limits remain unchanged.
 
-The reusable playbook is [tabletop-room](../../.claude/skills/tabletop-room/SKILL.md).
+The lighting and variation workflow is filed under the requested
+[web design agent](../../.claude/skills/web-design-agent/SKILL.md), including separate
+lighting/seed playbooks, rules, kernel index, check map, brief template and references.
+Its lighting check rejects five broken emitted-state cases; geometry, support and
+functional checks cover all 243 architectural/layout/furniture combinations.
+The existing reusable room playbook is [tabletop-room](../../.claude/skills/tabletop-room/SKILL.md).
 Its separate [rules](../../.claude/skills/tabletop-room/RULES.md),
 [look questions](../../.claude/skills/tabletop-room/LOOK.md),
 [kernel index](../../.claude/skills/tabletop-room/kernel/INDEX.md) and

@@ -38,7 +38,7 @@ export function roomDressing(p: TableScene): RoomPart[] {
                   : 'Swivel task chair';
   for (const x of seats)
     parts.push({
-      ...placedRoomPart(name, 'floor', 'floor', (q) => chair(q, t, r.variant), {
+      ...placedRoomPart(name, 'floor', 'floor', (q) => chair(q, t, p.furnitureVariant), {
         x,
         y: r.floor + (textile ? 0.022 : 0),
         z: b.hi[2] + 0.76,
@@ -49,7 +49,7 @@ export function roomDressing(p: TableScene): RoomPart[] {
   if (t === 'dining')
     for (const x of seats)
       parts.push({
-        ...placedRoomPart(name, 'floor', 'floor', (q) => chair(q, t, r.variant), {
+        ...placedRoomPart(name, 'floor', 'floor', (q) => chair(q, t, p.furnitureVariant), {
           x,
           y: r.floor + 0.022,
           z: b.lo[2] - 0.76,
@@ -113,8 +113,8 @@ export function roomDressing(p: TableScene): RoomPart[] {
       t === 'lab' ? 'Instrument trolley' : t === 'bar' ? 'Drinks trolley' : 'Supply trolley',
       'right',
       'floor',
-      (q) => cart(q, t, r.variant),
-      { x: r.half - 0.65, y: r.floor, z: r.front - 3.1 },
+      (q) => cart(q, t, p.furnitureVariant),
+      { x: r.half - 0.65, y: r.floor, z: r.front - 3.1 - (p.layoutVariant === 2 ? 0.3 : 0) },
     ),
   );
   if (!['lab', 'storage', 'kitchen', 'messy'].includes(t))

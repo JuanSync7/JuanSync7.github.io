@@ -11,7 +11,7 @@ import type { RoomPart } from './tableroom';
 export function roomZones(p: TableScene): RoomPart[] {
   const r = roomPlan(p),
     t = p.theme.id,
-    v = r.variant,
+    v = p.furnitureVariant,
     parts: RoomPart[] = [];
   const lounge = ['work', 'computer', 'study', 'bar'].includes(t);
   const left = {
@@ -45,7 +45,7 @@ export function roomZones(p: TableScene): RoomPart[] {
       parts.push(placedRoomPart('Ventilated chemical cabinet', 'right', 'floor', (q) => tallCabinet(q, t, v), right));
   } else if (t === 'storage') {
     parts.push(placedRoomPart('Steel supply shelving', 'left', 'floor', (q) => tallCabinet(q, t, v), left));
-    parts.push(placedRoomPart('Labelled filing drawers', 'right', 'floor', filingCabinet, right));
+    parts.push(placedRoomPart('Labelled filing drawers', 'right', 'floor', (q) => filingCabinet(q, v), right));
   } else if (t === 'messy') {
     parts.push(placedRoomPart('Craft bench with vice and supplies', 'left', 'floor', craftBench, left));
     parts.push(
@@ -58,7 +58,7 @@ export function roomZones(p: TableScene): RoomPart[] {
     );
     parts.push(placedRoomPart('Workshop parts cabinet', 'right', 'floor', (q) => tallCabinet(q, t, v), right));
   } else if (t === 'dining') {
-    parts.push(placedRoomPart('Serving sideboard', 'left', 'floor', (q) => sideboard(q, t), left));
+    parts.push(placedRoomPart('Serving sideboard', 'left', 'floor', (q) => sideboard(q, t, v), left));
     parts.push(placedRoomPart('China display cabinet', 'right', 'floor', (q) => tallCabinet(q, t, v), right));
   } else {
     const sofa = t === 'computer' || t === 'bar';
@@ -73,7 +73,7 @@ export function roomZones(p: TableScene): RoomPart[] {
               : 'Visitor armchair',
         'left',
         'floor',
-        (q) => loungeSeat(q, t, sofa),
+        (q) => loungeSeat(q, t, sofa, v),
         left,
       ),
     );
@@ -82,7 +82,7 @@ export function roomZones(p: TableScene): RoomPart[] {
         t === 'bar' ? 'Cocktail side table' : 'Reading side table',
         'floor',
         'floor',
-        (q) => sideTable(q, t),
+        (q) => sideTable(q, t, v),
         { x: -r.half + 2.55, y: r.floor + 0.022, z: r.nookZ },
       ),
     );
@@ -91,7 +91,7 @@ export function roomZones(p: TableScene): RoomPart[] {
         t === 'study' ? 'Library bookcase' : t === 'computer' ? 'Game storage cabinet' : 'Office filing cabinet',
         'right',
         'floor',
-        (q) => (t === 'work' ? filingCabinet(q) : tallCabinet(q, t, v)),
+        (q) => (t === 'work' ? filingCabinet(q, v) : tallCabinet(q, t, v)),
         right,
       ),
     );

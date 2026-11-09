@@ -201,6 +201,12 @@ try {
     });
     if (colour.error) throw colour.error;
     assert.equal(colour.status, 0, 'Room appearance regression failed');
+    const variation = spawnSync(process.execPath, ['scripts/figures/room-variation-browser.mjs', `--url=${url}`], {
+      stdio: 'inherit',
+      env: process.env,
+    });
+    if (variation.error) throw variation.error;
+    assert.equal(variation.status, 0, 'Room seed variation regression failed');
   }
   console.log(
     'All 9 rooms, WebGL/fallback, 180° sweep, true isometric projection, drag, keyboard, zoom, seed controls and mobile width passed. Wrote figures-out/tabletop-themes.png and room-camera-views.png',

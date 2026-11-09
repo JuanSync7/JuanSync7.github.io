@@ -103,6 +103,9 @@ alongside monochrome. Its material/light tokens live in `roomTones` and the
 monochrome audit strict and verify full colour with the dedicated room checks;
 never broaden the global palette or thresholds to accommodate this exception.
 Store new rules, verification scripts and playbook updates with the feature.
+For lighting and same-theme seeded variation, also use
+`.claude/skills/web-design-agent/SKILL.md`; it routes project work through the
+existing room and figure kernels and records the requested vault feedback.
 
 ## Seeded zoom-dive work
 

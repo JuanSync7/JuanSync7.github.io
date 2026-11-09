@@ -1,5 +1,17 @@
 ## 2026-11-07 — Shelf support correction
 
+## 2026-11-09 — Seeded room lighting and within-theme variation
+
+- Add four coordinated palettes and independent layout, furniture construction and
+  lighting choices per theme while preserving the central table and established inventory seeds.
+- Strengthen source/fill separation, monochrome material values and local practical
+  pools; add bounded depth-tested source halos and optional low-density distance haze.
+- Expand geometry, supports and circulation sweeps to 243 configurations; add emitted
+  lighting-state failures and 36 same-theme public seed comparisons in both renderers.
+- File lighting/variation playbooks, rules, kernel, checks, template and references
+  under the project web design agent workflow for scoped vault feedback.
+
+
 - Rebuilt wall shelves as backed cases and placed book/box contents from actual shelf tops, including tall cabinets and the controller display.
 - Added cupboard fixing cleats against the actual recessed wall surface, attached cabinet lights to their units, added wall-connected ceiling-light rails, and modelled pegboard standoffs and dining plant ledges.
 - Added independent support-face and attachment-path checks with six mutations that must fail; wired them into the existing geometry CI command.

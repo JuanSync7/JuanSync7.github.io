@@ -27,6 +27,10 @@ export interface TableScene {
   lit: number;
   mirror: number;
   roomVariant: number;
+  paletteVariant: number;
+  layoutVariant: number;
+  furnitureVariant: number;
+  lightVariant: number;
 }
 export const GAP = 0.075;
 export function tableView(p: TableScene, w = TABLE_ASPECT, h = 1): Camera {
@@ -88,7 +92,7 @@ function place(p: TableScene, intent: Intent, rng: Rng): boolean {
   }
   return false;
 }
-export const tabletop = (p: TableScene): PropModel => tableModel(p.theme);
+export const tabletop = (p: TableScene): PropModel => tableModel(p.theme, p.furnitureVariant);
 function compose(rng: Rng, theme: TableTheme): TableScene | null {
   const mirror = rng() < 0.5 ? -1 : 1;
   for (let attempt = 0; attempt < 24; attempt++) {
@@ -101,6 +105,10 @@ function compose(rng: Rng, theme: TableTheme): TableScene | null {
       lit: 0,
       mirror,
       roomVariant: 0,
+      paletteVariant: 0,
+      layoutVariant: 0,
+      furnitureVariant: 0,
+      lightVariant: 0,
     };
     const metric = ROOM_METRICS[theme.id];
     const intents = recipe(theme.id, rng, mirror).map((intent) => ({
@@ -142,6 +150,10 @@ function compose(rng: Rng, theme: TableTheme): TableScene | null {
       ? (highlights[Math.floor(rng() * highlights.length)]?.i ?? 0)
       : Math.floor(rng() * p.items.length);
     p.roomVariant = Math.floor(rng() * 3);
+    p.paletteVariant = Math.floor(rng() * 4);
+    p.layoutVariant = Math.floor(rng() * 3);
+    p.furnitureVariant = Math.floor(rng() * 3);
+    p.lightVariant = Math.floor(rng() * 3);
     return p;
   }
   return null;

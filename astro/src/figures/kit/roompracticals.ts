@@ -42,18 +42,22 @@ export function roomPracticals(scene: Scene, p: TableScene): PracticalLight[] {
   }
   for (const { x, y, z } of shelfLightMounts(p.theme.id)) {
     const light = new PointLight(roomHexOf(cool ? 'daylight' : 'amber'), 0, 3, 2);
-    light.position.set(x, y - 0.09, r.back + z);
+    light.position.set(r.mirror * x, y - 0.09, r.back + z);
     add(light, cool ? 2.0 : 2.5, cool ? 'daylight' : 'amber');
   }
   const pendant = ['dining', 'bar'].includes(p.theme.id);
-  for (const x of pendant ? [-1.45, 0, 1.45] : [0]) {
+  const clinical = ['lab', 'kitchen', 'storage'].includes(p.theme.id);
+  const sources = pendant
+    ? [-1.45, 0, 1.45].map((x) => [x, 2.22, 0])
+    : (clinical ? [0, 2.2] : [1.1]).map((z) => [0, r.top - 0.3, z]);
+  for (const [x, y, z] of sources) {
     const light = new PointLight(roomHexOf(cool ? 'daylight' : 'amber'), 0, 7, 2);
-    light.position.set(x, pendant ? 2.22 : r.top - 0.35, pendant ? 0 : 1.1);
+    light.position.set(r.mirror * x, y, z);
     add(light, pendant ? 3.4 : cool ? 6 : 3.5, cool ? 'daylight' : 'amber');
   }
   if (p.theme.id === 'kitchen') {
     const task = new PointLight(roomHexOf('daylight'), 0, 3.5, 2);
-    task.position.set(-r.half + 0.95, r.floor + 3.6, r.cookZ);
+    task.position.set(r.mirror * (-r.half + 0.95), r.floor + 3.6, r.cookZ);
     add(task, 2.4, 'daylight');
   }
   return result;
