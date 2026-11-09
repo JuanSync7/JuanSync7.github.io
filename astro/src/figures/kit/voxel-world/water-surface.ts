@@ -1,4 +1,5 @@
-import { BufferGeometry, Color, Float32BufferAttribute, Mesh, MeshLambertMaterial } from 'three';
+import { BufferGeometry, Color, Float32BufferAttribute, Mesh } from 'three';
+import { emissiveVoxelMaterial } from '../voxel-atmosphere/material';
 import { hexOf } from '../ink';
 import { waveGLSL } from './water';
 import { cell, type Liquid, type World } from './types';
@@ -9,6 +10,7 @@ export function waterSurface(world: World) {
     normals: number[] = [],
     colors: number[] = [],
     weights: number[] = [],
+    emission: number[] = [],
     indices: number[] = [];
   const clock = { value: 0 },
     palette = new Map<string, Color>(),
@@ -43,6 +45,7 @@ export function waterSurface(world: World) {
       positions.push(p[0] ?? 0, p[1] ?? 0, p[2] ?? 0);
       normals.push(...normal);
       colors.push(color.r, color.g, color.b);
+      emission.push(liquid.kind === 'lava' ? 1 : 0);
       weights.push(moving[i] && liquid.kind !== 'ice' ? weightAt(p[0] ?? 0, p[2] ?? 0) : 0);
     });
     indices.push(start, start + 1, start + 2, start, start + 2, start + 3);
@@ -95,6 +98,7 @@ export function waterSurface(world: World) {
     }
   }
   const geometry = new BufferGeometry();
+  geometry.setAttribute('voxelEmission', new Float32BufferAttribute(emission, 1));
   geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
   geometry.setAttribute('normal', new Float32BufferAttribute(normals, 3));
   geometry.setAttribute('color', new Float32BufferAttribute(colors, 3));
@@ -102,8 +106,13 @@ export function waterSurface(world: World) {
   geometry.setIndex(indices);
   geometry.computeBoundingSphere();
   if (geometry.boundingSphere) geometry.boundingSphere.radius += 0.2;
-  const material = new MeshLambertMaterial({ vertexColors: true, transparent: true, opacity: 0.91, depthWrite: false });
-  material.onBeforeCompile = (shader) => {
+  const material = emissiveVoxelMaterial(true);
+  material.transparent = true;
+  material.opacity = 0.91;
+  material.depthWrite = false;
+  const addEmission = material.onBeforeCompile;
+  material.onBeforeCompile = (shader, renderer) => {
+    addEmission(shader, renderer);
     shader.uniforms.voxelTime = clock;
     shader.vertexShader = 'uniform float voxelTime;\nattribute float voxelWaveWeight;\n' + shader.vertexShader;
     shader.vertexShader = shader.vertexShader.replace(
@@ -111,7 +120,7 @@ export function waterSurface(world: World) {
       `#include <begin_vertex>\ntransformed.y += (${waveGLSL('position.x', 'position.z', 'voxelTime')}) * voxelWaveWeight;`,
     );
   };
-  material.customProgramCacheKey = () => 'voxel-water-field/1';
+  material.customProgramCacheKey = () => 'voxel-water-field-emission/2';
   const mesh = new Mesh(geometry, material);
   mesh.frustumCulled = false;
   mesh.name = 'voxel-water';

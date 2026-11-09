@@ -1,0 +1,37 @@
+name: Voxel atmosphere
+on:
+  pull_request:
+  push:
+    branches-ignore: ["main"]
+permissions:
+  contents: read
+defaults:
+  run:
+    working-directory: astro
+jobs:
+  atmosphere:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: astro/package-lock.json
+      - run: npm ci
+      - name: Weather-light coupling, roofs, replay and geometry baselines
+        run: npm run voxel:atmosphere-check
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - name: Actual GPU effects, production controls and fallback
+        run: npm run voxel:atmosphere-browser
+      - name: Evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: voxel-atmosphere
+          path: |
+            astro/figures-out/voxel-atmosphere
+            astro/figures-out/voxel-atmosphere-*.json

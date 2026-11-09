@@ -3,10 +3,10 @@ import { orbitState, orbitPhase, viewBounds } from './pose';
 import { viewOf } from './view';
 import { Vector3 } from 'three';
 import type { TemplateFrame } from '../../defineTemplate';
-import { hexOf, mix } from '../ink';
+import { fallbackAtmosphere } from '../voxel-atmosphere/fallback';
 import { worldBounds } from './camera';
 import { terrainSolid } from './edges';
-import { voxel, type Material, type World, type WorldSpec } from './types';
+import { voxel, BUILDINGS, type Material, type World, type WorldSpec } from './types';
 
 type Point = [number, number, number];
 interface Face {
@@ -160,7 +160,8 @@ export function drawWorldFallback({
     .filter((f) => facing(f.normal) > 0.001)
     .map((face) => ({ face, normal: face.normal, depth: facing(face.center) }));
   faces.sort((a, b) => a.depth - b.depth);
-  for (const { face, normal } of faces) {
+  const atmosphere = fallbackAtmosphere(state, view, t, iso, (kind) => BUILDINGS.has(kind));
+  for (const { face, normal, depth } of faces) {
     ctx.beginPath();
     face.points.forEach((p, i) => {
       const [x, y] = iso(p);
@@ -168,9 +169,14 @@ export function drawWorldFallback({
       else ctx.moveTo(x, y);
     });
     ctx.closePath();
-    ctx.fillStyle =
-      normal[1] > 0 ? hexOf(face.material) : mix(face.material, 'ground', normal[0] > normal[2] ? 0.3 : 0.16);
+    ctx.fillStyle = atmosphere.shade(
+      face.material,
+      normal,
+      face.center,
+      0.5 - (depth - facing([center.x, center.y, center.z])) / (params.radius * 2),
+    );
     ctx.fill();
   }
+  atmosphere.draw(ctx);
   return `${params.biome} · ${state.props.length} objects`;
 }

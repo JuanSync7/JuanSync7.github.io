@@ -1,14 +1,16 @@
-import { BufferGeometry, Color, Float32BufferAttribute, Mesh, MeshLambertMaterial } from 'three';
+import { BufferGeometry, Color, Float32BufferAttribute, Mesh } from 'three';
+import { emissiveVoxelMaterial } from '../voxel-atmosphere/material';
 import { hexOf } from '../ink';
 import { surfaceQuads } from './surfaces';
 import type { Block, Material, World } from './types';
 
 /** Greedy geometry preserves the exact exposed unit faces and shades actual solid contacts. */
-export function blockMesh(blocks: Block[], world?: World): Mesh {
+export function blockMesh(blocks: Block[], world?: World, emissive: Set<string> = new Set()): Mesh {
   const positions: number[] = [],
     normals: number[] = [],
     colors: number[] = [],
-    indices: number[] = [];
+    indices: number[] = [],
+    emission: number[] = [];
   const palette = new Map<Material, Color>(),
     quads = surfaceQuads(blocks, world);
   let unitFaces = 0;
@@ -28,6 +30,11 @@ export function blockMesh(blocks: Block[], world?: World): Mesh {
       n[q.axis] = q.sign;
       p[u] = q.u - 0.5 + (i === 1 || i === 2 ? q.width : 0);
       p[v] = q.v - 0.5 + (i >= 2 ? q.height : 0);
+      const cell = [0, 0, 0];
+      cell[q.axis] = q.plane - q.sign * 0.5;
+      cell[u] = q.u;
+      cell[v] = q.v;
+      emission.push(emissive.has(cell.join(',')) ? 1 : 0);
       const brightness = 0.92 * (1 - (q.ao[i] ?? 0) * 0.12);
       positions.push(...p);
       normals.push(...n);
@@ -44,13 +51,14 @@ export function blockMesh(blocks: Block[], world?: World): Mesh {
     unitFaces += q.width * q.height;
   }
   const geometry = new BufferGeometry();
+  geometry.setAttribute('voxelEmission', new Float32BufferAttribute(emission, 1));
   geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
   geometry.setAttribute('normal', new Float32BufferAttribute(normals, 3));
   geometry.setAttribute('color', new Float32BufferAttribute(colors, 3));
   geometry.setIndex(indices);
   geometry.computeBoundingSphere();
   geometry.userData.surface = { unitFaces, quads: quads.length };
-  const mesh = new Mesh(geometry, new MeshLambertMaterial({ vertexColors: true }));
+  const mesh = new Mesh(geometry, emissiveVoxelMaterial(true));
   mesh.name = 'voxel-solids';
   return mesh;
 }

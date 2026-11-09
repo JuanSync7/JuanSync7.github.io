@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {readFileSync,existsSync,readdirSync} from 'node:fs';
+const root='../.claude/skills/web-design-agent';
+for(const file of ['SKILL.md','SYSTEM.md','RULES.md','LOOK.md','examples/prompt.md','examples/README.md','playbooks/voxel-atmosphere.md'])assert(existsSync(`${root}/${file}`),`WEB-DESIGN-WORKFLOW: missing ${file}`);
+const agent=readFileSync('../.claude/agents/web-design-agent.md','utf8');assert.match(agent,/Do not spawn/);assert.match(agent,/SKILL.md/);
+const scripts=readdirSync('scripts/voxel').filter(f=>f.endsWith('.mjs')).map(f=>readFileSync(`scripts/voxel/${f}`,'utf8')).join('\n');
+for(const id of new Set(readFileSync(`${root}/RULES.md`,'utf8').match(/VXL-ATM-[A-Z-]+/g)))assert(scripts.includes(id),`WEB-DESIGN-WORKFLOW: no check for ${id}`);
+const flow=readFileSync('../.github/workflows/voxel-atmosphere.yml','utf8');assert(flow.includes('voxel:atmosphere-check')&&flow.includes('voxel:atmosphere-browser')&&flow.includes('fetch-depth: 0'),'WEB-DESIGN-WORKFLOW: incomplete CI or historical baseline');
+const reference=readFileSync('../docs/voxel-agent/atmosphere-references.md','utf8');assert((reference.match(/https:\/\//g)??[]).length>=5,'WEB-DESIGN-WORKFLOW: missing references');
+const manifest=JSON.parse(readFileSync('src/figures/kit/voxel-atmosphere/pipeline.json','utf8'));assert.equal(manifest.owner,'web-design-agent');assert.equal(new Set(manifest.stages).size,6);
+console.log('Passed: single web design agent, atmosphere playbook/rule/check links, prompt, references, canonical sequence and CI wiring.');

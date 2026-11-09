@@ -1,3 +1,4 @@
+import VoxelAtmosphereControls from './VoxelAtmosphereControls';
 import type { WorldInfo } from '../../figures/kit/voxel-world/ecology-types';
 import { BIOMES, type Biome, type Landform } from '../../figures/kit/voxel-world/types';
 import { HABITATS } from '../../figures/kit/voxel-world/catalog';
@@ -87,20 +88,6 @@ export default function VoxelWorldControls({ info, view, biome, onView, onGenera
             onChange={(e) => onView({ ...view, zoom: Number(e.target.value) })}
           />
         </label>
-        <label className="lab-seed">
-          <span>light</span>
-          <select
-            aria-label="Sunlight"
-            value={view.sunlight}
-            onChange={(e) => onView({ ...view, sunlight: e.target.value })}
-          >
-            {['seed', 'dawn', 'noon', 'sunset'].map((l) => (
-              <option key={l} value={l}>
-                {l}
-              </option>
-            ))}
-          </select>
-        </label>
         <button
           type="button"
           className="lab-btn"
@@ -109,14 +96,7 @@ export default function VoxelWorldControls({ info, view, biome, onView, onGenera
         >
           orbit {view.orbit ? 'on' : 'off'}
         </button>
-        <button
-          type="button"
-          className="lab-btn"
-          aria-pressed={view.weather}
-          onClick={() => onView({ ...view, weather: !view.weather })}
-        >
-          weather {view.weather ? 'on' : 'off'}
-        </button>
+        <VoxelAtmosphereControls view={view} onView={onView} />
         <button type="button" className="lab-btn" onClick={() => onView({ ...DEFAULT_VIEW })}>
           reset view
         </button>

@@ -1,0 +1,58 @@
+[
+  {
+    "biome": "woodland",
+    "sha256": "ed6c8ad86f8db44ecac9da7aaa46cd5479aaf329840c0593e9cb98176d0a4787"
+  },
+  {
+    "biome": "mushroom",
+    "sha256": "1d51c80674537b826c67524689a82ae328fe1b802b2180c5774beb70f88b8312"
+  },
+  {
+    "biome": "snow",
+    "sha256": "d69065a6e0085fe415989339ea454c85cefd1598491cb5f887e23f933f029fe0"
+  },
+  {
+    "biome": "volcanic",
+    "sha256": "9f49efb2848dc140b56552f60a039bd43ff27f3c875fce259ccd3f73957a7db1"
+  },
+  {
+    "biome": "oasis",
+    "sha256": "fd4193d9ea7eb0aa589b45b8a6080996fcd762440835318ea96852bf0b46cbec"
+  },
+  {
+    "biome": "village",
+    "sha256": "d1b044ad529e6654a2ad32adafaebfc7f5bd4639f52f56802b981368389c7c03"
+  },
+  {
+    "biome": "rainforest",
+    "sha256": "735e8d36633744960426fae3b88ccb3e3d44123b990fa5cab88923953ff16950"
+  },
+  {
+    "biome": "tundra",
+    "sha256": "9813ee232f1135f5bbef7eeb77547db1790a5d4a3abc978fc6042506d93ff43b"
+  },
+  {
+    "biome": "desert",
+    "sha256": "7e1c49b14f1f8d73163f4a0e9f950bcbd650edfbb75dfba586c165aeef4ba516"
+  },
+  {
+    "biome": "plains",
+    "sha256": "8fd4291b015d8d27e878726854dc978762977c907002ed9d23d3f68f16b889ca"
+  },
+  {
+    "biome": "frozen",
+    "sha256": "61c97ae62612a863dd678ee6c3d7924c9c4cf9d0b6fe3b74f245aea3d9d116f0"
+  },
+  {
+    "biome": "wasteland",
+    "sha256": "479c316d21a65734bb3c07bfabd753d2685489063049db58ee11e23f1e263718"
+  },
+  {
+    "biome": "city",
+    "sha256": "6ae1321a5065d353ce062de95135184dab3c3ee3efc406ca40dc0942434c1971"
+  },
+  {
+    "biome": "caves",
+    "sha256": "b629547996db0acab1aa15c241fbd504aae10a3192215d4c143ceb9c0d665d84"
+  }
+]

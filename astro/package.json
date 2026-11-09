@@ -78,7 +78,10 @@
     "deepdive:selftest": "node scripts/deepdive/selftest.mjs",
     "deepdive:browser": "node scripts/deepdive/browser.mjs",
     "deepdive:gallery": "node scripts/deepdive/gallery.mjs",
-    "deepdive:agent": "node scripts/deepdive/agent.mjs"
+    "deepdive:agent": "node scripts/deepdive/agent.mjs",
+    "voxel:atmosphere-check": "node scripts/voxel/web-design-workflow.mjs && node scripts/voxel/atmosphere-check.mjs",
+    "voxel:atmosphere-browser": "node scripts/voxel/atmosphere-browser.mjs",
+    "voxel:atmosphere-verify": "node scripts/voxel/verify-atmosphere.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",
