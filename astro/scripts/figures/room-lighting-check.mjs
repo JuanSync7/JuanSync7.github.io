@@ -18,6 +18,21 @@ const report = {
 mkdirSync('figures-out', { recursive: true });
 const save = () => writeFileSync('figures-out/room-lighting-report.json', JSON.stringify(report, null, 2) + '\n');
 save();
+function windowSource(p, plan, parts, r, mood) {
+  if (!['bar', 'clean'].includes(mood)) {
+    const glazing = parts.find((part) => part.transmitsLight),
+      glass = glazing.model.surfaces.filter((s) => s.finish === 'window').flatMap((s) => s.points),
+      planeX = r.mirror * (-r.half - 0.16),
+      t = (planeX - plan.key[0]) / (plan.target[0] - plan.key[0]),
+      entry = plan.key.map((n, i) => n + t * (plan.target[i] - n));
+    for (const axis of [1, 2]) {
+      const lo = Math.min(...glass.map((p) => p[axis])),
+        hi = Math.max(...glass.map((p) => p[axis]));
+      assert(entry[axis] > lo && entry[axis] < hi, `${p.theme.id}: key ray blocked by window wall`);
+    }
+    assert.deepEqual(plan.target, [0, 0, 0], 'Key must aim at the actual tabletop working plane');
+  }
+}
 function lightBudget(state) {
   const lights = [];
   state.scene.traverse((o) => {
@@ -114,6 +129,7 @@ try {
             plan.key[1] < r.top || ['warm', 'day', 'night'].includes(roomStyle(theme.id).mood),
             'Ceiling blocks key',
           );
+          windowSource(q, plan, roomModels(q), r, roomStyle(theme.id).mood);
           const scene = new Scene(),
             cleanups = [],
             renderer = { shadowMap: {} },
@@ -192,6 +208,11 @@ try {
     restore();
     report.negativeFixtures.push(name);
   }
+  const day = arrange(mulberry32(42), 'work'),
+    blocked = roomLightPlan(day);
+  blocked.key[1] += 50;
+  assert.throws(() => windowSource(day, blocked, roomModels(day), roomPlan(day), 'day'), /key ray blocked/);
+  report.negativeFixtures.push('window key blocked by wall');
   const found = new Set();
   for (let seed = 0; seed < 5000 && found.size < 36; seed++) {
     const p = arrange(mulberry32((seed ^ 0x9e3779b9) >>> 0)),

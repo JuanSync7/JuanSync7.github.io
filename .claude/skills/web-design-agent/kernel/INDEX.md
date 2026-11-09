@@ -10,7 +10,7 @@ Implementation stays in `astro/src/figures/kit/`; this index extends the existin
 | `roomplan.ts`, `roomzones.ts`, `roomdressing.ts` | Shared zone anchors; layout 1 mirrors the room, layout 2 deepens secondary zones. Primary table stays fixed. |
 | `roommirror.ts` | Mirror x and reverse face winding; swap left/right ownership and recalculate actual bounds. |
 | `tableroom.ts`, `tableframes.ts` | Cache keys include every geometric choice. Colour and light choices do not contaminate geometry. Retain at most 18 recent room assemblies so seed browsing does not retain all 243 meshes. |
-| `roomlightplan.ts` | Pure source/mood plan: window key or source below ceiling, seeded daylight/evening/overcast or clinical/night variations, optional bounded haze. |
+| `roomlightplan.ts` | Pure source/mood plan: key ray passes through the measured window opening toward the tabletop; window key or source below ceiling, seeded daylight/evening/overcast or clinical/night variations, optional bounded haze. |
 | `roomlight.ts` | One shadow key, weak fill, fixture practicals, lazy/disposed PMREM, ACES exposure 1 and reversible monochrome/colour state. |
 | `roompracticals.ts` | Mounted sources mirror room anchors; tabletop lamps follow actual unmirrored item transforms. |
 | `roomglow.ts` | At most six depth-tested 0.4-unit emitter sprites. Explicit texture/material teardown; source halos are not bloom or illumination. |

@@ -13,7 +13,7 @@ portable physical measurements.
    closed ceiling and the full entrance arc before judging exposure. Fix normals;
    opposite faces cannot both use an absolute-dot diffuse term.
 3. **Neutral pass.** Disable colour, fog and glow. Start with one key. Put daylight
-   outside the actual window; place a clinical or pendant source below the ceiling
+   outside the actual window, with its ray crossing the measured aperture toward the table; place a clinical or pendant source below the ceiling
    at the fixture. Aim it toward the primary activity. Check the direction of a
    chair/table shadow at 0°, 90° and 180°.
 4. **Add bounded fill.** Hemisphere light supplies broad sky/ground response; a weak

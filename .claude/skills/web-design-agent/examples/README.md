@@ -13,6 +13,6 @@ review sheets, not hand-authored mockups. Read them before accepting the design.
 
 Bad examples are executable: the lighting check mutates real output into excessive
 ambient fill, an extra shadow caster, dense fog, detached glow and glow through
-walls. The variation browser flattens an actual monochrome image and requires its
+walls and a window key blocked by the wall. The variation browser flattens an actual monochrome image and requires its
 tonal check to reject it. The existing room regressions retain overlapping,
 floating-support, wrong camera and opaque floor/ceiling failure cases.

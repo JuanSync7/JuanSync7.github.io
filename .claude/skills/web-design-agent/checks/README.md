@@ -6,7 +6,7 @@ cache writers while rebuilding. `rooms:verify` remains the complete ordered gate
 | Contract | Command / evidence |
 | --- | --- |
 | Seed replay, four palettes/theme, three table designs, geometry cache independence | `npm run rooms:lighting` |
-| Light roles, one shadow caster, haze/halo budget, mirrored source, mode restoration and texture disposal | Same command; five mutated emitted-state failures must be rejected |
+| Light roles, one shadow caster, haze/halo budget, mirrored source, mode restoration and texture disposal | Same command; six mutated emitted-state failures must be rejected |
 | 243 layout/construction/furniture combinations; non-overlap, table anchor and camera projection | `npm run tabletop:check` |
 | 243 functional programs, human scale, grounded furniture and connected walking routes | `npm run rooms:program` |
 | 243 support cases plus buried/floating/detached failures | `npm run rooms:supports` |

@@ -163,7 +163,7 @@ live in `room-program-limits.json`; global audit limits remain unchanged.
 The lighting and variation workflow is filed under the requested
 [web design agent](../../.claude/skills/web-design-agent/SKILL.md), including separate
 lighting/seed playbooks, rules, kernel index, check map, brief template and references.
-Its lighting check rejects five broken emitted-state cases; geometry, support and
+Its lighting check rejects six broken emitted-state cases; geometry, support and
 functional checks cover all 243 architectural/layout/furniture combinations.
 The existing reusable room playbook is [tabletop-room](../../.claude/skills/tabletop-room/SKILL.md).
 Its separate [rules](../../.claude/skills/tabletop-room/RULES.md),

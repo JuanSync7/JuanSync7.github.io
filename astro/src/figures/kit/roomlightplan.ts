@@ -20,11 +20,15 @@ export function roomLightPlan(p: TableScene): RoomLightPlan {
     v = p.lightVariant ?? 0,
     pendant = style.mood === 'bar',
     clinical = style.mood === 'clean';
+  const target: Vec3 = [0, 0, 0],
+    high = p.theme.id === 'storage',
+    entryHeight = r.floor + (high ? [4.65, 4.3, 4.8] : [4.4, 4.05, 4.55])[v % 3],
+    extension = (r.half + 3) / r.half;
   const key: Vec3 = pendant
     ? [0, 2.22, 0]
     : clinical
       ? [0, r.top - 0.3, 0]
-      : [r.mirror * (-r.half - 3), r.floor + [6.8, 6.5, 7][v % 3], r.windowZ - 0.8];
+      : [r.mirror * (-r.half - 3), entryHeight * extension, (r.windowZ - 0.15) * extension];
   const evening = v === 1 && !clinical && style.mood !== 'night' && !pendant;
   const mood: LightMood = {
     ...base,
@@ -41,7 +45,7 @@ export function roomLightPlan(p: TableScene): RoomLightPlan {
         : ['Window daylight', 'Evening window', 'Overcast daylight'][v % 3],
     mood,
     key,
-    target: [0, r.floor + 0.9, pendant || clinical ? 0.2 : 0],
+    target,
     haze: v === 2 && (pendant || style.mood === 'night') ? 0.014 : 0,
     glow: pendant || style.mood === 'night' || evening ? 0.3 : 0.12,
   };

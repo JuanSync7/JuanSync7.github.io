@@ -16,7 +16,7 @@ These extend the [existing room rules](../tabletop-room/RULES.md).
 - **L5 Deterministic mood:** no time-of-day clock or per-frame random changes; a seed
   replays the same palette, furniture, arrangement and light variant.
 - **L6 Prove failures still fail:** actual emitted-state mutations must reject excess
-  fill, a second shadow caster, dense fog, disabled glow depth test and detached halos.
+  fill, a second shadow caster, dense fog, disabled glow depth test detached halos and a key blocked by the window wall.
 - **L7 State approximation honestly:** the Canvas path shares signed directional
   shading and material roles, with correct occlusion. It does not simulate WebGL
   shadow maps, PBR reflections, halos or atmospheric scattering.
