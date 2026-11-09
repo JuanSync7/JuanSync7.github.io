@@ -120,7 +120,7 @@ export function waterSurface(world: World) {
       `#include <begin_vertex>\ntransformed.y += (${waveGLSL('position.x', 'position.z', 'voxelTime')}) * voxelWaveWeight;`,
     );
   };
-  material.customProgramCacheKey = () => 'voxel-water-field-emission/2';
+  material.customProgramCacheKey = () => 'voxel-water-field-emission-muted/3';
   const mesh = new Mesh(geometry, material);
   mesh.frustumCulled = false;
   mesh.name = 'voxel-water';

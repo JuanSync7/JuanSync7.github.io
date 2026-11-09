@@ -1,3 +1,4 @@
+import { mutedDisplayColor } from './palette';
 import { Color } from 'three';
 import { hexOf } from '../ink';
 import { mulberry32 } from '../rng';
@@ -49,7 +50,7 @@ export function fallbackAtmosphere(
         profile.fill + profile.sky * 0.65 + profile.key * 0.33 * diffuse + (emission ? profile.emission : 0),
       );
     colour.lerp(fog, Math.min(0.7, bucket / 16 / profile.haze));
-    const value = colour.getStyle();
+    const value = mutedDisplayColor(colour, material, emission);
     cache.set(key, value);
     return value;
   }

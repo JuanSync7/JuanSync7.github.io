@@ -1,4 +1,5 @@
 import policy from './policy.json';
+import { paletteGLSL } from './palette';
 import { AdditiveBlending, Color, Group, Mesh, PlaneGeometry, PointLight, ShaderMaterial, type Camera } from 'three';
 import { hexOf } from '../ink';
 import type { AtmosphereWorld } from './types';
@@ -38,7 +39,8 @@ export function buildPracticals(root: Group, source: ReturnType<typeof practical
       vertexShader:
         'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
       fragmentShader:
-        'varying vec2 vUv;uniform vec3 colour;uniform float strength;void main(){float d=length(vUv-.5)*2.;float a=pow(max(0.,1.-d),3.);gl_FragColor=vec4(colour*strength,a*.52);}',
+        paletteGLSL +
+        '\nvarying vec2 vUv;uniform vec3 colour;uniform float strength;void main(){float d=length(vUv-.5)*2.;float a=pow(max(0.,1.-d),3.);gl_FragColor=vec4(voxelGlowPalette(colour*strength),a*.52);}',
     });
     const halo = new Mesh(geometry, material);
     halo.name = 'voxel-practical-glow';

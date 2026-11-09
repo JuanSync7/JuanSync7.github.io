@@ -4,6 +4,7 @@ import {createHash} from 'node:crypto';
 import {loadKernel} from './load.mjs';
 import {kernelFingerprint,verifiedFingerprint} from './fingerprint.mjs';
 import {islandFingerprint} from './island-fingerprint.mjs';
+// VXL-ATM-PALETTE is judged by the unchanged fixed figure pixel audit, not a widened threshold.
 const fingerprint=kernelFingerprint(),k=await loadKernel(true),baselines=JSON.parse(readFileSync('scripts/voxel/fixtures/atmosphere-baseline.json','utf8'));
 const pipeline=JSON.parse(readFileSync('src/figures/kit/voxel-atmosphere/pipeline.json','utf8'));
 let cases=0,roofSamples=0;const modes=new Set();

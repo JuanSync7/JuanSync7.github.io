@@ -17,6 +17,7 @@ visual claims require images. Authored guidance is unreviewed.
 | VXL-ATM-GEOMETRY | When atmosphere controls change, generated terrain/props shall stay unchanged. | Changing the scene to make a lighting test pass. | fourteen pinned geometry hashes and unchanged solid buffers |
 | VXL-ATM-BUDGET | When a scene is built, shadow resolution, glow sources and point lights shall stay bounded. | Unbounded lights/expensive shadow passes. | `policy.json`; CPU and unchanged frame-budget checks |
 | VXL-ATM-PIPELINE | When the controller updates, its actual trace shall match the canonical manifest. | Reversed trace fixture. | `pipeline.json`; CPU check |
+| VXL-ATM-PALETTE | When coloured light mixes with materials, the displayed gamut shall stay muted while retaining light/shadow value. | The first actual palette sweep rejected 3.93–6.51% of island pixels under mixed lights. | Material colour response; unchanged generic palette audit. |
 | VXL-ATM-PIXELS | When an effect is claimed, removing that effect shall change actual pixels. | Counters pass while no effect is visible; identical-image fixture. | real GPU shadow/glow/fog/particle ablations |
 | VXL-ATM-REDUCED | When reduced motion is requested, the scene shall remain frozen until input changes. | Animated precipitation despite reduced motion. | production browser image equality |
 | VXL-ATM-PHONE | When the viewport narrows, controls shall fit and the scene shall remain identifiable. | Overflow or unreadably dense weather. | browser layout check plus visual review |

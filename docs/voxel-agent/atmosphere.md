@@ -5,6 +5,11 @@ the corrected display name; `/lab/voxcel-island/` and existing seed links stay v
 Voxel Worlds remains at `/lab/voxel-scene/`. Terrain, population and placement are
 unchanged by light/weather controls.
 
+Coloured light is mapped back into the muted voxel material gamut while retaining
+light/shadow value. Matte ground and foliage retain their own chroma instead of
+turning into broad teal highlights; strong colour remains on actual emitting sources.
+The generic palette audit and its limits are unchanged.
+
 The prior renderer had strong ambient light, no cast shadows or fog, and tiny or absent
 ambient particles. A light-colour-only check could pass while those visual defects
 remained. The new web design agent workflow preserves that renderer at
@@ -15,6 +20,10 @@ map, weather-specific fog, emissive window/fire/lava cells, bounded source halos
 local lights. Rain/snow fall above the topmost solid field, including canopy and cave
 roofs. Low mist is depth-tested; dust and ash drift. Weather off retains practical
 light and local smoke/fire. Night is a cool readable key with warm practical sources.
+Current kernel fingerprints include the shared atmosphere, generation/colour helpers
+and night material tokens. Earlier non-atmosphere archives retain their original
+fingerprint format; both formats are reconstructed in verification.
+
 The public controls offer biome light/weather, dawn, noon, evening, night and explicit
 weather families. The shared figure clock freezes effects under reduced motion.
 

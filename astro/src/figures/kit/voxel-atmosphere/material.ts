@@ -1,3 +1,4 @@
+import { mutedVoxelPalette } from './palette';
 import { MeshLambertMaterial } from 'three';
 
 /** Only actual window/fire cells emit; foliage and yellow crops must not become lamps. */
@@ -19,5 +20,6 @@ export function emissiveVoxelMaterial(vertexColors = false) {
     );
   };
   material.customProgramCacheKey = () => 'voxel-practical-emission-1';
+  mutedVoxelPalette(material);
   return material;
 }
