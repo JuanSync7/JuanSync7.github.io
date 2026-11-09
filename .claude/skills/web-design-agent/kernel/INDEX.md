@@ -12,6 +12,7 @@ Implementation stays in `astro/src/figures/kit/`; this index extends the existin
 | `tableroom.ts`, `tableframes.ts` | Cache keys include every geometric choice. Colour and light choices do not contaminate geometry. Retain at most 18 recent room assemblies so seed browsing does not retain all 243 meshes. |
 | `roomlightplan.ts` | Pure source/mood plan: key ray passes through the measured window opening toward the tabletop; window key or source below ceiling, seeded daylight/evening/overcast or clinical/night variations, optional bounded haze. |
 | `roomlight.ts` | One shadow key, weak fill, fixture practicals, lazy/disposed PMREM, ACES exposure 1 and reversible monochrome/colour state. |
+| `roomoccluders.ts` | Structural walls/ceiling retain separate shadow-only meshes through camera cutaways; no colour/depth writes in the main view. Owned cloned geometry is disposed with the scene. |
 | `roompracticals.ts` | Mounted sources mirror room anchors; tabletop lamps follow actual unmirrored item transforms. |
 | `roomglow.ts` | At most six depth-tested 0.4-unit emitter sprites. Explicit texture/material teardown; source halos are not bloom or illumination. |
 | `roomshade.ts`, `roomflat.ts` | Signed diffuse normal with height/depth modulation. Reuse the per-frame source plan; preserve BSP occlusion. Canvas approximates form lighting, not WebGL effects. |

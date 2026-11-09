@@ -116,6 +116,10 @@ lights support the single shadow key. Screen spill, candles, pendants, under-she
 strips, floor lamps and the kitchen hood have corresponding modelled sources.
 Thin textiles receive shadows without casting noisy self-shadow patterns.
 
+Camera cutaways retain independent shadow-only structural walls and ceiling. Their
+main-pass materials write neither colour nor depth, so the interior stays visible
+while the window aperture and roof keep shaping the same light throughout the orbit.
+
 The PCSS helper adapts the blocker-search/Vogel-disk approach from drei-vanilla;
 its MIT notice is in `licenses/drei-room-shadows.txt`. Texture and shadow shader
 hooks compose per material and never mutate global Three.js chunks. Reflection
@@ -163,7 +167,7 @@ live in `room-program-limits.json`; global audit limits remain unchanged.
 The lighting and variation workflow is filed under the requested
 [web design agent](../../.claude/skills/web-design-agent/SKILL.md), including separate
 lighting/seed playbooks, rules, kernel index, check map, brief template and references.
-Its lighting check rejects six broken emitted-state cases; geometry, support and
+Its lighting check rejects seven broken output cases; geometry, support and
 functional checks cover all 243 architectural/layout/furniture combinations.
 The existing reusable room playbook is [tabletop-room](../../.claude/skills/tabletop-room/SKILL.md).
 Its separate [rules](../../.claude/skills/tabletop-room/RULES.md),

@@ -5,7 +5,7 @@ import { mkdtempSync, rmSync, mkdirSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { Scene, Texture, AdditiveBlending, SRGBColorSpace } from 'three';
+import { Scene, Texture, AdditiveBlending, SRGBColorSpace, PerspectiveCamera } from 'three';
 const scratch = mkdtempSync(join(tmpdir(), 'room-lighting-'));
 const report = {
   schema: 'room-lighting-check/1',
@@ -55,7 +55,7 @@ try {
   await build({
     stdin: {
       contents:
-        "export {arrange,THEMES,tabletop} from './src/figures/kit/tabletop';export {mulberry32} from './src/figures/kit/rng';export {roomStyle} from './src/figures/kit/roompalettes';export {roomModels} from './src/figures/kit/tableroom';export {roomPlan} from './src/figures/kit/roomplan';export {roomPaint} from './src/figures/kit/roompaint';export {roomLightPlan} from './src/figures/kit/roomlightplan';export {roomLighting,setRoomLighting} from './src/figures/kit/roomlight';export {roomFaceLight} from './src/figures/kit/roomshade';export {roomTones} from './src/styles/tokens/palette';",
+        "export {arrange,THEMES,tabletop} from './src/figures/kit/tabletop';export {mulberry32} from './src/figures/kit/rng';export {roomStyle} from './src/figures/kit/roompalettes';export {roomModels} from './src/figures/kit/tableroom';export {roomPlan} from './src/figures/kit/roomplan';export {roomPaint} from './src/figures/kit/roompaint';export {roomLightPlan} from './src/figures/kit/roomlightplan';export {roomLighting,setRoomLighting} from './src/figures/kit/roomlight';export {roomFaceLight} from './src/figures/kit/roomshade';export {roomTones} from './src/styles/tokens/palette';export {buildRoom,updateRoom,applyRoomView} from './src/figures/kit/roomrender';export {roomView} from './src/figures/kit/roomview';",
       resolveDir: process.cwd(),
     },
     bundle: true,
@@ -213,6 +213,36 @@ try {
   blocked.key[1] += 50;
   assert.throws(() => windowSource(day, blocked, roomModels(day), roomPlan(day), 'day'), /key ray blocked/);
   report.negativeFixtures.push('window key blocked by wall');
+  const architectural = arrange(mulberry32(42), 'work'),
+    room = api.buildRoom(architectural),
+    camera = new PerspectiveCamera();
+  const blockers = [];
+  room.group.traverse((o) => {
+    if (o.userData.roomOccluder) blockers.push(o);
+  });
+  const walls = new Set(blockers.map((o) => o.userData.roomOccluder));
+  assert.equal(walls.size, 4, 'Three structural walls and continuous ceiling must retain shadow blockers');
+  const checkBlockers = () => {
+    for (const o of blockers) {
+      assert(o.visible && o.parent === room.group && o.castShadow, 'Cutaway removed a structural shadow blocker');
+      assert(!o.material.colorWrite && !o.material.depthWrite, 'Shadow blocker paints over the room');
+    }
+  };
+  for (const view of ['eye', 'isometric'])
+    for (const angle of [0, 90, 135, 180]) {
+      const v = api.roomView(architectural, 640, 356, { view, angle });
+      api.applyRoomView(camera, v, 640, 356);
+      api.updateRoom(architectural, room.state, v, camera, { active: false, x: 0, y: 0 }, 640, 356);
+      checkBlockers();
+    }
+  blockers[0].visible = false;
+  assert.throws(checkBlockers, /removed a structural/);
+  blockers[0].visible = true;
+  report.negativeFixtures.push('cutaway deletes structural shadow');
+  room.group.traverse((o) => {
+    if (o.geometry) o.geometry.dispose();
+    for (const m of Array.isArray(o.material) ? o.material : o.material ? [o.material] : []) m.dispose();
+  });
   const found = new Set();
   for (let seed = 0; seed < 5000 && found.size < 36; seed++) {
     const p = arrange(mulberry32((seed ^ 0x9e3779b9) >>> 0)),

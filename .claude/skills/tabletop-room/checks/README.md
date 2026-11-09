@@ -11,7 +11,7 @@ Never change the site's global thresholds to accommodate this room.
 | `npm run rooms:camera` | 27 themed ceilings, 8,991 eye poses, mirrored endpoint projections, level sightline, floor-relative standing height, bounded constant lens, primary activity framing, native/fallback roof visibility, physical source positions, continuous tessellated grout, seven broken mutations and nine captured old-camera failures; runs in `tabletop:check` and CI |
 | `npm run rooms:supports` | Actual book/box base support, wall attachment paths and six rejected floating/buried/detached output mutations; also runs in `tabletop:check` and CI |
 | `npm run rooms:depth` | Pixel-centre visibility against independent native triangle rays in nine themes, three variants, two projections and three angles; the legacy painter remains a rejected fixture |
-| `npm run rooms:lighting` | 36 palettes, seed replay and design diversity, 243 emitted light states, six broken state mutations and glow disposal |
+| `npm run rooms:lighting` | 36 palettes, seed replay and design diversity, 243 emitted light states, seven broken output mutations and glow disposal |
 | `npm run rooms:variation -- --url=…` | 36 same-theme public palette seeds in both renderers; monochrome gradation, distinct images, mode restoration and stillness |
 | `npm run rooms:program` | 243 room configurations; actual primary floor share, human furniture/device scale, mandatory theme furnishings, grounded supports and connected walking routes |
 | `room-program-limits.json` | Scoped design criteria, separate from global figure thresholds |

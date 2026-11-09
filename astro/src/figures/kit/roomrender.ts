@@ -17,6 +17,7 @@ import { applyRoomMaterial } from './roommaterial';
 import { setRoomLighting, type RoomLighting } from './roomlight';
 import type { RoomAppearance } from './roomstyles';
 import { roomShadows } from './roomshadows';
+import { roomOccluders } from './roomoccluders';
 import { solidMesh } from './tablemesh';
 import { sceneModels, type SceneModel } from './roomscene';
 import { roomProject, roomVisible, type RoomView } from './roomview';
@@ -64,6 +65,7 @@ export function buildRoom(p: TableScene): { group: Group; state: RoomState } {
       if (o instanceof LineSegments && o.material instanceof LineBasicMaterial)
         edges.push({ material: o.material, base: o.material.color.clone(), opacity: o.material.opacity });
     });
+    roomOccluders(source, model, group);
     group.add(model);
     return { source, group: model, faces, edges };
   });

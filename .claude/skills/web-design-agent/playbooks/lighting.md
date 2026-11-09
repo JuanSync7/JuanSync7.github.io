@@ -24,6 +24,8 @@ portable physical measurements.
 5. **Shape shadow depth.** Use one shadow-casting key, a fitted frustum and a 2048 map.
    Tune normal bias against acne and detached contact shadows. Keep the existing
    material-local PCSS hook, its MIT attribution and static shadow invalidation.
+   Keep structural walls/ceilings as shadow-only blockers when cut away for the camera;
+   an orbit must not open the room to a different sun.
    Avoid shadow-casting point lights: each adds six shadow views.
 6. **Add actual practicals.** A glowing bulb is an emissive surface. Nearby light
    comes from a matched point/spot source; a task lamp needs its target. Sources,
