@@ -7,9 +7,16 @@ Version 3 widens terrain radii from 24–38 to 44–60 cells and adds ecological
 related places and close camera exploration. Engine versions can change old seed pictures;
 replay is deterministic within a fixed version and source fingerprint.
 
+## Atmosphere workflow
+
+The [lighting and weather workflow](atmosphere.md) belongs to the web design agent.
+It adds coupled light, fog, cast shadows, visible precipitation and practical glow to
+both scenes without changing generation. [References](atmosphere-references.md) record
+the constraints; the original geometry playbooks remain part of the voxel workflow.
+
 ## Two scenes
 
-[Voxcel Island](island.md) restores the compact six-theme cottage-and-harbour design at
+[Voxel Island](island.md) restores the compact six-theme cottage-and-harbour design at
 `/lab/voxcel-island/`. Voxel Worlds remains the larger generator at `/lab/voxel-scene/`.
 They share viewer controls and colour tokens, with separate terrain/population code and
 fingerprints. Keep the classic island composition when working on that variant.

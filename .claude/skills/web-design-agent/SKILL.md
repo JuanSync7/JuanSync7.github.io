@@ -1,34 +1,41 @@
 ---
 name: web-design-agent
-description: Project workflow for designing and verifying JuanSync web scenes; route seeded interiors and lighting through the existing figure and tabletop-room skills.
+description: Use when changing website design, seeded interiors, interactive scene lighting, weather, or the visual evidence workflow.
 ---
+# Web design agent
 
-# Web design agent workflow
+One agent operates this workflow. Read `SYSTEM.md`, then the applicable playbook,
+`RULES.md` and `LOOK.md`. Use the figure skill for drawings and site-taste for controls
+and page composition. Use the voxel-agent workflow when procedural world geometry,
+biome generation or placement changes. Room work also reads
+`../tabletop-room/SKILL.md` and its rules, look questions and kernel index.
 
-This is the user's requested project filing and workflow boundary. It is not a
-new autonomous agent, an approved vault-wide agent registration, or permission to
-delegate. Reuse the existing figure and tabletop-room kernels. The vault's
-VAULT-75 catalog proposal is still a plan; do not invent registry IDs or claim its
-gates already exist.
+1. Record the user's correction, affected scenes, acceptance cases and current source.
+2. Reproduce the old result. Load references and extract the visual/physical constraints.
+3. Implement through the owning kernel and template. Keep mechanical limits in policy;
+   name the failure case when changing a kernel or check. Keep fixed figure thresholds.
+4. Run independent checks with negative fixtures, then inspect actual pixels at desktop,
+   phone and reduced motion. A property named `shadows` does not prove a visible shadow.
+5. Review the comparison sheets. Fix unreadable night scenes, invisible weather,
+   clipped subjects or unrelated glow. Preserve contrary evidence and remaining limits.
+6. Archive the requested artifacts under the vault's Web design agent area using the
+   owning workflow. Guidance remains draft/unreviewed. Open the requested PR; report
+   its actual URL and check status. A passing check is not publishing approval.
 
-For seeded interiors, read `../tabletop-room/SKILL.md`, its rules and look questions,
-then read `RULES.md` and `LOOK.md` and choose the relevant playbook here:
+Choose the relevant playbook:
 
-- `playbooks/lighting.md`: source, exposure, fill, shadows, colour, glow and atmosphere.
-- `playbooks/seeded-room.md`: coordinated palettes, furniture design and functional placement.
+- [Room lighting](playbooks/lighting.md): source, exposure, fill, shadows, colour, glow and atmosphere.
+- [Seeded rooms](playbooks/seeded-room.md): coordinated palettes, furniture design and functional placement.
+- [Voxel atmosphere](playbooks/voxel-atmosphere.md): lighting, weather, practical emission and GPU evidence.
 
-Start from `templates/lighting-brief.md`; find implementation contracts in
-`kernel/INDEX.md` and verification in `checks/README.md`. Read only the referenced
-implementation needed for the change. Preserve the table as the primary activity,
-the camera/ceiling/support contracts and the global figure audit.
+For rooms, start from `templates/lighting-brief.md`; use `kernel/INDEX.md` and
+`checks/README.md` for contracts and commands. Preserve the table as the primary
+activity, camera/ceiling/support contracts and global figure limits. When room vault
+feedback is requested, use `agent-feedback/1` inbox entries and scoped attachment
+bundles of guidance, templates, references and focused scripts. Link the exact source
+revision; keep application source, package metadata, raw logs, reports and images in
+the source project. The voxel playbook retains its own source/evidence archive workflow.
 
-Work in this order: brief → source and reuse research → room plan → neutral lighting
-→ materials and palette → restrained effects → checks → visual review → PR.
-A generated contact sheet is evidence to inspect, not proof of good design.
-
-When vault feedback is requested, propose these project artifacts through its
-`agent-feedback/1` inbox and scoped attachment bundles under this workflow's name.
-Include source PR/version and actual check outcomes. Archive requested guidance,
-templates, references and focused scripts; keep application source, package
-metadata, raw logs, reports and images in the source project. Do not promote
-project decisions into approved global guidance through an intake PR.
+Do not spawn another agent merely to run a playbook. A missing measurement stays unknown.
+A generated contact sheet requires actual visual review. Project feedback does not adopt
+global vault guidance. The current user's instruction controls whether to merge or publish.

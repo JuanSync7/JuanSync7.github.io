@@ -1,0 +1,13 @@
+{
+  "schema": "voxel-atmosphere-policy/1",
+  "shadowMapSize": 1024,
+  "maxPointLights": 4,
+  "maxGlows": 12,
+  "maxWeatherParticles": 640,
+  "mistInstances": 24,
+  "light": {
+    "night": { "key": 1.05, "sky": 0.46, "fill": 0.06, "elevation": 0.6 },
+    "noon": { "key": 2.65, "sky": 0.65, "fill": 0.12, "elevation": 1.05 },
+    "evening": { "key": 2.35, "sky": 0.62, "fill": 0.12, "elevation": 0.27 }
+  }
+}

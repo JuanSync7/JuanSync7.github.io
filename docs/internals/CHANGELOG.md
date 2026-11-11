@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-11-09
+
+Voxel Worlds and Voxel Island gain weather-aware directional light, cached cast shadows,
+night/evening presets, fog, source-attached glow and visible rain/snow/mist/dust/ash.
+Shared controls and the 2D fallback retain weather/light behavior. The display name
+Voxel Island corrects the old spelling while seed URLs stay valid. A web design agent
+playbook, independent GPU ablations, references and reproducible vault evidence own
+the visual workflow.
+
 ## 2026-11-08
 
 Themed rooms retain one level lens at a floor-relative human eye height across their entrance orbit, removing

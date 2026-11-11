@@ -9,6 +9,9 @@ One agent owns the run. Scripts enforce geometry and distribution rules; the age
 judges the pictures. Read `SYSTEM.md`, then the relevant playbook rather than every
 playbook at once. `RULES.md` maps failures to checks; `LOOK.md` holds visual questions.
 
+For lighting/weather changes, the web design agent uses this geometry workflow with
+[the atmosphere playbook](../web-design-agent/playbooks/voxel-atmosphere.md). Operate as one agent.
+
 1. Record the requested change and acceptance cases with the existing generator version.
    Reproduce a failing seed or composition before editing.
 2. Research visual/scale changes with `playbooks/research.md`. Follow `pipeline.json`
