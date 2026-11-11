@@ -25,6 +25,7 @@ export function buildAtmosphere(
   root: Group,
   bounds: Box3,
   sources: ReturnType<typeof practicalSources>,
+  snowSize = policy.snowSize,
 ) {
   const { scene, camera, renderer } = env,
     radius = world.spec.radius,
@@ -52,7 +53,7 @@ export function buildAtmosphere(
   }
   const fog = new Fog(hexOf('ground'), 1, 1000);
   scene.fog = fog;
-  const weather = buildWeather(world, root),
+  const weather = buildWeather(world, root, snowSize),
     practicals = buildPracticals(root, sources);
   const emissions: { value: number }[] = [];
   root.traverse((o) => {
