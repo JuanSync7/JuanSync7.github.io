@@ -1,6 +1,7 @@
 import { BOUND, inset, type Box, type Pt, type Sketch, type Tone } from './sketch';
 import type { ChipNet, ChipPlan, ChipPort, ChipSide } from './chip-types';
 import { channelRoute } from './chip-channel';
+import { routeBoardNet } from './chip-board-router';
 
 const DELTA = 0.018;
 const EPS = 1e-7;
@@ -56,6 +57,12 @@ export function chipWire(S: Sketch, plan: ChipPlan, from: string, to: string, to
   const signal = connected[0]?.signal ?? keys.find((key) => key.endsWith(':conductor')) ?? `signal${plan.nets.length}`;
   const merged = new Set(connected.map((n) => n.signal));
   for (const n of plan.nets) if (merged.has(n.signal)) n.signal = signal;
+  if (plan.level === 'board') {
+    const points = routeBoardNet(plan, a, b, signal);
+    if (!points) throw new Error(`no legal plated-contact route: ${from} → ${to}`);
+    emitNet(S, plan, a, b, points, signal, tone);
+    return;
+  }
   const access = (p: ChipPort): Pt => {
     for (let k = 1; k <= 5; k++) {
       const q = escape(p, DELTA * k);
@@ -101,8 +108,12 @@ export function chipWire(S: Sketch, plan: ChipPlan, from: string, to: string, to
   if (!best) best = channelRoute(start, end, xs, ys, legal);
   if (!best) throw new Error(`no legal chip routing channel: ${from} → ${to}`);
   const points = simplify([a.point, ...best, b.point]).map(([x, y]): Pt => [x, y]);
+  emitNet(S, plan, a, b, points, signal, tone);
+}
+
+function emitNet(S: Sketch, plan: ChipPlan, a: ChipPort, b: ChipPort, points: Pt[], signal: string, tone: Tone): void {
   const vias = points.slice(1, -1);
-  plan.nets.push({ id: `net${plan.nets.length}`, from, to, points, layer: 'metal-hv', signal, vias });
+  plan.nets.push({ id: `net${plan.nets.length}`, from: a.id, to: b.id, points, layer: 'metal-hv', signal, vias });
   S.poly(points, tone);
   for (const p of [a.point, b.point]) S.rect([p[0] - 0.006, p[1] - 0.006, p[0] + 0.006, p[1] + 0.006], 1);
   for (const p of points.slice(1, -1)) S.dot(...p);

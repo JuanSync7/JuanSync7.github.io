@@ -1,6 +1,5 @@
-import { chipDetails } from './chip-detail';
-import { chipFrame, chipPart, chipPlan, chipWire, type ChipPlan } from './chip-plan';
-import { chipDecoupling, wireDecoupling } from './chip-power';
+import { buildBoard } from './chip-board-plan';
+import { chipPart, chipPlan, type ChipPlan } from './chip-plan';
 import { BOUND, inset, WX, type Box, type Sketch } from './sketch';
 
 /** The outer half of the silicon chain of plans for a zoom dive (`kit/sketch.ts`), each the
@@ -80,54 +79,7 @@ export function rack(S: Sketch): void {
   }
 }
 
-/** A motherboard uses a deliberate architecture: processor socket, memory channels,
- * VRM bank, edge IO, chipset and expansion connectors. Every drawn bus is a routed net
- * between corresponding boundary contacts, rather than an anonymous dangling bundle. */
+/** The PCB has its own footprint and connected power-stage grammar. */
 export function board(S: Sketch): void {
-  S.select([S.r(-0.37, -0.22), S.r(-0.12, -0.04)], 'package');
-  const plan = chipPlan(S, 'board');
-  chipFrame(S);
-  const socket = chipPart(plan, 'socket', 'socket', S.win, true);
-  socket.pinGroups = [['socket:n2', 'socket:s3']];
-  S.rect(inset(S.win, -0.045), 1);
-  for (const [x, y] of [
-    [-1.73, -0.77],
-    [1.73, -0.77],
-    [-1.73, 0.77],
-    [1.73, 0.77],
-  ] as const)
-    S.circle(x, y, 0.025, 1);
-  const count = S.int(2, 4);
-  for (let i = 0; i < count; i++) {
-    const y = -0.63 + i * 0.17;
-    chipPart(plan, `dimm${i}`, 'dimm', [0.65, y, 1.55, y + 0.065]);
-  }
-  const parts: [string, string, Box][] = [
-    ['vrm', 'vrm', [-1.12, -0.72, 0.2, -0.53]],
-    ['power', 'io', [0.7, 0.15, 1.55, 0.25]],
-    ['chipset', 'logic', [-1.18, 0.3, -0.65, 0.71]],
-    ['io0', 'io', [-1.67, -0.65, -1.47, -0.1]],
-    ['io1', 'io', [-1.67, 0.05, -1.47, 0.6]],
-    ['pcie0', 'pcie', [-0.35, 0.52, 1.35, 0.61]],
-    ['pcie1', 'pcie', [-0.35, 0.72, 1.35, 0.81]],
-  ];
-  for (const [id, kind, box] of parts) chipPart(plan, id, kind, box);
-  const vrm = plan.components.find((c) => c.id === 'vrm');
-  if (vrm) vrm.pinGroups = [['vrm:s1', 'vrm:s2', 'vrm:s3']];
-  const caps = plan.lanes === 8 ? 8 : 6;
-  chipDecoupling(plan, 'core-power', [-0.5, 0.27, 0.47, 0.45], caps);
-  for (let i = 0; i < count; i++) chipWire(S, plan, `socket:e${i % 2 ? 3 : 1}`, `dimm${i}:w2`, 2);
-  chipWire(S, plan, 'power:w2', 'vrm:e2', 1);
-  chipWire(S, plan, 'vrm:s2', 'socket:n2', 1);
-  chipWire(S, plan, 'io0:e2', 'socket:w1', 2);
-  chipWire(S, plan, 'io1:e2', 'chipset:w2', 2);
-  chipWire(S, plan, 'chipset:n2', 'socket:s1', 2);
-  chipWire(S, plan, 'chipset:e1', 'pcie0:w2', 2);
-  chipWire(S, plan, 'chipset:e3', 'pcie1:w2', 2);
-  chipWire(S, plan, 'vrm:s3', 'core-power-vdd:w2', 1);
-  chipWire(S, plan, 'power:e2', 'core-power-vss:e2', 1);
-  chipWire(S, plan, 'socket:s3', 'core-power-vdd:n2', 1);
-  chipWire(S, plan, 'socket:s2', 'core-power-vss:w2', 1);
-  wireDecoupling(S, plan, 'core-power', caps);
-  chipDetails(S, plan);
+  buildBoard(S);
 }

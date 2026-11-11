@@ -19,6 +19,7 @@ measured contract needs a negative fixture before it can be called enforced.
 | DD-CONTOUR | Contours cross each other or fail to describe the same scalar elevation field. | contour intersection/field checks and topographic review |
 | DD-HANDOFF | The camera jumps at a level boundary, child detail escapes its window or level borders flash. | boundary projection, browser frame comparison and motion review |
 | DD-REGISTER | A wire-bond package invents a different child pinout, misses the child's actual pad coordinates or loses its inside landing span at the portal. | actual child-pad registration, containment and retained-interface fixtures |
+| DD-LAYERS | Bumps float outside their declared cutaway, underfill detaches from its die, a stack lacks a base interface, or a repeated field loses pitch or emitted contacts. | independent surface/lattice inspection, layer bounds and missing-contact fixtures |
 | DD-BUDGET | A layout or draw exceeds its measured geometry/frame budget, or repeated navigation leaks resources. | generated counts and browser/figure performance checks |
 | DD-EVIDENCE | A pass cites stale source, missing artifacts, zero inspected cases or an unperformed visual review. | source fingerprint, artifact checks and review record |
 

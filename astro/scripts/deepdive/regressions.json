@@ -16,5 +16,23 @@
     "salt": 42,
     "rule": "DD-CONNECT",
     "observation": "The trim input had no legal escape channel; choose an available terminal access track before routing."
+  },
+  {
+    "id": "pcb-annular-contact-clearance",
+    "chain": "silicon",
+    "era": "modern",
+    "n": 1,
+    "salt": 42,
+    "rule": "DD-CLEARANCE",
+    "observation": "A plated via ring overlapped an unrelated route despite its center remaining clear; reserve full contact footprints when routing the PCB."
+  },
+  {
+    "id": "pcb-future-contact-reservation",
+    "chain": "silicon",
+    "era": "modern",
+    "n": 1,
+    "salt": 3,
+    "rule": "DD-CONNECT",
+    "observation": "An early route occupied the later decoupling-feed escape. Declare actual future terminals before routing and reserve their full contacts."
   }
 ]

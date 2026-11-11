@@ -100,6 +100,8 @@ for (const script of [
   'geometry-selftest.mjs',
   'camera-selftest.mjs',
   'chip-selftest.mjs',
+  'chip-surface-selftest.mjs',
+  'chip-routing-selftest.mjs',
   'room-selftest.mjs',
   'map-selftest.mjs',
   'connection-selftest.mjs',

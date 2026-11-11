@@ -1,6 +1,8 @@
 import type { Box, Pt } from './sketch';
 import type { GateContact, GateLayout, GateTerminal, GateWire } from './gates';
 import type { MatchedFingers } from './analog';
+import type { BoardLayout } from './chip-board-types';
+import type { ChipDieLayout, ChipPackagingLayout } from './chip-package-types';
 
 export type ChipSide = 'n' | 'e' | 's' | 'w';
 export interface ChipPort {
@@ -44,4 +46,9 @@ export interface ChipPlan {
   supplyPins?: GateTerminal[];
   matches?: MatchedFingers[];
   childPadMap?: { childId: string; parentId: string; side: ChipSide }[];
+  board?: BoardLayout;
+  package?: ChipPackagingLayout;
+  dieLayout?: ChipDieLayout;
+  /** Board terminals reserved before routing, including later connections. */
+  routePorts?: string[];
 }
