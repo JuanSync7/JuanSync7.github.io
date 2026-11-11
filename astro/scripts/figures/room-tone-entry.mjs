@@ -37,6 +37,7 @@ function role(s) {
   if (s.kind !== 'room') return 'props';
   if (s.label === 'Floor') return 'floor';
   if (s.support) return 'textiles';
+  if (s.side === 'ceiling') return 'ceiling';
   if (!s.interactive && ['back', 'left', 'right', 'ceiling'].includes(s.side)) return 'wall';
   return 'furniture';
 }

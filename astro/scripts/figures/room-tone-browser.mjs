@@ -5,9 +5,10 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { decode } from './pixels.mjs';
 import { PNG } from 'pngjs';
 const baseline = process.argv.includes('--baseline'),
+  eyesOnly = process.argv.includes('--eyes-only'),
   out = process.argv.find((a) => a.startsWith('--out='))?.slice(6) ?? 'figures-out/room-tone';
 mkdirSync(out, { recursive: true });
-const report = { schema: 'room-tone-check/1', passed: false, baseline, rooms: [], rejected: [], errors: [] };
+const report = { schema: 'room-tone-check/1', passed: false, baseline, eyesOnly, rooms: [], rejected: [], errors: [] };
 const save = () => writeFileSync(`${out}/report.json`, JSON.stringify(report, null, 2) + '\n');
 save();
 const bundle = await build({
@@ -84,11 +85,20 @@ function rejectMutations(png, mask, entities) {
     report.rejected.push(mutation);
   }
 }
+function assertCeiling(m, label) {
+  assert(m.ceiling.pixels >= 500, `${label}: ceiling missing from the eye view`);
+  assert(m.ceiling.median >= 28 / 255, `${label}: ceiling panels collapse into black`);
+  assert(m.ceiling.q90 - m.ceiling.q10 >= 0.04, `${label}: ceiling finish has no depth`);
+}
 if (!baseline) {
   const before = JSON.parse(readFileSync('scripts/figures/room-tone-before.json', 'utf8'));
   for (const r of before.rooms) {
     assert.throws(() => assertTones(r.metrics, `before/${r.theme}`), `${r.theme}: old crushed values escaped`);
     report.rejected.push(`before/${r.theme}`);
+  }
+  for (const r of before.eyes ?? []) {
+    assert.throws(() => assertCeiling(r.metrics, `before/${r.renderer}/${r.theme}`));
+    report.rejected.push(`before-ceiling/${r.renderer}/${r.theme}`);
   }
 }
 let browser;
@@ -109,7 +119,7 @@ try {
       }),
     );
     await page.goto('http://room-tone.test/');
-    for (const [theme, seed] of fixtures) {
+    for (const [theme, seed] of eyesOnly ? [] : fixtures) {
       let mono;
       for (const appearance of ['monochrome', 'colour']) {
         const r = await page.evaluate(
@@ -122,7 +132,7 @@ try {
           metrics = stats(png, mask, r.entities);
         writeFileSync(`${out}/${r.renderer}-${theme}-${appearance}.png`, png);
         writeFileSync(`${out}/${r.renderer}-${theme}-mask.png`, mask);
-        report.rooms.push({ theme, seed, appearance, renderer: r.renderer, metrics });
+        report.rooms.push({ theme, seed, appearance, renderer: r.renderer, view: 'isometric', angle: 135, metrics });
         save();
         if (appearance === 'monochrome') {
           mono = png;
@@ -137,6 +147,54 @@ try {
         { seed, fallback },
       );
       assert(mono.equals(Buffer.from(restored.png.split(',')[1], 'base64')), `${theme}: appearance failed to restore`);
+    }
+    for (const [theme, seed] of [
+      ['study', 6],
+      ['bar', 10],
+    ]) {
+      const r = await page.evaluate(
+        async ({ seed, fallback }) => (await import('/entry.js')).renderCase(seed, 'monochrome', fallback, 'eye', 90),
+        { seed, fallback },
+      );
+      const png = Buffer.from(r.png.split(',')[1], 'base64'),
+        mask = Buffer.from(r.mask.split(',')[1], 'base64'),
+        metrics = stats(png, mask, r.entities);
+      assert.equal(r.theme, theme);
+      writeFileSync(`${out}/${r.renderer}-${theme}-eye-monochrome.png`, png);
+      writeFileSync(`${out}/${r.renderer}-${theme}-eye-mask.png`, mask);
+      report.rooms.push({
+        theme,
+        seed,
+        appearance: 'monochrome',
+        renderer: r.renderer,
+        view: 'eye',
+        angle: 90,
+        metrics,
+      });
+      save();
+      if (!baseline) {
+        assertCeiling(metrics, `${r.renderer}/${theme}`);
+        if (theme === 'study') {
+          const broken = decode(png),
+            ids = decode(mask);
+          for (let at = 0; at < broken.data.length; at += 4)
+            if (r.entities[ids.data[at + 1] - 1]?.role === 'ceiling') broken.data.fill(8, at, at + 3);
+          assert.throws(() => assertCeiling(stats(PNG.sync.write(broken), mask, r.entities), 'crushed ceiling'));
+          report.rejected.push(`crushed-ceiling/${r.renderer}`);
+        }
+      }
+      await page.evaluate(
+        async ({ seed, fallback }) => (await import('/entry.js')).renderCase(seed, 'colour', fallback, 'eye', 90),
+        { seed, fallback },
+      );
+      const restored = await page.evaluate(
+        async ({ seed, fallback }) => (await import('/entry.js')).renderCase(seed, 'monochrome', fallback, 'eye', 90),
+        { seed, fallback },
+      );
+      assert(
+        png.equals(Buffer.from(restored.png.split(',')[1], 'base64')),
+        `${theme}: eye appearance failed to restore`,
+      );
     }
     await context.close();
   }

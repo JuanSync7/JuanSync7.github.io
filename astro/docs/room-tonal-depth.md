@@ -49,17 +49,33 @@ respectively. These are readability floors for this overview, not photographic
 exposure targets or substitutes for opening the images. Existing global coverage,
 night-token, signal, motion and performance limits are unchanged.
 
-`npm run rooms:tones` renders nine themes × two appearances × two renderers,
-checks exact colour→monochrome restoration, and requires crushed-furniture,
-flattened-wall and flattened-table mutations of actual renders to fail in each
-renderer. Shader composition/restoration remains in `rooms:materials`. CI and
-`rooms:verify` invoke the new tonal check. Reports start incomplete and only pass
-at the end; baseline capture mode explicitly never marks a check passed.
+The eye-level review then found another hidden failure: native ceiling panels had
+median values around 13 while their trim remained bright. Eye source
+`4ae9239f0bd5543f70c39cf1382b580815b6222e` is retained as two more failed-before
+fixtures. A higher neutral ceiling albedo raises these panels to approximately
+54–55; they remain darker than walls and readable as a solid roof. Canvas was
+already legible here. Check ceiling coverage, median ≥28/255 and q90–q10 ≥0.04
+separately from walls, since broad wall statistics also hid the dark roof.
+
+A bright-token probe exposed an old shortcut that made `inkStrong` room materials
+emit light. Emission now follows the semantic `light` finish, and the material
+bucket keeps that state separate from albedo. A white ceiling remains matte.
+`rooms:materials` verifies actual plain ceiling materials in all nine themes and
+rejects an injected emitter in each. Full-colour emission recipes stay explicit.
+
+`npm run rooms:tones` captures 36 overviews (nine themes × two appearances × two
+renderers) plus four monochrome eye ceilings: 40 images. It checks exact appearance
+restoration in both views. Nine captured old overview failures, two dark native
+ceilings and eight crushed/flattened real-image mutations must fail: 19 negatives.
+Shader composition/restoration remains in `rooms:materials`. CI and `rooms:verify`
+invoke the new check. Reports start incomplete and only pass at the end; baseline
+capture mode never marks a check passed. `--eyes-only` selects the smaller ceiling
+slice and is recorded in the report.
 CI invokes the new material/tonal checks through the established room browser
 entry point; its shared protected workflow file is unchanged. Seed input and
 performance startup actions allow 60 seconds for cold shader/PMREM compilation in
-the software-GPU runner and record `coldSeedMs` / `coldLoadMs`. This is a test load deadline; visual limits and separate
-render-frame budgets remain unchanged.
+the software-GPU runner and record `coldSeedMs` / `coldLoadMs`. This is a test load
+deadline; visual limits and separate render-frame budgets remain unchanged.
 
 Review all theme captures, eye 0°/90°/180°, true isometric and phone controls. Use
 the unchanged room-colour, figure and material checks for surrounding regressions.

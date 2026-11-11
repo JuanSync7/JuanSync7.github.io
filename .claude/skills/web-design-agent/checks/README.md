@@ -7,7 +7,7 @@ cache writers while rebuilding. `rooms:verify` remains the complete ordered gate
 | --- | --- |
 | Seed replay, four palettes/theme, three table designs, geometry cache independence | `npm run rooms:lighting` |
 | Light roles, one shadow caster, haze/halo budget, mirrored source, mode restoration and texture disposal | Same command; seven mutated output failures must be rejected |
-| Per-role wall/furniture/table midtones and gradients, nine captured failures, six mutated real images and exact mode restoration | `npm run rooms:tones`; 36 actual-kernel renders with eroded ID masks, separate from the scene-wide histogram |
+| Per-role wall/furniture/table and eye-ceiling values, eleven captured failures, eight mutated real images and exact mode restoration | `npm run rooms:tones`; 40 actual-kernel captures (36 overviews, four eye ceilings) with eroded ID masks, separate from the scene-wide histogram |
 | 243 layout/construction/furniture combinations; non-overlap, table anchor and camera projection | `npm run tabletop:check` |
 | 243 functional programs, human scale, grounded furniture and connected walking routes | `npm run rooms:program` |
 | 243 support cases plus buried/floating/detached failures | `npm run rooms:supports` |

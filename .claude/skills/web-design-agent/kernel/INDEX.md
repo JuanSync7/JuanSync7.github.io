@@ -16,8 +16,8 @@ Implementation stays in `astro/src/figures/kit/`; this index extends the existin
 | `roompracticals.ts` | Mounted sources mirror room anchors; tabletop lamps follow actual unmirrored item transforms. |
 | `roomglow.ts` | At most six depth-tested 0.4-unit emitter sprites. Explicit texture/material teardown; source halos are not bloom or illumination. |
 | `roomshade.ts`, `roomflat.ts` | Signed diffuse normal with height/depth modulation. Reuse the per-frame source plan; preserve BSP occlusion. Canvas approximates form lighting, not WebGL effects. |
-| `tablefinish.ts`, `tablemesh.ts`, `roommaterial.ts` | Differentiated neutral albedo/roughness, retained procedural detail, palette-aware colour materials and reversible emission state. |
-| `roommono.ts` | Semantic neutral value hierarchy; readable cabinet/frame/textile midtones and brighter working surfaces. Reserve near-black for recesses. Existing night tokens only. |
+| `tablefinish.ts`, `tablemesh.ts`, `roommaterial.ts` | Differentiated neutral albedo/roughness, retained procedural detail, palette-aware colour materials and reversible emission state. Fixture emission follows semantic finishes, never token brightness. |
+| `roommono.ts` | Semantic neutral value hierarchy; readable cabinet/frame/textile midtones and brighter working surfaces. Readable ceiling panels at eye level; reserve near-black for recesses. Existing night tokens only. |
 | `roomtonal.ts` | Material-local world height/front ramps plus analytic wall-foot/corner indirect attenuation. Compose after texture and before PCSS. Uniform gain 1 in mono, 0.45 in colour; no geometry or global shader changes. |
 | `roomflattonal.ts`, `roomflattexture.ts` | Continuous world-axis Canvas gradients and clipped monochrome/colour grain; no mapped shadows or geometric AO. |
 | `room-tone-browser.mjs`, `room-tone-entry.mjs` | Isolated actual-kernel browser render and eroded entity-ID masks; all nine themes in two modes/renderers, exact restoration, actual-image failure mutations and captured old metrics. No production inspection API. |

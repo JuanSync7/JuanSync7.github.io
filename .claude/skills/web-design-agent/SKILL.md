@@ -40,6 +40,6 @@ Do not spawn another agent merely to run a playbook. A missing measurement stays
 A generated contact sheet requires actual visual review. Project feedback does not adopt
 global vault guidance. The current user's instruction controls whether to merge or publish.
 
-For the 11 November surface-separation correction, follow lighting rules L9–L10
+For the 11 November surface-separation correction, follow lighting rules L9–L11
 and run `npm run rooms:tones` alongside existing checks. Inspect per-role values,
 world-space gradients and actual failed-before images; a global histogram is insufficient.

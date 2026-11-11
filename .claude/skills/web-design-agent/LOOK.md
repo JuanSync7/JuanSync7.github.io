@@ -18,6 +18,8 @@ architecture, camera and recognisable objects. Add these lighting questions:
 - Are halos small, attached to emitters and hidden by opaque objects?
 - Does haze add gentle depth only where intended, without hiding objects?
 - Do full colour → monochrome → full colour preserve camera, geometry and materials?
+- Are ceiling panels readable separately from their trim, and do bright neutral
+  finishes stay matte rather than becoming artificial emitters?
 - At eye 0° and 180°, do the ceiling, floor and sources still belong to one room?
 - Is the phone composition useful, and is the simpler fallback coherent?
 

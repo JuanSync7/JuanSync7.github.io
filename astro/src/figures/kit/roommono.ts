@@ -14,7 +14,7 @@ const VALUES: Partial<Record<FurnitureFinish, readonly [NightKey, number]>> = {
   walltile: ['inkSoft', 0.76],
   wallband: ['inkFaint', 0.8],
   brick: ['inkFaint', 0.9],
-  ceiling: ['inkSoft', 0.55],
+  ceiling: ['inkStrong', 1],
   floor: ['inkFaint', 0.55],
   floorAlt: ['inkSoft', 0.72],
   top: ['inkSoft', 0.92],
