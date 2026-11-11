@@ -74,10 +74,14 @@ try {
       return preview.screenshot();
     };
     for (const [theme, seed] of themes) {
-      await page.locator('.lab-seed input').fill(String(seed));
-      await page.locator('.lab-seed input').press('Enter');
+      // Five cold colour contexts include shader/PMREM compilation on software GPUs.
+      // This is a harness load deadline, not the separately checked render-frame budget.
+      const seedStart = Date.now();
+      await page.locator('.lab-seed input').fill(String(seed), { timeout: 60000 });
+      await page.locator('.lab-seed input').press('Enter', { timeout: 60000 });
       await page.waitForURL(new RegExp(`seed=${seed}$`));
       await ready();
+      const coldSeedMs = Date.now() - seedStart;
       assert.deepEqual(
         await page.locator('canvas[data-error]').evaluateAll((canvases) => canvases.map((c) => c.dataset.error)),
         [],
@@ -116,7 +120,7 @@ try {
       assert.equal(await page.locator('.room-orbit output').textContent(), '135°', 'Appearance changed the camera');
       writeFileSync(`figures-out/room-monochrome-${fallback ? 'fallback' : 'webgl'}-${theme}.png`, mono);
       shots.push({ label: `${theme} · colour`, png: colour }, { label: `${theme} · monochrome`, png: mono });
-      report.push({ theme, seed, renderer: fallback ? 'fallback' : 'webgl', metrics });
+      report.push({ theme, seed, renderer: fallback ? 'fallback' : 'webgl', coldSeedMs, metrics });
       await page.getByRole('button', { name: 'Full colour', exact: true }).click();
       await page.getByRole('button', { name: 'Eye level', exact: true }).click();
       const eye = await shot();

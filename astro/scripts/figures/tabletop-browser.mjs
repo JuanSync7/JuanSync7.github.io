@@ -195,6 +195,14 @@ try {
   if (process.argv.includes('--appearance')) {
     await browser.close();
     browser = undefined;
+    for (const script of ['room-material-check.mjs', 'room-tone-browser.mjs']) {
+      const result = spawnSync(process.execPath, [`scripts/figures/${script}`], {
+        stdio: 'inherit',
+        env: process.env,
+      });
+      if (result.error) throw result.error;
+      assert.equal(result.status, 0, `${script}: room material/tonal regression failed`);
+    }
     const colour = spawnSync(process.execPath, ['scripts/figures/room-colour-browser.mjs', `--url=${url}`], {
       stdio: 'inherit',
       env: process.env,

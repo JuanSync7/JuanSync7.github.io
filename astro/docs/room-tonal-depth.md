@@ -55,6 +55,11 @@ flattened-wall and flattened-table mutations of actual renders to fail in each
 renderer. Shader composition/restoration remains in `rooms:materials`. CI and
 `rooms:verify` invoke the new tonal check. Reports start incomplete and only pass
 at the end; baseline capture mode explicitly never marks a check passed.
+CI invokes the new material/tonal checks through the established room browser
+entry point; its shared protected workflow file is unchanged. Seed input actions
+allow 60 seconds for cold shader/PMREM compilation in the software-GPU runner and
+record `coldSeedMs`. This is a test load deadline; visual limits and separate
+render-frame budgets remain unchanged.
 
 Review all theme captures, eye 0°/90°/180°, true isometric and phone controls. Use
 the unchanged room-colour, figure and material checks for surrounding regressions.
