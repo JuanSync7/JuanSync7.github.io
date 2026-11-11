@@ -1,8 +1,8 @@
-# Voxcel Island
+# Voxel Island
 
 `/lab/voxcel-island/` restores the compact cottage-and-harbour scene from
 [d78373a](https://github.com/JuanSync7/JuanSync7.github.io/commit/d78373a), before the
-larger biome-world generator. The requested display name is **Voxcel Island**.
+larger biome-world generator. The corrected display name is **Voxel Island**; the original URL remains stable.
 `/lab/voxel-scene/` continues to serve Voxel Worlds.
 
 The island has the original six themes (woodland, mushroom, snow, volcanic, oasis
@@ -14,8 +14,7 @@ The historical generator, terrain, models, harbour, materials and cube meshing a
 isolated in `astro/src/figures/kit/voxcel-island/`. Shared camera math keeps drag,
 tilt, pan, pinch, zoom and orbit pause/resume consistent. Camera bounds include water
 and sails; the eye stays outside solid geometry. The 2D fallback uses the same camera
-projection and geometry. The original brighter lighting and small-object silhouettes
-remain part of this design.
+projection and geometry. Small-object silhouettes remain part of this design. The shared [atmosphere workflow](atmosphere.md) now owns its lighting, shadows, fog and weather.
 
 The restoration reference is the pinned source itself: its cottage/eaves/porch,
 measured spacing envelopes, six terrain functions and small harbour. The broader

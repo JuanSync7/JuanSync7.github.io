@@ -1,34 +1,17 @@
 import { BoxGeometry, DynamicDrawUsage, Group, InstancedMesh, Matrix4, MeshBasicMaterial } from 'three';
 import { hexOf } from '../ink';
-import { COLD, cell, type World } from './types';
-import { stream } from './seeds';
+import { cell, type World } from './types';
 
 type Particle = { x: number; y: number; z: number; phase: number; kind: string; ambient: boolean };
 /** One draw per particle family; wider worlds do not create a draw call per snowflake. */
 export function buildEffects(world: World, root: Group) {
   const surface = new Map(world.heights);
   for (const b of world.blocks) surface.set(cell(b.x, b.z), Math.max(surface.get(cell(b.x, b.z)) ?? -10, b.y));
-  const rng = stream(world.spec.layoutSeed, 'particles'),
-    particles: Particle[] = [],
+  const particles: Particle[] = [],
     emitters = [...world.emitters];
   const crater = world.landmarks.find((l) => l.kind === 'lava crater');
   if (crater) emitters.push({ x: crater.x, y: crater.height + 1, z: crater.z, kind: 'fire' });
   for (const e of emitters) for (let i = 0; i < 4; i++) particles.push({ ...e, phase: i / 4, ambient: false });
-  const cold = COLD.has(world.spec.biome),
-    dust = ['desert', 'wasteland', 'caves'].includes(world.spec.biome);
-  if (cold || dust || ['rainforest', 'mushroom'].includes(world.spec.biome))
-    for (let i = 0; i < 96; i++) {
-      const x = (rng() - 0.5) * world.spec.radius * 1.7,
-        z = (rng() - 0.5) * world.spec.radius * world.spec.stretch * 1.7;
-      particles.push({
-        x,
-        z,
-        y: (world.heights.get(cell(Math.round(x), Math.round(z))) ?? 0) + 4,
-        kind: cold ? 'snow' : dust ? 'dust' : 'magic',
-        phase: rng(),
-        ambient: true,
-      });
-    }
   const families = [...new Set(particles.map((p) => p.kind))].map((kind) => {
     const members = particles.filter((p) => p.kind === kind),
       small = kind === 'snow' || kind === 'dust';

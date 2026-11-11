@@ -1,3 +1,4 @@
+import VoxelAtmosphereControls from './VoxelAtmosphereControls';
 import { BIOMES, type Biome } from '../../figures/kit/voxcel-island/types';
 import { DEFAULT_VIEW, type VoxelView } from './voxel-view';
 
@@ -60,14 +61,7 @@ export default function IslandControls({ view, onView, onGenerate }: Props) {
         >
           orbit {view.orbit ? 'on' : 'off'}
         </button>
-        <button
-          type="button"
-          className="lab-btn"
-          aria-pressed={view.weather}
-          onClick={() => onView({ ...view, weather: !view.weather })}
-        >
-          weather {view.weather ? 'on' : 'off'}
-        </button>
+        <VoxelAtmosphereControls view={view} onView={onView} />
         <button type="button" className="lab-btn" onClick={() => onView({ ...DEFAULT_VIEW })}>
           reset view
         </button>

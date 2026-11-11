@@ -18,8 +18,8 @@ interface Params extends WorldSpec {
 
 export default defineTemplate<Params, World, WorldView>({
   id: 'voxcel-island',
-  title: 'Voxcel Island',
-  idea: 'The original compact voxel island: a cottage, biome-themed trees and mushrooms, sculpted shores, sailing boats and gentle waves.',
+  title: 'Voxel Island',
+  idea: 'The original compact voxel island: a cottage, biome-themed trees and mushrooms, sculpted shores, sailing boats, waves, weather-aware light and glowing windows.',
   style: 'three',
   motion: 'ambient',
   answers: true,
@@ -35,7 +35,7 @@ export default defineTemplate<Params, World, WorldView>({
   }),
   name: (p) => `${p.biome} island`,
   alt: (p) =>
-    `A miniature ${p.biome} voxel island with sculpted ridges, layered stone cliffs, a cottage, clear paths and boats on voxel water${p.biome === 'volcanic' ? ' and lava' : ''}. Trees, plants and props occupy separate, supported spaces.`,
+    `A miniature ${p.biome} voxel island with sculpted ridges, layered stone cliffs, a cottage, clear paths and boats on voxel water${p.biome === 'volcanic' ? ' and lava' : ''}. Trees, plants and props occupy separate, supported spaces. Light and weather controls include evening, moonlight, rain, snow and mist.`,
   setup: ({ params }) => generateWorld(params, params.layoutSeed),
   draw: drawWorldFallback,
   three: {

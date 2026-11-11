@@ -1,7 +1,8 @@
 import { PerspectiveCamera, Vector3 } from 'three';
 import { buildIslandPose, updateIslandPose, type IslandPose } from './pose';
 import type { TemplateFrame } from '../../defineTemplate';
-import { hexOf, mix } from '../ink';
+import { fallbackAtmosphere } from '../voxel-atmosphere/fallback';
+import { viewOf } from '../voxel-world/view';
 import { voxel, type Material, type World, type WorldSpec } from './types';
 
 type Point = [number, number, number];
@@ -120,7 +121,9 @@ export function drawWorldFallback(frame: TemplateFrame<WorldSpec, World>): strin
     .filter((face) => new Vector3(...face.normal).dot(camera.position.clone().sub(new Vector3(...face.center))) > 0)
     .map((face) => ({ face, depth: new Vector3(...face.center).applyMatrix4(camera.matrixWorldInverse).z }));
   faces.sort((a, b) => a.depth - b.depth);
-  for (const { face } of faces) {
+  const atmosphere = fallbackAtmosphere(state, viewOf(frame.data), frame.t, project, (kind) => kind === 'cottage');
+  const centerDepth = view.pose.bounds.getCenter(new Vector3()).applyMatrix4(camera.matrixWorldInverse).z;
+  for (const { face, depth } of faces) {
     ctx.beginPath();
     face.points.forEach((p, i) => {
       const [x, y] = project(p);
@@ -128,11 +131,14 @@ export function drawWorldFallback(frame: TemplateFrame<WorldSpec, World>): strin
       else ctx.moveTo(x, y);
     });
     ctx.closePath();
-    ctx.fillStyle =
-      face.normal[1] > 0
-        ? hexOf(face.material)
-        : mix(face.material, 'ground', face.normal[0] > face.normal[2] ? 0.3 : 0.16);
+    ctx.fillStyle = atmosphere.shade(
+      face.material,
+      face.normal,
+      face.center,
+      0.5 + (centerDepth - depth) / (params.radius * 2),
+    );
     ctx.fill();
   }
+  atmosphere.draw(ctx);
   return `${params.biome} · ${state.props.length} objects · ${state.boats.length} boats`;
 }

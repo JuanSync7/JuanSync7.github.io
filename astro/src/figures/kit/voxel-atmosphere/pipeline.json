@@ -1,0 +1,7 @@
+{
+  "schema": "voxel-atmosphere-pipeline/1",
+  "owner": "web-design-agent",
+  "stages": ["resolve", "light", "fog", "weather", "practicals", "publish"],
+  "inputs": ["accepted geometry and bounds", "layout seed", "light/weather controls", "figure clock", "camera"],
+  "invariant": "The atmosphere cannot regenerate or mutate terrain, props or placement."
+}

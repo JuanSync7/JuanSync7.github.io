@@ -24,7 +24,7 @@ const t = await loadTemplate(template);
     </header>
     {template === 'hardware-atlas' && <p class="tpl-back"><a href="/lab/icon-kit/">Inspect every object and download its SVG in the hardware atlas →</a></p>}
     {template === 'voxcel-island' && <p class="tpl-back"><a href="/lab/voxel-scene/">Explore the larger Voxel Worlds →</a></p>}
-    {template === 'voxel-scene' && <p class="tpl-back"><a href="/lab/voxcel-island/">Also: the compact Voxcel Island →</a></p>}
+    {template === 'voxel-scene' && <p class="tpl-back"><a href="/lab/voxcel-island/">Also: the compact Voxel Island →</a></p>}
     <TemplateLab client:only="react" template={template} />
   </main>
   <NightFooter />

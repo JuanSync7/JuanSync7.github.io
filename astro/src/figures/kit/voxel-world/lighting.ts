@@ -2,6 +2,7 @@ import { AmbientLight, Color, DirectionalLight, HemisphereLight, Scene } from 't
 import { hexOf } from '../ink';
 import type { WorldSpec } from './types';
 
+/** Neutral model-catalogue rig. Interactive scenes use voxel-atmosphere/scene. */
 export function sunlight(scene: Scene, spec: WorldSpec) {
   const sun = new DirectionalLight(),
     sky = new HemisphereLight(hexOf('worldSnow'), hexOf('worldEarth'), 1.4);
