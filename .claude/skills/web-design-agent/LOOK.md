@@ -33,6 +33,7 @@ seed sheets and phone captures. Record image hashes and uncertain judgments.
 - Do windows/fire glow from real geometry, with local illumination rather than a global wash?
 - Does rain look wet and overcast; does snow have cool, soft light; does mist separate depths?
 - Is weather visible at whole-world and phone scale without covering the scene in noise?
+- Are island snowflakes small compared with a terrain voxel, including at close zoom?
 - Do rain/snow stop above trees/roofs, and does weather off retain local fire and windows?
 - Are night and cave scenes readable? Does intentional close zoom preserve useful context?
 - Do reduced motion and fallback retain the composition? The fallback has directional face
