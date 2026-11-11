@@ -36,6 +36,16 @@ portable physical measurements.
    sRGB output and one tone-mapping pass. Choose coordinated wall, floor, timber,
    top, accent, textile and metal roles. Keep broad surfaces quieter than the table.
    Preserve light material detail; do not fix a dark room with emissive walls.
+   Separate albedo roles before increasing exposure: broad walls, darker floors,
+   readable furniture fronts, brighter tops/paper and genuinely dark recesses. In
+   monochrome, retain a neutral ground-side hemisphere response so lower faces do
+   not disappear. Shape object-height/floor-depth gradients in world space; apply
+   bounded analytic wall-foot/corner shading to indirect light only, retaining the
+   direct key and mapped shadows. This is a stylized contact approximation, not AO
+   from measured geometry. Colour uses 45% of the tonal gain; Canvas uses continuous
+   projected world-axis ramps and grain without GPU contact shadows. White ceiling
+   panels need their own readable values at eye level. Emission follows a light
+   finish, never the brightness of an albedo token; architecture must not glow.
 8. **Add effects only if the mood needs them.** Small depth-tested emitter halos can
    make bright lamps read. They do not illuminate a room. This implementation uses
    at most six 0.4-unit additive sprites, opacity ≤0.3, with depth test on and depth
@@ -51,6 +61,14 @@ portable physical measurements.
     same-theme variation browser check. Review all themes, both renderers, both
     appearances, endpoints and phone. Capture a before/after under the same seed,
     camera, appearance and size. Fix causes; do not relax the global audit.
+    Run `npm run rooms:tones`: 40 real captures use separate wall/furniture/table
+    masks plus four eye ceilings, one-pixel erosion, per-role midtone floors and
+    tonal spread. Confirm
+    exact mode restoration, rejection of crushed/flattened real-image mutations
+    and nine captured overview failures plus two dark native ceiling cases.
+    A crushed-ceiling mutation must fail in both renderers, and `rooms:materials`
+    must reject emission injected into plain roofs in all nine themes. A global histogram can pass while
+    furniture is unreadable. Open the images; these statistics do not judge taste.
 
 ## Recipes to choose, not stack
 

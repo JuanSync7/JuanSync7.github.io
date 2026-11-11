@@ -2,6 +2,7 @@ import { Color, type MeshStandardMaterial } from 'three';
 import { roomHexOf } from './ink';
 import type { RoomPaint } from './roompaint';
 import { roomTexture } from './roomtexture';
+import { setRoomTonalDepth } from './roomtonal';
 import type { ThemeId } from './tablethemes';
 import { THEMES } from './tablethemes';
 
@@ -46,6 +47,7 @@ export function roomMaterial(material: MeshStandardMaterial): RoomMaterial | und
 
 export function applyRoomMaterial(material: MeshStandardMaterial, colour: boolean): Color {
   const look = MATERIALS.get(material);
+  setRoomTonalDepth(material, colour);
   if (!look) return material.color;
   material.roughness = colour ? look.roughness : look.monoRoughness;
   material.metalness = colour ? look.metalness : look.monoMetalness;

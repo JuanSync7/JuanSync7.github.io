@@ -10,6 +10,7 @@ const stages = [
   ['room visual audit', 'node', ['scripts/figures/figure.mjs', 'pixel-still', `--url=${url}`]],
   ['camera and monochrome browser checks', 'node', ['scripts/figures/tabletop-browser.mjs', `--url=${url}`]],
   ['full-colour and appearance checks', 'node', ['scripts/figures/room-colour-browser.mjs', `--url=${url}`]],
+  ['material-role midtones and gradients', 'npm', ['run', 'rooms:tones']],
   [
     'within-theme seed variation and tonal depth',
     'node',

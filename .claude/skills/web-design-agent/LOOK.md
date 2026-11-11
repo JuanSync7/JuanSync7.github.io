@@ -9,12 +9,17 @@ architecture, camera and recognisable objects. Add these lighting questions:
 - Does one direction model form while weaker fill opens the shadows?
 - Can I read wall corners, furniture fronts and table items in monochrome?
 - Are paper, timber, metal, fabric and recessed areas separated in value/texture?
+- Do cabinet doors, chair rails and wall trim remain readable on their own, rather
+  than bright plates making the whole-image histogram look healthy? Check wall
+  feet/corners for gentle contact falloff and reject screen-fixed vignettes.
 - Does the table remain the primary activity without enlarging it to fill the room?
 - Do same-theme seeds vary coordinated colour, construction and secondary layout?
 - Do evening and low-light rooms still have usable worktops and readable routes?
 - Are halos small, attached to emitters and hidden by opaque objects?
 - Does haze add gentle depth only where intended, without hiding objects?
 - Do full colour → monochrome → full colour preserve camera, geometry and materials?
+- Are ceiling panels readable separately from their trim, and do bright neutral
+  finishes stay matte rather than becoming artificial emitters?
 - At eye 0° and 180°, do the ceiling, floor and sources still belong to one room?
 - Is the phone composition useful, and is the simpler fallback coherent?
 

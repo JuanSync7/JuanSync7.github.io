@@ -10,6 +10,8 @@
 - Mood: daylight / overcast / evening / clinical / low light / other justified recipe:
 - Material roles: wall / floor / wood / top / textile / accent / metal:
 - Monochrome value hierarchy and readable shadow areas:
+- Per-role wall / furniture / table / eye-ceiling masks, midtone floors, gradient spread and failed-before cases:
+- World-space tonal/contact treatment, colour gain and fallback approximation:
 - Atmosphere/bloom: purpose, budget, fallback and disposal; omit unless needed:
 - Room program, table anchor, secondary zones, door and walking clearances:
 - New reusable rule and observable failure case:
@@ -18,3 +20,5 @@
 - Reviewed before/after images, same-theme sheet, eye endpoints and phone:
 - Remaining approximations or unverified claims:
 - Source PR and vault intake PR; project guidance versus proposed global reuse:
+
+- Architectural material emission must stay zero; fixture emission uses semantic light finishes:

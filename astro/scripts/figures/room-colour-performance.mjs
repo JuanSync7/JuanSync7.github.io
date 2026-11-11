@@ -15,6 +15,9 @@ try {
       viewport: { width: 736, height: 1000 },
       reducedMotion: 'no-preference',
     });
+    // Match the colour suite's cold-load allowance on software GPUs. Render-frame
+    // averages below still use the unchanged shared Three.js performance limit.
+    context.setDefaultTimeout(60000);
     const page = await context.newPage(),
       errors = [];
     page.on('pageerror', (e) => errors.push(e.message));
@@ -23,11 +26,13 @@ try {
         errors.push(m.text());
     });
     await page.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.fulfill({ status: 200, body: '' }));
+    const loadStart = Date.now();
     await page.goto(`${url}/lab/pixel-still/?seed=${seed}`);
     await page.addStyleTag({ content: '.lab-main{max-width:640px;margin-inline:auto}' });
     const canvas = page.locator('.lab-main canvas');
     await canvas.evaluate((c) => c.scrollIntoView({ block: 'center' }));
     await page.waitForFunction(() => document.querySelector('.lab-main canvas')?.dataset.ready === '1');
+    const coldLoadMs = Date.now() - loadStart;
     await page.waitForTimeout(limits.liveWaitMs);
     const rendered = Number(await canvas.getAttribute('data-rendered-frames'));
     assert(rendered > 0, 'The room must draw before retaining its frame');
@@ -40,7 +45,7 @@ try {
       renderer: c.dataset.renderer,
       error: c.dataset.error,
     }));
-    report.push({ theme, seed, ...metrics });
+    report.push({ theme, seed, coldLoadMs, ...metrics });
     writeFileSync('figures-out/room-colour-performance.json', JSON.stringify(report, null, 2) + '\n');
     assert.equal(metrics.renderer, 'webgl');
     assert.equal(metrics.error, undefined);

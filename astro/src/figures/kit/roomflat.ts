@@ -5,6 +5,7 @@ import { roomLightPlan } from './roomlightplan';
 import { roomPlan } from './roomplan';
 import { roomFaceLight } from './roomshade';
 import { flatRoomTexture } from './roomflattexture';
+import { flatRoomTonal } from './roomflattonal';
 import { tableFinish } from './tablefinish';
 import { sceneModels } from './roomscene';
 import { roomProject, roomView, roomVisible } from './roomview';
@@ -77,11 +78,13 @@ export function flatRoom(
       const coloured = view.controls.appearance === 'colour';
       ctx.fillStyle = active
         ? mix('signalLine', 'signal', illumination)
-        : coloured
-          ? roomTone(paint.tone, paint.strength * (0.3 + illumination * 0.8), lighting.mood.key)
-          : mix('ground', finish.tone, illumination * Math.sqrt(finish.strength));
+        : flatRoomTonal(ctx, s.model.bounds, surface, view, (gain) =>
+            coloured
+              ? roomTone(paint.tone, paint.strength * (0.3 + illumination * 0.8) * gain, lighting.mood.key)
+              : mix('ground', finish.tone, illumination * Math.sqrt(finish.strength) * gain),
+          );
       ctx.fill();
-      if (coloured && !active) {
+      if (!active) {
         ctx.save();
         poly(ctx, points, true);
         ctx.clip();
@@ -102,7 +105,7 @@ export function flatRoom(
     );
     const width = Math.max(64, Math.max(...points.map((q) => q[0])) - Math.min(...points.map((q) => q[0])) + 10);
     const height = Math.max(40, Math.max(...points.map((q) => q[1])) - Math.min(...points.map((q) => q[1])) + 10);
-    ctx.fillStyle = ink.signal(0.12);
+    ctx.fillStyle = ink.signal(0.2);
     ctx.fillRect(centre[0] - width / 2, centre[1] - height / 2, width, height);
     ctx.strokeStyle = ink.signal(0.95);
     ctx.strokeRect(centre[0] - width / 2, centre[1] - height / 2, width, height);

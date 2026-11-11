@@ -11,7 +11,7 @@ try {
   await build({
     stdin: {
       contents:
-        "export {roomTones,night} from './src/styles/tokens/palette'; export {roomPaint,MATERIAL_PATTERNS} from './src/figures/kit/roompaint'; export {ROOM_STYLES} from './src/figures/kit/roomstyles'; export {LIGHT_MOODS} from './src/figures/kit/roomlightmoods'; export {attachRoomMaterial,applyRoomMaterial} from './src/figures/kit/roommaterial'; export {roomShadows} from './src/figures/kit/roomshadows'; export {PROP_KINDS,prop} from './src/figures/kit/tableprops'; export {tableModel} from './src/figures/kit/tableframes'; export {THEMES,arrange} from './src/figures/kit/tabletop'; export {mulberry32} from './src/figures/kit/rng'; export {roomModels} from './src/figures/kit/tableroom'; export {roomControls} from './src/figures/kit/roomview';",
+        "export {roomTones,night} from './src/styles/tokens/palette'; export {roomPaint,MATERIAL_PATTERNS} from './src/figures/kit/roompaint'; export {ROOM_STYLES} from './src/figures/kit/roomstyles'; export {LIGHT_MOODS} from './src/figures/kit/roomlightmoods'; export {attachRoomMaterial,applyRoomMaterial} from './src/figures/kit/roommaterial'; export {buildRoom} from './src/figures/kit/roomrender'; export {roomTonalDepth} from './src/figures/kit/roomtonal'; export {roomPlan} from './src/figures/kit/roomplan'; export {roomShadows} from './src/figures/kit/roomshadows'; export {PROP_KINDS,prop} from './src/figures/kit/tableprops'; export {tableModel} from './src/figures/kit/tableframes'; export {THEMES,arrange} from './src/figures/kit/tabletop'; export {mulberry32} from './src/figures/kit/rng'; export {roomModels} from './src/figures/kit/tableroom'; export {roomControls} from './src/figures/kit/roomview';",
       resolveDir: process.cwd(),
       loader: 'ts',
     },
@@ -23,6 +23,10 @@ try {
       {
         name: 'project-three',
         setup(b) {
+          b.onResolve({ filter: /^three\/examples\// }, (args) => ({
+            path: pathToFileURL(resolve('node_modules', args.path)).href,
+            external: true,
+          }));
           b.onResolve({ filter: /^three$/ }, () => ({
             path: pathToFileURL(resolve('node_modules/three/build/three.module.js')).href,
             external: true,
@@ -60,6 +64,24 @@ try {
     assert(ROOM_STYLES[theme.id]);
     assert(LIGHT_MOODS[ROOM_STYLES[theme.id].mood]);
     const p = arrange(mulberry32(7), theme.id);
+    const room = result.buildRoom(p),
+      roof = room.state.entities.find((entity) => entity.source.side === 'ceiling');
+    assert(roof?.faces.length, 'Missing ceiling materials');
+    const assertMatteRoof = () =>
+      roof.faces.forEach(({ material }) => assert.equal(material.emissiveIntensity, 0, 'Plain ceiling emits light'));
+    assertMatteRoof();
+    assert(
+      room.state.entities.some((entity) => entity.faces.some(({ material }) => material.emissiveIntensity > 0)),
+      'Monochrome fixtures stopped emitting',
+    );
+    const probe = roof.faces[0].material;
+    probe.emissiveIntensity = 0.6;
+    assert.throws(assertMatteRoof, /Plain ceiling emits light/);
+    probe.emissiveIntensity = 0;
+    room.group.traverse((object) => {
+      object.geometry?.dispose();
+      object.material?.dispose();
+    });
     const models = [
       ...PROP_KINDS.map((kind) => ({ kind, model: prop(kind) })),
       { kind: 'table', model: tableModel(theme) },
@@ -80,6 +102,7 @@ try {
       mat = new MeshStandardMaterial({ color: 0x555555 });
     const original = mat.color.clone();
     result.attachRoomMaterial(mat, paint, 7, theme.id);
+    result.roomTonalDepth(mat, tableModel(theme).bounds, result.roomPlan(p));
     result.roomShadows(mat);
     const colour = result.applyRoomMaterial(mat, true).clone();
     assert(!colour.equals(original));
@@ -97,6 +120,16 @@ try {
       shader.fragmentShader.includes('roomSoftShadow') && shader.fragmentShader.includes('roomSurface'),
       'Material detail replaced the shadow shader',
     );
+    assert(
+      shader.fragmentShader.includes('roomContact') && shader.fragmentShader.includes('roomRamp'),
+      'Missing tonal depth',
+    );
+    assert.equal(shader.uniforms.uRoomDepth.value, 1, 'Monochrome tonal depth did not restore');
+    result.applyRoomMaterial(mat, true);
+    assert.equal(shader.uniforms.uRoomDepth.value, 0.45, 'Colour should use restrained tonal gain');
+    result.applyRoomMaterial(mat, false);
+    assert.equal(shader.uniforms.uRoomDepth.value, 1, 'Monochrome tonal depth did not restore');
+    assert(mat.customProgramCacheKey().includes('room-tonal-depth-v1'), 'Missing shader variant cache key');
     assert(shader.vertexShader.includes('modelMatrix*vec4(transformed'), 'Texture space must stay fixed to the room');
     mat.dispose();
   }
@@ -104,7 +137,7 @@ try {
   assert.equal(result.roomControls({ appearance: 'colour' }).appearance, 'colour');
   assert.equal(result.roomControls({ appearance: 'invalid' }).appearance, 'monochrome');
   console.log(
-    `Room materials passed: ${recipes} face recipes, ${Object.keys(roomTones).length} mirrored tokens, nine themed lighting profiles, mode restoration and isolated shader composition.`,
+    `Room materials passed: ${recipes} face recipes, ${Object.keys(roomTones).length} mirrored tokens, nine themed lighting profiles, mode restoration, nine non-emissive ceiling scenes with rejected emitter mutations and isolated shader composition.`,
   );
 } finally {
   rmSync(scratch, { recursive: true, force: true });

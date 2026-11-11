@@ -22,7 +22,15 @@ export function solidMesh(model: PropModel, kind: TableObject, theme: ThemeId, p
   const group = new Group(),
     buckets = new Map<
       string,
-      { tone: NightKey; positions: number[]; roughness: number; metalness: number; strength: number; paint: RoomPaint }
+      {
+        tone: NightKey;
+        positions: number[];
+        roughness: number;
+        metalness: number;
+        strength: number;
+        monoEmission: number;
+        paint: RoomPaint;
+      }
     >();
   const lines: number[] = [];
   const phase = Math.abs(
@@ -41,13 +49,15 @@ export function solidMesh(model: PropModel, kind: TableObject, theme: ThemeId, p
     }
     const finish = tableFinish(kind, solid, theme, surface.finish);
     const paint = roomPaint(kind, theme, surface.finish, solid, phase, palette);
-    const key = `${finish.tone}:${finish.roughness}:${finish.metalness}:${finish.strength}:${paint.tone}:${paint.pattern}:${paint.emission}`;
+    const monoEmission = kind === 'room' && surface.finish === 'light' ? 0.6 : 0;
+    const key = `${finish.tone}:${finish.roughness}:${finish.metalness}:${finish.strength}:${monoEmission}:${paint.tone}:${paint.pattern}:${paint.emission}`;
     const bucket = buckets.get(key) ?? {
       tone: finish.tone,
       positions: [],
       roughness: finish.roughness,
       metalness: finish.metalness,
       strength: finish.strength,
+      monoEmission,
       paint,
     };
     buckets.set(key, bucket);
@@ -58,7 +68,7 @@ export function solidMesh(model: PropModel, kind: TableObject, theme: ThemeId, p
         if (a && b) bucket.positions.push(...first, ...a, ...b);
       }
   }
-  for (const { tone, positions, roughness, metalness, strength, paint } of buckets.values()) {
+  for (const { tone, positions, roughness, metalness, strength, monoEmission, paint } of buckets.values()) {
     const geometry = new BufferGeometry();
     geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
     geometry.computeVertexNormals();
@@ -70,7 +80,7 @@ export function solidMesh(model: PropModel, kind: TableObject, theme: ThemeId, p
       roughness,
       metalness,
       emissive: hexOf(tone),
-      emissiveIntensity: kind === 'room' && tone === 'inkStrong' ? 0.6 : 0,
+      emissiveIntensity: monoEmission,
       side: DoubleSide,
       flatShading: true,
       polygonOffset: true,

@@ -45,7 +45,7 @@ export function createRoomFocus(group: Group): RoomFocus {
     new MeshBasicMaterial({
       color: hexOf('signal'),
       transparent: true,
-      opacity: 0.12,
+      opacity: 0.2,
       depthWrite: false,
       depthTest: false,
       toneMapped: false,

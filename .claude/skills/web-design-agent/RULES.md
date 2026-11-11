@@ -29,6 +29,20 @@ These extend the [existing room rules](../tabletop-room/RULES.md).
   must retain its shadow occlusion. The emitted scene check holds blockers across
   both camera modes and rejects a removed blocker.
 
+- **L9 Test material roles separately:** the 11 November correction found nearly black
+  furniture despite a passing scene-wide histogram. Keep readable wall, furniture
+  and table midtones, with ceilings checked separately at eye level; reserve the darkest values for recesses/contact. Use eroded
+  entity-ID masks to measure actual surfaces. Reject crushed furniture and flattened
+  walls and ceilings in real-image mutations; retain captured old-render metrics as failed cases.
+- **L10 Anchor gradients to the world:** height/front tonal ramps and analytic
+  wall/floor contact shading must compose with texture and mapped shadows, stay fixed
+  through orbit, and restore through appearance switches. Apply a restrained gain
+  in colour. This contact approximation is not SSAO or global illumination.
+
+- **L11 Colour is not emission:** monochrome emission belongs to the semantic
+  `light` finish, never a bright neutral token. A white ceiling stays non-emissive.
+  Actual ceiling material checks reject an injected emitter in all nine themes.
+
 ## Voxel atmosphere
 
 These rules address the user's 2026-11-09 correction: flat illumination and invisible
