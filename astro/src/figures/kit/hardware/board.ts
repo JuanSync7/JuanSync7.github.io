@@ -8,7 +8,7 @@ export function board(p: Draft, n: number): void {
     [0, 0, 0],
   );
   p.box(0, 0, 0, 1.9, 0.09, 1.45, 0.065);
-  laminate(p, 1.9, 1.45, 0, 0.09);
+  laminate(p);
   rect(p, 0, 0.091, 0, 1.78, 1.32);
   for (const x of [-0.82, 0.82])
     for (const z of [-0.6, 0.6]) {

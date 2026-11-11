@@ -11,6 +11,11 @@ the visual workflow.
 
 ## 2026-11-08
 
+Hardware laminate seams now follow their host's emitted chamfered profile. Seed 1's
+lower board seams no longer extend past the corners. Explicit host binding and
+actual-face containment checks cover all six laminate assemblies and transformed
+profiles, including a negative fixture reproducing the square-seam defect.
+
 Themed rooms retain one level lens at a floor-relative human eye height across their entrance orbit, removing
 the extreme asymmetric field of view caused by nearby furniture at 0°. Solid themed
 ceilings close the wall tops at eye level, with seeded coffers, beams, panels and

@@ -64,6 +64,7 @@ function prepare(model: HardwareModel): Solid[] {
       solid.hi = [0, 1, 2].map((axis) => Math.max(...faces.flatMap((s) => s.points.map((p) => p[axis] ?? 0))));
     }
     for (const stroke of strokes) {
+      if (stroke.support !== undefined) continue;
       const host = solids
         .filter(
           (candidate) =>
@@ -98,16 +99,19 @@ const areaOf = (points: [number, number][]): number =>
   }, 0) / 2;
 /** The camera basis is computed once; model geometry and solid bounds are prepared once. */
 export function hardwareScene(model: HardwareModel, o: HardwareOptions, cam: Camera): ProjectedSurface[] {
-  const cy = Math.cos(cam.yaw),
-    sy = Math.sin(cam.yaw),
-    cp = Math.cos(cam.pitch),
-    sp = Math.sin(cam.pitch);
+  // A cache key and its projected geometry must use the same canonical pose.
+  const yaw = Number(cam.yaw.toFixed(4)),
+    pitch = Number(cam.pitch.toFixed(4));
+  const cy = Math.cos(yaw),
+    sy = Math.sin(yaw),
+    cp = Math.cos(pitch),
+    sp = Math.sin(pitch);
   const point = ([x, y, z]: Vec3): [number, number, number] => {
     const zz = x * sy + z * cy;
     return [x * cy - z * sy, zz * sp - y * cp, y * sp + zz * cp];
   };
   const selected = o.pick < 0 ? model.parts.length - 1 : o.pick;
-  const poseKey = `${o.mode}:${o.detail}:${cam.yaw.toFixed(4)}:${cam.pitch.toFixed(4)}`;
+  const poseKey = `${o.mode}:${o.detail}:${yaw}:${pitch}`;
   const groups: ProjectedSolid[] = [];
   for (const solid of prepare(model)) {
     if (o.isolate && solid.part !== selected) continue;

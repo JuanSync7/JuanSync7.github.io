@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { createServer } from 'vite';
 import { checkTransitions } from './transitions.mjs';
-import { checkRouting, checkSignals } from './contracts.mjs';
+import { checkRouting, checkSignals, checkSupportedMarkings } from './contracts.mjs';
 import { checkPlaybook } from './playbook-check.mjs';
 
 await checkPlaybook();
@@ -13,6 +13,7 @@ try {
   const { hardwareSvg, hardwareSprite } = await server.ssrLoadModule('/src/figures/kit/hardware/svg.ts');
   const { HARDWARE_KINDS, DEFAULT_OPTIONS, VIEWS } = await server.ssrLoadModule('/src/figures/kit/hardware/types.ts');
   const { Draft } = await server.ssrLoadModule('/src/figures/kit/hardware/primitives.ts');
+  const { laminate } = await server.ssrLoadModule('/src/figures/kit/hardware/details.ts');
   const { visibleStrokes } = await server.ssrLoadModule('/src/figures/kit/hardware/occlusion.ts');
   const { ink } = await server.ssrLoadModule('/src/figures/kit/ink.ts');
   const reversed = new Draft();
@@ -24,10 +25,16 @@ try {
   const { orderSolids } = await server.ssrLoadModule('/src/figures/kit/hardware/depth.ts');
   const { mulberry32 } = await server.ssrLoadModule('/src/figures/kit/rng.ts');
   const { default: template } = await server.ssrLoadModule('/src/figures/templates/hardware-atlas.ts');
+  const seedOne = template.instance(1).params;
+  assert.equal(seedOne.kind,'board','Reported seed 1 remains the circuit board regression');
+  assert.ok(checkSupportedMarkings(hardwareModel(seedOne.kind,seedOne.detail))>0,'Seed 1 includes checked physical seams');
   let drawings = 0;
   for (const kind of HARDWARE_KINDS) {
     for (const detail of [3, 4, 5]) {
       const model = hardwareModel(kind, detail);
+      const supported = checkSupportedMarkings(model);
+      if (['processor','memory','board','server','accelerator','optics'].includes(kind))
+        assert.ok(supported>0,`${kind}: laminate markings have explicit host coverage`);
       assert.ok(model.parts.length >= 3, `${kind}: named working assemblies`);
       for (const part of model.parts) {
         assert.ok(part.name && part.note && part.surfaces.length > 0, `${kind}: no empty placeholders`);
@@ -98,6 +105,30 @@ try {
     assert.equal(svg, hardwareSvg(hardwareModel(kind), DEFAULT_OPTIONS), `${kind}: repeat export is deterministic`);
   }
   // The laminate belongs to the translated mainboard, not to a plate at the origin.
+  const oldCorner = new Draft();
+  oldCorner.part('Chamfered board','Historical square seam overshoots its physical face.');
+  oldCorner.box(0,0,0,2,.1,1,.1);
+  oldCorner.line([[-1,.03,.5],[1,.03,.5],[1,.03,-.5]],false,oldCorner.profile().solid);
+  assert.throws(()=>checkSupportedMarkings({kind:'old-square-seam',parts:oldCorner.parts}),assert.AssertionError,'Bounding-box-fitting square seams must fail actual-face containment');
+  const concave = new Draft(); concave.part('Notched cap','A chord cannot bridge an empty notch.');
+  concave.extrude([[0,0],[3,0],[3,1],[1,1],[1,3],[0,3]],0,.2);
+  concave.line([[2.5,.2,.5],[.5,.2,2.5]],false,concave.profile().solid);
+  assert.throws(()=>checkSupportedMarkings({kind:'concave-chord',parts:concave.parts}),assert.AssertionError,'Endpoint containment cannot stand in for whole-segment containment');
+  for (const outside of [false,true]) {
+    const moved = new Draft(); moved.part('Moved host','Profile follows chamfers and completed transforms.');
+    moved.transform(()=>{moved.box(.2,.3,-.4,1.1,.2,.7,.12); if(!outside) laminate(moved);},[.5,.2,-.7],.15,.7);
+    if(outside) laminate(moved);
+    assert.equal(checkSupportedMarkings({kind:'transformed-laminate',parts:moved.parts}),14,'Every seam and hatch stays on the transformed host');
+  }
+  const noProfile = new Draft(); noProfile.part('Unsupported host','Must fail closed.');
+  assert.throws(()=>laminate(noProfile));
+  const { hardwareScene } = await server.ssrLoadModule('/src/figures/kit/hardware/scene.ts');
+  const cam=hardwareCamera('three-quarter');
+  const canonical=hardwareScene(structuredClone(hardwareModel('server')),DEFAULT_OPTIONS,cam);
+  const nearby=hardwareScene(structuredClone(hardwareModel('server')),DEFAULT_OPTIONS,{...cam,yaw:cam.yaw+1e-6,pitch:cam.pitch+1e-6});
+  assert.deepEqual(nearby,canonical,'Equal local pose keys produce identical geometry, independent of cache warmup order');
+  noProfile.tube(0,0,0,1,.8,.2);
+  assert.throws(()=>laminate(noProfile));
   const mainboard = hardwareModel('server').parts.find(p => p.name === 'Mainboard and processors');
   const edgeMarks = mainboard.surfaces.filter(s => !s.face && s.points.every(p => p[1] > .09 && p[1] < .125));
   assert.ok(edgeMarks.length > 0);

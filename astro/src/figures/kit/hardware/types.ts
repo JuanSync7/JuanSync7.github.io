@@ -24,6 +24,8 @@ export interface Surface {
   detail?: boolean;
   outline?: boolean;
   connection?: { from: string; to: string };
+  /** A surface marking bound to this part's physical solid, checked against its faces. */
+  support?: number;
 }
 export interface HardwarePart {
   name: string;

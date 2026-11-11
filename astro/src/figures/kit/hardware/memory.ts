@@ -8,7 +8,7 @@ export function memory(p: Draft, n: number): void {
     [0, 0, 0],
   );
   p.box(0, 0, 0, 1.55, 0.08, 1.3, 0.025);
-  laminate(p, 1.55, 1.3, 0, 0.08);
+  laminate(p);
   rect(p, 0, 0.081, 0, 1.22, 1.04);
   for (let i = 0; i < n + 8; i++) {
     const z = (i / (n + 7) - 0.5) * 0.84;

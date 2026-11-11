@@ -8,7 +8,7 @@ export function optics(p: Draft, n: number): void {
     [0, 0, 0],
   );
   p.box(0, 0, 0, 0.86, 0.065, 2.1, 0.035);
-  laminate(p, 0.86, 2.1, 0, 0.065);
+  laminate(p);
   for (let i = 0; i < n + 6; i++) {
     const x = (i / (n + 5) - 0.5) * 0.66;
     p.box(x, 0.066, -0.94, 0.038, 0.009, 0.22, 0.002);

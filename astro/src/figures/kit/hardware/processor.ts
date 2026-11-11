@@ -22,7 +22,7 @@ export function processor(p: Draft, n: number): void {
     [0, 0.4, 0],
   );
   p.box(0, 0.05, 0, 1.65, 0.1, 1.65, 0.085);
-  laminate(p, 1.65, 1.65, 0.05, 0.1);
+  laminate(p);
   rect(p, 0, 0.151, 0, 1.5, 1.5);
   for (const s of [-1, 1])
     for (let i = 0; i < n + 3; i++) {

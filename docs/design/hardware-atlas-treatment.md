@@ -24,6 +24,7 @@ Physical plausibility and visible occlusion remain explicit visual judgments.
 | User observation | Confirmed cause | Repair and proof |
 |---|---|---|
 | Wires leave bounds or look awkward. | Independent board/interposer routes share lanes; server laminate uses origin-centred coordinates on a translated board. | Separate conductors, align markings with the board; support, lane, endpoint and laminate regressions. |
+| Seed 1 lower lines still overshoot the box. | Laminate seams were rectangular while the board has chamfered corners. Trace checks and rectangular bounds missed this. | Derive seams from the emitted cap profile; bind them to their host and reject segments outside actual faces, with the original square seam as a failing fixture. |
 | Scrolling the seeded strip is laggy; static collection is fine. | All eight visible seed canvases continually repaint. | Freeze previews and skip unseen warm-up work; normal-motion idle profile plus live main-view test. |
 | Repeated parts have only one accent. | Signal selection chooses one face across an entire semantic assembly. | Preserve solid identity and choose an accent per solid, retaining painter order; missing-copy negative fixture. |
 | Isometric/wireframe glitches need a repeatable pipeline. | Hollow rim tessellation is outlined and rear markings paint through their own wall; mechanical and visual checks cover different properties. | Suppress internal rim seams, retain boundary rings, clip same-solid hidden strokes; kernel index, deterministic checks and required visual review. |
