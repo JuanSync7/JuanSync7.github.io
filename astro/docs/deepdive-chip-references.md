@@ -15,7 +15,19 @@ plan coordinates; they are illustrations of physical organisation, not mask data
 | [UMBC: NMOS combinational logic](https://courses.cs.umbc.edu/graduate/CMPE640/Fall16/cpatel2/lectures/lect15_combo2.pdf) | Slide 4 shows the depletion-load gate tied to its output/source. A weak load remains conductive at zero gate/source voltage. | The separate 6502-era `nmos-load` recipe has a depletion device and enhancement pull-down network, with no PFETs. Its tests check ratioed logic rather than incorrectly applying the CMOS no-static-current condition. |
 | [Steve Ward: CMOS notes](https://computationstructures.org/notes/cmos/notes.html) | Complementary PFET/NFET series-parallel networks drive the output from exactly one rail for each input combination. | `gates.ts` derives the pull-up as the dual of the pull-down; independent exhaustive truth-table tests check every input state. |
 
-Reviewed on 7 November 2026. Reference screenshots live only in the ignored
+## PCB and advanced packaging references
+
+Inspected on 11 November 2026 alongside the earlier device references:
+
+| Primary reference | Observed relationship | Adaptation |
+| --- | --- | --- |
+| [TSMC CoWoS-S cross-section](https://3dfabric.tsmc.com/site_img/dedicatedFoundry/technology/cowos/CoWoS-s_01.png), [CoWoS-L cross-section](https://3dfabric.tsmc.com/site_img/dedicatedFoundry/technology/cowos/CoWoS-L_01.png) | Distinct die contacts, interposer, substrate joints and attached underfill. Pitch changes with the interface; a local bridge belongs beneath a specific interface. | Explicit package envelopes and owner-contained exposed contact patches, rather than uniform circles across empty substrate. |
+| [AMD CDNA3 white paper, Figure 1, page 3](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/white-papers/amd-cdna-3-white-paper.pdf#page=3) | Exploded package render: compute chiplets above I/O dies, memory stacks alongside, perimeter passives and a shared base. | Compatible package recipes with distinct logic, memory, routing and support neighborhoods. These are inspired arrangements, not an exact MI300 implementation. |
+| [AMD CDNA2 white paper, Figures 1a–1b, pages 3–4](https://www.amd.com/content/dam/amd/en/documents/instinct-business-docs/white-papers/amd-cdna2-white-paper.pdf#page=3) | Older compute-array, cache/controller and boundary-interface organization, plus a paired-die module. | Whole die placement variants retain common tile dimensions while changing compute/fabric organization. |
+| [Raspberry Pi 4 reduced schematics](https://datasheets.raspberrypi.com/rpi4/raspberry-pi-4-reduced-schematics.pdf), [mechanical drawing](https://datasheets.raspberrypi.com/rpi4/raspberry-pi-4-mechanical-drawing.pdf) | Power stages and small support circuits form neighborhoods; connectors face edges; mounting holes have reserved annuli. | Board footprints, repeated power/passive banks, real contact pads, short support routes and mounting keepouts. |
+| [Digilent Basys3 manual, Figure 1, page 2](https://www.amd.com/content/dam/amd/en/documents/university/aup-boards/XUPBasys3/documentation/Basys3_rm_8_22_2014.pdf#page=2) | Actual photographed board distinguishes dense FPGA support components, peripheral ports and aligned switch/LED banks. | Component-specific PCB recipes rather than giving every device the same hatch or connector outline. |
+
+Earlier device references were reviewed on 7 November 2026. Reference screenshots live only in the ignored
 `figures-out/deepdive/reference-*` review directory. The site uses original vector
 geometry; no microscopy image or extracted proprietary layout is bundled.
 
@@ -27,8 +39,12 @@ geometry; no microscopy image or extracted proprietary layout is bundled.
   substrate contacts, ordered pad groups and repeated device footprints have roles.
 - Every inter-component wire joins two named boundary contacts. Source, destination,
   access track, bends and vias are recorded, then checked against emitted segments.
-- Horizontal and vertical interconnect use separate metal layers. A via joins layers
+- Horizontal and vertical macro interconnect use separate metal layers. A via joins layers
   only at a declared contact; unrelated parallel runs and contact-on-wire shorts fail.
+- Local PCB footprint traces declare their copper side. Same-layer bends need no
+  via; bottom-side routes connected to top SMD pads have explicit plated attachments.
+  The board router reserves full annular contacts, including at later connections,
+  rather than accepting clear centers whose metal rings still touch another signal.
 - Wire-bonded packages use a separate material rule: direct, ordered lead-to-die
   spans, each ending on two landing contacts. A bond has no planar routing elbow or
   metal-layer via. Crossing or overlapping bond fanouts fail even if labels match.

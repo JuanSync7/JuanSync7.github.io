@@ -4,6 +4,10 @@ Read `astro/docs/deepdive-chip-references.md` and the kernel index. First inspec
 real example of the requested era; RF test structures, bipolar analog, NMOS and
 modern CMOS have different devices and organisation.
 
+For PCB footprints, package layers, HBM or chiplet floorplans, also follow
+[the packaging playbook](packaging.md). Density follows physical ownership:
+component neighborhoods, interposer channels and regular contact fields.
+
 1. Establish the package/die/core boundary, pin-one convention, ordered external
    contacts and the complete selected part. Reserve routing channels and precision
    keepouts before drawing devices.
@@ -11,7 +15,9 @@ modern CMOS have different devices and organisation.
    bank counts, lanes and device classes between scenes, not each matched instance.
 3. Route named contacts. Preserve signal equivalence through explicit pin groups;
    a repeated string is insufficient proof that two wires share a net. Horizontal
-   and vertical metal may cross on different layers; a contact joins them.
+   and vertical macro routes may cross on different layers; a contact joins them.
+   Local PCB traces declare top or bottom copper separately, with real vias at
+   layer changes rather than at every same-layer bend.
    Wire bonds use direct, ordered lead-to-die spans with landing contacts. Reject
    right-angle metal routing, vias, crossed fanouts and mislabeled conductor material.
    For package-to-die handoffs, register the actual child plan's pads, count and

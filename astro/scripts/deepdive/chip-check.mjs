@@ -5,6 +5,7 @@ import { loadKernel } from './load.mjs';
 import { inspectGateLayout, inspectSupplyNetwork } from './chip-gate-check.mjs';
 import { inspectMatchedFingers } from './chip-analog-check.mjs';
 import { chipAncestor, inspectBondRegistration } from './chip-package-check.mjs';
+import { inspectChipSurface } from './chip-surface-check.mjs';
 import {
   EPS,
   finitePoint,
@@ -188,11 +189,12 @@ export function inspectChip(raw, model, win, finished) {
   if (model.level === 'die' && model.components.some((c) => c.kind === 'core')) {
     const cores = model.components.filter((c) => c.kind === 'core');
     if (
-      cores.length !== 6 ||
+      ![4, 6].includes(cores.length) ||
       cores.some((c) => Math.abs(c.box[2] - c.box[0] - 1) > EPS || Math.abs(c.box[3] - c.box[1] - 0.5) > EPS)
     )
       issues.push('inconsistent repeated core tiles');
   }
+  issues.push(...inspectChipSurface(raw, model, finished));
   return [...new Set(issues)];
 }
 

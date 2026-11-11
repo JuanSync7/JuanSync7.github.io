@@ -10,7 +10,7 @@ const args = process.argv.slice(2);
 const { values } = parseArgs({
   options: { url: { type: 'string' }, salts: { type: 'string' }, chain: { type: 'string' } },
 });
-const entries = (values.salts ?? '1,7,42,2026').split(',');
+const entries = (values.salts ?? '1,4,7,42,2026').split(',');
 if (entries.some((s) => !/^\d+$/.test(s))) throw new Error('Plan salts must be nonempty unsigned integer strings');
 const salts = [...new Set(entries.map(Number))];
 if (!salts.length || salts.some((s) => !Number.isSafeInteger(s) || s < 0 || s > 4294967295))
@@ -62,6 +62,8 @@ try {
                 selected: plan.selectedKind,
                 segments: plan.segs.flat().length + (plan.detail?.segs.flat().length ?? 0),
                 terminal: Boolean(plan.detail),
+                layoutVariant:
+                  plan.model?.package?.variant ?? plan.model?.dieLayout?.variant ?? plan.model?.board?.variant ?? null,
               };
             },
             { chain, era, seed, n },
@@ -70,7 +72,7 @@ try {
           const bytes = Buffer.from(shot.png.split(',')[1], 'base64');
           const artifact = saveArtifact(out, filename, bytes);
           artifacts.push(artifact);
-          const label = `${kernel.levelKind(chain, n)[0]} · salt ${seed} · selected ${shot.selected ?? 'detail'}${shot.terminal ? ' · journey end' : ''}`;
+          const label = `${kernel.levelKind(chain, n)[0]} · salt ${seed}${shot.layoutVariant ? ` · ${shot.layoutVariant}` : ''} · selected ${shot.selected ?? 'detail'}${shot.terminal ? ' · journey end' : ''}`;
           shots.push({ label, png: shot.png });
           cases.push({
             chain,
@@ -91,6 +93,16 @@ try {
       console.log(`gallery ${chain}/${era}: ${shots.length} plans captured`);
     }
   }
+  const layoutCoverage = Object.fromEntries(
+    ['board', 'package', 'die'].map((level, n) => [
+      level,
+      [...new Set(cases.filter((c) => c.chain === 'silicon' && c.era === 'modern' && c.n === n + 1).map((c) => c.layoutVariant))].sort(),
+    ]),
+  );
+  if (!values.salts && onlyChain !== 'city')
+    for (const level of ['board', 'package', 'die'])
+      if (layoutCoverage[level].length !== 3 || layoutCoverage[level].some((variant) => !variant))
+        throw new Error(`Default gallery misses a physical ${level} variant; update its maintained plan salts`);
   if (sourceHash() !== startedHash) throw new Error('Source changed during gallery capture; rerun');
   writeFileSync(
     join(out, 'gallery.json'),
@@ -100,6 +112,7 @@ try {
         seedNamespace: 'plan-salt',
         sourceHash: startedHash,
         counts: { plans: cases.length },
+        layoutCoverage,
         cases,
         artifacts,
         visualReview: 'required',

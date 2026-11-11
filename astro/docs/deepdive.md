@@ -50,6 +50,11 @@ seed list. It can start its own local server on port 4398; `--url=URL` selects a
 already running server. An explicit server is useful while iterating. Do not treat
 a check count, isolated plan salt and public figure seed as interchangeable.
 
+The gallery's default plan salts include `1,4,7,42,2026` so its modern PCB,
+package and die rows expose all three physical recipes at each level. Captions
+and `layoutCoverage` name those recipes. A custom short salt list is a focused
+inspection; it is not automatically complete variant coverage.
+
 `status` reports current source bytes and artifact availability. It does not rerun
 checks or infer that existing screenshots are fresh. The source fingerprint covers
 the zoom template, figure kit, figure wrappers, night palette, dedicated checks and
@@ -87,6 +92,15 @@ a reachable room is not building-code sign-off. Keep those distinctions in revie
 without adding implementation jargon to the public scene.
 
 ## Physical chain and journey restart
+
+PCB detail, modern package construction and die floorplan variants follow the
+[packaging playbook](../../.claude/skills/deepdive-agent/playbooks/packaging.md).
+Their models retain footprint pads, surface traces, exposed contact fields,
+underfill envelopes and repeated tile groups. `chip-surface-check.mjs` compares
+those relationships with actual emitted geometry; its corruption suite is part
+of `deepdive:selftest`. A surface field is a declared exposed patch, not a claim
+that opaque upper layers reveal every hidden bump. The chip reference notes map
+the chosen conventions to inspected primary images.
 
 The room and cell are the smallest physical views in each chain. Their selected
 part retains real furniture or device detail. The scene then dissolves into a

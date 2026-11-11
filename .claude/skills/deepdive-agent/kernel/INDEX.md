@@ -16,6 +16,9 @@ owner for the stage being changed; do not fork its geometry in a preview script.
 | `chip-power.ts`, `chip-digital-detail.ts`, `chip-bipolar-layout.ts` | Connected power networks, repeated digital organisation and reference-based bipolar floorplan. |
 | `chip-bond.ts` | Material-specific direct wire-bond spans and landing contacts; no planar metal-routing elbows or vias. |
 | `chip-package-pins.ts` | Projection of actual next-die pad contracts into explicit nested package geometry. |
+| `chip-board-*` | PCB footprint neighborhoods, attached pads/traces, mounting details and shared repeated recipes. |
+| `chip-board-router.ts`, `chip-contact-*` | Planned terminal escapes, finite contact clearance and direction-aware board routing. Straight grid vertices do not invent vias. |
+| `chip-package-*`, `chip-die-*` | Modern package construction, exposed bump/TSV fields, HBM base interfaces and whole die floorplans. |
 | `gates.ts`, `chip-gate-layout.ts`, `chip-gate-supply.ts` | Digital transistor topology, physical conductors/contacts and shared supplies. |
 | `maps.ts`, `map-layout.ts`, `map-parcels.ts`, `map-types.ts` | Urban street graph, blocks, parcels and model contracts. |
 | `map-region.ts`, `map-contours.ts`, `map-paint.ts`, `map-region-paint.ts` | Shared-field relief/contours, drainage and map drawing. |
@@ -24,6 +27,7 @@ owner for the stage being changed; do not fork its geometry in a preview script.
 | `../templates/zoom-dive.ts` | Figure grammar and presentation; no independent layout implementation. |
 | `astro/scripts/deepdive/geometry.mjs` | Independent geometric predicates used by checks. |
 | `astro/scripts/deepdive/` | Seed sweeps, negative fixtures, browser/gallery artifacts and run orchestration. |
+| `astro/scripts/deepdive/chip-surface-*.mjs` | Independent layer, contact-field, PCB footprint and die repetition checks and adverse fixtures. |
 
 `Sketch.model` preserves the domain model for inspection. It is evidence to measure,
 not an automatic guarantee: compare route endpoints, openings and boundaries with
