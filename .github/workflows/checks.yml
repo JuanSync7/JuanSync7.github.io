@@ -69,6 +69,8 @@ jobs:
           path: astro/figures-out/deepdive
       - name: Themed tabletop browsing and fallback
         run: npm run tabletop:browser
+      - name: Room surface values, gradients and failed-first images
+        run: npm run rooms:materials && npm run rooms:tones
       - name: Voxel GPU, controls, biome profiles and snapshot replay
         run: npm run voxel:gpu && npm run voxel:browser && npm run voxel:gallery -- --profile && npm run voxel:vault-check
       - name: Voxel evidence

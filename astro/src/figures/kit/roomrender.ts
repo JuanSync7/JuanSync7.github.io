@@ -18,6 +18,8 @@ import { setRoomLighting, type RoomLighting } from './roomlight';
 import type { RoomAppearance } from './roomstyles';
 import { roomShadows } from './roomshadows';
 import { roomOccluders } from './roomoccluders';
+import { roomTonalDepth } from './roomtonal';
+import { roomPlan } from './roomplan';
 import { solidMesh } from './tablemesh';
 import { sceneModels, type SceneModel } from './roomscene';
 import { roomProject, roomVisible, type RoomView } from './roomview';
@@ -46,7 +48,8 @@ export interface RoomState {
 const SIGNAL = new Color(hexOf('signal'));
 export function buildRoom(p: TableScene): { group: Group; state: RoomState } {
   const group = new Group(),
-    pickables: Mesh[] = [];
+    pickables: Mesh[] = [],
+    plan = roomPlan(p);
   const entities = sceneModels(p).map((source, i): Entity => {
     const model = solidMesh(source.model, source.kind, p.theme.id, p.paletteVariant);
     const faces: Entity['faces'] = [],
@@ -55,6 +58,7 @@ export function buildRoom(p: TableScene): { group: Group; state: RoomState } {
       if (o instanceof Mesh && o.material instanceof MeshStandardMaterial) {
         faces.push({ material: o.material, base: o.material.color.clone() });
         o.material.shadowSide = BackSide;
+        roomTonalDepth(o.material, source.model.bounds, plan);
         roomShadows(o.material);
         o.receiveShadow = true;
         o.castShadow = !source.support && !source.transmitsLight;

@@ -1,4 +1,4 @@
-import { roomTone } from './ink';
+import { ink, roomTone } from './ink';
 import type { MaterialPattern } from './roompaint';
 import { roomProject, type RoomView } from './roomview';
 import type { TableSurface } from './tableparts';
@@ -31,7 +31,8 @@ export function flatRoomTexture(
     true,
   );
   ctx.clip();
-  ctx.strokeStyle = roomTone(pattern === 'wood' ? 'walnut' : 'steel', 0.75);
+  ctx.strokeStyle =
+    view.controls.appearance === 'colour' ? roomTone(pattern === 'wood' ? 'walnut' : 'steel', 0.75) : ink.ground();
   ctx.globalAlpha = pattern === 'stone' ? 0.12 : 0.15;
   const floor = surface.finish === 'floor' || surface.finish === 'floorAlt';
   const count = pattern === 'stone' ? 4 : 18;

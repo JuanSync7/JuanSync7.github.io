@@ -83,7 +83,8 @@
     "rooms:variation": "node scripts/figures/room-variation-browser.mjs",
     "voxel:atmosphere-check": "node scripts/voxel/web-design-workflow.mjs && node scripts/voxel/atmosphere-check.mjs",
     "voxel:atmosphere-browser": "node scripts/voxel/atmosphere-browser.mjs",
-    "voxel:atmosphere-verify": "node scripts/voxel/verify-atmosphere.mjs"
+    "voxel:atmosphere-verify": "node scripts/voxel/verify-atmosphere.mjs",
+    "rooms:tones": "node scripts/figures/room-tone-browser.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",

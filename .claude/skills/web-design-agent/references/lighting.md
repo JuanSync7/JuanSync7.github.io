@@ -26,3 +26,14 @@ The source intensities and halo dimensions are artistic settings for this room's
 scale. They are not measured lux, a physically based exposure calibration or proof
 of photorealism. Stage/rim and monochromatic-colour recipes are documented extension
 options; this change does not expose them as extra UI modes.
+
+## Tonal correction, 11 November
+
+The installed Three.js 0.170 `ShaderChunk/aomap_fragment.glsl.js` attenuates
+`reflectedLight.indirectDiffuse` and indirect specular separately from direct
+lighting. `roomtonal.ts` follows that integration point for its bounded analytic
+room-plane contact approximation. The contact function is authored here; it is not
+a copied SSAO implementation or a claim of measured geometric occlusion. Existing
+world-coordinate procedural grain supplies the stable surface varying. No added
+dependency or borrowed model is needed. Read actual per-role images alongside the
+existing Three.js colour-management and lighting references.

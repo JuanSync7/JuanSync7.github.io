@@ -7,6 +7,7 @@ cache writers while rebuilding. `rooms:verify` remains the complete ordered gate
 | --- | --- |
 | Seed replay, four palettes/theme, three table designs, geometry cache independence | `npm run rooms:lighting` |
 | Light roles, one shadow caster, haze/halo budget, mirrored source, mode restoration and texture disposal | Same command; seven mutated output failures must be rejected |
+| Per-role wall/furniture/table midtones and gradients, nine captured failures, six mutated real images and exact mode restoration | `npm run rooms:tones`; 36 actual-kernel renders with eroded ID masks, separate from the scene-wide histogram |
 | 243 layout/construction/furniture combinations; non-overlap, table anchor and camera projection | `npm run tabletop:check` |
 | 243 functional programs, human scale, grounded furniture and connected walking routes | `npm run rooms:program` |
 | 243 support cases plus buried/floating/detached failures | `npm run rooms:supports` |
@@ -18,6 +19,8 @@ Reports start with `passed:false` and become green only after completion. Missin
 browser/server or an assertion failure must leave a failing report. Public CI runs
 the focused lighting check through `tabletop:check`; browser variation is included
 in the appearance run. Do not call a sheet inspected until it has actually been read.
+CI and `rooms:verify` also run `rooms:tones`; `rooms:materials` verifies the composed
+texture, tonal and PCSS hooks and reversible tonal uniforms without global shader edits.
 
 A proper eye interior can fill its frame; its scoped occupancy guard differs from
 the overview's global 50% coverage ceiling. Contrast, palette and highlight checks

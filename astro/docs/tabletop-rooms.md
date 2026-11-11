@@ -181,3 +181,7 @@ references, design choices, rejected cases and limits. The changelog lives in
 Read the actual room, seed, mode and camera captures before handoff. A passing pixel
 audit does not establish good room proportions. Vault feedback archives exact evidence
 and remains a report for review; it does not adopt global guidance or publish the site.
+
+The [11 November tonal treatment](room-tonal-depth.md) records the material-value
+hierarchy, world-space gradient/contact approximation and per-role actual-image
+regression checks (`npm run rooms:tones`). Global figure limits remain unchanged.

@@ -19,6 +19,12 @@ walls and a window key blocked by the wall. The variation browser flattens an ac
 tonal check to reject it. The existing room regressions retain overlapping,
 floating-support, wrong camera and opaque floor/ceiling failure cases.
 
+For the 11 November tonal correction, run `npm run rooms:tones`. The captured
+pre-correction metrics for all nine native themes must fail. Three real-image
+mutations (crushed furniture, flattened wall, flattened table) must fail in each
+renderer. See `astro/docs/room-tonal-depth.md` for the measured dining comparison.
+These checks keep bright props from masking dark cabinets; read actual images.
+
 ## Voxel atmosphere
 
 The pinned old renderer is the failed example for flat light/invisible weather.

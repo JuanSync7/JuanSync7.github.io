@@ -108,10 +108,10 @@ export function setRoomLighting(state: RoomLighting, appearance: RoomAppearance)
   key.color.set(colour ? roomHexOf(mood.key) : hexOf('inkStrong'));
   key.intensity = colour ? mood.keyPower : 4.2;
   bounce.color.set(colour ? roomHexOf(mood.bounce) : hexOf('inkStrong'));
-  bounce.intensity = colour ? mood.bouncePower : 0.35;
+  bounce.intensity = colour ? mood.bouncePower : 0.5;
   sky.color.set(colour ? roomHexOf(mood.sky) : hexOf('inkStrong'));
-  sky.groundColor.set(colour ? roomHexOf(mood.ground) : hexOf('ground'));
-  sky.intensity = colour ? mood.skyPower : 0.5;
+  sky.groundColor.set(colour ? roomHexOf(mood.ground) : hexOf('inkFaint'));
+  sky.intensity = colour ? mood.skyPower : 0.9;
   if (lamp) {
     lamp.color.set(colour ? roomHexOf(mood.lamp) : hexOf('inkStrong'));
     lamp.intensity = colour ? mood.lampPower : 2.2;
