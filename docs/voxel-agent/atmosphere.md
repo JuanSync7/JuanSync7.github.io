@@ -27,6 +27,12 @@ fingerprint format; both formats are reconstructed in verification.
 The public controls offer biome light/weather, dawn, noon, evening, night and explicit
 weather families. The shared figure clock freezes effects under reduced motion.
 
+Island snowfall uses `islandSnowSize: 0.14`, giving a maximum edge of 0.112 terrain
+voxels at the compact island scale, about 71% smaller than the previous flakes.
+This addresses the 2026-11-11 size correction; particle density, fall motion and
+the wider world's snow size stay unchanged. Check actual instance dimensions and
+inspect overview, close zoom and phone views rather than testing visibility alone.
+
 `astro/src/figures/kit/voxel-atmosphere/pipeline.json` owns the update order;
 `policy.json` owns light presets and resource limits. `scene.ts` emits an actual trace.
 The web design agent routes visual work through this playbook and geometry work
