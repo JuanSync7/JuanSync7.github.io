@@ -30,3 +30,10 @@ The default camera orbits slowly; dragging or keyboard navigation pauses it and 
 chosen pose. The orbit toggle resumes motion. Reduced motion freezes the figure clock.
 
 Water detail review: shoreline tests exclude submerged terrain columns, not merely missing height cells. Otherwise every pond bed suppresses its waves and receives shore foam. Foam uses seeded irregular samples on open water only; ice and lava do not receive white foam. The real GPU probe includes submerged beds, fixed ice, a cascade join and a true bank.
+
+Lighting and weather now use the web design agent's [atmosphere playbook](../../web-design-agent/playbooks/voxel-atmosphere.md).
+The canonical post-placement sequence is in `voxel-atmosphere/pipeline.json`;
+`atmosphere-check.mjs` verifies its actual trace and `atmosphere-browser.mjs` measures
+real GPU shadow, glow, fog and particle contributions. The old `sunlight` helper is
+only the neutral standalone model-catalogue rig. Do not restore high ambient fill in
+the interactive scenes to hide a failed night/readability case.

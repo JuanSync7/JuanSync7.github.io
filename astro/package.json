@@ -18,7 +18,7 @@
     "figures:look": "node scripts/figures/look.mjs",
     "figures:audit": "node scripts/figures/check.mjs && node scripts/figures/look.mjs",
     "figures:selftest": "node scripts/figures/check.mjs --selftest && node scripts/figures/look.mjs --selftest --no-sheet",
-    "tabletop:check": "npm run rooms:supports && npm run rooms:depth && node scripts/figures/tabletop-check.mjs",
+    "tabletop:check": "npm run rooms:camera && npm run rooms:supports && npm run rooms:depth && node scripts/figures/tabletop-check.mjs",
     "tabletop:browser": "node scripts/figures/tabletop-browser.mjs --appearance",
     "format:figures": "prettier --write src/figures",
     "posts:check": "node scripts/posts/check.mjs",
@@ -41,6 +41,7 @@
     "rooms:verify": "node scripts/figures/room-verify.mjs",
     "rooms:program": "node scripts/figures/room-program-check.mjs",
     "rooms:supports": "node scripts/figures/room-support-regression.mjs",
+    "rooms:camera": "node scripts/figures/room-camera-check.mjs",
     "rooms:depth": "node scripts/figures/room-depth-check.mjs",
     "vault:search": "node scripts/vault/search-check.mjs",
     "vault:diagrams": "node scripts/vault/export.mjs --check && node scripts/vault/diagram-check.mjs",
@@ -77,7 +78,10 @@
     "deepdive:selftest": "node scripts/deepdive/selftest.mjs",
     "deepdive:browser": "node scripts/deepdive/browser.mjs",
     "deepdive:gallery": "node scripts/deepdive/gallery.mjs",
-    "deepdive:agent": "node scripts/deepdive/agent.mjs"
+    "deepdive:agent": "node scripts/deepdive/agent.mjs",
+    "voxel:atmosphere-check": "node scripts/voxel/web-design-workflow.mjs && node scripts/voxel/atmosphere-check.mjs",
+    "voxel:atmosphere-browser": "node scripts/voxel/atmosphere-browser.mjs",
+    "voxel:atmosphere-verify": "node scripts/voxel/verify-atmosphere.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",

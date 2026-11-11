@@ -1,11 +1,27 @@
 # Changelog
 
+## 2026-11-09
+
+Voxel Worlds and Voxel Island gain weather-aware directional light, cached cast shadows,
+night/evening presets, fog, source-attached glow and visible rain/snow/mist/dust/ash.
+Shared controls and the 2D fallback retain weather/light behavior. The display name
+Voxel Island corrects the old spelling while seed URLs stay valid. A web design agent
+playbook, independent GPU ablations, references and reproducible vault evidence own
+the visual workflow.
+
 ## 2026-11-08
 
 Hardware laminate seams now follow their host's emitted chamfered profile. Seed 1's
 lower board seams no longer extend past the corners. Explicit host binding and
 actual-face containment checks cover all six laminate assemblies and transformed
 profiles, including a negative fixture reproducing the square-seam defect.
+
+Themed rooms retain one level lens at a floor-relative human eye height across their entrance orbit, removing
+the extreme asymmetric field of view caused by nearby furniture at 0°. Solid themed
+ceilings close the wall tops at eye level, with seeded coffers, beams, panels and
+acoustic slats; the isometric overview cuts them away. Ceiling/pendant shadow keys
+remain inside the roof. Independent camera/ceiling regression checks preserve the
+old failures, mirrored projections, source placement and fallback visibility.
 
 ## 2026-11-07
 

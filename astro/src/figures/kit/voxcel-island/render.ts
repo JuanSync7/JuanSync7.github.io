@@ -1,16 +1,17 @@
 import {
-  AmbientLight,
   BoxGeometry,
   Color,
-  DirectionalLight,
   Group,
   InstancedMesh,
   Matrix4,
   Mesh,
-  MeshLambertMaterial,
+  InstancedBufferAttribute,
   MeshBasicMaterial,
 } from 'three';
 import type { ThreeEnv, ThreeFrame } from '../../defineThree';
+import { emissiveVoxelMaterial } from '../voxel-atmosphere/material';
+import { buildAtmosphere } from '../voxel-atmosphere/scene';
+import { practicalSources } from '../voxel-atmosphere/practicals';
 import { hexOf } from '../ink';
 import { generateWorld } from './generate';
 import { blockMesh } from './mesh';
@@ -28,6 +29,7 @@ interface WaterCell {
 export interface WorldView {
   world: World;
   pose: IslandPose;
+  light: ReturnType<typeof buildAtmosphere>;
   root: Group;
   water: InstancedMesh;
   waterCells: WaterCell[];
@@ -38,22 +40,21 @@ export interface WorldView {
   particles: { mesh: Mesh; x: number; y: number; z: number; phase: number; kind: string }[];
 }
 
-export function buildWorldView({ scene, camera }: ThreeEnv, spec: WorldSpec, seed: number): WorldView {
+export function buildWorldView({ scene, camera, renderer }: ThreeEnv, spec: WorldSpec, seed: number): WorldView {
   const world = generateWorld(spec, seed),
     root = new Group();
   scene.add(root);
-  scene.add(new AmbientLight(hexOf('ink'), 1.8));
-  const sun = new DirectionalLight(hexOf('worldSnow'), 2.8);
-  sun.position.set(-15, 40, 20);
-  scene.add(sun);
   camera.far = 400;
   camera.fov = 30;
-  root.add(blockMesh(world.blocks));
+  const sources = practicalSources(world, (kind) => kind === 'cottage');
+  const solid = blockMesh(world.blocks, sources.cells);
+  solid.castShadow = solid.receiveShadow = true;
+  root.add(solid);
   const waterCells: WaterCell[] = [...world.liquids].map(([k, liquid]) => {
     const [x = 0, z = 0] = k.split(',').map(Number);
     return { x, z, liquid, edge: shoreCell(world, x, z) };
   });
-  const water = new InstancedMesh(new BoxGeometry(1, 1, 1), new MeshLambertMaterial(), waterCells.length);
+  const water = new InstancedMesh(new BoxGeometry(1, 1, 1), emissiveVoxelMaterial(), waterCells.length);
   const colour = new Color();
   waterCells.forEach(({ liquid, edge }, i) => {
     colour.set(hexOf(liquid.kind === 'lava' ? 'worldEmber' : liquid.kind === 'ice' ? 'worldIce' : 'worldWater'));
@@ -61,7 +62,12 @@ export function buildWorldView({ scene, camera }: ThreeEnv, spec: WorldSpec, see
     water.setColorAt(i, colour);
   });
   // Dynamic bounds include the entire water volume, not the initial identity matrices.
+  water.geometry.setAttribute(
+    'voxelEmission',
+    new InstancedBufferAttribute(new Float32Array(waterCells.map((c) => (c.liquid.kind === 'lava' ? 1 : 0))), 1),
+  );
   water.frustumCulled = false;
+  water.receiveShadow = true;
   root.add(water);
   const foamCells = waterCells.filter(
     ({ x, z, liquid, edge }) =>
@@ -101,29 +107,9 @@ export function buildWorldView({ scene, camera }: ThreeEnv, spec: WorldSpec, see
       root.add(particle);
       particles.push({ mesh: particle, x: emitter.x, y: emitter.y, z: emitter.z, phase: i / 5, kind: emitter.kind });
     }
-  if (spec.biome === 'snow' || spec.biome === 'mushroom')
-    for (let i = 0; i < 40; i++) {
-      const x = Math.sin(i * 21.7 + seed) * spec.radius * 0.8,
-        z = Math.sin(i * 13.9 + seed) * spec.radius * 0.8;
-      const particle = new Mesh(
-        new BoxGeometry(0.13, 0.13, 0.13),
-        new MeshBasicMaterial({
-          color: hexOf(spec.biome === 'snow' ? 'worldSnow' : 'signal'),
-          transparent: true,
-          opacity: 0.6,
-        }),
-      );
-      root.add(particle);
-      particles.push({
-        mesh: particle,
-        x,
-        y: (surface.get(cell(Math.round(x), Math.round(z))) ?? 3) + 5,
-        z,
-        phase: i / 40,
-        kind: spec.biome === 'snow' ? 'snow' : 'spore',
-      });
-    }
-  return { world, pose: buildIslandPose(world), root, water, waterCells, foam, foamCells, boats, surface, particles };
+  const pose = buildIslandPose(world),
+    light = buildAtmosphere({ scene, camera, renderer }, world, root, pose.bounds, sources);
+  return { world, pose, light, root, water, waterCells, foam, foamCells, boats, surface, particles };
 }
 
 const matrix = new Matrix4();
@@ -142,9 +128,9 @@ export function updateWorldView({
 }: ThreeFrame<WorldView>): string {
   const { world, water, waterCells, foam, foamCells, boats, particles, surface } = state;
   if (unseen) return `${world.spec.biome} · ${world.props.length} objects · ${world.boats.length} boats`;
-  const view = viewOf(data),
-    weather = view.weather;
+  const view = viewOf(data);
   updateIslandPose(camera, state.pose, world, { w, h, t, pointer, hover, data, still, dt, pulses: [] });
+  state.light.update(view.sunlight, view.weatherKind, view.weather, t);
   waterCells.forEach(({ x, z, liquid, edge }, i) => {
     const dy = liquid.kind === 'ice' ? 0 : swell(x, z, t) * (edge ? 0.3 : 1);
     const height = liquid.level - liquid.bottom + 1 + dy;
@@ -168,7 +154,7 @@ export function updateWorldView({
     boat.rotation.x = Math.sin(t * 1.1 + anchor.z * 0.19) * 0.012;
   });
   particles.forEach((p) => {
-    p.mesh.visible = weather || (p.kind !== 'snow' && p.kind !== 'spore');
+    p.mesh.visible = p.kind !== 'snow' && p.kind !== 'spore';
     const phase = (t * (p.kind === 'snow' ? 0.09 : 0.18) + p.phase) % 1;
     const falling = p.kind === 'snow';
     const y = falling ? 30 - phase * 32 : p.y + phase * (p.kind === 'spore' ? 5 : 4);

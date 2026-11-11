@@ -11,7 +11,10 @@ export function checkRoom(p, { roomPlan, roomModels, roomView, roomProject, room
     'Themed table anchor: dining seats on both sides; task surfaces meet the back wall',
   );
   assert.equal(plan.floor, table.lo[1], 'Furniture must stand on the floor');
-  assert.equal(parts.filter((s) => !s.interactive && !s.cutaway && s.side !== 'floor').length, 3);
+  assert.equal(
+    parts.filter((s) => !s.interactive && !s.cutaway && ['back', 'left', 'right'].includes(s.side)).length,
+    3,
+  );
   const floor = parts.find((s) => s.side === 'floor');
   assert(Math.abs(floor.model.bounds.hi[1] - plan.floor) < 1e-9);
   for (const part of parts.filter((s) => s.interactive))
@@ -107,7 +110,11 @@ export function checkRoom(p, { roomPlan, roomModels, roomView, roomProject, room
           assert(Math.abs(v.position[0] - (angle === 0 ? -plan.half : plan.half)) < 1e-9);
           assert(Math.abs(v.position[2] - plan.front) < 1e-9, 'Orbit end must meet the side-wall start');
         }
-        if (view === 'eye') assert(Math.abs(v.position[1] - p.eye) < 1e-9, 'Eye height changes during orbit');
+        if (view === 'eye')
+          assert(
+            v.position[1] - plan.floor >= 3.5 && v.position[1] - plan.floor <= 3.95,
+            'Human eye height must be measured from the room floor',
+          );
         if (view === 'isometric') {
           assert.equal(v.projection.dist, Infinity, 'Overview must use parallel projection');
           assert(Math.abs(yaw - ((angle - 90) * Math.PI) / 180) < 1e-9);
@@ -125,7 +132,7 @@ export function checkRoom(p, { roomPlan, roomModels, roomView, roomProject, room
           }
         }
         if (angle === 90) assert(roomVisible(p, 'left', v) && roomVisible(p, 'right', v));
-        if (angle === 90)
+        if (angle === 90 && view === 'isometric')
           for (const part of fittings.filter((s) => s.mount === 'floor')) {
             const b = part.model.bounds;
             for (const x of [b.lo[0], b.hi[0]])
@@ -140,13 +147,15 @@ export function checkRoom(p, { roomPlan, roomModels, roomView, roomProject, room
           }
         if (angle === 180) assert(!roomVisible(p, 'right', v) && roomVisible(p, 'left', v));
         if (angle === 0) assert(!roomVisible(p, 'left', v) && roomVisible(p, 'right', v));
-        for (const b of [table, ...p.items.map((it) => it.bounds)])
-          for (const x of [b.lo[0], b.hi[0]])
-            for (const y of [b.lo[1], b.hi[1]])
-              for (const z of [b.lo[2], b.hi[2]]) {
-                const q = new Vector3(x, y, z).project(cam);
-                assert(Math.abs(q.x) < 0.999 && Math.abs(q.y) < 0.999, `Cropped tabletop ${key}/${angle}/${view}`);
-              }
+        // Full-envelope framing belongs to the overview; eye level retains its lens.
+        if (view === 'isometric')
+          for (const b of [table, ...p.items.map((it) => it.bounds)])
+            for (const x of [b.lo[0], b.hi[0]])
+              for (const y of [b.lo[1], b.hi[1]])
+                for (const z of [b.lo[2], b.hi[2]]) {
+                  const q = new Vector3(x, y, z).project(cam);
+                  assert(Math.abs(q.x) < 0.999 && Math.abs(q.y) < 0.999, `Cropped tabletop ${key}/${angle}/${view}`);
+                }
         for (const x of [plan.bounds.lo[0], plan.bounds.hi[0]])
           for (const y of [plan.bounds.lo[1], plan.bounds.hi[1]])
             for (const z of [plan.bounds.lo[2], plan.bounds.hi[2]]) {

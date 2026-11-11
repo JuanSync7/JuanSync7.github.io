@@ -10,6 +10,7 @@ export interface CameraView {
   orbit: boolean;
   weather: boolean;
   sunlight: string;
+  weatherKind: string;
 }
 export const DEFAULT_VIEW: CameraView = {
   focus: '',
@@ -21,6 +22,7 @@ export const DEFAULT_VIEW: CameraView = {
   orbit: true,
   weather: true,
   sunlight: 'seed',
+  weatherKind: 'seed',
 };
 export function viewOf(data: unknown): CameraView {
   const d = typeof data === 'object' && data !== null ? data : {};
@@ -41,6 +43,7 @@ export function viewOf(data: unknown): CameraView {
         : 1,
     orbit: 'orbit' in d ? d.orbit === true : DEFAULT_VIEW.orbit,
     weather: !('weather' in d) || d.weather !== false,
+    weatherKind: 'weatherKind' in d && typeof d.weatherKind === 'string' ? d.weatherKind : 'seed',
     sunlight: 'sunlight' in d && typeof d.sunlight === 'string' ? d.sunlight : 'seed',
   };
 }

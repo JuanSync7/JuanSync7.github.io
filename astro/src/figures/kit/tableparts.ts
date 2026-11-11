@@ -13,6 +13,7 @@ export type FurnitureFinish =
   | 'foot'
   | 'tile'
   | 'wall'
+  | 'ceiling'
   | 'floor'
   | 'rug'
   | 'stitch'

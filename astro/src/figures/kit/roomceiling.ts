@@ -1,3 +1,4 @@
+import { roomRoof } from './roomroof';
 import { placedRoomPart } from './roomcompose';
 import { roomPlan } from './roomplan';
 import type { TableScene } from './tabletop';
@@ -11,6 +12,7 @@ export function roomCeiling(p: TableScene): RoomPart[] {
   const mountTop = r.top - (pendant ? 0.07 : 0.1);
   const end = pendant ? 0.125 : 1.1 + (clinical ? 1.5 : 0.19);
   return [
+    roomRoof(p),
     placedRoomPart(
       'Ceiling fixture mounting rails',
       'back',

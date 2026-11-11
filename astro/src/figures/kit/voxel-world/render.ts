@@ -7,22 +7,26 @@ import { generateWorld } from './generate';
 import { blockMesh } from './mesh';
 import { buildWater } from './water-view';
 import { buildEffects } from './effects';
-import { sunlight } from './lighting';
+import { buildAtmosphere } from '../voxel-atmosphere/scene';
+import { practicalSources } from '../voxel-atmosphere/practicals';
 import { worldBounds } from './camera';
 import { frameTerrain } from './camera-clearance';
 import { solidVolume } from './volume';
 import { BUILDINGS, TREES, type WorldSpec } from './types';
 
-export function buildWorldView({ scene, camera }: ThreeEnv, spec: WorldSpec, seed = spec.layoutSeed) {
+export function buildWorldView({ scene, camera, renderer }: ThreeEnv, spec: WorldSpec, seed = spec.layoutSeed) {
   const world = generateWorld(spec, seed),
     root = new Group();
   scene.add(root);
-  const solid = blockMesh(world.blocks, world);
+  const sources = practicalSources(world, (kind) => BUILDINGS.has(kind));
+  const solid = blockMesh(world.blocks, world, sources.cells);
+  solid.castShadow = solid.receiveShadow = true;
   root.add(solid);
   const waterView = buildWater(world, root),
-    effects = buildEffects(world, root),
-    light = sunlight(scene, spec);
-  const bounds = worldBounds(world);
+    effects = buildEffects(world, root);
+  waterView.mesh.receiveShadow = true;
+  const bounds = worldBounds(world),
+    light = buildAtmosphere({ scene, camera, renderer }, world, root, bounds, sources);
   camera.far = 1000;
   camera.near = 0.5;
   camera.fov = 32;
@@ -80,8 +84,8 @@ export function updateWorldView({
     );
     state.poseKey = poseKey;
   }
-  state.light.update(view.sunlight);
+  state.light.update(view.sunlight, view.weatherKind, view.weather, t);
   state.waterView.update(t);
-  state.effects.update(t, view.weather);
+  state.effects.update(t, false);
   return state.readout;
 }

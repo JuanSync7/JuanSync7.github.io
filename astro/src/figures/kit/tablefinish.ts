@@ -22,6 +22,7 @@ export function tableFinish(
   if (kind === 'room') {
     tone =
       detail === 'wall' ||
+      detail === 'ceiling' ||
       detail === 'brick' ||
       detail === 'wallpaper' ||
       detail === 'walltile' ||
@@ -57,6 +58,7 @@ export function tableFinish(
     metalness = detail === 'metal' ? 0.2 : 0;
     strength =
       detail === 'wall' ||
+      detail === 'ceiling' ||
       detail === 'brick' ||
       detail === 'wallpaper' ||
       detail === 'walltile' ||
