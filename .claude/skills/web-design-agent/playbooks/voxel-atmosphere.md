@@ -17,6 +17,8 @@ weather, or night/glow/fog/shadows are being changed.
 5. Instance precipitation and low mist. Seed sites once; evaluate motion from figure
    time. Respect topmost terrain/props/cave roofs. Keep local smoke/fire separate from
    the ambient-weather switch. Reduced motion uses the frozen figure clock.
+   Judge particle size against terrain voxels at overview, close zoom and phone sizes;
+   visibility alone does not justify large flakes. Island snow uses its own policy size.
 6. Run `voxel:atmosphere-check`, then `voxel:atmosphere-browser`. Use ablations of actual
    GPU effects, not scene labels. Run the existing world/island geometry, water, camera,
    browser and fixed figure audits. Inspect both numbered seed sheets and phone images.

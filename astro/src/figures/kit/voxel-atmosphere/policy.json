@@ -5,6 +5,8 @@
   "maxGlows": 12,
   "maxWeatherParticles": 640,
   "mistInstances": 24,
+  "snowSize": 0.48,
+  "islandSnowSize": 0.14,
   "light": {
     "night": { "key": 1.05, "sky": 0.46, "fill": 0.06, "elevation": 0.6 },
     "noon": { "key": 2.65, "sky": 0.65, "fill": 0.12, "elevation": 1.05 },

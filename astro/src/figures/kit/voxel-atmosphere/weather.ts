@@ -8,7 +8,7 @@ import type { AtmosphereProfile } from './profile';
 import type { AtmosphereWorld } from './types';
 
 /** Seeded land samples plus the topmost solid field keep precipitation above trees and cave roofs. */
-export function buildWeather(world: AtmosphereWorld, root: Group) {
+export function buildWeather(world: AtmosphereWorld, root: Group, snowSize = policy.snowSize) {
   const surface = new Map(world.heights);
   for (const b of world.blocks) {
     const key = `${b.x},${b.z}`;
@@ -60,9 +60,9 @@ export function buildWeather(world: AtmosphereWorld, root: Group) {
       matrix.makeRotationZ(rain ? Math.atan((profile.wind * 12) / 18) : p.drift);
       matrix.scale(
         dimensions.set(
-          size * (rain ? 0.11 : snow ? 0.48 : 0.3),
-          size * (rain ? 2.3 : snow ? 0.48 : 0.24),
-          size * (rain ? 0.11 : snow ? 0.48 : 0.3),
+          size * (rain ? 0.11 : snow ? snowSize : 0.3),
+          size * (rain ? 2.3 : snow ? snowSize : 0.24),
+          size * (rain ? 0.11 : snow ? snowSize : 0.3),
         ),
       );
       matrix.setPosition(x, ground + height, z);

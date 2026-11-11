@@ -11,6 +11,7 @@ import {
 import type { ThreeEnv, ThreeFrame } from '../../defineThree';
 import { emissiveVoxelMaterial } from '../voxel-atmosphere/material';
 import { buildAtmosphere } from '../voxel-atmosphere/scene';
+import atmospherePolicy from '../voxel-atmosphere/policy.json';
 import { practicalSources } from '../voxel-atmosphere/practicals';
 import { hexOf } from '../ink';
 import { generateWorld } from './generate';
@@ -108,7 +109,14 @@ export function buildWorldView({ scene, camera, renderer }: ThreeEnv, spec: Worl
       particles.push({ mesh: particle, x: emitter.x, y: emitter.y, z: emitter.z, phase: i / 5, kind: emitter.kind });
     }
   const pose = buildIslandPose(world),
-    light = buildAtmosphere({ scene, camera, renderer }, world, root, pose.bounds, sources);
+    light = buildAtmosphere(
+      { scene, camera, renderer },
+      world,
+      root,
+      pose.bounds,
+      sources,
+      atmospherePolicy.islandSnowSize,
+    );
   return { world, pose, light, root, water, waterCells, foam, foamCells, boats, surface, particles };
 }
 
