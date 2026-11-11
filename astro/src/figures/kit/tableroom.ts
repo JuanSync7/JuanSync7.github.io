@@ -1,3 +1,4 @@
+import { mirroredRoom } from './roommirror';
 import type { Vec3 } from './camera';
 import { finish, TableDraft, type PropModel } from './tableparts';
 import { roomPlan, type RoomPlan, type RoomSide } from './roomplan';
@@ -26,7 +27,7 @@ export interface RoomPart {
 }
 const CACHE = new Map<string, RoomPart[]>();
 export function roomModels(p: TableScene): RoomPart[] {
-  const key = `${p.theme.id}:${p.roomVariant}`,
+  const key = `${p.theme.id}:${p.roomVariant}:${p.layoutVariant}:${p.furnitureVariant}`,
     cached = CACHE.get(key);
   if (cached) return cached;
   const r = roomPlan(p),
@@ -119,8 +120,13 @@ export function roomModels(p: TableScene): RoomPart[] {
   const entry = parts.at(-1);
   if (entry) entry.entrance = true;
   parts.push(...roomDressing(p), ...roomAccents(p), ...roomSideGallery(p));
-  CACHE.set(key, parts);
-  return parts;
+  const result = r.mirror < 0 ? mirroredRoom(parts) : parts;
+  CACHE.set(key, result);
+  if (CACHE.size > 18) {
+    const oldest = CACHE.keys().next().value;
+    if (oldest !== undefined) CACHE.delete(oldest);
+  }
+  return result;
 }
 function backWall(p: TableDraft, r: RoomPlan, theme: string): void {
   const textured = theme === 'kitchen' || theme === 'messy';

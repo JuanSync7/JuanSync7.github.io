@@ -18,7 +18,7 @@ import { roomPaint, type RoomPaint } from './roompaint';
 import { attachRoomMaterial } from './roommaterial';
 
 /** Only drawn markings survive. Polygon seams and hidden wireframe edges are omitted. */
-export function solidMesh(model: PropModel, kind: TableObject, theme: ThemeId): Group {
+export function solidMesh(model: PropModel, kind: TableObject, theme: ThemeId, palette = 0): Group {
   const group = new Group(),
     buckets = new Map<
       string,
@@ -40,7 +40,7 @@ export function solidMesh(model: PropModel, kind: TableObject, theme: ThemeId): 
       continue;
     }
     const finish = tableFinish(kind, solid, theme, surface.finish);
-    const paint = roomPaint(kind, theme, surface.finish, solid, phase);
+    const paint = roomPaint(kind, theme, surface.finish, solid, phase, palette);
     const key = `${finish.tone}:${finish.roughness}:${finish.metalness}:${finish.strength}:${paint.tone}:${paint.pattern}:${paint.emission}`;
     const bucket = buckets.get(key) ?? {
       tone: finish.tone,

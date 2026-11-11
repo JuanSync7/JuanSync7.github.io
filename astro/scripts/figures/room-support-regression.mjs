@@ -25,11 +25,13 @@ try {
   });
   const { arrange, THEMES, roomPlan, roomModels } = await import(pathToFileURL(file));
   for (const theme of THEMES)
-    for (const roomVariant of [0, 1, 2]) {
-      const p = { ...arrange(() => 0.5, theme.id), roomVariant };
-      report.contents += checkRoomSupports(p, roomModels(p), roomPlan(p));
-      report.rooms++;
-    }
+    for (const roomVariant of [0, 1, 2])
+      for (const layoutVariant of [0, 1, 2])
+        for (const furnitureVariant of [0, 1, 2]) {
+          const p = { ...arrange(() => 0.5, theme.id), roomVariant, layoutVariant, furnitureVariant };
+          report.contents += checkRoomSupports(p, roomModels(p), roomPlan(p));
+          report.rooms++;
+        }
   const p = { ...arrange(() => 0.5, 'study'), roomVariant: 1 },
     plan = roomPlan(p),
     original = roomModels(p);

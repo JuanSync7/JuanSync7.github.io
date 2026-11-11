@@ -14,7 +14,7 @@
 | Bar | Dark walnut and brass | Burgundy, bottle green, charcoal | Lower amber light with shelf/candle pools |
 | Lab | Epoxy/porcelain and stainless steel | Cool pale walls, blue-grey, aqua glass | Clear neutral light and cool task illumination |
 
-Use `roomstyles.ts` for palette roles and `roomlightmoods.ts` for the physical
+Use `roomstyles.ts` for base palette roles and `roompalettes.ts` for four seeded coordinated choices per theme and `roomlightmoods.ts` for the physical
 light settings. Keep a material's albedo separate from the light that illuminates
 it. A dark bar and a bright lab need different key/fill balance; changing all
 materials to a darker colour does not establish night lighting.
@@ -61,3 +61,6 @@ leaving coloured emission or reflection intensity behind in monochrome mode.
 Do not import an external rendering framework just to add material detail. The
 existing Three.js runtime owns rendering and cleanup. External assets or helper
 code require a source/license record and deterministic loading behavior.
+
+See the [web design lighting playbook](../../web-design-agent/playbooks/lighting.md)
+for source/fill steps, evening/low-light recipes, bounded glow/haze and check contracts.

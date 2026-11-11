@@ -14,7 +14,7 @@ separately in `astro/scripts/figures/` and judge the output, not the builder's i
 | `TableDraft.roundRod(a, b, radius)` / `tableparts.ts` | A solid rod between endpoints; distinct from the base `Draft.tube(x, y, z, outer, inner, height)` hollow tube. The names must remain separate. |
 | `placedRoomPart(...)` / `roomcompose.ts` | Build one owned draft, transform once, then measure bounds. `support` is for thin textiles, not a collision exemption for arbitrary furniture. |
 | `roomFloor` | Structural plinth, tessellated upward grout bed and individual boards/tiles. Avoid a room-wide underlay at the endpoint near plane; image checks protect boards and rugs from opaque patches. |
-| `roomModels(p)` / `tableroom.ts` | Three walls, floor and eye-view ceiling, architectural fixtures and furnished zones. Cached by theme/room variant: builders must not depend on unkeyed inventory randomness. |
+| `roomModels(p)` / `tableroom.ts` | Three walls, floor and eye-view ceiling, architectural fixtures and furnished zones. Cached by theme/room/layout/furniture variant: builders must not depend on unkeyed inventory randomness. |
 | `roomZones`, `roomDressing` | Functional secondary zone, storage, chairs, textiles, trolley, lamps and wall art. Clinical utility and domestic lounge pieces have different programs. |
 | `chair`, `loungeSeat`, `sideboard`, `tallCabinet`, `sinkCounter`, `refrigerator`, `craftBench` | Specific geometry builders in `roomseats`, `roomlounge`, `roomstorage`, `roomkitchen`, `roomworkshop`. Their local back is −z; turn the whole model toward the room. |
 | `themedWindow`, `roomDoor`, `roomWallShell`, `wallFinish` | Window treatment, door hardware and architectural surfaces. Casements have real shell openings; avoid tiles/patterns covering those openings. |
@@ -27,3 +27,5 @@ separately in `astro/scripts/figures/` and judge the output, not the builder's i
 | `roomView`, `roomProject`, `roomVisible`, `roomClip` | Native/fallback camera agreement, floor-relative human eye height (3.7 units / ~1.68 m) and horizontal sightline, 55° base vertical lens independent of angle/furniture, mirrored entrance arc, orthographic preset, cutaways and near-plane clipping. Zoom changes the lens, not the camera path. |
 | `flatRoomSurfaces`, `orderedRoomFaces` / `roomflatorder.ts`, `roomflatbsp.ts` | Cached BSP geometry orders each compound room assembly for the current eye or orthographic direction. Preserve room layers and fragment texture clips; average face depth cannot order a tall bookcase. |
 | `buildRoom`, `updateRoom`, `flatRoom` | Geometry/material/view rendering and selection. A static room caches its input stamp and calls `ThreeFrame.renderWhen`; other figures retain their normal runtime. |
+
+Lighting and coordinated seeded variation also use the [web design kernel](../../web-design-agent/kernel/INDEX.md).

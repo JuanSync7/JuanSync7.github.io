@@ -57,3 +57,6 @@ names the public geometry/material/view functions and their coordinate gotchas.
 Keep strict TypeScript, kit files below 200 nonblank lines and the Three.js figure
 below 350. No figure-owned DOM, clocks, animation loops or per-frame randomness.
 No public push or deployment is part of `rooms:verify`.
+
+For lighting and within-theme palette/design/layout work, follow the
+[web design lighting and seed playbooks](../web-design-agent/SKILL.md).

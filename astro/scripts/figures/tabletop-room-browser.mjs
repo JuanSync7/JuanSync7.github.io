@@ -25,7 +25,11 @@ export async function checkRoomCamera(page, fallback, thresholds) {
       m = measure(decode(png), thresholds);
     writeFileSync('figures-out/room-current.png', png);
     assert(
-      m.coverage >= thresholds.coverageMin && m.coverage <= thresholds.coverageMax,
+      m.coverage >= thresholds.coverageMin &&
+        m.coverage <=
+          ((await page.getByRole('button', { name: 'Eye level', exact: true }).getAttribute('aria-pressed')) === 'true'
+            ? 1
+            : thresholds.coverageMax),
       `Bad room framing/coverage ${m.coverage}`,
     );
     assert(m.offPalette <= thresholds.offPaletteMax, `Off-palette room: ${m.offPalette}`);

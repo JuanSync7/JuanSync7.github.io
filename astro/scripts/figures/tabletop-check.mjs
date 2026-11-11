@@ -148,6 +148,11 @@ try {
   const orientations = new Map(THEMES.map((t) => [t.id, new Set()]));
   const themeCounts = new Map();
   const fixtures = new Map();
+  for (const theme of THEMES)
+    for (const roomVariant of [0, 1, 2])
+      for (const layoutVariant of [0, 1, 2])
+        for (const furnitureVariant of [0, 1, 2])
+          checkRoom({ ...arrange(rng(42), theme.id), roomVariant, layoutVariant, furnitureVariant }, sceneModule);
   for (const { seed, theme } of cases) {
     const p = arrange(rng(seed ^ 0x9e3779b9), theme);
     themeCounts.set(p.theme.id, (themeCounts.get(p.theme.id) ?? 0) + 1);
@@ -285,7 +290,7 @@ try {
   }
   assert.equal(kinds.size, PROP_KINDS.length);
   assert.equal(themeCounts.size, 9);
-  assert.equal(checkedRooms.size, 27, 'All seeded room construction variants must be covered');
+  assert.equal(checkedRooms.size, 243, 'All seeded room construction variants must be covered');
   const furniture = new Set(THEMES.map((t) => JSON.stringify(tabletop(arrange(rng(42), t.id)).surfaces)));
   assert.equal(furniture.size, 9, 'Each theme needs its own table geometry');
   for (const t of THEMES) {

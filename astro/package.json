@@ -18,7 +18,7 @@
     "figures:look": "node scripts/figures/look.mjs",
     "figures:audit": "node scripts/figures/check.mjs && node scripts/figures/look.mjs",
     "figures:selftest": "node scripts/figures/check.mjs --selftest && node scripts/figures/look.mjs --selftest --no-sheet",
-    "tabletop:check": "npm run rooms:camera && npm run rooms:supports && npm run rooms:depth && node scripts/figures/tabletop-check.mjs",
+    "tabletop:check": "npm run rooms:lighting && npm run rooms:camera && npm run rooms:supports && npm run rooms:depth && node scripts/figures/tabletop-check.mjs",
     "tabletop:browser": "node scripts/figures/tabletop-browser.mjs --appearance",
     "format:figures": "prettier --write src/figures",
     "posts:check": "node scripts/posts/check.mjs",
@@ -79,6 +79,8 @@
     "deepdive:browser": "node scripts/deepdive/browser.mjs",
     "deepdive:gallery": "node scripts/deepdive/gallery.mjs",
     "deepdive:agent": "node scripts/deepdive/agent.mjs",
+    "rooms:lighting": "node scripts/figures/room-lighting-check.mjs",
+    "rooms:variation": "node scripts/figures/room-variation-browser.mjs",
     "voxel:atmosphere-check": "node scripts/voxel/web-design-workflow.mjs && node scripts/voxel/atmosphere-check.mjs",
     "voxel:atmosphere-browser": "node scripts/voxel/atmosphere-browser.mjs",
     "voxel:atmosphere-verify": "node scripts/voxel/verify-atmosphere.mjs"

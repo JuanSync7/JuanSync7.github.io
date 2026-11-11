@@ -54,20 +54,18 @@ export function tableFinish(
                         : detail === 'tile' || detail === 'floorAlt'
                           ? 'line2'
                           : 'line3';
+    if (['wall', 'brick', 'wallpaper', 'walltile', 'wallband', 'ceiling'].includes(detail ?? '')) tone = 'inkMuted';
+    if (detail === 'floor' || detail === 'floorAlt') tone = 'inkFaint';
     roughness = detail === 'metal' ? 0.35 : 0.95;
     metalness = detail === 'metal' ? 0.2 : 0;
-    strength =
-      detail === 'wall' ||
-      detail === 'ceiling' ||
-      detail === 'brick' ||
-      detail === 'wallpaper' ||
-      detail === 'walltile' ||
-      detail === 'wallband'
-        ? 0.4
+    strength = ['wall', 'brick', 'wallpaper', 'walltile', 'wallband'].includes(detail ?? '')
+      ? 0.6
+      : detail === 'ceiling'
+        ? 0.65
         : detail === 'floor'
-          ? 0.2
-          : detail === 'tile' || detail === 'floorAlt'
-            ? 0.32
+          ? 0.45
+          : detail === 'floorAlt'
+            ? 0.5
             : detail === 'rug'
               ? 0.5
               : detail === 'stitch'

@@ -1,8 +1,9 @@
 import { poly } from './draw';
 import { ink, mix, roomTone } from './ink';
 import { roomPaint } from './roompaint';
-import { ROOM_STYLES } from './roomstyles';
-import { LIGHT_MOODS } from './roomlightmoods';
+import { roomLightPlan } from './roomlightplan';
+import { roomPlan } from './roomplan';
+import { roomFaceLight } from './roomshade';
 import { flatRoomTexture } from './roomflattexture';
 import { tableFinish } from './tablefinish';
 import { sceneModels } from './roomscene';
@@ -21,18 +22,6 @@ function inside(points: readonly Vec3[], x: number, y: number): boolean {
   }
   return hit;
 }
-function shade(points: Vec3[]): number {
-  const a = points[0],
-    b = points[1],
-    c = points[2];
-  if (!a || !b || !c) return 0.6;
-  const u = [b[0] - a[0], b[1] - a[1], b[2] - a[2]],
-    v = [c[0] - a[0], c[1] - a[1], c[2] - a[2]];
-  const nx = (u[1] ?? 0) * (v[2] ?? 0) - (u[2] ?? 0) * (v[1] ?? 0),
-    ny = (u[2] ?? 0) * (v[0] ?? 0) - (u[0] ?? 0) * (v[2] ?? 0),
-    nz = (u[0] ?? 0) * (v[1] ?? 0) - (u[1] ?? 0) * (v[0] ?? 0);
-  return 0.45 + 0.5 * Math.abs((nx * 0.3 + ny * 0.85 + nz * 0.4) / (Math.hypot(nx, ny, nz) || 1));
-}
 export function flatRoom(
   p: TableScene,
   ctx: CanvasRenderingContext2D,
@@ -43,7 +32,9 @@ export function flatRoom(
 ): string {
   const view = roomView(p, w, h, data),
     models = sceneModels(p);
-  const clipped = flatRoomSurfaces(p, models, view);
+  const clipped = flatRoomSurfaces(p, models, view),
+    lighting = roomLightPlan(p),
+    plan = roomPlan(p);
   const pick = (x: number, y: number): number => {
     const hit = clipped.findLast((s) => s.surface.face && inside(s.points, x, y));
     return hit && models[hit.index]?.interactive ? hit.index : -1;
@@ -81,17 +72,14 @@ export function flatRoom(
           (s.model.bounds.lo[0] + s.model.bounds.hi[0]) * 3 + (s.model.bounds.lo[2] + s.model.bounds.hi[2]) * 7,
         ),
       );
-      const paint = roomPaint(s.kind, p.theme.id, surface.finish, surface.solid, phase);
+      const paint = roomPaint(s.kind, p.theme.id, surface.finish, surface.solid, phase, p.paletteVariant);
+      const illumination = roomFaceLight(p, surface.points, lighting, plan);
       const coloured = view.controls.appearance === 'colour';
       ctx.fillStyle = active
-        ? mix('signalLine', 'signal', shade(surface.points))
+        ? mix('signalLine', 'signal', illumination)
         : coloured
-          ? roomTone(
-              paint.tone,
-              paint.strength * (0.45 + shade(surface.points) * 0.65),
-              LIGHT_MOODS[ROOM_STYLES[p.theme.id].mood].key,
-            )
-          : mix('ground', finish.tone, shade(surface.points) * Math.sqrt(finish.strength));
+          ? roomTone(paint.tone, paint.strength * (0.3 + illumination * 0.8), lighting.mood.key)
+          : mix('ground', finish.tone, illumination * Math.sqrt(finish.strength));
       ctx.fill();
       if (coloured && !active) {
         ctx.save();
