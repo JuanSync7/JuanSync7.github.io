@@ -1,5 +1,6 @@
 ---
 import Monogram from '../ui/Monogram.astro';
+import HeroSplat from './HeroSplat.astro';
 import PixelButton from '../ui/PixelButton.astro';
 import { HERO } from '../../data/home';
 
@@ -24,6 +25,13 @@ const smears = Array.from({ length: 38 }, () => ({
 ---
 
 <section id="top" class="pp-wrap pp-hero">
+  <svg class="pp-chalk-defs" width="0" height="0" aria-hidden="true" focusable="false">
+        <filter id="pp-chalk" color-interpolation-filters="sRGB" x="-30%" y="-30%" width="160%" height="160%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="4" seed="9" result="n0" />
+          <feColorMatrix in="n0" type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0 1" result="n" />
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="100" />
+        </filter>
+      </svg>
   <div class="pp-erw">
     <div class="pp-erb" aria-hidden="true">
       <div class="pp-erv">
@@ -36,13 +44,6 @@ const smears = Array.from({ length: 38 }, () => ({
           ))}
         </div>
       </div>
-      <svg class="pp-chalk-defs" width="0" height="0" aria-hidden="true" focusable="false">
-        <filter id="pp-chalk" color-interpolation-filters="sRGB" x="-30%" y="-30%" width="160%" height="160%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="4" seed="9" result="n0" />
-          <feColorMatrix in="n0" type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0 1" result="n" />
-          <feDisplacementMap in="SourceGraphic" in2="n" scale="100" />
-        </filter>
-      </svg>
     </div>
     <div class="pp-erz">
       <div class="pp-cwrap">
@@ -57,7 +58,7 @@ const smears = Array.from({ length: 38 }, () => ({
             </div>
           </div>
           <div class="stage pp-rise d2">
-            <div class="splat" aria-hidden="true"></div>
+            <HeroSplat />
             <Monogram class="logo" label="SJ circuit logo" intro="always" />
           </div>
         </div>
@@ -131,8 +132,8 @@ const smears = Array.from({ length: 38 }, () => ({
     position: relative;
     flex: 1 1 300px;
     min-width: 0;
-    max-width: 440px;
-    height: 420px;
+    max-width: var(--pp-stage-w);
+    height: var(--pp-stage-h);
     margin: 0 auto;
   }
 
@@ -140,23 +141,10 @@ const smears = Array.from({ length: 38 }, () => ({
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 112px;
-    height: 216px;
+    width: var(--pp-logo-w);
+    height: var(--pp-logo-h);
     transform: translate(-50%, -50%);
     overflow: visible;
-  }
-
-  /* The paint-mixing splat behind the mark. */
-  .pp-hero .splat {
-    position: absolute;
-    inset: -70px -90px;
-    opacity: 0.6;
-    filter: blur(11px);
-    background:
-      radial-gradient(ellipse 36% 22% at 45% 46%, color-mix(in srgb, var(--pp-signal) 55%, transparent), transparent 70%),
-      radial-gradient(ellipse 30% 26% at 58% 40%, color-mix(in srgb, var(--pp-chalk-c) 60%, transparent), transparent 70%),
-      radial-gradient(ellipse 34% 20% at 40% 58%, color-mix(in srgb, var(--pp-chalk-a) 80%, transparent), transparent 70%),
-      radial-gradient(ellipse 22% 30% at 62% 60%, color-mix(in srgb, var(--pp-chalk-d) 40%, transparent), transparent 70%);
   }
 
   /* Light: the hero page rips out of the notepad, hinged top-left, and leaves its punched strip. */

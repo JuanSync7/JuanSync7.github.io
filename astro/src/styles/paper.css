@@ -96,7 +96,7 @@ body.paper {
   container-type: inline-size;
   overflow-x: clip;
   --pp-edge: max(0px, calc((100cqw - var(--pp-measure)) / 2));
-  --pp-margin-x: max(10px, calc((100cqw - 1096px) / 2));
+  --pp-margin-x: max(10px, calc(var(--pp-edge) - 28px));
 }
 
 .pp-wrap {
@@ -114,6 +114,7 @@ body.paper {
   position: absolute;
   top: 0;
   bottom: 0;
+  z-index: calc(var(--hf-z-nav) + 1);
   display: var(--pp-notepad-display);
   pointer-events: none;
 }

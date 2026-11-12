@@ -26,6 +26,19 @@
   --pp-chalk-b: #c4c8d0;
   --pp-chalk-c: #a8adb5;
   --pp-chalk-d: #ff8c5a;
+  --pp-splat-deep: #0c0e12;
+  --pp-splat-slate: #2c323a;
+  --pp-splat-void: #08090c;
+  --pp-splat-mist: #8c939e;
+
+  /* Paint slots for the hero splat (colour with its own strength); Light and Dark mix differently. */
+  --pp-sp-1: color-mix(in srgb, var(--pp-signal) 50%, transparent);
+  --pp-sp-2: color-mix(in srgb, var(--pp-chalk-d) 34%, transparent);
+  --pp-sp-3: color-mix(in srgb, var(--pp-chalk-c) 55%, transparent);
+  --pp-sp-4: color-mix(in srgb, var(--pp-chalk-a) 85%, transparent);
+  --pp-sp-5: color-mix(in srgb, var(--pp-chalk-b) 60%, transparent);
+  --pp-sp-6: color-mix(in srgb, var(--pp-chalk-c) 55%, transparent);
+  --pp-sp-7: color-mix(in srgb, var(--pp-chalk-a) 85%, transparent);
 
   /* What each theme switches on: the notepad furniture and rip by day, the chalk and lift by night. */
   --pp-notepad-display: block;
@@ -66,7 +79,7 @@
   --pp-tracking-label: 0.03em;
 
   /* Page frame */
-  --pp-measure: 1040px;
+  --pp-measure: 1440px;
   --pp-pad: var(--hf-space-6);
   --pp-strip-w: 38px;
   --pp-hole-pitch: 62px;
@@ -82,6 +95,10 @@
   --pp-dur-step: 90ms;
   --pp-chip-label-w: 96px;
   --pp-map-sans: 'Geist', system-ui, sans-serif;
+  --pp-logo-w: 160px;
+  --pp-logo-h: 308px;
+  --pp-stage-h: 500px;
+  --pp-stage-w: 540px;
   --pp-note-w: 200px;
   --pp-note-gap: 90px;
   --pp-dur-brush: 1100ms;
@@ -106,6 +123,13 @@
     --pp-chalk-display: block;
     --pp-anim-rip: none;
     --pp-anim-lift: pp-lift;
+    --pp-sp-1: color-mix(in srgb, var(--pp-signal) 55%, transparent);
+    --pp-sp-2: color-mix(in srgb, var(--pp-chalk-d) 30%, transparent);
+    --pp-sp-3: color-mix(in srgb, var(--pp-splat-deep) 85%, transparent);
+    --pp-sp-4: color-mix(in srgb, var(--pp-splat-slate) 80%, transparent);
+    --pp-sp-5: color-mix(in srgb, var(--pp-splat-void) 90%, transparent);
+    --pp-sp-6: color-mix(in srgb, var(--pp-splat-mist) 42%, transparent);
+    --pp-sp-7: color-mix(in srgb, var(--pp-chalk-c) 34%, transparent);
   }
 }
 
@@ -126,6 +150,13 @@
   --pp-chalk-display: block;
   --pp-anim-rip: none;
   --pp-anim-lift: pp-lift;
+  --pp-sp-1: color-mix(in srgb, var(--pp-signal) 55%, transparent);
+  --pp-sp-2: color-mix(in srgb, var(--pp-chalk-d) 30%, transparent);
+  --pp-sp-3: color-mix(in srgb, var(--pp-splat-deep) 85%, transparent);
+  --pp-sp-4: color-mix(in srgb, var(--pp-splat-slate) 80%, transparent);
+  --pp-sp-5: color-mix(in srgb, var(--pp-splat-void) 90%, transparent);
+  --pp-sp-6: color-mix(in srgb, var(--pp-splat-mist) 42%, transparent);
+  --pp-sp-7: color-mix(in srgb, var(--pp-chalk-c) 34%, transparent);
 }
 
 /* Ragged tear edges of the hero sheet and of the strip it leaves behind. */
