@@ -1,0 +1,67 @@
+---
+import { CONTACT_SECTION, OFF_HOURS } from '../../data/home';
+import { CONTACT, IDENTITY } from '../../data/site';
+
+const links = [
+  { label: 'email', value: CONTACT.email, href: `mailto:${CONTACT.email}` },
+  { label: 'github', value: `github.com/${CONTACT.github}`, href: `https://github.com/${CONTACT.github}` },
+  { label: 'linkedin', value: `in/${CONTACT.linkedin}`, href: CONTACT.linkedinUrl },
+  { label: 'cv', value: 'Kok_Shew_Juan_CV_2026.pdf', href: IDENTITY.cvFile },
+];
+---
+
+<section id="contact" class="pp-section">
+  <div class="pp-wrap">
+    <p class="pp-label off">{OFF_HOURS.label} · {OFF_HOURS.items.join(' · ')}</p>
+    <h2 class="pp-hand headline">{CONTACT_SECTION.title} {CONTACT_SECTION.accent}</h2>
+    <p class="pp-body lead">{CONTACT_SECTION.body}</p>
+    <ul>
+      {links.map((l) => (
+        <li class="pp-row">
+          <a href={l.href}>
+            <span class="pp-label k">{l.label}</span>
+            <span class="pp-title v">{l.value}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .off {
+    margin-bottom: var(--hf-space-6);
+  }
+
+  .headline {
+    font-size: var(--pp-fs-hand-headline);
+    line-height: var(--pp-lh-hand-headline);
+    font-weight: var(--pp-w-hand-headline);
+    transform: rotate(-2deg);
+    transform-origin: left center;
+    margin-bottom: var(--hf-space-6);
+  }
+
+  .lead {
+    max-width: 640px;
+    margin-bottom: var(--hf-space-8);
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-bottom: 1px solid var(--pp-rule);
+  }
+
+  a {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--hf-space-1) var(--hf-space-6);
+    width: 100%;
+  }
+
+  .k {
+    flex: 0 0 90px;
+  }
+</style>

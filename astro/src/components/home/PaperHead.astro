@@ -1,0 +1,33 @@
+---
+export interface Props {
+  label: string;
+  title: string;
+  accent?: string;
+  lead?: string;
+}
+
+const { label, title, accent, lead } = Astro.props;
+---
+
+<div class="head pp-reveal">
+  <p class="pp-label">{label}</p>
+  <h2 class="pp-h2">{title}{accent ? <> <span class="accent">{accent}</span></> : null}</h2>
+  {lead ? <p class="pp-body lead">{lead}</p> : null}
+</div>
+
+<style>
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-3);
+    margin-bottom: var(--hf-space-6);
+  }
+
+  .accent {
+    color: var(--pp-ink-muted);
+  }
+
+  .lead {
+    max-width: 640px;
+  }
+</style>

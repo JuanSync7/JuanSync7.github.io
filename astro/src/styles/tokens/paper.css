@@ -1,0 +1,129 @@
+/* Paper system (notepad by day, blackboard by night): the juansync.dev redesign tokens.
+   Mirrors the design system artifact. Light is the default; dark follows the visitor's
+   setting unless data-theme is set on <html>. Two oranges on purpose: the Light one is deeper
+   so it holds its contrast on cream, the Dark one is brighter. */
+
+:root {
+  --pp-sans: 'Manrope', system-ui, sans-serif;
+  --pp-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --pp-hand: 'Caveat', cursive;
+
+  --pp-ground: #f3ecdf;
+  --pp-ink-strong: #16191e;
+  --pp-ink: #33383f;
+  --pp-ink-muted: #555a62;
+  --pp-rule: #d9cfbb;
+  --pp-outline: #b9ae99;
+  --pp-arrow: #7a7468;
+  --pp-signal: #f04a0e;
+  --pp-signal-shadow: #a8340c;
+  --pp-on-signal: #1a0800;
+  --pp-sheet: #f6f0e3;
+  --pp-strip: #ece2cd;
+  --pp-hole-edge: #46341e;
+  --pp-ink-shadow: #281e12;
+  --pp-chalk-a: #e2d9c6;
+  --pp-chalk-b: #c4c8d0;
+  --pp-chalk-c: #a8adb5;
+  --pp-chalk-d: #ff8c5a;
+
+  /* What each theme switches on: the notepad furniture and rip by day, the chalk and lift by night. */
+  --pp-notepad-display: block;
+  --pp-chalk-display: none;
+  --pp-anim-rip: pp-rip;
+  --pp-anim-lift: none;
+
+  /* Type scale */
+  --pp-fs-hero: clamp(34px, 6vw, 60px);
+  --pp-fs-h2: 30px;
+  --pp-fs-mark: 22px;
+  --pp-fs-title: 17px;
+  --pp-fs-lead: 18px;
+  --pp-fs-body: 16px;
+  --pp-fs-small: 14px;
+  --pp-fs-label: 14px;
+  --pp-fs-caption: 13px;
+  --pp-fs-hand-headline: clamp(46px, 9vw, 84px);
+  --pp-fs-hand-line: clamp(22px, 4vw, 28px);
+
+  --pp-w-body: 450;
+  --pp-w-label: 500;
+  --pp-w-statement: 600;
+  --pp-w-heading: 600;
+  --pp-w-title: 700;
+  --pp-w-hand-headline: 700;
+  --pp-w-hand-line: 600;
+
+  --pp-lh-hero: 1.08;
+  --pp-lh-h2: 1.2;
+  --pp-lh-statement: 1.4;
+  --pp-lh-lead: 1.6;
+  --pp-lh-body: 1.65;
+  --pp-lh-hand-headline: 1;
+  --pp-lh-hand-line: 1.3;
+  --pp-tracking-hero: -0.02em;
+  --pp-tracking-mark: 0.02em;
+  --pp-tracking-label: 0.03em;
+
+  /* Page frame */
+  --pp-measure: 1040px;
+  --pp-pad: var(--hf-space-6);
+  --pp-strip-w: 38px;
+  --pp-hole-pitch: 62px;
+
+  --pp-radius-sm: 5px;
+  --pp-radius-md: 8px;
+  --pp-radius-lg: 10px;
+
+  --pp-shadow-step: 4px;
+  --pp-shadow-step-hover: 6px;
+  --pp-ease-rise: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --pp-dur-rise: 900ms;
+  --pp-dur-step: 90ms;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --pp-ground: #16191e;
+    --pp-ink-strong: #fbf7ee;
+    --pp-ink: #d9d2c3;
+    --pp-ink-muted: #a8adb5;
+    --pp-rule: #2e343c;
+    --pp-outline: #3e4551;
+    --pp-arrow: #7b838f;
+    --pp-signal: #ff5a1f;
+    --pp-sheet: #16191e;
+    --pp-strip: #1b1f26;
+    --pp-hole-edge: #000000;
+    --pp-ink-shadow: #000000;
+    --pp-notepad-display: none;
+    --pp-chalk-display: block;
+    --pp-anim-rip: none;
+    --pp-anim-lift: pp-lift;
+  }
+}
+
+:root[data-theme='dark'] {
+  --pp-ground: #16191e;
+  --pp-ink-strong: #fbf7ee;
+  --pp-ink: #d9d2c3;
+  --pp-ink-muted: #a8adb5;
+  --pp-rule: #2e343c;
+  --pp-outline: #3e4551;
+  --pp-arrow: #7b838f;
+  --pp-signal: #ff5a1f;
+  --pp-sheet: #16191e;
+  --pp-strip: #1b1f26;
+  --pp-hole-edge: #000000;
+  --pp-ink-shadow: #000000;
+  --pp-notepad-display: none;
+  --pp-chalk-display: block;
+  --pp-anim-rip: none;
+  --pp-anim-lift: pp-lift;
+}
+
+/* Ragged tear edges of the hero sheet and of the strip it leaves behind. */
+:root {
+  --pp-clip-sheet: polygon(14px 0,100% 0,100% 100%,14px 100%,5.8px 99.0%,1.5px 95.7%,2.2px 92.4%,4.8px 89.1%,1.5px 85.8%,1.7px 82.5%,5.1px 79.2%,4.0px 75.9%,7.2px 72.6%,4.6px 69.3%,7.6px 66.0%,5.2px 62.7%,1.5px 59.4%,1.5px 56.1%,3.6px 52.8%,8.0px 49.5%,7.4px 46.2%,7.0px 42.9%,9.2px 39.6%,9.5px 36.3%,13px 33.0%,13px 29.7%,12.4px 26.4%,8.5px 23.1%,8.8px 19.8%,13px 16.5%,13px 13.2%,13px 9.9%,12.9px 6.6%,10.3px 3.3%,8.1px 0.0%);
+  --pp-clip-strip: polygon(0 0,calc(100% - 6px) 0,calc(100% - 5.9px) 0.0%,calc(100% - 3.7px) 3.3%,calc(100% - 1.1px) 6.6%,calc(100% - 1.0px) 9.9%,calc(100% - 1.0px) 13.2%,calc(100% - 1.0px) 16.5%,calc(100% - 5.2px) 19.8%,calc(100% - 5.5px) 23.1%,calc(100% - 1.6px) 26.4%,calc(100% - 1.0px) 29.7%,calc(100% - 1.0px) 33.0%,calc(100% - 4.5px) 36.3%,calc(100% - 4.8px) 39.6%,calc(100% - 7.0px) 42.9%,calc(100% - 6.6px) 46.2%,calc(100% - 6.0px) 49.5%,calc(100% - 10.4px) 52.8%,calc(100% - 12.5px) 56.1%,calc(100% - 12.5px) 59.4%,calc(100% - 8.8px) 62.7%,calc(100% - 6.4px) 66.0%,calc(100% - 9.4px) 69.3%,calc(100% - 6.8px) 72.6%,calc(100% - 10.0px) 75.9%,calc(100% - 8.9px) 79.2%,calc(100% - 12.3px) 82.5%,calc(100% - 12.5px) 85.8%,calc(100% - 9.2px) 89.1%,calc(100% - 11.8px) 92.4%,calc(100% - 12.5px) 95.7%,calc(100% - 8.2px) 99.0%,calc(100% - 6px) 100%,0 100%);
+}

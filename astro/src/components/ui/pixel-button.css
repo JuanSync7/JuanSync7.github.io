@@ -1,0 +1,65 @@
+/* The 8-bit button: a signal or outlined face with a hard shadow, moving in steps. */
+.pixel-button {
+  --pb-edge: var(--pp-signal);
+  --pb-face: var(--pp-signal);
+  --pb-shadow: var(--pp-signal-shadow);
+  --pb-ink: var(--pp-on-signal);
+  position: relative;
+  display: inline-block;
+  min-height: var(--nt-hit);
+  padding: var(--hf-space-4) calc(var(--hf-space-6) + 2px);
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-label);
+  font-weight: var(--pp-w-label);
+  letter-spacing: var(--pp-tracking-label);
+  color: var(--pb-ink);
+  text-decoration: none;
+  filter: drop-shadow(var(--pp-shadow-step) var(--pp-shadow-step) 0 var(--pb-shadow));
+  transition:
+    transform var(--pp-dur-step) steps(2),
+    filter var(--pp-dur-step) steps(2);
+}
+
+.pixel-button[data-variant='outline'] {
+  --pb-edge: var(--pp-outline);
+  --pb-face: var(--pp-ground);
+  --pb-shadow: var(--pp-outline);
+  --pb-ink: var(--pp-ink-strong);
+}
+
+.pixel-button .pb-edge,
+.pixel-button .pb-face {
+  position: absolute;
+}
+
+.pixel-button .pb-edge {
+  inset: 0;
+  background: var(--pb-edge);
+  border-radius: var(--pp-radius-md);
+}
+
+.pixel-button .pb-face {
+  inset: 3px;
+  background: var(--pb-face);
+  border-radius: var(--pp-radius-sm);
+}
+
+.pixel-button .pb-label {
+  position: relative;
+  z-index: var(--hf-z-content);
+}
+
+.paper .pixel-button:hover {
+  color: var(--pb-ink);
+  transform: translate(-2px, -2px);
+  filter: drop-shadow(var(--pp-shadow-step-hover) var(--pp-shadow-step-hover) 0 var(--pb-shadow));
+}
+
+.pixel-button[data-variant='outline']:hover .pb-edge {
+  background: var(--pp-signal);
+}
+
+.pixel-button:active {
+  transform: translate(4px, 4px);
+  filter: drop-shadow(0 0 0 var(--pb-shadow));
+}

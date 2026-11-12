@@ -139,6 +139,7 @@
   --nt-ink-muted: #8b92a5;
   --nt-ink-faint: #7d8496;
   --nt-signal: #2dd4bf;
+  --nt-signal-text: var(--nt-signal);
   --nt-signal-ink: #061210;
   --nt-signal-line: #1b3a36;
   --nt-signal-line-2: #1f4a44;
