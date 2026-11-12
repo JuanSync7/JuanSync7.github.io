@@ -1,18 +1,21 @@
 ---
-// The backdrop behind the mark: a few bold dry-brush strokes, the same brush that paints the theme
-// change. Each stroke is a flat colour cut by the brush mask, so its ragged ends and bristle streaks
-// come from the mask. Colours are tokens; the strokes paint on once, left to right.
+// The backdrop behind the mark: a few dry-brush strokes in the outline colour, painted one after
+// another with the same brush that paints the theme change. Each stroke is a flat colour cut by
+// the brush mask, so its ragged ends and bristle streaks come from the mask.
 const strokes = [
-  { cls: 'a', w: 400, h: 96, x: -215, y: -185, r: -14 },
-  { cls: 'b', w: 330, h: 80, x: -150, y: 150, r: -14 },
+  { w: 380, h: 96, x: -195, y: -165, r: -9, o: 0.85 },
+  { w: 420, h: 100, x: -215, y: -92, r: -6, o: 0.7 },
+  { w: 400, h: 98, x: -200, y: -16, r: -10, o: 0.9 },
+  { w: 410, h: 100, x: -210, y: 62, r: -7, o: 0.75 },
+  { w: 370, h: 90, x: -190, y: 128, r: -11, o: 0.85 },
 ];
 ---
 
 <div class="splat" aria-hidden="true">
   {strokes.map((s, i) => (
     <span
-      class={`stroke ${s.cls}`}
-      style={`--w:${s.w}px;--h:${s.h}px;--x:${s.x}px;--y:${s.y}px;--r:${s.r}deg;--i:${i}`}
+      class="stroke"
+      style={`--w:${s.w}px;--h:${s.h}px;--x:${s.x}px;--y:${s.y}px;--r:${s.r}deg;--i:${i};--o:${s.o}`}
     ></span>
   ))}
 </div>
@@ -31,21 +34,13 @@ const strokes = [
     height: var(--h);
     transform: rotate(var(--r));
     transform-origin: left center;
+    background: var(--pp-outline);
+    opacity: var(--o);
     mask-image: url('/brush-stroke.svg');
     mask-size: 100% 100%;
     mask-repeat: no-repeat;
     animation: pp-paint-on var(--pp-dur-brush) var(--pp-ease-brush) both;
     animation-delay: calc(var(--i) * var(--pp-dur-step) * 3);
-  }
-
-  .a {
-    background: var(--pp-signal);
-    opacity: 0.85;
-  }
-
-  .b {
-    background: var(--pp-outline);
-    opacity: 0.8;
   }
 
   @keyframes pp-paint-on {
