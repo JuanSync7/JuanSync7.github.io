@@ -59,7 +59,7 @@ export const NODES: readonly MapNode[] = [
   { id: 'engineers', title: 'Engineers', kind: 'person', x: 228, y: 16, w: 144, h: 48 },
   { id: 'leads', title: 'Project leads', kind: 'person', x: 396, y: 16, w: 144, h: 48 },
   { id: 'management', title: 'Management', kind: 'person', x: 588, y: 16, w: 132, h: 48 },
-  { id: 'doc-sources', title: 'Doc platforms', sub: 'S3 · SharePoint · Teams', kind: 'side', x: 744, y: 8, w: 144, h: 56 },
+  { id: 'doc-sources', title: 'Doc platforms', sub: 'S3 · SharePoint · Teams', kind: 'side', x: 744, y: 0, w: 144, h: 66 },
   { id: 'staff', title: 'All staff', kind: 'person', x: 936, y: 16, w: 168, h: 48 },
   // surfaces
   { id: 'vault', title: 'experience-vault', sub: 'per person · lessons → rules', kind: 'side', x: 0, y: 132, w: 160, h: 72 },
@@ -86,7 +86,7 @@ export const NODES: readonly MapNode[] = [
   { id: 'models', title: 'Models', sub: 'any Bedrock model · self-hosted vLLM', kind: 'leaf', x: 228, y: 708, w: 144, h: 72 },
   { id: 'tools', title: 'Tools · MCP', sub: 'Jira · M365 · Freshservice · AWS', kind: 'leaf', x: 396, y: 708, w: 144, h: 72 },
   { id: 'eda', title: 'EDA tools', sub: 'read the IP · return results', kind: 'leaf', x: 588, y: 708, w: 132, h: 72 },
-  { id: 'meetings', title: 'Meetings & notes', sub: 'next · team meetings · external notes · call notes', kind: 'next', x: 936, y: 708, w: 168, h: 72 },
+  { id: 'meetings', title: 'Meetings & notes', sub: 'next · team meetings · external notes · call notes', kind: 'next', x: 936, y: 700, w: 168, h: 80 },
   { id: 'ip', title: 'IP library', sub: 'never sent to a model', kind: 'leaf', x: 744, y: 844, w: 144, h: 64 },
   // under everything
   { id: 'identity', title: 'Identity', tag: '· AD · Entra ID · LDAP → IAM Identity Center', sub: 'every person and every agent sees only what their permissions allow', kind: 'band', x: 0, y: 944, w: 1104, h: 56 },

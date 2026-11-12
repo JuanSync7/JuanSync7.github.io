@@ -80,6 +80,8 @@
   --pp-ease-rise: cubic-bezier(0.2, 0.7, 0.2, 1);
   --pp-dur-rise: 900ms;
   --pp-dur-step: 90ms;
+  --pp-chip-label-w: 96px;
+  --pp-map-sans: 'Geist', system-ui, sans-serif;
   --pp-note-w: 200px;
   --pp-note-gap: 90px;
   --pp-dur-brush: 1100ms;
