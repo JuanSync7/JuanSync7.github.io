@@ -6,7 +6,7 @@
 .vault-lead { max-width: var(--nt-measure); font-size: var(--pr-lead-size); }
 .vault-actions { display: flex; flex-wrap: wrap; gap: var(--hf-space-5); align-items: center; }
 .vault-boundary { margin-top: var(--hf-space-2) !important; max-width: var(--nt-measure); }
-.vault-chapters { display: flex; flex-wrap: wrap; align-items: center; gap: var(--hf-space-4) var(--hf-space-8); padding-block: var(--hf-space-4); border-block: 1px solid var(--pr-rule); position: sticky; top: var(--hf-space-16); z-index: var(--hf-z-content); background: var(--nt-ground); }
+.vault-chapters { display: flex; flex-wrap: wrap; align-items: center; gap: var(--hf-space-4) var(--hf-space-8); padding-block: var(--hf-space-4); border-block: 1px solid var(--pr-rule); position: sticky; top: var(--pr-site-nav-h, var(--hf-space-16)); z-index: var(--hf-z-content); background: var(--nt-ground); }
 .vault-scroll-progress { position: absolute; bottom: 0; left: var(--nt-gutter); width: calc(100% - var(--nt-gutter) * 2); height: var(--pr-section-rule-height); background: var(--pr-label); transform: scaleX(0); transform-origin: left; pointer-events: none; }
 .pr-landing [data-presentation-section] { scroll-margin-top: var(--pr-scroll-inset); }
 html:has(.pr-landing) { scroll-behavior: smooth; }

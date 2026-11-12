@@ -12,7 +12,10 @@ const { current } = Astro.props;
 <header class="pp-nav">
   <div class="pp-wrap pp-nav-inner">
     <a class="mark" href="/" aria-label={`${IDENTITY.shortName}, home`}>S<span>J</span></a>
-    <nav aria-label="Primary">
+    <button class="menu" type="button" aria-expanded="false" aria-controls="pp-menu" aria-label="Menu">
+      <span class="bars" aria-hidden="true"></span>
+    </button>
+    <nav id="pp-menu" aria-label="Primary">
       <ul>
         {NAV.map((l) => (
           <li>
@@ -51,8 +54,22 @@ const { current } = Astro.props;
         t.finished.finally(function () { root.classList.remove('pp-theming'); });
       });
     }
+    function menu() {
+      var m = document.querySelector('.pp-nav .menu');
+      if (!m || m.dataset.bound) return;
+      m.dataset.bound = '1';
+      var nav = m.closest('.pp-nav');
+      function set(open) {
+        nav.toggleAttribute('data-open', open);
+        m.setAttribute('aria-expanded', String(open));
+      }
+      m.addEventListener('click', function () { set(!nav.hasAttribute('data-open')); });
+      nav.addEventListener('click', function (e) { if (e.target.closest('nav a')) set(false); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') set(false); });
+    }
     apply();
-    document.addEventListener('astro:page-load', apply);
+    menu();
+    document.addEventListener('astro:page-load', function () { apply(); menu(); });
     document.addEventListener('astro:after-swap', function () {
       try {
         var t = localStorage.getItem('pp-theme');
@@ -140,9 +157,108 @@ const { current } = Astro.props;
     display: none;
   }
 
+  .menu {
+    display: none;
+    min-height: var(--nt-hit);
+    min-width: var(--nt-hit);
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--pp-outline);
+    border-radius: var(--pp-radius-md);
+    cursor: pointer;
+  }
+
+  .bars,
+  .bars::before,
+  .bars::after {
+    display: block;
+    width: var(--hf-space-5);
+    height: 2px;
+    background: var(--pp-ink-strong);
+    border-radius: 1px;
+    transition: transform var(--pp-dur-step);
+  }
+
+  .bars {
+    position: relative;
+  }
+
+  .bars::before,
+  .bars::after {
+    content: '';
+    position: absolute;
+    left: 0;
+  }
+
+  .bars::before {
+    top: -6px;
+  }
+
+  .bars::after {
+    top: 6px;
+  }
+
+  [data-open] .bars {
+    background: transparent;
+  }
+
+  [data-open] .bars::before {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  [data-open] .bars::after {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  /* On a phone the links fold into a menu button, as in an app. The scrim is dropped there so
+     the margin line and punched strip run to the very top of the page. */
   @media (max-width: 699px) {
     .pp-nav {
       position: static;
+    }
+
+    .pp-nav-inner {
+      background: none;
+      backdrop-filter: none;
+      flex-wrap: wrap;
+    }
+
+    .cv {
+      margin-left: auto;
+    }
+
+    .menu {
+      display: inline-flex;
+      order: 4;
+    }
+
+    .theme {
+      order: 3;
+    }
+
+    nav {
+      display: none;
+      flex-basis: 100%;
+      margin-left: 0;
+      order: 5;
+      border-top: 1px solid var(--pp-rule);
+      padding-top: var(--hf-space-3);
+    }
+
+    [data-open] nav {
+      display: block;
+    }
+
+    ul {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    nav a {
+      display: block;
+      padding: var(--hf-space-3) 0;
+      font-size: var(--pp-fs-body);
     }
   }
 

@@ -21,16 +21,9 @@ html[data-theme='dark'] {
   color-scheme: dark;
 }
 
-body.paper {
-  margin: 0;
-  background: var(--pp-ground);
-  color: var(--pp-ink);
-  font-family: var(--pp-sans);
-  font-size: var(--pp-fs-body);
-  font-weight: var(--pp-w-body);
-  line-height: var(--pp-lh-body);
-  -webkit-font-smoothing: antialiased;
-
+/* On <html>, not <body>: tokens derived from these at :root (the fades, the presentation
+   roles) must resolve against the paper palette, not the night one. */
+html.paper {
   /* Night-era components read these; point them at the paper tokens. */
   --nt-ground: var(--pp-ground);
   --nt-ground-2: var(--pp-ground);
@@ -49,6 +42,7 @@ body.paper {
   --nt-ink-muted: var(--pp-ink-muted);
   --nt-ink-faint: var(--pp-ink-muted);
   --nt-signal: var(--pp-signal);
+  --pa-signal-ink: var(--pp-signal-text);
   --nt-signal-text: var(--pp-ink-muted);
   --nt-signal-ink: var(--pp-on-signal);
   --nt-signal-line: var(--pp-signal-shadow);
@@ -62,6 +56,17 @@ body.paper {
   --nt-sans: var(--pp-sans);
   --nt-display: var(--pp-sans);
   --nt-mono: var(--pp-mono);
+}
+
+body.paper {
+  margin: 0;
+  background: var(--pp-ground);
+  color: var(--pp-ink);
+  font-family: var(--pp-sans);
+  font-size: var(--pp-fs-body);
+  font-weight: var(--pp-w-body);
+  line-height: var(--pp-lh-body);
+  -webkit-font-smoothing: antialiased;
 }
 
 .paper a {

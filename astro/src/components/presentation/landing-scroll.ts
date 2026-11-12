@@ -10,12 +10,15 @@ export function createLandingScroll(engine: typeof gsap, root: HTMLElement, styl
   const travel = (name: string) => read(name, ['px']) * strength();
   const animations: gsap.core.Tween[] = [];
   const chapters = root.querySelector<HTMLElement>('[data-scroll-chapters]');
-  const siteNav = document.querySelector<HTMLElement>('body > header.nav');
+  const siteNav = document.querySelector<HTMLElement>('header.pp-nav');
   const previousInset = root.style.getPropertyValue('--pr-scroll-inset');
   const previousJourney = root.dataset.scrollJourney;
   const previousProgress = root.dataset.scrollFraction;
   const measureInset = () => {
-    const height = (chapters?.offsetHeight ?? 0) + (siteNav?.offsetHeight ?? 0);
+    // The paper nav sticks on wide screens only; on a phone it scrolls away with the page.
+    const navHeight = siteNav && getComputedStyle(siteNav).position === 'sticky' ? siteNav.offsetHeight : 0;
+    root.style.setProperty('--pr-site-nav-h', `${navHeight}px`);
+    const height = (chapters?.offsetHeight ?? 0) + navHeight;
     root.style.setProperty('--pr-scroll-inset', `${height + read('--pr-scroll-clearance', ['px'])}px`);
   };
   const observer = new ResizeObserver(measureInset);

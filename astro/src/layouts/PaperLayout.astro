@@ -9,20 +9,24 @@ import '../styles/paper.css';
 interface Props {
   title: string;
   description?: string;
+  /** Keep the page out of search results. */
+  noindex?: boolean;
 }
 
-const { title, description = 'Juan Kok: Senior Design & AI Engineer. AI platform, agents and governance.' } = Astro.props;
+const { title, description = 'Juan Kok: Senior Design & AI Engineer. AI platform, agents and governance.', noindex = false } = Astro.props;
 
 const THEME = `try{var t=localStorage.getItem('pp-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}`;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="paper">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    {noindex ? <meta name="robots" content="noindex" /> : null}
     <title>{title}</title>
+    <slot name="head" />
     <script is:inline set:html={THEME} />
     <ViewTransitions />
   </head>

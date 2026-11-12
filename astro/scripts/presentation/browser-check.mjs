@@ -115,7 +115,9 @@ async function roleContrast(page) {
     values[role] = luminance(composite(color(styles[role]), background));
     assert(separation(values[role], luminance(background)) >= contract.minNormalContrast, `${role}: computed AA contrast`);
   }
-  assert(values.title > values.body && values.body > values.comment, 'The computed hierarchy stays ordered');
+  // Ordered by contrast with the ground, so it holds on the cream notepad and the blackboard alike.
+  const contrast = (role) => separation(values[role], luminance(background));
+  assert(contrast('title') > contrast('body') && contrast('body') > contrast('comment'), 'The computed hierarchy stays ordered');
   assert(separation(values.title, values.body) >= contract.minTitleBodyLuminanceRatio);
   assert(separation(values.body, values.comment) >= contract.minBodyCommentLuminanceRatio);
   assert(styles.titleSize > styles.bodySize && styles.bodySize > styles.commentSize, 'Computed text sizes preserve the three-role hierarchy');

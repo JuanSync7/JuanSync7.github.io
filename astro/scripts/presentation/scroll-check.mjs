@@ -20,6 +20,13 @@ async function settled(page, selector) {
   }));
 }
 
+/** The site nav only covers the page when it sticks (wide screens); on a phone it scrolls away. */
+const stickyNavHeight = (page) =>
+  page.evaluate(() => {
+    const nav = document.querySelector('header.pp-nav');
+    return getComputedStyle(nav).position === 'sticky' ? nav.offsetHeight : 0;
+  });
+
 export async function checkScrollJourney(page, output, widths) {
   for (const width of widths) {
     await page.setViewportSize({ width, height: 960 });
@@ -42,8 +49,8 @@ export async function checkScrollJourney(page, output, widths) {
     await page.waitForFunction((initial) => new DOMMatrix(getComputedStyle(document.querySelector('[data-scroll-card]')).transform).m42 < initial / 2, cardTravel);
     await settled(page, '[data-scroll-card]');
     const bar = await page.locator('[data-scroll-chapters]').boundingBox();
-    const header = await page.locator('body > header.nav').boundingBox();
-    assert(bar && header && Math.abs(bar.y - header.height) < 2, 'Chapter navigation stays below the site header');
+    const header = { height: await stickyNavHeight(page) };
+    assert(bar && Math.abs(bar.y - header.height) < 2, 'Chapter navigation stays below the site header');
     const progress = await page.locator('[data-scroll-progress]').evaluate((line) => new DOMMatrix(getComputedStyle(line).transform).m11);
     assert(progress > 0 && progress < 1, 'The chapter rail reflects actual reading progress');
     await page.screenshot({ path: join(output, `scroll-${width}-explore.png`) });
@@ -72,12 +79,13 @@ export async function checkScrollJourney(page, output, widths) {
     const cabinetTop = await page.locator('[data-cabinet]').evaluate((cabinet) => {
       const stage = cabinet.closest('.vault-cabinet-stage');
       return getComputedStyle(stage).position === 'sticky' ? 0
-        : cabinet.getBoundingClientRect().top + scrollY - document.querySelector('body > header.nav').getBoundingClientRect().height;
+        : cabinet.getBoundingClientRect().top + scrollY - (document.querySelector('header.pp-nav').offsetHeight * (getComputedStyle(document.querySelector('header.pp-nav')).position === 'sticky'));
     });
     await position(page, cabinetTop);
     await page.waitForFunction(() => {
       const label = document.querySelector('[data-cabinet-link="1"] [data-folder-label]').getBoundingClientRect();
-      const header = document.querySelector('body > header.nav').getBoundingClientRect();
+      const nav = document.querySelector('header.pp-nav');
+      const header = { height: getComputedStyle(nav).position === 'sticky' ? nav.offsetHeight : 0 };
       return label.top >= header.height && label.bottom <= innerHeight;
     });
     const label = await first.locator('[data-folder-label]').boundingBox();

@@ -49,3 +49,12 @@
   margin-left: auto;
   color: var(--nt-ink-2);
 }
+
+/* On the paper system the rail sits inside the notepad's page column, clear of the punched
+   strip and margin line, not on the viewport edge. */
+html.paper body .wrap {
+  max-width: calc(100cqw - 2 * var(--pp-edge));
+  margin: 0 auto;
+  padding-left: var(--pp-pad);
+  padding-right: var(--pp-pad);
+}
