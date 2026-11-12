@@ -42,6 +42,7 @@ html.paper {
   --nt-ink-muted: var(--pp-ink-muted);
   --nt-ink-faint: var(--pp-ink-muted);
   --nt-signal: var(--pp-signal);
+  --pa-signal-ink: var(--pp-signal-text);
   --nt-signal-text: var(--pp-ink-muted);
   --nt-signal-ink: var(--pp-on-signal);
   --nt-signal-line: var(--pp-signal-shadow);

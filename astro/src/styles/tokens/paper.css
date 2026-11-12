@@ -17,6 +17,7 @@
   --pp-arrow: #7a7468;
   --pp-signal: #f04a0e;
   --pp-signal-shadow: #a8340c;
+  --pp-signal-text: #a8340c;
   --pp-on-signal: #1a0800;
   --pp-sheet: #f6f0e3;
   --pp-strip: #ece2cd;
@@ -110,6 +111,7 @@
     --pp-outline: #3e4551;
     --pp-arrow: #7b838f;
     --pp-signal: #ff5a1f;
+    --pp-signal-text: #ff5a1f;
     --pp-sheet: #16191e;
     --pp-strip: #1b1f26;
     --pp-hole-edge: #000000;
@@ -133,6 +135,7 @@
   --pp-outline: #3e4551;
   --pp-arrow: #7b838f;
   --pp-signal: #ff5a1f;
+  --pp-signal-text: #ff5a1f;
   --pp-sheet: #16191e;
   --pp-strip: #1b1f26;
   --pp-hole-edge: #000000;
