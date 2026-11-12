@@ -194,7 +194,7 @@ body.paper {
   color: var(--pp-ink);
 }
 
-.pp-hand {
+.paper .pp-hand {
   font-family: var(--pp-hand);
   color: var(--pp-ink-strong);
   text-shadow: 0 0 1px color-mix(in srgb, var(--pp-ink-strong) 35%, transparent);
@@ -287,4 +287,35 @@ body.paper {
   border-top: 1px solid var(--pp-rule);
   padding-top: var(--hf-space-12);
   padding-bottom: var(--hf-space-16);
+}
+
+/* Theme change: the new theme is painted over the old one with a brush stroke, left to right.
+   The mask is three times the viewport wide; its ragged edge crosses the screen as the mask
+   slides from 80% to 0%. Only while .pp-theming is set, so page swaps keep their crossfade. */
+.pp-theming::view-transition-old(root),
+.pp-theming::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+.pp-theming::view-transition-new(root) {
+  z-index: 2;
+  mask-image: url('/brush-mask.svg');
+  mask-repeat: no-repeat;
+  mask-size: 300% 100%;
+  animation: pp-brush var(--pp-dur-brush) var(--pp-ease-brush) both;
+}
+
+.pp-theming .nav {
+  view-transition-name: none;
+}
+
+@keyframes pp-brush {
+  from {
+    mask-position: 80% 0;
+  }
+
+  to {
+    mask-position: 0% 0;
+  }
 }

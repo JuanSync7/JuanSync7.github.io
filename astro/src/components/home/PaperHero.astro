@@ -13,11 +13,13 @@ const next = (): number => {
 };
 const smears = Array.from({ length: 38 }, () => ({
   tone: TONES[Math.floor(next() * TONES.length)] ?? 'a',
-  x: Math.round(next() * 100),
-  y: Math.round(next() * 100),
-  w: 10 + Math.round(next() * 40),
-  h: 2 + Math.round(next() * 6),
-  r: Math.round(next() * 180 - 90),
+  x: Math.round(next() * 100 - 18),
+  y: Math.round(next() * 100 - 6),
+  w: 30 + Math.round(next() * 40),
+  h: 5 + Math.round(next() * 9),
+  r: next() < 0.8 ? Math.round(-28 + next() * 18) : Math.round(5 + next() * 20),
+  o: (0.15 + next() * 0.19).toFixed(2),
+  b: 6 + Math.round(next() * 8),
 }));
 ---
 
@@ -25,10 +27,22 @@ const smears = Array.from({ length: 38 }, () => ({
   <div class="pp-erw">
     <div class="pp-erb" aria-hidden="true">
       <div class="pp-erv">
-        {smears.map((s) => (
-          <span class={`pp-smear tone-${s.tone}`} style={`--x:${s.x}%;--y:${s.y}%;--w:${s.w}%;--h:${s.h}%;--r:${s.r}deg`}></span>
-        ))}
+        <div class="pp-erl">
+          {smears.map((s) => (
+            <span
+              class={`pp-smear tone-${s.tone}`}
+              style={`--x:${s.x}%;--y:${s.y}%;--w:${s.w}%;--h:${s.h}%;--r:${s.r}deg;--o:${s.o};--b:${s.b}px`}
+            ></span>
+          ))}
+        </div>
       </div>
+      <svg class="pp-chalk-defs" width="0" height="0" aria-hidden="true" focusable="false">
+        <filter id="pp-chalk" color-interpolation-filters="sRGB" x="-30%" y="-30%" width="160%" height="160%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="4" seed="9" result="n0" />
+          <feColorMatrix in="n0" type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0 1" result="n" />
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="100" />
+        </filter>
+      </svg>
     </div>
     <div class="pp-erz">
       <div class="pp-cwrap">
@@ -256,7 +270,7 @@ const smears = Array.from({ length: 38 }, () => ({
   .pp-erv {
     position: absolute;
     inset: 0;
-    mask-image: radial-gradient(ellipse 75% 80% at 50% 50%, #000 45%, transparent 100%);
+    mask-image: radial-gradient(ellipse closest-side at 50% 50%, #000 50%, transparent 100%);
   }
 
   .pp-smear {
@@ -267,24 +281,35 @@ const smears = Array.from({ length: 38 }, () => ({
     height: var(--h);
     border-radius: 50%;
     transform: rotate(var(--r));
-    filter: blur(6px);
-    opacity: 0.34;
+    filter: blur(var(--b));
+    opacity: var(--o);
+    background-image: linear-gradient(90deg, transparent, currentcolor 25%, currentcolor 70%, transparent);
+  }
+
+  .pp-erl {
+    position: absolute;
+    inset: -60px;
+    filter: url('#pp-chalk');
+  }
+
+  .pp-chalk-defs {
+    position: absolute;
   }
 
   .tone-a {
-    background: var(--pp-chalk-a);
+    color: var(--pp-chalk-a);
   }
 
   .tone-b {
-    background: var(--pp-chalk-b);
+    color: var(--pp-chalk-b);
   }
 
   .tone-c {
-    background: var(--pp-chalk-c);
+    color: var(--pp-chalk-c);
   }
 
   .tone-d {
-    background: var(--pp-signal);
+    color: var(--pp-signal);
   }
 
   @keyframes pp-lift {
