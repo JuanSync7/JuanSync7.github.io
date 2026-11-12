@@ -11,8 +11,8 @@
 
 /* The instance sits on the page with no frame; its sides fade into the ground. */
 .lab-main {
+  background: var(--pp-figure-ground);
   aspect-ratio: 2 / 1;
-  mask-image: var(--hf-grad-fade-x);
 }
 
 .lab-bar {
