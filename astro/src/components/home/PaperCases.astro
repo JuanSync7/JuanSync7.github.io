@@ -1,0 +1,52 @@
+---
+import PaperHead from './PaperHead.astro';
+import { CASES } from '../../data/home';
+---
+
+<section id="cases" class="pp-section">
+  <div class="pp-wrap">
+    <PaperHead label={CASES.label} title={CASES.title} lead={CASES.body} />
+    <div class="list">
+      {CASES.items.map((c) => (
+        <article class="pp-row case">
+          <h3 class="pp-title head">{c.title}</h3>
+          <div class="beats">
+            <p class="pp-body"><span class="pp-label tag">what I noticed</span>{c.noticed}</p>
+            <p class="pp-body"><span class="pp-label tag">what I did</span>{c.did}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .list {
+    border-bottom: 1px solid var(--pp-rule);
+  }
+
+  .case {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--hf-space-3) var(--hf-space-8);
+    padding: var(--hf-space-6) 0;
+  }
+
+  .head {
+    flex: 0 0 250px;
+    min-width: 0;
+  }
+
+  .beats {
+    flex: 1 1 280px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-4);
+  }
+
+  .tag {
+    display: block;
+    margin-bottom: var(--hf-space-1);
+  }
+</style>

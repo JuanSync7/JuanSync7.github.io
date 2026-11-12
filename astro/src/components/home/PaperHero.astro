@@ -1,0 +1,358 @@
+---
+import Monogram from '../ui/Monogram.astro';
+import PixelButton from '../ui/PixelButton.astro';
+import { HERO } from '../../data/home';
+
+// Chalk left on the board behind the hero, laid out once from a seed so a build is repeatable.
+// Each smear is a soft ellipse in one of four chalk tones; the board shows them as the hero lifts.
+const TONES = ['a', 'b', 'c', 'd'] as const;
+let seed = 41;
+const next = (): number => {
+  seed = (seed * 16807) % 2147483647;
+  return seed / 2147483647;
+};
+const smears = Array.from({ length: 38 }, () => ({
+  tone: TONES[Math.floor(next() * TONES.length)] ?? 'a',
+  x: Math.round(next() * 100),
+  y: Math.round(next() * 100),
+  w: 10 + Math.round(next() * 40),
+  h: 2 + Math.round(next() * 6),
+  r: Math.round(next() * 180 - 90),
+}));
+---
+
+<section id="top" class="pp-wrap pp-hero">
+  <div class="pp-erw">
+    <div class="pp-erb" aria-hidden="true">
+      <div class="pp-erv">
+        {smears.map((s) => (
+          <span class={`pp-smear tone-${s.tone}`} style={`--x:${s.x}%;--y:${s.y}%;--w:${s.w}%;--h:${s.h}%;--r:${s.r}deg`}></span>
+        ))}
+      </div>
+    </div>
+    <div class="pp-erz">
+      <div class="pp-cwrap">
+        <div class="pp-crumple">
+          <div class="copy">
+            <p class="pp-label pp-rise">// {HERO.place} · {HERO.role}</p>
+            <h1 class="pp-hero-heading pp-rise d1">{HERO.lead} {HERO.accent}</h1>
+            <p class="pp-lead pp-rise d2">{HERO.body} At <strong>{HERO.at}</strong>{HERO.after}</p>
+            <div class="actions pp-rise d3">
+              <PixelButton href={HERO.primary.href}>{HERO.primary.label}</PixelButton>
+              <PixelButton href={HERO.secondary.href} variant="outline">{HERO.secondary.label}</PixelButton>
+            </div>
+          </div>
+          <div class="stage pp-rise d2">
+            <div class="splat" aria-hidden="true"></div>
+            <Monogram class="logo" label="SJ circuit logo" intro="always" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  // The torn strip's holes must line up with the page's permanent strip: measure where the
+  // hero sheet starts on the page and hand the hole phase to CSS.
+  (function () {
+    function phase() {
+      var w = document.querySelector('.pp-cwrap');
+      var page = document.querySelector('.pp-page');
+      if (!w || !page) return;
+      var top = w.getBoundingClientRect().top - page.getBoundingClientRect().top;
+      var pitch = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--pp-hole-pitch')) || 62;
+      w.style.setProperty('--pp-strip-phase', String(((top % pitch) + pitch) % pitch));
+    }
+    phase();
+    window.addEventListener('resize', phase);
+    document.addEventListener('astro:page-load', phase);
+  })();
+</script>
+
+<style is:global>
+  .pp-hero {
+    padding-top: var(--hf-space-8);
+  }
+
+  .pp-erw {
+    position: relative;
+  }
+
+  .pp-crumple {
+    position: relative;
+    z-index: var(--hf-z-content);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--hf-space-8) var(--hf-space-6);
+    margin: 0 calc(var(--pp-pad) * -1) 0 calc(var(--hf-space-6) * -3 - var(--hf-space-1));
+    padding: calc(var(--hf-space-20) - var(--hf-space-2)) var(--pp-pad) var(--hf-space-20) calc(var(--hf-space-20) - var(--hf-space-1));
+    clip-path: var(--pp-clip-sheet);
+    transform-origin: 0 0;
+    transform: translateY(var(--pp-ty)) rotate(calc(var(--pp-th) * -1deg));
+  }
+
+  .pp-hero .copy {
+    flex: 1 1 380px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--hf-space-5);
+  }
+
+  .pp-hero .copy > .pp-lead {
+    max-width: 600px;
+  }
+
+  .pp-hero .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--hf-space-3);
+    margin-top: var(--hf-space-3);
+  }
+
+  .pp-hero .stage {
+    position: relative;
+    flex: 1 1 300px;
+    min-width: 0;
+    max-width: 440px;
+    height: 420px;
+    margin: 0 auto;
+  }
+
+  .pp-hero .logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 112px;
+    height: 216px;
+    transform: translate(-50%, -50%);
+    overflow: visible;
+  }
+
+  /* The paint-mixing splat behind the mark. */
+  .pp-hero .splat {
+    position: absolute;
+    inset: -70px -90px;
+    opacity: 0.6;
+    filter: blur(11px);
+    background:
+      radial-gradient(ellipse 36% 22% at 45% 46%, color-mix(in srgb, var(--pp-signal) 55%, transparent), transparent 70%),
+      radial-gradient(ellipse 30% 26% at 58% 40%, color-mix(in srgb, var(--pp-chalk-c) 60%, transparent), transparent 70%),
+      radial-gradient(ellipse 34% 20% at 40% 58%, color-mix(in srgb, var(--pp-chalk-a) 80%, transparent), transparent 70%),
+      radial-gradient(ellipse 22% 30% at 62% 60%, color-mix(in srgb, var(--pp-chalk-d) 40%, transparent), transparent 70%);
+  }
+
+  /* Light: the hero page rips out of the notepad, hinged top-left, and leaves its punched strip. */
+  .pp-cwrap {
+    position: relative;
+  }
+
+  .pp-cwrap::before {
+    content: '';
+    position: absolute;
+    left: calc(var(--hf-space-26) * -1 + var(--hf-space-2) - var(--hf-space-1) * 2);
+    top: 0;
+    bottom: 0;
+    width: var(--pp-strip-w);
+    display: var(--pp-notepad-display);
+    background:
+      radial-gradient(circle at 19px 30px, var(--pp-ground) 0 7px, color-mix(in srgb, var(--pp-hole-edge) 30%, transparent) 7.5px 9.5px, transparent 10px) 0 0 /
+        var(--pp-strip-w) var(--pp-hole-pitch) repeat-y,
+      var(--pp-strip);
+    background-position: 0 calc(var(--pp-strip-phase, 0) * -1px), 0 0;
+    clip-path: var(--pp-clip-strip);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .pp-crumple::before {
+    content: '';
+    position: absolute;
+    left: calc(var(--hf-space-14) - var(--hf-space-1) + var(--pp-margin-x) - var(--pp-edge) - var(--pp-pad) + var(--hf-space-6) * 0);
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    display: var(--pp-notepad-display);
+    border-left: 1px solid color-mix(in srgb, var(--pp-signal) 38%, transparent);
+    border-right: 1px solid color-mix(in srgb, var(--pp-signal) 38%, transparent);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @keyframes pp-rip {
+    0% {
+      --pp-th: 0;
+      --pp-ty: 0%;
+      background-color: color-mix(in srgb, var(--pp-sheet) 0%, transparent);
+    }
+    8% {
+      background-color: var(--pp-sheet);
+    }
+    70% {
+      --pp-th: 10;
+      --pp-ty: 0%;
+    }
+    100% {
+      --pp-th: 17;
+      --pp-ty: -140%;
+      background-color: var(--pp-sheet);
+    }
+  }
+
+  @keyframes pp-ripstrip {
+    0% {
+      opacity: 0;
+    }
+    6%,
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes pp-ripline {
+    0% {
+      opacity: 0;
+    }
+    8%,
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes pp-ripshadow {
+    0%,
+    6% {
+      filter: drop-shadow(0 0 0 color-mix(in srgb, var(--pp-ink-shadow) 0%, transparent));
+    }
+    25%,
+    100% {
+      filter: drop-shadow(6px 14px 14px color-mix(in srgb, var(--pp-ink-shadow) 26%, transparent));
+    }
+  }
+
+  /* Dark: the blackboard slides up and reveals the chalk behind it. */
+  .pp-erz {
+    position: relative;
+    z-index: var(--hf-z-content);
+    margin: 0 calc(var(--pp-pad) * -1);
+    padding: 0 var(--pp-pad);
+  }
+
+  .pp-erb {
+    position: absolute;
+    left: calc(var(--pp-pad) * -1);
+    right: calc(var(--pp-pad) * -1);
+    top: 0;
+    bottom: 0;
+    display: var(--pp-chalk-display);
+    overflow: hidden;
+    pointer-events: none;
+    mask-image: linear-gradient(180deg, transparent calc(var(--pp-hb) - 2%), #000 calc(var(--pp-hb) + 6%));
+  }
+
+  .pp-erv {
+    position: absolute;
+    inset: 0;
+    mask-image: radial-gradient(ellipse 75% 80% at 50% 50%, #000 45%, transparent 100%);
+  }
+
+  .pp-smear {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: var(--w);
+    height: var(--h);
+    border-radius: 50%;
+    transform: rotate(var(--r));
+    filter: blur(6px);
+    opacity: 0.34;
+  }
+
+  .tone-a {
+    background: var(--pp-chalk-a);
+  }
+
+  .tone-b {
+    background: var(--pp-chalk-b);
+  }
+
+  .tone-c {
+    background: var(--pp-chalk-c);
+  }
+
+  .tone-d {
+    background: var(--pp-signal);
+  }
+
+  @keyframes pp-lift {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-80%);
+    }
+  }
+
+  @keyframes pp-hbmove {
+    0% {
+      --pp-hb: 100%;
+    }
+    100% {
+      --pp-hb: 20%;
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    .pp-cwrap {
+      animation: pp-ripshadow linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 95%;
+    }
+
+    .pp-cwrap::before {
+      animation: pp-ripstrip linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 95%;
+    }
+
+    .pp-crumple {
+      animation-name: var(--pp-anim-rip);
+      animation-duration: 1ms;
+      animation-timing-function: cubic-bezier(0.4, 0, 0.7, 0.7);
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 95%;
+    }
+
+    .pp-crumple::before {
+      animation: pp-ripline linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 95%;
+    }
+
+    .pp-erz {
+      animation-name: var(--pp-anim-lift);
+      animation-duration: 1ms;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+
+    .pp-erb {
+      animation: pp-hbmove linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .pp-crumple {
+      margin-left: calc(var(--pp-pad) * -1);
+      padding-left: var(--pp-pad);
+    }
+  }
+</style>

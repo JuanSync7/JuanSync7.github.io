@@ -1,0 +1,290 @@
+/* Paper system base: reset, page frame and the type styles of the redesign. Loaded only by
+   PaperLayout. Every value is a --pp-* token; the --nt-* remap below lets the night-era home
+   components (system map, repos) wear the new palette without being rewritten. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  color-scheme: light dark;
+}
+
+html[data-theme='light'] {
+  color-scheme: light;
+}
+
+html[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+body.paper {
+  margin: 0;
+  background: var(--pp-ground);
+  color: var(--pp-ink);
+  font-family: var(--pp-sans);
+  font-size: var(--pp-fs-body);
+  font-weight: var(--pp-w-body);
+  line-height: var(--pp-lh-body);
+  -webkit-font-smoothing: antialiased;
+
+  /* Night-era components read these; point them at the paper tokens. */
+  --nt-ground: var(--pp-ground);
+  --nt-ground-2: var(--pp-ground);
+  --nt-panel: var(--pp-ground);
+  --nt-panel-2: var(--pp-ground);
+  --nt-panel-signal: var(--pp-ground);
+  --nt-rule: var(--pp-rule);
+  --nt-line: var(--pp-rule);
+  --nt-line-2: var(--pp-outline);
+  --nt-line-3: var(--pp-outline);
+  --nt-line-4: var(--pp-outline);
+  --nt-ink-strong: var(--pp-ink-strong);
+  --nt-ink: var(--pp-ink);
+  --nt-ink-2: var(--pp-ink);
+  --nt-ink-soft: var(--pp-ink);
+  --nt-ink-muted: var(--pp-ink-muted);
+  --nt-ink-faint: var(--pp-ink-muted);
+  --nt-signal: var(--pp-signal);
+  --nt-signal-text: var(--pp-ink-muted);
+  --nt-signal-ink: var(--pp-on-signal);
+  --nt-signal-line: var(--pp-signal-shadow);
+  --nt-signal-line-2: var(--pp-signal);
+  --nt-signal-soft: color-mix(in srgb, var(--pp-signal) 12%, transparent);
+  --nt-signal-faint: color-mix(in srgb, var(--pp-signal) 5%, transparent);
+  --nt-signal-glow: color-mix(in srgb, var(--pp-signal) 45%, transparent);
+  --nt-dot: transparent;
+  --nt-scrim: color-mix(in srgb, var(--pp-ground) 88%, transparent);
+  --nt-scrim-strong: color-mix(in srgb, var(--pp-ground) 96%, transparent);
+  --nt-sans: var(--pp-sans);
+  --nt-display: var(--pp-sans);
+  --nt-mono: var(--pp-mono);
+}
+
+.paper a {
+  color: var(--pp-ink-strong);
+  text-decoration: none;
+}
+
+.paper a:hover {
+  color: var(--pp-signal);
+}
+
+.paper :focus-visible {
+  outline: 2px solid var(--pp-signal);
+  outline-offset: 3px;
+}
+
+.paper h1,
+.paper h2,
+.paper h3,
+.paper h4,
+.paper p {
+  margin: 0;
+}
+
+.paper [id] {
+  scroll-margin-top: var(--hf-space-20);
+}
+
+/* The page: a notepad by day, a board by night. */
+.pp-page {
+  position: relative;
+  container-type: inline-size;
+  overflow-x: clip;
+  --pp-edge: max(0px, calc((100cqw - var(--pp-measure)) / 2));
+  --pp-margin-x: max(10px, calc((100cqw - 1096px) / 2));
+}
+
+.pp-wrap {
+  position: relative;
+  z-index: var(--hf-z-content);
+  max-width: var(--pp-measure);
+  margin: 0 auto;
+  padding: 0 var(--pp-pad);
+}
+
+/* Notepad furniture: orange double margin line and a punched strip, in Light only. */
+.pp-page::before,
+.pp-page::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: var(--pp-notepad-display);
+  pointer-events: none;
+}
+
+.pp-page::before {
+  left: var(--pp-margin-x);
+  width: 3px;
+  border-left: 1px solid color-mix(in srgb, var(--pp-signal) 38%, transparent);
+  border-right: 1px solid color-mix(in srgb, var(--pp-signal) 38%, transparent);
+}
+
+.pp-page::after {
+  left: calc(var(--pp-edge) - 78px);
+  width: var(--pp-strip-w);
+  background:
+    radial-gradient(circle at 19px 30px, var(--pp-ground) 0 7px, color-mix(in srgb, var(--pp-hole-edge) 30%, transparent) 7.5px 9.5px, transparent 10px) 0
+      0 / var(--pp-strip-w) var(--pp-hole-pitch) repeat-y,
+    var(--pp-strip);
+}
+
+/* Type styles */
+.pp-label {
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-label);
+  font-weight: var(--pp-w-label);
+  color: var(--pp-ink-muted);
+}
+
+.pp-caption {
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-caption);
+  font-weight: var(--pp-w-label);
+  color: var(--pp-ink-muted);
+}
+
+.paper .pp-hero-heading {
+  font-size: var(--pp-fs-hero);
+  line-height: var(--pp-lh-hero);
+  font-weight: var(--pp-w-heading);
+  letter-spacing: var(--pp-tracking-hero);
+  color: var(--pp-ink-strong);
+}
+
+.paper .pp-h2 {
+  font-size: var(--pp-fs-h2);
+  line-height: var(--pp-lh-h2);
+  font-weight: var(--pp-w-heading);
+  color: var(--pp-ink-strong);
+}
+
+.pp-title {
+  font-size: var(--pp-fs-title);
+  font-weight: var(--pp-w-title);
+  color: var(--pp-ink-strong);
+}
+
+.pp-statement {
+  font-size: var(--pp-fs-title);
+  font-weight: var(--pp-w-statement);
+  line-height: var(--pp-lh-statement);
+  color: var(--pp-ink-strong);
+}
+
+.pp-lead {
+  font-size: var(--pp-fs-lead);
+  line-height: var(--pp-lh-lead);
+  color: var(--pp-ink);
+}
+
+.pp-body {
+  font-size: var(--pp-fs-body);
+  line-height: var(--pp-lh-body);
+  color: var(--pp-ink);
+}
+
+.pp-small {
+  font-size: var(--pp-fs-small);
+  color: var(--pp-ink);
+}
+
+.pp-hand {
+  font-family: var(--pp-hand);
+  color: var(--pp-ink-strong);
+  text-shadow: 0 0 1px color-mix(in srgb, var(--pp-ink-strong) 35%, transparent);
+}
+
+/* Sections: a hairline, then 48px above and 64px below. */
+.pp-section {
+  border-top: 1px solid var(--pp-rule);
+  padding: var(--hf-space-12) 0 var(--hf-space-16);
+}
+
+/* A row: hairline above, number or mark, then the text. Hover draws it in signal. */
+.pp-row {
+  display: flex;
+  gap: var(--hf-space-6);
+  align-items: baseline;
+  padding: var(--hf-space-5) 0 calc(var(--hf-space-5) - 2px);
+  border-top: 1px solid var(--pp-rule);
+  transition:
+    border-color 250ms ease,
+    box-shadow 250ms ease;
+}
+
+.pp-row:hover {
+  position: relative;
+  z-index: var(--hf-z-content);
+  border-top-color: var(--pp-signal);
+  box-shadow: 0 1px 0 0 var(--pp-signal);
+}
+
+/* Scroll-linked entrance */
+@keyframes pp-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.pp-rise {
+  animation: pp-rise var(--pp-dur-rise) var(--pp-ease-rise) both;
+}
+
+@supports (animation-timeline: view()) {
+  .pp-reveal {
+    animation: pp-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 35%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paper *,
+  .paper *::before,
+  .paper *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@property --pp-th {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --pp-ty {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
+@property --pp-hb {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 100%;
+}
+
+/* Night-era home components (system map, repos) sit in the same frame as the paper ones. */
+.paper .nt-wrap {
+  max-width: var(--pp-measure);
+  padding-left: var(--pp-pad);
+  padding-right: var(--pp-pad);
+}
+
+.paper .nt-section {
+  border-top: 1px solid var(--pp-rule);
+  padding-top: var(--hf-space-12);
+  padding-bottom: var(--hf-space-16);
+}

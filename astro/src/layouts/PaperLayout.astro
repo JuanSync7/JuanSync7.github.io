@@ -1,0 +1,34 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+import '../styles/tokens/index.css';
+import '../styles/night.css';
+import '../styles/paper.css';
+
+/** A page on the paper system: notepad by day, blackboard by night. Follows the visitor's
+ *  setting until they pick a theme with the nav toggle; the choice is kept per browser. */
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Juan Kok: Senior Design & AI Engineer. AI platform, agents and governance.' } = Astro.props;
+
+const THEME = `try{var t=localStorage.getItem('pp-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <script is:inline set:html={THEME} />
+    <ViewTransitions />
+  </head>
+  <body class="paper night">
+    <div class="pp-page">
+      <slot />
+    </div>
+  </body>
+</html>

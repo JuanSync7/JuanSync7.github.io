@@ -71,7 +71,7 @@ try {
   await page.goto(`${base}/design-system/`);
   await page.waitForFunction(() => document.querySelector('[data-design-system]')?.dataset.ready === 'true');
   assert.equal(await page.locator('h1').count(), 1);
-  assert.equal(await page.locator('section[data-ds-section]').count(), 7);
+  assert.equal(await page.locator('section[data-ds-section]').count(), 8);
   await page.screenshot({ path: join(out, 'desktop.png') });
   for (const id of ['foundations', 'components']) {
     await page.locator(`#${id}`).evaluate((section) => section.scrollIntoView({ block: 'start' }));

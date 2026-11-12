@@ -1,0 +1,155 @@
+---
+import { NAV } from '../../data/home';
+import { IDENTITY } from '../../data/site';
+
+interface Props {
+  current?: string;
+}
+
+const { current } = Astro.props;
+---
+
+<header class="pp-nav">
+  <div class="pp-wrap pp-nav-inner">
+    <a class="mark" href="/" aria-label={`${IDENTITY.shortName}, home`}>S<span>J</span></a>
+    <nav aria-label="Primary">
+      <ul>
+        {NAV.map((l) => (
+          <li>
+            <a href={l.href} aria-current={l.label === current ? 'page' : undefined}>{l.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <a class="cv" href={IDENTITY.cvFile}>cv.pdf</a>
+    <button class="theme" type="button" data-theme-toggle aria-label="Switch between light and dark theme">
+      <span class="sun" aria-hidden="true">light</span><span class="moon" aria-hidden="true">dark</span>
+    </button>
+  </div>
+</header>
+
+<script is:inline>
+  (function () {
+    function apply() {
+      var b = document.querySelector('[data-theme-toggle]');
+      if (!b || b.dataset.bound) return;
+      b.dataset.bound = '1';
+      b.addEventListener('click', function () {
+        var root = document.documentElement;
+        var dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        var next = dark ? 'light' : 'dark';
+        root.dataset.theme = next;
+        try { localStorage.setItem('pp-theme', next); } catch (e) {}
+      });
+    }
+    apply();
+    document.addEventListener('astro:page-load', apply);
+    document.addEventListener('astro:after-swap', function () {
+      try {
+        var t = localStorage.getItem('pp-theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    });
+  })();
+</script>
+
+<style>
+  .pp-nav {
+    position: sticky;
+    top: 0;
+    z-index: var(--hf-z-nav);
+    background: var(--nt-scrim);
+    backdrop-filter: blur(12px);
+  }
+
+  .pp-nav-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--hf-space-2) var(--hf-space-4);
+    padding-top: var(--hf-space-4);
+    padding-bottom: var(--hf-space-4);
+  }
+
+  .mark {
+    font-size: var(--pp-fs-mark);
+    font-weight: var(--pp-w-heading);
+    letter-spacing: var(--pp-tracking-mark);
+    color: var(--pp-ink-strong);
+  }
+
+  .mark span {
+    color: var(--pp-signal);
+  }
+
+  nav {
+    margin-left: auto;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--hf-space-2) calc(var(--hf-space-6) - 2px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  nav a,
+  .cv,
+  .theme {
+    font-family: var(--pp-mono);
+    font-size: var(--pp-fs-caption);
+    font-weight: var(--pp-w-label);
+    color: var(--pp-ink-muted);
+  }
+
+  nav a:hover,
+  .cv:hover {
+    color: var(--pp-signal);
+  }
+
+  nav a[aria-current='page'] {
+    color: var(--pp-ink-strong);
+  }
+
+  .theme {
+    min-height: var(--nt-hit);
+    padding: 0 var(--hf-space-3);
+    background: transparent;
+    border: 1px solid var(--pp-outline);
+    border-radius: var(--pp-radius-md);
+    cursor: pointer;
+  }
+
+  .theme:hover {
+    border-color: var(--pp-signal);
+  }
+
+  .moon {
+    display: none;
+  }
+
+  @media (max-width: 699px) {
+    .pp-nav {
+      position: static;
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .sun {
+      display: none;
+    }
+    :global(:root:not([data-theme='light'])) .moon {
+      display: inline;
+    }
+  }
+
+  :global(:root[data-theme='dark']) .sun {
+    display: none;
+  }
+
+  :global(:root[data-theme='dark']) .moon {
+    display: inline;
+  }
+</style>

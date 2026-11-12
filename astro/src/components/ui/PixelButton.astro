@@ -1,0 +1,17 @@
+---
+import './pixel-button.css';
+
+interface Props {
+  href: string;
+  variant?: 'signal' | 'outline';
+  class?: string;
+}
+
+const { href, variant = 'signal', class: className } = Astro.props;
+---
+
+<a class:list={['pixel-button', className]} href={href} data-variant={variant}>
+  <span class="pb-edge"></span>
+  {variant === 'outline' && <span class="pb-face"></span>}
+  <span class="pb-label"><slot /></span>
+</a>

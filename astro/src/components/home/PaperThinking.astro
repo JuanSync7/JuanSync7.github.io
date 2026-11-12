@@ -1,0 +1,163 @@
+---
+import PaperHead from './PaperHead.astro';
+import { THINKING } from '../../data/home';
+
+const num = (i: number): string => String(i + 1).padStart(2, '0');
+---
+
+<section id="thinking" class="pp-section">
+  <div class="pp-wrap">
+    <PaperHead label={THINKING.label} title={THINKING.title} accent={THINKING.accent} lead={THINKING.body} />
+
+    <ol class="rows">
+      {THINKING.principles.map((p, i) => (
+        <li class="pp-row">
+          <span class="pp-label num">{num(i)}</span>
+          <div class="text">
+            <h3 class="pp-statement">{p.title}</h3>
+            <p class="pp-body">{p.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <div class="pair">
+      <div>
+        <p class="pp-label sub">// {THINKING.ready.title} <span class="note">{THINKING.ready.note}</span></p>
+        <ol class="rows">
+          {THINKING.ready.points.map((p) => (
+            <li class="pp-row ask">
+              <span class="pp-caption q" aria-hidden="true">?</span>
+              <span class="pp-body">{p}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <div>
+        <p class="pp-label sub">// {THINKING.lessons.title}</p>
+        <table>
+          <caption class="nt-sr">In silicon, and the same idea in AI systems</caption>
+          <tbody>
+            {THINKING.lessons.rows.map(([chip, ai]) => (
+              <tr>
+                <td class="chip pp-small">{chip}</td>
+                <td class="arrow" aria-hidden="true">→</td>
+                <td class="pp-small">{ai}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="chips">
+      <span class="pp-label">// stack</span>
+      {THINKING.stack.map((s) => <span class="tag">{s}</span>)}
+      <span class="pp-label dom">// domain</span>
+      {THINKING.domain.map((s) => <span class="tag">{s}</span>)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .rows {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-bottom: 1px solid var(--pp-rule);
+  }
+
+  .num {
+    flex: 0 0 var(--hf-space-7);
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-1);
+    max-width: 720px;
+  }
+
+  .pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--hf-space-10);
+    margin-top: var(--hf-space-10);
+  }
+
+  .sub {
+    margin-bottom: var(--hf-space-3);
+  }
+
+  .note {
+    font-weight: 400;
+  }
+
+  .ask {
+    gap: var(--hf-space-4);
+    padding-top: var(--hf-space-4);
+    padding-bottom: var(--hf-space-4);
+  }
+
+  /* The question mark is small text; it sits in ink with a signal rule, not in signal. */
+  .q {
+    flex: 0 0 var(--hf-space-7);
+    color: var(--pp-ink-strong);
+    border-bottom: 2px solid var(--pp-signal);
+    align-self: baseline;
+    text-align: center;
+    width: var(--hf-space-4);
+    flex-basis: var(--hf-space-4);
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  td {
+    padding: var(--hf-space-2) 0;
+    border-top: 1px solid var(--pp-rule);
+    vertical-align: top;
+  }
+
+  td.chip {
+    width: 42%;
+    color: var(--pp-ink-muted);
+  }
+
+  td.arrow {
+    width: var(--hf-space-8);
+    text-align: center;
+    color: var(--pp-ink-strong);
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--hf-space-2);
+    margin-top: var(--hf-space-10);
+  }
+
+  .dom {
+    margin-left: var(--hf-space-4);
+  }
+
+  .tag {
+    padding: var(--hf-space-1) var(--hf-space-3);
+    border: 1px solid var(--pp-outline);
+    border-radius: var(--pp-radius-md);
+    box-shadow: 2px 2px 0 var(--pp-outline);
+    font-family: var(--pp-mono);
+    font-size: var(--pp-fs-caption);
+    font-weight: var(--pp-w-label);
+    color: var(--pp-ink-strong);
+  }
+
+  @media (max-width: 900px) {
+    .pair {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
