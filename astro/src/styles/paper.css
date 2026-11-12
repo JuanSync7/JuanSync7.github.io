@@ -95,14 +95,15 @@ body.paper {
   position: relative;
   container-type: inline-size;
   overflow-x: clip;
-  --pp-edge: max(0px, calc((100cqw - var(--pp-measure)) / 2));
+  --pp-gutter: clamp(0px, calc((100cqw - var(--pp-measure-min)) / 2), var(--pp-gutter-max));
+  --pp-edge: max(var(--pp-gutter), calc((100cqw - var(--pp-measure)) / 2));
   --pp-margin-x: max(10px, calc(var(--pp-edge) - 28px));
 }
 
 .pp-wrap {
   position: relative;
   z-index: var(--hf-z-content);
-  max-width: var(--pp-measure);
+  max-width: calc(100cqw - 2 * var(--pp-edge));
   margin: 0 auto;
   padding: 0 var(--pp-pad);
 }
@@ -279,7 +280,7 @@ body.paper {
 
 /* Night-era home components (system map, repos) sit in the same frame as the paper ones. */
 .paper .nt-wrap {
-  max-width: var(--pp-measure);
+  max-width: calc(100cqw - 2 * var(--pp-edge));
   padding-left: var(--pp-pad);
   padding-right: var(--pp-pad);
 }
