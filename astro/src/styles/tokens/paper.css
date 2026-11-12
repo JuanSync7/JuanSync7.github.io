@@ -84,6 +84,9 @@
   --pp-dur-step: 90ms;
   --pp-chip-label-w: 96px;
   --pp-map-sans: 'Geist', system-ui, sans-serif;
+  --pp-gloss-0: #16191e;
+  --pp-gloss-1: #5b616b;
+  --pp-gloss-glow: 0.45;
   --pp-logo-w: 160px;
   --pp-logo-h: 308px;
   --pp-stage-h: 500px;
@@ -112,6 +115,9 @@
     --pp-chalk-display: block;
     --pp-anim-rip: none;
     --pp-anim-lift: pp-lift;
+    --pp-gloss-0: #b8bdc6;
+    --pp-gloss-1: #ffffff;
+    --pp-gloss-glow: 0.6;
   }
 }
 
@@ -132,6 +138,9 @@
   --pp-chalk-display: block;
   --pp-anim-rip: none;
   --pp-anim-lift: pp-lift;
+  --pp-gloss-0: #b8bdc6;
+  --pp-gloss-1: #ffffff;
+  --pp-gloss-glow: 0.6;
 }
 
 /* Ragged tear edges of the hero sheet and of the strip it leaves behind. */
