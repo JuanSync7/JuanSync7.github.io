@@ -38,8 +38,17 @@ const { current } = Astro.props;
         var root = document.documentElement;
         var dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
         var next = dark ? 'light' : 'dark';
-        root.dataset.theme = next;
-        try { localStorage.setItem('pp-theme', next); } catch (e) {}
+        function change() {
+          root.dataset.theme = next;
+          try { localStorage.setItem('pp-theme', next); } catch (e) {}
+        }
+        if (!document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          change();
+          return;
+        }
+        root.classList.add('pp-theming');
+        var t = document.startViewTransition(change);
+        t.finished.finally(function () { root.classList.remove('pp-theming'); });
       });
     }
     apply();
@@ -58,11 +67,12 @@ const { current } = Astro.props;
     position: sticky;
     top: 0;
     z-index: var(--hf-z-nav);
-    background: var(--nt-scrim);
-    backdrop-filter: blur(12px);
   }
 
   .pp-nav-inner {
+    /* The scrim sits on the content column only, so the strip and frame run up behind the gutters. */
+    background: var(--nt-scrim);
+    backdrop-filter: blur(12px);
     display: flex;
     flex-wrap: wrap;
     align-items: center;

@@ -10,10 +10,12 @@ interface Props {
   label?: string;
   /** 'session' draws in on the first page of a visit only; 'always' on every mount. */
   intro?: 'session' | 'always' | 'none';
+  /** The hero finish: a graded S stroke and a soft signal glow under the J (paper-system gloss tokens). */
+  gloss?: boolean;
   class?: string;
 }
 
-const { label, intro = 'session', class: cls } = Astro.props;
+const { label, intro = 'session', gloss = false, class: cls } = Astro.props;
 // Runs as the page parses, before the mark paints, so a later page of the same visit never
 // flashes the draw-in. Storage can be missing or blocked; then the mark simply draws in again.
 const SESSION = `try{if(sessionStorage.getItem('sj-drawn'))document.documentElement.dataset.sjDrawn='1';else sessionStorage.setItem('sj-drawn','1')}catch(e){}`;
@@ -21,7 +23,7 @@ const SESSION = `try{if(sessionStorage.getItem('sj-drawn'))document.documentElem
 
 {intro === 'session' && <script is:inline set:html={SESSION} />}
 <svg
-  class:list={['sj', cls]}
+  class:list={['sj', { gloss }, cls]}
   data-intro={intro}
   viewBox="62 22 72 138"
   fill="none"
@@ -29,6 +31,19 @@ const SESSION = `try{if(sessionStorage.getItem('sj-drawn'))document.documentElem
   aria-label={label}
   aria-hidden={label ? undefined : 'true'}
 >
+  {gloss && (
+    <defs>
+      <linearGradient id="sj-gloss" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" style="stop-color: var(--pp-gloss-0)" />
+        <stop offset="0.5" style="stop-color: var(--pp-gloss-1)" />
+        <stop offset="1" style="stop-color: var(--pp-gloss-0)" />
+      </linearGradient>
+      <filter id="sj-glow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="3.2" />
+      </filter>
+    </defs>
+  )}
+  {gloss && <path class="glow" d="M122 34 V126 Q122 150 98 150 Q74 150 74 128" filter="url(#sj-glow)" />}
   <line class="tie t1" x1="108" y1="82" x2="122" y2="82" pathLength="1" />
   <line class="tie t2" x1="108" y1="104" x2="122" y2="104" pathLength="1" />
   <path class="net s" d="M122 34 H74 V62 H108 V126 H74" pathLength="1" />
@@ -79,6 +94,18 @@ const SESSION = `try{if(sessionStorage.getItem('sj-drawn'))document.documentElem
 
   .j {
     stroke: var(--nt-signal);
+  }
+
+  .gloss .s {
+    stroke: url('#sj-gloss');
+  }
+
+  .glow {
+    stroke: var(--nt-signal);
+    stroke-width: 9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: var(--pp-gloss-glow);
   }
 
   .tie {

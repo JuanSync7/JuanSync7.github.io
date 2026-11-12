@@ -71,6 +71,8 @@ const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([
 
 <style>
   .system {
+    /* The boxes are sized for Geist, so the map keeps it; a wider face spills out of them. */
+    font-family: var(--pp-map-sans);
     display: flex;
     flex-direction: column;
     gap: var(--hf-space-6);
@@ -295,8 +297,8 @@ const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([
     color: var(--nt-signal-text);
   }
 
-  /* Below this width the boxes can't hold their words, so the map gives way to the steps. */
-  @media (max-width: 1000px) {
+  /* Below this width the boxes can't hold their words (measured with the real fonts: Doc platforms, Agent harness, IP catalogue and Meetings overflow near 1000px), so the map gives way to the steps. */
+  @media (max-width: 1060px) {
     .map {
       display: none;
     }

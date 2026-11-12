@@ -66,7 +66,9 @@
   --pp-tracking-label: 0.03em;
 
   /* Page frame */
-  --pp-measure: 1040px;
+  --pp-measure: 1440px;
+  --pp-measure-min: 1040px;
+  --pp-gutter-max: 120px;
   --pp-pad: var(--hf-space-6);
   --pp-strip-w: 38px;
   --pp-hole-pitch: 62px;
@@ -80,6 +82,21 @@
   --pp-ease-rise: cubic-bezier(0.2, 0.7, 0.2, 1);
   --pp-dur-rise: 900ms;
   --pp-dur-step: 90ms;
+  --pp-chip-label-w: 96px;
+  --pp-map-sans: 'Geist', system-ui, sans-serif;
+  --pp-wood-0: #3d2f24;
+  --pp-wood-shade: #1a130d;
+  --pp-gloss-0: #16191e;
+  --pp-gloss-1: #5b616b;
+  --pp-gloss-glow: 0.45;
+  --pp-logo-w: 160px;
+  --pp-logo-h: 308px;
+  --pp-stage-h: 500px;
+  --pp-stage-w: 540px;
+  --pp-note-w: 200px;
+  --pp-note-gap: 90px;
+  --pp-dur-brush: 1100ms;
+  --pp-ease-brush: cubic-bezier(0.6, 0, 0.3, 1);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -100,6 +117,9 @@
     --pp-chalk-display: block;
     --pp-anim-rip: none;
     --pp-anim-lift: pp-lift;
+    --pp-gloss-0: #b8bdc6;
+    --pp-gloss-1: #ffffff;
+    --pp-gloss-glow: 0.6;
   }
 }
 
@@ -120,6 +140,9 @@
   --pp-chalk-display: block;
   --pp-anim-rip: none;
   --pp-anim-lift: pp-lift;
+  --pp-gloss-0: #b8bdc6;
+  --pp-gloss-1: #ffffff;
+  --pp-gloss-glow: 0.6;
 }
 
 /* Ragged tear edges of the hero sheet and of the strip it leaves behind. */

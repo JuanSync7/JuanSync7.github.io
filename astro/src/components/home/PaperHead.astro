@@ -1,15 +1,19 @@
 ---
+import MarginNote from '../ui/MarginNote.astro';
+
 export interface Props {
   label: string;
   title: string;
   accent?: string;
   lead?: string;
+  note?: string;
 }
 
-const { label, title, accent, lead } = Astro.props;
+const { label, title, accent, lead, note } = Astro.props;
 ---
 
 <div class="head pp-reveal">
+  {note ? <MarginNote text={note} /> : null}
   <p class="pp-label">{label}</p>
   <h2 class="pp-h2">{title}{accent ? <> <span class="accent">{accent}</span></> : null}</h2>
   {lead ? <p class="pp-body lead">{lead}</p> : null}
@@ -17,6 +21,7 @@ const { label, title, accent, lead } = Astro.props;
 
 <style>
   .head {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: var(--hf-space-3);

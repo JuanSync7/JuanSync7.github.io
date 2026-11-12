@@ -7,7 +7,7 @@ const num = (i: number): string => String(i + 1).padStart(2, '0');
 
 <section id="thinking" class="pp-section">
   <div class="pp-wrap">
-    <PaperHead label={THINKING.label} title={THINKING.title} accent={THINKING.accent} lead={THINKING.body} />
+    <PaperHead note="five rules I keep coming back to" label={THINKING.label} title={THINKING.title} accent={THINKING.accent} lead={THINKING.body} />
 
     <ol class="rows">
       {THINKING.principles.map((p, i) => (
@@ -51,10 +51,14 @@ const num = (i: number): string => String(i + 1).padStart(2, '0');
     </div>
 
     <div class="chips">
-      <span class="pp-label">// stack</span>
-      {THINKING.stack.map((s) => <span class="tag">{s}</span>)}
-      <span class="pp-label dom">// domain</span>
-      {THINKING.domain.map((s) => <span class="tag">{s}</span>)}
+      <div class="chip-row">
+        <span class="pp-label">// stack</span>
+        <div class="tags">{THINKING.stack.map((s) => <span class="tag">{s}</span>)}</div>
+      </div>
+      <div class="chip-row">
+        <span class="pp-label">// domain</span>
+        <div class="tags">{THINKING.domain.map((s) => <span class="tag">{s}</span>)}</div>
+      </div>
     </div>
   </div>
 </section>
@@ -134,14 +138,32 @@ const num = (i: number): string => String(i + 1).padStart(2, '0');
 
   .chips {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--hf-space-2);
+    flex-direction: column;
+    gap: var(--hf-space-4);
     margin-top: var(--hf-space-10);
   }
 
-  .dom {
-    margin-left: var(--hf-space-4);
+  .chip-row {
+    display: grid;
+    grid-template-columns: var(--pp-chip-label-w) minmax(0, 1fr);
+    align-items: start;
+    gap: var(--hf-space-2) var(--hf-space-4);
+  }
+
+  .chip-row > .pp-label {
+    padding-top: var(--hf-space-1);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--hf-space-2);
+  }
+
+  @media (max-width: 560px) {
+    .chip-row {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 
   .tag {

@@ -28,6 +28,8 @@ const THEME = `try{var t=localStorage.getItem('pp-theme');if(t==='light'||t==='d
   </head>
   <body class="paper night">
     <div class="pp-page">
+      <div class="pp-board pp-board-l" aria-hidden="true"></div>
+      <div class="pp-board pp-board-r" aria-hidden="true"></div>
       <slot />
     </div>
   </body>

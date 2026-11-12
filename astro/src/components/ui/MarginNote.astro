@@ -1,0 +1,34 @@
+---
+export interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<p class="pp-hand margin-note" aria-hidden="true">{text}</p>
+
+<style>
+  /* A note in the empty left margin, beside the punched strip. It only exists where the page
+     is wide enough to leave a gutter; the parent must be position: relative. */
+  .margin-note {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: calc(100% + var(--pp-pad) + var(--pp-note-gap));
+    width: min(var(--pp-note-w), calc(var(--pp-edge) - var(--pp-note-gap) - var(--pp-pad)));
+    font-size: var(--pp-fs-hand-line);
+    line-height: var(--pp-lh-hand-line);
+    font-weight: var(--pp-w-hand-line);
+    text-align: right;
+    transform: rotate(-3deg);
+    transform-origin: right top;
+    text-wrap: balance;
+  }
+
+  @container (min-width: 2000px) {
+    .margin-note {
+      display: block;
+    }
+  }
+</style>
