@@ -67,11 +67,12 @@ const { current } = Astro.props;
     position: sticky;
     top: 0;
     z-index: var(--hf-z-nav);
-    background: var(--nt-scrim);
-    backdrop-filter: blur(12px);
   }
 
   .pp-nav-inner {
+    /* The scrim sits on the content column only, so the strip and frame run up behind the gutters. */
+    background: var(--nt-scrim);
+    backdrop-filter: blur(12px);
     display: flex;
     flex-wrap: wrap;
     align-items: center;

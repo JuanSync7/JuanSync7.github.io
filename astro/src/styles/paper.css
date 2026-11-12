@@ -94,6 +94,7 @@ body.paper {
 .pp-page {
   position: relative;
   container-type: inline-size;
+  isolation: isolate;
   overflow-x: clip;
   --pp-gutter: clamp(0px, calc((100cqw - var(--pp-measure-min)) / 2), var(--pp-gutter-max));
   --pp-edge: max(var(--pp-gutter), calc((100cqw - var(--pp-measure)) / 2));
@@ -115,7 +116,7 @@ body.paper {
   position: absolute;
   top: 0;
   bottom: 0;
-  z-index: calc(var(--hf-z-nav) + 1);
+  z-index: -1;
   display: var(--pp-notepad-display);
   pointer-events: none;
 }
@@ -320,4 +321,28 @@ body.paper {
   to {
     mask-position: 0% 0;
   }
+}
+
+/* The blackboard's wooden frame: two upright boards on the page edges, in Dark only, in the
+   place of the notepad's punched strip. Below the page content, so section rules cross them. */
+.pp-board {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
+  width: var(--pp-strip-w);
+  display: var(--pp-chalk-display);
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, var(--pp-wood-shade) 0, transparent 16%, transparent 82%, var(--pp-wood-shade) 100%),
+    repeating-linear-gradient(90deg, transparent 0 3px, color-mix(in srgb, var(--pp-wood-shade) 22%, transparent) 3px 4px, transparent 4px 9px),
+    linear-gradient(90deg, var(--pp-wood-1), var(--pp-wood-0) 55%, var(--pp-wood-1));
+}
+
+.pp-board-l {
+  left: calc(var(--pp-edge) - 78px);
+}
+
+.pp-board-r {
+  right: calc(var(--pp-edge) - 78px);
 }
