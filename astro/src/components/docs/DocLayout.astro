@@ -1,0 +1,79 @@
+---
+import type { MarkdownHeading } from 'astro';
+import type { DocGroup } from '../../data/docnav';
+import './docs.css';
+
+interface Props {
+  section: string;
+  home: { href: string; label: string };
+  groups: DocGroup[];
+  current: string;
+  headings: MarkdownHeading[];
+}
+
+const { section, home, groups, current, headings } = Astro.props;
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+<div class="doc">
+  <button class="doc-toggle" type="button" aria-expanded="false" aria-controls="doc-pane">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10" /></svg>
+    {section}
+  </button>
+  <aside class="doc-pane" id="doc-pane" aria-label={section}>
+    <a class="doc-home" href={home.href}>{home.label}</a>
+    {groups.map((g) => (
+      <section class="doc-group">
+        <h2 class="doc-group-label">{g.label}</h2>
+        <ul>
+          {g.links.map((l) => (
+            <li><a href={l.href} aria-current={l.href === current ? 'page' : undefined}>{l.title}</a></li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </aside>
+  <div class="doc-main"><slot /></div>
+  {toc.length > 1 ? (
+    <nav class="doc-toc" aria-label="On this page">
+      <p class="doc-toc-label">On this page</p>
+      <ul>
+        {toc.map((h) => (
+          <li class={`d${h.depth}`}><a href={`#${h.slug}`} data-doc-toc>{h.text}</a></li>
+        ))}
+      </ul>
+    </nav>
+  ) : null}
+</div>
+
+<script is:inline>
+  (function () {
+    var obs;
+    function setup() {
+      if (obs) obs.disconnect();
+      var t = document.querySelector('.doc-toggle');
+      var pane = document.querySelector('.doc-pane');
+      if (t && pane && !t.dataset.bound) {
+        t.dataset.bound = '1';
+        t.addEventListener('click', function () {
+          var open = !pane.hasAttribute('data-open');
+          pane.toggleAttribute('data-open', open);
+          t.setAttribute('aria-expanded', String(open));
+        });
+      }
+      var links = [].slice.call(document.querySelectorAll('[data-doc-toc]'));
+      if (!links.length || !('IntersectionObserver' in window)) return;
+      var heads = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+      obs = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          var i = heads.indexOf(e.target);
+          links.forEach(function (a, k) { k === i ? a.setAttribute('aria-current', 'location') : a.removeAttribute('aria-current'); });
+        });
+      }, { rootMargin: '-15% 0px -75% 0px' });
+      heads.forEach(function (h) { if (h) obs.observe(h); });
+    }
+    setup();
+    document.addEventListener('astro:page-load', setup);
+  })();
+</script>

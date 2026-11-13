@@ -3,6 +3,8 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import NightPage from '../../layouts/NightPage.astro';
 import NightNav from '../../components/layout/NightNav.astro';
 import NightFooter from '../../components/layout/NightFooter.astro';
+import DocLayout from '../../components/docs/DocLayout.astro';
+import { blogGroups } from '../../data/docnav';
 import FigureCanvas from '../../components/ui/FigureCanvas.tsx';
 import { CATEGORY_LABEL } from '../../data/writing';
 import '../../styles/night-prose.css';
@@ -13,7 +15,7 @@ export async function getStaticPaths() {
     .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
   return entries.map((entry, i) => ({
     params: { slug: entry.slug },
-    props: { entry, newer: entries[i - 1] ?? null, older: entries[i + 1] ?? null },
+    props: { entry, newer: entries[i - 1] ?? null, older: entries[i + 1] ?? null, all: entries },
   }));
 }
 
@@ -21,10 +23,11 @@ interface Props {
   entry: CollectionEntry<'blog'>;
   newer: CollectionEntry<'blog'> | null;
   older: CollectionEntry<'blog'> | null;
+  all: CollectionEntry<'blog'>[];
 }
 
-const { entry, newer, older } = Astro.props;
-const { Content } = await entry.render();
+const { entry, newer, older, all } = Astro.props;
+const { Content, headings } = await entry.render();
 const { data } = entry;
 const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(data.date);
 ---
@@ -33,6 +36,8 @@ const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', y
   <NightNav current="writing" />
   <div class="nt-progress" aria-hidden="true"></div>
   <main class="nt-wrap post">
+    <DocLayout section="Writing" home={{ href: '/blog/', label: '← All writing' }} groups={blogGroups(all)} current={`/blog/${entry.slug}`} headings={headings}>
+    <div class="post-col">
     <a class="back" href="/blog/#posts">← All writing</a>
     <header class="head">
       <p class="meta">
@@ -65,16 +70,22 @@ const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', y
         </a>
       ) : null}
     </nav>
+    </div>
+    </DocLayout>
   </main>
   <NightFooter />
 </NightPage>
 
 <style>
-  .post {
+  .post-col {
     display: flex;
     flex-direction: column;
     gap: var(--hf-space-10);
     padding-top: var(--nt-section-y-tight);
+  }
+
+  .post {
+    padding-top: 0;
     padding-bottom: var(--nt-section-y);
   }
 
@@ -84,6 +95,12 @@ const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', y
     font-family: var(--nt-mono);
     font-size: var(--nt-fs-caption);
     color: var(--nt-ink-muted);
+  }
+
+  @media (min-width: 901px) {
+    .back {
+      display: none;
+    }
   }
 
   .head {

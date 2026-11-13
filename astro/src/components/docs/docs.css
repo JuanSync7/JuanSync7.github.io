@@ -1,0 +1,133 @@
+/* A document section: a pane of sibling documents on the left, the article in the middle,
+   "On this page" on the right. The pane and the contents are sticky; below the widths in the
+   tokens the contents go first, then the pane folds into a button above the article. */
+.doc {
+  display: grid;
+  grid-template-columns: var(--pp-doc-nav-w) minmax(0, 1fr) var(--pp-doc-toc-w);
+  gap: var(--pp-doc-gap);
+  align-items: start;
+}
+
+.doc-main {
+  min-width: 0;
+}
+
+.doc-pane,
+.doc-toc {
+  position: sticky;
+  top: var(--hf-space-20);
+  max-height: calc(100vh - var(--hf-space-24));
+  overflow-y: auto;
+  padding-top: var(--nt-section-y-tight);
+  font-size: var(--nt-fs-caption);
+}
+
+.doc-toggle {
+  display: none;
+}
+
+.doc-home {
+  display: block;
+  margin-bottom: var(--hf-space-6);
+  font-family: var(--nt-mono);
+  color: var(--nt-ink-muted);
+}
+
+.doc-group + .doc-group {
+  margin-top: var(--hf-space-6);
+}
+
+.doc-group-label,
+.doc-toc-label {
+  margin: 0 0 var(--hf-space-2);
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-caption);
+  font-weight: 500;
+  color: var(--nt-ink-muted);
+}
+
+.doc-pane ul,
+.doc-toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.doc-pane li a,
+.doc-toc li a {
+  display: block;
+  padding: var(--hf-space-1) 0 var(--hf-space-1) var(--hf-space-3);
+  border-left: 1px solid var(--nt-rule);
+  color: var(--nt-ink-2);
+  line-height: 1.4;
+}
+
+.doc-toc li.d3 a {
+  padding-left: var(--hf-space-6);
+}
+
+.doc-pane li a:hover,
+.doc-toc li a:hover,
+.doc-home:hover {
+  color: var(--nt-signal);
+}
+
+.doc-pane li a[aria-current='page'],
+.doc-toc li a[aria-current='location'] {
+  border-left-color: var(--nt-signal);
+  color: var(--nt-ink-strong);
+}
+
+@media (max-width: 1180px) {
+  .doc {
+    grid-template-columns: var(--pp-doc-nav-w) minmax(0, 1fr);
+  }
+
+  .doc-toc {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .doc {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .doc-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--hf-space-2);
+    justify-self: start;
+    margin-top: var(--hf-space-4);
+    min-height: var(--nt-hit);
+    padding: 0 var(--hf-space-3);
+    background: transparent;
+    border: 1px solid var(--nt-line);
+    border-radius: var(--hf-radius-md);
+    color: var(--nt-ink-2);
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-caption);
+    cursor: pointer;
+  }
+
+  .doc-toggle svg {
+    width: var(--hf-space-5);
+    height: var(--hf-space-5);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+  }
+
+  .doc-pane {
+    display: none;
+    position: static;
+    max-height: none;
+    padding-top: var(--hf-space-4);
+  }
+
+  .doc-pane[data-open] {
+    display: block;
+  }
+}

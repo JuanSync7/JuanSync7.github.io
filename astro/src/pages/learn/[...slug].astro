@@ -3,25 +3,29 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import NightPage from '../../layouts/NightPage.astro';
 import NightNav from '../../components/layout/NightNav.astro';
 import NightFooter from '../../components/layout/NightFooter.astro';
+import DocLayout from '../../components/docs/DocLayout.astro';
+import { learnGroups } from '../../data/docnav';
 import FigureCanvas from '../../components/ui/FigureCanvas.tsx';
 import Mermaid from '../../components/trackers/Mermaid.astro';
-import { LEARN_COPY, LEARN_SUBJECT, readTime } from '../../data/learn';
+import { LEARN_COPY, LEARN_SUBJECT, learnEntries, readTime } from '../../data/learn';
 import '../../styles/night-prose.css';
 import '../../styles/learn-paper.css';
 
 export async function getStaticPaths() {
   const entries = await getCollection('learn');
-  return entries.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
+  const all = await learnEntries();
+  return entries.map((entry) => ({ params: { slug: entry.slug }, props: { entry, all } }));
 }
 
 interface Props {
   entry: CollectionEntry<'learn'>;
+  all: CollectionEntry<'learn'>[];
 }
 
 // A field guide: the night page's nav, header and live cover, then the text on paper, then the
 // tracker that follows the same subject week by week.
-const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { entry, all } = Astro.props;
+const { Content, headings } = await entry.render();
 const { data } = entry;
 const subject = LEARN_SUBJECT[data.subject];
 const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(data.date);
@@ -31,6 +35,8 @@ const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', y
   <NightNav current="learn" />
   <div class="nt-progress" aria-hidden="true"></div>
   <main class="nt-wrap guide">
+    <DocLayout section="Field guides" home={{ href: LEARN_COPY.all.href, label: `← ${LEARN_COPY.all.label}` }} groups={learnGroups(all)} current={`/learn/${entry.slug}`} headings={headings}>
+    <div class="guide-col">
     <a class="back" href={LEARN_COPY.all.href}>← {LEARN_COPY.all.label}</a>
     <header class="head">
       <p class="meta">
@@ -61,17 +67,23 @@ const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', y
         <span>{LEARN_COPY.all.label} →</span>
       </a>
     </nav>
+    </div>
+    </DocLayout>
   </main>
   <Mermaid />
   <NightFooter />
 </NightPage>
 
 <style>
-  .guide {
+  .guide-col {
     display: flex;
     flex-direction: column;
     gap: var(--hf-space-10);
     padding-top: var(--nt-section-y-tight);
+  }
+
+  .guide {
+    padding-top: 0;
     padding-bottom: var(--nt-section-y);
   }
 
@@ -81,6 +93,12 @@ const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', y
     font-family: var(--nt-mono);
     font-size: var(--nt-fs-caption);
     color: var(--nt-ink-muted);
+  }
+
+  @media (min-width: 901px) {
+    .back {
+      display: none;
+    }
   }
 
   .head {
