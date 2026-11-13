@@ -31,7 +31,7 @@
   --pp-sticker-fill-2: #cfc4ad;
   --pp-sticker-shadow: rgb(0 0 0 / 0.38);
   --pp-sticker-tape: rgb(240 228 190 / 0.72);
-  --pp-sticker-size: clamp(84px, 12vw, 128px);
+  --pp-sticker-size: clamp(76px, 9vw, 116px);
   --pp-sticker-line: 2.4;
   --pp-sticker-tape-w: 44px;
   --pp-sticker-tape-h: 16px;

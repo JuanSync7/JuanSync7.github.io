@@ -113,8 +113,16 @@ column, and code wraps with a hanging indent instead of scrolling sideways.
 - Colour: the exact signal orange in both themes, nothing muted; no grey panels behind content; code in the
   palette's terminal window; 60/30/10 for ground, ink and orange; text readable in both themes.
 - Dark is the same notepad in gunmetal. The figure or room stage follows the page ground.
-- LEGO and block scenes: "do a proper 3D isometric first, then only turn it into lego", smaller pieces, street
-  lamps, benches, unique architecture; the animation starts as the model and swaps to bricks.
+- LEGO and block scenes: design the scene as a proper isometric voxel model first, for reference only;
+  on screen it is LEGO from the start, bricks pressed on one by one, slowly, then taken apart and rebuilt.
+  Smaller pieces, street lamps, benches, unique architecture (13 Nov 2026, correcting an earlier build that
+  showed the model and swapped it to bricks).
+- "Let's build something" is a realistic 3D coder/gamer setup (13 Nov 2026): a modern desk, an ultrawide with
+  a chat app streaming, a portrait monitor of code, a screen bar on the monitor, a detailed mechanical
+  keyboard, a gaming PC with glass side, water cooling, fans and accent lights, a gaming chair, and several
+  server racks behind, hot-wired to each other with jumper cables and cabled to the PC. Render it close.
+- Hobbies: the word "Hobbies" hand-written on the left, stickers on the right, no hairlines above or below;
+  no `// contact.sh` label and no lines around the contact scenes.
 - Stickers: accurate objects (a grand piano, a shuttlecock, a swimmer in waves, a frisbee with wind, a travel
   bag), pasted on the notepad.
 The rules and checks for all of this are the vault decks `Colour and contrast`, `Page layout`, `Designing and

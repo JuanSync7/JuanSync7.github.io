@@ -104,6 +104,42 @@ export const roomTones = {
   ink: '#101b24',
 } as const;
 export type RoomTone = keyof typeof roomTones;
+
+/** Real material colours for the home page's desk scene (requested 13 Nov 2026 as "a realistic
+ *  3D setup"). Objects keep their true colours in both themes, so the scene is not recoloured
+ *  by the page filter. Greys stay in the night palette's cool neutral band (the figure audit
+ *  checks it); the one signal is read from the page's --nt-signal at run time, which is the
+ *  signal orange on paper pages and the night signal on the figure bench. */
+export const deskTones = {
+  deskTop: '#e9ebef',
+  deskEdge: '#c9ccd3',
+  metal: '#8c9097',
+  shell: '#1e2025',
+  bezel: '#111216',
+  mat: '#33353a',
+  keyBase: '#2a2c31',
+  key: '#e6e6e8',
+  keyMod: '#9ba1ac',
+  keyCase: '#3b3f47',
+  glass: '#2a2f3a',
+  tower: '#2c2e33',
+  towerFront: '#3d4046',
+  rack: '#1b1d21',
+  unit: '#5c6068',
+  unit2: '#74787f',
+  cable: '#3a3d43',
+  led: '#a9afb7',
+  chatGround: '#f1f2f5',
+  chatSide: '#e1e4ea',
+  chatInk: '#3a3f4b',
+  chatInkSoft: '#a3a9ba',
+  codeGround: '#15171c',
+  codeGutter: '#1d2026',
+  codeInk: '#c9ced8',
+  codeInkSoft: '#646b78',
+  signalNight: '#2dd4bf',
+} as const;
+export type DeskTone = keyof typeof deskTones;
 /** Existing paper tokens, mirrored for portable slide SVGs as well as CSS previews. */
 export const paper = {
   ground: '#dcd8cc',

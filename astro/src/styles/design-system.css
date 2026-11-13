@@ -716,3 +716,22 @@
 .ds-slide-icons > div { display: grid; place-items: center; width: var(--hf-space-20); aspect-ratio: 1; }
 .ds-slide-icons svg { display: block; width: var(--hf-space-16); height: var(--hf-space-16); }
 .ds-slide-paper { background: var(--nt-paper-ground); }
+
+.ds-desk-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hf-space-2) var(--hf-space-4);
+}
+
+.ds-desk-swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hf-space-2);
+  font: var(--nt-fs-caption) var(--nt-mono);
+}
+
+.ds-desk-swatch i {
+  width: var(--hf-space-5);
+  height: var(--hf-space-5);
+  border: 1px solid var(--nt-line);
+}
