@@ -20,3 +20,14 @@
   color: var(--nt-ink-muted);
   pointer-events: none;
 }
+
+/* Colour on the paper system: a figure in the night palette is turned to ink on paper by day
+   (see --pp-figure-filter). Full-colour scenes (rooms, voxel worlds) keep a dark stage. */
+.figure-canvas:not([data-colour='full']) canvas {
+  filter: var(--pp-figure-filter, none);
+  mix-blend-mode: var(--pp-figure-blend, normal);
+}
+
+.figure-canvas[data-colour='full'] {
+  background: var(--pp-figure-ground, transparent);
+}

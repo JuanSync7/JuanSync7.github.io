@@ -75,6 +75,9 @@ export interface FigureMeta {
   seed: number;
   /** True when the drawing is meant to run off the canvas edges (a field, a lattice). */
   bleed?: boolean;
+  /** True for a scene in its own full colour (rooms, voxel worlds). Every other figure is drawn in
+   *  the night palette, which the paper system turns to ink on paper by day. */
+  fullColour?: boolean;
   /** Width over height of the box the figure is designed for. The bench shows it at this. */
   aspect: number;
 }
