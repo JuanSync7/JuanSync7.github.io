@@ -23,6 +23,25 @@ html[data-theme='dark'] {
 
 /* On <html>, not <body>: tokens derived from these at :root (the fades, the presentation
    roles) must resolve against the paper palette, not the night one. */
+/* The older pages' variables (--bg, --panel, --teal, ...) are bridged to the paper tokens, so a
+   page that still reads them takes its colours from the one central config, in both themes.
+   The extra :root keeps this above the older data-theme blocks. */
+html.paper:root {
+  --bg: var(--pp-ground);
+  --panel: var(--nt-panel);
+  --panel2: var(--nt-panel-2);
+  --line: var(--nt-line);
+  --txt: var(--nt-ink);
+  --txt2: var(--nt-ink-2);
+  --muted: var(--nt-ink-muted);
+  --amber: var(--pp-ink-muted);
+  --teal: var(--pp-signal);
+  --accent: var(--pp-signal);
+  --accent2: var(--pp-signal);
+  --chip: var(--nt-panel-2);
+  --hover: var(--nt-panel-2);
+}
+
 html.paper {
   /* Night-era components read these; point them at the paper tokens. */
   --nt-ground: var(--pp-ground);
@@ -56,6 +75,17 @@ html.paper {
   --nt-sans: var(--pp-sans);
   --nt-display: var(--pp-sans);
   --nt-mono: var(--pp-mono);
+  /* The code window (macOS-style, three dots) takes the paper palette: a gunmetal window with
+     signal-orange, grey and cream dots, in both themes. */
+  --nt-code-ground: var(--pp-term-ground);
+  --nt-code-line: var(--pp-term-line);
+  --nt-code-ink: var(--pp-term-ink);
+  --nt-term-red: var(--pp-term-dot-1);
+  --nt-term-amber: var(--pp-term-dot-2);
+  --nt-term-green: var(--pp-term-dot-3);
+  --term-r: var(--pp-term-dot-1);
+  --term-y: var(--pp-term-dot-2);
+  --term-g: var(--pp-term-dot-3);
 }
 
 body.paper {
