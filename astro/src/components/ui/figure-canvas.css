@@ -22,7 +22,7 @@
 }
 
 /* Colour on the paper system: a figure in the night palette is turned to ink on paper by day
-   (see --pp-figure-filter). Full-colour scenes (rooms, voxel worlds: pixel-still, voxel-scene, voxcel-island and their seeded instances) keep a dark stage. */
+   (see --pp-figure-filter). Full-colour scenes (rooms, voxel worlds: pixel-still, voxel-scene, voxcel-island and their seeded instances) sit on the page ground (--pp-figure-ground). */
 .figure-canvas:not(:where([data-figure^='pixel-still'], [data-figure^='voxel-scene'], [data-figure^='voxcel-island'])) canvas {
   filter: var(--pp-figure-filter, none);
   mix-blend-mode: var(--pp-figure-blend, normal);

@@ -3,6 +3,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { chromium } from 'playwright';
 import { decode, diff, measure } from './pixels.mjs';
 import { writeSheet } from './sheet.mjs';
+import { nightInk } from './night-ink.mjs';
 import { colourMetrics, assertColour } from './room-colour-metrics.mjs';
 import { checkEyeImage } from './room-eye-image.mjs';
 const url = (process.argv.find((a) => a.startsWith('--url='))?.slice(6) ?? 'http://127.0.0.1:4410').replace(/\/$/, '');
@@ -32,10 +33,15 @@ writeFileSync(
 try {
   browser = await chromium.launch();
   for (const fallback of [false, true]) {
-    const context = await browser.newContext({ viewport: { width: 1200, height: 1000 }, reducedMotion: 'reduce' }),
+    const context = await browser.newContext({
+        viewport: { width: 1200, height: 1000 },
+        reducedMotion: 'reduce',
+        colorScheme: 'dark',
+      }),
       page = await context.newPage(),
       shots = [],
       eyeShots = [];
+    await nightInk(page);
     page.on('pageerror', (e) => errors.push(e.message));
     page.on('console', (m) => {
       if (

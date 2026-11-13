@@ -86,7 +86,7 @@
   --pp-dur-step: 90ms;
   --pp-chip-label-w: 96px;
   --pp-map-sans: 'Geist', system-ui, sans-serif;
-  --pp-figure-ground: #07080c;
+  --pp-figure-ground: var(--pp-ground);
   /* Figures are drawn in the night palette (light lines, teal signal, near-black ground). On the
      cream notepad they are inverted to dark lines on paper, the teal turned to the signal orange,
      and multiplied onto the page so the figure's ground becomes the paper. */
@@ -103,6 +103,9 @@
   --pp-note-gap: 90px;
   --pp-dur-brush: 1100ms;
   --pp-ease-brush: cubic-bezier(0.6, 0, 0.3, 1);
+  --pp-dur-flip: 850ms;
+  --pp-ease-flip: cubic-bezier(0.55, 0, 0.25, 1);
+  --pp-flip-depth: 2400px;
 }
 
 @media (prefers-color-scheme: dark) {

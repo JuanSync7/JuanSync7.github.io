@@ -4,7 +4,8 @@ export async function nightInk(target) {
   await target.addInitScript(() => {
     document.addEventListener('DOMContentLoaded', () => {
       const style = document.createElement('style');
-      style.textContent = ':root { --pp-figure-filter: none !important; --pp-figure-blend: normal !important; }';
+      style.textContent =
+        ':root { --pp-figure-filter: none !important; --pp-figure-blend: normal !important; --pp-figure-ground: #07080c !important; --pp-ground: #07080c !important; }';
       document.head.append(style);
     });
   });

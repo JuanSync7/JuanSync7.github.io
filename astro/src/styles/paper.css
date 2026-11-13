@@ -318,6 +318,54 @@ body.paper {
   view-transition-name: none;
 }
 
+/* Page swaps: the page you leave turns over on its left edge, by the punched strip, and the
+   new page lies underneath. Only without reduced motion, and not for a theme change. */
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.pp-theming)::view-transition-old(root),
+  html:not(.pp-theming)::view-transition-new(root) {
+    mix-blend-mode: normal;
+    animation-duration: var(--pp-dur-flip);
+    animation-timing-function: var(--pp-ease-flip);
+    animation-fill-mode: both;
+  }
+
+  html:not(.pp-theming)::view-transition-old(root) {
+    z-index: 2;
+    transform-origin: 0 50%;
+    animation-name: pp-flip-out;
+  }
+
+  html:not(.pp-theming)::view-transition-new(root) {
+    z-index: 1;
+    animation-name: pp-flip-in;
+  }
+}
+
+@keyframes pp-flip-out {
+  from {
+    transform: perspective(var(--pp-flip-depth)) rotateY(0deg);
+    filter: brightness(1) drop-shadow(0 0 0 transparent);
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  to {
+    transform: perspective(var(--pp-flip-depth)) rotateY(-100deg);
+    filter: brightness(0.7) drop-shadow(12px 0 28px color-mix(in srgb, var(--pp-ink-shadow) 45%, transparent));
+    opacity: 0;
+  }
+}
+
+@keyframes pp-flip-in {
+  from {
+    filter: brightness(0.82);
+  }
+  to {
+    filter: brightness(1);
+  }
+}
+
 @keyframes pp-brush {
   from {
     mask-position: 80% 0;

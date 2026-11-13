@@ -76,6 +76,14 @@ const smears = Array.from({ length: 38 }, () => ({
       var top = w.getBoundingClientRect().top - page.getBoundingClientRect().top;
       var pitch = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--pp-hole-pitch')) || 62;
       w.style.setProperty('--pp-strip-phase', String(((top % pitch) + pitch) % pitch));
+      var c = w.querySelector('.pp-crumple');
+      var probe = document.createElement('i');
+      probe.style.cssText = 'position:absolute;visibility:hidden;left:var(--pp-margin-x)';
+      page.appendChild(probe);
+      var x = probe.offsetLeft;
+      page.removeChild(probe);
+      for (var n = c; n && n !== page; n = n.offsetParent) x -= n.offsetLeft;
+      c.style.setProperty('--pp-line-x', x + 'px');
     }
     phase();
     window.addEventListener('resize', phase);
@@ -171,13 +179,13 @@ const smears = Array.from({ length: 38 }, () => ({
   .pp-crumple::before {
     content: '';
     position: absolute;
-    left: calc(var(--hf-space-14) - var(--hf-space-1) + var(--pp-margin-x) - var(--pp-edge) - var(--pp-pad) + var(--hf-space-6) * 0);
+    left: var(--pp-line-x, 0px);
     top: 0;
     bottom: 0;
     width: 3px;
     display: var(--pp-notepad-display);
-    border-left: 1px solid color-mix(in srgb, var(--pp-signal) 38%, transparent);
-    border-right: 1px solid color-mix(in srgb, var(--pp-signal) 38%, transparent);
+    border-left: 1px solid color-mix(in srgb, var(--pp-signal) var(--pp-margin-mix), transparent);
+    border-right: 1px solid color-mix(in srgb, var(--pp-signal) var(--pp-margin-mix), transparent);
     opacity: 0;
     pointer-events: none;
   }
