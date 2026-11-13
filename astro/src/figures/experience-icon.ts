@@ -156,7 +156,7 @@ export default defineCanvasFigure<null>({
   style: 'hairline',
   motion: 'ambient',
   answers: false,
-  group: 'feature',
+  group: 'post',
   seed: 903,
   aspect: 1.3,
   setup: () => null,
