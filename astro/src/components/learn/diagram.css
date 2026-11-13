@@ -160,7 +160,7 @@
 }
 
 .dg-step.core .dg-step-label {
-  color: var(--nt-signal);
+  color: var(--nt-signal-text);
 }
 
 .dg figcaption {

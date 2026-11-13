@@ -55,7 +55,7 @@
 .package-open-label {
   font-family: var(--nt-mono);
   font-size: var(--nt-fs-meta);
-  color: var(--nt-signal);
+  color: var(--nt-signal-text);
 }
 
 .package-open-notes {
@@ -111,7 +111,7 @@
 }
 
 .package-open-parts .is-on .package-open-index {
-  color: var(--nt-signal);
+  color: var(--nt-signal-text);
 }
 
 @media (max-width: 900px) {

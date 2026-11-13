@@ -113,7 +113,7 @@
 }
 
 .page-kind {
-  color: var(--nt-signal);
+  color: var(--nt-signal-text);
 }
 
 .page h3 {
@@ -131,7 +131,7 @@
   display: inline-flex;
   align-items: center;
   min-height: var(--nt-hit);
-  color: var(--nt-signal);
+  color: var(--nt-signal-text);
 }
 
 .page.is-active .st {

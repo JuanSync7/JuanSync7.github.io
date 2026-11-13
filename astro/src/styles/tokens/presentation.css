@@ -3,7 +3,7 @@
   --pr-title: var(--nt-ink-strong);
   --pr-body: var(--nt-ink-2);
   --pr-comment: var(--nt-ink-muted);
-  --pr-label: var(--nt-signal);
+  --pr-label: var(--nt-signal-text);
   --pr-title-font: var(--nt-display);
   --pr-body-font: var(--nt-sans);
   --pr-comment-font: var(--nt-mono);

@@ -11,7 +11,7 @@
 .vc-label-layer, .vc-label-mask { position: absolute; pointer-events: none; }
 .vc-label-mask { inset: 0; }
 .vc-folder-label { position: absolute; white-space: nowrap; color: var(--pr-title); font: var(--vc-label-size) / var(--nt-lh-body) var(--nt-mono); letter-spacing: var(--hf-tracking-wide); padding: var(--hf-space-1); }
-.vc-folder-label[data-active='true'] { color: var(--nt-signal); }
+.vc-folder-label[data-active='true'] { color: var(--nt-signal-text); }
 .vc-folder:focus-visible { outline: none; }
 .vc-folder:focus-visible .vc-folder-label { outline: var(--pa-focus-width) solid var(--nt-signal); outline-offset: var(--pa-focus-offset); }
 .vc-readout { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: var(--hf-space-3) var(--hf-space-5); padding-top: var(--hf-space-5); border-top: 1px solid var(--pr-rule); }

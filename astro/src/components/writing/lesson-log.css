@@ -70,7 +70,7 @@
 
 .log-step:hover:not(:disabled) {
   border-color: var(--nt-signal);
-  color: var(--nt-signal);
+  color: var(--nt-signal-text);
 }
 
 .log-step:disabled {
@@ -126,7 +126,7 @@
 }
 
 .log-tag {
-  color: var(--nt-signal);
+  color: var(--nt-signal-text);
 }
 
 .night .log-title {
@@ -161,7 +161,7 @@
 }
 
 .night .log-all {
-  color: var(--nt-signal);
+  color: var(--nt-signal-text);
 }
 
 /* On a phone the field keeps its full width at a taller ratio, so the days stay legible

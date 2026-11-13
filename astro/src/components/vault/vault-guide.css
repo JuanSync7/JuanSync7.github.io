@@ -125,7 +125,7 @@
 }
 
 .vg-content a:not([class]) {
-  color: var(--nt-signal);
+  color: var(--nt-signal-text);
   text-decoration: underline;
   text-underline-offset: var(--hf-space-1);
 }
@@ -217,7 +217,7 @@
   padding: var(--hf-space-3) var(--hf-space-4);
   border-bottom: 1px solid var(--nt-code-line);
   font: var(--nt-fs-caption) var(--nt-mono);
-  color: var(--pr-comment);
+  color: var(--nt-code-muted);
 }
 
 .vg-terminal-dots {

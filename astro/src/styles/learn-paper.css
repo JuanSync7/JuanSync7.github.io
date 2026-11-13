@@ -17,37 +17,7 @@
   --mono: var(--nt-mono);
 }
 
-/* A terminal window: three dots in a title bar, a rule under it, the code scrolling below. */
-.night .paper .prose pre {
-  position: relative;
-  padding: var(--hf-space-12) var(--hf-space-5) var(--hf-space-5);
-  border-color: var(--nt-code-line);
-  background: var(--nt-code-ground) !important;
-  color: var(--nt-code-ink);
-}
-
-.night .paper .prose pre::before {
-  content: '';
-  position: absolute;
-  top: var(--hf-space-4);
-  left: var(--hf-space-5);
-  width: var(--hf-space-3);
-  height: var(--hf-space-3);
-  border-radius: var(--hf-radius-pill);
-  background: var(--nt-term-red);
-  box-shadow:
-    var(--hf-space-5) 0 0 var(--nt-term-amber),
-    var(--hf-space-10) 0 0 var(--nt-term-green);
-}
-
-.night .paper .prose pre::after {
-  content: '';
-  position: absolute;
-  top: var(--hf-space-10);
-  right: 0;
-  left: 0;
-  border-top: 1px solid var(--nt-code-line);
-}
+/* The terminal window for code lives in night-prose.css, shared with blog posts. */
 
 /* A Mermaid diagram is a figure, not code: no window, centred, captioned. */
 .night .paper .prose figure.ig-fig {

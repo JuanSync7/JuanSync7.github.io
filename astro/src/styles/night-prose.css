@@ -26,7 +26,7 @@
 }
 
 .night .prose a {
-  color: var(--nt-signal);
+  color: var(--nt-signal-text);
   text-decoration: underline;
   text-decoration-color: var(--nt-signal-line-2);
   text-underline-offset: 0.2em;
@@ -71,6 +71,39 @@
   background: var(--nt-panel) !important;
   font-size: var(--nt-fs-small);
   line-height: 1.55;
+}
+
+/* Code is always a terminal window (owner's rule, 3 Oct 2026): dark ground from the palette in
+   both themes, three dots in a title bar, a rule under it. Shared by posts and field guides. */
+.night .prose pre:not(.mermaid) {
+  position: relative;
+  padding: var(--hf-space-12) var(--hf-space-5) var(--hf-space-5);
+  border-color: var(--nt-code-line);
+  background: var(--nt-code-ground) !important;
+  color: var(--nt-code-ink);
+}
+
+.night .prose pre:not(.mermaid)::before {
+  content: '';
+  position: absolute;
+  top: var(--hf-space-4);
+  left: var(--hf-space-5);
+  width: var(--hf-space-3);
+  height: var(--hf-space-3);
+  border-radius: var(--hf-radius-pill);
+  background: var(--nt-term-red);
+  box-shadow:
+    var(--hf-space-5) 0 0 var(--nt-term-amber),
+    var(--hf-space-10) 0 0 var(--nt-term-green);
+}
+
+.night .prose pre:not(.mermaid)::after {
+  content: '';
+  position: absolute;
+  top: var(--hf-space-10);
+  right: 0;
+  left: 0;
+  border-top: 1px solid var(--nt-code-line);
 }
 
 .night .prose blockquote {

@@ -50,7 +50,7 @@
   min-height: var(--nt-hit);
   font-family: var(--nt-mono);
   font-size: var(--nt-fs-meta);
-  color: var(--nt-signal);
+  color: var(--nt-signal-text);
 }
 
 .lab-controls {
@@ -69,7 +69,7 @@
 
 .lab-btn:hover:not(:disabled),
 .lab-copy:hover {
-  color: var(--nt-signal);
+  color: var(--nt-signal-text);
 }
 
 .lab-btn:disabled {
@@ -136,7 +136,7 @@
 }
 
 .lab-thumb:hover .lab-thumb-label {
-  color: var(--nt-signal);
+  color: var(--nt-signal-text);
 }
 
 
@@ -178,7 +178,7 @@
 }
 
 .voxel-controls [aria-pressed='true'] {
-  color: var(--nt-signal);
+  color: var(--nt-signal-text);
 }
 
 .voxel-stage { touch-action: none; cursor: grab; }
