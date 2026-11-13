@@ -37,25 +37,10 @@ const THEME = `try{var t=localStorage.getItem('pp-theme');if(t==='light'||t==='d
          day, gunmetal (16191E) by night, with the signal orange in place of the teal. -->
     <svg class="pp-figure-defs" width="0" height="0" aria-hidden="true" focusable="false">
       <filter id="pp-figure-day" color-interpolation-filters="sRGB">
-        <feColorMatrix type="matrix" values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0" />
-        <feColorMatrix type="saturate" values="0.2" />
-        <feColorMatrix type="hueRotate" values="23" />
-        <feColorMatrix type="saturate" values="7" />
-        <feComponentTransfer>
-          <feFuncR type="gamma" amplitude="0.9535" exponent="1.6" offset="0" />
-          <feFuncG type="gamma" amplitude="0.9255" exponent="1.6" offset="0" />
-          <feFuncB type="gamma" amplitude="0.8745" exponent="1.6" offset="0" />
-        </feComponentTransfer>
+        <feColorMatrix type="matrix" values="-1.0739 0.5402 -0.4044 0 0.9845 -0.1175 -0.7401 -0.0366 0 0.9537 0.2395 -1.1569 0.1001 0 0.8995 0 0 0 1 0" />
       </filter>
       <filter id="pp-figure-night" color-interpolation-filters="sRGB">
-        <feColorMatrix type="saturate" values="0.2" />
-        <feColorMatrix type="hueRotate" values="-157" />
-        <feColorMatrix type="saturate" values="6" />
-        <feComponentTransfer>
-          <feFuncR type="linear" slope="0.9395" intercept="0.0605" />
-          <feFuncG type="linear" slope="0.9312" intercept="0.0688" />
-          <feFuncB type="linear" slope="0.9259" intercept="0.0741" />
-        </feComponentTransfer>
+        <feColorMatrix type="matrix" values="-0.1987 1.2545 -0.0859 0 0.0564 0.7252 -0.0535 0.2701 0 0.0671 1.0212 -0.5228 0.3846 0 0.0879 0 0 0 1 0" />
       </filter>
     </svg>
     <div class="pp-page">
