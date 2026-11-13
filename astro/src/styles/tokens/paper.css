@@ -4,24 +4,27 @@
    so it holds its contrast on cream, the Dark one is brighter. */
 
 :root {
-  --pp-sans: 'Manrope', system-ui, sans-serif;
-  --pp-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-  --pp-hand: 'Caveat', cursive;
+  /* One palette: every colour is light-dark(day, night). The scheme comes from the visitor's
+     setting, or from the theme button (data-theme), through color-scheme below. */
+  color-scheme: light dark;
+  --pp-sans: 'Manrope Variable', 'Manrope', system-ui, sans-serif;
+  --pp-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --pp-hand: 'Caveat Variable', 'Caveat', cursive;
 
-  --pp-ground: #f3ecdf;
-  --pp-ink-strong: #16191e;
-  --pp-ink: #33383f;
-  --pp-ink-muted: #555a62;
-  --pp-rule: #d9cfbb;
+  --pp-ground: light-dark(#f3ecdf, #16191e);
+  --pp-ink-strong: light-dark(#16191e, #fbf7ee);
+  --pp-ink: light-dark(#33383f, #d9d2c3);
+  --pp-ink-muted: light-dark(#555a62, #a8adb5);
+  --pp-rule: light-dark(#d9cfbb, #2e343c);
   --pp-margin-mix: 38%;
-  --pp-term-ground: #16191e;
-  --pp-term-line: #2e343c;
+  --pp-term-ground: light-dark(#16191e, #0f1216);
+  --pp-term-line: light-dark(#2e343c, #2e343c);
   --pp-term-ink: #fbf7ee;
-  --pp-term-dot-1: #f04a0e;
+  --pp-term-dot-1: light-dark(#f04a0e, #ff5a1f);
   --pp-term-dot-2: #8a909a;
   --pp-term-dot-3: #d9d2c3;
-  --pp-outline: #b9ae99;
-  --pp-arrow: #7a7468;
+  --pp-outline: light-dark(#b9ae99, #3e4551);
+  --pp-arrow: light-dark(#7a7468, #7b838f);
   --pp-sticker-edge: #fbf7ee;
   --pp-sticker-ink: #2b2620;
   --pp-sticker-fill: #efe6d3;
@@ -32,14 +35,14 @@
   --pp-sticker-line: 2.4;
   --pp-sticker-tape-w: 44px;
   --pp-sticker-tape-h: 16px;
-  --pp-signal: #f04a0e;
+  --pp-signal: light-dark(#f04a0e, #ff5a1f);
   --pp-signal-shadow: #a8340c;
-  --pp-signal-text: #a8340c;
+  --pp-signal-text: light-dark(#a8340c, #ff5a1f);
   --pp-on-signal: #1a0800;
-  --pp-sheet: #f6f0e3;
-  --pp-strip: #ece2cd;
-  --pp-hole-edge: #46341e;
-  --pp-ink-shadow: #281e12;
+  --pp-sheet: light-dark(#f6f0e3, #1d2128);
+  --pp-strip: light-dark(#ece2cd, #272c34);
+  --pp-hole-edge: light-dark(#46341e, #07080b);
+  --pp-ink-shadow: light-dark(#281e12, #000000);
   --pp-chalk-a: #e2d9c6;
   --pp-chalk-b: #c4c8d0;
   --pp-chalk-c: #a8adb5;
@@ -102,7 +105,7 @@
   --pp-dur-rise: 900ms;
   --pp-dur-step: 90ms;
   --pp-chip-label-w: 96px;
-  --pp-map-sans: 'Geist', system-ui, sans-serif;
+  --pp-map-sans: 'Geist Variable', 'Geist', system-ui, sans-serif;
   --pp-figure-ground: var(--pp-ground);
   /* Figures are drawn in the night palette (light lines, teal signal, near-black ground). On the
      cream notepad they are inverted to dark lines on paper, the teal turned to the signal orange,
@@ -110,8 +113,8 @@
   --pp-figure-filter: url('#pp-figure-day');
   --pp-world-filter: url('#pp-world-day');
   --pp-figure-blend: normal;
-  --pp-gloss-0: #16191e;
-  --pp-gloss-1: #5b616b;
+  --pp-gloss-0: light-dark(#16191e, #b8bdc6);
+  --pp-gloss-1: light-dark(#5b616b, #ffffff);
   --pp-gloss-glow: 0.45;
   --pp-logo-w: 160px;
   --pp-logo-h: 308px;
@@ -129,57 +132,28 @@
   --pp-doc-gap: 40px;
 }
 
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+/* Night values that are not colours (light-dark() takes colours only). Kept in step by
+   scripts/site/tokens-check.mjs. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --pp-ground: #16191e;
-    --pp-ink-strong: #fbf7ee;
-    --pp-ink: #d9d2c3;
-    --pp-ink-muted: #a8adb5;
-    --pp-rule: #2e343c;
-    --pp-outline: #3e4551;
-    --pp-arrow: #7b838f;
-    --pp-signal: #ff5a1f;
-    --pp-signal-text: #ff5a1f;
     --pp-figure-filter: url('#pp-figure-night');
     --pp-world-filter: url('#pp-world-night');
     --pp-figure-blend: normal;
-    --pp-sheet: #1d2128;
-    --pp-strip: #272c34;
     --pp-margin-mix: 75%;
-    --pp-term-ground: #0f1216;
-    --pp-term-line: #2e343c;
-    --pp-term-dot-1: #ff5a1f;
-    --pp-hole-edge: #07080b;
-    --pp-ink-shadow: #000000;
-    --pp-gloss-0: #b8bdc6;
-    --pp-gloss-1: #ffffff;
     --pp-gloss-glow: 0.6;
   }
 }
 
 :root[data-theme='dark'] {
-  --pp-ground: #16191e;
-  --pp-ink-strong: #fbf7ee;
-  --pp-ink: #d9d2c3;
-  --pp-ink-muted: #a8adb5;
-  --pp-rule: #2e343c;
-  --pp-outline: #3e4551;
-  --pp-arrow: #7b838f;
-  --pp-signal: #ff5a1f;
-  --pp-signal-text: #ff5a1f;
+  color-scheme: dark;
   --pp-figure-filter: url('#pp-figure-night');
   --pp-world-filter: url('#pp-world-night');
   --pp-figure-blend: normal;
-  --pp-sheet: #1d2128;
-  --pp-strip: #272c34;
   --pp-margin-mix: 75%;
-  --pp-term-ground: #0f1216;
-  --pp-term-line: #2e343c;
-  --pp-term-dot-1: #ff5a1f;
-  --pp-hole-edge: #07080b;
-  --pp-ink-shadow: #000000;
-  --pp-gloss-0: #b8bdc6;
-  --pp-gloss-1: #ffffff;
   --pp-gloss-glow: 0.6;
 }
 
