@@ -117,7 +117,7 @@
     --pp-arrow: #7b838f;
     --pp-signal: #ff5a1f;
     --pp-signal-text: #ff5a1f;
-    --pp-figure-filter: none;
+    --pp-figure-filter: saturate(0.45) hue-rotate(-157deg) saturate(2.6);
     --pp-figure-blend: normal;
     --pp-sheet: #16191e;
     --pp-strip: #1b1f26;
@@ -143,7 +143,7 @@
   --pp-arrow: #7b838f;
   --pp-signal: #ff5a1f;
   --pp-signal-text: #ff5a1f;
-  --pp-figure-filter: none;
+  --pp-figure-filter: saturate(0.45) hue-rotate(-157deg) saturate(2.6);
   --pp-figure-blend: normal;
   --pp-sheet: #16191e;
   --pp-strip: #1b1f26;

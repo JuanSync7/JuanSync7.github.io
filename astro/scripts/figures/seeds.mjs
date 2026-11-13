@@ -12,6 +12,7 @@ import { chromium } from 'playwright';
 import { existsSync } from 'node:fs';
 import { FIX_TPL_DIR, ROOT, TPL_DIR, readMeta } from './source.mjs';
 import { writeSheet } from './sheet.mjs';
+import { nightInk } from './night-ink.mjs';
 
 const TH = JSON.parse(readFileSync(join(ROOT, 'scripts', 'figures', 'thresholds.json'), 'utf8'));
 const args = process.argv.slice(2);
@@ -26,6 +27,7 @@ if (!id) {
 
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1280, height: 900 }, colorScheme: 'dark' });
+await nightInk(page);
 await page.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.fulfill({ status: 200, contentType: 'text/css', body: '' }));
 const shots = [];
 for (let seed = from; seed < from + count; seed++) {

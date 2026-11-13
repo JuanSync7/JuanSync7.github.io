@@ -35,6 +35,7 @@ import { chromium } from 'playwright';
 import { FIG_DIR, FIX_DIR, FIX_TPL_DIR, ROOT, TPL_DIR, figureFiles, readMeta } from './source.mjs';
 import { decode, diff, measure } from './pixels.mjs';
 import { writeSheet } from './sheet.mjs';
+import { nightInk } from './night-ink.mjs';
 
 const TH = JSON.parse(readFileSync(join(ROOT, 'scripts', 'figures', 'thresholds.json'), 'utf8'));
 const OUT = join(ROOT, 'figures-out');
@@ -73,6 +74,7 @@ const NOISE = /\[vite\]|Download the React DevTools|GroupMarkerNotSet|GL Driver 
  *  with a 504 that says nothing about the figure. */
 async function warm(browser, url) {
   const page = await browser.newPage({ colorScheme: 'dark' });
+  await nightInk(page);
   await page.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.fulfill({ status: 200, contentType: 'text/css', body: '' }));
   for (let attempt = 0; attempt < 3; attempt++) {
     await page.goto(`${url}/figures${fixtures ? '?fixtures=1' : ''}`, { waitUntil: 'load' });
@@ -87,6 +89,7 @@ async function warm(browser, url) {
 
 async function shoot(browser, url, id, { query = '', width = TH.width, viewport = 1280, reduced = false, live = false } = {}) {
   const ctx = await browser.newContext({ viewport: { width: viewport, height: 900 }, reducedMotion: reduced ? 'reduce' : 'no-preference', colorScheme: 'dark' });
+  await nightInk(ctx);
   const page = await ctx.newPage();
   // Webfonts are not the figure's business, and the sandbox may have no network: answer
   // them empty so a missing font neither stalls a shot nor logs an error.
