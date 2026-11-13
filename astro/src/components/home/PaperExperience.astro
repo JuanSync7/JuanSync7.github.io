@@ -1,6 +1,7 @@
 ---
 import PaperHead from './PaperHead.astro';
 import PaperAction from '../ui/PaperAction.astro';
+import FigureCanvas from '../ui/FigureCanvas';
 import { EXPERIENCE, EXPERIENCE_TILES, EXPERIENCE_CTA } from '../../data/home';
 
 const [current, ...before] = EXPERIENCE.roles;
@@ -13,10 +14,10 @@ const [current, ...before] = EXPERIENCE.roles;
       <p class="now pp-label">{current.title} · {current.org}{current.place ? ` · ${current.place}` : ''}</p>
     ) : null}
     <div class="grid">
-      {EXPERIENCE_TILES.map((t, i) => (
-        <article class:list={['tile', { lead: i === 0 }]}>
+      {EXPERIENCE_TILES.map((t) => (
+        <article class="tile">
+          <div class="icon"><FigureCanvas id="experience-icon" data={{ kind: t.kind }} label={t.title} client:visible /></div>
           <p class="pp-label tag">{t.tag}</p>
-          <p class="stat">{t.stat}</p>
           <h3 class="pp-title">{t.title}</h3>
           <p class="pp-small cap">{t.caption}</p>
         </article>
@@ -39,39 +40,29 @@ const [current, ...before] = EXPERIENCE.roles;
   .grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--hf-space-4);
+    border-top: 1px solid var(--pp-rule);
   }
 
+  /* Transparent cards, divided only by hairlines: a rule under each row and between columns. */
   .tile {
     display: flex;
     flex-direction: column;
     gap: var(--hf-space-2);
-    min-height: 260px;
     padding: var(--hf-space-6);
-    background: var(--pp-sheet);
-    border: 1px solid var(--pp-rule);
-    border-radius: var(--hf-radius-2xl);
+    border-bottom: 1px solid var(--pp-rule);
   }
 
-  .tile.lead {
-    border-color: var(--pp-signal);
+  .tile:not(:nth-child(3n + 1)) {
+    border-left: 1px solid var(--pp-rule);
+  }
+
+  .icon {
+    aspect-ratio: 1.3;
+    margin-bottom: var(--hf-space-3);
   }
 
   .tag {
     margin: 0;
-  }
-
-  .stat {
-    margin: auto 0 var(--hf-space-2);
-    font-size: var(--pp-fs-stat);
-    font-weight: var(--pp-w-title);
-    line-height: var(--pp-lh-hero);
-    letter-spacing: -0.02em;
-    color: var(--pp-ink-strong);
-  }
-
-  .lead .stat {
-    color: var(--pp-signal-text);
   }
 
   .tile :global(.pp-title),
@@ -108,11 +99,23 @@ const [current, ...before] = EXPERIENCE.roles;
     .grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    .tile:not(:nth-child(3n + 1)) {
+      border-left: 0;
+    }
+
+    .tile:nth-child(2n) {
+      border-left: 1px solid var(--pp-rule);
+    }
   }
 
   @media (max-width: 560px) {
     .grid {
       grid-template-columns: minmax(0, 1fr);
+    }
+
+    .tile:nth-child(n) {
+      border-left: 0;
     }
   }
 </style>
