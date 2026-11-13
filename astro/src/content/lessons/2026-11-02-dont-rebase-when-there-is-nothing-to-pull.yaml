@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-02",
+  "tag": "Git",
+  "title": "A rebase can't keep a merge, so don't rebase when there is nothing to pull.",
+  "why": "A rebasing pull can replay your local commits even when upstream has nothing new, and a plain replay drops merge commits. Fetch first, and skip the rebase when upstream is already in your history.",
+  "problem": "A nightly job that keeps its own local merge commits ran `git pull --rebase` before pushing. With ten local merges waiting and nothing new upstream, the pull still replayed them, ran into generated files that were not tracked, and stopped, so nothing was pushed that night.",
+  "cause": "A rebase rebuilds commits one by one on top of upstream. A merge commit has two parents, and a plain replay turns it back into the separate changes it joined, so the merge is gone and the replay can stop on files the merge had already settled. The source reports this happening even with upstream already in the local history.",
+  "steps": [
+    "Fetch upstream first, without changing the branch.",
+    "If upstream is already part of the local history (`git merge-base --is-ancestor @{u} HEAD` succeeds), there is nothing to pull: skip the rebase and push.",
+    "Only when upstream has new commits, integrate them, with a method that keeps merges (a merge, or `git pull --rebase=merges`) if the history depends on them."
+  ],
+  "solution": "Make \"nothing new upstream\" a no-op instead of a rebase.",
+  "verification": "The source reports a test added for local merges with nothing new upstream. For another job, make a local merge, fetch an unchanged upstream, and confirm the branch head is the same commit after the pull step.",
+  "limitations": "The change covers only the case with nothing new upstream. When upstream does have new commits, the job's plain rebase still flattens local merges; keeping them there was queued, not done.",
+  "category": "software-engineering",
+  "tags": [
+    "git",
+    "ops",
+    "idempotency"
+  ]
+}

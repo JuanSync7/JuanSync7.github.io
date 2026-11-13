@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-12",
+  "tag": "Performance",
+  "title": "Profile before you build the fix someone proposed.",
+  "why": "A slow step looked like it repeated too much work, and the proposed fix was to repeat less. A profile showed the time went elsewhere, and a one-line prefilter fixed it.",
+  "problem": "A step that checks staged files for names that must be swapped took over two and a half hours on a large catch-up run. The work item proposed judging again only what the previous pass had changed.",
+  "cause": "Measured on a copy of the run, the step settled in two passes and the second took 17 s, so the proposed fix would have saved almost nothing. A profile put most of the first pass, 753 s of 934 s, in one function that ran every name's regular expression on every line: about 109 million searches, though almost no line held a name.",
+  "steps": [
+    "Reproduce the slow run on a copy, without its side effects.",
+    "Time the part the proposal targets before changing it.",
+    "Profile to find where the time actually goes.",
+    "Here: combine all the name patterns into one regular expression, return early for a line it does not match, and run the full search only on lines that match."
+  ],
+  "solution": "Measure first; the cost was a missing prefilter, not repeated passes.",
+  "verification": "The source reports a test that counts the searches (10,050 before the fix, none after, on 100 lines without a name), a line-by-line comparison with the full search, and three planted faults that each turned a test red.",
+  "limitations": "The end-to-end time after the fix is not reported, so no speed-up is claimed. A combined pattern must match exactly where the separate ones do, including case and word boundaries.",
+  "category": "software-engineering",
+  "tags": [
+    "performance",
+    "measurement",
+    "python"
+  ]
+}

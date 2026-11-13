@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-06",
+  "tag": "Testing",
+  "title": "A process test written on a quiet machine fails on a busy one.",
+  "why": "Fixed timeouts and one-shot reads of /proc assume the machine is idle. Wait for conditions with a deadline, and treat every form of \"gone\" as dead.",
+  "problem": "A test checked that a timeout killed an interpreter and its children. On a heavily loaded machine the interpreter had not started its child within the 1-second timeout, so there was no child to check, and the test failed every time under load.",
+  "cause": "The test assumed three things that hold only on an idle machine: the child starts before the timeout fires, a killed process disappears at once, and a pid file written in two steps is never read half-written. A related check could also fail when the process was reaped between opening `/proc/<pid>/stat` and reading it.",
+  "steps": [
+    "Wait on a condition with a deadline instead of a fixed delay: retry until the child exists, then wait, up to a limit, for it to die.",
+    "Pin any host reading the test does not test, such as the load average a gate looks at.",
+    "Write a file the test polls under a temporary name and rename it into place, so a reader never sees it empty.",
+    "Count a missing /proc entry, a zombie and ESRCH (`ProcessLookupError`) all as dead."
+  ],
+  "solution": "Make the test wait for what it needs, and accept every way a process can be gone.",
+  "verification": "The source reports the failure reproduced 12 times in 12 on a machine loaded well past its cores, both repaired tests passing 6 times in 6 under the same load, and a planted fault (killing only the interpreter, not its process group) turning the test red.",
+  "limitations": "A deadline still bounds the wait, so an extreme load can still fail the test, but now it fails clearly.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "linux",
+    "debugging"
+  ]
+}

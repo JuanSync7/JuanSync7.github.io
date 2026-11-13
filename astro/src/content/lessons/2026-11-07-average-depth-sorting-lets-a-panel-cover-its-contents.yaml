@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-07",
+  "tag": "Rendering",
+  "title": "Sorting faces by average depth lets a tall panel paint over what sits in front of it.",
+  "why": "Drawing whole faces back to front by their mean depth fails when one large face spans the depth of smaller ones. Split and order the geometry, then check which face each pixel shows.",
+  "problem": "A browser fallback that draws a 3D room without a depth buffer showed, on some views, the tall side of a bookcase painted over the books on its own shelves.",
+  "cause": "Without a depth buffer, faces are drawn back to front, each sorted by a single depth. A tall panel's average depth can be nearer than books in front of part of it, so it is drawn after them and covers them. Geometry and pixel-count checks could not see it: every face was there, only the order was wrong.",
+  "steps": [
+    "Build a binary space partition (BSP) tree for each compound object, splitting faces that cross each other's planes.",
+    "Walk the tree back to front from the current view direction, for perspective and orthographic views alike.",
+    "Check with an independent ray test: for sample pixel centres, cast a ray into the scene and confirm the painted face is the nearest one."
+  ],
+  "solution": "Order by a structure that knows which face is in front from this view, not by one number per face.",
+  "verification": "The source reports the old painter failing an occlusion check (1,232 of 8,611 content samples covered by a case face), the new one passing 9,877 ray-checked samples across 162 poses, and the old painter still rejected. The two sample sets differ, so the counts are not a direct before and after.",
+  "limitations": "This is for drawing without a depth buffer; with a GPU depth buffer the problem is solved differently. Building the tree costs time, so it was cached per object.",
+  "category": "frontend-and-design",
+  "tags": [
+    "frontend",
+    "verification",
+    "debugging"
+  ]
+}
