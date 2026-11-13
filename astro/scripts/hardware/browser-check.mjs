@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile, mkdir, copyFile } from 'node:fs/promises';
 import { spawn } from 'node:child_process';
 import { chromium } from 'playwright';
+import { nightInk } from '../figures/night-ink.mjs';
 
 const supplied = process.argv.find((arg) => arg.startsWith('--url='))?.slice(6);
 const base = supplied ?? 'http://127.0.0.1:4387';
@@ -18,6 +19,7 @@ try {
   browser = await chromium.launch();
   const context = await browser.newContext({ viewport: { width: 1360, height: 1000 }, reducedMotion: 'reduce', acceptDownloads: true, colorScheme: 'dark' });
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+  await nightInk(context);
   const page = await context.newPage();
   const errors = [];
   page.on('pageerror', (error) => errors.push(error.message));

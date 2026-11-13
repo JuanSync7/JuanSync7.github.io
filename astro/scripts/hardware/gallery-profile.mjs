@@ -1,6 +1,7 @@
 import { chromium } from 'playwright';
 import { mkdir, writeFile, readFile } from 'node:fs/promises';
 import assert from 'node:assert/strict';
+import { nightInk } from '../figures/night-ink.mjs';
 
 const base = process.argv.find(a => a.startsWith('--url='))?.slice(6) ?? 'http://127.0.0.1:4321';
 const name = process.argv.find(a => a.startsWith('--name='))?.slice(7) ?? 'gallery-profile';
@@ -9,6 +10,7 @@ await mkdir('hardware-out', { recursive: true });
 const browser = await chromium.launch();
 try {
   const page = await browser.newPage({ viewport: { width: 1360, height: 1000 }, colorScheme: 'dark' });
+  await nightInk(page);
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
   await page.goto(`${base}/lab/hardware-atlas/?seed=7`);
