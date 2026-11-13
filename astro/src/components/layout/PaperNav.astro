@@ -26,7 +26,7 @@ const { current } = Astro.props;
     </nav>
     <a class="cv" href={IDENTITY.cvFile}>cv.pdf</a>
     <button class="theme" type="button" data-theme-toggle aria-label="Switch between light and dark theme">
-      <span class="sun" aria-hidden="true">light</span><span class="moon" aria-hidden="true">dark</span>
+      <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" /><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8" /></svg><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" /></svg>
     </button>
   </div>
 </header>
@@ -153,6 +153,18 @@ const { current } = Astro.props;
     border-color: var(--pp-signal);
   }
 
+  .sun,
+  .moon {
+    width: var(--hf-space-5);
+    height: var(--hf-space-5);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vertical-align: middle;
+  }
+
   .moon {
     display: none;
   }
@@ -267,7 +279,7 @@ const { current } = Astro.props;
       display: none;
     }
     :global(:root:not([data-theme='light'])) .moon {
-      display: inline;
+      display: inline-block;
     }
   }
 
@@ -276,6 +288,6 @@ const { current } = Astro.props;
   }
 
   :global(:root[data-theme='dark']) .moon {
-    display: inline;
+    display: inline-block;
   }
 </style>

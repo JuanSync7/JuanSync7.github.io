@@ -8,6 +8,7 @@ import { pathToFileURL } from 'node:url';
 import { build } from 'esbuild';
 import { chromium } from 'playwright';
 import { writeSheet } from './sheet.mjs';
+import { nightInk } from './night-ink.mjs';
 import { decode, measure } from './pixels.mjs';
 import { checkRoomCamera, checkRoomTouch } from './tabletop-room-browser.mjs';
 
@@ -54,9 +55,14 @@ try {
   }
   assert.equal(examples.size, 9);
   browser = await chromium.launch();
-  const ctx = await browser.newContext({ viewport: { width: 1200, height: 1000 }, reducedMotion: 'reduce' });
+  const ctx = await browser.newContext({
+    viewport: { width: 1200, height: 1000 },
+    reducedMotion: 'reduce',
+    colorScheme: 'dark',
+  });
   const page = await ctx.newPage(),
     errors = [];
+  await nightInk(page);
   const noise = /\[vite\]|React DevTools|GroupMarkerNotSet|GL Driver Message|enable-unsafe-swiftshader/;
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('console', (m) => {
@@ -102,8 +108,13 @@ try {
   const roomShots = [],
     isoShots = [];
   for (const fallback of [false, true]) {
-    const c = await browser.newContext({ viewport: { width: 1200, height: 1000 }, reducedMotion: 'reduce' });
+    const c = await browser.newContext({
+      viewport: { width: 1200, height: 1000 },
+      reducedMotion: 'reduce',
+      colorScheme: 'dark',
+    });
     const p = await c.newPage();
+    await nightInk(p);
     p.on('pageerror', (e) => errors.push(e.message));
     p.on('console', (m) => {
       if (/Too many active WebGL contexts|CONTEXT_LOST_WEBGL/.test(m.text())) errors.push(m.text());
