@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-09",
+  "tag": "Fault injection",
+  "title": "Before planting a fault, write down what it could reach if it ignored your fakes.",
+  "why": "A mutant of code that stops processes inverted its own filter and stopped every process the user owned. Run planted faults only where their worst escape reaches nothing real.",
+  "problem": "Mutation testing plants small faults in code to check that the tests catch them. Run against a sweep meant to stop only one run's processes, a mutant inverted the \"belongs to this run\" filter. The sweep then sent TERM and KILL to every process the user owned, three times, including their remote shells and the mutation runner, which left the source file mutated.",
+  "cause": "A planted fault is a real bug for as long as it runs. The tests' fakes protect only code that uses them; a mutant that ignores them reaches the real system. A rule against this existed in another project's notes, so this run never loaded it.",
+  "steps": [
+    "Before planting faults, list what the code could reach if it ignored every fake: processes, files, branches, the network.",
+    "Run code that signals processes in its own PID namespace and session, and code that deletes or pushes in a throwaway container with no network.",
+    "Have the code take its signaller from its caller, so tests and mutants use a recording fake, and check each target again just before signalling it.",
+    "After a run is killed or cut short, compare the mutated file with its saved original."
+  ],
+  "solution": "Choose where a fault runs by what its worst escape would hit.",
+  "verification": "The source records the incident and the rule written from it; later tests fail when the namespace or the new session is removed.",
+  "limitations": "This keeps a wrong mutant away from real processes and files; it says nothing about whether the mutants are meaningful. The namespace is Linux only.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "isolation",
+    "linux"
+  ]
+}

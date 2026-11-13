@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-07",
+  "tag": "Testing",
+  "title": "A switch that reaches the main view may not reach its previews.",
+  "why": "A colour switch worked in a room's main view, but the preview thumbnails kept the default look, and the test only checked the main view. Give the setting one owner, and test every place it should show.",
+  "problem": "A user reported that full colour did not work. In a live check the main 3D scene switched correctly, but the small seed previews beside it, and a card elsewhere on the site, stayed monochrome. The existing colour check looked only at the main scene, so it passed.",
+  "cause": "The previews were drawn by a shared component that never received the appearance setting, so it fell back to its own monochrome default. Each view decided its look separately, and the test covered only one of them.",
+  "steps": [
+    "Give the setting one owner that passes it to every view that draws the scene, previews included.",
+    "Have each place that shows the scene elsewhere receive an explicit preset rather than a default.",
+    "Add a test that flips the switch and checks that the pixels of every view change, not just the main one."
+  ],
+  "solution": "Test where the setting must show up, not only where it was first wired.",
+  "verification": "The source reports a screenshot regression that failed because preview pixels did not follow the switch, then passed after the change across nine themes, both renderers, both camera views and mobile width.",
+  "limitations": "The user's device and page were not identified, so the original report may have had another cause there; no device-specific fault was reproduced.",
+  "category": "frontend-and-design",
+  "tags": [
+    "frontend",
+    "testing",
+    "ownership"
+  ]
+}
