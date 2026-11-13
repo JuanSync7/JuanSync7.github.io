@@ -91,7 +91,7 @@
   /* Figures are drawn in the night palette (light lines, teal signal, near-black ground). On the
      cream notepad they are inverted to dark lines on paper, the teal turned to the signal orange,
      and multiplied onto the page so the figure's ground becomes the paper. */
-  --pp-figure-filter: invert(1) hue-rotate(23deg) brightness(0.72) contrast(1.25);
+  --pp-figure-filter: invert(1) hue-rotate(23deg) saturate(1.8) brightness(0.62) contrast(1.4);
   --pp-figure-blend: multiply;
   --pp-gloss-0: #16191e;
   --pp-gloss-1: #5b616b;
