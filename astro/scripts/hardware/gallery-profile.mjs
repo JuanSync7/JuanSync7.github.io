@@ -8,7 +8,7 @@ const { gallery: limits } = JSON.parse(await readFile(new URL('./rules.json', im
 await mkdir('hardware-out', { recursive: true });
 const browser = await chromium.launch();
 try {
-  const page = await browser.newPage({ viewport: { width: 1360, height: 1000 } });
+  const page = await browser.newPage({ viewport: { width: 1360, height: 1000 }, colorScheme: 'dark' });
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
   await page.goto(`${base}/lab/hardware-atlas/?seed=7`);

@@ -15,7 +15,7 @@ export async function writeSheet(browser, outPng, fig, shots, lines) {
     ul{list-style:none;padding:0;margin:20px 0 0} li.fail{color:#ff6b6b} li.warn{color:#e0b44c} li.ok{color:#6bd3b0}
   </style><h1>${esc(fig.id)}</h1><p>${esc(fig.style)} · ${esc(fig.motion)} · answers ${fig.answers ? 'yes' : 'no'}${fig.bleed ? ' · bleeds' : ''}</p>
   <div class="shots">${cells}</div><ul>${rows}</ul>`;
-  const page = await browser.newPage({ viewport: { width: 1500, height: 900 } });
+  const page = await browser.newPage({ viewport: { width: 1500, height: 900 }, colorScheme: 'dark' });
   await page.setContent(html);
   await page.screenshot({ path: outPng, fullPage: true });
   await page.close();

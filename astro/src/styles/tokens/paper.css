@@ -88,6 +88,11 @@
   --pp-wood-0: #3d2f24;
   --pp-wood-shade: #1a130d;
   --pp-figure-ground: #07080c;
+  /* Figures are drawn in the night palette (light lines, teal signal, near-black ground). On the
+     cream notepad they are inverted to dark lines on paper, the teal turned to the signal orange,
+     and multiplied onto the page so the figure's ground becomes the paper. */
+  --pp-figure-filter: invert(1) hue-rotate(23deg) saturate(1.8) brightness(0.62) contrast(1.4);
+  --pp-figure-blend: multiply;
   --pp-gloss-0: #16191e;
   --pp-gloss-1: #5b616b;
   --pp-gloss-glow: 0.45;
@@ -112,6 +117,8 @@
     --pp-arrow: #7b838f;
     --pp-signal: #ff5a1f;
     --pp-signal-text: #ff5a1f;
+    --pp-figure-filter: none;
+    --pp-figure-blend: normal;
     --pp-sheet: #16191e;
     --pp-strip: #1b1f26;
     --pp-hole-edge: #000000;
@@ -136,6 +143,8 @@
   --pp-arrow: #7b838f;
   --pp-signal: #ff5a1f;
   --pp-signal-text: #ff5a1f;
+  --pp-figure-filter: none;
+  --pp-figure-blend: normal;
   --pp-sheet: #16191e;
   --pp-strip: #1b1f26;
   --pp-hole-edge: #000000;
