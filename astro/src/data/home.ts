@@ -131,6 +131,16 @@ export const OFF_HOURS = {
   items: ['ultimate frisbee', 'badminton', 'swimming', 'piano', 'travelling'],
 } as const;
 
+/** The off-hours as stickers pasted on the notepad: which drawing each one is (the
+ *  `hobby-sticker` figure's `item`) and the die-cut shape the page gives it. */
+export const STICKERS = [
+  { label: 'ultimate frisbee', item: 'frisbee', cut: 'round' },
+  { label: 'badminton', item: 'badminton', cut: 'square' },
+  { label: 'swimming', item: 'swimming', cut: 'round' },
+  { label: 'piano', item: 'piano', cut: 'wide' },
+  { label: 'travelling', item: 'travelling', cut: 'square' },
+] as const;
+
 export const CONTACT_SECTION = {
   label: '// contact.sh',
   title: 'Let’s build',

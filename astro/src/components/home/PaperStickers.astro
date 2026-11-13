@@ -1,0 +1,146 @@
+---
+import FigureCanvas from '../ui/FigureCanvas.tsx';
+import { OFF_HOURS, STICKERS } from '../../data/home';
+---
+
+<section id="off-hours" class="pp-section" aria-labelledby="off-hours-label">
+  <div class="pp-wrap">
+    <p id="off-hours-label" class="pp-label">{OFF_HOURS.label}</p>
+    <ul class="sheet">
+      {
+        STICKERS.map((s) => (
+          <li class={`sticker cut-${s.cut}`}>
+            <div class="art">
+              <FigureCanvas client:visible id="hobby-sticker" data={{ item: s.item }} label={`A hand-drawn ${s.label} sticker`} />
+            </div>
+            <span class="pp-hand name">{s.label}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .sheet {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: var(--hf-space-8) var(--hf-space-6);
+    margin: var(--hf-space-8) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* A die-cut sticker: whiter paper than the page, a thin cut line, a soft lift off the sheet,
+     each pasted at its own angle. */
+  .sticker {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--hf-space-2);
+    transform: rotate(var(--tilt, 0deg)) translateY(var(--drop, 0));
+    transition: transform var(--pp-dur-rise) var(--pp-ease-rise);
+  }
+
+  .art {
+    position: relative;
+    width: var(--pp-sticker-w);
+    aspect-ratio: 1;
+    padding: var(--pp-sticker-edge);
+    background: var(--pp-sticker);
+    border: 1px solid color-mix(in srgb, var(--pp-outline) 70%, transparent);
+    border-radius: var(--pp-radius-lg);
+    box-shadow:
+      0 1px 0 color-mix(in srgb, var(--pp-ink-shadow) 18%, transparent),
+      0 var(--pp-shadow-step) var(--hf-space-4) calc(var(--pp-shadow-step) * -1)
+        color-mix(in srgb, var(--pp-ink-shadow) 35%, transparent);
+  }
+
+  .cut-round .art {
+    border-radius: 50%;
+  }
+
+  .cut-wide .art {
+    width: calc(var(--pp-sticker-w) * 1.2);
+    aspect-ratio: 1.25;
+  }
+
+  /* The peeling corner on the square cuts: the sticker's back folded over. */
+  .cut-square .art::after,
+  .cut-wide .art::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    bottom: -1px;
+    width: var(--pp-peel);
+    height: var(--pp-peel);
+    background: var(--pp-strip);
+    border-top-left-radius: var(--pp-radius-md);
+    border-top: 1px solid var(--pp-outline);
+    border-left: 1px solid var(--pp-outline);
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+    box-shadow: calc(var(--pp-shadow-step) * -0.5) calc(var(--pp-shadow-step) * -0.5) var(--hf-space-2)
+      color-mix(in srgb, var(--pp-ink-shadow) 20%, transparent);
+  }
+
+  .cut-square .art,
+  .cut-wide .art {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--pp-peel)), calc(100% - var(--pp-peel)) 100%, 0 100%);
+  }
+
+  .name {
+    margin-top: var(--hf-space-2);
+    font-size: var(--pp-fs-hand-line);
+    color: var(--pp-ink);
+    transform: rotate(calc(var(--tilt, 0deg) * -0.6));
+  }
+
+  .sticker:nth-child(1) {
+    --tilt: -7deg;
+  }
+  .sticker:nth-child(2) {
+    --tilt: 5deg;
+    --drop: var(--hf-space-6);
+  }
+  .sticker:nth-child(3) {
+    --tilt: -3deg;
+  }
+  .sticker:nth-child(4) {
+    --tilt: 4deg;
+    --drop: var(--hf-space-8);
+  }
+  .sticker:nth-child(5) {
+    --tilt: -5deg;
+  }
+
+  .sticker:hover {
+    transform: rotate(calc(var(--tilt, 0deg) * 0.3)) translateY(calc(var(--drop, 0px) - var(--hf-space-1)));
+  }
+
+  @media (max-width: 640px) {
+    .sheet {
+      gap: var(--hf-space-6) var(--hf-space-4);
+    }
+
+    .art {
+      width: calc(var(--pp-sticker-w) * 0.78);
+    }
+
+    .cut-wide .art {
+      width: calc(var(--pp-sticker-w) * 0.98);
+    }
+
+    .sticker {
+      --drop: 0px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sticker {
+      transition: none;
+    }
+  }
+</style>

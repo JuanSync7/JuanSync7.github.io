@@ -1,5 +1,6 @@
 ---
-import { CONTACT_SECTION, OFF_HOURS } from '../../data/home';
+import FigureCanvas from '../ui/FigureCanvas.tsx';
+import { CONTACT_SECTION } from '../../data/home';
 import { CONTACT, IDENTITY } from '../../data/site';
 
 const links = [
@@ -12,25 +13,65 @@ const links = [
 
 <section id="contact" class="pp-section">
   <div class="pp-wrap">
-    <p class="pp-label off">{OFF_HOURS.label} · {OFF_HOURS.items.join(' · ')}</p>
-    <h2 class="pp-hand headline">{CONTACT_SECTION.title} {CONTACT_SECTION.accent}</h2>
-    <p class="pp-body lead">{CONTACT_SECTION.body}</p>
+    <div class="build">
+      <div class="fig left">
+        <FigureCanvas client:visible id="brick-build" />
+      </div>
+      <div class="words">
+        <p class="pp-label">{CONTACT_SECTION.label}</p>
+        <h2 class="pp-hand headline">{CONTACT_SECTION.title} {CONTACT_SECTION.accent}</h2>
+        <p class="pp-body lead">{CONTACT_SECTION.body}</p>
+      </div>
+      <div class="fig right">
+        <FigureCanvas client:visible id="platform-links" />
+      </div>
+    </div>
     <ul>
-      {links.map((l) => (
-        <li class="pp-row">
-          <a href={l.href}>
-            <span class="pp-label k">{l.label}</span>
-            <span class="pp-title v">{l.value}</span>
-          </a>
-        </li>
-      ))}
+      {
+        links.map((l) => (
+          <li class="pp-row">
+            <a href={l.href}>
+              <span class="pp-label k">{l.label}</span>
+              <span class="pp-title v">{l.value}</span>
+            </a>
+          </li>
+        ))
+      }
     </ul>
   </div>
 </section>
 
 <style>
-  .off {
-    margin-bottom: var(--hf-space-6);
+  /* The headline in the middle; the bricks being built on its left and the platform being
+     cabled on its right, both on the same floor line. */
+  .build {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr) minmax(0, 1fr);
+    grid-template-areas: 'left words right';
+    align-items: center;
+    gap: var(--hf-space-6);
+    margin-bottom: var(--hf-space-10);
+  }
+
+  .left {
+    grid-area: left;
+  }
+
+  .right {
+    grid-area: right;
+  }
+
+  .fig {
+    height: var(--pp-build-fig-h);
+  }
+
+  .words {
+    grid-area: words;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--hf-space-4);
+    text-align: center;
   }
 
   .headline {
@@ -38,17 +79,15 @@ const links = [
     line-height: var(--pp-lh-hand-headline);
     font-weight: var(--pp-w-hand-headline);
     transform: rotate(-2deg);
-    transform-origin: left center;
-    margin-bottom: var(--hf-space-6);
   }
 
   .lead {
-    max-width: 640px;
-    margin-bottom: var(--hf-space-8);
+    max-width: 34ch;
   }
 
   ul {
-    margin: 0;
+    max-width: 760px;
+    margin: 0 auto;
     padding: 0;
     list-style: none;
     border-bottom: 1px solid var(--pp-rule);
@@ -63,5 +102,18 @@ const links = [
 
   .k {
     flex: 0 0 90px;
+  }
+
+  @media (max-width: 960px) {
+    .build {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-areas:
+        'words words'
+        'left right';
+    }
+
+    .fig {
+      height: calc(var(--pp-build-fig-h) * 0.62);
+    }
   }
 </style>

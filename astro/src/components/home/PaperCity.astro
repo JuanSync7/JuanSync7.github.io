@@ -1,0 +1,19 @@
+---
+import HeroCity from './HeroCity.tsx';
+---
+
+<section id="city" class="pp-section" aria-labelledby="city-label">
+  <div class="pp-wrap">
+    <p id="city-label" class="pp-label">// system.stack · the same platform, as a city in layers</p>
+    <div class="stage">
+      <HeroCity client:visible />
+    </div>
+  </div>
+</section>
+
+<style>
+  .stage {
+    height: var(--pp-city-h);
+    margin-top: var(--hf-space-6);
+  }
+</style>
