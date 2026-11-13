@@ -17,45 +17,6 @@
   --mono: var(--nt-mono);
 }
 
-@media (prefers-color-scheme: light) {
-  .night .paper {
-    --nt-ground: var(--nt-paper-ground);
-    --nt-panel: var(--nt-paper-panel);
-    --nt-panel-2: var(--nt-paper-panel-2);
-    --nt-rule: var(--nt-paper-line);
-    --nt-line: var(--nt-paper-line);
-    --nt-ink-strong: var(--nt-paper-ink-strong);
-    --nt-ink: var(--nt-paper-ink);
-    --nt-ink-2: var(--nt-paper-ink-2);
-    --nt-ink-soft: var(--nt-paper-ink-2);
-    --nt-ink-muted: var(--nt-paper-ink-muted);
-    --nt-ink-faint: var(--nt-paper-ink-muted);
-    --nt-signal: var(--nt-paper-signal);
-    --nt-signal-line-2: var(--nt-paper-signal-line);
-    --nt-panel-signal: var(--nt-paper-signal-panel);
-
-    padding: var(--hf-space-12) var(--hf-space-10);
-    border-radius: var(--hf-radius-2xl);
-    background: var(--nt-paper-ground);
-    color: var(--nt-paper-ink-2);
-  }
-
-  .night .paper .prose h2,
-  .night .paper .prose h3 {
-    color: var(--nt-paper-ink-strong);
-  }
-
-  .night .paper .prose :not(pre) > code {
-    background: var(--nt-paper-panel);
-  }
-}
-
-@media (prefers-color-scheme: light) and (max-width: 720px) {
-  .night .paper {
-    padding: var(--hf-space-8) var(--hf-space-4);
-  }
-}
-
 /* A terminal window: three dots in a title bar, a rule under it, the code scrolling below. */
 .night .paper .prose pre {
   position: relative;

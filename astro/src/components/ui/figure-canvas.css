@@ -24,12 +24,15 @@
 /* Colour on the paper system: a figure in the night palette is turned to ink on paper by day
    (see --pp-figure-filter). Full-colour rooms keep their colours; voxel worlds keep them in the
    lab viewer only, and as covers elsewhere they are recoloured like every other figure. */
-.figure-canvas:not(:where([data-figure^='pixel-still'])):not(
-    :where([data-figure^='voxel-scene'], [data-figure^='voxcel-island']):where(.lab-main *)
-  )
+.figure-canvas:not(:where([data-figure^='pixel-still'], [data-figure^='voxel-scene'], [data-figure^='voxcel-island']))
   canvas {
   filter: var(--pp-figure-filter, none);
   mix-blend-mode: var(--pp-figure-blend, normal);
+}
+
+/* Voxel worlds have mid-tone fills, so they get a filter with extra contrast around the ground. */
+.figure-canvas:where([data-figure^='voxel-scene'], [data-figure^='voxcel-island']):not(:where(.lab-main *)) canvas {
+  filter: var(--pp-world-filter, none);
 }
 
 .figure-canvas:where([data-figure^='pixel-still']),

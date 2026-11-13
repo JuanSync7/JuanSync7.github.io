@@ -42,6 +42,14 @@ const THEME = `try{var t=localStorage.getItem('pp-theme');if(t==='light'||t==='d
       <filter id="pp-figure-night" color-interpolation-filters="sRGB">
         <feColorMatrix type="matrix" values="-0.2025 1.2387 -0.0670 0 0.0561 0.7302 -0.0329 0.2456 0 0.0675 1.0292 -0.4902 0.3458 0 0.0885 0 0 0 1 0" />
       </filter>
+      <filter id="pp-world-night" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="-0.2025 1.2387 -0.0670 0 0.0561 0.7302 -0.0329 0.2456 0 0.0675 1.0292 -0.4902 0.3458 0 0.0885 0 0 0 1 0" />
+        <feComponentTransfer><feFuncR type="linear" slope="1.7" intercept="-0.0604" /><feFuncG type="linear" slope="1.7" intercept="-0.0686" /><feFuncB type="linear" slope="1.7" intercept="-0.0823" /></feComponentTransfer>
+      </filter>
+      <filter id="pp-world-day" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="-1.0823 0.5060 -0.3636 0 0.9839 -0.1168 -0.7373 -0.0400 0 0.9537 0.2434 -1.1408 0.0808 0 0.8998 0 0 0 1 0" />
+        <feComponentTransfer><feFuncR type="linear" slope="1.7" intercept="-0.6670" /><feFuncG type="linear" slope="1.7" intercept="-0.6478" /><feFuncB type="linear" slope="1.7" intercept="-0.6121" /></feComponentTransfer>
+      </filter>
     </svg>
     <div class="pp-page">
       <slot />

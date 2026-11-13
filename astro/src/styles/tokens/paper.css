@@ -14,6 +14,12 @@
   --pp-ink-muted: #555a62;
   --pp-rule: #d9cfbb;
   --pp-margin-mix: 38%;
+  --pp-term-ground: #16191e;
+  --pp-term-line: #2e343c;
+  --pp-term-ink: #fbf7ee;
+  --pp-term-dot-1: #f04a0e;
+  --pp-term-dot-2: #8a909a;
+  --pp-term-dot-3: #d9d2c3;
   --pp-outline: #b9ae99;
   --pp-arrow: #7a7468;
   --pp-signal: #f04a0e;
@@ -91,6 +97,7 @@
      cream notepad they are inverted to dark lines on paper, the teal turned to the signal orange,
      and multiplied onto the page so the figure's ground becomes the paper. */
   --pp-figure-filter: url('#pp-figure-day');
+  --pp-world-filter: url('#pp-world-day');
   --pp-figure-blend: normal;
   --pp-gloss-0: #16191e;
   --pp-gloss-1: #5b616b;
@@ -123,10 +130,14 @@
     --pp-signal: #ff5a1f;
     --pp-signal-text: #ff5a1f;
     --pp-figure-filter: url('#pp-figure-night');
+    --pp-world-filter: url('#pp-world-night');
     --pp-figure-blend: normal;
     --pp-sheet: #1d2128;
     --pp-strip: #272c34;
     --pp-margin-mix: 75%;
+    --pp-term-ground: #0f1216;
+    --pp-term-line: #2e343c;
+    --pp-term-dot-1: #ff5a1f;
     --pp-hole-edge: #07080b;
     --pp-ink-shadow: #000000;
     --pp-gloss-0: #b8bdc6;
@@ -146,10 +157,14 @@
   --pp-signal: #ff5a1f;
   --pp-signal-text: #ff5a1f;
   --pp-figure-filter: url('#pp-figure-night');
+  --pp-world-filter: url('#pp-world-night');
   --pp-figure-blend: normal;
   --pp-sheet: #1d2128;
   --pp-strip: #272c34;
   --pp-margin-mix: 75%;
+  --pp-term-ground: #0f1216;
+  --pp-term-line: #2e343c;
+  --pp-term-dot-1: #ff5a1f;
   --pp-hole-edge: #07080b;
   --pp-ink-shadow: #000000;
   --pp-gloss-0: #b8bdc6;
