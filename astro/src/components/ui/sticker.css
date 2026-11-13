@@ -1,0 +1,53 @@
+/* A die-cut sticker pressed on the notepad: the art is wobbled by hand (filter), cut round
+   with a cream border and a soft shadow, and set at a slight angle. */
+.sticker {
+  position: relative;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--hf-space-2);
+  transform: rotate(var(--tilt, 0deg));
+}
+
+.sticker svg {
+  width: var(--pp-sticker-size);
+  height: auto;
+  overflow: visible;
+}
+
+.sticker .i {
+  fill: none;
+  stroke: var(--pp-sticker-ink);
+  stroke-width: var(--pp-sticker-line);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sticker .k {
+  fill: var(--pp-sticker-ink);
+}
+
+.sticker .f {
+  fill: var(--pp-sticker-fill);
+}
+
+.sticker .g {
+  fill: var(--pp-sticker-fill-2);
+}
+
+.sticker .a {
+  fill: var(--pp-signal);
+}
+
+.sticker.taped::before {
+  content: '';
+  position: absolute;
+  top: calc(var(--hf-space-1) * -1);
+  left: 50%;
+  width: var(--pp-sticker-tape-w);
+  height: var(--pp-sticker-tape-h);
+  transform: translateX(-50%) rotate(-4deg);
+  background: var(--pp-sticker-tape);
+  z-index: 1;
+}

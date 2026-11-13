@@ -1,0 +1,21 @@
+---
+import { STICKERS, type StickerKind } from '../../figures/kit/stickers';
+import './sticker.css';
+
+interface Props {
+  kind: StickerKind;
+  /** Degrees the sticker was pressed on at. */
+  tilt?: number;
+  /** A strip of tape across the top instead of a bare press. */
+  taped?: boolean;
+}
+const { kind, tilt = 0, taped = false } = Astro.props;
+const { label, art } = STICKERS[kind];
+---
+
+<figure class:list={['sticker', { taped }]} style={`--tilt:${tilt}deg`}>
+  <svg viewBox="0 0 100 100" role="img" aria-label={label}>
+    <g class="art" filter="url(#sticker-cut)" set:html={art} />
+  </svg>
+  <figcaption class="pp-label">{label}</figcaption>
+</figure>
