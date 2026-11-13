@@ -1,73 +1,118 @@
 ---
 import PaperHead from './PaperHead.astro';
-import { EXPERIENCE } from '../../data/home';
+import PaperAction from '../ui/PaperAction.astro';
+import { EXPERIENCE, EXPERIENCE_TILES, EXPERIENCE_CTA } from '../../data/home';
+
+const [current, ...before] = EXPERIENCE.roles;
 ---
 
 <section id="experience" class="pp-section">
   <div class="pp-wrap">
     <PaperHead note="chips first, then the AI platform" label={EXPERIENCE.label} title={EXPERIENCE.title} />
-    <div class="list">
-      {EXPERIENCE.roles.map((r) => (
-        <article class="pp-row role">
-          <div class="head">
-            <h3 class="pp-title">{r.title}</h3>
-            <p class="pp-label">{r.org}{r.place ? ` · ${r.place}` : ''}</p>
-          </div>
-          <div class="body">
-            <p class="pp-body">{r.summary}</p>
-            {r.points ? (
-              <dl>
-                {r.points.map((p) => (
-                  <div>
-                    <dt class="pp-label">{p.tag}</dt>
-                    <dd class="pp-small">{p.text}</dd>
-                  </div>
-                ))}
-              </dl>
-            ) : null}
-          </div>
+    {current ? (
+      <p class="now pp-label">{current.title} · {current.org}{current.place ? ` · ${current.place}` : ''}</p>
+    ) : null}
+    <div class="grid">
+      {EXPERIENCE_TILES.map((t, i) => (
+        <article class:list={['tile', { lead: i === 0 }]}>
+          <p class="pp-label tag">{t.tag}</p>
+          <p class="stat">{t.stat}</p>
+          <h3 class="pp-title">{t.title}</h3>
+          <p class="pp-small cap">{t.caption}</p>
         </article>
       ))}
     </div>
+    <div class="before">
+      {before.map((r) => (
+        <p class="step"><span class="pp-title">{r.title}</span><span class="pp-label">{r.org}</span></p>
+      ))}
+    </div>
+    <div class="cta"><PaperAction href={EXPERIENCE_CTA.href} variant="signal">{EXPERIENCE_CTA.label}</PaperAction></div>
   </div>
 </section>
 
 <style>
-  .list {
-    border-bottom: 1px solid var(--pp-rule);
+  .now {
+    margin: 0 0 var(--hf-space-5);
   }
 
-  .role {
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: var(--hf-space-3) var(--hf-space-8);
-    padding: var(--hf-space-6) 0;
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--hf-space-4);
   }
 
-  .head {
-    flex: 0 0 250px;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--hf-space-1);
-  }
-
-  .body {
-    flex: 1 1 280px;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--hf-space-3);
-  }
-
-  dl {
+  .tile {
     display: flex;
     flex-direction: column;
     gap: var(--hf-space-2);
+    min-height: 260px;
+    padding: var(--hf-space-6);
+    background: var(--pp-sheet);
+    border: 1px solid var(--pp-rule);
+    border-radius: var(--hf-radius-2xl);
+  }
+
+  .tile.lead {
+    border-color: var(--pp-signal);
+  }
+
+  .tag {
     margin: 0;
   }
 
-  dd {
+  .stat {
+    margin: auto 0 var(--hf-space-2);
+    font-size: var(--pp-fs-stat);
+    font-weight: var(--pp-w-title);
+    line-height: var(--pp-lh-hero);
+    letter-spacing: -0.02em;
+    color: var(--pp-ink-strong);
+  }
+
+  .lead .stat {
+    color: var(--pp-signal-text);
+  }
+
+  .tile :global(.pp-title),
+  .cap {
     margin: 0;
+  }
+
+  .cap {
+    color: var(--pp-ink-muted);
+    max-width: 44ch;
+  }
+
+  .before {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--hf-space-3) var(--hf-space-8);
+    margin-top: var(--hf-space-6);
+    padding-top: var(--hf-space-5);
+    border-top: 1px solid var(--pp-rule);
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-1);
+    margin: 0;
+  }
+
+  .cta {
+    margin-top: var(--hf-space-6);
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 560px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 </style>
