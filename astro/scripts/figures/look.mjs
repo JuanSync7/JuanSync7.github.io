@@ -72,7 +72,7 @@ const NOISE = /\[vite\]|Download the React DevTools|GroupMarkerNotSet|GL Driver 
  *  finished bundling dependencies. A first request can otherwise land mid-re-bundle and fail
  *  with a 504 that says nothing about the figure. */
 async function warm(browser, url) {
-  const page = await browser.newPage();
+  const page = await browser.newPage({ colorScheme: 'dark' });
   await page.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.fulfill({ status: 200, contentType: 'text/css', body: '' }));
   for (let attempt = 0; attempt < 3; attempt++) {
     await page.goto(`${url}/figures${fixtures ? '?fixtures=1' : ''}`, { waitUntil: 'load' });
@@ -86,7 +86,7 @@ async function warm(browser, url) {
 }
 
 async function shoot(browser, url, id, { query = '', width = TH.width, viewport = 1280, reduced = false, live = false } = {}) {
-  const ctx = await browser.newContext({ viewport: { width: viewport, height: 900 }, reducedMotion: reduced ? 'reduce' : 'no-preference' });
+  const ctx = await browser.newContext({ viewport: { width: viewport, height: 900 }, reducedMotion: reduced ? 'reduce' : 'no-preference', colorScheme: 'dark' });
   const page = await ctx.newPage();
   // Webfonts are not the figure's business, and the sandbox may have no network: answer
   // them empty so a missing font neither stalls a shot nor logs an error.

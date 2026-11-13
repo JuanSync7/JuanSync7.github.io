@@ -5,7 +5,7 @@ const base = process.argv.find(a => a.startsWith('--url='))?.slice(6) ?? 'http:/
 const name = process.argv.find(a => a.startsWith('--name='))?.slice(7) ?? 'after';
 const browser = await chromium.launch();
 try {
-  const page = await browser.newPage({ viewport: { width: 1120, height: 900 }, reducedMotion: 'reduce' });
+  const page = await browser.newPage({ viewport: { width: 1120, height: 900 }, reducedMotion: 'reduce', colorScheme: 'dark' });
   for (const mode of ['isometric','wireframe','exploded']) {
     await page.setContent(await readFile(`hardware-out/sheet-${mode}.svg`, 'utf8'));
     await page.locator('body').evaluate(b => b.style.margin = '0');

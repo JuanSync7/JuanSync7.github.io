@@ -37,7 +37,7 @@ export async function browserEnvironment(args = process.argv.slice(2)) {
 }
 
 export async function newPage(browser, width = 1440, reducedMotion = 'reduce') {
-  const page = await browser.newPage({ viewport: { width, height: 1000 }, reducedMotion });
+  const page = await browser.newPage({ viewport: { width, height: 1000 }, reducedMotion, colorScheme: 'dark' });
   await page.route(/fonts\.(googleapis|gstatic)\.com/, (route) =>
     route.fulfill({ status: 200, contentType: 'text/css', body: '' }),
   );

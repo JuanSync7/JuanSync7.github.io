@@ -16,7 +16,7 @@ try {
   }
   await mkdir('hardware-out', { recursive: true });
   browser = await chromium.launch();
-  const context = await browser.newContext({ viewport: { width: 1360, height: 1000 }, reducedMotion: 'reduce', acceptDownloads: true });
+  const context = await browser.newContext({ viewport: { width: 1360, height: 1000 }, reducedMotion: 'reduce', acceptDownloads: true, colorScheme: 'dark' });
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   const page = await context.newPage();
   const errors = [];
