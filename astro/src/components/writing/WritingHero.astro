@@ -29,14 +29,16 @@ import { WRITING_HERO } from '../../data/writing';
     border-bottom: 1px solid var(--nt-rule);
   }
 
+  /* The field and its fade start right of the notepad's margin line, so the punched strip and the
+     line run over the hero instead of being painted out by it. */
   .field {
     position: absolute;
-    inset: 0;
+    inset: 0 0 0 calc(var(--pp-margin-x) + var(--hf-space-2));
   }
 
   .fade {
     position: absolute;
-    inset: 0;
+    inset: 0 0 0 calc(var(--pp-margin-x) + var(--hf-space-2));
     background: var(--nt-grad-fade-left);
     pointer-events: none;
   }

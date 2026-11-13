@@ -114,7 +114,7 @@ body.paper {
   padding: 0 var(--pp-pad);
 }
 
-/* Notepad furniture: orange double margin line and a punched strip, in Light only. */
+/* Notepad furniture: orange double margin line and a punched strip, in both themes. */
 .pp-page::before,
 .pp-page::after {
   content: '';
@@ -129,8 +129,8 @@ body.paper {
 .pp-page::before {
   left: var(--pp-margin-x);
   width: 3px;
-  border-left: 1px solid color-mix(in srgb, var(--pp-signal) 38%, transparent);
-  border-right: 1px solid color-mix(in srgb, var(--pp-signal) 38%, transparent);
+  border-left: 1px solid color-mix(in srgb, var(--pp-signal) var(--pp-margin-mix), transparent);
+  border-right: 1px solid color-mix(in srgb, var(--pp-signal) var(--pp-margin-mix), transparent);
 }
 
 .pp-page::after {
@@ -328,27 +328,6 @@ body.paper {
   }
 }
 
-/* The blackboard's wooden frame: two upright boards on the page edges, in Dark only, in the
-   place of the notepad's punched strip. Below the page content, so section rules cross them. */
-.pp-board {
+.pp-figure-defs {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  z-index: -1;
-  width: var(--pp-strip-w);
-  display: var(--pp-chalk-display);
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 19px 30px, var(--pp-chalk-c) 0 3px, var(--pp-wood-shade) 3.5px 7px, transparent 7.5px) 0 0 /
-      var(--pp-strip-w) var(--pp-hole-pitch) repeat-y,
-    repeating-linear-gradient(90deg, transparent 0 5px, color-mix(in srgb, var(--pp-wood-shade) 18%, transparent) 5px 6px),
-    var(--pp-wood-0);
-}
-
-.pp-board-l {
-  left: calc(var(--pp-edge) - 78px);
-}
-
-.pp-board-r {
-  right: calc(var(--pp-edge) - 78px);
 }

@@ -13,6 +13,7 @@
   --pp-ink: #33383f;
   --pp-ink-muted: #555a62;
   --pp-rule: #d9cfbb;
+  --pp-margin-mix: 38%;
   --pp-outline: #b9ae99;
   --pp-arrow: #7a7468;
   --pp-signal: #f04a0e;
@@ -28,7 +29,7 @@
   --pp-chalk-c: #a8adb5;
   --pp-chalk-d: #ff8c5a;
 
-  /* What each theme switches on: the notepad furniture and rip by day, the chalk and lift by night. */
+  /* Both themes are a notepad: the punched strip, margin line and tearing hero sheet. */
   --pp-notepad-display: block;
   --pp-chalk-display: none;
   --pp-anim-rip: pp-rip;
@@ -85,14 +86,12 @@
   --pp-dur-step: 90ms;
   --pp-chip-label-w: 96px;
   --pp-map-sans: 'Geist', system-ui, sans-serif;
-  --pp-wood-0: #3d2f24;
-  --pp-wood-shade: #1a130d;
   --pp-figure-ground: #07080c;
   /* Figures are drawn in the night palette (light lines, teal signal, near-black ground). On the
      cream notepad they are inverted to dark lines on paper, the teal turned to the signal orange,
      and multiplied onto the page so the figure's ground becomes the paper. */
-  --pp-figure-filter: invert(1) hue-rotate(23deg) saturate(1.8) brightness(0.62) contrast(1.4);
-  --pp-figure-blend: multiply;
+  --pp-figure-filter: url('#pp-figure-day');
+  --pp-figure-blend: normal;
   --pp-gloss-0: #16191e;
   --pp-gloss-1: #5b616b;
   --pp-gloss-glow: 0.45;
@@ -117,16 +116,13 @@
     --pp-arrow: #7b838f;
     --pp-signal: #ff5a1f;
     --pp-signal-text: #ff5a1f;
-    --pp-figure-filter: saturate(0.45) hue-rotate(-157deg) saturate(2.6);
+    --pp-figure-filter: url('#pp-figure-night');
     --pp-figure-blend: normal;
-    --pp-sheet: #16191e;
-    --pp-strip: #1b1f26;
-    --pp-hole-edge: #000000;
+    --pp-sheet: #1d2128;
+    --pp-strip: #272c34;
+    --pp-margin-mix: 75%;
+    --pp-hole-edge: #07080b;
     --pp-ink-shadow: #000000;
-    --pp-notepad-display: none;
-    --pp-chalk-display: block;
-    --pp-anim-rip: none;
-    --pp-anim-lift: pp-lift;
     --pp-gloss-0: #b8bdc6;
     --pp-gloss-1: #ffffff;
     --pp-gloss-glow: 0.6;
@@ -143,16 +139,13 @@
   --pp-arrow: #7b838f;
   --pp-signal: #ff5a1f;
   --pp-signal-text: #ff5a1f;
-  --pp-figure-filter: saturate(0.45) hue-rotate(-157deg) saturate(2.6);
+  --pp-figure-filter: url('#pp-figure-night');
   --pp-figure-blend: normal;
-  --pp-sheet: #16191e;
-  --pp-strip: #1b1f26;
-  --pp-hole-edge: #000000;
+  --pp-sheet: #1d2128;
+  --pp-strip: #272c34;
+  --pp-margin-mix: 75%;
+  --pp-hole-edge: #07080b;
   --pp-ink-shadow: #000000;
-  --pp-notepad-display: none;
-  --pp-chalk-display: block;
-  --pp-anim-rip: none;
-  --pp-anim-lift: pp-lift;
   --pp-gloss-0: #b8bdc6;
   --pp-gloss-1: #ffffff;
   --pp-gloss-glow: 0.6;

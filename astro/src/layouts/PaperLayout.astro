@@ -31,9 +31,34 @@ const THEME = `try{var t=localStorage.getItem('pp-theme');if(t==='light'||t==='d
     <ViewTransitions />
   </head>
   <body class="paper night">
+    <!-- Figures are drawn in the night palette: near-black ground, light lines, teal signal. These
+         two filters (see --pp-figure-filter) recolour them so a figure's ground, and the faces it
+         fills with that ground to hide what is behind, match the page exactly: cream (F3ECDF) by
+         day, gunmetal (16191E) by night, with the signal orange in place of the teal. -->
+    <svg class="pp-figure-defs" width="0" height="0" aria-hidden="true" focusable="false">
+      <filter id="pp-figure-day" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0" />
+        <feColorMatrix type="saturate" values="0.2" />
+        <feColorMatrix type="hueRotate" values="23" />
+        <feColorMatrix type="saturate" values="7" />
+        <feComponentTransfer>
+          <feFuncR type="gamma" amplitude="0.9535" exponent="1.6" offset="0" />
+          <feFuncG type="gamma" amplitude="0.9255" exponent="1.6" offset="0" />
+          <feFuncB type="gamma" amplitude="0.8745" exponent="1.6" offset="0" />
+        </feComponentTransfer>
+      </filter>
+      <filter id="pp-figure-night" color-interpolation-filters="sRGB">
+        <feColorMatrix type="saturate" values="0.2" />
+        <feColorMatrix type="hueRotate" values="-157" />
+        <feColorMatrix type="saturate" values="6" />
+        <feComponentTransfer>
+          <feFuncR type="linear" slope="0.9395" intercept="0.0605" />
+          <feFuncG type="linear" slope="0.9312" intercept="0.0688" />
+          <feFuncB type="linear" slope="0.9259" intercept="0.0741" />
+        </feComponentTransfer>
+      </filter>
+    </svg>
     <div class="pp-page">
-      <div class="pp-board pp-board-l" aria-hidden="true"></div>
-      <div class="pp-board pp-board-r" aria-hidden="true"></div>
       <slot />
     </div>
   </body>
