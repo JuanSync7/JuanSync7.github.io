@@ -21,7 +21,6 @@ export default defineTemplate<Params, World, WorldView>({
   title: 'Voxel Island',
   idea: 'The original compact voxel island: a cottage, biome-themed trees and mushrooms, sculpted shores, sailing boats, waves, weather-aware light and glowing windows.',
   style: 'three',
-  fullColour: true,
   motion: 'ambient',
   answers: true,
   aspect: 1.6,

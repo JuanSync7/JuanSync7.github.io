@@ -71,8 +71,8 @@ export function defineTemplate<P, S, T = S>(spec: TemplateSpec<P, S, T>): Templa
 export function defineTemplate<P, S, T = S>(spec: TemplateSpec<P, S, T> | ThreeTemplateSpec<P, S>): Template {
   const { grammar, name, alt, ...rest } = spec;
   // Keep renderer callbacks off the catalog metadata for either kind of template.
-  const { id, title, idea, style, motion, answers, aspect, bleed, fullColour } = rest;
-  const meta = { id, title, idea, style, motion, answers, aspect, bleed, fullColour };
+  const { id, title, idea, style, motion, answers, aspect, bleed } = rest;
+  const meta = { id, title, idea, style, motion, answers, aspect, bleed };
   return {
     ...meta,
     kind: 'template',

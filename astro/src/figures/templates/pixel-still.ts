@@ -16,7 +16,6 @@ export default defineTemplate<TableScene, RoomState>({
   title: 'Themed rooms',
   idea: 'A seed chooses a complete themed room with human-scale furniture, functional zones, coordinated architecture and lighting; an entrance camera and cutaway walls reveal the interior.',
   style: 'three',
-  fullColour: true,
   renderer: defineThreeFigure,
   motion: 'responsive',
   answers: true,

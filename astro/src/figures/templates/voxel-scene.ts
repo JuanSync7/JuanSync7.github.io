@@ -16,7 +16,6 @@ export default defineTemplate<WorldSpec, World, WorldView>({
   title: 'Voxel Worlds',
   idea: 'A seed chooses the terrain, biome transitions, settlements, vegetation and atmosphere: from empty dunes and alpine valleys to dense rainforest, caves and cities, with cast shadows, glowing practical lights and visible biome weather.',
   style: 'three',
-  fullColour: true,
   motion: 'ambient',
   answers: true,
   aspect: 1.6,

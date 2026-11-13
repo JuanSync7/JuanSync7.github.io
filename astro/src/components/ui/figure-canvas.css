@@ -22,12 +22,12 @@
 }
 
 /* Colour on the paper system: a figure in the night palette is turned to ink on paper by day
-   (see --pp-figure-filter). Full-colour scenes (rooms, voxel worlds) keep a dark stage. */
-.figure-canvas:not([data-colour='full']) canvas {
+   (see --pp-figure-filter). Full-colour scenes (rooms, voxel worlds: pixel-still, voxel-scene, voxcel-island and their seeded instances) keep a dark stage. */
+.figure-canvas:not(:where([data-figure^='pixel-still'], [data-figure^='voxel-scene'], [data-figure^='voxcel-island'])) canvas {
   filter: var(--pp-figure-filter, none);
   mix-blend-mode: var(--pp-figure-blend, normal);
 }
 
-.figure-canvas[data-colour='full'] {
+.figure-canvas:where([data-figure^='pixel-still'], [data-figure^='voxel-scene'], [data-figure^='voxcel-island']) {
   background: var(--pp-figure-ground, transparent);
 }

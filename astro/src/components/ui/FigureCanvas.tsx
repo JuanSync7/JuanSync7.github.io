@@ -33,7 +33,7 @@ export default function FigureCanvas({ id, className, label, readout = false, fr
   };
   const figure = useFigureLoop(ref, { id, freezeAt, pointerAt, fixtures, data, onReadout: report });
   return (
-    <div className={`figure-canvas${className ? ` ${className}` : ''}`} data-figure={id} data-style={figure?.style} data-colour={figure?.fullColour ? 'full' : undefined}>
+    <div className={`figure-canvas${className ? ` ${className}` : ''}`} data-figure={id} data-style={figure?.style}>
       {/* The canvas is an image only once its figure, and so its alt text, has loaded; until
           then it is hidden from assistive tech rather than an image with no name. */}
       <canvas ref={ref} role={figure ? 'img' : undefined} aria-label={label ?? figure?.alt} aria-hidden={figure ? undefined : true} />
