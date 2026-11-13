@@ -1,6 +1,9 @@
 ---
 import { CONTACT_SECTION, OFF_HOURS } from '../../data/home';
 import { CONTACT, IDENTITY } from '../../data/site';
+import FigureCanvas from '../ui/FigureCanvas';
+import Sticker from '../ui/Sticker.astro';
+import HeroCity from './HeroCity.tsx';
 
 const links = [
   { label: 'email', value: CONTACT.email, href: `mailto:${CONTACT.email}` },
@@ -8,13 +11,45 @@ const links = [
   { label: 'linkedin', value: `in/${CONTACT.linkedin}`, href: CONTACT.linkedinUrl },
   { label: 'cv', value: 'Kok_Shew_Juan_CV_2026.pdf', href: IDENTITY.cvFile },
 ];
+const stickers = [
+  { kind: 'frisbee', tilt: -7, taped: false },
+  { kind: 'badminton', tilt: 5, taped: true },
+  { kind: 'swimming', tilt: -3, taped: false },
+  { kind: 'piano', tilt: 6, taped: true },
+  { kind: 'travelling', tilt: -5, taped: false },
+] as const;
 ---
+
+<svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <filter id="sticker-cut" x="-25%" y="-25%" width="150%" height="150%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="5" result="n"></feTurbulence>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="3" result="hand"></feDisplacementMap>
+    <feMorphology in="hand" operator="dilate" radius="5" result="grown"></feMorphology>
+    <feFlood class="cut" result="paper"></feFlood>
+    <feComposite in="paper" in2="grown" operator="in" result="edge"></feComposite>
+    <feDropShadow in="edge" dx="1.5" dy="2.5" stdDeviation="2" class="drop" result="lifted"></feDropShadow>
+    <feMerge><feMergeNode in="lifted"></feMergeNode><feMergeNode in="hand"></feMergeNode></feMerge>
+  </filter>
+</svg>
+
+<section id="off-hours" class="pp-section board">
+  <div class="pp-wrap">
+    <p class="pp-label">{OFF_HOURS.label}</p>
+    <div class="stickers">
+      {stickers.map((s) => <Sticker kind={s.kind} tilt={s.tilt} taped={s.taped} />)}
+    </div>
+  </div>
+</section>
 
 <section id="contact" class="pp-section">
   <div class="pp-wrap">
-    <p class="pp-label off">{OFF_HOURS.label} · {OFF_HOURS.items.join(' · ')}</p>
+    <p class="pp-label centre">{CONTACT_SECTION.label}</p>
     <h2 class="pp-hand headline">{CONTACT_SECTION.title} {CONTACT_SECTION.accent}</h2>
     <p class="pp-body lead">{CONTACT_SECTION.body}</p>
+    <div class="scenes">
+      <div class="scene"><FigureCanvas id="lego-city" client:visible /></div>
+      <div class="scene"><FigureCanvas id="system-platform" client:visible /></div>
+    </div>
     <ul>
       {links.map((l) => (
         <li class="pp-row">
@@ -28,23 +63,72 @@ const links = [
   </div>
 </section>
 
+<section id="city" class="pp-section">
+  <div class="pp-wrap city"><HeroCity client:visible /></div>
+</section>
+
 <style>
-  .off {
-    margin-bottom: var(--hf-space-6);
+  .defs {
+    position: absolute;
+  }
+
+  .defs :global(.cut) {
+    flood-color: var(--pp-sticker-edge);
+  }
+
+  .defs :global(.drop) {
+    flood-color: var(--pp-sticker-shadow);
+  }
+
+  .board {
+    border-top: 1px solid var(--pp-rule);
+  }
+
+  .stickers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--hf-space-8) var(--hf-space-10);
+    padding: var(--hf-space-10) 0 var(--hf-space-4);
+  }
+
+  .centre {
+    text-align: center;
   }
 
   .headline {
     font-size: var(--pp-fs-hand-headline);
     line-height: var(--pp-lh-hand-headline);
     font-weight: var(--pp-w-hand-headline);
-    transform: rotate(-2deg);
-    transform-origin: left center;
-    margin-bottom: var(--hf-space-6);
+    text-align: center;
+    margin: var(--hf-space-4) 0 var(--hf-space-4);
   }
 
   .lead {
     max-width: 640px;
+    margin: 0 auto var(--hf-space-8);
+    text-align: center;
+  }
+
+  .scenes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: 1px solid var(--pp-rule);
+    border-bottom: 1px solid var(--pp-rule);
     margin-bottom: var(--hf-space-8);
+  }
+
+  .scene {
+    aspect-ratio: 1.1;
+  }
+
+  .scene + .scene {
+    border-left: 1px solid var(--pp-rule);
+  }
+
+  .city {
+    aspect-ratio: 1.6;
+    max-height: 80vh;
   }
 
   ul {
@@ -63,5 +147,16 @@ const links = [
 
   .k {
     flex: 0 0 90px;
+  }
+
+  @media (max-width: 720px) {
+    .scenes {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .scene + .scene {
+      border-left: 0;
+      border-top: 1px solid var(--pp-rule);
+    }
   }
 </style>

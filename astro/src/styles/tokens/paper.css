@@ -22,6 +22,16 @@
   --pp-term-dot-3: #d9d2c3;
   --pp-outline: #b9ae99;
   --pp-arrow: #7a7468;
+  --pp-sticker-edge: #fbf7ee;
+  --pp-sticker-ink: #2b2620;
+  --pp-sticker-fill: #efe6d3;
+  --pp-sticker-fill-2: #cfc4ad;
+  --pp-sticker-shadow: rgb(0 0 0 / 0.38);
+  --pp-sticker-tape: rgb(240 228 190 / 0.72);
+  --pp-sticker-size: clamp(84px, 12vw, 128px);
+  --pp-sticker-line: 2.4;
+  --pp-sticker-tape-w: 44px;
+  --pp-sticker-tape-h: 16px;
   --pp-signal: #f04a0e;
   --pp-signal-shadow: #a8340c;
   --pp-signal-text: #a8340c;

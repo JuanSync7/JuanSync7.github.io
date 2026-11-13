@@ -120,3 +120,11 @@ part for the next view. Run `npm run deepdive:selftest`, `deepdive:check`,
 sheet is evidence to review, not an automatic visual pass. Do not loosen the
 generic figure thresholds. Record failures with their public seed or isolated
 plan salt and add a regression before calling them fixed.
+
+## Home stickers and LEGO scenes
+
+The 13 November 2026 request explicitly authorizes the hand-drawn die-cut stickers
+(`figures/kit/stickers.ts`, `ui/Sticker.astro`, tokens `--pp-sticker-*`) and the two
+three.js scenes `lego-city` and `system-platform` (kits `lego.ts`, `platform.ts`). They stay
+within the night palette: the page filter turns the signal into signal orange. Stickers are
+static art, so they use classes `i`, `f`, `g`, `a` and no colour literals.
