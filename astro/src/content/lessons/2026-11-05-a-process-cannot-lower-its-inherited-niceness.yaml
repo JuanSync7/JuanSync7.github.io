@@ -3,7 +3,7 @@
   "tag": "Linux",
   "title": "An ordinary process can't make itself less nice than it started.",
   "why": "An absolute niceness below the one a process inherited can't be reached without privilege. Ship a target every caller can reach, and refuse a lower one clearly.",
-  "problem": "A test gate started its interpreters at a fixed absolute niceness, a scheduling priority. When the gate itself was launched already niced at 15, the target was lower than the level it inherited, and six gate checks failed.",
+  "problem": "A test gate started its interpreters at a fixed absolute niceness, a scheduling priority. A gate that was itself launched already niced above that target could not reach it, and six gate checks failed.",
   "cause": "On Linux an unprivileged process can raise its nice value, giving up priority, but cannot lower it again. A target below the inherited level is out of reach for an ordinary user, however it is asked for.",
   "steps": [
     "Choose an absolute target that every inherited level you support can reach. The highest value, 19, always can.",

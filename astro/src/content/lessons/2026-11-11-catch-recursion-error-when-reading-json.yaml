@@ -3,21 +3,21 @@
   "tag": "Python",
   "title": "A JSON reader that catches only ValueError crashes on deeply nested input.",
   "why": "Python's json module raises RecursionError, not a decode error, on input nested past the recursion limit. A scanner that must read every file needs a flat fallback.",
-  "problem": "A privacy scanner decoded each JSON file before checking its strings, and caught ValueError for files that were not valid JSON. A test file of 10,000 bytes of nested arrays raised RecursionError instead, which escaped the scan and stopped the push gate that relied on it.",
+  "problem": "A privacy scanner decoded each JSON file before checking its strings, and caught ValueError for files that were not valid JSON. A test file of 10,000 bytes of nested arrays raised RecursionError instead, which escaped the scan and failed a pre-merge check; once merged, it would have stopped the push gate too.",
   "cause": "Decoding and walking JSON in Python is recursive. Past the interpreter's recursion limit it raises RecursionError, which is not a ValueError. The depth varies by version: the source reports Python 3.6 refusing 5,000 levels, where 3.13 decodes 5,000 and refuses 10,000.",
   "steps": [
     "Catch RecursionError where unusual files are decoded, and switch to a flat reading instead of failing.",
     "In the flat reading, find each string literal in one linear pass and decode it on its own, and also read the raw text, so decoding can add text but never hide it.",
-    "Don't build numbers while scanning: converting a very long integer can take time quadratic in its digits.",
+    "Don't build numbers while scanning: converting a very long integer can take time quadratic in its digits where the interpreter does not cap it.",
     "Build test files at the running decoder's own refusal depth, not a fixed number."
   ],
   "solution": "Treat \"too deep to decode\" as its own case, with a reading that still sees every string.",
   "verification": "The source reports tests that failed against each earlier version of the fix (one scan took 172 s, a 5 MB string took about 800 MB) and planted faults that the tests caught.",
-  "limitations": "Another recursive reader in the same tool still raised on deep files; it stops the run rather than letting anything through, and was queued. The flat reading suits scanning text, not rebuilding the data.",
+  "limitations": "Another recursive reader in the same tool still raised on deep files; it fails closed and was queued. The flat reading suits scanning text, not rebuilding the data.",
   "category": "software-engineering",
   "tags": [
     "python",
     "error-handling",
-    "privacy"
+    "validation"
   ]
 }

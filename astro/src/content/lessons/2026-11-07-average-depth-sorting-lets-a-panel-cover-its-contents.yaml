@@ -4,7 +4,7 @@
   "title": "Sorting faces by average depth lets a tall panel paint over what sits in front of it.",
   "why": "Drawing whole faces back to front by their mean depth fails when one large face spans the depth of smaller ones. Split and order the geometry, then check which face each pixel shows.",
   "problem": "A browser fallback that draws a 3D room without a depth buffer showed, on some views, the tall side of a bookcase painted over the books on its own shelves.",
-  "cause": "Without a depth buffer, faces are drawn back to front, each sorted by a single depth. A tall panel's average depth can be nearer than books in front of part of it, so it is drawn after them and covers them. Geometry and pixel-count checks could not see it: every face was there, only the order was wrong.",
+  "cause": "Without a depth buffer, faces are drawn back to front, each sorted by a single depth. A tall panel's average depth can be nearer than books in front of part of it, so it is drawn after them and covers them. Geometry and pixel-count checks did not catch it: every face was there, only the order was wrong.",
   "steps": [
     "Build a binary space partition (BSP) tree for each compound object, splitting faces that cross each other's planes.",
     "Walk the tree back to front from the current view direction, for perspective and orthographic views alike.",
@@ -16,7 +16,7 @@
   "category": "frontend-and-design",
   "tags": [
     "frontend",
-    "verification",
+    "testing",
     "debugging"
   ]
 }

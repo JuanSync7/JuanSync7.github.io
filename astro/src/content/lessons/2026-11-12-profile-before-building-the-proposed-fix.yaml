@@ -2,7 +2,7 @@
   "date": "2026-11-12",
   "tag": "Performance",
   "title": "Profile before you build the fix someone proposed.",
-  "why": "A slow step looked like it repeated too much work, and the proposed fix was to repeat less. A profile showed the time went elsewhere, and a one-line prefilter fixed it.",
+  "why": "A slow step looked like it repeated too much work, and the proposed fix was to repeat less. A profile showed the time went elsewhere, and one combined pattern, checked first, removed almost all of the searches.",
   "problem": "A step that checks staged files for names that must be swapped took over two and a half hours on a large catch-up run. The work item proposed judging again only what the previous pass had changed.",
   "cause": "Measured on a copy of the run, the step settled in two passes and the second took 17 s, so the proposed fix would have saved almost nothing. A profile put most of the first pass, 753 s of 934 s, in one function that ran every name's regular expression on every line: about 109 million searches, though almost no line held a name.",
   "steps": [

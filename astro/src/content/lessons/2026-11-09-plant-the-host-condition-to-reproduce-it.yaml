@@ -7,7 +7,7 @@
   "cause": "The child used the real lookup, not the suite's stand-in. On most machines the real lookup works, so the gap stayed hidden.",
   "steps": [
     "Write a `sitecustomize.py` that makes `pwd.getpwuid` raise `KeyError` for the current user id.",
-    "Put its directory on `PYTHONPATH`. Python imports sitecustomize at start-up, in the test runner and in every Python child it starts.",
+    "Put its directory on `PYTHONPATH`. Python imports sitecustomize at start-up, in the test runner and in every Python child that inherits `PYTHONPATH`.",
     "Run the suite: the host-only failure now appears on any machine.",
     "Fix the cause, for example by starting every test child through the suite's one bootstrap, and keep the probe to show the fix holds."
   ],
