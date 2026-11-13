@@ -38,11 +38,11 @@
 
 .night .tnav a:hover,
 .night .tnav a[aria-current='page'] {
-  color: var(--nt-signal);
+  color: var(--nt-signal-text);
 }
 
 .night .tnav .tnav-home {
-  color: var(--nt-signal);
+  color: var(--nt-signal-text);
 }
 
 .night .tnav .tnav-learn {

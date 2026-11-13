@@ -37,6 +37,8 @@ html.paper:root {
   --amber: var(--pp-ink-muted);
   --teal: var(--pp-signal);
   --accent: var(--pp-signal);
+  --teal-text: var(--pp-signal-text);
+  --accent-text: var(--pp-signal-text);
   --accent2: var(--pp-signal);
   --chip: var(--nt-panel-2);
   --hover: var(--nt-panel-2);
@@ -62,7 +64,8 @@ html.paper {
   --nt-ink-faint: var(--pp-ink-muted);
   --nt-signal: var(--pp-signal);
   --pa-signal-ink: var(--pp-signal-text);
-  --nt-signal-text: var(--pp-ink-muted);
+  /* Orange as text: the deeper signal by day (AA on cream), the bright one at night. */
+  --nt-signal-text: var(--pp-signal-text);
   --nt-signal-ink: var(--pp-on-signal);
   --nt-signal-line: var(--pp-signal-shadow);
   --nt-signal-line-2: var(--pp-signal);
@@ -80,6 +83,7 @@ html.paper {
   --nt-code-ground: var(--pp-term-ground);
   --nt-code-line: var(--pp-term-line);
   --nt-code-ink: var(--pp-term-ink);
+  --nt-code-muted: var(--pp-term-dot-2);
   --nt-term-red: var(--pp-term-dot-1);
   --nt-term-amber: var(--pp-term-dot-2);
   --nt-term-green: var(--pp-term-dot-3);
@@ -105,7 +109,7 @@ body.paper {
 }
 
 .paper a:hover {
-  color: var(--pp-signal);
+  color: var(--pp-signal-text);
 }
 
 .paper :focus-visible {

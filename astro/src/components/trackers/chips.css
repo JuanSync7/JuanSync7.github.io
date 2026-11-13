@@ -2,7 +2,7 @@
 @import './tracker-skin.css';
 
 /* chip tiers (quiet uppercase mono labels; teal only for the GPU tier) */
-.cat.gpu     {color:var(--teal)}
+.cat.gpu     {color: var(--teal-text, var(--teal))}
 .cat.wafer   {color:var(--muted)}
 .cat.dataflow{color:var(--muted)}
 .cat.asic    {color:var(--muted)}

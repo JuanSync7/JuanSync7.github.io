@@ -46,7 +46,7 @@
   gap: var(--hf-space-3);
 }
 .room-presets button[aria-pressed='true'] {
-  color: var(--nt-signal);
+  color: var(--nt-signal-text);
 }
 .room-help {
   margin: 0;

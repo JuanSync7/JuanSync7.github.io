@@ -1,6 +1,7 @@
 import type { NightKey } from '../../styles/tokens/palette';
 import type { Rng } from './rng';
-import { architecture, type Edit, type Voxels } from './legobuildings';
+import { architecture } from './legobuildings';
+import type { Edit, Voxels } from './legoparts';
 
 /** The LEGO city is designed as an ordinary isometric city first, a field of voxels (streets,
  *  blocks, a church, a stadium, a domed museum, towers, houses, a factory, lamps, benches, cars),

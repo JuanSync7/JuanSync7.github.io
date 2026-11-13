@@ -69,7 +69,7 @@
 .doc-pane li a:hover,
 .doc-toc li a:hover,
 .doc-home:hover {
-  color: var(--nt-signal);
+  color: var(--nt-signal-text);
 }
 
 .doc-pane li a[aria-current='page'],

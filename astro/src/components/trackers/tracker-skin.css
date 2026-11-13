@@ -18,7 +18,7 @@ body{margin:0;color:var(--txt);font-family:var(--sans);line-height:1.6;font-size
     repeating-linear-gradient(90deg, transparent 0 31px, rgba(255,255,255,0.016) 31px 32px),
     var(--bg);
   background-attachment:fixed;}
-a{color:var(--teal);text-decoration:none}
+a{color: var(--teal-text, var(--teal));text-decoration:none}
 a:hover{text-decoration:underline}
 .wrap{max-width:none;margin:0;padding:0 48px 100px}
 
@@ -38,14 +38,14 @@ a:hover{text-decoration:underline}
 .navlinks a{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
   padding:7px 13px;border-radius:8px;border:1px solid transparent;transition:.18s var(--ease)}
 .navlinks a:hover{color:var(--txt);border-color:var(--line);text-decoration:none}
-.navlinks a.active{color:var(--teal);border-color:#2f4a47}
+.navlinks a.active{color: var(--teal-text, var(--teal));border-color:#2f4a47}
 
 /* ---- page header ---- */
 header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px;
   border-bottom:1px solid var(--line);padding:56px 0 32px;margin-bottom:18px}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
 h1{font-family:var(--display);font-weight:600;font-size:44px;margin:0;letter-spacing:-.025em;line-height:1.1}
-h1 em{font-style:italic;color:var(--teal)}
+h1 em{font-style:italic;color: var(--teal)}
 .sub{color:var(--muted);margin-top:10px;font-size:17px;max-width:620px}
 .meta{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--muted);text-align:right;line-height:1.9}
 .meta b{color:var(--txt);font-weight:500}
@@ -160,11 +160,11 @@ h2.section em{font-style:italic;color:var(--txt)}
 .prose{margin-top:28px;font-size:15.5px;line-height:1.7;color:var(--txt2)}
 .prose h2{font-family:var(--display);font-weight:600;letter-spacing:-0.015em;font-size:24px;margin:34px 0 10px;color:var(--txt)}
 .prose h3{font-family:var(--display);font-weight:600;letter-spacing:-0.01em;font-size:19px;margin:26px 0 8px;color:var(--txt)}
-.prose a{color:var(--teal)}
+.prose a{color: var(--teal-text, var(--teal))}
 .prose strong{color:var(--txt);font-weight:600}
 .prose ul,.prose ol{padding-left:22px}
 .prose li{margin:6px 0}
-.prose code{font-family:var(--mono);font-size:13px;background:var(--panel2);border:1px solid var(--line);padding:1px 6px;border-radius:5px;color:var(--teal)}
+.prose code{font-family:var(--mono);font-size:13px;background:var(--panel2);border:1px solid var(--line);padding:1px 6px;border-radius:5px;color: var(--teal-text, var(--teal))}
 .prose blockquote{border-left:2px solid var(--line);margin:18px 0;padding:4px 0 4px 18px;color:var(--muted);font-style:italic}
 .prose hr{border:none;border-top:1px solid var(--line);margin:28px 0}
 

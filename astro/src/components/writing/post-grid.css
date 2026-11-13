@@ -106,7 +106,7 @@
 }
 
 .card-cat {
-  color: var(--nt-signal);
+  color: var(--nt-signal-text);
 }
 
 .card-title {
@@ -130,7 +130,7 @@
 }
 
 .card:hover .card-go {
-  color: var(--nt-signal);
+  color: var(--nt-signal-text);
   transform: translateX(var(--hf-space-1));
 }
 

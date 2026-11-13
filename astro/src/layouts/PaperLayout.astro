@@ -1,4 +1,5 @@
 ---
+import { figureMatrix, worldContrast } from '../styles/theme/figure-filters';
 import { ViewTransitions } from 'astro:transitions';
 import '../styles/tokens/index.css';
 import '../styles/night.css';
@@ -16,6 +17,10 @@ interface Props {
 const { title, description = 'Juan Kok: Senior Design & AI Engineer. AI platform, agents and governance.', noindex = false } = Astro.props;
 
 const THEME = `try{var t=localStorage.getItem('pp-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}`;
+const dayMatrix = figureMatrix(0);
+const nightMatrix = figureMatrix(1);
+const dayWorld = worldContrast(0);
+const nightWorld = worldContrast(1);
 ---
 
 <!doctype html>
@@ -38,18 +43,18 @@ const THEME = `try{var t=localStorage.getItem('pp-theme');if(t==='light'||t==='d
          day, gunmetal (16191E) by night, with the signal orange in place of the teal. -->
     <svg class="pp-figure-defs" width="0" height="0" aria-hidden="true" focusable="false">
       <filter id="pp-figure-day" color-interpolation-filters="sRGB">
-        <feColorMatrix type="matrix" values="-1.0823 0.5060 -0.3636 0 0.9839 -0.1168 -0.7373 -0.0400 0 0.9537 0.2434 -1.1408 0.0808 0 0.8998 0 0 0 1 0" />
+        <feColorMatrix type="matrix" values={dayMatrix} />
       </filter>
       <filter id="pp-figure-night" color-interpolation-filters="sRGB">
-        <feColorMatrix type="matrix" values="-0.2025 1.2387 -0.0670 0 0.0561 0.7302 -0.0329 0.2456 0 0.0675 1.0292 -0.4902 0.3458 0 0.0885 0 0 0 1 0" />
+        <feColorMatrix type="matrix" values={nightMatrix} />
       </filter>
       <filter id="pp-world-night" color-interpolation-filters="sRGB">
-        <feColorMatrix type="matrix" values="-0.2025 1.2387 -0.0670 0 0.0561 0.7302 -0.0329 0.2456 0 0.0675 1.0292 -0.4902 0.3458 0 0.0885 0 0 0 1 0" />
-        <feComponentTransfer><feFuncR type="linear" slope="1.7" intercept="-0.0604" /><feFuncG type="linear" slope="1.7" intercept="-0.0686" /><feFuncB type="linear" slope="1.7" intercept="-0.0823" /></feComponentTransfer>
+        <feColorMatrix type="matrix" values={nightMatrix} />
+        <feComponentTransfer><feFuncR type="linear" slope={nightWorld.slope} intercept={nightWorld.intercepts[0]} /><feFuncG type="linear" slope={nightWorld.slope} intercept={nightWorld.intercepts[1]} /><feFuncB type="linear" slope={nightWorld.slope} intercept={nightWorld.intercepts[2]} /></feComponentTransfer>
       </filter>
       <filter id="pp-world-day" color-interpolation-filters="sRGB">
-        <feColorMatrix type="matrix" values="-1.0823 0.5060 -0.3636 0 0.9839 -0.1168 -0.7373 -0.0400 0 0.9537 0.2434 -1.1408 0.0808 0 0.8998 0 0 0 1 0" />
-        <feComponentTransfer><feFuncR type="linear" slope="1.7" intercept="-0.6670" /><feFuncG type="linear" slope="1.7" intercept="-0.6478" /><feFuncB type="linear" slope="1.7" intercept="-0.6121" /></feComponentTransfer>
+        <feColorMatrix type="matrix" values={dayMatrix} />
+        <feComponentTransfer><feFuncR type="linear" slope={dayWorld.slope} intercept={dayWorld.intercepts[0]} /><feFuncG type="linear" slope={dayWorld.slope} intercept={dayWorld.intercepts[1]} /><feFuncB type="linear" slope={dayWorld.slope} intercept={dayWorld.intercepts[2]} /></feComponentTransfer>
       </filter>
     </svg>
     <div class="pp-page">
