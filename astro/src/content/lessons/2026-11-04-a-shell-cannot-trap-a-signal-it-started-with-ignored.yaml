@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-04",
+  "tag": "Shell",
+  "title": "A shell can't trap a signal it started with ignored.",
+  "why": "A test that stops a bash step with a signal passed by hand but hung when the run was started under nohup. Give the child under test default signal handling.",
+  "problem": "A test sent a signal to a bash step and expected the step's trap to record the run as failed. It passed when run by hand. When the nightly run was started detached under `nohup`, the trap never ran: the step's sleep carried on and the test timed out.",
+  "cause": "`nohup` starts a program with SIGHUP ignored, and an ignored signal stays ignored in every child it starts. A non-interactive shell cannot trap a signal that was ignored when it started, so the test's trap was never set. By hand it passed only because GNU `timeout` resets those signals for its child.",
+  "steps": [
+    "Start the child under test with HUP, INT and TERM reset to their default actions, the state a terminal session gives it. In Python, for example, set them to `SIG_DFL` in the child before it runs bash.",
+    "Run the test once under `nohup` and once normally; both should behave the same.",
+    "Keep a planted fault, such as a step with no trap, to prove the test can still fail."
+  ],
+  "solution": "Don't let a test inherit its signal handling from however the run happened to be launched.",
+  "verification": "The source reports the test red under `nohup` before the fix and green after, green with INT and HUP ignored too, and still red with a planted fault (no TERM trap).",
+  "limitations": "This is about signals ignored when the shell starts, not ones blocked or trapped later. Interactive shells and other languages have their own rules.",
+  "category": "systems-and-operations",
+  "tags": [
+    "shell",
+    "linux",
+    "testing"
+  ]
+}

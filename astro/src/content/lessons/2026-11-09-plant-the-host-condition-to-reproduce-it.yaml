@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-09",
+  "tag": "Testing",
+  "title": "Reproduce a failure that happens on one host by planting that host's condition.",
+  "why": "Six tests failed on one machine because its user had no account entry. A small start-up file can make every Python process see the same condition anywhere, so the failure can be reproduced and fixed off that host.",
+  "problem": "A test suite replaced the account lookup with a stand-in, but some tests started a fresh Python child with `python -c`, which skipped it. On a host where the running user id has no account entry, six tests failed for a reason unrelated to what they tested, and nowhere else.",
+  "cause": "The child used the real lookup, not the suite's stand-in. On most machines the real lookup works, so the gap stayed hidden.",
+  "steps": [
+    "Write a `sitecustomize.py` that makes `pwd.getpwuid` raise `KeyError` for the current user id.",
+    "Put its directory on `PYTHONPATH`. Python imports sitecustomize at start-up, in the test runner and in every Python child that inherits `PYTHONPATH`.",
+    "Run the suite: the host-only failure now appears on any machine.",
+    "Fix the cause, for example by starting every test child through the suite's one bootstrap, and keep the probe to show the fix holds."
+  ],
+  "solution": "When a failure depends on the host, plant the host's condition rather than hunting for the host.",
+  "verification": "The source reports that the probe reproduced the failure on other hosts. The bootstrap fix was proposed; its outcome is not recorded yet.",
+  "limitations": "This works for conditions Python code reaches through something you can patch at start-up. It does not reproduce kernel, file system or hardware differences, and sitecustomize is not loaded when `PYTHONPATH` is ignored (`-E`, `-I`) or `site` is off (`-S`).",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "python",
+    "reproducibility"
+  ]
+}

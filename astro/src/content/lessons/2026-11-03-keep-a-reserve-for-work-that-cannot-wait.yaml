@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-03",
+  "tag": "Budgets",
+  "title": "Keep part of a shared budget for the work that can't wait.",
+  "why": "When several kinds of work share one spending cap, the kinds that could wait can spend it first. Keep a reserve that only the work that must run may use.",
+  "problem": "A nightly pipeline shared one model spending cap of $15 across its steps. A backlog that could safely wait a night ran first and used the whole cap, so a later step that had to run did not. The output had a gap, and two runs in a row held back their publish.",
+  "cause": "One cap answers only \"is there money left?\", not \"for which work?\". Steps draw from it in the order they run, so whichever comes first wins, whether or not it matters most.",
+  "steps": [
+    "Mark which kinds of work may wait for the next run.",
+    "Give the cap a reserve, here $4 of the $15, that those kinds stop short of; work that must run can still use the whole cap.",
+    "Before any call, check that the reserve belongs to a real budget and still leaves room for at least one call, so a lowered cap fails loudly instead of quietly refusing the work that may wait."
+  ],
+  "solution": "One budget, with a floor kept back for work that must finish.",
+  "verification": "The source reports tests for the reserve and the preflight; it cites no later production run. A check for another pipeline: plan a run whose waiting backlog alone is larger than the cap, and confirm the must-run step still gets its calls.",
+  "limitations": "This keeps one shared budget; when roles need limits that don't affect each other, separate budgets fit better. The $4 was sized to leave room for two calls at the largest per-call reserve the waiting work had booked; no run after the change is reported.",
+  "category": "systems-and-operations",
+  "tags": [
+    "cost-control",
+    "resource-limits",
+    "llm"
+  ]
+}

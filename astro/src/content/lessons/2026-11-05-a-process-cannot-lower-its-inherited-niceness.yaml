@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-05",
+  "tag": "Linux",
+  "title": "An ordinary process can't make itself less nice than it started.",
+  "why": "An absolute niceness below the one a process inherited can't be reached without privilege. Ship a target every caller can reach, and refuse a lower one clearly.",
+  "problem": "A test gate started its interpreters at a fixed absolute niceness, a scheduling priority. A gate that was itself launched already niced above that target could not reach it, and six gate checks failed.",
+  "cause": "On Linux an unprivileged process can raise its nice value, giving up priority, but cannot lower it again. A target below the inherited level is out of reach for an ordinary user, however it is asked for.",
+  "steps": [
+    "Choose an absolute target that every inherited level you support can reach. The highest value, 19, always can.",
+    "If a caller asks for a target below the level it inherited, fail with a clear message instead of carrying on at a different priority.",
+    "Check the niceness the child actually got, not the one requested."
+  ],
+  "solution": "Ship 19 as the target, and keep a lower target as an explicit choice that refuses when it can't be met.",
+  "verification": "The source reports the same six failures reproduced at inherited niceness 15 before the change, and all six passing on two Python versions at inherited levels 0, 15 and 19 after it.",
+  "limitations": "A privileged process (root, or one with CAP_SYS_NICE) can lower its niceness, and RLIMIT_NICE can allow it too. The rule in the cause is general Linux behaviour: the source records the failures and the fix, not the rule.",
+  "category": "systems-and-operations",
+  "tags": [
+    "linux",
+    "resource-limits",
+    "testing"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-08",
+  "tag": "3D views",
+  "title": "A camera that fits itself to nearby objects makes matching views disagree.",
+  "why": "Two opposite eye-level views of the same room came out with very different fields of view, because each camera fitted itself to the furniture in front of it. Fix the lens and the eye height instead.",
+  "problem": "A generated room shows eye-level views from each entrance, which should feel like the same person standing at either end. One view fitted itself to nearby furniture and reached about 138° of vertical field of view, against 73° for the opposite view, so the two ends of the same room looked different.",
+  "cause": "Fitting the camera to whatever is visible makes the lens depend on the nearest objects, which change with every layout. Mirrored views then get different lenses, though the person standing there has not changed.",
+  "steps": [
+    "Use one fixed base lens, here 55° vertical.",
+    "Keep the sightline level and the two entrance points mirrored.",
+    "Place the eye at a human height above each room's actual floor (about 1.68 m), not above a nominal plane.",
+    "Give eye-level views their own check for how much of the frame they fill, instead of reusing the overview's threshold."
+  ],
+  "solution": "Keep the viewer a person: one lens at one eye height, whatever is nearby.",
+  "verification": "The source reports camera checks across 8,991 poses in 27 theme variants that reject seven deliberately broken outputs and nine captured cases of the old camera.",
+  "limitations": "A fixed lens can leave a small room sparse; a separate check holds how much of the frame an eye view fills (55 to 100%). Furniture at the edge of the frame may be cut off; that was accepted rather than changing the lens to fit it.",
+  "category": "frontend-and-design",
+  "tags": [
+    "design",
+    "frontend",
+    "testing"
+  ]
+}

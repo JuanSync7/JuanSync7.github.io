@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-10",
+  "tag": "Isolation",
+  "title": "A PID namespace alone still lets kill(0) reach your own processes.",
+  "why": "Code that signals processes was tested in a private PID namespace, but it still shared the caller's process group, so a signal to its own group could escape. Start a new session inside the namespace too.",
+  "problem": "To keep fault-injection tests of process-killing code away from real processes, the tests ran in a private PID namespace (`unshare -Upf --mount-proc`). A review found that `kill(0, sig)`, which signals the caller's own process group, could still reach processes outside the namespace.",
+  "cause": "A new PID namespace hides other processes' ids, but its first process stays in the process group of the program that created it, and that group has members outside. Signalling a group reaches its members by group, not by namespace.",
+  "steps": [
+    "Run `setsid` inside the namespace so the code under test gets its own session and process group.",
+    "Keep a small shell as the namespace's first process, because that process inherits orphans and must reap them, or killed children linger as zombies that a liveness check still sees.",
+    "Add `--kill-child`, so the whole namespace ends when an outer time limit kills `unshare`.",
+    "Together: `unshare -Upf --kill-child --mount-proc setsid bash -c '\"$@\"; exit $?' reaper <command>`."
+  ],
+  "solution": "Isolate the process group as well as the process ids.",
+  "verification": "The source reports a live probe that confirmed the escape and that `setsid` inside the namespace closed it, and isolation tests that fail when `setsid` or the namespace is removed, or when `--kill-child` is dropped.",
+  "limitations": "Linux only. Code that deletes files or pushes needs a different boundary, such as a throwaway container with no network. The source does not record a CI run of these tests.",
+  "category": "systems-and-operations",
+  "tags": [
+    "isolation",
+    "linux",
+    "testing"
+  ]
+}

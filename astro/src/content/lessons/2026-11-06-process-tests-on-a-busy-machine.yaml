@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-06",
+  "tag": "Testing",
+  "title": "On a busy machine a process starts late, dies slowly and can vanish mid-read.",
+  "why": "Under load a child can start after the timeout fires, a killed process can linger, and a status read can race the reaper. Wait for each state with a deadline, and treat every form of \"gone\" as dead.",
+  "problem": "A test checked that a timeout killed an interpreter and its children. On a heavily loaded machine the interpreter had not started its child within the 1-second timeout, so there was no child to check, and the test failed every time under load.",
+  "cause": "The test assumed three things that hold only on an idle machine: the child starts before the timeout fires, a killed process disappears at once, and a pid file written in two steps is never read half-written. A status read can also lose a race: the process is reaped between opening `/proc/<pid>/stat` and reading it.",
+  "steps": [
+    "Wait on a condition with a deadline instead of a fixed delay: retry until the child exists, then wait, up to a limit, for it to die.",
+    "Fix host readings the test is not about, such as the load average a gate checks.",
+    "Write a file the test polls under a temporary name and rename it into place, so a reader never sees it empty.",
+    "Count a missing /proc entry, a zombie and ESRCH (`ProcessLookupError`) all as dead."
+  ],
+  "solution": "Wait for each state, and accept every way a process can be gone.",
+  "verification": "The source reports 12 failures in 12 under heavy load before the fix, 6 passes in 6 under the same load after it, and a planted fault (killing only the interpreter, not its process group) still turning the test red.",
+  "limitations": "A deadline still bounds the wait, so extreme load can still fail the test.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "linux",
+    "debugging"
+  ]
+}
