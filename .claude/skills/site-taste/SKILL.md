@@ -105,6 +105,22 @@ Built in response (his to keep or change): the paper is for light-mode readers a
 keep the night ground; on a phone each table row becomes a card with every value labelled by its
 column, and code wraps with a hanging indent instead of scrolling sideways.
 
+**The paper redesign, November 2026** (10–13 Nov 2026)
+- Cards: "my cards are always transparent and separated only with lines"; "i prefer icons rather than these
+  text": each card leads with an animated isometric hairline icon, not a big stat.
+- Landing: concise visuals and short titles at full width; the long story moves to `/about` in article format,
+  and `/about` sits in the top navigation.
+- Colour: the exact signal orange in both themes, nothing muted; no grey panels behind content; code in the
+  palette's terminal window; 60/30/10 for ground, ink and orange; text readable in both themes.
+- Dark is the same notepad in gunmetal. The figure or room stage follows the page ground.
+- LEGO and block scenes: "do a proper 3D isometric first, then only turn it into lego", smaller pieces, street
+  lamps, benches, unique architecture; the animation starts as the model and swaps to bricks.
+- Stickers: accurate objects (a grand piano, a shuttlecock, a swimmer in waves, a frisbee with wind, a travel
+  bag), pasted on the notepad.
+The rules and checks for all of this are the vault decks `Colour and contrast`, `Page layout`, `Designing and
+judging pages`, `Voxel and LEGO scenes`, `Stickers and icons` and `Shipping the site`; the checks are
+`npm run site:tokens` and `npm run site:pages`.
+
 ## Built
 
 - **Night system** (`astro/src/styles/tokens/`, `night.css`, `NightLayout`, `NightPage`):
