@@ -86,7 +86,9 @@
     "voxel:atmosphere-verify": "node scripts/voxel/verify-atmosphere.mjs",
     "rooms:tones": "node scripts/figures/room-tone-browser.mjs",
     "site:reach": "node scripts/site/reach.mjs",
-    "site:tokens": "node scripts/site/tokens-check.mjs"
+    "site:tokens": "node scripts/site/tokens-check.mjs",
+    "site:pages": "node scripts/site/page-check.mjs",
+    "site:design-export": "node scripts/site/design-system-export.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",
