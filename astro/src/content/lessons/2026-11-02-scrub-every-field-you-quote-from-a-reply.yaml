@@ -2,7 +2,7 @@
   "date": "2026-11-02",
   "tag": "Secrets",
   "title": "A value you only check is still untrusted text when you quote it.",
-  "why": "An error message quoted the model name a server sent back, and an API key echoed in that field reached the retry log. Scrub every field you quote from a reply, including the ones you only compare.",
+  "why": "An error message quoted the model name a server sent back, and in a test an API key echoed in that field reached the retry log. Scrub every field you quote from a reply, including the ones you only compare.",
   "problem": "A client checked that each reply named the expected model and, when it didn't, logged a reason that quoted the reply's `model` field. Every other reply text was scrubbed for secrets before logging, but this reason was not. A re-review planted the API key in that field, and the key showed up in the retry log lines.",
   "cause": "The field was treated as metadata to compare, not as text to protect. A server can fill any field with anything, including an echo of the credentials it was sent, so a value used only for a check can still carry a secret once an error message quotes it.",
   "steps": [
@@ -12,7 +12,7 @@
     "Add a test that plants the secret in the field and asserts it never appears in the log while the reason still does."
   ],
   "solution": "Scrub what you quote, not only what you expected to be content.",
-  "verification": "The source reports that the planted-key test failed on the earlier version, with the key in the retry lines, and passes after the change.",
+  "verification": "The source reports that the planted-key test failed on the earlier version and passes after the change.",
   "limitations": "This was shown with a planted key in a test; no leak in production is reported.",
   "category": "security-and-networking",
   "tags": [
