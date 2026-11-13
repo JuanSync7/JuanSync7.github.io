@@ -42,6 +42,7 @@ export const NAV = [
   { label: 'system', href: '/#system' },
   { label: 'thinking', href: '/#thinking' },
   { label: 'experience', href: '/#experience' },
+  { label: 'about', href: '/about/' },
   { label: 'work', href: '/#work' },
   { label: 'lab', href: '/lab/' },
   { label: 'anatomy', href: '/anatomy/chip-package/' },
@@ -125,6 +126,19 @@ export const EXPERIENCE = {
     ...(points ? { points } : {}),
   })),
 } as const;
+
+/** The landing's view of the current role: one big figure and one short line per area. The full
+ *  text of each area stays in profile.json and is read on /about. `tag` matches a profile point. */
+export const EXPERIENCE_TILES = [
+  { kind: 'adoption', tag: 'adoption & governance', stat: '~100', title: 'Claude Code, company-wide', caption: 'engineers using it daily, under a policy IT owns and users cannot override.' },
+  { kind: 'knowledge', tag: 'knowledge', stat: '1 RAG', title: 'Company knowledge', caption: 'one company-wide base on AWS Bedrock, plus a private one per customer project.' },
+  { kind: 'measurement', tag: 'measurement', stat: '−39%', title: 'Measured first', caption: 'the nDCG a reranker was costing, found before anyone shipped it.' },
+  { kind: 'agents', tag: 'agents', stat: '1 graph', title: 'Agentic delivery', caption: 'owned tasks with typed inputs and outputs, traced to the customer requirement.' },
+  { kind: 'platform', tag: 'platform', stat: '1 API', title: 'One gateway', caption: 'every team reaches any model, Bedrock or self-hosted, through LiteLLM.' },
+  { kind: 'visibility', tag: 'visibility', stat: '3.3M', title: 'Licence analytics', caption: 'Slurm jobs analysed to forecast licence use and cut memory waste.' },
+] as const;
+
+export const EXPERIENCE_CTA = { label: 'Read the full story', href: '/about/' } as const;
 
 export const OFF_HOURS = {
   label: '// low_power_mode',

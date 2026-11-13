@@ -25,6 +25,7 @@ const THEME = `try{var t=localStorage.getItem('pp-theme');if(t==='light'||t==='d
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     {noindex ? <meta name="robots" content="noindex" /> : null}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
     <slot name="head" />
     <script is:inline set:html={THEME} />

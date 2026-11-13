@@ -1,0 +1,83 @@
+---
+import NightPage from '../../layouts/NightPage.astro';
+import NightNav from '../../components/layout/NightNav.astro';
+import NightFooter from '../../components/layout/NightFooter.astro';
+import { PROFILE } from '../../data/profile';
+import '../../styles/night-prose.css';
+
+const cv = PROFILE.cv_file;
+---
+
+<NightPage title="About · Juan Kok" description={PROFILE.role_line}>
+  <NightNav current="about" />
+  <main class="nt-wrap about">
+    <a class="back" href="/#experience">← Back to the landing page</a>
+    <header class="head">
+      <p class="meta">about</p>
+      <h1>About Juan</h1>
+      <p class="excerpt">{PROFILE.role_line}</p>
+    </header>
+    <article class="prose">
+      {PROFILE.experience.map((r) => (
+        <section>
+          <h2>{r.title}</h2>
+          <p class="where">{r.org}{r.place ? ` · ${r.place}` : ''} · {r.dates}</p>
+          {r.summary ? <p>{r.summary}</p> : null}
+          {r.points ? r.points.map((p) => (
+            <>
+              <h3>{p.tag}</h3>
+              <p>{p.text}</p>
+            </>
+          )) : null}
+        </section>
+      ))}
+      <p><a href={cv}>The same record as a CV (PDF)</a></p>
+    </article>
+  </main>
+  <NightFooter />
+</NightPage>
+
+<style>
+  .about {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-10);
+    max-width: 760px;
+    padding-top: var(--nt-section-y-tight);
+    padding-bottom: var(--nt-section-y);
+  }
+
+  .back,
+  .meta,
+  .where {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-caption);
+    color: var(--nt-ink-muted);
+  }
+
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-5);
+  }
+
+  .meta {
+    margin: 0;
+    color: var(--nt-signal);
+  }
+
+  h1 {
+    font-size: var(--nt-fs-h1);
+    line-height: var(--nt-lh-tight);
+    letter-spacing: var(--nt-tracking-display);
+  }
+
+  .excerpt {
+    font-size: var(--nt-fs-intro);
+    color: var(--nt-ink-soft);
+  }
+
+  .where {
+    margin: 0 0 var(--hf-space-3);
+  }
+</style>
