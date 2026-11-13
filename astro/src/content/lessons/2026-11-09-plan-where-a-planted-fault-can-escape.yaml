@@ -12,8 +12,8 @@
     "After a run is killed or cut short, compare the mutated file with its saved original."
   ],
   "solution": "Choose where a fault runs by what it could hit.",
-  "verification": "The source records the incident and the rule written from it; no later mutation run under the rule is reported. A runner could enforce it: refuse to start a mutation run outside a PID namespace, where process 1 is not the host's init.",
-  "limitations": "It keeps a wrong mutant away from real processes and files; it says nothing about whether the mutants are meaningful.",
+  "verification": "The source records the incident and the rule written from it. Later mutation runs are reported in a container or a private PID namespace. A runner could refuse to start outside one, where process 1 is the host's init.",
+  "limitations": "It keeps a wrong mutant away from real processes and files; it says nothing about whether the mutants are meaningful. The namespace is Linux only.",
   "category": "software-engineering",
   "tags": [
     "testing",

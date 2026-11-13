@@ -3,7 +3,7 @@
   "tag": "Testing",
   "title": "A switch that reaches the main view may not reach its previews.",
   "why": "A colour switch worked in a room's main view, but the preview thumbnails kept the default look, and the test only checked the main view. Give the setting one owner, and test every place it should show.",
-  "problem": "Full colour was reported as not working. A live check found the main 3D scene switching correctly. A new screenshot test then showed that the preview thumbnails beside it, and a card elsewhere on the site, stayed monochrome. The existing colour check looked only at the main scene, so it had passed.",
+  "problem": "Full colour was reported as not working. A live check found the main 3D scene switching correctly. A new screenshot test showed that the preview thumbnails beside it stayed monochrome, and a card elsewhere on the site had the same gap. The existing colour check looked only at the main scene, so it had passed.",
   "cause": "The previews were drawn by a shared component that never received the appearance setting, so it fell back to its own monochrome default. Each view decided its look separately, and the test covered only one of them.",
   "steps": [
     "Give the setting one owner that passes it to every view that draws the scene, previews included.",
