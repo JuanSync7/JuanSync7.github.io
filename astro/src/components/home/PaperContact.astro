@@ -33,22 +33,21 @@ const stickers = [
 </svg>
 
 <section id="off-hours" class="pp-section board">
-  <div class="pp-wrap">
-    <p class="pp-label">{OFF_HOURS.label}</p>
+  <div class="pp-wrap hobbies">
+    <h2 class="pp-hand hand">{OFF_HOURS.title}</h2>
     <div class="stickers">
       {stickers.map((s) => <Sticker kind={s.kind} tilt={s.tilt} taped={s.taped} />)}
     </div>
   </div>
 </section>
 
-<section id="contact" class="pp-section">
+<section id="contact" class="pp-section open">
   <div class="pp-wrap">
-    <p class="pp-label centre">{CONTACT_SECTION.label}</p>
     <h2 class="pp-hand headline">{CONTACT_SECTION.title} {CONTACT_SECTION.accent}</h2>
     <p class="pp-body lead">{CONTACT_SECTION.body}</p>
     <div class="scenes">
       <div class="scene"><FigureCanvas id="lego-city" client:visible /></div>
-      <div class="scene"><FigureCanvas id="system-platform" client:visible /></div>
+      <div class="scene"><FigureCanvas id="dev-desk" client:visible /></div>
     </div>
     <ul>
       {links.map((l) => (
@@ -80,20 +79,37 @@ const stickers = [
     flood-color: var(--pp-sticker-shadow);
   }
 
+  /* The hobbies and the contact read as one open page: no hairlines between them. */
+  .board,
+  .open {
+    border-top: 0;
+  }
+
   .board {
-    border-top: 1px solid var(--pp-rule);
+    padding-bottom: 0;
+  }
+
+  .hobbies {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+    align-items: center;
+    gap: var(--hf-space-8);
+  }
+
+  .hand {
+    margin: 0;
+    font-size: var(--pp-fs-hand-headline);
+    line-height: var(--pp-lh-hand-headline);
+    font-weight: var(--pp-w-hand-headline);
+    transform: rotate(-4deg);
   }
 
   .stickers {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--hf-space-8) var(--hf-space-10);
-    padding: var(--hf-space-10) 0 var(--hf-space-4);
-  }
-
-  .centre {
-    text-align: center;
+    justify-content: space-between;
+    gap: var(--hf-space-6);
+    padding: var(--hf-space-6) 0;
   }
 
   .headline {
@@ -113,17 +129,12 @@ const stickers = [
   .scenes {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    border-top: 1px solid var(--pp-rule);
-    border-bottom: 1px solid var(--pp-rule);
+    gap: var(--hf-space-6);
     margin-bottom: var(--hf-space-8);
   }
 
   .scene {
     aspect-ratio: 1.1;
-  }
-
-  .scene + .scene {
-    border-left: 1px solid var(--pp-rule);
   }
 
   .city {
@@ -154,9 +165,8 @@ const stickers = [
       grid-template-columns: minmax(0, 1fr);
     }
 
-    .scene + .scene {
-      border-left: 0;
-      border-top: 1px solid var(--pp-rule);
+    .hobbies {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

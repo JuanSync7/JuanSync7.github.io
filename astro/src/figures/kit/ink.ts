@@ -1,4 +1,4 @@
-import { night, roomTones, type RoomTone, type NightKey } from '../../styles/tokens/palette';
+import { deskTones, night, roomTones, type DeskTone, type RoomTone, type NightKey } from '../../styles/tokens/palette';
 
 /** The only way a figure gets a colour. Every value comes from the night tokens, so a
  *  figure can't drift off-palette; the audit rejects any colour literal in a figure.
@@ -74,4 +74,19 @@ export function roomTone(key: RoomTone, amount = 1, light: RoomTone = 'porcelain
     ),
   );
   return `rgb(${channels.join(',')})`;
+}
+
+/** Desk-scene material colours (true colours, not recoloured by the page). */
+export const deskHexOf = (key: DeskTone): string => deskTones[key];
+
+/** The page's signal colour as shown now, read off an element through a probe (the token is a
+ *  light-dark() pair, which getPropertyValue would return unresolved). Paper pages remap
+ *  --nt-signal onto the signal orange; on the night figure bench it is the night signal. */
+export function pageSignal(at: Element): string {
+  const probe = document.createElement('span');
+  probe.style.color = 'var(--nt-signal, ' + deskTones.signalNight + ')';
+  at.appendChild(probe);
+  const c = getComputedStyle(probe).color;
+  probe.remove();
+  return c;
 }

@@ -15,6 +15,8 @@ const files = import.meta.glob<string>(
     '/src/components/presentation/{heading-reveals.ts,landing-scroll.ts,motion.ts,motion-values.ts}',
     '/src/figures/vault-cabinet.ts',
     '/src/figures/kit/stickers.ts',
+    '/src/styles/tokens/palette.ts',
+    '/src/figures/kit/ink.ts',
   ],
   { query: '?raw', import: 'default', eager: true },
 );

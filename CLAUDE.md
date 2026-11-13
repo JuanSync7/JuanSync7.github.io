@@ -121,10 +121,14 @@ sheet is evidence to review, not an automatic visual pass. Do not loosen the
 generic figure thresholds. Record failures with their public seed or isolated
 plan salt and add a regression before calling them fixed.
 
-## Home stickers and LEGO scenes
+## Home stickers, LEGO city and desk scene
 
-The 13 November 2026 request explicitly authorizes the hand-drawn die-cut stickers
-(`figures/kit/stickers.ts`, `ui/Sticker.astro`, tokens `--pp-sticker-*`) and the two
-three.js scenes `lego-city` and `system-platform` (kits `lego.ts`, `platform.ts`). They stay
-within the night palette: the page filter turns the signal into signal orange. Stickers are
-static art, so they use classes `i`, `f`, `g`, `a` and no colour literals.
+The 13 November 2026 requests explicitly authorize the hand-drawn die-cut stickers
+(`figures/kit/stickers.ts`, `ui/Sticker.astro`, tokens `--pp-sticker-*`), the `lego-city` scene
+(kits `legocity.ts`, `legobuildings.ts`, `legoparts.ts`, `lego.ts`) and the realistic `dev-desk`
+scene (kits `desk.ts`, `deskprops.ts`, `keyboard.ts`, `gamingpc.ts`, `chair.ts`, `rack.ts`,
+`screens.ts`, `studio.ts`). The LEGO city stays in the night palette and is recoloured by the page
+filter; it is designed as a voxel model but only its bricks are ever drawn. `dev-desk` is exempt
+from the page filter (`figure-canvas.css`) and takes true material colours from `deskTones` in
+`palette.ts` (cool neutrals inside the audit's band), its one accent from `--nt-signal` at run time;
+it passes the generic audit unchanged. Stickers are static art with classes `i`, `f`, `g`, `a`, `k`.

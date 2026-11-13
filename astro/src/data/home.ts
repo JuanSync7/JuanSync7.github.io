@@ -141,12 +141,11 @@ export const EXPERIENCE_TILES = [
 export const EXPERIENCE_CTA = { label: 'Read the full story', href: '/about/' } as const;
 
 export const OFF_HOURS = {
-  label: '// low_power_mode',
+  title: 'Hobbies',
   items: ['ultimate frisbee', 'badminton', 'swimming', 'piano', 'travelling'],
 } as const;
 
 export const CONTACT_SECTION = {
-  label: '// contact.sh',
   title: 'Let’s build',
   accent: 'something.',
   body: 'Happy to talk agentic systems, LLM platforms, or getting AI past an IT security review.',
