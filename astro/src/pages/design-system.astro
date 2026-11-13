@@ -57,8 +57,9 @@ const sizes = tokens('typography').filter((t) => t.name.startsWith('--nt-fs'));
 const sections = [ ['overview', 'Overview'], ['foundations', 'Foundations'], ['type', 'Typography'], ['layout', 'Layout & motion'], ['patterns', 'Page patterns'], ['paper', 'Paper system'], ['components', 'Components'], ['legacy', 'Legacy library'] ];
 const paperRaw = tokens('paper');
 const paperColours = ['ground', 'ink-strong', 'ink', 'ink-muted', 'rule', 'outline', 'arrow', 'signal', 'signal-shadow', 'on-signal', 'sheet', 'strip'].map((n) => {
-  const all = paperRaw.filter((t) => t.name === `--pp-${n}`);
-  return { name: `--pp-${n}`, light: all[0]?.value ?? '', dark: all[1]?.value ?? all[0]?.value ?? '' };
+  const value = paperRaw.find((t) => t.name === `--pp-${n}`)?.value ?? '';
+  const pair = value.match(/^light-dark\(\s*([^,]+?)\s*,\s*([^)]+?)\s*\)$/);
+  return { name: `--pp-${n}`, light: pair?.[1] ?? value, dark: pair?.[2] ?? value };
 });
 const paperType = paperRaw.filter((t) => /^--pp-(fs|w|lh|tracking)-/.test(t.name));
 const paperSpace = paperRaw.filter((t) => /^--pp-(radius|shadow-step|dur|measure|pad)/.test(t.name));

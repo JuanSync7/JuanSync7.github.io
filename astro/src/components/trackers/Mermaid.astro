@@ -6,17 +6,28 @@
    paper column takes the paper's colours on a night page. */
 ---
 <script>
-  import mermaid from 'mermaid';
 
+  // Colour tokens may be light-dark() pairs, which a custom property keeps unresolved; reading
+  // them through a probe's `color` gives the rgb the page is actually showing.
   const readTokens = (at: Element) => {
     const s = getComputedStyle(at);
-    const g = (n: string) => s.getPropertyValue(n).trim();
-    return { bg: g('--bg'), panel: g('--panel'), line: g('--line'), txt: g('--txt'), muted: g('--muted'), teal: g('--teal'), mono: g('--mono') };
+    const probe = document.createElement('span');
+    at.appendChild(probe);
+    const colour = (n: string) => {
+      probe.style.color = `var(${n})`;
+      return getComputedStyle(probe).color;
+    };
+    const g = (n: string) => (n === '--mono' ? s.getPropertyValue(n).trim() : colour(n));
+    const out = { bg: g('--bg'), panel: g('--panel'), line: g('--line'), txt: g('--txt'), muted: g('--muted'), teal: g('--teal'), mono: g('--mono') };
+    probe.remove();
+    return out;
   };
 
-  const render = () => {
+  // Mermaid is 600 KB: load it only on a page that has a diagram.
+  const render = async () => {
     const nodes = Array.from(document.querySelectorAll<HTMLElement>('pre.mermaid'));
     if (!nodes.length) return;
+    const { default: mermaid } = await import('mermaid');
     const t = readTokens(nodes[0]);
     for (const n of nodes) {
       if (!n.dataset.src) n.dataset.src = (n.textContent || '').trim();
@@ -45,6 +56,6 @@
     mermaid.run({ nodes });
   };
 
-  render();
-  new MutationObserver(render).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  void render();
+  new MutationObserver(() => void render()).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 </script>
