@@ -87,7 +87,7 @@
 }
 
 .anatomy-parts .is-on .anatomy-index {
-  color: var(--nt-signal);
+  color: var(--nt-signal-text);
 }
 
 .anatomy-name {

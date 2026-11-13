@@ -3,7 +3,7 @@
 
 /* category tiers (quiet labels; teal only for the "open" tier) */
 .cat.proprietary{color:var(--muted)}
-.cat.open{color:var(--teal)}
+.cat.open{color: var(--teal-text, var(--teal))}
 .cat.small{color:var(--muted)}
 .cat.agentic{color:var(--muted)}
 .cat.encoder{color:var(--muted)}

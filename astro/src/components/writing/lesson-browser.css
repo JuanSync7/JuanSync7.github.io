@@ -1,16 +1,16 @@
 .lesson-browser { display: flex; flex-direction: column; gap: var(--hf-space-10); }
 .lesson-browser [hidden] { display: none; }
 .lesson-back, .lesson-label, .lesson-meta, .lesson-entry-tags, .lesson-result { font-family: var(--nt-mono); font-size: var(--nt-fs-meta); }
-.lesson-back, .lesson-label { color: var(--nt-signal); }
+.lesson-back, .lesson-label { color: var(--nt-signal-text); }
 .lesson-head { display: grid; gap: var(--hf-space-4); max-width: var(--nt-measure); }
 .lesson-head p, .lesson-tag-picker > p, .lesson-group > header p { color: var(--nt-ink-muted); }
 .lesson-controls { padding-block: var(--hf-space-6); border-block: 1px solid var(--nt-rule); }
 .lesson-selects { display: flex; align-items: end; flex-wrap: wrap; gap: var(--hf-space-4); }
 .lesson-selects label, .lesson-tag-search { display: grid; gap: var(--hf-space-2); font-size: var(--nt-fs-small); }
 .lesson-selects select, .lesson-tag-search input, .lesson-selects button { color: var(--nt-ink); background: var(--nt-ground); border: 1px solid var(--nt-rule); padding: var(--hf-space-3); border-radius: 0; font: inherit; }
-.lesson-selects button { cursor: pointer; color: var(--nt-signal); }
+.lesson-selects button { cursor: pointer; color: var(--nt-signal-text); }
 .lesson-tag-picker { margin-top: var(--hf-space-6); }
-.lesson-browser summary { cursor: pointer; color: var(--nt-signal); }
+.lesson-browser summary { cursor: pointer; color: var(--nt-signal-text); }
 .lesson-browser :is(select, input, button, summary):focus-visible { outline: 2px solid var(--nt-signal); outline-offset: var(--hf-space-1); }
 .lesson-tag-picker > p { margin-block: var(--hf-space-3); font-size: var(--nt-fs-small); }
 .lesson-tag-search { max-width: var(--nt-measure); margin-block: var(--hf-space-4); }

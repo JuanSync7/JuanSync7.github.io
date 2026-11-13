@@ -3,5 +3,5 @@
 
 /* engine tiers (quiet labels; teal only for the "local" tier) */
 .cat.server{color:var(--muted)}
-.cat.local{color:var(--teal)}
+.cat.local{color: var(--teal-text, var(--teal))}
 .cat.legacy{color:var(--muted);text-decoration:line-through}
