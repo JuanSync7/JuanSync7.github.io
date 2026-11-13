@@ -15,8 +15,12 @@ const IMPORT = /(?:import|export)\s[^'"`]*?from\s*['"]([^'"]+)['"]|import\(\s*['
 const GLOB = /import\.meta\.glob(?:<[^>]*>)?\(\s*(\[[\s\S]*?\]|['"][^'"]+['"])/g;
 
 function resolveSpec(from, spec) {
-  if (!spec.startsWith('.') && !spec.startsWith('/src')) return null;
-  const base = spec.startsWith('/src') ? join(ROOT, spec) : resolve(dirname(from), spec);
+  if (!spec.startsWith('.') && !spec.startsWith('/src') && !spec.startsWith('@/')) return null;
+  const base = spec.startsWith('@/')
+    ? join(SRC, spec.slice(2))
+    : spec.startsWith('/src')
+      ? join(ROOT, spec)
+      : resolve(dirname(from), spec);
   for (const e of EXT) if (existsSync(base + e) && statSync(base + e).isFile()) return base + e;
   return null;
 }
@@ -27,7 +31,9 @@ function globFiles(from, pattern) {
 }
 const all = walk(SRC);
 const seen = new Set();
-const queue = all.filter((f) => f.startsWith(join(SRC, 'pages')));
+// Pages, and the content collections the pages load through astro:content (an .mdx imports
+// components of its own).
+const queue = all.filter((f) => f.startsWith(join(SRC, 'pages')) || f.startsWith(join(SRC, 'content')));
 while (queue.length) {
   const f = queue.pop();
   if (!f || seen.has(f)) continue;
@@ -40,8 +46,6 @@ while (queue.length) {
   }
   for (const m of text.matchAll(GLOB)) for (const p of m[1].match(/['"]([^'"]+)['"]/g) ?? []) queue.push(...globFiles(f, p.slice(1, -1)));
 }
-// Content collections are loaded by the pages through astro:content.
-for (const f of all) if (f.startsWith(join(SRC, 'content'))) seen.add(f);
 const unreached = all
   .filter((f) => /^src\/(components|styles|layouts|hooks)\//.test(relative(ROOT, f)) && !seen.has(f))
   .map((f) => relative(ROOT, f))
