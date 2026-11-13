@@ -20,6 +20,20 @@ function bar(ctx: Ctx, x: number, y: number, w: number, h: number, colour: strin
 
 const REPLY = [0.92, 0.84, 0.88, 0.6, 0.78];
 
+/** The assistant's mark: a small eight-point burst. */
+function mark(ctx: Ctx, x: number, y: number, colour: string): void {
+  ctx.strokeStyle = colour;
+  ctx.lineWidth = 3;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  for (let i = 0; i < 4; i++) {
+    const a = (i * Math.PI) / 4;
+    ctx.moveTo(x - Math.cos(a) * 7, y - Math.sin(a) * 7);
+    ctx.lineTo(x + Math.cos(a) * 7, y + Math.sin(a) * 7);
+  }
+  ctx.stroke();
+}
+
 export function drawChat(ctx: Ctx, w: number, h: number, u: number, signal: string): void {
   const ink = deskHexOf('chatInk');
   const soft = deskHexOf('chatInkSoft');
@@ -30,6 +44,9 @@ export function drawChat(ctx: Ctx, w: number, h: number, u: number, signal: stri
   ctx.fillRect(0, 0, side, h);
   bar(ctx, 14, 16, side * 0.5, 8, ink);
   for (let i = 0; i < 7; i++) bar(ctx, 14, 44 + i * 22, side * (0.45 + ((i * 37) % 30) / 100), 6, soft);
+  // The open chat, marked in the signal.
+  ctx.fillStyle = signal;
+  ctx.fillRect(0, 38, 4, 18);
   const x0 = side + w * 0.08;
   const col = w - side - w * 0.16;
   // History: an earlier question and answer, dimmed.
@@ -42,6 +59,11 @@ export function drawChat(ctx: Ctx, w: number, h: number, u: number, signal: stri
   ctx.beginPath();
   ctx.roundRect(x0, cy, col, 38, 12);
   ctx.stroke();
+  // The send button.
+  ctx.fillStyle = signal;
+  ctx.beginPath();
+  ctx.arc(x0 + col - 19, cy + 19, 11, 0, Math.PI * 2);
+  ctx.fill();
   const typed = clamp((u - 0.8) / 2.2);
   const sent = u >= 3.2;
   const promptW = col * 0.62 * typed;
@@ -56,14 +78,15 @@ export function drawChat(ctx: Ctx, w: number, h: number, u: number, signal: stri
     bar(ctx, x0 + col * 0.38, by, col * 0.62, 24, deskHexOf('chatSide'));
     bar(ctx, x0 + col * 0.38 + 12, by + 8, col * 0.62 - 24, 8, ink);
   }
-  // The reply, streaming line by line.
+  // The reply, streaming line by line, beside the assistant's mark.
   const stream = clamp((u - 5.5) / 3.5) * REPLY.length;
+  if (u >= 3.6) mark(ctx, x0 - 16, 140, signal);
   for (let i = 0; i < REPLY.length; i++) {
     const f = clamp(stream - i);
     if (f <= 0) break;
     const lw = col * (REPLY[i] ?? 0.8) * f;
-    const y = 136 + i * 16;
-    bar(ctx, x0, y, lw, 8, ink);
+    const y = 134 + i * 19;
+    bar(ctx, x0, y, lw, 11, ink);
     if (f < 1 && u < 9.2) bar(ctx, x0 + lw + 3, y - 2, 6, 12, signal);
   }
   const fade = clamp((u - 11) / 1);
@@ -86,10 +109,13 @@ export function drawCode(ctx: Ctx, w: number, h: number, u: number, signal: stri
   ctx.fillRect(0, 0, w * 0.14, h);
   ctx.fillRect(0, 0, w, 22);
   bar(ctx, w * 0.2, 8, w * 0.22, 6, deskHexOf('codeInkSoft'));
+  // The open file's tab, underlined in the signal.
+  ctx.fillStyle = signal;
+  ctx.fillRect(w * 0.17, 19, w * 0.28, 3);
   const ink = deskHexOf('codeInk');
   const soft = deskHexOf('codeInkSoft');
-  const line = 22;
-  const pre = 6;
+  const line = 24;
+  const pre = 3;
   const arrived = u < 7 ? 0 : Math.min(CODE.length, Math.floor(((u - 7) / 3.5) * CODE.length) + 1);
   const total = pre + arrived;
   const room = Math.floor((h - 40) / line);
@@ -101,8 +127,10 @@ export function drawCode(ctx: Ctx, w: number, h: number, u: number, signal: stri
     const i = fresh ? n - pre : n + 4;
     const indent = (CODE[i % CODE.length] ?? 0) * w * 0.07;
     const len = (LEN[i % LEN.length] ?? 0.5) * w * 0.7;
-    bar(ctx, w * 0.2 + indent, y, len * 0.3, 7, fresh ? ink : soft);
-    bar(ctx, w * 0.2 + indent + len * 0.34, y, len * 0.66, 7, fresh ? soft : deskHexOf('codeGutter'));
+    // Keywords (the first word of an outer line) in the signal, as an editor's theme would.
+    const keyword = fresh && (CODE[i % CODE.length] ?? 0) <= 1;
+    bar(ctx, w * 0.2 + indent, y, len * 0.3, 10, keyword ? signal : fresh ? ink : soft);
+    bar(ctx, w * 0.2 + indent + len * 0.34, y, len * 0.66, 10, fresh ? soft : deskHexOf('codeGutter'));
     if (fresh && n === total - 1 && u < 10.8) bar(ctx, w * 0.22 + indent + len, y - 3, 4, 13, signal);
   }
 }
