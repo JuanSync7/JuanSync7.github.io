@@ -24,6 +24,10 @@
   stroke-linejoin: round;
 }
 
+.sticker .k {
+  fill: var(--pp-sticker-ink);
+}
+
 .sticker .f {
   fill: var(--pp-sticker-fill);
 }
