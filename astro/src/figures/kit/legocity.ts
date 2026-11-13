@@ -1,9 +1,11 @@
 import type { NightKey } from '../../styles/tokens/palette';
 import type { Rng } from './rng';
+import { architecture, type Edit, type Voxels } from './legobuildings';
 
-/** The LEGO city is designed as an ordinary isometric city first (streets, blocks, a park, a
- *  plaza, stepped towers with window rows, apartment slabs, houses with roofs, trees) as a
- *  field of voxels, and only then packed into bricks: `legoCity` returns the bricks. */
+/** The LEGO city is designed as an ordinary isometric city first, a field of voxels (streets,
+ *  blocks, a church, a stadium, a domed museum, towers, houses, a factory, lamps, benches, cars),
+ *  and only then packed into bricks: `legoCity` returns the voxels (for the smooth model) and
+ *  the bricks (for the LEGO) of the same city. */
 
 export interface Brick {
   x: number;
@@ -14,101 +16,26 @@ export interface Brick {
   tone: NightKey;
   /** When it clicks on during the build, 0..1; the teardown runs the same order backwards. */
   order: number;
+  /** Stud cells (offsets inside the brick) with nothing above them. */
+  studs: [number, number][];
+}
+export interface Voxel {
+  x: number;
+  z: number;
+  layer: number;
+  tone: NightKey;
+  /** Position across the plate, 0 at the front corner to 1 at the back. */
+  wave: number;
+}
+export interface City {
+  bricks: Brick[];
+  voxels: Voxel[];
+  layers: number;
 }
 
-export const GRID = 22;
-const PITCH = 7;
-type Voxels = Map<string, NightKey>;
+export const GRID = 44;
+const PITCH = 14;
 const key = (l: number, x: number, z: number): string => `${l}|${x}|${z}`;
-
-interface Edit {
-  vox: Voxels;
-  rng: Rng;
-}
-const put = (e: Edit, l: number, x: number, z: number, tone: NightKey): void => void e.vox.set(key(l, x, z), tone);
-
-/** A hollow storey ring (and a full cap on the last) with a window pattern on the walls. */
-function tower(
-  e: Edit,
-  x0: number,
-  z0: number,
-  w: number,
-  d: number,
-  from: number,
-  to: number,
-  tone: NightKey,
-  glass: NightKey,
-): void {
-  for (let l = from; l <= to; l++) {
-    for (let x = x0; x < x0 + w; x++) {
-      for (let z = z0; z < z0 + d; z++) {
-        const wall = x === x0 || x === x0 + w - 1 || z === z0 || z === z0 + d - 1;
-        const window = l > from && l < to && (l - from) % 2 === 1 && (x + z) % 2 === 0 && !(x === x0 && z === z0);
-        if (l === to || wall) put(e, l, x, z, window ? glass : tone);
-      }
-    }
-  }
-}
-
-function tree(e: Edit, x: number, z: number): void {
-  put(e, 1, x, z, 'line4');
-  put(e, 2, x, z, 'line4');
-  for (let dx = -1; dx <= 1; dx++) for (let dz = -1; dz <= 1; dz++) put(e, 3, x + dx, z + dz, 'inkSoft');
-  put(e, 4, x, z, 'inkSoft');
-}
-
-function house(e: Edit, x0: number, z0: number, tone: NightKey, roof: NightKey): void {
-  tower(e, x0, z0, 3, 3, 1, 3, tone, 'line4');
-  for (let x = x0; x < x0 + 3; x++) for (let z = z0 + 1; z < z0 + 2; z++) put(e, 4, x, z, roof);
-  for (let x = x0; x < x0 + 3; x++) for (let z = z0; z < z0 + 3; z += 2) put(e, 4, x, z, roof);
-  put(e, 5, x0 + 1, z0 + 1, roof);
-}
-
-type Kind = 'skyscraper' | 'slab' | 'park' | 'houses' | 'plaza' | 'twin';
-const PLAN: Kind[][] = [
-  ['twin', 'houses', 'slab'],
-  ['park', 'skyscraper', 'plaza'],
-  ['slab', 'houses', 'twin'],
-];
-
-function block(e: Edit, kind: Kind, x0: number, z0: number): void {
-  const r = e.rng;
-  if (kind === 'skyscraper') {
-    tower(e, x0, z0, 6, 6, 1, 8, 'ink2', 'line4');
-    tower(e, x0 + 1, z0 + 1, 4, 4, 9, 15, 'ink2', 'line4');
-    tower(e, x0 + 2, z0 + 2, 2, 2, 16, 20, 'inkSoft', 'line4');
-    for (let l = 21; l <= 24; l++) put(e, l, x0 + 2, z0 + 2, l === 24 ? 'signal' : 'inkMuted');
-  } else if (kind === 'twin') {
-    tower(e, x0, z0, 3, 3, 1, 9 + Math.floor(r() * 3), 'inkSoft', 'line4');
-    tower(e, x0 + 3, z0 + 3, 3, 3, 1, 6 + Math.floor(r() * 3), 'ink2', 'line4');
-    for (let x = x0; x < x0 + 6; x++)
-      for (let z = z0; z < z0 + 6; z++) if (!e.vox.has(key(1, x, z))) put(e, 1, x, z, 'inkMuted');
-    put(e, 11, x0 + 1, z0 + 1, 'signal');
-  } else if (kind === 'slab') {
-    tower(e, x0, z0 + 1, 6, 3, 1, 5, 'ink2', 'line4');
-    tower(e, x0 + 3, z0 + 1, 3, 3, 6, 7, 'inkSoft', 'line4');
-    put(e, 8, x0 + 4, z0 + 2, 'signal');
-    for (let x = x0; x < x0 + 6; x++) put(e, 1, x, z0 + 5, 'inkMuted');
-  } else if (kind === 'houses') {
-    house(e, x0, z0, 'inkSoft', 'signal');
-    house(e, x0 + 3, z0 + 3, 'ink2', 'line4');
-    tree(e, x0 + 4, z0 + 1);
-  } else if (kind === 'park') {
-    for (let x = x0; x < x0 + 6; x++) for (let z = z0; z < z0 + 6; z++) put(e, 1, x, z, 'inkMuted');
-    tree(e, x0 + 1, z0 + 1);
-    tree(e, x0 + 4, z0 + 2);
-    tree(e, x0 + 2, z0 + 4);
-    for (let x = x0 + 4; x < x0 + 6; x++) put(e, 1, x, z0 + 5, 'line4');
-  } else {
-    for (let x = x0; x < x0 + 6; x++)
-      for (let z = z0; z < z0 + 6; z++) put(e, 1, x, z, (x + z) % 2 ? 'inkSoft' : 'ink2');
-    for (let dx = 1; dx <= 4; dx++)
-      for (let dz = 1; dz <= 4; dz++)
-        if (dx === 1 || dx === 4 || dz === 1 || dz === 4) put(e, 2, x0 + dx, z0 + dz, 'inkMuted');
-    put(e, 3, x0 + 2, z0 + 2, 'signal');
-    put(e, 3, x0 + 3, z0 + 3, 'signal');
-  }
-}
 
 /** Packs each layer's voxels into bricks, largest first, one tone per brick. */
 function pack(vox: Voxels): Brick[] {
@@ -135,38 +62,48 @@ function pack(vox: Voxels): Brick[] {
       let ok = true;
       for (let i = 0; i < w && ok; i++) for (let j = 0; j < d && ok; j++) ok = left.get(key(l, x + i, z + j)) === tone;
       if (!ok) continue;
-      for (let i = 0; i < w; i++) for (let j = 0; j < d; j++) left.delete(key(l, x + i, z + j));
-      out.push({ x, z, w, d, layer: l, tone, order: 0 });
+      const studs: [number, number][] = [];
+      for (let i = 0; i < w; i++) {
+        for (let j = 0; j < d; j++) {
+          left.delete(key(l, x + i, z + j));
+          if (!vox.has(key(l + 1, x + i, z + j))) studs.push([i, j]);
+        }
+      }
+      out.push({ x, z, w, d, layer: l, tone, order: 0, studs });
       break;
     }
   }
   return out;
 }
 
-export function legoCity(rng: Rng): Brick[] {
+export function legoCity(rng: Rng): City {
   const e: Edit = { vox: new Map(), rng };
-  // The ground: streets in the darkest grey with a pale lane mark, blocks on light plates.
+  // The ground: streets two studs wide in the darkest grey with a pale lane mark, blocks on
+  // a mid plate edged by a pale pavement.
   for (let x = 0; x < GRID; x++) {
     for (let z = 0; z < GRID; z++) {
-      const road = x % PITCH === 0 || z % PITCH === 0;
+      const rx = x % PITCH;
+      const rz = z % PITCH;
+      const road = rx < 2 || rz < 2 || x >= GRID - 2 || z >= GRID - 2;
+      const kerb = !road && (rx === 2 || rx === PITCH - 1 || rz === 2 || rz === PITCH - 1);
       const lane =
-        road &&
-        ((x % PITCH === 0 && z % 2 === 0 && z % PITCH !== 0) || (z % PITCH === 0 && x % 2 === 0 && x % PITCH !== 0));
-      put(e, 0, x, z, lane ? 'inkFaint' : road ? 'line3' : 'inkMuted');
+        road && ((rx < 2 && rx === 0 && z % 4 < 2 && rz >= 2) || (rz < 2 && rz === 0 && x % 4 < 2 && rx >= 2));
+      e.vox.set(key(0, x, z), lane ? 'inkFaint' : road ? 'line3' : kerb ? 'inkSoft' : 'inkMuted');
     }
   }
-  PLAN.forEach((row, i) => row.forEach((kind, j) => block(e, kind, 1 + i * PITCH, 1 + j * PITCH)));
-  // Shift to the plate's centre.
-  const shifted = new Map<string, NightKey>();
-  e.vox.forEach((t, k) => shifted.set(k, t));
-  const bricks = pack(shifted).map((b) => ({ ...b, x: b.x - GRID / 2, z: b.z - GRID / 2 }));
-  const maxLayer = Math.max(...bricks.map((b) => b.layer));
+  architecture(e, PITCH, GRID);
+  const bricks = pack(e.vox);
+  const layers = Math.max(...bricks.map((b) => b.layer)) + 1;
   for (const b of bricks) {
-    const wave = (b.x + b.z + GRID) / (2 * GRID);
+    const wave = (b.x + b.z) / (2 * GRID);
     b.order = Math.min(
       1,
-      (b.layer === 0 ? 0 : 0.16) + (1 - wave) * 0.34 * (b.layer === 0 ? 0.4 : 1) + (b.layer / (maxLayer + 1)) * 0.5,
+      (b.layer === 0 ? 0 : 0.12) + (1 - wave) * 0.3 * (b.layer === 0 ? 0.4 : 1) + (b.layer / layers) * 0.58,
     );
   }
-  return bricks;
+  const voxels: Voxel[] = [...e.vox].map(([k, tone]) => {
+    const [layer = 0, x = 0, z = 0] = k.split('|').map(Number);
+    return { x, z, layer, tone, wave: (x + z) / (2 * GRID) };
+  });
+  return { bricks, voxels, layers };
 }

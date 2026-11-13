@@ -2,85 +2,137 @@ import {
   BoxGeometry,
   Color,
   CylinderGeometry,
+  Group,
   InstancedMesh,
   Matrix4,
   MeshLambertMaterial,
   Quaternion,
   Vector3,
-  type Scene,
 } from 'three';
 import { hexOf } from './ink';
-
-/** A LEGO brick: its footprint in studs (w by d), its layer, and the tone it is moulded in.
- *  `order` is when it clicks on during the build, 0..1; the teardown runs the same order backwards. */
-import type { Brick } from './legocity';
+import { GRID, type City } from './legocity';
 
 export const BRICK_H = 0.62;
 const STUD_R = 0.27;
 const STUD_H = 0.16;
+const GAP = 0.965;
 
+/** What the city shows at one moment. `model` 0..1 raises the smooth isometric model layer by
+ *  layer; `swap` 0..1 turns it into LEGO in a wave across the plate; `teardown` 1..0 lifts the
+ *  bricks away in the build order (1 = standing). */
+export interface CityState {
+  model: number;
+  swap: number;
+  teardown: number;
+}
 export interface LegoSet {
-  bricks: Brick[];
-  /** Position every brick for a build progress 0..1 (0 empty plate, 1 complete). */
-  set(progress: number): void;
+  show(s: CityState): void;
 }
 
 const tmp = new Matrix4();
 const pos = new Vector3();
 const scl = new Vector3();
 const quat = new Quaternion();
+const ease = (x: number): number => {
+  const c = Math.min(1, Math.max(0, x));
+  return c * c * (3 - 2 * c);
+};
 
-/** Draws the bricks as two instanced meshes, bodies and studs, so a few hundred bricks cost
- *  two draw calls. A brick falls in from above as its turn comes and leaves the same way. */
-export function brickMeshes(scene: Scene, bricks: Brick[], onDispose: (d: () => void) => void): LegoSet {
-  const studs = bricks.reduce((n, b) => n + b.w * b.d, 0);
-  const body = new InstancedMesh(new BoxGeometry(1, 1, 1), new MeshLambertMaterial(), bricks.length);
-  const nubs = new InstancedMesh(new CylinderGeometry(STUD_R, STUD_R, STUD_H, 12), new MeshLambertMaterial(), studs);
+/** The city as three instanced meshes (smooth voxels, brick bodies, studs): a few draw calls for
+ *  tens of thousands of parts. The smooth model is the plain isometric city; the bricks are the
+ *  same city packed into LEGO. */
+export function cityMeshes(into: Group, city: City, onDispose: (d: () => void) => void): LegoSet {
+  const { bricks, voxels, layers } = city;
   const col = new Color();
+  const smooth = new InstancedMesh(new BoxGeometry(1, 1, 1), new MeshLambertMaterial(), voxels.length);
+  voxels.forEach((v, i) => smooth.setColorAt(i, col.set(hexOf(v.tone))));
+  const body = new InstancedMesh(new BoxGeometry(1, 1, 1), new MeshLambertMaterial(), bricks.length);
   const owner: number[] = [];
   const cell: [number, number][] = [];
   bricks.forEach((b, i) => {
     body.setColorAt(i, col.set(hexOf(b.tone)));
-    for (let a = 0; a < b.w; a++) {
-      for (let c = 0; c < b.d; c++) {
-        nubs.setColorAt(owner.length, col.set(hexOf(b.tone)));
-        owner.push(i);
-        cell.push([a + 0.5, c + 0.5]);
-      }
-    }
-  });
-  scene.add(body, nubs);
-  onDispose(() => {
-    body.dispose();
-    nubs.dispose();
-  });
-  const GAP = 0.965;
-  const set = (progress: number): void => {
-    const state = bricks.map((b) => {
-      // Each brick has a short window of the build to fall into place.
-      const local = Math.min(1, Math.max(0, (progress - b.order * 0.78) / 0.22));
-      return local * local * (3 - 2 * local);
+    b.studs.forEach((s) => {
+      owner.push(i);
+      cell.push(s);
     });
+  });
+  const nubs = new InstancedMesh(
+    new CylinderGeometry(STUD_R, STUD_R, STUD_H, 10),
+    new MeshLambertMaterial(),
+    owner.length,
+  );
+  owner.forEach((i, n) => nubs.setColorAt(n, col.set(hexOf(bricks[i]?.tone ?? 'ink2'))));
+  into.add(smooth, body, nubs);
+  onDispose(() => [smooth, body, nubs].forEach((m) => m.dispose()));
+  const place = (
+    m: InstancedMesh,
+    i: number,
+    x: number,
+    y: number,
+    z: number,
+    w: number,
+    h: number,
+    d: number,
+    k: number,
+  ): void => {
+    pos.set(x, y, z);
+    scl.set(w * k, h * k, d * k);
+    m.setMatrixAt(i, tmp.compose(pos, quat, scl));
+  };
+  const show = (s: CityState): void => {
+    const smoothOn = s.swap < 1 && s.teardown >= 1;
+    smooth.visible = smoothOn;
+    if (smoothOn) {
+      voxels.forEach((v, i) => {
+        const up = ease(s.model * 1.5 * layers - v.layer * 1.2 - v.wave * 0.2 * layers);
+        const gone = ease((s.swap * 1.7 - v.wave * 0.7) / 0.3);
+        const k = Math.max(0, Math.min(up, 1 - gone));
+        place(smooth, i, v.x + 0.5, (v.layer + 0.5) * BRICK_H, v.z + 0.5, 1, BRICK_H, 1, k > 0.001 ? k : 0);
+      });
+      smooth.instanceMatrix.needsUpdate = true;
+    }
+    const brickOn = s.swap > 0 || s.teardown < 1;
+    body.visible = brickOn;
+    nubs.visible = brickOn;
+    if (!brickOn) return;
+    const grow = bricks.map((b) => {
+      if (s.teardown < 1) return ease((s.teardown - b.order * 0.78) / 0.22);
+      return ease((s.swap * 1.7 - ((b.x + b.z) / (2 * GRID)) * 0.7) / 0.3);
+    });
+    const lift = (i: number): number => (s.teardown < 1 ? (1 - (grow[i] ?? 0)) * 6 : 0);
     bricks.forEach((b, i) => {
-      const s = state[i] ?? 0;
-      const y = (b.layer + 0.5) * BRICK_H + (1 - s) * 5;
-      const k = s > 0.001 ? 1 : 0;
-      pos.set(b.x + b.w / 2, y, b.z + b.d / 2);
-      scl.set(b.w * GAP * k, BRICK_H * GAP * k, b.d * GAP * k);
-      body.setMatrixAt(i, tmp.compose(pos, quat, scl));
+      const g = grow[i] ?? 0;
+      place(
+        body,
+        i,
+        b.x + b.w / 2,
+        (b.layer + 0.5) * BRICK_H + lift(i),
+        b.z + b.d / 2,
+        b.w * GAP,
+        BRICK_H * GAP,
+        b.d * GAP,
+        g > 0.001 ? 1 : 0,
+      );
     });
     owner.forEach((i, n) => {
       const b = bricks[i];
       const c = cell[n];
       if (!b || !c) return;
-      const s = state[i] ?? 0;
-      const k = s > 0.001 ? 1 : 0;
-      pos.set(b.x + c[0], (b.layer + 1) * BRICK_H + STUD_H / 2 + (1 - s) * 5, b.z + c[1]);
-      scl.set(k, k, k);
-      nubs.setMatrixAt(n, tmp.compose(pos, quat, scl));
+      const g = grow[i] ?? 0;
+      place(
+        nubs,
+        n,
+        b.x + c[0] + 0.5,
+        (b.layer + 1) * BRICK_H + STUD_H / 2 + lift(i),
+        b.z + c[1] + 0.5,
+        1,
+        1,
+        1,
+        g > 0.001 ? 1 : 0,
+      );
     });
     body.instanceMatrix.needsUpdate = true;
     nubs.instanceMatrix.needsUpdate = true;
   };
-  return { bricks, set };
+  return { show };
 }
