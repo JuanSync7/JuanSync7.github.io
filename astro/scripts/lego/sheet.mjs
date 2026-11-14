@@ -1,6 +1,7 @@
 // Draws one stage of a LEGO model as a sheet for review: `npm run lego:sheet -- <model> <stage>`
 // with stage wire (plan, four views), solid (isometric model, 360°), lego (pieces, 360°) or
-// catalogue; for a reference sketch (kit/legosketches.ts) sketch, sketch3d or compare. Needs the dev server (`--url=`, default http://127.0.0.1:4321); writes
+// catalogue; for a reference sketch (kit/legosketches.ts) sketch, sketch3d, compare or drawing (an A3
+// first-angle general-arrangement drawing). Needs the dev server (`--url=`, default http://127.0.0.1:4321); writes
 // figures-out/lego-<model>-<stage>.png. `--only=45,top` picks views, `--tile=1000` sizes them. Read the sheet before going on to the next stage.
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { chromium } from 'playwright';

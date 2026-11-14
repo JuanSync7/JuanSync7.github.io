@@ -6,6 +6,11 @@ import type { SketchPart } from './legosketch';
 export interface Sketch {
   /** The LEGO model this is drawn for (its plan is laid over the sketch in `compare`). */
   model: string;
+  /** The part's name on its drawing, and the real metres one stud stands for. */
+  title: string;
+  scale: number;
+  /** When the sketch was last drawn, for its drawing's title block. */
+  drawn: string;
   parts: SketchPart[];
 }
 
@@ -39,6 +44,9 @@ const PILLAR = (z: number): SketchPart => ({
 export const LEGO_SKETCHES: Record<string, Sketch> = {
   rearwing: {
     model: 'f1',
+    title: 'Rear wing, 2026 rules',
+    scale: 0.135,
+    drawn: '2026-11-14',
     parts: [
       // The three elements: main plane, a larger second element, a short steep third.
       {
@@ -63,14 +71,17 @@ export const LEGO_SKETCHES: Record<string, Sketch> = {
       PILLAR(6.25),
       PILLAR(7.75),
       // Context: the crash structure, its rain light, and the rear tyres.
-      { kind: 'post', x0: 34.5, x1: 39.1, y0: 1.6, y1: 2.9, z0: 6, z1: 8, tone: 'line3' },
-      { kind: 'post', x0: 39.1, x1: 39.25, y0: 2.0, y1: 2.5, z0: 6.8, z1: 7.2, tone: 'signal' },
-      { kind: 'wheel', x: 33, y: 2.7, r: 2.7, z0: 0, z1: 3, tone: 'line2' },
-      { kind: 'wheel', x: 33, y: 2.7, r: 2.7, z0: 11, z1: 14, tone: 'line2' },
+      { kind: 'post', x0: 34.5, x1: 39.1, y0: 1.6, y1: 2.9, z0: 6, z1: 8, tone: 'line3', context: true },
+      { kind: 'post', x0: 39.1, x1: 39.25, y0: 2.0, y1: 2.5, z0: 6.8, z1: 7.2, tone: 'signal', context: true },
+      { kind: 'wheel', x: 33, y: 2.7, r: 2.7, z0: 0, z1: 3, tone: 'line2', context: true },
+      { kind: 'wheel', x: 33, y: 2.7, r: 2.7, z0: 11, z1: 14, tone: 'line2', context: true },
     ],
   },
   frontwing: {
     model: 'f1',
+    title: 'Front wing, 2026 rules',
+    scale: 0.135,
+    drawn: '2026-11-14',
     parts: [
       // The main plane, low and fixed, an arrowhead in plan: its leading edge swept back toward
       // the tips, its middle (under the nose) raised a little.
@@ -89,11 +100,11 @@ export const LEGO_SKETCHES: Record<string, Sketch> = {
       { kind: 'post', x0: 0.4, x1: 4.3, y0: 0.12, y1: 0.2, z0: 0, z1: 1.3, tone: 'line4' },
       { kind: 'post', x0: 0.4, x1: 4.3, y0: 0.12, y1: 0.2, z0: 12.7, z1: 14, tone: 'line4' },
       // The nose, its two pylons down to the main plane, and the front tyres.
-      { kind: 'post', x0: 1.2, x1: 9.5, y0: 2.1, y1: 3.2, z0: 6.1, z1: 7.9, tone: 'line3' },
+      { kind: 'post', x0: 1.2, x1: 9.5, y0: 2.1, y1: 3.2, z0: 6.1, z1: 7.9, tone: 'line3', context: true },
       { kind: 'plate', outline: [[1.4, 0.9], [2.3, 0.9], [2.6, 2.2], [1.6, 2.2]], z: 6.4, t: 0.12, tone: 'line4' }, // prettier-ignore
       { kind: 'plate', outline: [[1.4, 0.9], [2.3, 0.9], [2.6, 2.2], [1.6, 2.2]], z: 7.6, t: 0.12, tone: 'line4' }, // prettier-ignore
-      { kind: 'wheel', x: 8, y: 2.7, r: 2.7, z0: 0, z1: 2, tone: 'line2' },
-      { kind: 'wheel', x: 8, y: 2.7, r: 2.7, z0: 12, z1: 14, tone: 'line2' },
+      { kind: 'wheel', x: 8, y: 2.7, r: 2.7, z0: 0, z1: 2, tone: 'line2', context: true },
+      { kind: 'wheel', x: 8, y: 2.7, r: 2.7, z0: 12, z1: 14, tone: 'line2', context: true },
     ],
   },
 };

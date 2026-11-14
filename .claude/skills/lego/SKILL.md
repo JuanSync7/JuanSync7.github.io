@@ -29,7 +29,10 @@ server up (`npx astro dev --port 4321 --host 127.0.0.1`).
    draw the real thing first, not in LEGO: an entry in `kit/legosketches.ts` (airfoils, thin
    plates, posts, pods, in the model's frame and units), its sources named in its comment.
    `npm run lego:sheet -- <sketch> sketch` (wireframe: top, side, front, iso) and `sketch3d`
-   (shaded, 360°). Work from a photograph where you have one; say when you do not.
+   (shaded, 360°). Work from a photograph where you have one; say when you do not. Then
+   `npm run lego:sheet -- <sketch> drawing`: the engineer's drawing (first-angle views,
+   dimensions, A3 sheet) to measure the plan against. The nested playbook `drawing/` holds the
+   whole of this step: research, sketch, drawing, compare, and putting a drawing on a page.
 2. **Plan as shapes.** Write the model as a list of shapes in a new kit file (`kit/lego<name>.ts`,
    letters only), registered in `kit/legomodels.ts`. Use only the shape kinds and angles the
    catalogue has (`RULES.md`, "Shapes"). Design the structure as a builder would: one root

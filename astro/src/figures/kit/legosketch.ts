@@ -23,7 +23,8 @@ import { plastic } from './legoscene';
  *  frame (studs; x along the car, y up, z across). The LEGO plan is then drawn against it
  *  (`compare`). A sketch says where its numbers come from. */
 
-export type SketchPart = { tone: NightKey } & (
+/** `context`: a neighbour drawn to place the part (a tyre, a crash structure), left off its drawing. */
+export type SketchPart = { tone: NightKey; context?: boolean } & (
   | {
       /** A wing element: an inverted, cambered section from its leading edge to its trailing
        *  edge (x, y), across z0..z1. `spoon` raises the leading edge toward the tips; `sweep`
@@ -79,7 +80,8 @@ function loft(rings: [number, number, number][][]): BufferGeometry {
   return g;
 }
 
-function geometryOf(p: SketchPart): BufferGeometry {
+/** One sketch part as a closed solid, in the model's frame. */
+export function sketchGeometry(p: SketchPart): BufferGeometry {
   switch (p.kind) {
     case 'foil': {
       const sec = section(p.t, p.camber);
@@ -113,7 +115,7 @@ function geometryOf(p: SketchPart): BufferGeometry {
 export function sketchModel(parts: SketchPart[], lines: boolean, own: (d: () => void) => void, tone?: NightKey): Group {
   const g = new Group();
   for (const p of parts) {
-    const geo = geometryOf(p);
+    const geo = sketchGeometry(p);
     own(() => geo.dispose());
     if (lines) {
       const mat = new LineBasicMaterial({ color: hexOf(tone ?? p.tone) });

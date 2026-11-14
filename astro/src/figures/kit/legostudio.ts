@@ -18,6 +18,7 @@ import { smoothModel, wireModel } from './legoplan';
 import { legoModel } from './legoscene';
 import { LEGO_MODELS } from './legomodels';
 import { build } from './legoswap';
+import { drawingSheet } from './draftsheet';
 import { sketchModel } from './legosketch';
 import { LEGO_SKETCHES } from './legosketches';
 
@@ -25,7 +26,7 @@ import { LEGO_SKETCHES } from './legosketches';
  *  wireframe plan in four views, then the smooth isometric model and the LEGO each turned
  *  through 360 degrees, and the catalogue of pieces. Every stage is read before the next. */
 
-export type Mode = 'wire' | 'solid' | 'lego' | 'catalogue' | 'sketch' | 'sketch3d' | 'compare';
+export type Mode = 'wire' | 'solid' | 'lego' | 'catalogue' | 'sketch' | 'sketch3d' | 'compare' | 'drawing';
 interface View {
   label: string;
   az: number;
@@ -109,6 +110,8 @@ function aim(box: Box3, v: View, aspect: number): OrthographicCamera {
 
 /** Renders one model's stage as a sheet of captioned tiles; returns a PNG data URL. */
 export function sheet(id: string, mode: Mode, tile = 360, only = ''): string {
+  // A sketch's drawing is a whole A3 sheet, `tile` pixels wide when that is given.
+  if (mode === 'drawing') return drawingSheet(id, tile < 1200 ? 2400 : tile);
   const sketch = LEGO_SKETCHES[id];
   const shapes = LEGO_MODELS[sketch ? sketch.model : id];
   if (!shapes) throw new Error(`lego: no model ${id}`);
