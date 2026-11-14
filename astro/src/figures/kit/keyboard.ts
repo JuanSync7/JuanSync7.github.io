@@ -1,5 +1,6 @@
 import { CylinderGeometry, Group, InstancedMesh, Matrix4, Quaternion, Vector3 } from 'three';
 import { DESK, type Kit } from './desk';
+import { allSit } from './bounds';
 
 /** A 75% mechanical keyboard: an aluminium case with a raised bezel, sculpted keycaps (square
  *  frustums, wider at the foot) laid out row by row with real key widths, darker modifiers, a
@@ -42,7 +43,7 @@ export function keyboard(k: Kit, root: Group, owned: { dispose(): void }[]): Key
   root.add(board);
   const width = 15.5 * U + 0.022;
   const depth = 6 * U + 0.03;
-  k.add(k.rounded(width, 0.022, depth, 0.006), k.mat('keyCase', 0.3, 0.8), [0, 0, 0], board);
+  const shell = k.add(k.rounded(width, 0.022, depth, 0.006), k.mat('keyCase', 0.3, 0.8), [0, 0, 0], board);
   k.add(k.rounded(width - 0.012, 0.004, depth - 0.012, 0.002), k.mat('bezel', 0.6, 0.2), [0, 0.011, 0], board);
   const cap = new CylinderGeometry(0.36, 0.5, 1, 4, 1);
   cap.rotateY(Math.PI / 4);
@@ -72,6 +73,7 @@ export function keyboard(k: Kit, root: Group, owned: { dispose(): void }[]): Key
     });
   });
   board.add(keys);
+  allSit(keys, () => shell, 'key', { axes: 'xz' });
   // A rotary knob over the top right, and a coiled cable out of the back.
   const knob = new CylinderGeometry(0.009, 0.009, 0.014, 16);
   owned.push(knob);

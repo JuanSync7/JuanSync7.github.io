@@ -46,12 +46,14 @@ export function dome(e: Edit, cx: number, cz: number, r: number, l0: number, t: 
     }
   }
 }
-export function spire(e: Edit, cx: number, cz: number, w: number, l0: number, t: T): number {
+/** A stepped spire from its corner (x0, z0), on whole studs: a brick can't sit half a stud over. */
+export function spire(e: Edit, x0: number, z0: number, w: number, l0: number, t: T): number {
   let l = l0;
   for (let s = w; s >= 1; s -= 2) {
-    fill(e, l, cx - (s - 1) / 2, cz - (s - 1) / 2, s, s, t);
+    const o = Math.floor((w - s) / 2);
+    fill(e, l, x0 + o, z0 + o, s, s, t);
+    fill(e, l + 1, x0 + o, z0 + o, s, s, t);
     l += 2;
-    fill(e, l - 1, cx - (s - 1) / 2, cz - (s - 1) / 2, s, s, t);
   }
   return l;
 }

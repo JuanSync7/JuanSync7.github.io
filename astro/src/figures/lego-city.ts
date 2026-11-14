@@ -9,43 +9,34 @@ import {
   OrthographicCamera,
 } from 'three';
 import { defineThreeFigure } from './defineThree';
-import { isometric } from './kit/camera';
+import { isometric, project } from './kit/camera';
 import { box, clear } from './kit/draw';
 import { hexOf, ink } from './kit/ink';
-import { cityMeshes, type CityState, type LegoSet } from './kit/lego';
+import { cityMeshes, FINISHED, LOOP, type LegoSet } from './kit/lego';
 import { GRID, legoCity } from './kit/legocity';
-import { smoothstep } from './kit/motion';
 
-/** One city, made twice. First it rises as a plain isometric model, street by street and floor by
- *  floor; then a wave sweeps across and every part turns into LEGO (the same city packed into
- *  studded bricks); the bricks stand a while, lift away in build order, and the loop begins
- *  again. Under reduced motion it rests as the finished LEGO city. */
+/** A LEGO city built by hand on its baseplate. The base (roads, pavements, block plates) is there
+ *  from the first frame; brick by brick, nine blocks go up course by course (a church, a stadium,
+ *  a domed museum, a skyscraper, houses, a factory, a park, a slab and twin towers) while cars
+ *  and lamps go onto the streets; the finished city stands a while, then the bricks come off
+ *  again, last on first off, and the bare base waits for the next build. Under reduced motion it
+ *  rests finished. */
 
-const LOOP = 20;
 const SCALE = 0.5;
-/** The time a still capture rests at: by then the city has turned to bricks. */
+/** The time a still capture rests at. */
 const REST = 1.2;
+/** Where the loop opens: the first courses are going on, so the build is under way when seen. */
+const OPEN = 7;
 
 interface State {
   set: LegoSet;
 }
 
-/** The loop: model rises 0-4.5, stands to 6, turns to LEGO 6-10, stands to 13, lifts away
- *  13-18, and the plate rests empty until 20. */
-function stateAt(t: number): CityState {
-  const u = t % LOOP;
-  return {
-    model: Math.min(1, u / 4.5),
-    swap: smoothstep(6, 10, u),
-    teardown: u < 13 ? 1 : 1 - smoothstep(13, 18, u),
-  };
-}
-
 export default defineThreeFigure<State>({
   id: 'lego-city',
   title: 'LEGO city',
-  alt: 'An isometric city that rises as a smooth model, turns into LEGO bricks, comes apart and is built again.',
-  idea: 'The same city in two materials: designed as a smooth isometric model, then made of studded bricks, taken apart and rebuilt: a platform is designed first and assembled from small parts.',
+  alt: 'A LEGO city built brick by brick on its baseplate, then taken apart and built again.',
+  idea: 'A platform is assembled from small standard parts on a fixed base, piece by piece, and can be taken apart and rebuilt.',
   motion: 'ambient',
   answers: false,
   group: 'feature',
@@ -60,6 +51,7 @@ export default defineThreeFigure<State>({
     world.scale.setScalar(SCALE);
     world.position.set((-GRID * SCALE) / 2, 0, (-GRID * SCALE) / 2);
     scene.add(world);
+    // The baseplate the city stands on, a stud wider than the city all round.
     const plate = new Mesh(
       new BoxGeometry(GRID + 1, 0.3, GRID + 1),
       new MeshLambertMaterial({ color: hexOf('line3') }),
@@ -72,22 +64,22 @@ export default defineThreeFigure<State>({
   update: (f) => {
     const cam = f.selectCamera('orthographic');
     if (!(cam instanceof OrthographicCamera)) return;
-    const span = 17.5;
+    const span = 15;
     const k = Math.max(1, f.w / f.h);
     cam.left = -span * k;
     cam.right = span * k;
     cam.top = (span * k * f.h) / f.w;
     cam.bottom = -cam.top;
     cam.position.set(34, 30, 34);
-    cam.lookAt(0, 5.5, 0);
+    cam.lookAt(0, 1.7, 0);
     cam.updateProjectionMatrix();
-    f.state.set.show(
-      f.still ? { model: Math.min(1, f.t / REST), swap: f.t >= REST ? 1 : 0, teardown: 1 } : stateAt(f.t),
-    );
+    f.state.set.show(f.still && f.t === REST ? FINISHED : (f.t + OPEN) % LOOP);
   },
+  // Without WebGL: the same idea in 2D, a baseplate with a few studded brick buildings on it.
   fallback: ({ ctx, w, h }) => {
     clear(ctx, w, h);
-    const cam = isometric(w * 0.5, h * 0.7, Math.min(w, h) * 0.05);
+    const s = Math.min(w, h) * 0.05;
+    const cam = isometric(w * 0.5, h * 0.62, s);
     const tones = {
       top: ink.soft(0.9),
       left: ink.line(0.5),
@@ -96,14 +88,33 @@ export default defineThreeFigure<State>({
       crease: ink.faint(0.8),
     };
     const lit = { ...tones, top: ink.signal(0.9) };
-    const city = [
-      [-4, -4, 5],
-      [0, -4, 3],
-      [-4, 0, 3],
-      [0, 0, 8],
-      [4, 0, 4],
-      [0, 4, 5],
+    box(ctx, cam, -7, -7, 7, 7, -0.3, 0, { ...tones, top: ink.faint(0.9) });
+    const brick = (x: number, z: number, bw: number, bd: number, y: number, top = tones): void => {
+      box(ctx, cam, x + 0.04, z + 0.04, x + bw - 0.04, z + bd - 0.04, y, y + 0.6, top);
+    };
+    const studs = (x: number, z: number, bw: number, bd: number, y: number, top = tones): void => {
+      for (let i = 0; i < bw; i++)
+        for (let j = 0; j < bd; j++) {
+          const [px, py] = project(cam, x + i + 0.5, y + 0.6, z + j + 0.5);
+          ctx.beginPath();
+          ctx.ellipse(px, py - s * 0.08, s * 0.3, s * 0.17, 0, 0, Math.PI * 2);
+          ctx.fillStyle = top.top;
+          ctx.fill();
+          ctx.strokeStyle = top.edge;
+          ctx.stroke();
+        }
+    };
+    const towers = [
+      [-5, -5, 2, 2, 5],
+      [-1, -5, 4, 2, 2],
+      [-5, -1, 2, 4, 3],
+      [-1, -1, 2, 2, 8],
+      [3, -1, 2, 2, 4],
+      [-1, 3, 4, 2, 3],
     ] as const;
-    city.forEach(([x, z, floors], i) => box(ctx, cam, x, z, x + 2.6, z + 2.6, 0, floors * 0.8, i === 3 ? lit : tones));
+    towers.forEach(([x, z, bw, bd, n], t) => {
+      for (let c = 0; c < n; c++) brick(x, z, bw, bd, c * 0.6, t === 3 && c === n - 1 ? lit : tones);
+      studs(x, z, bw, bd, (n - 1) * 0.6, t === 3 ? lit : tones);
+    });
   },
 });

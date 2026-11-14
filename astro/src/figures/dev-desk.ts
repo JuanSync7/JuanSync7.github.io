@@ -126,8 +126,10 @@ export default defineThreeFigure<State>({
         target.z + Math.cos(az) * Math.cos(el) * 8,
       );
       cam.lookAt(target);
-      cam.near = 0.1;
-      cam.far = 30;
+      // A tight depth range (the scene is about 3 m across, 8 m out) keeps depth precise on GPUs
+      // with a 16-bit depth buffer.
+      cam.near = 4;
+      cam.far = 13;
       cam.updateMatrixWorld();
       let x0 = Infinity;
       let x1 = -Infinity;

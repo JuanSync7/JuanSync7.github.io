@@ -1,135 +1,87 @@
-import {
-  BoxGeometry,
-  Color,
-  CylinderGeometry,
-  Group,
-  InstancedMesh,
-  Matrix4,
-  MeshLambertMaterial,
-  Quaternion,
-  Vector3,
-} from 'three';
+import { BoxGeometry, Color, CylinderGeometry, Group, InstancedMesh, Matrix4, MeshLambertMaterial } from 'three';
 import { hexOf } from './ink';
-import { GRID, type City } from './legocity';
+import type { City } from './legocity';
+
+/** The LEGO city as two instanced meshes (brick bodies and studs): a few draw calls for thousands
+ *  of parts. Nothing but bricks is ever drawn. The base (layer 0: road tiles, pavements, block
+ *  plates) is always there; each brick above it drops from a hand's height and clicks onto the
+ *  studs below in its turn; the teardown lifts the bricks off again, last on first off, and the
+ *  base stays where it is. */
 
 export const BRICK_H = 0.62;
+/** A plate is a third of a brick: the base is plates and tiles. */
+export const PLATE_H = BRICK_H / 3;
 const STUD_R = 0.27;
 const STUD_H = 0.16;
 const GAP = 0.965;
+/** How far above its place a brick appears, and how long it takes to click on, in seconds. */
+const DROP = 2.6;
 
-/** What the city shows at one moment. `model` 0..1 raises the smooth isometric model layer by
- *  layer; `swap` 0..1 turns it into LEGO in a wave across the plate; `teardown` 1..0 lifts the
- *  bricks away in the build order (1 = standing). */
-export interface CityState {
-  model: number;
-  swap: number;
-  teardown: number;
-}
+/** Seconds: building, the finished city standing, taking it apart, the bare base. */
+export const TIMELINE = { build: 54, hold: 6, tear: 14, rest: 3, press: 0.55, lift: 0.7 };
+export const LOOP = TIMELINE.build + TIMELINE.hold + TIMELINE.tear + TIMELINE.rest;
+/** A time in the loop at which the city stands finished. */
+export const FINISHED = TIMELINE.build + TIMELINE.hold / 2;
+
 export interface LegoSet {
-  show(s: CityState): void;
+  /** Shows the city at `u` seconds into the loop. */
+  show(u: number): void;
 }
 
-const tmp = new Matrix4();
-const pos = new Vector3();
-const scl = new Vector3();
-const quat = new Quaternion();
-const ease = (x: number): number => {
-  const c = Math.min(1, Math.max(0, x));
-  return c * c * (3 - 2 * c);
-};
+const clamp = (x: number): number => Math.min(1, Math.max(0, x));
+/** Bottom and height of a course: the base is one plate, every course above it a brick. */
+const bottom = (layer: number): number => (layer === 0 ? 0 : PLATE_H + (layer - 1) * BRICK_H);
+const height = (layer: number): number => (layer === 0 ? PLATE_H : BRICK_H);
 
-/** The city as three instanced meshes (smooth voxels, brick bodies, studs): a few draw calls for
- *  tens of thousands of parts. The smooth model is the plain isometric city; the bricks are the
- *  same city packed into LEGO. */
+/** Height above its place at `u`, or null while it is not on the table. */
+function offset(order: number, u: number): number | null {
+  const { build, hold, tear, press, lift } = TIMELINE;
+  if (order === 0) return 0;
+  if (u < build + hold) {
+    const k = clamp((u - order * (build - press)) / press);
+    if (k <= 0) return null;
+    // Falls under gravity, then settles onto the studs.
+    return (1 - k * k) * DROP;
+  }
+  const k = clamp((u - build - hold - (1 - order) * (tear - lift)) / lift);
+  return k >= 1 ? null : k * k * DROP * 2.4;
+}
+
 export function cityMeshes(into: Group, city: City, onDispose: (d: () => void) => void): LegoSet {
-  const { bricks, voxels, layers } = city;
+  const { bricks } = city;
   const col = new Color();
-  const smooth = new InstancedMesh(new BoxGeometry(1, 1, 1), new MeshLambertMaterial(), voxels.length);
-  voxels.forEach((v, i) => smooth.setColorAt(i, col.set(hexOf(v.tone))));
   const body = new InstancedMesh(new BoxGeometry(1, 1, 1), new MeshLambertMaterial(), bricks.length);
-  const owner: number[] = [];
-  const cell: [number, number][] = [];
-  bricks.forEach((b, i) => {
-    body.setColorAt(i, col.set(hexOf(b.tone)));
-    b.studs.forEach((s) => {
-      owner.push(i);
-      cell.push(s);
-    });
-  });
+  const studs = bricks.flatMap((b, i) => b.studs.map((s) => ({ i, ...s })));
   const nubs = new InstancedMesh(
-    new CylinderGeometry(STUD_R, STUD_R, STUD_H, 10),
+    new CylinderGeometry(STUD_R, STUD_R, STUD_H, 12),
     new MeshLambertMaterial(),
-    owner.length,
+    studs.length,
   );
-  owner.forEach((i, n) => nubs.setColorAt(n, col.set(hexOf(bricks[i]?.tone ?? 'ink2'))));
-  into.add(smooth, body, nubs);
-  onDispose(() => [smooth, body, nubs].forEach((m) => m.dispose()));
-  const place = (
-    m: InstancedMesh,
-    i: number,
-    x: number,
-    y: number,
-    z: number,
-    w: number,
-    h: number,
-    d: number,
-    k: number,
-  ): void => {
-    pos.set(x, y, z);
-    scl.set(w * k, h * k, d * k);
-    m.setMatrixAt(i, tmp.compose(pos, quat, scl));
-  };
-  const show = (s: CityState): void => {
-    const smoothOn = s.swap < 1 && s.teardown >= 1;
-    smooth.visible = smoothOn;
-    if (smoothOn) {
-      voxels.forEach((v, i) => {
-        const up = ease(s.model * 1.5 * layers - v.layer * 1.2 - v.wave * 0.2 * layers);
-        const gone = ease((s.swap * 1.7 - v.wave * 0.7) / 0.3);
-        const k = Math.max(0, Math.min(up, 1 - gone));
-        place(smooth, i, v.x + 0.5, (v.layer + 0.5) * BRICK_H, v.z + 0.5, 1, BRICK_H, 1, k > 0.001 ? k : 0);
-      });
-      smooth.instanceMatrix.needsUpdate = true;
-    }
-    const brickOn = s.swap > 0 || s.teardown < 1;
-    body.visible = brickOn;
-    nubs.visible = brickOn;
-    if (!brickOn) return;
-    const grow = bricks.map((b) => {
-      if (s.teardown < 1) return ease((s.teardown - b.order * 0.78) / 0.22);
-      return ease((s.swap * 1.7 - ((b.x + b.z) / (2 * GRID)) * 0.7) / 0.3);
-    });
-    const lift = (i: number): number => (s.teardown < 1 ? (1 - (grow[i] ?? 0)) * 6 : 0);
+  bricks.forEach((b, i) => body.setColorAt(i, col.set(hexOf(b.tone))));
+  studs.forEach((s, n) => nubs.setColorAt(n, col.set(hexOf(bricks[s.i]?.tone ?? 'ink2'))));
+  into.add(body, nubs);
+  onDispose(() => [body, nubs].forEach((m) => m.dispose()));
+  const m = new Matrix4();
+  const hidden = new Matrix4().makeScale(0, 0, 0);
+  const lift: (number | null)[] = bricks.map(() => 0);
+  const show = (u: number): void => {
     bricks.forEach((b, i) => {
-      const g = grow[i] ?? 0;
-      place(
-        body,
-        i,
-        b.x + b.w / 2,
-        (b.layer + 0.5) * BRICK_H + lift(i),
-        b.z + b.d / 2,
-        b.w * GAP,
-        BRICK_H * GAP,
-        b.d * GAP,
-        g > 0.001 ? 1 : 0,
-      );
+      const up = offset(b.order, u);
+      lift[i] = up;
+      if (up === null) return body.setMatrixAt(i, hidden);
+      const h = height(b.layer);
+      m.makeScale(b.w * GAP, h * (b.layer === 0 ? 1 : GAP), b.d * GAP);
+      m.setPosition(b.x + b.w / 2, bottom(b.layer) + h / 2 + up, b.z + b.d / 2);
+      body.setMatrixAt(i, m);
     });
-    owner.forEach((i, n) => {
-      const b = bricks[i];
-      const c = cell[n];
-      if (!b || !c) return;
-      const g = grow[i] ?? 0;
-      place(
-        nubs,
-        n,
-        b.x + c[0] + 0.5,
-        (b.layer + 1) * BRICK_H + STUD_H / 2 + lift(i),
-        b.z + c[1] + 0.5,
-        1,
-        1,
-        1,
-        g > 0.001 ? 1 : 0,
-      );
+    studs.forEach((s, n) => {
+      const up = lift[s.i];
+      const b = bricks[s.i];
+      // A stud shows while its brick is on the table and nothing has been pressed onto it yet.
+      const covered = s.cover >= 0 && lift[s.cover] === 0;
+      if (!b || up === null || up === undefined || covered) return nubs.setMatrixAt(n, hidden);
+      m.makeTranslation(b.x + s.at[0] + 0.5, bottom(b.layer) + height(b.layer) + STUD_H / 2 + up, b.z + s.at[1] + 0.5);
+      nubs.setMatrixAt(n, m);
     });
     body.instanceMatrix.needsUpdate = true;
     nubs.instanceMatrix.needsUpdate = true;

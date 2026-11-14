@@ -16,12 +16,29 @@
   overflow: visible;
 }
 
-.sticker .i {
+.sticker .i,
+.sticker .o,
+.sticker .t,
+.sticker .h {
   fill: none;
   stroke: var(--pp-sticker-ink);
   stroke-width: var(--pp-sticker-line);
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+/* The bold outline round an object, the thin hatching in its shadows, the white gloss on it. */
+.sticker .o {
+  stroke-width: var(--pp-sticker-line-bold);
+}
+
+.sticker .t {
+  stroke-width: var(--pp-sticker-line-thin);
+}
+
+.sticker .h {
+  stroke: var(--pp-sticker-edge);
+  stroke-width: var(--pp-sticker-line);
 }
 
 .sticker .k {

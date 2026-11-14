@@ -11,6 +11,7 @@ import {
   TubeGeometry,
   Vector3,
 } from 'three';
+import { allSit, mustSit } from './bounds';
 import { deskHexOf } from './ink';
 import type { Kit } from './desk';
 
@@ -54,24 +55,36 @@ function cabinet(k: Kit, g: Group, owned: Owned): InstancedMesh {
   owned.push(leds.material as MeshBasicMaterial);
   const m = new Matrix4();
   const grey = new Color(deskHexOf('led'));
+  const units: Mesh[] = [];
   for (let u = 0; u < ROW.units; u++) {
     const y = 0.08 + u * (uH + 0.006) + uH / 2;
-    k.add(k.rounded(w - 0.07, uH - 0.006, d - 0.06, 0.005), k.mat(u % 2 ? 'unit2' : 'unit', 0.4, 0.7), [0, y, 0.01], g);
+    units.push(
+      k.add(
+        k.rounded(w - 0.07, uH - 0.006, d - 0.06, 0.005),
+        k.mat(u % 2 ? 'unit2' : 'unit', 0.4, 0.7),
+        [0, y, 0.01],
+        g,
+      ),
+    );
     for (let i = 0; i < 12; i++)
       bays.setMatrixAt(
         u * 12 + i,
         m.makeTranslation(-0.18 + (i % 6) * 0.056, y + (i < 6 ? 0.03 : -0.01), front + 0.022),
       );
+    // Three status lights at the right of the face, clear of the bays and of the face's edge.
     for (let i = 0; i < 3; i++) {
-      leds.setMatrixAt(u * 3 + i, m.makeTranslation(0.17 + i * 0.022, y + 0.04, front + 0.024));
+      leds.setMatrixAt(u * 3 + i, m.makeTranslation(0.15 + i * 0.019, y + 0.04, front + 0.024));
       leds.setColorAt(u * 3 + i, grey);
     }
   }
   bays.castShadow = true;
   g.add(bays, leds);
   const sw = h - 0.08;
-  k.add(k.rounded(w - 0.07, 0.044, d - 0.06, 0.004), k.mat('shell', 0.5, 0.3), [0, sw, 0.01], g);
-  k.add(k.rounded(w - 0.12, 0.006, 0.004, 0.002), k.accent, [0, sw - 0.016, front + 0.024], g);
+  const box = k.add(k.rounded(w - 0.07, 0.044, d - 0.06, 0.004), k.mat('shell', 0.5, 0.3), [0, sw, 0.01], g);
+  const strip = k.add(k.rounded(w - 0.12, 0.006, 0.004, 0.002), k.accent, [0, sw - 0.016, front + 0.024], g);
+  allSit(bays, (i) => units[Math.floor(i / 12)] ?? box, 'drive bay', { axes: 'xy' });
+  allSit(leds, (i) => units[Math.floor(i / 3)] ?? box, 'status light', { axes: 'xy' });
+  mustSit(strip, box, 'switch strip', { axes: 'xy' });
   return leds;
 }
 
