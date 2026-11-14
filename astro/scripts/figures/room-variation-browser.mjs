@@ -6,6 +6,7 @@ import { chromium } from 'playwright';
 import { PNG } from 'pngjs';
 import { decode, diff } from './pixels.mjs';
 import { colourMetrics, assertColour } from './room-colour-metrics.mjs';
+import { nightInk } from './night-ink.mjs';
 const url = (process.argv.find((a) => a.startsWith('--url='))?.slice(6) ?? 'http://127.0.0.1:4410').replace(/\/$/, '');
 const report = { schema: 'room-variation-browser/1', passed: false, url, rooms: [], errors: [] };
 mkdirSync('figures-out', { recursive: true });
@@ -57,10 +58,12 @@ try {
   browser = await chromium.launch();
   for (const fallback of [false, true]) {
     const renderer = fallback ? 'fallback' : 'webgl',
-      context = await browser.newContext({ viewport: { width: 1200, height: 1000 }, reducedMotion: 'reduce' }),
+      context = await browser.newContext({ viewport: { width: 1200, height: 1000 }, reducedMotion: 'reduce', colorScheme: 'dark' }),
       page = await context.newPage(),
       shots = [],
       first = new Map();
+    // Measure the rooms on the night ground, as the other room audits do (the paper stage follows the page).
+    await nightInk(page);
     await context.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.fulfill({ status: 200, body: '' }));
     if (fallback)
       await context.addInitScript(() => {
