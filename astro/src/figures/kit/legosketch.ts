@@ -26,7 +26,8 @@ import { plastic } from './legoscene';
 export type SketchPart = { tone: NightKey } & (
   | {
       /** A wing element: an inverted, cambered section from its leading edge to its trailing
-       *  edge (x, y), across z0..z1. `spoon` raises the leading edge toward the tips. */
+       *  edge (x, y), across z0..z1. `spoon` raises the leading edge toward the tips; `sweep`
+       *  moves it back (x) toward z1 (or toward z0 when negative): an arrowhead in plan. */
       kind: 'foil';
       le: [number, number];
       te: [number, number];
@@ -35,6 +36,7 @@ export type SketchPart = { tone: NightKey } & (
       t: number;
       camber: number;
       spoon?: number;
+      sweep?: number;
     }
   | { kind: 'plate'; outline: [number, number][]; z: number; t: number }
   | { kind: 'post'; x0: number; x1: number; y0: number; y1: number; z0: number; z1: number }
@@ -84,7 +86,8 @@ function geometryOf(p: SketchPart): BufferGeometry {
       const rings = Array.from({ length: 17 }, (_, k) => {
         const z = p.z0 + ((p.z1 - p.z0) * k) / 16;
         const u = (2 * (z - p.z0)) / (p.z1 - p.z0) - 1;
-        const le: [number, number] = [p.le[0], p.le[1] + (p.spoon ?? 0) * u * u];
+        const back = (p.sweep ?? 0) >= 0 ? (u + 1) / 2 : (1 - u) / 2;
+        const le: [number, number] = [p.le[0] + Math.abs(p.sweep ?? 0) * back, p.le[1] + (p.spoon ?? 0) * u * u];
         const [dx, dy] = [p.te[0] - le[0], p.te[1] - le[1]];
         return sec.map(([a, b]): [number, number, number] => [le[0] + a * dx - b * dy, le[1] + a * dy + b * dx, z]);
       });

@@ -29,11 +29,15 @@ Each rule says what it is held by. A rule held by a check is not a judgment call
   one plate thick and smooth.
 - A bracket's flange is as tall as what it holds (`flange`: studs), so the back of a sideways
   plate rests on the flange and never shows its underside.
+- Half a stud: a `jumper` (a 1 x 2 plate with one centre stud) lets a sub-assembly sit half a
+  stud over (a pose that moves it 0.5). Use it where whole studs leave a visible gap, such as
+  wing elements that must reach the endplates between two brackets.
 - A flap that should leave a slot under it hangs from a hinge on a riser, a plate above what it
   follows. A cascade hangs each element from a hinge on the one before.
 - Sub-assemblies may not overlap each other or the model: each cell is a box turned with its
   sub-assembly, tested by separating axes, faces that touch allowed; hinge partners are let off
-  at the knuckle. (Check: `clipping`, `kit/legoclash.ts`.) Do not tile over a hinge's studs where
+  at the knuckle; a bracket's flange counts as the plate it is, not its whole row. (Check:
+  `clipping`, `kit/legoclash.ts`.) Do not tile over a hinge's studs where
   the flap swings past them: the check will say so.
 
 ## Shapes

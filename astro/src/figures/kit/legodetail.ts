@@ -50,6 +50,9 @@ export function detail(p: Piece, o: BodyOpts): Part[] {
       const side = Array.from({ length: w * f }, (_, k) => new CylinderGeometry(STUD_R, STUD_R, STUD_H, SEG).rotateX(Math.PI / 2).translate((k % w) + 0.5, Math.floor(k / w) + 0.5, g - STUD_H / 2)); // prettier-ignore
       return one([box(g, 0, g, w - g, PLATE, d - g), box(g, 0, g, w - g, f, PLATE), ...side, ...studs()]);
     }
+    case 'jumper':
+      // The plate, and its one stud in the middle (always drawn: no shared stud stands there).
+      return one([box(g, 0, g, w - g, top, d - g), new CylinderGeometry(STUD_R, STUD_R, STUD_H, SEG).translate(w / 2, top + STUD_H / 2, d / 2)]); // prettier-ignore
     case 'hinge': {
       // The plate and its knuckle: fingers along the far edge, in the first half of each stud so
       // the partner's fingers (turned round) fall between them.

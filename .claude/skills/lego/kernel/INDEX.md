@@ -30,5 +30,6 @@ stud). A piece's (x, z) is its footprint's minimum corner; rolling parts use the
 | `piece(shape)` / `legoswap.ts`; `both`, `mirror` / `legomirror.ts` | The piece a part shape becomes (to hang a sub-assembly on); mirroring, sub-assemblies included. |
 | `LEGO_SKETCHES` / `legosketches.ts`; `sketchModel` / `legosketch.ts` | Reference sketches of real objects (review only): `lego:sheet -- <id> sketch \| sketch3d \| compare`. |
 | `flap`, `endplate` / `legoaero.ts`; `rearWing` / `legorearwing.ts` | Hinged flaps and thin endplates for any car; the F1's 2026 rear wing, built to the `rearwing` sketch. |
+| `jumper` (catalogue) | A 1 x 2 plate with one centre stud: what sits on it in a sub-assembly posed 0.5 over is held (`legojoint.ts`). |
 | `RIG` / `legorig.ts` | The joint rig: a bracket with a sideways tile, a hinge with a flap. `lego:sheet -- rig`. |
 | `hollow(w, d, top, gap)` / `legounder.ts` | The real underside of a brick, plate or tile (walls, roof, tubes or pins), drawn in the LEGO view (`under: true`). |

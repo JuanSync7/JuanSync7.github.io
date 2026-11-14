@@ -36,9 +36,10 @@ export type Kind =
   | 'bar' // a thin bar standing in a stud, h plates long: antennas, stalks
   | 'fin' // a thin upright fin rising toward its back end: a shark fin, a strake
   | 'bracket' // a plate w x 2 with a flange one stud tall on its front edge (local v = 0), studs out
-  | 'hinge'; // a hinge plate w x 1, its knuckle along its far edge (local v = 1): see legopose
+  | 'hinge' // a hinge plate w x 1, its knuckle along its far edge (local v = 1): see legopose
+  | 'jumper'; // a 1 x 2 plate with one stud in its centre: what sits on it moves half a stud
 
-export const KINDS: Kind[] = ['brick', 'plate', 'tile', 'grille', 'technic', 'slope45', 'slope33', 'inv45', 'cheese', 'curve2', 'curve3', 'curve4', 'wedge', 'quarter', 'round', 'roundtile', 'cone', 'dome', 'helmet', 'bar', 'fin', 'uplate', 'wheel', 'axle', 'bracket', 'hinge']; // prettier-ignore
+export const KINDS: Kind[] = ['brick', 'plate', 'tile', 'grille', 'technic', 'slope45', 'slope33', 'inv45', 'cheese', 'curve2', 'curve3', 'curve4', 'wedge', 'quarter', 'round', 'roundtile', 'cone', 'dome', 'helmet', 'bar', 'fin', 'uplate', 'wheel', 'axle', 'bracket', 'hinge', 'jumper']; // prettier-ignore
 
 export interface Piece {
   kind: Kind;
@@ -70,7 +71,8 @@ export interface Piece {
 export const PLATE = 0.4;
 export const HOLE_Y = 1.75;
 const WEDGE_TIP = 1; // as the real wing plates (41769, 41770): one stud wide at the tip
-const SMOOTH: Kind[] = ['tile', 'grille', 'cheese', 'curve2', 'curve3', 'curve4', 'dome', 'helmet', 'uplate', 'wheel', 'axle', 'quarter', 'roundtile', 'bar', 'fin']; // prettier-ignore
+// A jumper's one stud is off the grid (between its cells): it is a joint of its own (legojoint).
+const SMOOTH: Kind[] = ['jumper', 'tile', 'grille', 'cheese', 'curve2', 'curve3', 'curve4', 'dome', 'helmet', 'uplate', 'wheel', 'axle', 'quarter', 'roundtile', 'bar', 'fin']; // prettier-ignore
 /** Ramps whose top carries studs only on their first row. */
 const STUD_ROW: Kind[] = ['slope45', 'slope33'];
 

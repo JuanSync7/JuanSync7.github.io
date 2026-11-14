@@ -76,6 +76,7 @@ const SAMPLE: Record<Kind, Piece> = {
   axle: one('axle', 0, 6, 0, { cy: 1, r: 0.12 }),
   bracket: one('bracket', 2, 2, 1),
   hinge: one('hinge', 2, 1, 1),
+  jumper: one('jumper', 1, 2, 1),
 };
 
 /** A camera looking at `box` from azimuth `az` (0 = from the nose, -x) and elevation `el`. */

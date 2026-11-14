@@ -4,7 +4,7 @@
 import { inspect } from '../../src/figures/kit/legocheck.ts';
 import { LEGO_MODELS, LEGO_QUEUES } from '../../src/figures/kit/legomodels.ts';
 import { build } from '../../src/figures/kit/legoswap.ts';
-import { br, flap, hg, leaf, RIG, side } from '../../src/figures/kit/legorig.ts';
+import { br, flap, hg, jumper, leaf, RIG, side } from '../../src/figures/kit/legorig.ts';
 
 const brick = (x, y, z) => ({ kind: 'block', x, y, z, w: 2, d: 1, h: 3, tone: 'ink' });
 /** Each fixture adds one fault to a passing model and names the check that must catch it. */
@@ -30,7 +30,10 @@ const FIXTURES = [
 ];
 
 // Each joint fixture breaks the joint rig (kit/legorig.ts, which must pass as built) one way.
+const through = { kind: 'sub', id: 'through', pose: { r: [1, 0, 0, 0, 1, 0, 0, 0, 1], o: [0, 0, -0.3] }, shapes: [{ kind: 'part', part: 'tile', x: 2, y: 4, z: 0, w: 1, d: 1, h: 1, tone: 'ink' }] }; // prettier-ignore
 const JOINTS = [
+  { name: 'a tile half a stud over with no jumper', expect: 'floating', shapes: RIG.filter((s) => s !== jumper) },
+  { name: "a tile through a bracket's flange", expect: 'clipping', shapes: [...RIG, through] },
   { name: 'a tile on side studs with no bracket', expect: 'floating', shapes: [RIG[0], br, hg, side({ ...br, x: 5 }), flap(0.3, leaf)] }, // prettier-ignore
   {
     name: 'a flap turned down into the base',

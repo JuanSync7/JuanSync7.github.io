@@ -30,6 +30,7 @@ export function jointsOf(p: Piece): Joint[] {
     for (let i = 0; i < p.w; i++)
       for (let k = 0; k < flangeOf(p); k++) out.push({ kind: 'stud', at: apply(q, local(p, i + 0.5, k + 0.5, 0)), dir: out0 }); // prettier-ignore
   }
+  if (p.kind === 'jumper') out.push({ kind: 'stud', at: apply(q, local(p, p.w / 2, p.h * PLATE, p.d / 2)), dir: up });
   if (p.kind === 'hinge') {
     const axis = turned(minus(local(p, 1, 0, p.d), local(p, 0, 0, p.d)));
     out.push({ kind: 'hinge', at: apply(q, local(p, p.w / 2, KNUCKLE_Y, p.d)), dir: axis });

@@ -1,7 +1,8 @@
 import { both } from './legomirror.ts';
-import { endplate, flap } from './legoaero.ts';
+import { flap } from './legoaero.ts';
+import { onSide } from './legopose.ts';
 import { rearWing } from './legorearwing.ts';
-import type { Shape } from './legoswap.ts';
+import { piece, type Shape } from './legoswap.ts';
 
 /** A Formula 1 car as a LEGO model, designed as shapes on the stud grid (x along the car from the
  *  front wing at 0, z across it with the centre line at 7, y in plates from the ground). Every part
@@ -25,10 +26,22 @@ const FRONT = 8;
 const REAR = 33;
 const sym = (list: Shape[]): Shape[] => list.flatMap((s) => both(s, W));
 
-// Front wing: the main plane carries an endplate bracket at each tip and, behind its leading edge,
-// a riser with the hinge for two flaps, the second hung from the first.
-const FW_BRACKET: Shape = { kind: 'part', part: 'bracket', x: 0, y: 3, z: 0, w: 4, d: 2, h: 1, flange: 2, tone: 'line4' }; // prettier-ignore
-const FW_HINGE: Shape = { kind: 'part', part: 'hinge', x: 2, y: 4, z: 2, w: 4, d: 1, h: 1, dir: 'z-', tone: 'line4' };
+// Front wing: the endplate bracket stands on the footplate; the flaps' hinge on the main plane.
+const FW_BRACKET: Shape = { kind: 'part', part: 'bracket', x: 0, y: 1, z: 0, w: 4, d: 2, h: 1, flange: 2, tone: 'line4' }; // prettier-ignore
+const FW_HINGE: Shape = { kind: 'part', part: 'hinge', x: 1, y: 2, z: 1, w: 5, d: 1, h: 1, dir: 'z-', tone: 'line4' };
+/** The front endplate on its bracket: a plate and tiles, its top front corner rounded. */
+const FW_ENDPLATE: Shape = {
+  kind: 'sub',
+  id: 'front-endplate',
+  pose: onSide(piece(FW_BRACKET)),
+  shapes: [
+    { kind: 'part', part: 'plate', x: 0, y: 0, z: 0, w: 4, d: 2, h: 1, tone: 'inkSoft' },
+    { kind: 'part', part: 'quarter', x: 0, y: 1, z: 1, w: 1, d: 1, h: 1, dir: 'z+', tone: 'inkSoft' },
+    { kind: 'part', part: 'tile', x: 1, y: 1, z: 1, w: 3, d: 1, h: 1, tone: 'inkSoft' },
+    { kind: 'part', part: 'tile', x: 0, y: 1, z: 0, w: 4, d: 1, h: 1, tone: 'inkSoft' },
+  ],
+};
+
 export const F1: Shape[] = [
   // Floor: a two-plate spine between the wheels, narrower beside the rear wheels.
   { kind: 'block', x: 6, y: 1, z: 3, w: 24, d: 8, h: 2, tone: 'line3', root: true },
@@ -58,30 +71,27 @@ export const F1: Shape[] = [
   // Survival cell and engine on the floor.
   { kind: 'block', x: 9, y: 3, z: 5, w: 11, d: 4, h: 5, tone: 'inkMuted' },
   { kind: 'block', x: 20, y: 3, z: 5, w: 12, d: 4, h: 5, tone: 'inkMuted' },
-  // Front wing: a two-plate main plane, a cascade of flaps rising to the back, curved endplates.
-  { kind: 'block', x: 0, y: 1, z: 0, w: 4, d: 14, h: 2, tone: 'line4' },
+  // Front wing, to the reference sketch `frontwing` (kit/legosketches.ts): a footplate on the
+  // ground at each tip with the endplate's bracket on it; the main plane an arrowhead of two
+  // tapered plates, swept back to the tips; on its back row the hinge for the two active flaps,
+  // the second hung from the first; a pylon from the middle up to the nose.
   ...sym([
-    // The main plane's rounded leading edge, the riser, the flaps, and the endplate.
-    { kind: 'ramp', x: 0, y: 3, z: 2, profile: 'cheese', wid: 4, dir: 'x-', tone: 'line4' },
-    { kind: 'block', x: 1, y: 3, z: 2, w: 2, d: 4, h: 1, tone: 'line4' },
-    { kind: 'block', x: 1, y: 4, z: 2, w: 1, d: 4, h: 1, top: 'tiles', tone: 'line4' },
-    FW_HINGE,
-    flap('front-flap', FW_HINGE, 0.2, 4, (h) => flap('second', h, 0.3, 4)),
+    { kind: 'part', part: 'plate', x: 0, y: 0, z: 0, w: 4, d: 2, h: 1, tone: 'line4' },
     FW_BRACKET,
-    { kind: 'block', x: 0, y: 4, z: 1, w: 4, d: 1, h: 1, top: 'tiles', tone: 'line4' },
-    endplate('front-endplate', FW_BRACKET, 4, 2),
-    // A footplate under each endplate.
-    { kind: 'block', x: 0, y: 0, z: 0, w: 4, d: 1, h: 1, tone: 'line4' },
+    { kind: 'part', part: 'tile', x: 0, y: 2, z: 1, w: 1, d: 1, h: 1, tone: 'line4' },
+    FW_ENDPLATE,
+    { kind: 'wedge', x: 0, y: 1, z: 2, len: 5, wid: 2, dir: 'z-', hand: 'L', tone: 'line4' },
+    FW_HINGE,
+    flap('front-flap', FW_HINGE, 0.18, 5, (h) => flap('second', h, 0.18, 5, undefined, 1)),
   ]),
-  { kind: 'block', x: 3, y: 3, z: 6, w: 1, d: 2, h: 5, tone: 'line4' },
-  { kind: 'ramp', x: 0, y: 3, z: 6, profile: 'cheese', wid: 2, dir: 'x-', tone: 'line4' },
-  { kind: 'block', x: 1, y: 3, z: 6, w: 2, d: 2, h: 1, top: 'tiles', tone: 'line4' },
+  { kind: 'part', part: 'plate', x: 1, y: 2, z: 6, w: 1, d: 2, h: 1, tone: 'line4' },
+  { kind: 'block', x: 1, y: 3, z: 6, w: 1, d: 2, h: 5, tone: 'line4' },
   // Nose: a plate over the pillars and the front axle, a chamfered underside, a rounded tip.
-  { kind: 'block', x: 2, y: 8, z: 6, w: 7, d: 2, h: 1, tone: 'inkMuted' },
+  { kind: 'block', x: 1, y: 8, z: 6, w: 8, d: 2, h: 1, tone: 'inkMuted' },
   { kind: 'ramp', x: 4, y: 5, z: 6, profile: 'inv45', wid: 2, dir: 'x-', tone: 'inkMuted' },
-  { kind: 'part', part: 'quarter', x: 2, y: 9, z: 6, w: 1, d: 1, h: 1, dir: 'x-', tone: 'inkSoft' },
-  { kind: 'part', part: 'quarter', x: 2, y: 9, z: 7, w: 1, d: 1, h: 1, dir: 'z+', tone: 'inkSoft' },
-  { kind: 'block', x: 3, y: 9, z: 6, w: 2, d: 2, h: 1, top: 'tiles', tone: 'inkSoft' },
+  { kind: 'part', part: 'quarter', x: 1, y: 9, z: 6, w: 1, d: 1, h: 1, dir: 'x-', tone: 'inkSoft' },
+  { kind: 'part', part: 'quarter', x: 1, y: 9, z: 7, w: 1, d: 1, h: 1, dir: 'z+', tone: 'inkSoft' },
+  { kind: 'block', x: 2, y: 9, z: 6, w: 3, d: 2, h: 1, top: 'tiles', tone: 'inkSoft' },
   { kind: 'ramp', x: 5, y: 9, z: 6, profile: 'curve4', wid: 2, dir: 'x-', tone: 'inkSoft' },
   // Dash in front of the cockpit, the halo's pillar on it.
   { kind: 'block', x: 9, y: 8, z: 5, w: 6, d: 4, h: 3, tone: 'inkSoft' },
