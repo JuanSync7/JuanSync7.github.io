@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-12",
+  "tag": "Exit codes",
+  "title": "Folding exit codes with max() turns a killed check into a pass.",
+  "why": "A runner kept the worst of its checks' exit codes with max(), and in a planted test a check killed by a signal returned a negative code, so the run passed. Map every code outside your table to an error before you combine them.",
+  "problem": "A check runner started each check as a subprocess and kept the worst exit code with max(). A check killed by SIGKILL never reported a result, but the run still passed.",
+  "cause": "Python's `subprocess` reports a process killed by a signal as a negative return code: −9 for SIGKILL. `max(0, -9)` is 0, the code for a pass, so the one result that meant \"this check never finished\" ranked below success.",
+  "steps": [
+    "Before combining, treat any negative code, or any code outside your documented exit table, as an error of its own (here, a BUG status).",
+    "Only then fold with max(), or whatever ordering your table defines.",
+    "Add a selftest with a check that kills itself, and expect the error status."
+  ],
+  "solution": "Normalise each code first; rank them second.",
+  "verification": "The source reports the fix in each runner and selftests that run a stub check which kills itself and expect BUG.",
+  "limitations": "No real run that passed wrongly is reported; the gap was fixed with planted kills. Most shells report a signal death as 128 plus the signal number instead, so a shell runner needs the same care. This is one case of the rule that a check has three outcomes.",
+  "category": "software-engineering",
+  "tags": [
+    "python",
+    "error-handling",
+    "testing"
+  ]
+}

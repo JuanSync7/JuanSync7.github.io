@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-12",
+  "tag": "Testing",
+  "title": "A red test of a bound must run under a bound.",
+  "why": "A test that proves code limits its work is first run against code with no limit. That red run is the unbounded code at its worst size, so give the test its own memory cap and timeout.",
+  "problem": "A check had to name a gap in section numbers as a range rather than listing every missing number. Its test used a huge gap, so the difference would be obvious, and was first run red against the code without the bound. That run listed every missing number and drove the shared host out of memory.",
+  "cause": "In test-first work the red run is the old, unbounded behaviour, deliberately fed the input that makes it worst. Nothing limited that run, so it took memory from everything else on the machine.",
+  "steps": [
+    "When a test proves a bound on time or memory, run the code under test in a child process with its own limit, such as a 1 GiB address-space cap and a timeout.",
+    "Size the limit so the bounded code passes easily and the unbounded code fails by hitting it.",
+    "Run the red version once under the limit and confirm it fails by the limit, not by the machine."
+  ],
+  "solution": "Let the test's own limit catch the unbounded run, never the host's.",
+  "verification": "The source reports the out-of-memory event on the red run and the change to a child held to 1 GiB with a timeout, in a change whose twelve planted faults each went red.",
+  "limitations": "An address-space cap counts reserved memory, not only what is used, so some runtimes need a higher cap than they appear to use. A per-process limit does not cover a test that starts many processes; that needs a cgroup or a container.",
+  "category": "software-engineering",
+  "tags": [
+    "testing",
+    "resource-limits",
+    "linux"
+  ]
+}
