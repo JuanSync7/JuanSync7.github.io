@@ -16,7 +16,9 @@ import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment
 import type { NightKey } from '../../styles/tokens/palette';
 import { hexOf } from './ink';
 import { body, GAP, STUD_H, STUD_R, type Part } from './legomesh';
-import { key, PLATE, socketsOf, studsOf, turn, type Piece } from './legoset';
+import { jointsOf, spot } from './legojoint';
+import { apply, type Pose, type V3 } from './legopose';
+import { PLATE, studsOf, turn, type Piece } from './legoset';
 
 /** Three ways to draw one LEGO model: the wireframe plan and the smooth isometric model (one
  *  solid per shape), and the LEGO itself (one instanced mesh per piece shape, so a model of
@@ -25,10 +27,17 @@ import { key, PLATE, socketsOf, studsOf, turn, type Piece } from './legoset';
 export const TONE: Record<NonNullable<Part['tone']>, NightKey> = { rim: 'inkSoft', dark: 'line2' };
 const ANGLE: Record<Piece['rot'], number> = { 0: 0, 1: -Math.PI / 2, 2: Math.PI, 3: Math.PI / 2 };
 
-/** Where a piece's own frame sits on the grid. */
+/** A sub-assembly's pose as a matrix. */
+const poseMatrix = (q: Pose): Matrix4 =>
+  new Matrix4().set(...(q.r.slice(0, 3) as V3), q.o[0], ...(q.r.slice(3, 6) as V3), q.o[1], ...(q.r.slice(6, 9) as V3), q.o[2], 0, 0, 0, 1); // prettier-ignore
+
+/** Where a piece's own frame sits in the model (on its grid, then where its sub-assembly sits). */
 export function placement(p: Piece, lift = 0): Matrix4 {
   const [x, z] = p.kind === 'wheel' || p.kind === 'axle' ? [p.x, p.z] : turn(p, 0, 0);
-  return new Matrix4().makeRotationY(ANGLE[p.rot]).setPosition(x, p.y * PLATE + lift, z);
+  const m = new Matrix4().makeRotationY(ANGLE[p.rot]).setPosition(x, p.y * PLATE, z);
+  if (p.pose) m.premultiply(poseMatrix(p.pose));
+  m.elements[13] = (m.elements[13] ?? 0) + lift;
+  return m;
 }
 
 /** Light for plastic: a soft room for the sheen on studs and curves, a fill, and a key light from
@@ -58,10 +67,12 @@ export interface LegoModel {
 /** The LEGO: every piece's body instanced by its shape, and every stud one instance of a single
  *  stud mesh, so a stud shows only while its piece is on the table and nothing has been pressed
  *  onto it yet (a few hundred thousand covered studs are never drawn as triangles). */
-export function legoModel(pieces: Piece[], own: (d: () => void) => void): LegoModel {
+/** `under`: draw each piece's real underside (walls, tubes, pins). Worth it where pieces are seen
+ *  from below or lifted off; a large static model (the city) leaves it out to stay light. */
+export function legoModel(pieces: Piece[], own: (d: () => void) => void, under = false): LegoModel {
   const group = new Group();
   const shapes = new Map<string, { parts: Part[]; owners: number[] }>();
-  const bodyOf = (p: Piece): Part[] => body(p, { studs: false, gap: GAP, under: true });
+  const bodyOf = (p: Piece): Part[] => body(p, { studs: false, gap: GAP, under });
   pieces.forEach((p, i) => {
     const k = [p.kind, p.w, p.d, p.h, p.hand, p.cy, p.r].join('|');
     const e = shapes.get(k) ?? { parts: bodyOf(p), owners: [] };
@@ -94,11 +105,17 @@ export function legoModel(pieces: Piece[], own: (d: () => void) => void): LegoMo
   }
   // Studs: where each stands, whose it is, and which piece will cover it (-1: none).
   const sockets = new Map<string, number>();
-  pieces.forEach((p, i) => socketsOf(p).forEach((c) => sockets.set(c, i)));
-  const studs: { owner: number; cover: number; x: number; y: number; z: number }[] = [];
+  pieces.forEach((p, i) => jointsOf(p).forEach((j) => j.kind === 'socket' && sockets.set(spot(j.at), i)));
+  const studs: { owner: number; cover: number; home: Matrix4 }[] = [];
   pieces.forEach((p, i) => {
     const { at, top } = studsOf(p);
-    for (const [x, z] of at) studs.push({ owner: i, cover: sockets.get(key(x, top, z)) ?? -1, x, y: top, z });
+    const frame = p.pose ? poseMatrix(p.pose) : null;
+    for (const [x, z] of at) {
+      const v: V3 = [x + 0.5, top * PLATE, z + 0.5];
+      const home = new Matrix4().makeTranslation(...v);
+      if (frame) home.premultiply(frame);
+      studs.push({ owner: i, cover: sockets.get(spot(apply(p.pose, v))) ?? -1, home });
+    }
   });
   const nub = new CylinderGeometry(STUD_R, STUD_R, STUD_H, 16).translate(0, STUD_H / 2, 0);
   const nubs = add(nub, studs.length);
@@ -137,7 +154,11 @@ export function legoModel(pieces: Piece[], own: (d: () => void) => void): LegoMo
         const up = lifts[s.owner];
         const covered = s.cover >= 0 && lifts[s.cover] === 0;
         if (up === null || up === undefined || covered) nubs.setMatrixAt(n, hidden);
-        else nubs.setMatrixAt(n, m.makeTranslation(s.x + 0.5, s.y * PLATE + up, s.z + 0.5));
+        else {
+          m.copy(s.home);
+          m.elements[13] = (m.elements[13] ?? 0) + up;
+          nubs.setMatrixAt(n, m);
+        }
       }
       if (touched.size) dirty.add(nubs);
       touched.clear();

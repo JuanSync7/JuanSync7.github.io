@@ -146,6 +146,9 @@ then the smooth isometric model turned through 360°), swap it into catalogue pi
 Every LEGO figure calls `mustHold` at build, draws only pieces (its base included) and uses the
 standard build animation. Read the `npm run lego:sheet` sheets at each stage. The checks
 (`kit/legocheck.ts`, `scripts/lego/check.mjs`) change only with a fixture in `lego:selftest`.
+Anything not studs-up (an endplate on its side, a flap on a hinge) is a sub-assembly fixed by
+`onSide`/`onHinge` (`kit/legopose.ts`); the checks join pieces on world-space studs, side studs and
+hinges and test overlaps between sub-assemblies (`legojoint.ts`, `legoclash.ts`).
 Every piece is drawn from our own geometry, made from LEGO's published sizes (the 8 mm stud,
 real undersides in `kit/legounder.ts`); nothing from the LDraw library ships with the site.
 `scripts/lego/ldraw-parts.json` names the real part each catalogue shape stands for, and

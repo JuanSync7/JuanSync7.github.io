@@ -55,11 +55,11 @@ export default defineThreeFigure<State>({
     const turn = new Group();
     const car = new Group();
     car.position.set(-19.5, 0, -7);
-    const model = legoModel(pieces, onDispose);
+    const model = legoModel(pieces, onDispose, true);
     car.add(model.group);
     // The display base, LEGO too: a course of plates bonded under a course of tiles, so the
     // tyres stand on smooth tops. It is there from the first frame and never moves.
-    const base = legoModel(build(LEGO_STANDS.f1 ?? []), onDispose).group;
+    const base = legoModel(build(LEGO_STANDS.f1 ?? []), onDispose, true).group;
     car.add(base);
     turn.add(car);
     turn.scale.setScalar(SCALE);

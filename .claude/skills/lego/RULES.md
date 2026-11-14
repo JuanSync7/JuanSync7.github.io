@@ -10,8 +10,31 @@ Each rule says what it is held by. A rule held by a check is not a judgment call
   their axis. (Check: `offGrid`.)
 - No two pieces share a cell. Wheels take every cell their cylinder reaches; an axle's path is
   clear apart from its technic holes and hubs. (Check: `clipping`.)
-- Every piece joins the root through studs or an axle. A stud joins only where a piece sits
-  directly on a studded top; tiles, curves and domes have none. (Check: `floating`.)
+- Every piece joins the root through studs, side studs, a hinge or an axle. A stud joins only
+  where a socket meets it head on, whichever way both pieces face; tiles, curves and domes have
+  none on top. (Check: `floating`, on world joints from `legojoint.ts`.)
+- Underneath, a piece is a real piece: walls, a roof, tubes or pins (`legounder.ts`), from
+  LEGO's published sizes. Our own geometry only; the LDraw library is a local reference
+  (`npm run lego:reference`), never shipped.
+
+## Sub-assemblies: sideways and hinged
+
+- What is not studs-up is a sub-assembly (`kind: 'sub'`): shapes on their own grid, studs up as
+  usual, fixed to the model by a pose. Build the pose from the piece that holds it, never by
+  hand: `onSide(piece(bracket))` puts the sub-assembly's studs-up face out of a bracket's flange,
+  its first row of sockets on the flange's studs; `onHinge(piece(hinge), angle)` hangs it on a
+  hinge plate's knuckle, its root a hinge plate facing x- at its own (0, 0, 0).
+- Use one for anything thin and upright (endplates, fences, a vertical fin) or set at an angle
+  (flaps, a raked wing): a stack of plates on its edge is thick and stepped; a plate on its side is
+  one plate thick and smooth.
+- A bracket's flange is as tall as what it holds (`flange`: studs), so the back of a sideways
+  plate rests on the flange and never shows its underside.
+- A flap that should leave a slot under it hangs from a hinge on a riser, a plate above what it
+  follows. A cascade hangs each element from a hinge on the one before.
+- Sub-assemblies may not overlap each other or the model: each cell is a box turned with its
+  sub-assembly, tested by separating axes, faces that touch allowed; hinge partners are let off
+  at the knuckle. (Check: `clipping`, `kit/legoclash.ts`.) Do not tile over a hinge's studs where
+  the flap swings past them: the check will say so.
 
 ## Shapes
 
@@ -52,3 +75,6 @@ Each rule says what it is held by. A rule held by a check is not a judgment call
 | "The check is too strict for this model." | Fix the design. Change a check only with a selftest fixture. | Checks |
 | "I'll skip the wire and solid sheets and go straight to LEGO." | Plan first: proportions are cheap in shapes, dear in pieces. | Workflow |
 | "The base is just a stand; a box is fine." | Build it from plates and tiles. | Pieces |
+| "I'll stack plates on edge for the endplate." | A bracket and a plate on its side: thinner and smooth. | Sub-assemblies |
+| "I'll work out this pose by hand." | `onSide` / `onHinge` from the holding piece; the joint checks then agree with the drawing. | Sub-assemblies |
+| "More pieces will make it more detailed." | Detail comes from the joints and shapes; the count follows. | Shapes |

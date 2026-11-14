@@ -72,6 +72,8 @@ const SAMPLE: Record<Kind, Piece> = {
   uplate: one('uplate', 6, 4, 1),
   wheel: one('wheel', 0, 2, 0, { cy: 6.75, r: 2.7, tone: 'line2' }),
   axle: one('axle', 0, 6, 0, { cy: 1, r: 0.12 }),
+  bracket: one('bracket', 2, 2, 1),
+  hinge: one('hinge', 2, 1, 1),
 };
 
 /** A camera looking at `box` from azimuth `az` (0 = from the nose, -x) and elevation `el`. */
@@ -112,9 +114,9 @@ export function sheet(id: string, mode: Mode, tile = 360, only = ''): string {
   mustHold(pieces, id);
   let models: Group[];
   if (mode === 'catalogue') {
-    models = KINDS.map((kind) => legoModel([SAMPLE[kind]], own).group);
+    models = KINDS.map((kind) => legoModel([SAMPLE[kind]], own, true).group);
   } else {
-    const m = mode === 'wire' ? wireModel(shapes, 'ink2', own) : mode === 'solid' ? smoothModel(shapes, own) : legoModel(pieces, own).group; // prettier-ignore
+    const m = mode === 'wire' ? wireModel(shapes, 'ink2', own) : mode === 'solid' ? smoothModel(shapes, own) : legoModel(pieces, own, true).group; // prettier-ignore
     models = [m];
   }
   const all = mode === 'wire' ? PLAN : mode === 'catalogue' ? KINDS.map((k): View => ({ label: k, az: 35, el: 30 })) : ORBIT; // prettier-ignore

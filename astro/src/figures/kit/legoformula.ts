@@ -1,4 +1,6 @@
-import { both, type Shape } from './legoswap.ts';
+import { both } from './legomirror.ts';
+import { onHinge, onSide } from './legopose.ts';
+import { piece, type Shape } from './legoswap.ts';
 
 /** A Formula 1 car as a LEGO model, designed as shapes on the stud grid (x along the car from the
  *  front wing at 0, z across it with the centre line at 7, y in plates from the ground). Every part
@@ -12,13 +14,56 @@ import { both, type Shape } from './legoswap.ts';
  *  endplates hang from it and the beam wing hangs from them; the halo rests on a pillar at the
  *  front and on the airbox. Slopes, curves, wedges and quarter tiles give the surfaces their
  *  angles: the nose's chamfered underside, the sidepods' undercut and coke-bottle tail, the
- *  engine cover's fall to the shark fin, the diffuser's kick, the 33° flap. */
+ *  engine cover's fall to the shark fin, the diffuser's kick. Thin and angled parts are
+ *  sub-assemblies: the endplates are a plate and tiles on their side on brackets, and the wings'
+ *  flaps hang from hinges over a slot, the front wing's two in a cascade. */
 
 const W = 14;
 const WHEEL = { r: 2.7, cy: 6.75 };
 const FRONT = 8;
 const REAR = 33;
 const sym = (list: Shape[]): Shape[] => list.flatMap((s) => both(s, W));
+
+/** A flap: a two-deep hinge plate turned round on its partner, tiled on top. A second flap hangs
+ *  from a hinge on the first one's back row, a plate higher, so a slot opens under it. */
+const flap = (id: string, hinge: Shape, angle: number, span: number, next?: (h: Shape) => Shape): Shape => {
+  const tiles = (d: number): Shape => ({
+    kind: 'block',
+    x: 0,
+    y: 1,
+    z: 0,
+    w: span,
+    d,
+    h: 1,
+    top: 'tiles',
+    tone: 'ink2',
+  });
+  const back: Shape = { kind: 'part', part: 'hinge', x: 0, y: 1, z: 1, w: span, d: 1, h: 1, tone: 'line4' };
+  return {
+    kind: 'sub',
+    id,
+    pose: onHinge(piece(hinge), angle),
+    shapes: [
+      { kind: 'part', part: 'hinge', x: 0, y: 0, z: 0, w: span, d: 2, h: 1, dir: 'x-', tone: 'line4' },
+      ...(next ? [tiles(1), back, next(back)] : [tiles(2)]),
+    ],
+  };
+};
+/** A thin endplate: a plate and its tiles, standing on a bracket's side studs, `tall` studs high. */
+const endplate = (id: string, bracket: Shape, len: number, tall: number): Shape => ({
+  kind: 'sub',
+  id,
+  pose: onSide(piece(bracket)),
+  shapes: [{ kind: 'block', x: 0, y: 0, z: 0, w: len, d: tall, h: 2, top: 'tiles', tone: 'inkSoft' }],
+});
+
+// Front wing: the main plane carries an endplate bracket at each tip and, behind its leading edge,
+// a riser with the hinge for two flaps, the second hung from the first.
+const FW_BRACKET: Shape = { kind: 'part', part: 'bracket', x: 0, y: 3, z: 0, w: 4, d: 2, h: 1, flange: 2, tone: 'line4' }; // prettier-ignore
+const FW_HINGE: Shape = { kind: 'part', part: 'hinge', x: 2, y: 4, z: 2, w: 4, d: 1, h: 1, dir: 'z-', tone: 'line4' };
+// Rear wing: a bracket at each tip for the endplates, a hinge across the back for the flap.
+const RW_BRACKET: Shape = { kind: 'part', part: 'bracket', x: 34, y: 17, z: 3, w: 3, d: 2, h: 1, flange: 3, tone: 'line4' }; // prettier-ignore
+const RW_HINGE: Shape = { kind: 'part', part: 'hinge', x: 36, y: 18, z: 4, w: 6, d: 1, h: 1, dir: 'z-', tone: 'line4' };
 
 export const F1: Shape[] = [
   // Floor: a two-plate spine between the wheels, narrower beside the rear wheels.
@@ -52,13 +97,16 @@ export const F1: Shape[] = [
   // Front wing: a two-plate main plane, a cascade of flaps rising to the back, curved endplates.
   { kind: 'block', x: 0, y: 1, z: 0, w: 4, d: 14, h: 2, tone: 'line4' },
   ...sym([
-    { kind: 'block', x: 2, y: 3, z: 1, w: 2, d: 5, h: 1, tone: 'ink2' },
-    { kind: 'ramp', x: 2, y: 4, z: 1, profile: 'curve2', wid: 5, dir: 'x-', tone: 'ink2' },
-    { kind: 'block', x: 0, y: 3, z: 0, w: 4, d: 1, h: 2, tone: 'inkSoft' },
-    { kind: 'ramp', x: 0, y: 5, z: 0, profile: 'curve4', wid: 1, dir: 'x-', tone: 'inkSoft' },
-    // The main plane's rounded leading edge and smooth top, and a footplate under each endplate.
-    { kind: 'ramp', x: 0, y: 3, z: 1, profile: 'cheese', wid: 5, dir: 'x-', tone: 'line4' },
-    { kind: 'block', x: 1, y: 3, z: 1, w: 1, d: 5, h: 1, top: 'tiles', tone: 'line4' },
+    // The main plane's rounded leading edge, the riser, the flaps, and the endplate.
+    { kind: 'ramp', x: 0, y: 3, z: 2, profile: 'cheese', wid: 4, dir: 'x-', tone: 'line4' },
+    { kind: 'block', x: 1, y: 3, z: 2, w: 2, d: 4, h: 1, tone: 'line4' },
+    { kind: 'block', x: 1, y: 4, z: 2, w: 1, d: 4, h: 1, top: 'tiles', tone: 'line4' },
+    FW_HINGE,
+    flap('front-flap', FW_HINGE, 0.2, 4, (h) => flap('second', h, 0.3, 4)),
+    FW_BRACKET,
+    { kind: 'block', x: 0, y: 4, z: 1, w: 4, d: 1, h: 1, top: 'tiles', tone: 'line4' },
+    endplate('front-endplate', FW_BRACKET, 4, 2),
+    // A footplate under each endplate.
     { kind: 'block', x: 0, y: 0, z: 0, w: 4, d: 1, h: 1, tone: 'line4' },
   ]),
   { kind: 'block', x: 3, y: 3, z: 6, w: 1, d: 2, h: 5, tone: 'line4' },
@@ -125,17 +173,42 @@ export const F1: Shape[] = [
   { kind: 'block', x: 35, y: 4, z: 6, w: 3, d: 2, h: 3, tone: 'line4' },
   { kind: 'round', x: 37, y: 7, z: 6, size: 1, h: 1, tone: 'signal' },
   { kind: 'block', x: 35, y: 7, z: 6, w: 1, d: 2, h: 8, tone: 'line4' },
-  // Rear wing: a two-plate main plane, a 33° flap, endplates above and below, the beam wing.
+  // Rear wing: a two-plate main plane with a rounded leading edge; behind it, over a slot, the
+  // flap on its hinge; thin endplates on brackets at the tips, struts below, the beam wing.
   { kind: 'block', x: 34, y: 15, z: 3, w: 4, d: 8, h: 2, tone: 'inkSoft' },
-  { kind: 'block', x: 35, y: 17, z: 4, w: 3, d: 6, h: 1, tone: 'ink2' },
-  { kind: 'ramp', x: 35, y: 18, z: 4, profile: 'slope33', wid: 6, dir: 'x-', tone: 'ink2' },
-  { kind: 'block', x: 37, y: 21, z: 4, w: 1, d: 6, h: 1, top: 'tiles', tone: 'line4' },
-  { kind: 'ramp', x: 34, y: 17, z: 4, profile: 'cheese', wid: 6, dir: 'x-', tone: 'inkSoft' },
+  { kind: 'ramp', x: 34, y: 17, z: 5, profile: 'cheese', wid: 4, dir: 'x-', tone: 'inkSoft' },
+  { kind: 'block', x: 35, y: 17, z: 5, w: 1, d: 4, h: 1, top: 'tiles', tone: 'inkSoft' },
+  { kind: 'block', x: 36, y: 17, z: 5, w: 1, d: 4, h: 1, tone: 'line4' },
+  { kind: 'block', x: 37, y: 17, z: 5, w: 1, d: 4, h: 1, top: 'tiles', tone: 'inkSoft' },
+  RW_HINGE,
+  flap('rear-flap', RW_HINGE, 0.45, 6),
   ...sym([
     { kind: 'block', x: 34, y: 10, z: 3, w: 4, d: 1, h: 5, tone: 'line4' },
-    { kind: 'block', x: 34, y: 17, z: 3, w: 4, d: 1, h: 3, top: 'tiles', tone: 'line4' },
+    RW_BRACKET,
+    { kind: 'block', x: 34, y: 18, z: 4, w: 2, d: 1, h: 1, top: 'tiles', tone: 'line4' },
+    endplate('rear-endplate', RW_BRACKET, 4, 3),
   ]),
   { kind: 'block', x: 36, y: 8, z: 3, w: 2, d: 8, h: 2, tone: 'ink2' },
+  // Tiles over the studs that would show: smooth tops where a builder would finish them.
+  { kind: 'block', x: 7, y: 3, z: 6, w: 2, d: 2, h: 1, top: 'tiles', tone: 'line3' },
+  { kind: 'block', x: 34, y: 3, z: 4, w: 1, d: 6, h: 1, top: 'tiles', tone: 'line3' },
+  { kind: 'block', x: 19, y: 8, z: 6, w: 1, d: 2, h: 1, top: 'tiles', tone: 'inkMuted' },
+  { kind: 'block', x: 15, y: 10, z: 6, w: 1, d: 2, h: 1, top: 'tiles', tone: 'line4' },
+  { kind: 'block', x: 36, y: 7, z: 6, w: 1, d: 2, h: 1, top: 'tiles', tone: 'line4' },
+  { kind: 'block', x: 37, y: 7, z: 7, w: 1, d: 1, h: 1, top: 'tiles', tone: 'line4' },
+  { kind: 'block', x: 36, y: 10, z: 4, w: 2, d: 6, h: 1, top: 'tiles', tone: 'ink2' },
+  ...sym([
+    { kind: 'block', x: 24, y: 3, z: 4, w: 4, d: 1, h: 1, top: 'tiles', tone: 'line3' },
+    { kind: 'block', x: 28, y: 3, z: 3, w: 2, d: 2, h: 1, top: 'tiles', tone: 'line3' },
+    { kind: 'block', x: 30, y: 3, z: 4, w: 2, d: 1, h: 1, top: 'tiles', tone: 'line3' },
+    { kind: 'block', x: 15, y: 1, z: 2, w: 2, d: 1, h: 1, top: 'tiles', tone: 'line4' },
+    { kind: 'block', x: 17, y: 1, z: 2, w: 12, d: 1, h: 1, top: 'tiles', tone: 'line4' },
+    { kind: 'block', x: 7, y: 5, z: 2, w: 2, d: 3, h: 1, top: 'tiles', tone: 'line4' },
+    { kind: 'block', x: 7, y: 9, z: 3, w: 2, d: 3, h: 1, top: 'tiles', tone: 'line4' },
+    { kind: 'block', x: 32, y: 5, z: 3, w: 2, d: 2, h: 1, top: 'tiles', tone: 'line4' },
+    { kind: 'block', x: 32, y: 9, z: 4, w: 2, d: 2, h: 1, top: 'tiles', tone: 'line4' },
+    { kind: 'block', x: 37, y: 17, z: 3, w: 1, d: 2, h: 1, top: 'tiles', tone: 'inkSoft' },
+  ]),
   // Axles and wheels: narrower front tyres, wider rears.
   { kind: 'axle', x: FRONT, cy: WHEEL.cy, z: 0, len: W, tone: 'line4' },
   { kind: 'axle', x: REAR, cy: WHEEL.cy, z: 0, len: W, tone: 'line4' },

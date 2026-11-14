@@ -4,6 +4,7 @@ import { hexOf } from './ink';
 import { body } from './legomesh';
 import type { Piece } from './legoset';
 import { placement, plastic, TONE } from './legoscene';
+import { compose } from './legopose';
 import { PROFILE, ROT, type Shape } from './legoswap';
 
 /** The planning views of a LEGO model, for review only (`npm run lego:sheet`): the smooth
@@ -11,7 +12,7 @@ import { PROFILE, ROT, type Shape } from './legoswap';
 
 /** The body a shape would be as one solid: the plan the LEGO is swapped from. */
 function solidOf(s: Shape): Piece[] {
-  const at = { y: 0, rot: 0 as const, tone: s.tone };
+  const at = { y: 0, rot: 0 as const, tone: s.kind === 'sub' ? 'ink' : s.tone };
   switch (s.kind) {
     case 'block':
       return [{ ...at, kind: 'brick', x: s.x, y: s.y, z: s.z, w: s.w, d: s.d, h: s.h }];
@@ -38,6 +39,8 @@ function solidOf(s: Shape): Piece[] {
       return [{ ...at, kind: 'wheel', x: s.x, z: s.z, w: 0, d: s.width, h: 0, cy: s.cy, r: s.r }];
     case 'axle':
       return [{ ...at, kind: 'axle', x: s.x, z: s.z, w: 0, d: s.len, h: 0, cy: s.cy, r: 0.12 }];
+    case 'sub':
+      return s.shapes.flatMap(solidOf).map((p) => ({ ...p, pose: compose(s.pose, p.pose) }));
   }
 }
 

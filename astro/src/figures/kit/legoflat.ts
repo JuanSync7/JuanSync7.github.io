@@ -1,6 +1,7 @@
 import { project, type Camera } from './camera';
 import { box } from './draw';
 import { ink } from './ink';
+import { apply } from './legopose';
 import { cellsOf, PLATE, studsOf, type Piece } from './legoset';
 import { STUD_H, STUD_R } from './legomesh';
 
@@ -21,6 +22,20 @@ export function legoFlat(ctx: CanvasRenderingContext2D, cam: Camera, pieces: Pie
         ctx.strokeStyle = ink.line(0.9);
         ctx.stroke();
       }
+      continue;
+    }
+    if (p.pose) {
+      // A piece of a sub-assembly (sideways or hinged): the box around it, as the model has it.
+      const q = p.pose;
+      const pts = cellsOf(p).flatMap((k) => {
+        const [x = 0, y = 0, z = 0] = k.split(',').map(Number);
+        return [0, 1].flatMap((a) =>
+          [0, 1].flatMap((b) => [0, 1].map((c) => apply(q, [x + a, (y + b) * PLATE, z + c]))),
+        );
+      });
+      const lo = [0, 1, 2].map((d) => Math.min(...pts.map((v) => v[d] ?? 0)));
+      const hi = [0, 1, 2].map((d) => Math.max(...pts.map((v) => v[d] ?? 0)));
+      box(ctx, cam, lo[0] ?? 0, lo[2] ?? 0, hi[0] ?? 0, hi[2] ?? 0, lo[1] ?? 0, hi[1] ?? 0, tones);
       continue;
     }
     const cells = cellsOf(p).map((k) => k.split(',').map(Number));

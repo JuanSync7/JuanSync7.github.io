@@ -1,5 +1,6 @@
 import { CylinderGeometry, type BufferGeometry } from 'three';
-import { box, fall, join, LIP, plan, profile, SEG, STUD_R, studsAt, type BodyOpts, type Part } from './legogeo';
+import { box, fall, join, LIP, plan, profile, SEG, STUD_H, STUD_R, studsAt, type BodyOpts, type Part } from './legogeo';
+import { flangeOf, KNUCKLE_Y } from './legopose';
 import { footprint, PLATE, type Piece } from './legoset';
 
 /** Geometry for the detail pieces: the gentler and inverted slopes, the 3-long curve, rounded
@@ -42,6 +43,18 @@ export function detail(p: Piece, o: BodyOpts): Part[] {
       const t = 0.12;
       const fin = profile([[g, 0], [w - g, 0], [w - g, top], [w - 0.7, top], [g, 0.25]], d, d / 2 - t); // prettier-ignore
       return one([fin, box(g, 0, d / 2 - 0.2, w - g, 0.12, d / 2 + 0.2)]);
+    }
+    case 'bracket': {
+      // The base, the flange on its front edge, and the flange's studs pointing out (-z).
+      const f = flangeOf(p);
+      const side = Array.from({ length: w * f }, (_, k) => new CylinderGeometry(STUD_R, STUD_R, STUD_H, SEG).rotateX(Math.PI / 2).translate((k % w) + 0.5, Math.floor(k / w) + 0.5, g - STUD_H / 2)); // prettier-ignore
+      return one([box(g, 0, g, w - g, PLATE, d - g), box(g, 0, g, w - g, f, PLATE), ...side, ...studs()]);
+    }
+    case 'hinge': {
+      // The plate and its knuckle: fingers along the far edge, in the first half of each stud so
+      // the partner's fingers (turned round) fall between them.
+      const fingers = Array.from({ length: w }, (_, k) => new CylinderGeometry(KNUCKLE_Y, KNUCKLE_Y, 0.4, SEG).rotateZ(Math.PI / 2).translate(k + 0.25, KNUCKLE_Y, d)); // prettier-ignore
+      return one([box(g, 0, g, w - g, top, d - g), ...fingers, ...studs()]);
     }
     default:
       throw new Error(`lego: no geometry for ${p.kind}`);

@@ -4,6 +4,7 @@
 import { inspect } from '../../src/figures/kit/legocheck.ts';
 import { LEGO_MODELS, LEGO_QUEUES } from '../../src/figures/kit/legomodels.ts';
 import { build } from '../../src/figures/kit/legoswap.ts';
+import { br, flap, hg, leaf, RIG, side } from '../../src/figures/kit/legorig.ts';
 
 const brick = (x, y, z) => ({ kind: 'block', x, y, z, w: 2, d: 1, h: 3, tone: 'ink' });
 /** Each fixture adds one fault to a passing model and names the check that must catch it. */
@@ -28,6 +29,18 @@ const FIXTURES = [
   },
 ];
 
+// Each joint fixture breaks the joint rig (kit/legorig.ts, which must pass as built) one way.
+const JOINTS = [
+  { name: 'a tile on side studs with no bracket', expect: 'floating', shapes: [RIG[0], br, hg, side({ ...br, x: 5 }), flap(0.3, leaf)] }, // prettier-ignore
+  {
+    name: 'a flap turned down into the base',
+    expect: 'clipping',
+    shapes: [RIG[0], br, hg, side(br), flap(-0.5, leaf)],
+  },
+  { name: 'a flap with no hinge to hang on', expect: 'floating', shapes: [RIG[0], br, hg, side(br), flap(0.3, leaf.slice(1))] }, // prettier-ignore
+  { name: 'two plates in one cell of a flap', expect: 'clipping', shapes: [...RIG.slice(0, 4), flap(0.3, [...leaf, { ...leaf[1], y: 1 }])] }, // prettier-ignore
+];
+
 const report = (shapes) => inspect(build(shapes));
 let failed = 0;
 if (process.argv.includes('--selftest')) {
@@ -35,6 +48,18 @@ if (process.argv.includes('--selftest')) {
   for (const f of FIXTURES) {
     const r = report([...base, ...f.add]);
     const caught = r[f.expect].length > 0;
+    console.log(`${caught ? 'ok  ' : 'FAIL'}  ${f.expect} catches ${f.name}`);
+    if (!caught) failed++;
+  }
+  const rig = report(RIG);
+  const clean = !rig.clipping.length && !rig.floating.length && !rig.offGrid.length;
+  console.log(`${clean ? 'ok  ' : 'FAIL'}  the joint rig passes as built`);
+  if (!clean) {
+    console.log(JSON.stringify(rig, null, 1));
+    failed++;
+  }
+  for (const f of JOINTS) {
+    const caught = report(f.shapes)[f.expect].length > 0;
     console.log(`${caught ? 'ok  ' : 'FAIL'}  ${f.expect} catches ${f.name}`);
     if (!caught) failed++;
   }

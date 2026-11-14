@@ -28,7 +28,9 @@ server up (`npx astro dev --port 4321 --host 127.0.0.1`).
 2. **Plan as shapes.** Write the model as a list of shapes in a new kit file (`kit/lego<name>.ts`,
    letters only), registered in `kit/legomodels.ts`. Use only the shape kinds and angles the
    catalogue has (`RULES.md`, "Shapes"). Design the structure as a builder would: one root
-   piece, everything connected to it by studs or axles. Then
+   piece, everything connected to it by studs or axles. Anything thin and upright or set at an
+   angle (endplates, flaps) is a sub-assembly on a bracket or a hinge (`RULES.md`,
+   "Sub-assemblies"). Then
    `npm run lego:sheet -- <model> wire` and read the top, side, front and isometric views.
 3. **Isometric model.** `npm run lego:sheet -- <model> solid`: each shape as one smooth solid,
    turned through twelve angles plus top, low and under views. Fix proportions and silhouette here, while they

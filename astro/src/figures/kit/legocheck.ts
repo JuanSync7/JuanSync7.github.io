@@ -1,4 +1,6 @@
-import { cellsOf, HOLE_Y, key, socketsOf, studsOf, turn, type Piece } from './legoset.ts';
+import { clashes } from './legoclash.ts';
+import { dot, jointsOf, spot, type Joint } from './legojoint.ts';
+import { cellsOf, HOLE_Y, key, turn, type Piece } from './legoset.ts';
 
 /** The checks every LEGO model must pass, kept apart from the catalogue and the swap so the code
  *  that builds a model is not the code that judges it. Pure; run in node by `npm run lego:check`
@@ -16,10 +18,15 @@ export interface Report {
   offGrid: string[];
 }
 
-const name = (p: Piece, i: number): string => `#${i} ${p.kind} at ${p.x},${p.y},${p.z}`;
+const label = (pieces: Piece[], i: number): string => {
+  const p = pieces[i];
+  return p ? name(p, i) : `#${i}`;
+};
+const name = (p: Piece, i: number): string => `#${i} ${p.kind} at ${p.x},${p.y},${p.z}${p.sub ? ` in ${p.sub}` : ''}`;
 
-/** The checks: no two pieces in one cell (clipping), every piece joined to the root through
- *  studs or an axle (floating), every block piece on whole studs and plates (off grid). */
+/** The checks: no two pieces in one cell of a grid, and no overlap between sub-assemblies
+ *  (clipping); every piece joined to the root through studs, side studs, hinges or an axle
+ *  (floating); every block piece on whole studs and plates of its own grid (off grid). */
 export function inspect(pieces: Piece[]): Report {
   const report: Report = { clipping: [], floating: [], offGrid: [] };
   const owner = new Map<string, number>();
@@ -27,23 +34,39 @@ export function inspect(pieces: Piece[]): Report {
     const rolling = p.kind === 'wheel' || p.kind === 'axle';
     if (!rolling && ![p.x, p.y, p.z].every(Number.isInteger)) report.offGrid.push(name(p, i));
     for (const c of cellsOf(p)) {
-      const o = owner.get(c);
-      if (o !== undefined && o !== i) report.clipping.push(`${name(p, i)} meets ${name(pieces[o] ?? p, o)} in ${c}`);
-      else owner.set(c, i);
+      const at = `${p.sub ?? ''}|${c}`;
+      const o = owner.get(at);
+      if (o !== undefined && o !== i) report.clipping.push(`${name(p, i)} meets ${name(pieces[o] ?? p, o)} in ${at}`);
+      else owner.set(at, i);
     }
   });
   const parent = pieces.map((_, i) => i);
   const find = (i: number): number => (parent[i] === i ? i : (parent[i] = find(parent[i] ?? i)));
   const join = (a: number, b: number): void => void (parent[find(a)] = find(b));
-  const sockets = new Map<string, number>();
-  pieces.forEach((p, i) => socketsOf(p).forEach((c) => sockets.set(c, i)));
-  pieces.forEach((p, i) => {
-    const { at, top } = studsOf(p);
-    for (const [x, z] of at) {
-      const above = sockets.get(key(x, top, z));
-      if (above !== undefined) join(i, above);
-    }
-  });
+  // Joints meet at one point: a stud head on into a socket, or two knuckles on one axis.
+  const meet = new Map<string, { i: number; j: Joint }[]>();
+  pieces.forEach((p, i) =>
+    jointsOf(p).forEach((j) => {
+      const list = meet.get(spot(j.at));
+      if (list) list.push({ i, j });
+      else meet.set(spot(j.at), [{ i, j }]);
+    }),
+  );
+  const hinged = new Set<string>();
+  for (const list of meet.values())
+    for (const a of list)
+      for (const b of list) {
+        if (a.i >= b.i) continue;
+        const [s, t] = [a.j.kind, b.j.kind];
+        const plugged =
+          ((s === 'stud' && t === 'socket') || (s === 'socket' && t === 'stud')) && dot(a.j.dir, b.j.dir) < -0.99;
+        const pinned = s === 'hinge' && t === 'hinge' && Math.abs(dot(a.j.dir, b.j.dir)) > 0.99;
+        if (plugged || pinned) join(a.i, b.i);
+        if (pinned) hinged.add(`${a.i}-${b.i}`);
+      }
+  if (pieces.some((p) => p.sub))
+    for (const [a, b] of clashes(pieces, hinged))
+      report.clipping.push(`${label(pieces, a)} meets ${label(pieces, b)} across sub-assemblies`);
   pieces.forEach((a, i) => {
     if (a.kind !== 'axle') return;
     const z1 = a.z + a.d;
@@ -55,7 +78,7 @@ export function inspect(pieces: Piece[]): Report {
     // The axle's own path must be clear: past its holes and hubs nothing may sit on it.
     for (let z = a.z; z < z1; z++) {
       for (const x of [a.x - 1, a.x]) {
-        const o = owner.get(key(x, Math.floor(a.cy ?? 0), z));
+        const o = owner.get(`|${key(x, Math.floor(a.cy ?? 0), z)}`);
         const host = o !== undefined && (pieces[o]?.kind === 'technic' || pieces[o]?.kind === 'wheel');
         if (o !== undefined && !host) report.clipping.push(`${name(a, i)} runs through ${name(pieces[o] ?? a, o)}`);
       }

@@ -24,4 +24,9 @@ stud). A piece's (x, z) is its footprint's minimum corner; rolling parts use the
 | `legoFlat(ctx, cam, pieces)` / `legoflat.ts` | The no-WebGL fallback: pieces as boxes with studs, wheels as discs. |
 | `sheet(model, stage, tile, only)` / `legostudio.ts` | The review sheets behind `npm run lego:sheet`: wire in top, side, front, iso; solid and lego through twelve angles plus top, low and under. Never imported by a page. |
 | `LEGO_MODELS` / `legomodels.ts` | Every model by id; `lego:check` and `lego:sheet` read it. |
+| `Pose`, `onSide(bracket)`, `onHinge(hinge, angle)`, `compose`, `mirrorPose` / `legopose.ts` | Sub-assemblies: the pose that fixes one to a bracket's side studs or a hinge's knuckle. Pure. |
+| `jointsOf(p)` / `legojoint.ts` | Every stud, socket and knuckle of a piece in the model's space, whichever way it faces: what `floating` joins on. |
+| `clashes(pieces, hinged)` / `legoclash.ts` | Clipping across sub-assemblies: turned cell boxes, separating-axis test. |
+| `piece(shape)` / `legoswap.ts`; `both`, `mirror` / `legomirror.ts` | The piece a part shape becomes (to hang a sub-assembly on); mirroring, sub-assemblies included. |
+| `RIG` / `legorig.ts` | The joint rig: a bracket with a sideways tile, a hinge with a flap. `lego:sheet -- rig`. |
 | `hollow(w, d, top, gap)` / `legounder.ts` | The real underside of a brick, plate or tile (walls, roof, tubes or pins), drawn in the LEGO view (`under: true`). |

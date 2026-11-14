@@ -1,4 +1,5 @@
 import type { NightKey } from '../../styles/tokens/palette.ts';
+import { compose, PLATE_Y, type Pose } from './legopose.ts';
 import type { Kind, Piece } from './legoset.ts';
 
 /** The swap: a model is designed as shapes (the isometric model, drawn with the angles LEGO
@@ -22,9 +23,11 @@ export type Shape =
   | (At & { kind: 'round'; size: 1 | 2; h: number; cap?: boolean })
   | (At & { kind: 'technic'; len: number; rows: number })
   | (At & { kind: 'halo'; len: number; wid: number; dir: Dir })
-  | (At & { kind: 'part'; part: Kind; w: number; d: number; h: number; dir?: Dir; hand?: 'L' | 'R'; root?: boolean }) // prettier-ignore
+  | (At & { kind: 'part'; part: Kind; w: number; d: number; h: number; dir?: Dir; hand?: 'L' | 'R'; root?: boolean; flange?: number }) // prettier-ignore
   | { kind: 'wheel'; x: number; cy: number; z: number; width: number; r: number; tone: NightKey }
-  | { kind: 'axle'; x: number; cy: number; z: number; len: number; tone: NightKey };
+  | { kind: 'axle'; x: number; cy: number; z: number; len: number; tone: NightKey }
+  /** A sub-assembly: shapes on their own grid, fixed to the model by `pose` (see legopose). */
+  | { kind: 'sub'; id: string; pose: Pose; shapes: Shape[] };
 
 /** A ramp profile: how far it runs and how many plates it falls. */
 export const PROFILE = {
@@ -154,11 +157,13 @@ export function swap(s: Shape): Piece[] {
     case 'halo':
       return [base('uplate', s, s.len, s.wid, 1, ROT[s.dir])];
     case 'part':
-      return [{ ...base(s.part, s, s.w, s.d, s.h, ROT[s.dir ?? 'x+']), ...(s.hand ? { hand: s.hand } : {}), ...(s.root ? { root: true } : {}) }]; // prettier-ignore
+      return [{ ...base(s.part, s, s.w, s.d, s.h, ROT[s.dir ?? 'x+']), ...(s.hand ? { hand: s.hand } : {}), ...(s.root ? { root: true } : {}), ...(s.flange ? { flange: s.flange } : {}) }]; // prettier-ignore
     case 'wheel':
       return [{ kind: 'wheel', x: s.x, y: 0, z: s.z, w: 0, d: s.width, h: 0, rot: 0, tone: s.tone, cy: s.cy, r: s.r }];
     case 'axle':
       return [{ kind: 'axle', x: s.x, y: 0, z: s.z, w: 0, d: s.len, h: 0, rot: 0, tone: s.tone, cy: s.cy, r: 0.12 }];
+    case 'sub':
+      return s.shapes.flatMap(swap).map((p) => ({ ...p, root: false, sub: p.sub ? `${s.id}/${p.sub}` : s.id, pose: compose(s.pose, p.pose) })); // prettier-ignore
   }
 }
 
@@ -168,7 +173,7 @@ export function swap(s: Shape): Piece[] {
  *  whose queue is null is the base, there before anyone starts (order 0). */
 export function build(shapes: Shape[], queue?: (p: Piece) => string | null): Piece[] {
   const pieces = shapes.flatMap((s, i) => swap(s).map((p) => ({ p, i })));
-  const level = (p: Piece): number => (p.kind === 'axle' ? 1e3 : p.kind === 'wheel' ? 1e3 + 1 : p.y);
+  const level = (p: Piece): number => (p.kind === 'axle' ? 1e3 : p.kind === 'wheel' ? 1e3 + 1 : PLATE_Y(p));
   const groups = new Map<string, { p: Piece; i: number }[]>();
   for (const e of pieces) {
     const q = queue ? queue(e.p) : '';
@@ -183,46 +188,9 @@ export function build(shapes: Shape[], queue?: (p: Piece) => string | null): Pie
   return pieces.map(({ p }) => p);
 }
 
-/** The same shape on the other side of a model `width` studs wide (mirrored across z): its z
- *  flipped, its z-direction reversed and a wedge's cut side swapped. */
-export function mirror(s: Shape, width: number): Shape {
-  const flip = (d: Dir): Dir => (d === 'z+' ? 'z-' : d === 'z-' ? 'z+' : d);
-  const hand = (h: 'L' | 'R'): 'L' | 'R' => (h === 'L' ? 'R' : 'L');
-  switch (s.kind) {
-    case 'block':
-      return { ...s, z: width - s.z - s.d, root: false };
-    case 'ramp': {
-      const across = s.dir === 'x+' || s.dir === 'x-' ? s.wid : PROFILE[s.profile].run;
-      return { ...s, z: width - s.z - across, dir: flip(s.dir) };
-    }
-    case 'wedge': {
-      const across = s.dir === 'x+' || s.dir === 'x-' ? s.wid : s.len;
-      return { ...s, z: width - s.z - across, dir: flip(s.dir), hand: hand(s.hand) };
-    }
-    case 'part': {
-      const dir = s.dir ?? 'x+';
-      const across = dir === 'x+' || dir === 'x-' ? s.d : s.w;
-      // A quarter tile's round edge faces (+u, +v): mirroring swaps its turn with the neighbour's.
-      const q: Record<Dir, Dir> = { 'x+': 'z-', 'z-': 'x+', 'z+': 'x-', 'x-': 'z+' };
-      return {
-        ...s,
-        z: width - s.z - across,
-        dir: s.part === 'quarter' ? q[dir] : flip(dir),
-        ...(s.hand ? { hand: hand(s.hand) } : {}),
-      };
-    }
-    case 'round':
-      return { ...s, z: width - s.z - s.size };
-    case 'technic':
-      return { ...s, z: width - s.z - s.rows };
-    case 'halo':
-      return { ...s, z: width - s.z - s.wid };
-    case 'wheel':
-      return { ...s, z: width - s.z - s.width };
-    case 'axle':
-      return { ...s, z: width - s.z - s.len };
-  }
-}
-
-/** A shape and its mirror. */
-export const both = (s: Shape, width: number): Shape[] => [s, mirror(s, width)];
+/** The piece one single-piece shape (a part) becomes: for a bracket or hinge a sub-assembly hangs on. */
+export const piece = (s: Shape): Piece => {
+  const p = swap(s)[0];
+  if (!p) throw new Error(`lego: ${s.kind} makes no piece`);
+  return p;
+};

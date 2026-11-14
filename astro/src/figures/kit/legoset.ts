@@ -1,4 +1,5 @@
 import type { NightKey } from '../../styles/tokens/palette.ts';
+import type { Pose } from './legopose.ts';
 
 /** The LEGO parts catalogue as data: what each piece kind fills, where its studs are. Pure: no
  *  three, so `scripts/lego/check.mjs` runs it in node. The checks are in `legocheck.ts`.
@@ -33,9 +34,11 @@ export type Kind =
   | 'roundtile' // round tile, 1 x 1 or 2 x 2: lights, wheel caps, a camera lens
   | 'cone' // 1 x 1 cone, 3 plates, an open stud on top
   | 'bar' // a thin bar standing in a stud, h plates long: antennas, stalks
-  | 'fin'; // a thin upright fin rising toward its back end: a shark fin, a strake
+  | 'fin' // a thin upright fin rising toward its back end: a shark fin, a strake
+  | 'bracket' // a plate w x 2 with a flange one stud tall on its front edge (local v = 0), studs out
+  | 'hinge'; // a hinge plate w x 1, its knuckle along its far edge (local v = 1): see legopose
 
-export const KINDS: Kind[] = ['brick', 'plate', 'tile', 'grille', 'technic', 'slope45', 'slope33', 'inv45', 'cheese', 'curve2', 'curve3', 'curve4', 'wedge', 'quarter', 'round', 'roundtile', 'cone', 'dome', 'helmet', 'bar', 'fin', 'uplate', 'wheel', 'axle']; // prettier-ignore
+export const KINDS: Kind[] = ['brick', 'plate', 'tile', 'grille', 'technic', 'slope45', 'slope33', 'inv45', 'cheese', 'curve2', 'curve3', 'curve4', 'wedge', 'quarter', 'round', 'roundtile', 'cone', 'dome', 'helmet', 'bar', 'fin', 'uplate', 'wheel', 'axle', 'bracket', 'hinge']; // prettier-ignore
 
 export interface Piece {
   kind: Kind;
@@ -56,6 +59,11 @@ export interface Piece {
   root?: boolean;
   /** Build order, 0..1, set by the model. */
   order?: number;
+  /** Brackets: how many studs tall the flange stands (1 when not given). */
+  flange?: number;
+  /** A piece of a sub-assembly: its name, and where its grid sits in the model's. */
+  sub?: string;
+  pose?: Pose;
 }
 
 /** Plates per stud of height, and the height of a technic hole above the brick's bottom. */
@@ -101,6 +109,7 @@ export function footprint(p: Piece): { fill: [number, number][]; studs: [number,
         inside = far <= wedgeWidth(p, i + 1);
       }
       if (p.kind === 'uplate') touched = j === 0 || j === p.d - 1 || i === p.w - 1;
+      if (p.kind === 'bracket' && j === 0) inside = false; // the flange stands on that row
       if (!touched) continue;
       fill.push([i, j]);
       const studded = !SMOOTH.includes(p.kind) && (!STUD_ROW.includes(p.kind) || i === 0);
@@ -139,7 +148,9 @@ export function cellsOf(p: Piece): string[] {
   const out: string[] = [];
   for (const [i, j] of footprint(p).fill) {
     const [x, z] = cellOf(p, i, j);
-    for (let y = p.y; y < p.y + heightAt(p, i); y++) out.push(key(x, y, z));
+    // A flange of f studs rises 2.5 f plates from the bracket's bottom: whole cells over the base.
+    const flange = p.kind === 'bracket' && j === 0 ? Math.ceil((p.flange ?? 1) / PLATE) - 1 : 0;
+    for (let y = p.y; y < p.y + heightAt(p, i) + flange; y++) out.push(key(x, y, z));
   }
   return out;
 }
