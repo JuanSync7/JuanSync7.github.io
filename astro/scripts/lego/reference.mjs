@@ -1,36 +1,34 @@
-// Makes kit/data/ldraw.json: the real LEGO geometry, from the LDraw Parts Library, for every
-// catalogue shape the models use that `ldraw-parts.json` names a part for. Each part is fitted
-// to its catalogue shape and refused if it does not fit: its size must match the shape's, its
-// top surface (and the underside of an inverted slope) must match the shape's at every sample,
-// and the studs it carries must stand where the catalogue says they do.
+// Compares our catalogue pieces with the real LEGO parts they stand for, as a reference only:
+// for each shape `ldraw-parts.json` names a part for, the part is read from a local copy of the
+// LDraw Parts Library, turned to fit, and measured against our own geometry. It must be the same
+// size, carry its studs where our catalogue does, and its top surface (the underside of an
+// inverted slope) must lie within TOL of ours. Nothing from the library is written or shipped:
+// the site draws only our own geometry (kit/legomesh.ts), so the library's licence never applies
+// to the site. Run it when a piece's geometry changes.
 //
-//   npm run lego:ldraw -- <ldraw dir>   (the folder holding parts/ and p/)
-//   LDDEBUG=kind,w,d,h,hand,number npm run lego:ldraw -- <dir>   prints one fit's height grids
+//   npm run lego:reference -- <ldraw dir>   (the folder holding parts/ and p/)
+//   LDDEBUG=kind,w,d,h,hand,number npm run lego:reference -- <dir>   prints one fit's height grids
 //
-// Get the library from https://library.ldraw.org (or the GitHub mirror
-// gkjohnson/ldraw-parts-library). The library is CC BY 2.0 / 4.0: the output carries the
-// attribution, and every page that draws these parts credits "the LDraw Parts Library".
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+// The library: https://library.ldraw.org, or the GitHub mirror gkjohnson/ldraw-parts-library.
+import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { execFileSync } from 'node:child_process';
-import { body, GAP } from '../../src/figures/kit/legomesh.ts';
+import { body } from '../../src/figures/kit/legomesh.ts';
 import { cellsOf, studsOf } from '../../src/figures/kit/legoset.ts';
 import { build } from '../../src/figures/kit/legoswap.ts';
 import { LEGO_MODELS, LEGO_STANDS } from '../../src/figures/kit/legomodels.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const OUT = join(ROOT, 'src/figures/kit/data/ldraw.json');
 const LIB = process.argv[2];
 if (!LIB || !existsSync(join(LIB, 'parts'))) {
-  console.error('usage: npx tsx scripts/lego/ldraw.mjs <ldraw dir with parts/ and p/>');
+  console.error('usage: npm run lego:reference -- <ldraw dir with parts/ and p/>');
   process.exit(2);
 }
 const TABLE = JSON.parse(readFileSync(join(ROOT, 'scripts/lego/ldraw-parts.json'), 'utf8')).parts;
 const LDU = 1 / 20; // one stud is 20 LDraw units; a plate is 8
 const PLATE = 0.4;
 const UNDER = ['inv45']; // shapes told apart by their underside
-const TOL = 0.35; // studs: past this mean height difference the part is not this shape at all
+const TOL = 0.05; // studs: the mean height difference our piece may show against the real part
 
 // ---- reading LDraw: every triangle of a part, and where its top studs stand -------------------
 const files = new Map();
@@ -114,17 +112,23 @@ function hits(tris, x, z) {
  *  shape has none). Holes the hand-made shape lacks cost nothing. This picks the turn. */
 function mismatch(a, b, p) {
   const top = p.h * PLATE;
+  // Under a stud the body's top is the stud's own business (a hollow stud is a hole): skip it.
+  const studs = studsOf({ ...p, x: 0, y: 0, z: 0, rot: 0 }).at;
+  const underStud = (x, z) => studs.some(([i, j]) => Math.hypot(x - i - 0.5, z - j - 0.5) < 0.32);
   let sum = 0;
   let n = 0;
   for (let i = 0; i < p.w * 4; i++)
     for (let j = 0; j < p.d * 4; j++) {
       const [x, z] = [(i + 0.5) / 4, (j + 0.5) / 4];
+      if (!UNDER.includes(p.kind) && underStud(x, z)) continue;
       const [ha, hb] = [hits(a, x, z), hits(b, x, z)];
       if (!ha) continue;
       n++;
       if (!hb) sum += top;
-      else
-        sum += UNDER.includes(p.kind) ? Math.abs(ha[0] - hb[0]) : Math.abs(Math.min(ha[1], top) - Math.min(hb[1], top));
+      else if (!UNDER.includes(p.kind)) sum += Math.abs(Math.min(ha[1], top) - Math.min(hb[1], top));
+      else if (hb[0] > 0.01) sum += Math.abs(ha[0] - hb[0]);
+      // Where our underside sits flat on the base, the real part's hollow there does not count.
+      else n--;
     }
   return n ? sum / n : Infinity;
 }
@@ -190,29 +194,7 @@ function fit(p, number) {
     return { error: `${number} has studs at ${got.join(' ')}, the shape at ${[...want].join(' ')}` };
   if (Math.abs(best.height - top - (own.length ? 0.2 : 0)) > 0.05)
     return { error: `${number} is ${best.height.toFixed(2)} high, the shape ${top}` };
-  return { ...best, own };
-}
-
-// ---- packing: vertices on a 1/400-stud grid as Int16, triangles as Uint16 indices -----------
-const Q = 400;
-function pack(tris, p, g = GAP) {
-  const sx = (p.w - 2 * g) / p.w;
-  const sz = (p.d - 2 * g) / p.d;
-  const at = new Map();
-  const pos = [];
-  const idx = [];
-  for (const t of tris)
-    for (const [x, y, z] of t) {
-      const v = [Math.round((g + x * sx) * Q), Math.round(y * Q), Math.round((g + z * sz) * Q)];
-      const k = v.join(',');
-      if (!at.has(k)) {
-        at.set(k, pos.length / 3);
-        pos.push(...v);
-      }
-      idx.push(at.get(k));
-    }
-  if (pos.length / 3 > 65535) throw new Error('too many vertices for one part');
-  return { p: Buffer.from(new Int16Array(pos).buffer).toString('base64'), i: Buffer.from(new Uint16Array(idx).buffer).toString('base64') }; // prettier-ignore
+  return best;
 }
 
 if (process.env.LDDEBUG) {
@@ -220,53 +202,42 @@ if (process.env.LDDEBUG) {
   const p = { kind, w: +w, d: +d, h: +h, hand: hand || undefined, x: 0, y: 0, z: 0, rot: 0, tone: 'ink' };
   const raw = flatten(`${number}.dat`);
   const ours = body(p, { studs: false, gap: 0 }).flatMap((q) => trisOf(q.geo));
-  const grid = (t, f) => [...Array(p.d * 4)].map((_, j) => [...Array(p.w * 4)].map((_, i) => { const r = hits(t, (i + 0.5) / 4, (j + 0.5) / 4); return r ? f(r).toFixed(2).padStart(5) : '    -'; }).join(' ')).join('\n'); // prettier-ignore
-  console.log('ours top\n' + grid(ours, (r) => r[1]) + '\nours bottom\n' + grid(ours, (r) => r[0]));
+  const at = (t, i, j) => hits(t, (i + 0.5) / 4, (j + 0.5) / 4);
+  const grid = (t, f) => [...Array(p.d * 4)].map((_, j) => [...Array(p.w * 4)].map((_, i) => { const r = at(t, i, j); return r ? f(r).toFixed(2).padStart(5) : '    -'; }).join(' ')).join('\n'); // prettier-ignore
+  console.log(`ours top\n${grid(ours, (r) => r[1])}\nours bottom\n${grid(ours, (r) => r[0])}`);
   for (let k = 0; k < 4; k++) {
     let tris = raw.tris.map((t) => t.map((v) => toOurs(v, k)).reverse());
     const b = boundsOf(tris.flat());
     tris = tris.map((t) => t.map((v) => [v[0] - b[0][0], v[1] - b[1][0], v[2] - b[2][0]]));
-    console.log(
-      `turn ${k} size ${(b[0][1] - b[0][0]).toFixed(2)} x ${(b[2][1] - b[2][0]).toFixed(2)} x ${(b[1][1] - b[1][0]).toFixed(2)} off ${mismatch(tris, ours, p).toFixed(3)}`,
-    );
-    console.log(grid(tris, (r) => r[1]) + '\n--bottom\n' + grid(tris, (r) => r[0]));
+    console.log(`turn ${k} off ${mismatch(tris, ours, p).toFixed(3)}\n${grid(tris, (r) => r[1])}\n--bottom\n${grid(tris, (r) => r[0])}`); // prettier-ignore
   }
   process.exit(0);
 }
+
 const shapeKey = (p) => `${p.kind} ${Math.min(p.w, p.d)}x${Math.max(p.w, p.d)} h${p.h}${p.hand ? ` ${p.hand}` : ''}`;
-const parts = {};
-const handMade = new Map();
 const seen = new Set();
+const unmatched = new Map();
 let failed = 0;
+let compared = 0;
 const stands = Object.entries(LEGO_STANDS).map(([id, s]) => [`${id} stand`, s]);
 for (const [model, shapes] of [...Object.entries(LEGO_MODELS), ...stands]) {
   for (const p of build(shapes)) {
     const id = [p.kind, p.w, p.d, p.h, p.hand ?? ''].join('|');
-    if (parts[id] || seen.has(id)) continue;
+    if (seen.has(id)) continue;
     seen.add(id);
     const number = TABLE[shapeKey(p)];
     if (!number) {
-      handMade.set(shapeKey(p), [...(handMade.get(shapeKey(p)) ?? []), model]);
+      unmatched.set(shapeKey(p), [...(unmatched.get(shapeKey(p)) ?? []), model]);
       continue;
     }
+    compared++;
     const f = fit(p, number);
     if (f.error) {
-      console.log(`FAIL  ${shapeKey(p)} (${model}): ${f.error}`);
+      console.log(`FAIL  ${shapeKey(p).padEnd(20)} ${number.padEnd(6)} (${model}): ${f.error}`);
       failed++;
-      continue;
-    }
-    parts[id] = { part: number, ...(f.own.length ? { own: f.own } : {}), ...pack(f.tris, p) };
-    console.log(`ok    ${shapeKey(p).padEnd(20)} ${number.padEnd(6)} turn ${f.k}  off ${f.score.toFixed(3)}  ${f.tris.length} triangles${f.own.length ? `  own studs ${f.own.join(' ')}` : ''}`); // prettier-ignore
+    } else console.log(`ok    ${shapeKey(p).padEnd(20)} ${number.padEnd(6)} off ${f.score.toFixed(3)}`);
   }
 }
-const stud = flatten('stud.dat').tris.map((t) => t.map((v) => toOurs(v, 0)).reverse());
-const out = {
-  credit: 'Part geometry from the LDraw Parts Library (https://library.ldraw.org), CC BY 2.0 / CC BY 4.0. LEGO is a trademark of the LEGO Group, which does not sponsor this site.', // prettier-ignore
-  stud: pack(stud, { w: 1, d: 1 }, 0),
-  parts,
-};
-writeFileSync(OUT, JSON.stringify(out, null, 2) + '\n');
-execFileSync('npx', ['prettier', '--write', OUT], { cwd: ROOT, stdio: 'ignore' });
-console.log(`\n${Object.keys(parts).length} real parts written to ${OUT.replace(ROOT + '/', '')}`);
-console.log(`hand-made: ${[...handMade].map(([k, m]) => `${k} (${[...new Set(m)].join(', ')})`).join('; ')}`);
+console.log(`\n${compared - failed} of ${compared} shapes match their real part`);
+console.log(`no real part named: ${[...unmatched].map(([k, m]) => `${k} (${[...new Set(m)].join(', ')})`).join('; ')}`);
 process.exit(failed ? 1 : 0);

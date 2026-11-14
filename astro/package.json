@@ -92,7 +92,7 @@
     "lego:check": "node scripts/lego/check.mjs",
     "lego:selftest": "node scripts/lego/check.mjs --selftest",
     "lego:sheet": "node scripts/lego/sheet.mjs",
-    "lego:ldraw": "npx tsx scripts/lego/ldraw.mjs"
+    "lego:reference": "npx tsx scripts/lego/reference.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",

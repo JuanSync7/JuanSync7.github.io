@@ -1,5 +1,5 @@
 import { CylinderGeometry, type BufferGeometry } from 'three';
-import { box, fall, join, plan, profile, SEG, STUD_R, studsAt, type BodyOpts, type Part } from './legogeo';
+import { box, fall, join, LIP, plan, profile, SEG, STUD_R, studsAt, type BodyOpts, type Part } from './legogeo';
 import { footprint, PLATE, type Piece } from './legoset';
 
 /** Geometry for the detail pieces: the gentler and inverted slopes, the 3-long curve, rounded
@@ -13,12 +13,12 @@ export function detail(p: Piece, o: BodyOpts): Part[] {
   const one = (list: BufferGeometry[]): Part[] => [{ geo: join(list) }];
   switch (p.kind) {
     case 'slope33':
-      return one([profile([[g, 0], [w - g, 0], [w - g, 0.16], [1, top], [g, top]], d, g), ...studs()]); // prettier-ignore
+      return one([profile([[g, 0], [w - g, 0], [w - g, LIP], [1, top], [g, top]], d, g), ...studs()]); // prettier-ignore
     case 'inv45':
       // A studded flat top; underneath, one stud row of bottom and then the face rising away.
-      return one([profile([[g, 0], [1, 0], [w - g, top - 0.16], [w - g, top], [g, top]], d, g), ...studs()]); // prettier-ignore
+      return one([profile([[g, 0], [1, 0], [w - g, top - LIP], [w - g, top], [g, top]], d, g), ...studs()]); // prettier-ignore
     case 'curve3':
-      return one([profile([[g, 0], [w - g, 0], ...fall(w - g, top, 0.08, true).reverse()], d, g)]);
+      return one([profile([[g, 0], [w - g, 0], ...fall(w - g, top, LIP, true).reverse()], d, g)]);
     case 'quarter': {
       // The rounded edge faces away from the corner at (0, 0).
       const r = 1 - g;
@@ -31,7 +31,8 @@ export function detail(p: Piece, o: BodyOpts): Part[] {
     case 'roundtile':
       return one([new CylinderGeometry(w / 2 - g, w / 2 - g, top, 24).translate(w / 2, top / 2, d / 2)]);
     case 'cone':
-      return one([new CylinderGeometry(STUD_R, 0.5 - g, top, 20).translate(0.5, top / 2, 0.5), ...studs()]);
+      // A short round foot, then the taper up to the stud (as the real cone).
+      return one([new CylinderGeometry(0.5 - g, 0.5 - g, LIP, 20).translate(0.5, LIP / 2, 0.5), new CylinderGeometry(STUD_R, 0.5 - g, top - LIP, 20).translate(0.5, LIP + (top - LIP) / 2, 0.5), ...studs()]); // prettier-ignore
     case 'bar':
       return one([
         new CylinderGeometry(0.1, 0.1, top, 10).translate(0.5, top / 2, 0.5),

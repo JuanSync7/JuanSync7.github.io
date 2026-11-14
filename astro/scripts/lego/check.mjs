@@ -4,15 +4,6 @@
 import { inspect } from '../../src/figures/kit/legocheck.ts';
 import { LEGO_MODELS, LEGO_QUEUES } from '../../src/figures/kit/legomodels.ts';
 import { build } from '../../src/figures/kit/legoswap.ts';
-import { readFileSync } from 'node:fs';
-
-// Real parts: every shape `ldraw-parts.json` names a part for must have been fitted and packed
-// (`npm run lego:ldraw`); a shape it does not name is drawn hand-made, and is listed.
-const TABLE = JSON.parse(readFileSync(new URL('./ldraw-parts.json', import.meta.url), 'utf8')).parts;
-const PACKED = JSON.parse(
-  readFileSync(new URL('../../src/figures/kit/data/ldraw.json', import.meta.url), 'utf8'),
-).parts;
-const shapeOf = (p) => `${p.kind} ${Math.min(p.w, p.d)}x${Math.max(p.w, p.d)} h${p.h}${p.hand ? ` ${p.hand}` : ''}`;
 
 const brick = (x, y, z) => ({ kind: 'block', x, y, z, w: 2, d: 1, h: 3, tone: 'ink' });
 /** Each fixture adds one fault to a passing model and names the check that must catch it. */
@@ -51,11 +42,7 @@ if (process.argv.includes('--selftest')) {
   for (const [id, shapes] of Object.entries(LEGO_MODELS)) {
     const pieces = build(shapes, LEGO_QUEUES[id]);
     const r = inspect(pieces);
-    const key = (p) => [p.kind, p.w, p.d, p.h, p.hand ?? ''].join('|');
-    const stale = [...new Set(pieces.filter((p) => TABLE[shapeOf(p)] && !PACKED[key(p)]).map(shapeOf))];
-    const real = pieces.filter((p) => PACKED[key(p)]).length;
     const bad = [
-      ...stale.map((s) => `not packed  ${s} (run npm run lego:ldraw)`),
       ...r.offGrid.map((s) => `off grid  ${s}`),
       ...r.clipping.map((s) => `clipping  ${s}`),
       ...r.floating.map((s) => `floating  ${s}`),
@@ -63,8 +50,6 @@ if (process.argv.includes('--selftest')) {
     const kinds = {};
     for (const p of pieces) kinds[p.kind] = (kinds[p.kind] ?? 0) + 1;
     console.log(`${bad.length ? 'FAIL' : 'ok  '}  ${id}: ${pieces.length} pieces ${JSON.stringify(kinds)}`);
-    const made = [...new Set(pieces.filter((p) => !TABLE[shapeOf(p)]).map(shapeOf))];
-    console.log(`      real parts: ${real} of ${pieces.length}; hand-made: ${made.join(', ') || 'none'}`);
     for (const b of bad.slice(0, 20)) console.log(`      ${b}`);
     if (bad.length) failed++;
   }

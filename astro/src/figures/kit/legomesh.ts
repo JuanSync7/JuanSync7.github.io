@@ -1,6 +1,7 @@
 import { BoxGeometry, BufferGeometry, CylinderGeometry, LatheGeometry, SphereGeometry, Vector2 } from 'three';
 import { detail } from './legodetail';
-import { box, fall, GAP, join, plan, profile, SEG, studsAt, type BodyOpts, type Part } from './legogeo';
+import { box, fall, GAP, join, LIP, plan, profile, SEG, studsAt, type BodyOpts, type Part } from './legogeo';
+import { hollow } from './legounder';
 import { footprint, HOLE_Y, PLATE, wedgeOutline, type Kind, type Piece } from './legoset';
 
 export { GAP, STUD_H, STUD_R, join, type BodyOpts, type Part } from './legogeo';
@@ -65,7 +66,7 @@ export function body(p: Piece, o: BodyOpts = { studs: true, gap: GAP }): Part[] 
     case 'brick':
     case 'plate':
     case 'tile':
-      return merge([box(g, 0, g, w - g, top, d - g), ...studded()]);
+      return merge([o.under ? hollow(w, d, top, g) : box(g, 0, g, w - g, top, d - g), ...studded()]);
     case 'grille': {
       const ribs = Array.from({ length: w * 2 }, (_, k) => box(k * 0.5 + 0.08, top - 0.12, g + 0.1, k * 0.5 + 0.3, top, d - g - 0.1)); // prettier-ignore
       return merge([box(g, 0, g, w - g, top - 0.12, d - g), ...ribs]);
@@ -75,11 +76,11 @@ export function body(p: Piece, o: BodyOpts = { studs: true, gap: GAP }): Part[] 
       return [...merge([box(g, 0, g, w - g, top, d - g), ...studded()]), { geo: join(holes), tone: 'dark' }];
     }
     case 'slope45':
-      return merge([profile([[g, 0], [w - g, 0], [w - g, 0.16], [1, top], [g, top]], d, g), ...studded()]); // prettier-ignore
+      return merge([profile([[g, 0], [w - g, 0], [w - g, LIP], [1, top], [g, top]], d, g), ...studded()]); // prettier-ignore
     case 'cheese':
     case 'curve2':
     case 'curve4':
-      return merge([profile([[g, 0], [w - g, 0], ...fall(w - g, top, 0.08, kind !== 'cheese').reverse()], d, g)]);
+      return merge([profile([[g, 0], [w - g, 0], ...fall(w - g, top, LIP, kind !== 'cheese').reverse()], d, g)]);
     case 'wedge':
       return merge([plan(wedgeOutline(p), top), ...studded()]);
     case 'round': {

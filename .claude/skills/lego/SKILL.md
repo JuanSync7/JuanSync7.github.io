@@ -40,15 +40,15 @@ server up (`npx astro dev --port 4321 --host 127.0.0.1`).
 5. **Swap and check.** `npm run lego:check`: the model is swapped into pieces and checked for
    clipping, floating pieces and pieces off the grid. Fix the design, never the check. Then
    `npm run lego:sheet -- <model> lego` and read the LEGO through 360°.
-6. **Real parts.** Where a shape has a real LEGO part, name it in `scripts/lego/ldraw-parts.json`
-   (LDraw number) and run `npm run lego:ldraw -- <ldraw dir>` (library: library.ldraw.org, or the
-   GitHub mirror gkjohnson/ldraw-parts-library). A part that does not fit is refused: fix the
-   catalogue shape to match the real part (as the wedge tip was), never loosen the fit. Read
-   `npm run lego:sheet -- <model> real` against the `lego` sheet.
+6. **Real parts.** Every piece is our own geometry, built from LEGO's published sizes. Where a
+   shape has a real LEGO part, name it in `scripts/lego/ldraw-parts.json` (LDraw number) and run
+   `npm run lego:reference -- <ldraw dir>` against a local copy of the library (library.ldraw.org,
+   or the GitHub mirror gkjohnson/ldraw-parts-library; never committed). A piece that does not
+   match is fixed in our catalogue to match the real part (as the wedge tip and the slope lips
+   were), never by loosening the comparison.
 7. **Figure.** Mount the model in a three.js figure with the standard build animation (a LEGO
    base present from the first frame, pieces dropping on in order, the finished model holding,
-   pieces lifting off last-on-first-off while the base stays) and `mustHold` at build. Pass `REAL`
-   to `legoModel` to draw real parts, and credit the LDraw Parts Library where the figure shows.
+   pieces lifting off last-on-first-off while the base stays) and `mustHold` at build.
    `npm run figure -- <id> --url=http://127.0.0.1:4321` and read the sheet.
 8. **Look.** Answer `LOOK.md` with the sheets as evidence. Fix the cause of anything wrong and
    return to the stage where it was made.

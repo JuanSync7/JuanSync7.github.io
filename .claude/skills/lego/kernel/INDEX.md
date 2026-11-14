@@ -24,4 +24,4 @@ stud). A piece's (x, z) is its footprint's minimum corner; rolling parts use the
 | `legoFlat(ctx, cam, pieces)` / `legoflat.ts` | The no-WebGL fallback: pieces as boxes with studs, wheels as discs. |
 | `sheet(model, stage, tile, only)` / `legostudio.ts` | The review sheets behind `npm run lego:sheet`: wire in top, side, front, iso; solid and lego through twelve angles plus top, low and under. Never imported by a page. |
 | `LEGO_MODELS` / `legomodels.ts` | Every model by id; `lego:check` and `lego:sheet` read it. |
-| `REAL`, `partOf`, `LDRAW_CREDIT` / `legoreal.ts` | Real LEGO parts (LDraw geometry from `data/ldraw.json`) for `legoModel(pieces, own, REAL)`; hand-made where a shape has none. |
+| `hollow(w, d, top, gap)` / `legounder.ts` | The real underside of a brick, plate or tile (walls, roof, tubes or pins), drawn in the LEGO view (`under: true`). |

@@ -1,5 +1,5 @@
 {
-  "about": "Each catalogue shape (kind, short x long side in studs, height in plates, hand) and the real LEGO part (LDraw number) drawn for it. A shape not listed here is drawn from the hand-made geometry in kit/legomesh.ts.",
+  "about": "Each catalogue shape (kind, short x long side in studs, height in plates, hand) and the real LEGO part (LDraw number) drawn for it. Every piece is drawn from our own geometry (kit/legomesh.ts); `npm run lego:reference` compares it with these parts in a local copy of the LDraw library.",
   "parts": {
     "brick 1x1 h3": "3005",
     "brick 1x2 h3": "3004",
@@ -47,7 +47,7 @@
     "quarter 1x1 h1": "25269",
     "roundtile 1x1 h1": "98138",
     "cone 1x1 h3": "4589",
-    "wedge 2x4 h1 R": "41769",
-    "wedge 2x4 h1 L": "41770"
+    "wedge 2x4 h1 R": "41770",
+    "wedge 2x4 h1 L": "41769"
   }
 }

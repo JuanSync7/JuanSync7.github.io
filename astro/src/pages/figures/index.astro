@@ -1,7 +1,6 @@
 ---
 import NightLayout from '../../layouts/NightLayout.astro';
 import FigureBench from '../../components/figures/FigureBench.tsx';
-import { LDRAW_CREDIT } from '../../figures/kit/legoreal';
 ---
 
 <NightLayout title="Figures — juan_kok" description="Every figure on the site, live, with what each one shows." noindex>
@@ -11,9 +10,6 @@ import { LDRAW_CREDIT } from '../../figures/kit/legoreal';
       <p>Every drawing on the site, live. Each one is a single file, checked by the same audit before it ships.</p>
     </header>
     <FigureBench client:only="react" />
-    <footer class="figures-credits">
-      <p>lego-f1 · {LDRAW_CREDIT}</p>
-    </footer>
   </main>
 </NightLayout>
 
@@ -31,12 +27,6 @@ import { LDRAW_CREDIT } from '../../figures/kit/legoreal';
     line-height: var(--nt-lh-heading);
   }
   .figures-head p {
-    color: var(--nt-ink-soft);
-  }
-  .figures-credits {
-    margin-top: var(--hf-space-10);
-    max-width: var(--nt-measure);
-    font-size: var(--nt-fs-small);
     color: var(--nt-ink-soft);
   }
 </style>

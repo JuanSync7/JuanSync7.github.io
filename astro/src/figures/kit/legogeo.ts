@@ -6,7 +6,7 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
  *  takes mixed geometry. Every piece is drawn in its own frame, footprint (0, 0) to (w, d). */
 
 export const STUD_R = 0.3;
-export const STUD_H = 0.18;
+export const STUD_H = 1.7 / 8; // 1.7 mm, on the 8 mm stud pitch
 export const GAP = 0.02;
 export const SEG = 16;
 
@@ -17,6 +17,8 @@ export interface Part {
 export interface BodyOpts {
   studs: boolean;
   gap: number;
+  /** Draw the real underside (walls, tubes, pins) where the piece has one. */
+  under?: boolean;
 }
 
 /** Merges parts of mixed kinds (indexed boxes, unindexed extrusions) into one geometry. */
@@ -51,12 +53,16 @@ export const studsAt = (cells: [number, number][], top: number): BufferGeometry[
     new CylinderGeometry(STUD_R, STUD_R, STUD_H, SEG).translate(i + 0.5, top + STUD_H / 2, j + 0.5),
   );
 
-/** A falling top from height `hi` at u = 0 to `lo` at u = run: straight or a convex curve. */
+/** The lip a slope keeps at its low end, as on the real parts (1.6 mm). */
+export const LIP = 0.2;
+
+/** A falling top from height `hi` at u = from to `lo` at u = run: straight, or a curve that
+ *  holds its height and then rolls off (1 - t^2, the profile of the real curved slopes). */
 export function fall(run: number, hi: number, lo: number, curved: boolean, from = 0): [number, number][] {
-  const n = curved ? 10 : 1;
+  const n = curved ? 12 : 1;
   return Array.from({ length: n + 1 }, (_, k): [number, number] => {
     const t = k / n;
-    const y = curved ? lo + (hi - lo) * Math.cos((t * Math.PI) / 2) : hi + (lo - hi) * t;
+    const y = curved ? lo + (hi - lo) * (1 - Math.pow(t, 2.1)) : hi + (lo - hi) * t;
     return [from + (run - from) * t, y];
   });
 }
