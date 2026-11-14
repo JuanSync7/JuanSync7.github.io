@@ -1,5 +1,6 @@
 import { Color, Group, Mesh, MeshStandardMaterial, PlaneGeometry, type BufferGeometry, type Material } from 'three';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
+import { mustSit } from './bounds';
 import { deskHexOf } from './ink';
 import type { DeskTone } from '../../styles/tokens/palette';
 
@@ -81,17 +82,21 @@ export function monitor(
   k.add(k.rounded(0.045, neckH, 0.022, 0.006), metal, [0, neckH / 2, -0.05], g);
   k.add(k.rounded(0.08, 0.05, 0.03, 0.006), metal, [0, neckH, -0.035], g);
   const panelY = neckH + 0.01;
-  k.add(k.rounded(w + 0.018, h + 0.032, 0.022, 0.006), k.mat('shell', 0.55, 0.2), [0, panelY, -0.01], g);
+  const panel = k.add(k.rounded(w + 0.018, h + 0.032, 0.022, 0.006), k.mat('shell', 0.55, 0.2), [0, panelY, -0.01], g);
   const geo = new PlaneGeometry(w, h);
   const screen = new Mesh(geo, new MeshStandardMaterial({ color: 0xffffff }));
-  screen.position.set(0, panelY + 0.008, 0.0015);
+  // 2 mm proud of the panel's face: closer, and a coarse depth buffer lets the two fight, which
+  // shows as the screen flickering.
+  screen.position.set(0, panelY + 0.008, 0.003);
   g.add(screen);
+  mustSit(screen, panel, 'screen', { axes: 'xy' });
   if (lightBar) {
     // A screen bar resting on the panel's top edge: the bar leans over the front, its counterweight
     // clamp hangs down the back, and its lit underside is the accent.
     const top = panelY + (h + 0.032) / 2;
-    k.add(k.rounded(w * 0.78, 0.022, 0.026, 0.008), k.mat('shell', 0.4, 0.4), [0, top + 0.016, 0.012], g);
-    k.add(k.rounded(w * 0.7, 0.003, 0.01, 0.001), k.accent, [0, top + 0.004, 0.02], g);
+    const bar = k.add(k.rounded(w * 0.78, 0.022, 0.026, 0.008), k.mat('shell', 0.4, 0.4), [0, top + 0.016, 0.012], g);
+    const lit = k.add(k.rounded(w * 0.7, 0.003, 0.01, 0.001), k.accent, [0, top + 0.004, 0.02], g);
+    mustSit(lit, bar, 'screen bar light', { axes: 'xz' });
     k.add(k.rounded(0.05, 0.016, 0.04, 0.004), k.mat('shell', 0.4, 0.4), [0, top + 0.002, -0.01], g);
     k.add(k.rounded(0.04, 0.05, 0.014, 0.004), k.mat('shell', 0.4, 0.4), [0, top - 0.02, -0.03], g);
   }

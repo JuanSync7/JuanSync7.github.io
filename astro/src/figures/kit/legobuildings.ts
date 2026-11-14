@@ -40,9 +40,11 @@ function gable(e: Edit, x0: number, z0: number, w: number, d: number, l0: number
 }
 
 type Kind = 'twin' | 'church' | 'slab' | 'park' | 'skyscraper' | 'stadium' | 'houses' | 'museum' | 'factory';
+/** The view runs from the front corner over the middle to the back corner, so the back corner is
+ *  the low park: a tall tower there would sit right behind the skyscraper and read as part of it. */
 const PLAN: Kind[][] = [
-  ['twin', 'church', 'slab'],
-  ['park', 'skyscraper', 'stadium'],
+  ['park', 'church', 'slab'],
+  ['twin', 'skyscraper', 'stadium'],
   ['houses', 'museum', 'factory'],
 ];
 
@@ -55,7 +57,7 @@ function block(e: Edit, kind: Kind, x: number, z: number): void {
     tower(e, x + 2, z + 2, 6, 6, 17, 26, 'ink2');
     tower(e, x + 3, z + 3, 4, 4, 27, 33, 'inkSoft');
     spire(e, x + 4, z + 4, 2, 34, 'inkMuted');
-    for (let l = 39; l <= 46; l++) put(e, l, x + 4, z + 4, l === 46 ? 'signal' : 'inkMuted');
+    for (let l = 36; l <= 42; l++) put(e, l, x + 4, z + 4, l === 42 ? 'signal' : 'inkMuted');
   } else if (kind === 'twin') {
     fill(e, 1, x, z, 10, 10, 'inkSoft');
     tower(e, x, z, 4, 4, 2, 22 + Math.floor(r() * 3), 'ink2');

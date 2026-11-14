@@ -79,7 +79,13 @@ export function screenOn(mesh: Mesh, w: number, h: number, owned: { dispose(): v
   const tex = new CanvasTexture(c);
   tex.colorSpace = SRGBColorSpace;
   tex.anisotropy = 4;
-  const mat = new MeshBasicMaterial({ map: tex, toneMapped: false });
+  const mat = new MeshBasicMaterial({
+    map: tex,
+    toneMapped: false,
+    polygonOffset: true,
+    polygonOffsetFactor: -2,
+    polygonOffsetUnits: -2,
+  });
   mesh.material = mat;
   owned.push(tex, mat);
   return { tex, ctx, w, h };

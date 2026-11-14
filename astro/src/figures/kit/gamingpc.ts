@@ -1,4 +1,5 @@
 import {
+  Box3,
   CatmullRomCurve3,
   CylinderGeometry,
   Group,
@@ -7,6 +8,7 @@ import {
   TubeGeometry,
   Vector3,
 } from 'three';
+import { allInside } from './bounds';
 import { deskHexOf } from './ink';
 import type { Kit } from './desk';
 
@@ -136,5 +138,7 @@ export function gamingPc(k: Kit, root: Group, at: [number, number, number], owne
     ]);
     k.add(keep(new TubeGeometry(curve, 24, 0.006, 6, false)), dark, [0, 0, 0], pc);
   }
+  // Every part, lights and fans included, stays inside the case (the front grille stands 9 mm proud).
+  allInside(pc, new Box3(new Vector3(-W / 2, 0, -D / 2), new Vector3(W / 2, H + 0.012, D / 2 + 0.009)), 'PC');
   return { rotors };
 }

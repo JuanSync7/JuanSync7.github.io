@@ -3,10 +3,11 @@ import type { Rng } from './rng';
 import { architecture } from './legobuildings';
 import type { Edit, Voxels } from './legoparts';
 
-/** The LEGO city is designed as an ordinary isometric city first, a field of voxels (streets,
- *  blocks, a church, a stadium, a domed museum, towers, houses, a factory, lamps, benches, cars),
- *  and only then packed into bricks: `legoCity` returns the voxels (for the smooth model) and
- *  the bricks (for the LEGO) of the same city. */
+/** The LEGO city is designed as an ordinary isometric city, a field of voxels (streets, blocks, a
+ *  church, a stadium, a domed museum, towers, houses, a factory, lamps, benches, cars), which is
+ *  only the plan: what is drawn is that plan packed into bricks. Layer 0 is the baseplate's own
+ *  tiles and plates (roads, pavements, blocks), there from the start; every brick above it is
+ *  placed by hand, block by block and course by course. */
 
 export interface Brick {
   x: number;
@@ -15,22 +16,13 @@ export interface Brick {
   d: number;
   layer: number;
   tone: NightKey;
-  /** When it clicks on during the build, 0..1; the teardown runs the same order backwards. */
+  /** When it clicks on during the build, 0..1 (the base is 0); the teardown runs it backwards. */
   order: number;
-  /** Stud cells (offsets inside the brick) with nothing above them. */
-  studs: [number, number][];
-}
-export interface Voxel {
-  x: number;
-  z: number;
-  layer: number;
-  tone: NightKey;
-  /** Position across the plate, 0 at the front corner to 1 at the back. */
-  wave: number;
+  /** Every stud on its top, with the brick that later covers it (-1: none, it stays visible). */
+  studs: { at: [number, number]; cover: number }[];
 }
 export interface City {
   bricks: Brick[];
-  voxels: Voxel[];
   layers: number;
 }
 
@@ -63,11 +55,11 @@ function pack(vox: Voxels): Brick[] {
       let ok = true;
       for (let i = 0; i < w && ok; i++) for (let j = 0; j < d && ok; j++) ok = left.get(key(l, x + i, z + j)) === tone;
       if (!ok) continue;
-      const studs: [number, number][] = [];
+      const studs: Brick['studs'] = [];
       for (let i = 0; i < w; i++) {
         for (let j = 0; j < d; j++) {
           left.delete(key(l, x + i, z + j));
-          if (!vox.has(key(l + 1, x + i, z + j))) studs.push([i, j]);
+          studs.push({ at: [i, j], cover: -1 });
         }
       }
       out.push({ x, z, w, d, layer: l, tone, order: 0, studs });
@@ -94,17 +86,43 @@ export function legoCity(rng: Rng): City {
   }
   architecture(e, PITCH, GRID);
   const bricks = pack(e.vox);
-  const layers = Math.max(...bricks.map((b) => b.layer)) + 1;
-  for (const b of bricks) {
-    const wave = (b.x + b.z) / (2 * GRID);
-    b.order = Math.min(
-      1,
-      (b.layer === 0 ? 0 : 0.12) + (1 - wave) * 0.3 * (b.layer === 0 ? 0.4 : 1) + (b.layer / layers) * 0.58,
-    );
-  }
-  const voxels: Voxel[] = [...e.vox].map(([k, tone]) => {
-    const [layer = 0, x = 0, z = 0] = k.split('|').map(Number);
-    return { x, z, layer, tone, wave: (x + z) / (2 * GRID) };
+  // Road tiles are smooth; every other part has studs, hidden while a brick sits on them.
+  const at = new Map<string, number>();
+  bricks.forEach((b, i) => {
+    for (let a = 0; a < b.w; a++) for (let c = 0; c < b.d; c++) at.set(key(b.layer, b.x + a, b.z + c), i);
   });
-  return { bricks, voxels, layers };
+  for (const b of bricks) {
+    if (b.layer === 0 && (b.tone === 'line3' || b.tone === 'inkFaint')) b.studs = [];
+    for (const s of b.studs) s.cover = at.get(key(b.layer + 1, b.x + s.at[0], b.z + s.at[1])) ?? -1;
+  }
+  // Every brick sits on whole studs and on the plate: half a stud over, or past the edge, is a
+  // brick no builder could place.
+  for (const b of bricks) {
+    const off =
+      [b.x, b.z].some((v) => !Number.isInteger(v)) || b.x < 0 || b.z < 0 || b.x + b.w > GRID || b.z + b.d > GRID;
+    if (off) throw new Error(`bounds: a brick at ${b.x},${b.z} (layer ${b.layer}) is off the studs or the plate`);
+  }
+  buildOrder(bricks);
+  return { bricks, layers: Math.max(...bricks.map((b) => b.layer)) + 1 };
+}
+
+/** The build, as nine builders at once: one per block, each laying its block course by course,
+ *  back to front within a course (so a new brick is never hidden behind the last), from the start of the build to the end; the street furniture
+ *  (cars, lamps on the roads) is a tenth queue. The base is there before anyone starts. */
+function buildOrder(bricks: Brick[]): void {
+  const queues = new Map<string, Brick[]>();
+  for (const b of bricks) {
+    if (b.layer === 0) continue;
+    const cx = b.x + b.w / 2;
+    const cz = b.z + b.d / 2;
+    const rx = cx % PITCH;
+    const rz = cz % PITCH;
+    const street = rx < 2.5 || rz < 2.5 || rx > PITCH - 1 || rz > PITCH - 1;
+    const q = street ? 'street' : `${Math.floor(cx / PITCH)}|${Math.floor(cz / PITCH)}`;
+    queues.set(q, [...(queues.get(q) ?? []), b]);
+  }
+  queues.forEach((list) => {
+    list.sort((a, b) => a.layer - b.layer || a.z - b.z || a.x - b.x);
+    list.forEach((b, i) => (b.order = 0.02 + (0.96 * i) / Math.max(1, list.length - 1)));
+  });
 }

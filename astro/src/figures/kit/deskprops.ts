@@ -1,4 +1,13 @@
-import { CylinderGeometry, Group, SphereGeometry, TorusGeometry, type MeshStandardMaterial } from 'three';
+import {
+  Box3,
+  CylinderGeometry,
+  Group,
+  SphereGeometry,
+  TorusGeometry,
+  Vector3,
+  type MeshStandardMaterial,
+} from 'three';
+import { boxIn, within } from './bounds';
 import { DESK, type Kit } from './desk';
 
 /** The details of a coder's desk: headphones on a stand, a mug, a notebook and pen, a plant, a
@@ -54,5 +63,7 @@ export function deskProps(k: Kit, root: Group, accent: MeshStandardMaterial, own
   k.add(cyl(0.03, 0.03, 0.004), k.mat('bezel', 0.5, 0), [0.08, y + 0.002, -0.3]);
   k.add(k.rounded(0.9, 0.06, 0.12, 0.004), metal, [0, y - 0.1, -0.26]);
   // Light strip under the desk's front edge.
-  k.add(k.rounded(DESK.w - 0.1, 0.006, 0.008, 0.002), accent, [0, y - 0.034, DESK.d / 2 - 0.03]);
+  const strip = k.add(k.rounded(DESK.w - 0.1, 0.006, 0.008, 0.002), accent, [0, y - 0.034, DESK.d / 2 - 0.03]);
+  const under = new Box3(new Vector3(-DESK.w / 2, 0, -DESK.d / 2), new Vector3(DESK.w / 2, y, DESK.d / 2));
+  within(boxIn(strip, root), under, 'desk light strip');
 }

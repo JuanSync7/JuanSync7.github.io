@@ -131,4 +131,9 @@ scene (kits `desk.ts`, `deskprops.ts`, `keyboard.ts`, `gamingpc.ts`, `chair.ts`,
 filter; it is designed as a voxel model but only its bricks are ever drawn. `dev-desk` is exempt
 from the page filter (`figure-canvas.css`) and takes true material colours from `deskTones` in
 `palette.ts` (cool neutrals inside the audit's band), its one accent from `--nt-signal` at run time;
-it passes the generic audit unchanged. Stickers are static art with classes `i`, `f`, `g`, `a`, `k`.
+it passes the generic audit unchanged. Stickers are static art in a teenage artist's hand (bold
+outline, cel shade, gloss, doodles) with classes `o`, `i`, `t`, `h`, `f`, `g`, `a`, `k`; no brand marks.
+The LEGO city draws only bricks: its base (layer 0) is there from the first frame, bricks drop onto
+it and come off it, and every brick sits on whole studs inside the plate (`legoCity` throws otherwise).
+Every part of a scene sits inside what holds it: use `kit/bounds.ts` (`mustSit`, `allSit`,
+`allInside`) for lights, strips, ports and inner parts, so a part that pokes out fails the audit.
