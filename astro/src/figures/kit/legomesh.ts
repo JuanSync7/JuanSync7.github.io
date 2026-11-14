@@ -1,76 +1,14 @@
-import {
-  BoxGeometry,
-  BufferGeometry,
-  CylinderGeometry,
-  ExtrudeGeometry,
-  LatheGeometry,
-  Shape,
-  SphereGeometry,
-  Vector2,
-} from 'three';
-import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import { BoxGeometry, BufferGeometry, CylinderGeometry, LatheGeometry, SphereGeometry, Vector2 } from 'three';
+import { detail } from './legodetail';
+import { box, fall, GAP, join, plan, profile, SEG, studsAt, type BodyOpts, type Part } from './legogeo';
 import { footprint, HOLE_Y, PLATE, wedgeOutline, type Kind, type Piece } from './legoset';
+
+export { STUD_H, STUD_R, join, type BodyOpts, type Part } from './legogeo';
 
 /** The 3D shape of every catalogue piece, in the piece's own frame: its footprint from (0, 0) to
  *  (w, d) on x and z, its bottom at y = 0. The same builders draw the smooth isometric model
  *  (`studs: false`, no gap, one body per shape) so the two views share their geometry. A piece
  *  can have more than one part (a wheel is a tyre and a rim); `tone` overrides the piece's own. */
-
-export const STUD_R = 0.3;
-export const STUD_H = 0.18;
-const GAP = 0.02;
-const SEG = 16;
-
-export interface Part {
-  geo: BufferGeometry;
-  tone?: 'rim' | 'dark';
-}
-export interface BodyOpts {
-  studs: boolean;
-  gap: number;
-}
-
-/** Merges parts of mixed kinds (indexed boxes, unindexed extrusions) into one geometry. */
-export function join(list: BufferGeometry[]): BufferGeometry {
-  const flat = list.map((g) => {
-    const f = g.index ? g.toNonIndexed() : g;
-    f.deleteAttribute('uv');
-    return f;
-  });
-  const out = mergeGeometries(flat);
-  if (!out) throw new Error('lego: parts would not merge');
-  return out;
-}
-
-const box = (x0: number, y0: number, z0: number, x1: number, y1: number, z1: number): BufferGeometry =>
-  new BoxGeometry(x1 - x0, y1 - y0, z1 - z0).translate((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2);
-
-/** A side profile (u along x, height y) pushed across z from g to d - g. */
-function profile(points: [number, number][], d: number, g: number): BufferGeometry {
-  const s = new Shape(points.map(([u, y]) => new Vector2(u, y)));
-  return new ExtrudeGeometry(s, { depth: d - 2 * g, bevelEnabled: false }).translate(0, 0, g);
-}
-
-/** A plan outline (u along x, v along z) pushed up from 0 to h. */
-function plan(points: [number, number][], h: number): BufferGeometry {
-  const s = new Shape(points.map(([u, v]) => new Vector2(u, -v)));
-  return new ExtrudeGeometry(s, { depth: h, bevelEnabled: false, curveSegments: SEG }).rotateX(-Math.PI / 2);
-}
-
-const studsAt = (cells: [number, number][], top: number): BufferGeometry[] =>
-  cells.map(([i, j]) =>
-    new CylinderGeometry(STUD_R, STUD_R, STUD_H, SEG).translate(i + 0.5, top + STUD_H / 2, j + 0.5),
-  );
-
-/** A falling top from height `hi` at u = 0 to `lo` at u = run: straight or a convex curve. */
-function fall(run: number, hi: number, lo: number, curved: boolean, from = 0): [number, number][] {
-  const n = curved ? 10 : 1;
-  return Array.from({ length: n + 1 }, (_, k): [number, number] => {
-    const t = k / n;
-    const y = curved ? lo + (hi - lo) * Math.cos((t * Math.PI) / 2) : hi + (lo - hi) * t;
-    return [from + (run - from) * t, y];
-  });
-}
 
 /** The tyre: a lathe of a rounded section between the rim and the tread, with two grooves. */
 function tyre(r: number, d: number): BufferGeometry {
@@ -182,5 +120,7 @@ export function body(p: Piece, o: BodyOpts = { studs: true, gap: GAP }): Part[] 
       const r = p.r ?? 0.12;
       return merge([box(-r, cy - r / 3, 0, r, cy + r / 3, d), box(-r / 3, cy - r, 0, r / 3, cy + r, d)]);
     }
+    default:
+      return detail(p, o);
   }
 }

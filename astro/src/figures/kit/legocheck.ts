@@ -1,17 +1,8 @@
-import { cellOf, cellsOf, footprint, HOLE_Y, key, studsOf, turn, type Piece } from './legoset.ts';
+import { cellsOf, HOLE_Y, key, socketsOf, studsOf, turn, type Piece } from './legoset.ts';
 
 /** The checks every LEGO model must pass, kept apart from the catalogue and the swap so the code
  *  that builds a model is not the code that judges it. Pure; run in node by `npm run lego:check`
  *  and at build by every LEGO figure (`mustHold`, which throws, so the figure audit fails). */
-
-/** Where a piece takes studs from below: every bottom cell, except on rolling parts. */
-const socketsOf = (p: Piece): string[] =>
-  p.kind === 'wheel' || p.kind === 'axle'
-    ? []
-    : footprint(p).fill.map(([i, j]) => {
-        const [x, z] = cellOf(p, i, j);
-        return key(x, p.y, z);
-      });
 
 /** Technic holes: the axis x of each, its height, and the z span it runs through. */
 const holesOf = (p: Piece): { x: number; y: number; z0: number; z1: number }[] =>

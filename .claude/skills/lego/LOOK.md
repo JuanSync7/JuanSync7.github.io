@@ -12,7 +12,7 @@ Read each sheet; answer each question with what the sheet shows (the view and wh
 
 ## LEGO (stage 5)
 
-- Through all eight angles and the top and low views: is any piece inside another, or hanging
+- Through all twelve angles and the top, low and under views: is any piece inside another, or hanging
   in the air? (The check says no; the sheet is where a wrong check would show.)
 - Does every slanted or curved surface use a slope, curve, wedge or round, not stepped bricks?
 - Do the studs, tiles and grilles fall where a builder would put them?

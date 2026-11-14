@@ -56,7 +56,9 @@ function solidOf(s: Shape): Piece[] {
     case 'technic':
       return [{ ...at, kind: 'brick', x: s.x, y: s.y, z: s.z, w: s.len, d: s.rows, h: 3 }];
     case 'halo':
-      return [{ ...at, kind: 'uplate', x: s.x, y: s.y, z: s.z, w: s.len, d: s.wid, h: 1, rot: 2 }];
+      return [{ ...at, kind: 'uplate', x: s.x, y: s.y, z: s.z, w: s.len, d: s.wid, h: 1, rot: ROT[s.dir] }];
+    case 'part':
+      return [{ ...at, kind: s.part, x: s.x, y: s.y, z: s.z, w: s.w, d: s.d, h: s.h, rot: ROT[s.dir ?? 'x+'], ...(s.hand ? { hand: s.hand } : {}) }]; // prettier-ignore
     case 'wheel':
       return [{ ...at, kind: 'wheel', x: s.x, z: s.z, w: 0, d: s.width, h: 0, cy: s.cy, r: s.r }];
     case 'axle':

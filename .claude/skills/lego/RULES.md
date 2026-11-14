@@ -15,12 +15,18 @@ Each rule says what it is held by. A rule held by a check is not a judgment call
 
 ## Shapes
 
-- Draw the plan with the angles the catalogue has: straight 45° (`slope45`), the 1 × 1 slope
-  (`cheese`), the 2-long and 4-long curves (`curve2`, `curve4`), tapered plates (`wedge`), rounds
-  and domes, wheels. A ramp is one piece deep; a longer fall is several ramps stepped down.
+- Draw the plan with the angles the catalogue has: 45° and 33° slopes, the inverted 45° for
+  undersides, the 1 × 1 slope (`cheese`, also a rounded edge along a top), the 2-, 3- and 4-long
+  curves, tapered plates (`wedge`), quarter and round tiles, rounds, domes, cones, bars, fins,
+  wheels. A ramp is one piece deep; a longer fall is several ramps stepped down.
+- Detail is shape, not count: rounded edges (a row of `cheese` along a top edge), undercuts
+  (`inv45`), tapers in plan (`wedge`), smooth tops where a builder would tile, small parts that
+  name the object (fins, winglets, a T-camera). More pieces follow from that.
 - A block is laid in a bond: courses alternate direction and a course is re-laid until its seams
   are bridged by the next. A single course of plates holds together only where something above
   bridges it, so a wing is two plates thick or hangs from one piece. (Check: `floating`.)
+- A part that reaches out from what holds it (a wishbone, a beam wing) is one piece laid toward
+  its holder (`lay: 'z'`), or two courses, so it is held; a single course of small plates is not.
 - Smooth tops are a tile course (`top: 'tiles'`), vents a grille course; studs stay where
   something will attach or where the studded look is wanted.
 - Structure as a builder would: a root (a floor plate, a baseplate); axles through technic bricks

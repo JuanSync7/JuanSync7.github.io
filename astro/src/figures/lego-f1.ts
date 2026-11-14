@@ -22,8 +22,10 @@ const SCALE = 0.36;
 const REST = 1.2;
 /** Where the loop opens: the floor and the axle mounts are down, the survival cell going on. */
 const OPEN = 12;
+/** The turn that shows the car nose first, from the front left. */
+const FACE = 1.95;
 /** Seconds: per piece while building, standing, taking apart, the bare base. */
-const T = { per: 0.16, hold: 6, tear: 10, rest: 2.5, press: 0.55, lift: 0.7 };
+const T = { per: 0.12, hold: 6, tear: 10, rest: 2.5, press: 0.55, lift: 0.7 };
 const DROP = 6;
 
 interface State {
@@ -90,7 +92,7 @@ export default defineThreeFigure<State>({
     cam.updateProjectionMatrix();
     const finished = f.still && Math.abs(f.t - REST) < 1e-3;
     const u = finished ? s.build + T.hold / 2 : (f.t + OPEN) % s.loop;
-    s.turn.rotation.y = finished ? -0.5 : -0.5 + (u / s.loop) * Math.PI * 2;
+    s.turn.rotation.y = FACE + (finished ? 0 : (u / s.loop) * Math.PI * 2);
     s.pieces.forEach((p, i) => s.model.place(i, lift(p.order ?? 0, u, s)));
     s.model.commit();
   },

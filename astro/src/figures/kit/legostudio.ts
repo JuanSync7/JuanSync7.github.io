@@ -36,9 +36,10 @@ const PLAN: View[] = [
   { label: 'iso', az: 45, el: 30 },
 ];
 const ORBIT: View[] = [
-  ...Array.from({ length: 8 }, (_, k): View => ({ label: `${k * 45}°`, az: k * 45, el: 26 })),
+  ...Array.from({ length: 12 }, (_, k): View => ({ label: `${k * 30}°`, az: k * 30, el: 26 })),
   { label: 'top', az: 30, el: 80 },
   { label: 'low', az: 30, el: 4 },
+  { label: 'under', az: 210, el: -35 },
 ];
 
 const one = (kind: Kind, w: number, d: number, h: number, extra: Partial<Piece> = {}): Piece => ({
@@ -52,6 +53,14 @@ const SAMPLE: Record<Kind, Piece> = {
   grille: one('grille', 2, 1, 1),
   technic: one('technic', 2, 1, 3),
   slope45: one('slope45', 2, 2, 3),
+  slope33: one('slope33', 3, 1, 3),
+  inv45: one('inv45', 2, 2, 3),
+  curve3: one('curve3', 3, 1, 2),
+  quarter: one('quarter', 1, 1, 1),
+  roundtile: one('roundtile', 2, 2, 1),
+  cone: one('cone', 1, 1, 3),
+  bar: one('bar', 1, 1, 8),
+  fin: one('fin', 6, 1, 6),
   cheese: one('cheese', 1, 1, 2),
   curve2: one('curve2', 2, 1, 2),
   curve4: one('curve4', 4, 1, 3),

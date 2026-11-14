@@ -16,18 +16,22 @@ interface At {
   tone: NightKey;
 }
 export type Shape =
-  | (At & { kind: 'block'; w: number; d: number; h: number; top?: 'studs' | 'tiles' | 'grille'; root?: boolean })
-  | (At & { kind: 'ramp'; profile: 'slope45' | 'cheese' | 'curve2' | 'curve4'; wid: number; dir: Dir })
+  | (At & { kind: 'block'; w: number; d: number; h: number; top?: 'studs' | 'tiles' | 'grille'; root?: boolean; lay?: 'x' | 'z' }) // prettier-ignore
+  | (At & { kind: 'ramp'; profile: keyof typeof PROFILE; wid: number; dir: Dir })
   | (At & { kind: 'wedge'; len: number; wid: number; dir: Dir; hand: 'L' | 'R' })
   | (At & { kind: 'round'; size: 1 | 2; h: number; cap?: boolean })
   | (At & { kind: 'technic'; len: number; rows: number })
   | (At & { kind: 'halo'; len: number; wid: number; dir: Dir })
+  | (At & { kind: 'part'; part: Kind; w: number; d: number; h: number; dir?: Dir; hand?: 'L' | 'R' })
   | { kind: 'wheel'; x: number; cy: number; z: number; width: number; r: number; tone: NightKey }
   | { kind: 'axle'; x: number; cy: number; z: number; len: number; tone: NightKey };
 
 /** A ramp profile: how far it runs and how many plates it falls. */
 export const PROFILE = {
   slope45: { run: 2, h: 3 },
+  slope33: { run: 3, h: 3 },
+  inv45: { run: 2, h: 3 },
+  curve3: { run: 3, h: 2 },
   cheese: { run: 1, h: 2 },
   curve2: { run: 2, h: 2 },
   curve4: { run: 4, h: 3 },
@@ -98,11 +102,12 @@ function holds(courses: Piece[][]): boolean {
 
 /** A block's courses, each re-laid with a shifted first piece until the block holds together:
  *  the bond a builder uses, so no seam runs through the whole block. */
-function bond(kinds: Kind[], s: At & { w: number; d: number }): Piece[] {
+function bond(kinds: Kind[], s: At & { w: number; d: number; lay?: 'x' | 'z' }): Piece[] {
   const courses: Piece[][] = [];
   let y = s.y;
   kinds.forEach((kind, n) => {
-    const tries = [0, 1, 3, 2, 5].map((phase) => course(kind, s, y, n % 2 === 1, phase));
+    const odd = (n % 2 === 1) !== (s.lay === 'z');
+    const tries = [0, 1, 3, 2, 5].map((phase) => course(kind, s, y, odd, phase));
     courses.push(tries.find((c) => holds([...courses, c])) ?? tries[0] ?? []);
     y += kind === 'brick' ? 3 : 1;
   });
@@ -147,6 +152,8 @@ export function swap(s: Shape): Piece[] {
       return Array.from({ length: s.rows }, (_, k) => base('technic', { ...s, z: s.z + k }, s.len, 1, 3));
     case 'halo':
       return [base('uplate', s, s.len, s.wid, 1, ROT[s.dir])];
+    case 'part':
+      return [{ ...base(s.part, s, s.w, s.d, s.h, ROT[s.dir ?? 'x+']), ...(s.hand ? { hand: s.hand } : {}) }];
     case 'wheel':
       return [{ kind: 'wheel', x: s.x, y: 0, z: s.z, w: 0, d: s.width, h: 0, rot: 0, tone: s.tone, cy: s.cy, r: s.r }];
     case 'axle':
@@ -163,3 +170,47 @@ export function build(shapes: Shape[]): Piece[] {
   ranked.forEach(({ p }, k) => (p.order = k / Math.max(1, ranked.length - 1)));
   return pieces.map(({ p }) => p);
 }
+
+/** The same shape on the other side of a model `width` studs wide (mirrored across z): its z
+ *  flipped, its z-direction reversed and a wedge's cut side swapped. */
+export function mirror(s: Shape, width: number): Shape {
+  const flip = (d: Dir): Dir => (d === 'z+' ? 'z-' : d === 'z-' ? 'z+' : d);
+  const hand = (h: 'L' | 'R'): 'L' | 'R' => (h === 'L' ? 'R' : 'L');
+  switch (s.kind) {
+    case 'block':
+      return { ...s, z: width - s.z - s.d, root: false };
+    case 'ramp': {
+      const across = s.dir === 'x+' || s.dir === 'x-' ? s.wid : PROFILE[s.profile].run;
+      return { ...s, z: width - s.z - across, dir: flip(s.dir) };
+    }
+    case 'wedge': {
+      const across = s.dir === 'x+' || s.dir === 'x-' ? s.wid : s.len;
+      return { ...s, z: width - s.z - across, dir: flip(s.dir), hand: hand(s.hand) };
+    }
+    case 'part': {
+      const dir = s.dir ?? 'x+';
+      const across = dir === 'x+' || dir === 'x-' ? s.d : s.w;
+      // A quarter tile's round edge faces (+u, +v): mirroring swaps its turn with the neighbour's.
+      const q: Record<Dir, Dir> = { 'x+': 'z-', 'z-': 'x+', 'z+': 'x-', 'x-': 'z+' };
+      return {
+        ...s,
+        z: width - s.z - across,
+        dir: s.part === 'quarter' ? q[dir] : flip(dir),
+        ...(s.hand ? { hand: hand(s.hand) } : {}),
+      };
+    }
+    case 'round':
+      return { ...s, z: width - s.z - s.size };
+    case 'technic':
+      return { ...s, z: width - s.z - s.rows };
+    case 'halo':
+      return { ...s, z: width - s.z - s.wid };
+    case 'wheel':
+      return { ...s, z: width - s.z - s.width };
+    case 'axle':
+      return { ...s, z: width - s.z - s.len };
+  }
+}
+
+/** A shape and its mirror. */
+export const both = (s: Shape, width: number): Shape[] => [s, mirror(s, width)];

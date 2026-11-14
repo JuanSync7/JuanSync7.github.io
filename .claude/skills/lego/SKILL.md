@@ -29,7 +29,7 @@ server up (`npx astro dev --port 4321 --host 127.0.0.1`).
    piece, everything connected to it by studs or axles. Then
    `npm run lego:sheet -- <model> wire` and read the top, side, front and isometric views.
 3. **Isometric model.** `npm run lego:sheet -- <model> solid`: each shape as one smooth solid,
-   turned through 360° plus top and low views. Fix proportions and silhouette here, while they
+   turned through twelve angles plus top, low and under views. Fix proportions and silhouette here, while they
    are cheap to change. Use `--only=45 --tile=1400` for a close view.
 4. **Catalogue.** If the model needs a shape no piece has, add the piece to the catalogue first
    (`kit/legoset.ts` cells and studs, `kit/legomesh.ts` geometry, a sample in

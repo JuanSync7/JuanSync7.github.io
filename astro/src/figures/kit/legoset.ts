@@ -24,9 +24,17 @@ export type Kind =
   | 'dome' // 2 x 2 dome: a helmet, a light
   | 'uplate' // a U-shaped plate: a ring with two legs (the F1 halo)
   | 'wheel' // rim and tyre on an axle along z
-  | 'axle'; // a cross axle along z
+  | 'axle' // a cross axle along z
+  | 'slope33' // 3 deep, 1 stud row then a 33 degree face, 3 plates tall
+  | 'inv45' // inverted 45 degree slope, 2 deep: flat studded top, the underside rising away
+  | 'curve3' // curved slope, 3 long, 2 plates tall
+  | 'quarter' // 1 x 1 quarter-round tile: a rounded corner
+  | 'roundtile' // round tile, 1 x 1 or 2 x 2: lights, wheel caps, a camera lens
+  | 'cone' // 1 x 1 cone, 3 plates, an open stud on top
+  | 'bar' // a thin bar standing in a stud, h plates long: antennas, stalks
+  | 'fin'; // a thin upright fin rising toward its back end: a shark fin, a strake
 
-export const KINDS: Kind[] = ['brick', 'plate', 'tile', 'grille', 'technic', 'slope45', 'cheese', 'curve2', 'curve4', 'wedge', 'round', 'dome', 'uplate', 'wheel', 'axle']; // prettier-ignore
+export const KINDS: Kind[] = ['brick', 'plate', 'tile', 'grille', 'technic', 'slope45', 'slope33', 'inv45', 'cheese', 'curve2', 'curve3', 'curve4', 'wedge', 'quarter', 'round', 'roundtile', 'cone', 'dome', 'bar', 'fin', 'uplate', 'wheel', 'axle']; // prettier-ignore
 
 export interface Piece {
   kind: Kind;
@@ -53,7 +61,9 @@ export interface Piece {
 export const PLATE = 0.4;
 export const HOLE_Y = 1.75;
 const WEDGE_TIP = 0.5;
-const SMOOTH: Kind[] = ['tile', 'grille', 'cheese', 'curve2', 'curve4', 'dome', 'uplate', 'wheel', 'axle'];
+const SMOOTH: Kind[] = ['tile', 'grille', 'cheese', 'curve2', 'curve3', 'curve4', 'dome', 'uplate', 'wheel', 'axle', 'quarter', 'roundtile', 'bar', 'fin']; // prettier-ignore
+/** Ramps whose top carries studs only on their first row. */
+const STUD_ROW: Kind[] = ['slope45', 'slope33'];
 
 /** A local point (u, v) of a piece's footprint on the grid, after its quarter turn. */
 export function turn(p: Piece, u: number, v: number): [number, number] {
@@ -92,12 +102,15 @@ export function footprint(p: Piece): { fill: [number, number][]; studs: [number,
       if (p.kind === 'uplate') touched = j === 0 || j === p.d - 1 || i === p.w - 1;
       if (!touched) continue;
       fill.push([i, j]);
-      const studded = !SMOOTH.includes(p.kind) && (p.kind !== 'slope45' || i === 0);
+      const studded = !SMOOTH.includes(p.kind) && (!STUD_ROW.includes(p.kind) || i === 0);
       if (studded && inside) studs.push([i, j]);
     }
   }
   return { fill, studs };
 }
+
+/** How many plates a piece stands at column i: a fin rises along its length, the rest are flat. */
+export const heightAt = (p: Piece, i: number): number => (p.kind === 'fin' ? Math.ceil((p.h * (i + 1)) / p.w) : p.h);
 
 export const key = (x: number, y: number, z: number): string => `${x},${y},${z}`;
 export const cellOf = (p: Piece, i: number, j: number): [number, number] => {
@@ -125,7 +138,7 @@ export function cellsOf(p: Piece): string[] {
   const out: string[] = [];
   for (const [i, j] of footprint(p).fill) {
     const [x, z] = cellOf(p, i, j);
-    for (let y = p.y; y < p.y + p.h; y++) out.push(key(x, y, z));
+    for (let y = p.y; y < p.y + heightAt(p, i); y++) out.push(key(x, y, z));
   }
   return out;
 }
@@ -134,3 +147,15 @@ export function cellsOf(p: Piece): string[] {
 export function studsOf(p: Piece): { at: [number, number][]; top: number } {
   return { at: footprint(p).studs.map(([i, j]) => cellOf(p, i, j)), top: p.y + p.h };
 }
+
+/** Where a piece takes studs from below: every bottom cell, but only the stud row of an inverted
+ *  slope (the rest of its underside slants) and none on rolling parts. */
+export const socketsOf = (p: Piece): string[] =>
+  p.kind === 'wheel' || p.kind === 'axle'
+    ? []
+    : footprint(p)
+        .fill.filter(([i]) => p.kind !== 'inv45' || i === 0)
+        .map(([i, j]) => {
+          const [x, z] = cellOf(p, i, j);
+          return key(x, p.y, z);
+        });
