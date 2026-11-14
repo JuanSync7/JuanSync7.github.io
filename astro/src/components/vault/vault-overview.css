@@ -8,7 +8,8 @@
 .vault-boundary { margin-top: var(--hf-space-2) !important; max-width: var(--nt-measure); }
 .vault-chapters { display: flex; flex-wrap: wrap; align-items: center; gap: var(--hf-space-4) var(--hf-space-8); padding-block: var(--hf-space-4); border-block: 1px solid var(--pr-rule); position: sticky; top: var(--pr-site-nav-h, var(--hf-space-16)); z-index: var(--hf-z-content); background: var(--nt-ground); }
 .vault-scroll-progress { position: absolute; bottom: 0; left: var(--nt-gutter); width: calc(100% - var(--nt-gutter) * 2); height: var(--pr-section-rule-height); background: var(--pr-label); transform: scaleX(0); transform-origin: left; pointer-events: none; }
-.pr-landing [data-presentation-section] { scroll-margin-top: var(--pr-scroll-inset); }
+/* Outranks the generic `.paper [id]` offset whatever order the stylesheets load in. */
+.pr-landing [id][data-presentation-section] { scroll-margin-top: var(--pr-scroll-inset); }
 html:has(.pr-landing) { scroll-behavior: smooth; }
 .vault-chapters a { color: var(--pr-comment); min-height: var(--nt-hit); display: inline-flex; align-items: center; }
 .pr-page .vault-chapters a[aria-current='location'] { color: var(--pr-label); }

@@ -4,9 +4,9 @@
 <title id="vault-knowledge-graph-title">Experience vault / knowledge graph</title>
 <desc id="vault-knowledge-graph-desc">arrows = the named relation from one record to another · lit = an example lesson Illustrative records only. Two pages can share a group and link sideways; an explicit supported_by relation provides a route to evidence. Following a link exposes a source to inspect, not a guarantee that its claim is true. Group: The invented topic Retry policy and lesson Bound retry work each belong to the Reliable systems grouping page. Cross-link: The lesson links sideways to the topic; their shared group supplies another route between them. Inspect evidence: The lesson has an illustrative supported_by relation to an invented work note. Its evidence and trust labels still need to be read. Enter anywhere: Start at a group, topic, lesson or source. Follow outgoing relations, backlinks or inverse membership to discover wider context.</desc>
 <style>
-text{font-family:'Geist', system-ui, sans-serif;fill:#e6e8ee}
-.heading{font-family:'Space Grotesk', 'Geist', sans-serif;font-size:21px;font-weight:600}.meta,.label{font-family:'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;font-size:11px;fill:#a3a9ba}
-.name{font-size:14px;font-weight:600}.sub{font-family:'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;font-size:11px;fill:#a3a9ba}
+text{font-family:'Geist Variable', 'Geist', system-ui, sans-serif;fill:#e6e8ee}
+.heading{font-family:'Space Grotesk Variable', 'Geist Variable', sans-serif;font-size:21px;font-weight:600}.meta,.label{font-family:'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;font-size:11px;fill:#a3a9ba}
+.name{font-size:14px;font-weight:600}.sub{font-family:'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;font-size:11px;fill:#a3a9ba}
 .caption{font-size:12px;fill:#a3a9ba}.reading{font-size:12px;fill:#2dd4bf}
 .wire{fill:none;stroke:#2dd4bf;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 </style>

@@ -4,9 +4,9 @@
 <title id="vault-architecture-title">Experience vault / architecture</title>
 <desc id="vault-architecture-desc">arrows = inputs read by the next component · lit = hand-authored guidance Collected evidence becomes generated notes, then an indexed graph that a reader or agent can inspect. Authored guidance stays separately owned and can also be selected directly. Privacy and publication checks cover the outgoing bundle across these stages. Collect: Work records and source notes provide evidence for the record. Summarise: Bounded, cached model calls produce structured accounts. Hand-authored guidance is a separate input, with its own authority. Render and index: Rebuildable notes receive metadata, identities, links and grouping routes; the index makes those routes searchable. Retrieve: A reader or calling agent searches, inspects and selects source context, including authored guidance directly. Privacy and publication checks govern what may leave the system.</desc>
 <style>
-text{font-family:'Geist', system-ui, sans-serif;fill:#e6e8ee}
-.heading{font-family:'Space Grotesk', 'Geist', sans-serif;font-size:21px;font-weight:600}.meta,.label{font-family:'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;font-size:11px;fill:#a3a9ba}
-.name{font-size:14px;font-weight:600}.sub{font-family:'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;font-size:11px;fill:#a3a9ba}
+text{font-family:'Geist Variable', 'Geist', system-ui, sans-serif;fill:#e6e8ee}
+.heading{font-family:'Space Grotesk Variable', 'Geist Variable', sans-serif;font-size:21px;font-weight:600}.meta,.label{font-family:'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;font-size:11px;fill:#a3a9ba}
+.name{font-size:14px;font-weight:600}.sub{font-family:'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;font-size:11px;fill:#a3a9ba}
 .caption{font-size:12px;fill:#a3a9ba}.reading{font-size:12px;fill:#2dd4bf}
 .wire{fill:none;stroke:#2dd4bf;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 </style>
