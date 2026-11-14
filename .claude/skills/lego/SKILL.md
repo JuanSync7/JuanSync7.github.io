@@ -25,13 +25,20 @@ server up (`npx astro dev --port 4321 --host 127.0.0.1`).
 1. **Brief.** Name the object and what makes it recognisable (for an F1 car: wheels outboard,
    long nose, front and rear wings, sidepods, halo, airbox). Find its real proportions and pick a
    scale: one stud = real width ÷ studs wide. Write both at the top of the model file.
+   **Reference sketch.** Before planning a part whose shape matters (a wing, a nose, a roof),
+   draw the real thing first, not in LEGO: an entry in `kit/legosketches.ts` (airfoils, thin
+   plates, posts, pods, in the model's frame and units), its sources named in its comment.
+   `npm run lego:sheet -- <sketch> sketch` (wireframe: top, side, front, iso) and `sketch3d`
+   (shaded, 360°). Work from a photograph where you have one; say when you do not.
 2. **Plan as shapes.** Write the model as a list of shapes in a new kit file (`kit/lego<name>.ts`,
    letters only), registered in `kit/legomodels.ts`. Use only the shape kinds and angles the
    catalogue has (`RULES.md`, "Shapes"). Design the structure as a builder would: one root
    piece, everything connected to it by studs or axles. Anything thin and upright or set at an
    angle (endplates, flaps) is a sub-assembly on a bracket or a hinge (`RULES.md`,
    "Sub-assemblies"). Then
-   `npm run lego:sheet -- <model> wire` and read the top, side, front and isometric views.
+   `npm run lego:sheet -- <model> wire` and read the top, side, front and isometric views. With a
+   sketch, `npm run lego:sheet -- <sketch> compare` lays the sketch (signal colour) over the
+   plan's wireframe; `solid` and `lego` with a sketch id frame that part.
 3. **Isometric model.** `npm run lego:sheet -- <model> solid`: each shape as one smooth solid,
    turned through twelve angles plus top, low and under views. Fix proportions and silhouette here, while they
    are cheap to change. Use `--only=45 --tile=1400` for a close view.

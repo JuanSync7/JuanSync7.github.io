@@ -18,12 +18,14 @@ import { smoothModel, wireModel } from './legoplan';
 import { legoModel } from './legoscene';
 import { LEGO_MODELS } from './legomodels';
 import { build } from './legoswap';
+import { sketchModel } from './legosketch';
+import { LEGO_SKETCHES } from './legosketches';
 
 /** The review bench for LEGO models, used by `npm run lego:sheet` (never by a page): the
  *  wireframe plan in four views, then the smooth isometric model and the LEGO each turned
  *  through 360 degrees, and the catalogue of pieces. Every stage is read before the next. */
 
-export type Mode = 'wire' | 'solid' | 'lego' | 'catalogue';
+export type Mode = 'wire' | 'solid' | 'lego' | 'catalogue' | 'sketch' | 'sketch3d' | 'compare';
 interface View {
   label: string;
   az: number;
@@ -106,22 +108,36 @@ function aim(box: Box3, v: View, aspect: number): OrthographicCamera {
 
 /** Renders one model's stage as a sheet of captioned tiles; returns a PNG data URL. */
 export function sheet(id: string, mode: Mode, tile = 360, only = ''): string {
-  const shapes = LEGO_MODELS[id];
+  const sketch = LEGO_SKETCHES[id];
+  const shapes = LEGO_MODELS[sketch ? sketch.model : id];
   if (!shapes) throw new Error(`lego: no model ${id}`);
   const disposers: (() => void)[] = [];
   const own = (d: () => void): void => void disposers.push(d);
   const pieces: Piece[] = build(shapes);
   mustHold(pieces, id);
   let models: Group[];
-  if (mode === 'catalogue') {
+  // A sketch frames its own parts.
+  let frame: Group | null = null;
+  if (sketch && (mode === 'sketch' || mode === 'sketch3d' || mode === 'compare')) {
+    // In `compare` the sketch is drawn in the signal colour over the plan's wireframe.
+    const ref = sketchModel(sketch.parts, mode !== 'sketch3d', own, mode === 'compare' ? 'signal' : undefined);
+    frame = ref;
+    const m = new Group().add(ref);
+    if (mode === 'compare') m.add(wireModel(shapes, 'inkSoft', own));
+    models = [m];
+  } else if (sketch && (mode === 'solid' || mode === 'lego')) {
+    // The plan or the LEGO, framed on the part the sketch draws.
+    frame = sketchModel(sketch.parts, true, own);
+    models = [mode === 'solid' ? smoothModel(shapes, own) : legoModel(pieces, own, true).group];
+  } else if (mode === 'catalogue') {
     models = KINDS.map((kind) => legoModel([SAMPLE[kind]], own, true).group);
   } else {
     const m = mode === 'wire' ? wireModel(shapes, 'ink2', own) : mode === 'solid' ? smoothModel(shapes, own) : legoModel(pieces, own, true).group; // prettier-ignore
     models = [m];
   }
-  const all = mode === 'wire' ? PLAN : mode === 'catalogue' ? KINDS.map((k): View => ({ label: k, az: 35, el: 30 })) : ORBIT; // prettier-ignore
+  const all = mode === 'wire' || mode === 'sketch' || mode === 'compare' ? PLAN : mode === 'catalogue' ? KINDS.map((k): View => ({ label: k, az: 35, el: 30 })) : ORBIT; // prettier-ignore
   const views = only ? all.filter((v) => only.split(',').includes(v.label.replace('°', ''))) : all;
-  const cols = Math.min(views.length, mode === 'wire' ? 2 : 5);
+  const cols = Math.min(views.length, mode === 'wire' || mode === 'sketch' || mode === 'compare' ? 2 : 5);
   const rows = Math.ceil(views.length / cols);
   const aspect = 4 / 3;
   const th = Math.round(tile / aspect);
@@ -145,7 +161,7 @@ export function sheet(id: string, mode: Mode, tile = 360, only = ''): string {
   views.forEach((v, k) => {
     const g = models[mode === 'catalogue' ? KINDS.indexOf(v.label as Kind) : 0] ?? new Group();
     scene.add(g);
-    const box = new Box3().setFromObject(g);
+    const box = new Box3().setFromObject(frame ?? g);
     if (box.isEmpty()) box.set(new Vector3(-1, -1, -1), new Vector3(1, 1, 1));
     r.render(scene, aim(box, v, aspect));
     const x = (k % cols) * tile;

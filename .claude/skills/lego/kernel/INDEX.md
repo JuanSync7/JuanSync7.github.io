@@ -28,5 +28,7 @@ stud). A piece's (x, z) is its footprint's minimum corner; rolling parts use the
 | `jointsOf(p)` / `legojoint.ts` | Every stud, socket and knuckle of a piece in the model's space, whichever way it faces: what `floating` joins on. |
 | `clashes(pieces, hinged)` / `legoclash.ts` | Clipping across sub-assemblies: turned cell boxes, separating-axis test. |
 | `piece(shape)` / `legoswap.ts`; `both`, `mirror` / `legomirror.ts` | The piece a part shape becomes (to hang a sub-assembly on); mirroring, sub-assemblies included. |
+| `LEGO_SKETCHES` / `legosketches.ts`; `sketchModel` / `legosketch.ts` | Reference sketches of real objects (review only): `lego:sheet -- <id> sketch \| sketch3d \| compare`. |
+| `flap`, `endplate` / `legoaero.ts`; `rearWing` / `legorearwing.ts` | Hinged flaps and thin endplates for any car; the F1's 2026 rear wing, built to the `rearwing` sketch. |
 | `RIG` / `legorig.ts` | The joint rig: a bracket with a sideways tile, a hinge with a flap. `lego:sheet -- rig`. |
 | `hollow(w, d, top, gap)` / `legounder.ts` | The real underside of a brick, plate or tile (walls, roof, tubes or pins), drawn in the LEGO view (`under: true`). |
