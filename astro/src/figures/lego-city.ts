@@ -73,7 +73,7 @@ export default defineThreeFigure<State>({
     cam.position.set(34, 30, 34);
     cam.lookAt(0, 1.7, 0);
     cam.updateProjectionMatrix();
-    f.state.set.show(f.still && f.t === REST ? FINISHED : (f.t + OPEN) % LOOP);
+    f.state.set.show(f.still && Math.abs(f.t - REST) < 1e-3 ? FINISHED : (f.t + OPEN) % LOOP);
   },
   // Without WebGL: the same idea in 2D, a baseplate with a few studded brick buildings on it.
   fallback: ({ ctx, w, h }) => {

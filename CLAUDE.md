@@ -137,3 +137,13 @@ The LEGO city draws only bricks: its base (layer 0) is there from the first fram
 it and come off it, and every brick sits on whole studs inside the plate (`legoCity` throws otherwise).
 Every part of a scene sits inside what holds it: use `kit/bounds.ts` (`mustSit`, `allSit`,
 `allInside`) for lights, strips, ports and inner parts, so a part that pokes out fails the audit.
+
+## LEGO models
+
+Anything built in LEGO uses `.claude/skills/lego/SKILL.md`: plan the model as shapes (wireframe,
+then the smooth isometric model turned through 360°), swap it into catalogue pieces, and pass
+`npm run lego:check` (no clipping, nothing floating, every piece on the grid) before it is drawn.
+Every LEGO figure calls `mustHold` at build, draws only pieces (its base included) and uses the
+standard build animation. Read the `npm run lego:sheet` sheets at each stage. The checks
+(`kit/legocheck.ts`, `scripts/lego/check.mjs`) change only with a fixture in `lego:selftest`.
+
