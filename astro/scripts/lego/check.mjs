@@ -2,7 +2,7 @@
 // piece, every block piece on whole studs and plates. `--selftest` proves each check still
 // catches a model that breaks it. Node strips the kit's types, so there is no build step.
 import { inspect } from '../../src/figures/kit/legocheck.ts';
-import { LEGO_MODELS } from '../../src/figures/kit/legomodels.ts';
+import { LEGO_MODELS, LEGO_QUEUES } from '../../src/figures/kit/legomodels.ts';
 import { build } from '../../src/figures/kit/legoswap.ts';
 
 const brick = (x, y, z) => ({ kind: 'block', x, y, z, w: 2, d: 1, h: 3, tone: 'ink' });
@@ -28,7 +28,7 @@ if (process.argv.includes('--selftest')) {
   }
 } else {
   for (const [id, shapes] of Object.entries(LEGO_MODELS)) {
-    const pieces = build(shapes);
+    const pieces = build(shapes, LEGO_QUEUES[id]);
     const r = inspect(pieces);
     const bad = [...r.offGrid.map((s) => `off grid  ${s}`), ...r.clipping.map((s) => `clipping  ${s}`), ...r.floating.map((s) => `floating  ${s}`)];
     const kinds = {};

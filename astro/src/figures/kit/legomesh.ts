@@ -3,7 +3,7 @@ import { detail } from './legodetail';
 import { box, fall, GAP, join, plan, profile, SEG, studsAt, type BodyOpts, type Part } from './legogeo';
 import { footprint, HOLE_Y, PLATE, wedgeOutline, type Kind, type Piece } from './legoset';
 
-export { STUD_H, STUD_R, join, type BodyOpts, type Part } from './legogeo';
+export { GAP, STUD_H, STUD_R, join, type BodyOpts, type Part } from './legogeo';
 
 /** The 3D shape of every catalogue piece, in the piece's own frame: its footprint from (0, 0) to
  *  (w, d) on x and z, its bottom at y = 0. The same builders draw the smooth isometric model
@@ -86,17 +86,18 @@ export function body(p: Piece, o: BodyOpts = { studs: true, gap: GAP }): Part[] 
       const c = new CylinderGeometry(w / 2 - g, w / 2 - g, top, 24).translate(w / 2, top / 2, d / 2);
       return merge([c, ...studded()]);
     }
-    case 'dome': {
-      const s = new SphereGeometry(w / 2 - g, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2).scale(
+    case 'dome':
+    case 'helmet': {
+      const seg = Math.max(24, w * 6);
+      const s = new SphereGeometry(w / 2 - g, seg, 12, 0, Math.PI * 2, 0, Math.PI / 2).scale(
         1,
         (top - 0.3) / (w / 2),
         1,
       );
-      const neck = new CylinderGeometry(w / 2 - g, w / 2 - g, 0.3, 24).translate(0, 0.15, 0);
-      return [
-        { geo: join([neck, s.translate(0, 0.3, 0)]).translate(w / 2, 0, d / 2) },
-        { geo: visor(w / 2 - g, (top - 0.3) / (w / 2)).translate(w / 2, 0.3, d / 2), tone: 'dark' },
-      ];
+      const neck = new CylinderGeometry(w / 2 - g, w / 2 - g, 0.3, seg).translate(0, 0.15, 0);
+      const shell: Part = { geo: join([neck, s.translate(0, 0.3, 0)]).translate(w / 2, 0, d / 2) };
+      if (kind === 'dome') return [shell];
+      return [shell, { geo: visor(w / 2 - g, (top - 0.3) / (w / 2)).translate(w / 2, 0.3, d / 2), tone: 'dark' }];
     }
     case 'uplate': {
       const a = d / 2;

@@ -21,7 +21,8 @@ export type Kind =
   | 'curve4' // curved slope, 4 long, 3 plates tall
   | 'wedge' // a tapered plate, cut on one side (hand R or L)
   | 'round' // round plate or brick, 1 x 1 or 2 x 2
-  | 'dome' // 2 x 2 dome: a helmet, a light
+  | 'dome' // a round dome, any even size: a roof, an onion spire
+  | 'helmet' // a 2 x 2 dome with a visor: a driver's helmet
   | 'uplate' // a U-shaped plate: a ring with two legs (the F1 halo)
   | 'wheel' // rim and tyre on an axle along z
   | 'axle' // a cross axle along z
@@ -34,7 +35,7 @@ export type Kind =
   | 'bar' // a thin bar standing in a stud, h plates long: antennas, stalks
   | 'fin'; // a thin upright fin rising toward its back end: a shark fin, a strake
 
-export const KINDS: Kind[] = ['brick', 'plate', 'tile', 'grille', 'technic', 'slope45', 'slope33', 'inv45', 'cheese', 'curve2', 'curve3', 'curve4', 'wedge', 'quarter', 'round', 'roundtile', 'cone', 'dome', 'bar', 'fin', 'uplate', 'wheel', 'axle']; // prettier-ignore
+export const KINDS: Kind[] = ['brick', 'plate', 'tile', 'grille', 'technic', 'slope45', 'slope33', 'inv45', 'cheese', 'curve2', 'curve3', 'curve4', 'wedge', 'quarter', 'round', 'roundtile', 'cone', 'dome', 'helmet', 'bar', 'fin', 'uplate', 'wheel', 'axle']; // prettier-ignore
 
 export interface Piece {
   kind: Kind;
@@ -61,7 +62,7 @@ export interface Piece {
 export const PLATE = 0.4;
 export const HOLE_Y = 1.75;
 const WEDGE_TIP = 0.5;
-const SMOOTH: Kind[] = ['tile', 'grille', 'cheese', 'curve2', 'curve3', 'curve4', 'dome', 'uplate', 'wheel', 'axle', 'quarter', 'roundtile', 'bar', 'fin']; // prettier-ignore
+const SMOOTH: Kind[] = ['tile', 'grille', 'cheese', 'curve2', 'curve3', 'curve4', 'dome', 'helmet', 'uplate', 'wheel', 'axle', 'quarter', 'roundtile', 'bar', 'fin']; // prettier-ignore
 /** Ramps whose top carries studs only on their first row. */
 const STUD_ROW: Kind[] = ['slope45', 'slope33'];
 

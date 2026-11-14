@@ -9,8 +9,10 @@ Read the project `CLAUDE.md`, the `figure` and `site-taste` skills, then `RULES.
 and `kernel/INDEX.md` here. The worked example is the F1 car: `astro/src/figures/kit/legoformula.ts`
 (the design) and `astro/src/figures/lego-f1.ts` (the figure).
 
-`lego-city` on the home page predates this pipeline (its own kits `legocity`, `legobuildings`,
-`legoparts`, `lego`); moving it onto the catalogue and checks is open work.
+The second worked example is the home page's city (`kit/legocity.ts`, `legobuildings.ts`,
+`legoparts.ts`, `lego-city.ts`): a large model planned as voxels for its walls (two plates each)
+with every roof, dome, spire, tree, lamp, bench and car a shaped part, built by ten builders at
+once (`build(shapes, queue)`).
 
 Everything drawn is LEGO pieces, from the first frame to the last. The smooth model and the
 wireframe are for planning and review only; they never appear on a page.

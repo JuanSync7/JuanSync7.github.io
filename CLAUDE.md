@@ -125,7 +125,7 @@ plan salt and add a regression before calling them fixed.
 
 The 13 November 2026 requests explicitly authorize the hand-drawn die-cut stickers
 (`figures/kit/stickers.ts`, `ui/Sticker.astro`, tokens `--pp-sticker-*`), the `lego-city` scene
-(kits `legocity.ts`, `legobuildings.ts`, `legoparts.ts`, `lego.ts`) and the realistic `dev-desk`
+(kits `legocity.ts`, `legobuildings.ts`, `legoparts.ts`, on the generic LEGO pipeline) and the realistic `dev-desk`
 scene (kits `desk.ts`, `deskprops.ts`, `keyboard.ts`, `gamingpc.ts`, `chair.ts`, `rack.ts`,
 `screens.ts`, `studio.ts`). The LEGO city stays in the night palette and is recoloured by the page
 filter; it is designed as a voxel model but only its bricks are ever drawn. `dev-desk` is exempt
@@ -133,8 +133,8 @@ from the page filter (`figure-canvas.css`) and takes true material colours from 
 `palette.ts` (cool neutrals inside the audit's band), its one accent from `--nt-signal` at run time;
 it passes the generic audit unchanged. Stickers are static art in a teenage artist's hand (bold
 outline, cel shade, gloss, doodles) with classes `o`, `i`, `t`, `h`, `f`, `g`, `a`, `k`; no brand marks.
-The LEGO city draws only bricks: its base (layer 0) is there from the first frame, bricks drop onto
-it and come off it, and every brick sits on whole studs inside the plate (`legoCity` throws otherwise).
+The LEGO city is a model of the generic pipeline (see "LEGO models"): buildings planned as voxels and
+laid as plates, roofs, domes, spires, trees, lamps, benches and cars as shaped catalogue pieces.
 Every part of a scene sits inside what holds it: use `kit/bounds.ts` (`mustSit`, `allSit`,
 `allInside`) for lights, strips, ports and inner parts, so a part that pokes out fails the audit.
 

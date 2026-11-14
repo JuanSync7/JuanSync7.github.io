@@ -14,7 +14,8 @@ import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment
 import { hexOf } from './ink';
 import { mustHold } from './legocheck';
 import { KINDS, type Kind, type Piece } from './legoset';
-import { legoModel, smoothModel, wireModel } from './legoscene';
+import { smoothModel, wireModel } from './legoplan';
+import { legoModel } from './legoscene';
 import { LEGO_MODELS } from './legomodels';
 import { build } from './legoswap';
 
@@ -66,7 +67,8 @@ const SAMPLE: Record<Kind, Piece> = {
   curve4: one('curve4', 4, 1, 3),
   wedge: one('wedge', 4, 2, 1, { hand: 'R' }),
   round: one('round', 2, 2, 3),
-  dome: one('dome', 2, 2, 3, { tone: 'signal' }),
+  dome: one('dome', 4, 4, 5),
+  helmet: one('helmet', 2, 2, 3, { tone: 'signal' }),
   uplate: one('uplate', 6, 4, 1),
   wheel: one('wheel', 0, 2, 0, { cy: 6.75, r: 2.7, tone: 'line2' }),
   axle: one('axle', 0, 6, 0, { cy: 1, r: 0.12 }),

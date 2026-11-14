@@ -22,7 +22,7 @@ export type Shape =
   | (At & { kind: 'round'; size: 1 | 2; h: number; cap?: boolean })
   | (At & { kind: 'technic'; len: number; rows: number })
   | (At & { kind: 'halo'; len: number; wid: number; dir: Dir })
-  | (At & { kind: 'part'; part: Kind; w: number; d: number; h: number; dir?: Dir; hand?: 'L' | 'R' })
+  | (At & { kind: 'part'; part: Kind; w: number; d: number; h: number; dir?: Dir; hand?: 'L' | 'R'; root?: boolean }) // prettier-ignore
   | { kind: 'wheel'; x: number; cy: number; z: number; width: number; r: number; tone: NightKey }
   | { kind: 'axle'; x: number; cy: number; z: number; len: number; tone: NightKey };
 
@@ -145,7 +145,7 @@ export function swap(s: Shape): Piece[] {
         y += h;
         left -= h;
       }
-      if (s.cap) out.push(base('dome', { ...s, y }, 2, 2, 3));
+      if (s.cap) out.push(base('helmet', { ...s, y }, 2, 2, 3));
       return out;
     }
     case 'technic':
@@ -153,7 +153,7 @@ export function swap(s: Shape): Piece[] {
     case 'halo':
       return [base('uplate', s, s.len, s.wid, 1, ROT[s.dir])];
     case 'part':
-      return [{ ...base(s.part, s, s.w, s.d, s.h, ROT[s.dir ?? 'x+']), ...(s.hand ? { hand: s.hand } : {}) }];
+      return [{ ...base(s.part, s, s.w, s.d, s.h, ROT[s.dir ?? 'x+']), ...(s.hand ? { hand: s.hand } : {}), ...(s.root ? { root: true } : {}) }]; // prettier-ignore
     case 'wheel':
       return [{ kind: 'wheel', x: s.x, y: 0, z: s.z, w: 0, d: s.width, h: 0, rot: 0, tone: s.tone, cy: s.cy, r: s.r }];
     case 'axle':
@@ -162,12 +162,23 @@ export function swap(s: Shape): Piece[] {
 }
 
 /** A whole model: every shape swapped, the build order set course by course from the bottom
- *  (in shape order within a course), axles and wheels last, as a builder fits them. */
-export function build(shapes: Shape[]): Piece[] {
+ *  (in shape order within a course), axles and wheels last, as a builder fits them. With `queue`,
+ *  pieces go to builders working side by side, each through its own pieces in that order; a piece
+ *  whose queue is null is the base, there before anyone starts (order 0). */
+export function build(shapes: Shape[], queue?: (p: Piece) => string | null): Piece[] {
   const pieces = shapes.flatMap((s, i) => swap(s).map((p) => ({ p, i })));
   const level = (p: Piece): number => (p.kind === 'axle' ? 1e3 : p.kind === 'wheel' ? 1e3 + 1 : p.y);
-  const ranked = [...pieces].sort((a, b) => level(a.p) - level(b.p) || a.i - b.i);
-  ranked.forEach(({ p }, k) => (p.order = k / Math.max(1, ranked.length - 1)));
+  const groups = new Map<string, { p: Piece; i: number }[]>();
+  for (const e of pieces) {
+    const q = queue ? queue(e.p) : '';
+    if (q === null) e.p.order = 0;
+    else groups.set(q, [...(groups.get(q) ?? []), e]);
+  }
+  for (const list of groups.values()) {
+    list.sort((a, b) => level(a.p) - level(b.p) || a.i - b.i);
+    const [from, span] = queue ? [0.02, 0.96] : [0, 1];
+    list.forEach(({ p }, k) => (p.order = from + (span * k) / Math.max(1, list.length - 1)));
+  }
   return pieces.map(({ p }) => p);
 }
 

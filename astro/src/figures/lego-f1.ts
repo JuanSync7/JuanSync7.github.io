@@ -6,6 +6,7 @@ import { legoFlat } from './kit/legoflat';
 import { F1 } from './kit/legoformula';
 import { mustHold } from './kit/legocheck';
 import type { Piece } from './kit/legoset';
+import { finishedAt, liftAt, loopOf, type Timeline } from './kit/legoplay';
 import { legoLight, legoModel, type LegoModel } from './kit/legoscene';
 import { build } from './kit/legoswap';
 
@@ -24,29 +25,16 @@ const REST = 1.2;
 const OPEN = 12;
 /** The turn that shows the car nose first, from the front left. */
 const FACE = 1.95;
-/** Seconds: per piece while building, standing, taking apart, the bare base. */
-const T = { per: 0.12, hold: 6, tear: 10, rest: 2.5, press: 0.55, lift: 0.7 };
-const DROP = 6;
+/** Seconds per piece while building; the rest of the standard timeline. */
+const PER = 0.12;
+const T = { hold: 6, tear: 10, rest: 2.5, press: 0.55, lift: 0.7, drop: 6 };
 
 interface State {
   model: LegoModel;
   pieces: Piece[];
   turn: Group;
-  build: number;
-  loop: number;
+  time: Timeline;
   size: number;
-}
-
-const clamp = (x: number): number => Math.min(1, Math.max(0, x));
-
-/** Height above its place at u seconds into the loop, or null while off the table. */
-function lift(order: number, u: number, s: State): number | null {
-  if (u < s.build + T.hold) {
-    const k = clamp((u - order * (s.build - T.press)) / T.press);
-    return k <= 0 ? null : (1 - k * k) * DROP;
-  }
-  const k = clamp((u - s.build - T.hold - (1 - order) * (T.tear - T.lift)) / T.lift);
-  return k >= 1 ? null : k * k * DROP * 2.2;
 }
 
 export default defineThreeFigure<State>({
@@ -77,8 +65,7 @@ export default defineThreeFigure<State>({
     scene.add(turn);
     // The frame fits the circle the base sweeps as the car turns.
     const size = 2 * Math.hypot(21, 8) * SCALE;
-    const b = pieces.length * T.per;
-    return { model, pieces, turn, build: b, loop: b + T.hold + T.tear + T.rest, size };
+    return { model, pieces, turn, time: { ...T, build: pieces.length * PER }, size };
   },
   update: (f) => {
     const s = f.state;
@@ -91,9 +78,10 @@ export default defineThreeFigure<State>({
     cam.lookAt(0, 1.2, 0);
     cam.updateProjectionMatrix();
     const finished = f.still && Math.abs(f.t - REST) < 1e-3;
-    const u = finished ? s.build + T.hold / 2 : (f.t + OPEN) % s.loop;
-    s.turn.rotation.y = FACE + (finished ? 0 : (u / s.loop) * Math.PI * 2);
-    s.pieces.forEach((p, i) => s.model.place(i, lift(p.order ?? 0, u, s)));
+    const loop = loopOf(s.time);
+    const u = finished ? finishedAt(s.time) : (f.t + OPEN) % loop;
+    s.turn.rotation.y = FACE + (finished ? 0 : (u / loop) * Math.PI * 2);
+    s.pieces.forEach((p, i) => s.model.place(i, liftAt(p.order ?? 0, u, s.time)));
     s.model.commit();
   },
   fallback: ({ ctx, w, h }) => {

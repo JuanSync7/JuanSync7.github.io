@@ -15,8 +15,11 @@ stud). A piece's (x, z) is its footprint's minimum corner; rolling parts use the
 | `heightAt`, `socketsOf` / `legoset.ts` | A fin rises along its length (its cells per column); an inverted slope takes studs only under its stud row. |
 | `detail(piece, opts)` / `legodetail.ts`, primitives / `legogeo.ts` | Geometry of the detail pieces (33° and inverted slopes, 3-long curve, quarter and round tiles, cone, bar, fin); `box`, `profile`, `plan`, `studsAt`, `fall`, `join` shared by both geometry files. |
 | `body(piece, opts)` / `legomesh.ts` | Each piece's 3D geometry, in its own frame, with studs, technic holes, the helmet's visor, the tyre's tread. `studs: false, gap: 0` draws the smooth plan solid. |
-| `legoModel(pieces, own)` / `legoscene.ts` | The LEGO, one instanced mesh per piece shape; `place(i, lift | null)` then `commit()` moves or hides piece i. |
-| `smoothModel`, `wireModel` / `legoscene.ts` | The isometric plan and its wireframe, one solid per shape. |
+| `legoModel(pieces, own)` / `legoscene.ts` | The LEGO, one instanced mesh per piece shape and one for every stud; `place(i, lift | null)` then `commit()` moves or hides piece i, and a stud hides once the piece that covers it is down. Unchanged pieces cost nothing. |
+| `liftAt(order, u, timeline)`, `loopOf`, `finishedAt` / `legoplay.ts` | The standard build animation every LEGO figure uses. |
+| `build(shapes, queue?)` / `legoswap.ts` | With a queue, pieces go to builders working side by side; a null queue is the base (order 0). |
+| `cityShapes`, `cityQueue` / `legocity.ts`; parts / `legoparts.ts` | The city: voxel walls laid as plates (`yOf`), shaped parts (`gable`, `dome`, `spire`, `tree`, `lamp`, `bench`, `car`) that stand on the highest voxel under them. |
+| `smoothModel`, `wireModel` / `legoplan.ts` | The isometric plan and its wireframe, one solid per shape. |
 | `legoLight(scene, renderer, own)` / `legoscene.ts` | Room environment, ambient and key light; no shadow map (pieces move). |
 | `legoFlat(ctx, cam, pieces)` / `legoflat.ts` | The no-WebGL fallback: pieces as boxes with studs, wheels as discs. |
 | `sheet(model, stage, tile, only)` / `legostudio.ts` | The review sheets behind `npm run lego:sheet`: wire in top, side, front, iso; solid and lego through twelve angles plus top, low and under. Never imported by a page. |
