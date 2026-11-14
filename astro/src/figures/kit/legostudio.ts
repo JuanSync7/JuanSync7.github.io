@@ -10,6 +10,7 @@ import {
   Vector3,
   WebGLRenderer,
 } from 'three';
+import { REAL } from './legoreal';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { hexOf } from './ink';
 import { mustHold } from './legocheck';
@@ -23,7 +24,7 @@ import { build } from './legoswap';
  *  wireframe plan in four views, then the smooth isometric model and the LEGO each turned
  *  through 360 degrees, and the catalogue of pieces. Every stage is read before the next. */
 
-export type Mode = 'wire' | 'solid' | 'lego' | 'catalogue';
+export type Mode = 'wire' | 'solid' | 'lego' | 'real' | 'catalogue';
 interface View {
   label: string;
   az: number;
@@ -112,9 +113,9 @@ export function sheet(id: string, mode: Mode, tile = 360, only = ''): string {
   mustHold(pieces, id);
   let models: Group[];
   if (mode === 'catalogue') {
-    models = KINDS.map((kind) => legoModel([SAMPLE[kind]], own).group);
+    models = KINDS.map((kind) => legoModel([SAMPLE[kind]], own, REAL).group);
   } else {
-    const m = mode === 'wire' ? wireModel(shapes, 'ink2', own) : mode === 'solid' ? smoothModel(shapes, own) : legoModel(pieces, own).group; // prettier-ignore
+    const m = mode === 'wire' ? wireModel(shapes, 'ink2', own) : mode === 'solid' ? smoothModel(shapes, own) : legoModel(pieces, own, mode === 'real' ? REAL : undefined).group; // prettier-ignore
     models = [m];
   }
   const all = mode === 'wire' ? PLAN : mode === 'catalogue' ? KINDS.map((k): View => ({ label: k, az: 35, el: 30 })) : ORBIT; // prettier-ignore

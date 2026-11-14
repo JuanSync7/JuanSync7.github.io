@@ -91,7 +91,8 @@
     "site:design-export": "node scripts/site/design-system-export.mjs",
     "lego:check": "node scripts/lego/check.mjs",
     "lego:selftest": "node scripts/lego/check.mjs --selftest",
-    "lego:sheet": "node scripts/lego/sheet.mjs"
+    "lego:sheet": "node scripts/lego/sheet.mjs",
+    "lego:ldraw": "npx tsx scripts/lego/ldraw.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",

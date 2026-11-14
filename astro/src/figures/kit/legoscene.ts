@@ -16,7 +16,7 @@ import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment
 import type { NightKey } from '../../styles/tokens/palette';
 import { hexOf } from './ink';
 import { body, GAP, STUD_H, STUD_R, type Part } from './legomesh';
-import { key, PLATE, socketsOf, studsOf, turn, type Piece } from './legoset';
+import { footprint, key, PLATE, socketsOf, studsOf, turn, type Piece } from './legoset';
 
 /** Three ways to draw one LEGO model: the wireframe plan and the smooth isometric model (one
  *  solid per shape), and the LEGO itself (one instanced mesh per piece shape, so a model of
@@ -48,6 +48,14 @@ export function legoLight(scene: Scene, renderer: WebGLRenderer, own: (d: () => 
 
 export const plastic = (): MeshStandardMaterial => new MeshStandardMaterial({ roughness: 0.38, metalness: 0 });
 
+/** Real part geometry to draw pieces with (`REAL` in kit/legoreal), kept out of this file so a
+ *  figure that draws hand-made pieces does not load the parts. */
+export interface RealParts {
+  body(p: Piece): BufferGeometry | null;
+  own(p: Piece): Set<string>;
+  stud(): BufferGeometry;
+}
+
 export interface LegoModel {
   group: Group;
   /** Moves piece i up by `lift` world units, or hides it (null). Call `commit` after a pass. */
@@ -58,12 +66,16 @@ export interface LegoModel {
 /** The LEGO: every piece's body instanced by its shape, and every stud one instance of a single
  *  stud mesh, so a stud shows only while its piece is on the table and nothing has been pressed
  *  onto it yet (a few hundred thousand covered studs are never drawn as triangles). */
-export function legoModel(pieces: Piece[], own: (d: () => void) => void): LegoModel {
+export function legoModel(pieces: Piece[], own: (d: () => void) => void, real?: RealParts): LegoModel {
   const group = new Group();
   const shapes = new Map<string, { parts: Part[]; owners: number[] }>();
+  const bodyOf = (p: Piece): Part[] => {
+    const geo = real?.body(p);
+    return geo ? [{ geo }] : body(p, { studs: false, gap: GAP });
+  };
   pieces.forEach((p, i) => {
     const k = [p.kind, p.w, p.d, p.h, p.hand, p.cy, p.r].join('|');
-    const e = shapes.get(k) ?? { parts: body(p, { studs: false, gap: GAP }), owners: [] };
+    const e = shapes.get(k) ?? { parts: bodyOf(p), owners: [] };
     e.owners.push(i);
     shapes.set(k, e);
   });
@@ -97,9 +109,15 @@ export function legoModel(pieces: Piece[], own: (d: () => void) => void): LegoMo
   const studs: { owner: number; cover: number; x: number; y: number; z: number }[] = [];
   pieces.forEach((p, i) => {
     const { at, top } = studsOf(p);
-    for (const [x, z] of at) studs.push({ owner: i, cover: sockets.get(key(x, top, z)) ?? -1, x, y: top, z });
+    const kept = real?.own(p) ?? new Set<string>();
+    const local = footprint(p).studs;
+    at.forEach(([x, z], n) => {
+      const [u, v] = local[n] ?? [0, 0];
+      if (!kept.has(`${u},${v}`)) studs.push({ owner: i, cover: sockets.get(key(x, top, z)) ?? -1, x, y: top, z });
+    });
   });
-  const nubs = add(new CylinderGeometry(STUD_R, STUD_R, STUD_H, 14).translate(0, STUD_H / 2, 0), studs.length);
+  const nub = real ? real.stud() : new CylinderGeometry(STUD_R, STUD_R, STUD_H, 14).translate(0, STUD_H / 2, 0);
+  const nubs = add(nub, studs.length);
   const ofOwner: number[][] = pieces.map(() => []);
   studs.forEach((s, n) => {
     nubs.setColorAt(n, col.set(hexOf(pieces[s.owner]?.tone ?? 'ink2')));

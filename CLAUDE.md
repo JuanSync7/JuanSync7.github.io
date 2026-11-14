@@ -146,4 +146,9 @@ then the smooth isometric model turned through 360°), swap it into catalogue pi
 Every LEGO figure calls `mustHold` at build, draws only pieces (its base included) and uses the
 standard build animation. Read the `npm run lego:sheet` sheets at each stage. The checks
 (`kit/legocheck.ts`, `scripts/lego/check.mjs`) change only with a fixture in `lego:selftest`.
+A piece can be drawn as the real LEGO part it stands for: `scripts/lego/ldraw-parts.json` names the
+LDraw part for a catalogue shape, `npm run lego:ldraw -- <ldraw dir>` fits it (size, surface, studs,
+nothing outside the shape's cells) and packs it into `kit/data/ldraw.json`, and a figure passes
+`REAL` (`kit/legoreal.ts`) to `legoModel`. A page that shows real parts credits the LDraw Parts
+Library (`LDRAW_CREDIT`). `lego:check` fails a named shape that was not packed.
 

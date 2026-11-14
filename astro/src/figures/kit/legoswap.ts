@@ -37,8 +37,9 @@ export const PROFILE = {
   curve4: { run: 4, h: 3 },
 } as const;
 
-/** Rectangles a course is packed with, biggest first. */
+/** Rectangles a course is packed with, biggest first: sizes LEGO makes (no 2 x 8 tile). */
 const SIZES: [number, number][] = [[8, 2], [6, 2], [4, 2], [3, 2], [2, 2], [8, 1], [6, 1], [4, 1], [3, 1], [2, 1], [1, 1]]; // prettier-ignore
+const sizesOf = (kind: Kind): [number, number][] => (kind === 'tile' ? SIZES.slice(1) : SIZES);
 
 const base = (kind: Kind, a: At, w: number, d: number, h: number, rot: Piece['rot'] = 0): Piece => ({
   kind,
@@ -63,7 +64,7 @@ function course(kind: Kind, s: At & { w: number; d: number }, y: number, odd: bo
     for (let j = 0; j < s.d; j++) {
       if (!free.has(`${i},${j}`)) continue;
       const first = phase > 0 && (odd ? j === 0 : i === 0);
-      for (const [a, b] of SIZES) {
+      for (const [a, b] of sizesOf(kind)) {
         if (first && a > phase) continue;
         const [w, d] = odd ? [b, a] : [a, b];
         let fits = i + w <= s.w && j + d <= s.d;

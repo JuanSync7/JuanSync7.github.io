@@ -77,6 +77,8 @@ export interface FigureMeta {
   bleed?: boolean;
   /** Width over height of the box the figure is designed for. The bench shows it at this. */
   aspect: number;
+  /** Attribution owed for material the figure draws (a parts library, a data set); shown with it. */
+  credit?: string;
 }
 
 export interface CanvasEnv {

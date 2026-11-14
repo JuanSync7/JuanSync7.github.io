@@ -40,13 +40,19 @@ server up (`npx astro dev --port 4321 --host 127.0.0.1`).
 5. **Swap and check.** `npm run lego:check`: the model is swapped into pieces and checked for
    clipping, floating pieces and pieces off the grid. Fix the design, never the check. Then
    `npm run lego:sheet -- <model> lego` and read the LEGO through 360°.
-6. **Figure.** Mount the model in a three.js figure with the standard build animation (a LEGO
+6. **Real parts.** Where a shape has a real LEGO part, name it in `scripts/lego/ldraw-parts.json`
+   (LDraw number) and run `npm run lego:ldraw -- <ldraw dir>` (library: library.ldraw.org, or the
+   GitHub mirror gkjohnson/ldraw-parts-library). A part that does not fit is refused: fix the
+   catalogue shape to match the real part (as the wedge tip was), never loosen the fit. Read
+   `npm run lego:sheet -- <model> real` against the `lego` sheet.
+7. **Figure.** Mount the model in a three.js figure with the standard build animation (a LEGO
    base present from the first frame, pieces dropping on in order, the finished model holding,
-   pieces lifting off last-on-first-off while the base stays) and `mustHold` at build.
+   pieces lifting off last-on-first-off while the base stays) and `mustHold` at build. Pass `REAL`
+   to `legoModel` to draw real parts, and credit the LDraw Parts Library where the figure shows.
    `npm run figure -- <id> --url=http://127.0.0.1:4321` and read the sheet.
-7. **Look.** Answer `LOOK.md` with the sheets as evidence. Fix the cause of anything wrong and
+8. **Look.** Answer `LOOK.md` with the sheets as evidence. Fix the cause of anything wrong and
    return to the stage where it was made.
-8. **Hand over.** The model file, any new pieces, the figure, the sheets read, and what is still
+9. **Hand over.** The model file, any new pieces, the figure, the sheets read, and what is still
    unverified. Run `npm run lego:selftest` and `npm run check` before calling it done.
 
 ## Tools and limits

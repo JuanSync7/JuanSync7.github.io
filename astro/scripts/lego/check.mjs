@@ -4,6 +4,15 @@
 import { inspect } from '../../src/figures/kit/legocheck.ts';
 import { LEGO_MODELS, LEGO_QUEUES } from '../../src/figures/kit/legomodels.ts';
 import { build } from '../../src/figures/kit/legoswap.ts';
+import { readFileSync } from 'node:fs';
+
+// Real parts: every shape `ldraw-parts.json` names a part for must have been fitted and packed
+// (`npm run lego:ldraw`); a shape it does not name is drawn hand-made, and is listed.
+const TABLE = JSON.parse(readFileSync(new URL('./ldraw-parts.json', import.meta.url), 'utf8')).parts;
+const PACKED = JSON.parse(
+  readFileSync(new URL('../../src/figures/kit/data/ldraw.json', import.meta.url), 'utf8'),
+).parts;
+const shapeOf = (p) => `${p.kind} ${Math.min(p.w, p.d)}x${Math.max(p.w, p.d)} h${p.h}${p.hand ? ` ${p.hand}` : ''}`;
 
 const brick = (x, y, z) => ({ kind: 'block', x, y, z, w: 2, d: 1, h: 3, tone: 'ink' });
 /** Each fixture adds one fault to a passing model and names the check that must catch it. */
@@ -11,9 +20,21 @@ const FIXTURES = [
   { name: 'a brick inside the chassis', expect: 'clipping', add: [brick(10, 3, 6)] },
   { name: 'a brick in mid-air', expect: 'floating', add: [brick(10, 30, 6)] },
   { name: 'a brick half a stud over', expect: 'offGrid', add: [{ ...brick(10, 30, 6), x: 10.5 }] },
-  { name: 'a plate across an axle', expect: 'clipping', add: [{ kind: 'block', x: 7, y: 6, z: 3, w: 1, d: 1, h: 1, tone: 'ink' }] },
-  { name: 'a plate inside a wheel', expect: 'clipping', add: [{ kind: 'block', x: 9, y: 4, z: 1, w: 1, d: 1, h: 1, tone: 'ink' }] },
-  { name: 'a one-course wing on the airbox', expect: 'floating', add: [{ kind: 'block', x: 20, y: 16, z: 0, w: 4, d: 14, h: 1, tone: 'ink' }] },
+  {
+    name: 'a plate across an axle',
+    expect: 'clipping',
+    add: [{ kind: 'block', x: 7, y: 6, z: 3, w: 1, d: 1, h: 1, tone: 'ink' }],
+  },
+  {
+    name: 'a plate inside a wheel',
+    expect: 'clipping',
+    add: [{ kind: 'block', x: 9, y: 4, z: 1, w: 1, d: 1, h: 1, tone: 'ink' }],
+  },
+  {
+    name: 'a one-course wing on the airbox',
+    expect: 'floating',
+    add: [{ kind: 'block', x: 20, y: 16, z: 0, w: 4, d: 14, h: 1, tone: 'ink' }],
+  },
 ];
 
 const report = (shapes) => inspect(build(shapes));
@@ -30,10 +51,20 @@ if (process.argv.includes('--selftest')) {
   for (const [id, shapes] of Object.entries(LEGO_MODELS)) {
     const pieces = build(shapes, LEGO_QUEUES[id]);
     const r = inspect(pieces);
-    const bad = [...r.offGrid.map((s) => `off grid  ${s}`), ...r.clipping.map((s) => `clipping  ${s}`), ...r.floating.map((s) => `floating  ${s}`)];
+    const key = (p) => [p.kind, p.w, p.d, p.h, p.hand ?? ''].join('|');
+    const stale = [...new Set(pieces.filter((p) => TABLE[shapeOf(p)] && !PACKED[key(p)]).map(shapeOf))];
+    const real = pieces.filter((p) => PACKED[key(p)]).length;
+    const bad = [
+      ...stale.map((s) => `not packed  ${s} (run npm run lego:ldraw)`),
+      ...r.offGrid.map((s) => `off grid  ${s}`),
+      ...r.clipping.map((s) => `clipping  ${s}`),
+      ...r.floating.map((s) => `floating  ${s}`),
+    ];
     const kinds = {};
     for (const p of pieces) kinds[p.kind] = (kinds[p.kind] ?? 0) + 1;
     console.log(`${bad.length ? 'FAIL' : 'ok  '}  ${id}: ${pieces.length} pieces ${JSON.stringify(kinds)}`);
+    const made = [...new Set(pieces.filter((p) => !TABLE[shapeOf(p)]).map(shapeOf))];
+    console.log(`      real parts: ${real} of ${pieces.length}; hand-made: ${made.join(', ') || 'none'}`);
     for (const b of bad.slice(0, 20)) console.log(`      ${b}`);
     if (bad.length) failed++;
   }

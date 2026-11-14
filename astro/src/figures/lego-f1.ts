@@ -5,8 +5,10 @@ import { clear } from './kit/draw';
 import { legoFlat } from './kit/legoflat';
 import { F1 } from './kit/legoformula';
 import { mustHold } from './kit/legocheck';
+import { LEGO_STANDS } from './kit/legomodels';
 import type { Piece } from './kit/legoset';
 import { finishedAt, liftAt, loopOf, type Timeline } from './kit/legoplay';
+import { LDRAW_CREDIT, REAL } from './kit/legoreal';
 import { legoLight, legoModel, type LegoModel } from './kit/legoscene';
 import { build } from './kit/legoswap';
 
@@ -16,7 +18,8 @@ import { build } from './kit/legoswap';
  *  come off again, last on first off, and the base waits for the next build. The car turns once
  *  through every loop, so each side is seen being built. Under reduced motion it rests finished.
  *  The model is designed as shapes and swapped into catalogue pieces (kit/legoswap), and must
- *  pass the catalogue's checks (no clipping, nothing floating) before it is drawn. */
+ *  pass the catalogue's checks (no clipping, nothing floating) before it is drawn. Each piece is
+ *  drawn as the real LEGO part it stands for (kit/legoreal, from the LDraw Parts Library). */
 
 const SCALE = 0.36;
 /** The time a still rests at (the frame loop reaches it in steps, so compare with a tolerance). */
@@ -47,6 +50,7 @@ export default defineThreeFigure<State>({
   group: 'feature',
   seed: 7312,
   aspect: 1.5,
+  credit: LDRAW_CREDIT,
   build: ({ scene, renderer, onDispose }) => {
     legoLight(scene, renderer, onDispose);
     const pieces = build(F1);
@@ -54,11 +58,11 @@ export default defineThreeFigure<State>({
     const turn = new Group();
     const car = new Group();
     car.position.set(-19.5, 0, -7);
-    const model = legoModel(pieces, onDispose);
+    const model = legoModel(pieces, onDispose, REAL);
     car.add(model.group);
     // The display base, LEGO too: a course of plates bonded under a course of tiles, so the
     // tyres stand on smooth tops. It is there from the first frame and never moves.
-    const base = legoModel(build([{ kind: 'block', x: -1, y: -2, z: -1, w: 42, d: 16, h: 2, top: 'tiles', tone: 'line2' }]), onDispose).group; // prettier-ignore
+    const base = legoModel(build(LEGO_STANDS.f1 ?? []), onDispose, REAL).group;
     car.add(base);
     turn.add(car);
     turn.scale.setScalar(SCALE);

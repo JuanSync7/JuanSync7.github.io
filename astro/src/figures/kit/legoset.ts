@@ -61,7 +61,7 @@ export interface Piece {
 /** Plates per stud of height, and the height of a technic hole above the brick's bottom. */
 export const PLATE = 0.4;
 export const HOLE_Y = 1.75;
-const WEDGE_TIP = 0.5;
+const WEDGE_TIP = 1; // as the real wing plates (41769, 41770): one stud wide at the tip
 const SMOOTH: Kind[] = ['tile', 'grille', 'cheese', 'curve2', 'curve3', 'curve4', 'dome', 'helmet', 'uplate', 'wheel', 'axle', 'quarter', 'roundtile', 'bar', 'fin']; // prettier-ignore
 /** Ramps whose top carries studs only on their first row. */
 const STUD_ROW: Kind[] = ['slope45', 'slope33'];
