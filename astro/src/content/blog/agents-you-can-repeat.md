@@ -1,6 +1,6 @@
 ---
 title: "Agents you can repeat"
-excerpt: "The agents I trust aren't the clever ones. They're the ones whose every decision a script could make has been taken away from them."
+excerpt: "The agents I trust aren't the clever ones; they're the ones with every decision a script could make taken away."
 category: tutorials
 date: 2026-10-24
 cover: workflow~3
