@@ -3,7 +3,7 @@ import NightPage from '../../layouts/NightPage.astro';
 import NightNav from '../../components/layout/NightNav.astro';
 import NightFooter from '../../components/layout/NightFooter.astro';
 import FigureCanvas from '../../components/ui/FigureCanvas.tsx';
-import { AREA, draftLayout } from '../../figures/kit/legodraft';
+import { AREA, draftLayout, titleFields } from '../../figures/kit/legodraft';
 import { build } from '../../figures/kit/legoswap';
 import { F1 } from '../../figures/kit/legoformula';
 
@@ -90,13 +90,16 @@ npm run figure -- lego-f1                 # the build, audited`;
             </tbody>
           </table>
           <dl class="lg-block">
-            <div class="lg-title"><dt>Title</dt><dd>{layout.sketch.title}</dd></div>
-            <div><dt>Drawing no.</dt><dd>JS-LEGO-REARWING-01</dd></div>
-            <div><dt>Scale (A3)</dt><dd>1:{layout.scale}</dd></div>
-            <div><dt>Projection</dt><dd>First angle</dd></div>
-            <div><dt>Drawn</dt><dd>Claude</dd></div>
-            <div><dt>Date</dt><dd>{layout.sketch.drawn}</dd></div>
-            <div><dt>Units</dt><dd>mm</dd></div>
+            {
+              titleFields(layout).flatMap((row) =>
+                row.map(([field, value, width]) => (
+                  <div style={`--lg-span: ${width / 5}`}>
+                    <dt>{field}</dt>
+                    <dd>{value}</dd>
+                  </div>
+                )),
+              )
+            }
           </dl>
         </div>
       </figure>
@@ -223,7 +226,7 @@ npm run figure -- lego-f1                 # the build, audited`;
   }
   .lg-foot {
     display: grid;
-    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr) minmax(0, 1.2fr);
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
     align-items: start;
     gap: var(--hf-space-6);
     border-top: 1px solid var(--nt-line-3);
@@ -253,17 +256,16 @@ npm run figure -- lego-f1                 # the build, audited`;
     font-weight: normal;
   }
   .lg-block {
+    grid-column: 1 / -1;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(36, minmax(0, 1fr));
     margin: 0;
     border: 1px solid var(--nt-line-3);
   }
   .lg-block > div {
+    grid-column: span var(--lg-span);
     padding: var(--hf-space-2) var(--hf-space-3);
     border: 1px solid var(--nt-line-2);
-  }
-  .lg-block .lg-title {
-    grid-column: 1 / -1;
   }
   .lg-block dt {
     font: var(--nt-fs-caption) var(--nt-mono);
@@ -275,7 +277,7 @@ npm run figure -- lego-f1                 # the build, audited`;
     font: var(--nt-fs-small) var(--nt-mono);
     color: var(--nt-ink);
   }
-  .lg-block .lg-title dd {
+  .lg-block > div:first-child dd {
     font-size: var(--nt-fs-h5);
   }
   .lg-aside {
@@ -353,6 +355,15 @@ npm run figure -- lego-f1                 # the build, audited`;
   @media (max-width: 720px) {
     .lg-foot {
       grid-template-columns: 1fr;
+    }
+    .lg-block {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .lg-block > div {
+      grid-column: auto;
+    }
+    .lg-block > div:first-child {
+      grid-column: 1 / -1;
     }
   }
 </style>

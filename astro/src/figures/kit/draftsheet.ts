@@ -1,6 +1,6 @@
 import { Color, OrthographicCamera, Scene, WebGLRenderer } from 'three';
 import { hexOf } from './ink';
-import { A3, AREA, draftScene, type Layout } from './legodraft';
+import { A3, AREA, draftScene, titleFields, WEIGHT, type Layout } from './legodraft';
 
 /** A sketch's drawing on a whole A3 sheet, for review (`npm run lego:sheet -- <sketch> drawing`):
  *  the frame, the drawing (kit/legodraft) in its area, and the words a page would set as DOM:
@@ -28,30 +28,20 @@ function text(
 }
 
 /** The title block: 180 mm wide along the bottom right, in rows of cells. */
-function titleBlock(ctx: Ctx, l: Layout, id: string, mm: number): void {
-  const [x0, y0, w, h] = [(A3.w - A3.edge - 180) * mm, (A3.h - A3.edge - A3.block) * mm, 180 * mm, A3.block * mm];
-  ctx.strokeRect(x0, y0, w, h);
-  const rows: [string, string, number][][] = [
-    [['TITLE', l.sketch.title.toUpperCase(), 180]],
-    [['DRAWING NO.', `JS-LEGO-${id.toUpperCase()}-01`, 70], ['SCALE (A3)', `1:${l.scale}`, 40], ['PROJECTION', 'FIRST ANGLE', 70]], // prettier-ignore
-    [
-      ['DRAWN', 'CLAUDE', 45],
-      ['CHECKED', '-', 45],
-      ['DATE', l.sketch.drawn, 45],
-      ['UNITS', 'MM', 45],
-    ],
-  ];
+function titleBlock(ctx: Ctx, l: Layout, mm: number): void {
+  const [x0, y0] = [(A3.w - A3.edge - 180) * mm, (A3.h - A3.edge - A3.block) * mm];
   const rh = [16, 12, 12];
   let y = y0;
-  rows.forEach((row, r) => {
+  titleFields(l).forEach((row, r) => {
+    const h = (rh[r] ?? 12) * mm;
     let x = x0;
-    row.forEach(([label, value, cw]) => {
-      ctx.strokeRect(x, y, cw * mm, (rh[r] ?? 12) * mm);
-      text(ctx, label, x + 2 * mm, y + 3 * mm, 2.2 * mm);
-      text(ctx, value, x + 2 * mm, y + (rh[r] ?? 12) * 0.62 * mm, (r === 0 ? 5 : 3.2) * mm);
+    row.forEach(([field, value, cw]) => {
+      ctx.strokeRect(x, y, cw * mm, h);
+      text(ctx, field.toUpperCase(), x + 1.5 * mm, y + 2.5 * mm, 1.8 * mm);
+      text(ctx, value.toUpperCase(), x + 1.5 * mm, y + h * 0.62, (r === 0 ? 5 : 3.5) * mm);
       x += cw * mm;
     });
-    y += (rh[r] ?? 12) * mm;
+    y += h;
   });
 }
 
@@ -106,7 +96,7 @@ function variableTable(ctx: Ctx, l: Layout, x0: number, y0: number, mm: number):
     row.forEach((cell, c) => {
       const cw = (cols[c]?.[1] ?? 10) * mm;
       ctx.strokeRect(x, y0 + r * rh * mm, cw, rh * mm);
-      text(ctx, cell, x + 1.5 * mm, y0 + (r + 0.5) * rh * mm, Math.min(2.4, rh * 0.5) * mm);
+      text(ctx, cell, x + 1.5 * mm, y0 + (r + 0.5) * rh * mm, Math.min(2.5, rh * 0.5) * mm);
       x += cw;
     });
   });
@@ -116,11 +106,12 @@ function variableTable(ctx: Ctx, l: Layout, x0: number, y0: number, mm: number):
 export function drawingSheet(id: string, width = 2400): string {
   const mm = width / A3.w;
   const disposers: (() => void)[] = [];
-  const { group, layout } = draftScene(id, (d) => void disposers.push(d));
+  const { group, layout, fit } = draftScene(id, (d) => void disposers.push(d));
   const [aw, ah] = [Math.round(AREA.w * mm), Math.round(AREA.h * mm)];
   const r = new WebGLRenderer({ antialias: true, preserveDrawingBuffer: true, alpha: true });
   r.setClearColor(new Color(0x000000), 0);
   r.setSize(aw, ah);
+  fit(aw, ah);
   const scene = new Scene().add(group);
   const cam = new OrthographicCamera(0, layout.w, 0, -layout.h, 0.1, 400);
   cam.position.set(0, 0, 200);
@@ -134,14 +125,14 @@ export function drawingSheet(id: string, width = 2400): string {
   const [ax, ay] = [A3.left * mm, A3.edge * mm];
   ctx.drawImage(r.domElement, ax, ay);
   ctx.strokeStyle = hexOf('inkSoft');
-  ctx.lineWidth = Math.max(1, 0.5 * mm);
+  ctx.lineWidth = 0.7 * mm; // ISO 5457: the frame is at least 0.7 mm
   ctx.strokeRect(ax, ay, (A3.w - A3.left - A3.edge) * mm, (A3.h - 2 * A3.edge) * mm);
-  ctx.lineWidth = Math.max(1, 0.25 * mm);
+  ctx.lineWidth = WEIGHT.thin * mm;
   ctx.fillStyle = hexOf('ink2');
-  titleBlock(ctx, layout, id, mm);
+  titleBlock(ctx, layout, mm);
   gridBorder(ctx, mm);
   const at = (fx: number, fy: number): [number, number] => [ax + fx * aw, ay + fy * ah];
-  const size = 3.2 * mm;
+  const size = 3.5 * mm;
   const nudge = { above: [0, -1], below: [0, 1], left: [-1, 0], right: [1, 0] } as const;
   for (const l of layout.labels) {
     const [x, y] = at(l.x, l.y);
@@ -157,7 +148,7 @@ export function drawingSheet(id: string, width = 2400): string {
     '3. HIDDEN EDGES DASHED. CENTRE LINES CHAIN.',
     '4. FROM THE RULES AS REPORTED. NO PHOTO TRACED.',
   ];
-  notes.forEach((n, k) => text(ctx, n, ax + 4 * mm, (top + 5 + k * 7) * mm, 2.6 * mm));
+  notes.forEach((n, k) => text(ctx, n, ax + 4 * mm, (top + 5 + k * 7) * mm, 2.5 * mm));
   variableTable(ctx, layout, (A3.left + 80) * mm, top * mm, mm);
   const url = out.toDataURL('image/png');
   disposers.forEach((d) => d());

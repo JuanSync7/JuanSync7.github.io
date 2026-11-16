@@ -9,8 +9,11 @@ export interface Sketch {
   /** The part's name on its drawing, and the real metres one stud stands for. */
   title: string;
   scale: number;
-  /** When the sketch was last drawn, for its drawing's title block. */
+  /** For its drawing's title block (ISO 7200): the date of issue, the identification number
+   *  (at most 16 characters, unique) and the revision letter. */
   drawn: string;
+  number: string;
+  revision: string;
   /** Where section A-A cuts across the span (z, studs): through every element. */
   cut: number;
   parts: SketchPart[];
@@ -49,7 +52,9 @@ export const LEGO_SKETCHES: Record<string, Sketch> = {
     model: 'f1',
     title: 'Rear wing, 2026 rules',
     scale: 0.135,
-    drawn: '2026-11-14',
+    drawn: '2026-11-16',
+    number: 'JS-LEGO-0001',
+    revision: 'B',
     cut: 5,
     parts: [
       // The three elements: main plane, a larger second element, a short steep third.
@@ -123,7 +128,9 @@ export const LEGO_SKETCHES: Record<string, Sketch> = {
     model: 'f1',
     title: 'Front wing, 2026 rules',
     scale: 0.135,
-    drawn: '2026-11-14',
+    drawn: '2026-11-16',
+    number: 'JS-LEGO-0002',
+    revision: 'B',
     cut: 3.5,
     parts: [
       // The main plane, low and fixed, an arrowhead in plan: its leading edge swept back toward

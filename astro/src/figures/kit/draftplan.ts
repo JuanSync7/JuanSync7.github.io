@@ -57,10 +57,10 @@ export interface Plan {
   layout: Layout;
   /** Per view: the turned model's box (exploded for that view) and where its centre goes. */
   at: Record<DraftView, { box: Box3; x: number; y: number }>;
-  /** Thin line work (dimensions, centre and cutting lines, symbol), and the section's outline
-   *  with its hatching: segment end points in pairs. */
+  /** Line work as segment end points in pairs: thin (dimensions, centre and cutting lines,
+   *  hatching, symbol) and thick (the section's outline), as ISO 128 weighs them. */
   thin: P2[];
-  cut: P2[];
+  thick: P2[];
 }
 
 function boxOf(geos: BufferGeometry[], t: Matrix4): Box3 {
@@ -160,19 +160,40 @@ export function plan(id: string): Plan {
     label('A', tip, uy < 0 ? 'above' : 'below');
   }
   // The section's outline, hatched, and the symbol.
-  const cut = section.map(secDraw);
-  cut.push(...hatch(cut, 0.012 * m));
+  const thick = section.map(secDraw);
+  thin.push(...hatch(thick, 0.012 * m));
   const sx = x2 + c2 / 2;
   const sy = y1 + r1 / 2;
   thin.push(...symbolLines(sx - 1.8 * sym, sy - sym, sx, sy));
   label('First angle', [sx - 0.9 * sym, sy], 'below');
+  label(`Scale 1:${scale}`, [sx - 0.9 * sym, sy - sym], 'above');
   label('Side elevation', [x0, y0 - S.y / 2], 'above');
   label('End elevation', [x1, y0 - E.y / 2], 'above');
   label(`Section A-A (1:${scale / DETAIL})`, [x2, y0 + secH / 2 + 0.12 * m], 'below');
   label('Plan', [x0, y1 + P.y / 2], 'below');
   label('Exploded isometric', [x1, y1 + X.y / 2], 'below');
-  return { layout: { sketch, w, h, scale, labels, variables }, at, thin, cut };
+  return { layout: { sketch, w, h, scale, labels, variables }, at, thin, thick };
 }
 
 /** Where the drawing's words go, and its variables. */
 export const draftLayout = (id: string): Layout => plan(id).layout;
+
+/** ISO 7200's title block, as rows of [field, value, width in mm] across its 180 mm: the eight
+ *  mandatory fields, the identification number bottom right, and no scale or projection (they sit
+ *  by the projection symbol). The approval person stays empty until a person approves it. */
+export function titleFields(l: Layout): [string, string, number][][] {
+  const s = l.sketch;
+  return [
+    [
+      ['Title', s.title, 120],
+      ['Document type', 'General arrangement', 60],
+    ],
+    [
+      ['Creator', 'Claude', 45],
+      ['Approval person', '-', 45],
+      ['Document status', 'In work', 45],
+      ['Paper', 'A3', 45],
+    ],
+    [['Legal owner', 'Juan Kok', 50], ['Date of issue', s.drawn, 40], ['Rev', s.revision, 15], ['Sheet', '1/1', 20], ['Identification no.', s.number, 55]], // prettier-ignore
+  ];
+}
