@@ -31,6 +31,8 @@ export interface Part {
   name: string;
   /** CSS selector inside the root; '' is the root itself. */
   selector: string;
+  /** A part drawn by CSS as a pseudo-element of the selected element (a margin line). */
+  pseudo?: '::before' | '::after';
   sizing: Sizing;
   /** How it sizes on a phone, where that differs (a row of buttons that wraps to the width). */
   phone?: Sizing;
@@ -43,12 +45,15 @@ export interface Part {
 }
 
 /** What a size measures on its part. Lengths are dimensioned on the drawing; border, radius, the
- *  printed edge and font size are leader notes. */
+ *  printed edge and font size are leader notes. An inset is the distance from the root's left or
+ *  right edge to the part's. */
 export type Measure =
   | 'width'
   | 'max-width'
   | 'height'
   | 'min-height'
+  | 'inset-left'
+  | 'inset-right'
   | 'padding-x'
   | 'padding-y'
   | 'gap'

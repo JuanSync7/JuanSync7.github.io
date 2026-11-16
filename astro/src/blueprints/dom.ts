@@ -23,8 +23,8 @@ export function find(root: Element, selector: string): HTMLElement | null {
   return isEl(el) ? el : null;
 }
 
-export const style = (el: HTMLElement): CSSStyleDeclaration =>
-  (el.ownerDocument.defaultView ?? window).getComputedStyle(el);
+export const style = (el: HTMLElement, pseudo?: string): CSSStyleDeclaration =>
+  (el.ownerDocument.defaultView ?? window).getComputedStyle(el, pseudo);
 
 /** A token's value in CSS px, read where the part can see it. */
 export function tokenPx(el: HTMLElement, token: string): number {
@@ -42,4 +42,14 @@ export function tokenPx(el: HTMLElement, token: string): number {
 export function rel(el: Element, root: Element): Box {
   const [b, r, z] = [el.getBoundingClientRect(), root.getBoundingClientRect(), zoomOf(root)];
   return { x: (b.left - r.left) / z, y: (b.top - r.top) / z, w: b.width / z, h: b.height / z };
+}
+
+/** A pseudo-element's box (a page's margin line drawn as ::before), from its computed position in
+ *  its host: it has no box of its own to ask. Zero wide when it is not drawn. */
+export function relPseudo(el: HTMLElement, pseudo: string, root: Element): Box {
+  const host = rel(el, root);
+  const cs = style(el, pseudo);
+  if (cs.content === 'none' || cs.display === 'none') return { ...host, w: 0 };
+  const h = px(cs.height) || host.h - px(cs.top) - px(cs.bottom);
+  return { x: host.x + px(cs.left), y: host.y + px(cs.top), w: px(cs.width), h };
 }

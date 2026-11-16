@@ -1,4 +1,4 @@
-import { find, isEl, px, style, zoomOf } from './dom';
+import { find, isEl, px, rel, relPseudo, style, zoomOf } from './dom';
 import type { Blueprint, Sizing, View } from './types';
 
 /** How a component's part sizes: copy the component into a host off screen, give the part's
@@ -61,5 +61,10 @@ export function templateSizing(
 export function widths(doc: Document, spec: Blueprint, view: View): Record<number, number> {
   const root = doc.querySelector(view.root);
   if (!root) return {};
-  return Object.fromEntries(spec.parts.map((p) => [p.id, (find(root, p.selector)?.getBoundingClientRect().width ?? 0) / zoomOf(root)])); // prettier-ignore
+  return Object.fromEntries(
+    spec.parts.map((p) => {
+      const el = find(root, p.selector);
+      return [p.id, el ? (p.pseudo ? relPseudo(el, p.pseudo, root) : rel(el, root)).w : 0];
+    }),
+  );
 }

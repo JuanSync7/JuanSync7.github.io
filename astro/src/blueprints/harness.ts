@@ -53,8 +53,8 @@ export const FIXTURES: Record<string, { spec?: (b: Record<string, Blueprint>) =>
   'a part that fills marked hug': { spec: (b) => void (b['paper-action']?.parts[1] && (b['paper-action'].parts[1].sizing = 'hug')) }, // prettier-ignore
   'a slot that hugs marked fill': { spec: (b) => void (b['paper-action']?.parts[2] && (b['paper-action'].parts[2].sizing = 'fill')) }, // prettier-ignore
   'a literal that equals the token': { css: '.paper-action .pa-face { padding-left: 20px !important }' },
-  'a template part that is not there': { spec: (b) => void (b['blog-post']?.parts[1] && (b['blog-post'].parts[1].selector = '.no-such-pane')) }, // prettier-ignore
-  'a fixed column marked fill': { spec: (b) => void (b['blog-post']?.parts[2] && (b['blog-post'].parts[2].sizing = 'fill')) }, // prettier-ignore
+  'a template part that is not there': { spec: (b) => void (b['blog-post']?.parts[5] && (b['blog-post'].parts[5].selector = '.no-such-pane')) }, // prettier-ignore
+  'a fixed column marked fill': { spec: (b) => void (b['blog-post']?.parts[5] && (b['blog-post'].parts[5].sizing = 'fill')) }, // prettier-ignore
 };
 
 export interface Result {

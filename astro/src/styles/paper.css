@@ -138,6 +138,7 @@ body.paper {
   --pp-gutter: clamp(0px, calc((100cqw - var(--pp-measure-min)) / 2), var(--pp-gutter-max));
   --pp-edge: max(var(--pp-gutter), calc((100cqw - var(--pp-measure)) / 2));
   --pp-margin-x: max(var(--pp-margin-min), calc(var(--pp-edge) - var(--pp-margin-inset)));
+  --pp-strip-x: calc(var(--pp-edge) - var(--pp-strip-inset));
 }
 
 .pp-wrap {
@@ -168,7 +169,7 @@ body.paper {
 }
 
 .pp-page::after {
-  left: calc(var(--pp-edge) - var(--pp-strip-inset));
+  left: var(--pp-strip-x);
   width: var(--pp-strip-w);
   background:
     var(--pp-holes) 0 0 / var(--pp-strip-w) var(--pp-hole-pitch) repeat-y,

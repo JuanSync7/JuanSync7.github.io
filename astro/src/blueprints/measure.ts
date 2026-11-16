@@ -1,4 +1,4 @@
-import { find, isEl, px, rel, style, tokenPx, zoomOf, type Box } from './dom';
+import { find, isEl, px, rel, relPseudo, style, tokenPx, zoomOf, type Box } from './dom';
 import { sizingOf, templateSizing } from './sizing';
 import { shownIn, type Blueprint, type Measure, type Sizing, type View } from './types';
 
@@ -12,7 +12,7 @@ export { widths } from './sizing';
 
 export type P = [number, number];
 
-const LENGTHS: Measure[] = ['width', 'max-width', 'height', 'min-height', 'padding-x', 'padding-y', 'gap'];
+const LENGTHS: Measure[] = ['width', 'max-width', 'height', 'min-height', 'inset-left', 'inset-right', 'padding-x', 'padding-y', 'gap']; // prettier-ignore
 const NUDGE = 8;
 
 export interface SizeResult {
@@ -58,14 +58,20 @@ function read(
   el: HTMLElement,
   root: Element,
   ends: [HTMLElement | null, HTMLElement | null] | null,
+  pseudo?: string,
 ): { v: number; a: P; b: P | null } {
-  const cs = style(el);
-  const B = rel(el, root);
+  const cs = style(el, pseudo);
+  const B = pseudo ? relPseudo(el, pseudo, root) : rel(el, root);
+  const W = root.getBoundingClientRect().width / zoomOf(root);
   const [bl, bt] = [px(cs.borderLeftWidth), px(cs.borderTopWidth)];
   const right: P = [B.x + B.w, B.y];
   switch (m) {
     case 'width':
       return { v: B.w, a: [B.x, B.y], b: right };
+    case 'inset-left':
+      return { v: B.x, a: [0, B.y], b: [B.x, B.y] };
+    case 'inset-right':
+      return { v: W - B.x - B.w, a: [B.x + B.w, B.y], b: [W, B.y] };
     case 'max-width':
       return { v: px(cs.maxWidth), a: [B.x, B.y], b: right };
     case 'height':
@@ -106,6 +112,7 @@ function drives(
   ends: [HTMLElement | null, HTMLElement | null] | null,
   before: number,
   expected: number,
+  pseudo?: string,
 ): boolean {
   if (!LENGTHS.includes(s.measure) && s.measure !== 'radius' && s.measure !== 'border' && s.measure !== 'font-size')
     return true; // the printed edge is a shadow offset pair, checked by value
@@ -113,7 +120,7 @@ function drives(
   for (let e: HTMLElement | null = el; e; e = e.parentElement) chain.push(e);
   const prior = chain.map((e) => e.style.getPropertyValue(s.token));
   chain.forEach((e) => e.style.setProperty(s.token, `${expected + NUDGE}px`));
-  const after = read(s.measure, el, root, ends).v;
+  const after = read(s.measure, el, root, ends, pseudo).v;
   chain.forEach((e, i) => (prior[i] ? e.style.setProperty(s.token, prior[i] ?? '') : e.style.removeProperty(s.token)));
   return Math.abs(after - before) >= NUDGE / 2;
 }
@@ -146,21 +153,23 @@ function measureRoot(root: HTMLElement | null, spec: Blueprint, view: View, size
   const boxes: Record<number, Box> = {};
   for (const p of shown) {
     const el = find(root, p.selector);
-    if (!el || el.getBoundingClientRect().width === 0) {
+    const box = el && (p.pseudo ? relPseudo(el, p.pseudo, root) : rel(el, root));
+    if (!el || !box || box.w === 0) {
       problems.push(`${p.name} (${p.id}) is not on the page at ${view.name}`);
       continue;
     }
     els.set(p.id, el);
-    boxes[p.id] = rel(el, root);
+    boxes[p.id] = box;
   }
   const sizes: SizeResult[] = [];
   for (const s of spec.sizes.filter((x) => shownIn(x, view.name))) {
     const el = els.get(s.part);
     if (!el) continue;
     const ends: [HTMLElement | null, HTMLElement | null] | null = s.between ? [els.get(s.between[0]) ?? null, els.get(s.between[1]) ?? null] : null; // prettier-ignore
-    const r = read(s.measure, el, root, ends);
+    const pseudo = spec.parts.find((p) => p.id === s.part)?.pseudo;
+    const r = read(s.measure, el, root, ends, pseudo);
     const expected = tokenPx(el, s.token);
-    const driven = drives(s, el, root, ends, r.v, expected);
+    const driven = drives(s, el, root, ends, r.v, expected, pseudo);
     sizes.push({ ...s, actual: r.v, expected, driven, a: r.a, b: r.b });
     const where = `${s.measure} of ${spec.parts.find((p) => p.id === s.part)?.name ?? s.part}`;
     if (!(Math.abs(r.v - expected) <= 0.5))
@@ -171,7 +180,8 @@ function measureRoot(root: HTMLElement | null, spec: Blueprint, view: View, size
     const want: Sizing = view.name === 'phone' && p.phone ? p.phone : p.sizing;
     let got: Sizing = want;
     if (sizer === 'clone') got = sizingOf(root, p.selector, p.slot === true);
-    else if (sizer) got = templateSizing(els.get(p.id), root, sizer[p.id] ?? 0, boxes[p.id]?.w ?? 0, want);
+    else if (sizer)
+      got = templateSizing(p.pseudo ? undefined : els.get(p.id), root, sizer[p.id] ?? 0, boxes[p.id]?.w ?? 0, want);
     return { id: p.id, name: p.name, want, got };
   });
   for (const z of sizing) if (z.want !== z.got) problems.push(`${z.name} (${z.id}) should ${z.want} but ${z.got}s`);

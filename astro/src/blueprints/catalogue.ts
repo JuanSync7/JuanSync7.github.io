@@ -29,6 +29,8 @@ export const MEASURE_WORDS: Record<Measure, string> = {
   'max-width': 'widest width',
   height: 'height',
   'min-height': 'least height',
+  'inset-left': 'distance from the left edge',
+  'inset-right': 'distance from the right edge',
   'padding-x': 'padding across',
   'padding-y': 'padding down',
   gap: 'gap',
