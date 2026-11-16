@@ -50,6 +50,14 @@ The design-system page contains the live component specimens and starting recipe
 6. **Templates are figures drawn from a seed.** A template in `astro/src/figures/templates/` (`defineTemplate`) turns a seed into choices with its grammar; an instance `<template>~<seed>` works anywhere a figure id does, including `cover:`. Every template appears at `/lab/` automatically. A template is done when its seed sheet (`npm run figure:seeds -- <id> 12 --url=<dev server>`; it needs a running dev server) was read and the look passes for its three audit seeds.
 7. **Paper and night systems.** Every public page (home, writing, learn, trackers, vault, anatomy, lab indexes, design system) uses `PaperLayout.astro` (through `NightPage`, `NightNav`, `NightFooter`, which keep their night-era names): cream notepad by day, gunmetal notepad by night (same paper tear, punched strip and orange margin line), `--pp-*` tokens remapped onto the `--nt-*` ones on `<html class="paper">`. The figure bench (`/figures`) keeps `NightLayout.astro`, `styles/night.css` and the `--nt-*` tokens. Figures take colour only through `figures/kit/ink.ts`, which reads the `night` mirror in `palette.ts`.
 
+## Component blueprints
+
+A shared component's structure is a spec in `astro/src/blueprints/` (parts, how each sizes, which
+token sets each size; never colours, motion or content). Change the spec and the component together:
+`npm run blueprint:check` measures the rendered component against it, `npm run blueprint -- <id>`
+draws its A3 blueprint sheet (read it), `npm run blueprint:selftest` proves the check still catches
+a broken spec. They need the dev server. See `astro/src/blueprints/README.md`.
+
 ## Writing posts
 
 1. **The rules live in the experience vault, not here.** Before writing or editing a post in `astro/src/content/blog/`, read from the `JuanSync7/experience-vault` repo: `Notes/Me/SOUL.md`, `Notes/Me/Knowledge/Writing voice.md`, then `Blog writing.md` (a post) or `Article writing.md` (a `/learn` explainer), and the deck `Notes/Decks/Writing posts and articles.md` (rules R-POST-*, R-ART-*). The worked examples are in `Notes/Examples/Writing/`. If the vault isn't reachable, say so before writing.

@@ -15,8 +15,8 @@ playbook `Playbooks/lettering`, and each project holds a synced copy it never ed
 | `font.ts` | `buildFont()`: the OpenType font (CFF outlines), with a fixed date. Build scripts only: it needs `opentype.js`. |
 | `index.ts` | Everything above except `font.ts`, safe to import in a browser. |
 
-The character set: A to Z, 0 to 9 and `- . , : / ( ) = + ' " # ! ? %` with the diameter, plus-minus,
-degree and multiplication signs, 55 in all. Lower case is set as capitals, as drawings are lettered.
+The character set: A to Z, 0 to 9 and `- . , : / ( ) = + ' " # ! ? %` with the middle dot, the diameter,
+plus-minus, degree and multiplication signs, 56 in all. Lower case is set as capitals, as drawings are lettered.
 
 ## Using it in a project
 

@@ -7,9 +7,9 @@ import { buildFont } from '../../src/lib/lettering/font.ts';
 import { GLYPHS, glyph, TYPE_B } from '../../src/lib/lettering/index.ts';
 
 const OUT = new URL('../../public/fonts/iso-lettering-b.otf', import.meta.url);
-const NEED = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', ...'-.,:/()=+\'"#!?%', 'Ø', '±', '°', '×'];
+const NEED = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', ...'-.,:/()=+\'"#!?%', 'Ø', '±', '°', '×', '·'];
 // Characters that reach below the baseline or stop short of the capital height.
-const LOW = new Set([...'-.,:=+\'"#!?%', '±', '°', '×', 'Q', 'Ø', '(', ')', '/']);
+const LOW = new Set([...'-.,:=+\'"#!?%', '·', '±', '°', '×', 'Q', 'Ø', '(', ')', '/']);
 const WIDE6 = ['B', 'E', 'H'];
 
 function problems() {
