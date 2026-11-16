@@ -188,8 +188,8 @@ npm run figure -- lego-f1                 # the build, audited`;
   }
   .lg-tag {
     position: absolute;
-    font-family: var(--nt-mono);
-    font-size: min(var(--nt-fs-caption), 2.2cqw);
+    font-family: var(--nt-drafting);
+    font-size: min(calc(var(--nt-fs-caption) / 0.7), 3cqw);
     text-transform: uppercase;
     white-space: nowrap;
     color: var(--nt-ink-2);
@@ -221,7 +221,8 @@ npm run figure -- lego-f1                 # the build, audited`;
   .lg-notes {
     margin: 0;
     padding-left: var(--hf-space-5);
-    font: var(--nt-fs-caption) / var(--nt-lh-body) var(--nt-mono);
+    font: var(--nt-fs-small) / var(--nt-lh-body) var(--nt-drafting);
+    text-transform: uppercase;
     color: var(--nt-ink-muted);
   }
   .lg-block {
@@ -237,13 +238,14 @@ npm run figure -- lego-f1                 # the build, audited`;
     border: 1px solid var(--nt-line-2);
   }
   .lg-block dt {
-    font: var(--nt-fs-caption) var(--nt-mono);
+    font: var(--nt-fs-caption) var(--nt-drafting);
     text-transform: uppercase;
     color: var(--nt-ink-muted);
   }
   .lg-block dd {
     margin: 0;
-    font: var(--nt-fs-small) var(--nt-mono);
+    text-transform: uppercase;
+    font: var(--nt-fs-ui) var(--nt-drafting);
     color: var(--nt-ink);
   }
   .lg-block > div:first-child dd {

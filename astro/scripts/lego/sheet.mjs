@@ -17,6 +17,8 @@ const browser = await chromium.launch({
 });
 const page = await browser.newPage();
 await page.goto(`${url}/figures/`);
+// Drawing sheets letter in the site's ISO 3098 font: have it loaded before any canvas uses it.
+await page.evaluate(() => document.fonts.load("10px 'ISO Lettering B'"));
 const data = await page.evaluate(
   async ([m, s, t, o]) => (await import('/src/figures/kit/legostudio.ts')).sheet(m, s, t, o),
   [model, stage, tile, only],

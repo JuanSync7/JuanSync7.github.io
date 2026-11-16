@@ -10,6 +10,15 @@
 @import '@fontsource-variable/geist';
 @import '@fontsource-variable/space-grotesk';
 
+/* ISO 3098 type B lettering for engineering drawings, built by the site's own library
+   (src/lib/lettering, `npm run lettering:build`). Capitals and figures; lower case is set as
+   capitals. Capital height is 0.7 of the font size. */
+@font-face {
+  font-family: 'ISO Lettering B';
+  src: url('/fonts/iso-lettering-b.otf') format('opentype');
+  font-display: swap;
+}
+
 :root {
   /* Font stacks */
   --hf-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
@@ -29,6 +38,7 @@
   --nt-sans: 'Geist Variable', 'Geist', system-ui, sans-serif;
   --nt-display: 'Space Grotesk Variable', 'Geist Variable', sans-serif;
   --nt-mono: var(--hf-mono);
+  --nt-drafting: 'ISO Lettering B', var(--hf-mono);
   --nt-fs-caption: 12px;
   --nt-fs-meta: 13px;
   --nt-fs-small: 14px;

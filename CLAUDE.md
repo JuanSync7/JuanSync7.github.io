@@ -151,7 +151,8 @@ Anything not studs-up (an endplate on its side, a flap on a hinge) is a sub-asse
 hinges and test overlaps between sub-assemblies (`legojoint.ts`, `legoclash.ts`).
 Before a part whose shape matters is planned, it is sketched as the real thing and drawn as a
 first-angle engineering drawing (`.claude/skills/lego/drawing/SKILL.md`, `npm run lego:sheet --
-<sketch> drawing`); on a page its words are DOM laid out by `draftLayout` (`/lab/lego/`).
+<sketch> drawing`); on a page its words are DOM laid out by `draftLayout` (`/lab/lego/`), set in the
+site's own ISO 3098 lettering (`src/lib/lettering`, `--nt-drafting`, `npm run lettering:check`).
 Every piece is drawn from our own geometry, made from LEGO's published sizes (the 8 mm stud,
 real undersides in `kit/legounder.ts`); nothing from the LDraw library ships with the site.
 `scripts/lego/ldraw-parts.json` names the real part each catalogue shape stands for, and

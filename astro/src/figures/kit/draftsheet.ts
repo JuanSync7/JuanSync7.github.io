@@ -20,7 +20,8 @@ function text(
   ctx.save();
   ctx.translate(x, y);
   ctx.rotate(angle);
-  ctx.font = `${size}px monospace`;
+  // `size` is the capital height; the lettering's capitals stand 0.7 of the font size.
+  ctx.font = `${size / 0.7}px 'ISO Lettering B', monospace`;
   ctx.textAlign = align;
   ctx.textBaseline = 'middle';
   ctx.fillText(s, 0, 0);
@@ -38,7 +39,14 @@ function titleBlock(ctx: Ctx, l: Layout, mm: number): void {
     row.forEach(([field, value, cw]) => {
       ctx.strokeRect(x, y, cw * mm, h);
       text(ctx, field.toUpperCase(), x + 1.5 * mm, y + 2.5 * mm, 1.8 * mm);
-      text(ctx, value.toUpperCase(), x + 1.5 * mm, y + h * 0.62, (r === 0 ? 5 : 3.5) * mm);
+      // ISO 3098 heights: 5 for the title, 3.5 for the rest, down the series until it fits its cell.
+      const room = (cw - 3) * mm;
+      const fits = (hmm: number): boolean => {
+        ctx.font = `${(hmm * mm) / 0.7}px 'ISO Lettering B', monospace`;
+        return ctx.measureText(value.toUpperCase()).width <= room;
+      };
+      const hmm = [r === 0 && x === x0 ? 5 : 3.5, 2.5, 1.8].find(fits) ?? 1.8;
+      text(ctx, value.toUpperCase(), x + 1.5 * mm, y + h * 0.62, hmm * mm);
       x += cw * mm;
     });
     y += h;
