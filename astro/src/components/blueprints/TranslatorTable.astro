@@ -1,0 +1,33 @@
+---
+import { MEASURE_WORDS, type Row } from '../../blueprints/catalogue';
+
+/** Rows of the translator's index: a part and a measure in plain words, the one token that sets
+ *  it, where to change it, and who else it would change. */
+interface Props {
+  rows: Row[];
+  /** Show which blueprint each row belongs to (the whole index). */
+  all?: boolean;
+}
+const { rows, all = false } = Astro.props;
+---
+
+<table class="bpl-index">
+  <thead>
+    <tr>{all ? <th>Blueprint</th> : null}<th>Part</th><th>Size</th><th>Token</th><th>Change it in</th><th>Value</th><th>Also changes</th></tr>
+  </thead>
+  <tbody>
+    {
+      rows.map((r) => (
+        <tr>
+          {all ? <td data-label="Blueprint"><a href={`/lab/blueprints/${r.blueprint}/`}>{r.title}</a></td> : null}
+          <td data-label="Part">{r.part} {r.partName}</td>
+          <td data-label="Size">{MEASURE_WORDS[r.measure]}</td>
+          <td data-label="Token"><code>{r.token}</code></td>
+          <td data-label="Change it in"><code>{r.defined.replace(/^src\//, '')}</code></td>
+          <td data-label="Value">{r.chain.join(' → ')}</td>
+          <td data-label="Also changes">{r.sharedWith.length ? r.sharedWith.join(', ') : '-'}{r.readBy.length > 1 ? ` · read in ${r.readBy.length} files` : ''}</td>
+        </tr>
+      ))
+    }
+  </tbody>
+</table>

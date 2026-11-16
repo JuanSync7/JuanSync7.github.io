@@ -1,64 +1,76 @@
-// Component blueprints, measured from the components as they render on /design-system/.
-//   npm run blueprint -- <id> [--store] [--url=…]   the A3 sheet: figures-out/blueprint-<id>.png, or with
-//                                                   --store public/blueprints/<id>.png (the design system's copy)
-//   npm run blueprint:check [-- --url=…]                        every spec against its component
-// Needs the dev server and Playwright's Chromium (PLAYWRIGHT_BROWSERS_PATH as for other sheets).
+// Blueprints, measured on their real pages through /lab/blueprints/check/ (it works on the dev
+// server and on the built site served by `astro preview`).
+//   npm run blueprint:check                every spec against its component or page, every view
+//   npm run blueprint:selftest             breaks specs and code on purpose; each must be caught
+//   npm run blueprint -- <id> [--store]    the A3 sheets: figures-out/blueprint-<id>[-phone].png, or
+//                                          with --store public/blueprints/ (the design system's copy)
+//   npm run blueprint -- all --store       every sheet
+// Options: --url=<server> (default http://127.0.0.1:4321). Needs Playwright's Chromium.
 import { chromium } from 'playwright';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 
 const args = process.argv.slice(2);
 const url = (args.find((a) => a.startsWith('--url=')) ?? '--url=http://127.0.0.1:4321').slice(6);
-const check = args.includes('--check');
-const selftest = args.includes('--selftest');
 const id = args.find((a) => !a.startsWith('--'));
 const browser = await chromium.launch();
-const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
-await page.goto(`${url}/design-system/`, { waitUntil: 'networkidle' });
-await page.evaluate(() => document.fonts.load("10px 'ISO Lettering B'"));
-if (selftest) {
-  // Each fixture breaks one spec on purpose; the check must catch it.
-  const caught = await page.evaluate(async () => {
-    const { BLUEPRINTS } = await import('/src/blueprints/index.ts');
-    const { measure } = await import('/src/blueprints/measure.ts');
-    const spec = BLUEPRINTS['paper-action'];
-    const fixtures = {
-      'a size set by the wrong token': (b) => (b.sizes[1].token = '--pa-padding-x'),
-      'a part that fills marked hug': (b) => (b.parts[1].sizing = 'hug'),
-      'a slot that hugs marked fill': (b) => (b.parts[2].sizing = 'fill'),
-    };
-    return Object.entries(fixtures).map(([name, breakIt]) => {
-      const broken = structuredClone(spec);
-      breakIt(broken);
-      BLUEPRINTS['paper-action'] = broken;
-      const found = measure('paper-action').problems.length > 0;
-      BLUEPRINTS['paper-action'] = spec;
-      return { name, found };
-    });
-  });
-  await browser.close();
-  for (const c of caught) console.log(`blueprint selftest: ${c.found ? 'ok' : 'MISSED'} - ${c.name}`);
-  process.exit(caught.every((c) => c.found) ? 0 : 1);
+
+// Every blueprint's id, read from its spec file; one page each keeps a run from timing out.
+const allIds = () =>
+  readdirSync('src/blueprints')
+    .map((f) => /\bid: '([\w-]+)',\s*kind:/.exec(readFileSync(`src/blueprints/${f}`, 'utf8'))?.[1])
+    .filter(Boolean);
+
+async function results(query) {
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  page.on('pageerror', (e) => console.error(`page error: ${e.message}`));
+  await page.goto(`${url}/lab/blueprints/check/?${query}`, { waitUntil: 'load' });
+  await page.waitForSelector('#bp-results[data-done]', { timeout: 180000 });
+  const r = JSON.parse(await page.textContent('#bp-results'));
+  await page.close();
+  return r;
 }
-if (check) {
-  const results = await page.evaluate(async () => {
-    const { BLUEPRINTS } = await import('/src/blueprints/index.ts');
-    const { measure } = await import('/src/blueprints/measure.ts');
-    return Object.keys(BLUEPRINTS).map((k) => ({ id: k, problems: measure(k).problems }));
-  });
+
+if (args.includes('--selftest')) {
+  const names = [
+    'a size set by the wrong token',
+    'a part that fills marked hug',
+    'a slot that hugs marked fill',
+    'a literal that equals the token',
+    'a template part that is not there',
+    'a fixed column marked fill',
+  ];
+  let missed = 0;
+  for (const name of names) {
+    const only = name.includes('template') || name.includes('column') ? 'blog-post' : 'paper-action';
+    const r = await results(`only=${only}&break=${encodeURIComponent(name)}`);
+    const found = r.some((x) => x.problems.length > 0);
+    if (!found) missed++;
+    console.log(`blueprint selftest: ${found ? 'ok' : 'MISSED'} - ${name}`);
+  }
   await browser.close();
-  const bad = results.filter((r) => r.problems.length);
-  for (const r of results) console.log(`blueprint: ${r.id} ${r.problems.length ? 'FAILS' : 'matches its spec'}`);
-  for (const r of bad) for (const p of r.problems) console.error(`  ${r.id}: ${p}`);
-  process.exit(bad.length ? 1 : 0);
+  process.exit(missed ? 1 : 0);
+}
+if (args.includes('--check')) {
+  const r = [];
+  for (const k of allIds()) r.push(...(await results(`only=${k}`)));
+  await browser.close();
+  for (const x of r) console.log(`blueprint: ${x.id} (${x.view}) ${x.problems.length ? 'FAILS' : 'matches its spec'}`);
+  for (const x of r) for (const p of x.problems) console.error(`  ${x.id} (${x.view}): ${p}`);
+  process.exit(r.some((x) => x.problems.length) ? 1 : 0);
 }
 if (!id) {
-  console.error('usage: npm run blueprint -- <id> | npm run blueprint:check');
+  console.error('usage: npm run blueprint -- <id|all> [--store] | blueprint:check | blueprint:selftest');
   process.exit(2);
 }
-const data = await page.evaluate(async (k) => (await import('/src/blueprints/sheet.ts')).blueprintSheet(k), id);
+const ids = id === 'all' ? allIds() : [id];
+const r = [];
+for (const k of ids) r.push(...(await results(`sheets&only=${k}`)));
 await browser.close();
-// --store keeps the sheet with the design system, linked from its blueprint on /design-system/.
-const out = args.includes('--store') ? `public/blueprints/${id}.png` : `figures-out/blueprint-${id}.png`;
-mkdirSync(out.slice(0, out.lastIndexOf('/')), { recursive: true });
-writeFileSync(out, Buffer.from(data.split(',')[1], 'base64'));
-console.log(`wrote ${out}`);
+const dir = args.includes('--store') ? 'public/blueprints' : 'figures-out';
+mkdirSync(dir, { recursive: true });
+for (const x of r) {
+  if (!x.sheet) continue;
+  const name = `${args.includes('--store') ? '' : 'blueprint-'}${x.id}${x.view === 'desktop' ? '' : `-${x.view}`}.png`;
+  writeFileSync(`${dir}/${name}`, Buffer.from(x.sheet.split(',')[1], 'base64'));
+  console.log(`wrote ${dir}/${name}${x.problems.length ? ` (with ${x.problems.length} problem(s))` : ''}`);
+}

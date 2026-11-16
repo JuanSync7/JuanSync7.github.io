@@ -1,5 +1,7 @@
 /* Three readable text roles. Separation is checked independently from background contrast. */
 :root {
+  /* A vault guide's reading column: the measure with room for its diagrams. */
+  --pr-guide-w: calc(var(--nt-measure) + var(--hf-space-20));
   --pr-title: var(--nt-ink-strong);
   --pr-body: var(--nt-ink-2);
   --pr-comment: var(--nt-ink-muted);

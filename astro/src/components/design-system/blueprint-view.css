@@ -20,8 +20,7 @@
   position: relative;
   flex: none;
   zoom: var(--bp-fit, 1);
-  /* Room for the dimensions: the tall one on the left, the short one on the right. */
-  padding: calc(var(--bp-room) * 1.5) var(--bp-room) calc(var(--bp-room) * 2.2) calc(var(--bp-room) * 1.6);
+  /* view.ts pads it to hold the drawing: dimensions, notes and part names. */
 }
 .bp-zoom {
   width: max-content;
@@ -123,20 +122,48 @@
   line-height: 1;
   white-space: nowrap;
 }
-.bp-label[data-side='above'] {
-  transform: translate(-50%, calc(-100% - var(--bp-gap)));
+.bp-label[data-side='centre'] {
+  transform: translate(-50%, -50%);
+}
+.bp-label[data-side='vertical'] {
+  transform: translate(-50%, -50%) rotate(-90deg);
 }
 .bp-label[data-side='below'] {
   transform: translate(-50%, var(--bp-gap));
 }
-.bp-label[data-side='below-end'] {
-  transform: translate(-100%, var(--bp-gap));
+.bp-part {
+  border: var(--bp-thin) solid var(--bp-ink);
 }
-.bp-label[data-side='left'] {
-  transform: translate(calc(-50% - var(--bp-gap) - 0.6em), -50%) rotate(-90deg);
+/* A part's number in a circle, as on a parts list. */
+.bp-balloon {
+  display: grid;
+  place-items: center;
+  width: calc(var(--bp-fs) * 1.5);
+  height: calc(var(--bp-fs) * 1.5);
+  transform: translate(-50%, -50%);
+  border: var(--bp-thin) solid var(--bp-ink);
+  border-radius: 50%;
+  background: var(--nt-bg);
+  font-size: var(--bp-fs);
+  line-height: 1;
 }
-.bp-label[data-side='right'] {
-  transform: translate(calc(-50% + var(--bp-gap) + 0.6em), -50%) rotate(-90deg);
+/* A template's real page, at its window width, scaled to the drawing. */
+.bp-frame-wrap {
+  overflow: hidden;
+  border: var(--bp-thin) solid var(--nt-line-3);
+}
+.bp-frame {
+  display: block;
+  border: 0;
+  transform: scale(var(--bp-page-scale));
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+.bp-status {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: var(--nt-fs-caption);
+  color: var(--bp-ink-soft);
 }
 .bp-foot {
   display: grid;
@@ -166,8 +193,17 @@
 .bp-table th {
   color: var(--bp-ink-soft);
 }
-.bp-table td:first-child {
+.bp-table td {
+  overflow-wrap: anywhere;
+}
+.bp-sizes {
+  grid-column: 1 / -1;
+}
+.bp-sizes td:nth-child(4) {
   white-space: nowrap;
+}
+.bp-sizes tr[data-state='off'] td {
+  text-decoration: underline wavy;
 }
 .bp-block {
   grid-column: 1 / -1;
@@ -199,14 +235,15 @@
     padding: var(--hf-space-3);
   }
 }
-/* On a phone a row of the size table becomes a card: token and value, then what it sets. */
+/* On a phone a row of the size table becomes a card: mark, token and value, then the part and what it sets. */
 @media (max-width: 480px) {
   .bp-sizes thead {
     display: none;
   }
   .bp-sizes tr {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: 'mark token value' 'part part sets';
     border: var(--bp-thin) solid var(--nt-line-2);
     border-top: none;
   }
@@ -216,10 +253,23 @@
   .bp-sizes td {
     border: none;
   }
+  .bp-sizes td:nth-child(1) {
+    grid-area: mark;
+  }
   .bp-sizes td:nth-child(2) {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    padding-top: 0;
+    grid-area: part;
     color: var(--bp-ink-soft);
+    padding-top: 0;
+  }
+  .bp-sizes td:nth-child(3) {
+    grid-area: sets;
+    color: var(--bp-ink-soft);
+    padding-top: 0;
+  }
+  .bp-sizes td:nth-child(4) {
+    grid-area: token;
+  }
+  .bp-sizes td:nth-child(5) {
+    grid-area: value;
   }
 }

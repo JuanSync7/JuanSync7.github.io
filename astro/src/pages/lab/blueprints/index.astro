@@ -1,0 +1,83 @@
+---
+import NightPage from '../../../layouts/NightPage.astro';
+import NightNav from '../../../components/layout/NightNav.astro';
+import NightFooter from '../../../components/layout/NightFooter.astro';
+import TranslatorTable from '../../../components/blueprints/TranslatorTable.astro';
+import { ALL } from '../../../blueprints';
+import { ROWS } from '../../../blueprints/catalogue-data';
+import '../../../components/blueprints/blueprint-lab.css';
+import '../../../components/design-system/blueprint-view.css';
+
+const groups = [
+  { title: 'Shared components', items: ALL.filter((b) => b.kind === 'component') },
+  { title: 'Page chrome', items: ALL.filter((b) => b.number.startsWith('JS-LY')) },
+  { title: 'Page templates', items: ALL.filter((b) => b.number.startsWith('JS-TP')) },
+];
+const sizes = ROWS.length;
+const steps = [
+  ['Point', 'Find the part on the drawing. Every part has a number in a circle, and every size has a mark.'],
+  ['Name it', 'Say what to change in those words: part 3, its gap, smaller. The index turns that into one token.'],
+  ['Change the token', 'The index says which file and line set it, and what else the same token sizes.'],
+  ['Check it', 'The check measures the page again. If the size did not follow the token, something hardcoded it.'],
+];
+---
+
+<NightPage
+  title="Blueprints · Lab · Juan Kok"
+  description="Every shared component and page template on this site, drawn as an engineering blueprint: each part numbered, each size named by the token that sets it."
+>
+  <NightNav current="lab" />
+  <main class="nt-wrap nt-section">
+    <header class="bpl-head">
+      <a href="/lab/">← the lab</a>
+      <span>// lab · blueprints</span>
+      <h1>Name every part.<br />Then change it by name.</h1>
+      <p>
+        Each component and page of this site has a blueprint, measured from the real page. Every part gets a number and every size
+        gets the one token that sets it. So anyone who can read the drawing can ask for a change in its own words, and the change
+        lands on exactly one line of code.
+      </p>
+      <div class="bpl-meta"><span>{ALL.length} blueprints</span><span>{sizes} named sizes</span><span>measured at 1280 and 390 px</span></div>
+    </header>
+
+    <section class="bpl-section" aria-labelledby="bpl-how">
+      <h2 id="bpl-how"><span>01</span> How a change travels</h2>
+      <ol class="bpl-steps">{steps.map(([t, d]) => <li><strong>{t}</strong>{d}</li>)}</ol>
+      <p class="bpl-example">
+        “On the blog post page, make the gap between the article and the contents narrower.” That is part 4 and part 5 of the
+        blog post blueprint, mark D: the token <code>--pp-doc-gap</code>, set in <code>styles/tokens/paper.css</code>. It also
+        sets the same gap on the learn article page, so both change together.
+      </p>
+    </section>
+
+    {
+      groups.map((g, i) => (
+        <section class="bpl-section" aria-labelledby={`bpl-g${i}`}>
+          <h2 id={`bpl-g${i}`}><span>{String(i + 2).padStart(2, '0')}</span> {g.title}</h2>
+          <ul class="bpl-cards">
+            {g.items.map((b) => (
+              <li class="bpl-card">
+                <a href={`/lab/blueprints/${b.id}/`}>
+                  <img src={`/blueprints/${b.id}.png`} alt={`The A3 blueprint of ${b.title}`} loading="lazy" width="420" height="297" />
+                  <span class="bpl-card-no">{b.number} · rev {b.revision}</span>
+                  <h3>{b.title}</h3>
+                  <span>{b.summary}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+
+    <section class="bpl-section" aria-labelledby="bpl-index">
+      <h2 id="bpl-index"><span>05</span> The index</h2>
+      <p>
+        Every named size on the site, in plain words. An agent asked for a change looks it up here and changes one token, or asks
+        which part was meant. The same index is in the code as <code>src/blueprints/INDEX.md</code>.
+      </p>
+      <TranslatorTable rows={ROWS} all />
+    </section>
+  </main>
+  <NightFooter />
+</NightPage>

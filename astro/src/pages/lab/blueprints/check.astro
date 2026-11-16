@@ -1,0 +1,30 @@
+---
+import NightPage from '../../../layouts/NightPage.astro';
+---
+
+<NightPage title="Blueprint check · Lab · Juan Kok" description="Measures every blueprint against its page. Used by npm run blueprint:check.">
+  <main class="nt-wrap nt-section">
+    <h1>Blueprint check</h1>
+    <p>
+      Every blueprint, measured on its real page in a hidden frame. <code>npm run blueprint:check</code> reads this page. Add
+      <code>?only=&lt;id&gt;</code>, <code>?sheets</code> or <code>?break=&lt;fixture&gt;</code>.
+    </p>
+    <pre id="bp-results">Measuring…</pre>
+    <div id="bp-frames" aria-hidden="true"></div>
+  </main>
+</NightPage>
+
+<script>
+  import { run } from '../../../blueprints/harness';
+
+  document.addEventListener('astro:page-load', () => {
+    const out = document.getElementById('bp-results');
+    const host = document.getElementById('bp-frames');
+    if (!out || !host || out.dataset.done) return;
+    const q = new URLSearchParams(location.search);
+    run(host, { only: q.get('only') ?? undefined, sheets: q.has('sheets'), fixture: q.get('break') ?? undefined })
+      .then((r) => (out.textContent = JSON.stringify(r)))
+      .catch((e: unknown) => (out.textContent = JSON.stringify([{ id: 'harness', view: '-', problems: [String(e)] }])))
+      .finally(() => (out.dataset.done = 'true'));
+  });
+</script>

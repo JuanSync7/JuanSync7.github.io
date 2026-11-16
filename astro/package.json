@@ -10,7 +10,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
-    "check": "astro check && npm run lint && prettier --check src/figures && npm run figures:check && npm run site:tokens && npm run posts:check && npm run map:check && npm run lego:check && npm run lego:selftest && npm run lettering:check && npm run lessons:selftest && npm run lessons:check && npm run vault:check && npm run presentation:check",
+    "check": "astro check && npm run lint && prettier --check src/figures && npm run figures:check && npm run site:tokens && npm run posts:check && npm run map:check && npm run lego:check && npm run lego:selftest && npm run lettering:check && npm run blueprint:index:check && npm run lessons:selftest && npm run lessons:check && npm run vault:check && npm run presentation:check",
     "map:check": "node scripts/system-map/check.mjs",
     "figure": "node scripts/figures/figure.mjs",
     "figure:seeds": "node scripts/figures/seeds.mjs",
@@ -99,7 +99,10 @@
     "blueprint:selftest": "node scripts/blueprints/run.mjs --selftest",
     "lego:selftest": "node scripts/lego/check.mjs --selftest",
     "lego:sheet": "node scripts/lego/sheet.mjs",
-    "lego:reference": "npx tsx scripts/lego/reference.mjs"
+    "lego:reference": "npx tsx scripts/lego/reference.mjs",
+    "blueprint:index": "npx tsx scripts/blueprints/index.mjs",
+    "blueprint:index:check": "npx tsx scripts/blueprints/index.mjs --check",
+    "blueprint:sync": "node scripts/blueprints/sync.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",

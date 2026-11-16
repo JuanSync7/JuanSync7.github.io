@@ -27,6 +27,7 @@ Choose the relevant playbook:
 - [Room lighting](playbooks/lighting.md): source, exposure, fill, shadows, colour, glow and atmosphere.
 - [Seeded rooms](playbooks/seeded-room.md): coordinated palettes, furniture design and functional placement.
 - [Voxel atmosphere](playbooks/voxel-atmosphere.md): lighting, weather, practical emission and GPU evidence.
+- [Blueprints](../blueprint/SKILL.md): a component's or page's parts, sizing and tokens, and design changes asked for by name.
 
 For rooms, start from `templates/lighting-brief.md`; use `kernel/INDEX.md` and
 `checks/README.md` for contracts and commands. Preserve the table as the primary

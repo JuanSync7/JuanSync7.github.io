@@ -38,7 +38,7 @@ The design-system page contains the live component specimens and starting recipe
 2. **Tokens are the single source of truth.** If a value isn't in tokens, add it there first, then reference via `var(--token-name)`.
 3. **Component-scoped CSS** lives next to the `.tsx` (e.g. `cockpit/cockpit.css`), imported by the component. Site-global CSS (reset, typography, layout primitives) lives in `astro/src/styles/`.
 4. **No Tailwind.** Plain CSS + variables is the chosen idiom. Don't introduce utility-class systems.
-5. **Tracker layout = version rail + centered main panel, inside the paper page column.** On tracker pages (`/trackers/**`) the version-history timeline is a navigation rail, not part of the main panel. The pages sit on the paper system (`TrackerLayout` → `NightPage` → `PaperLayout`: the paper nav and footer, then a row linking the three trackers and the field guides); under it `.wrap` takes the page column (`max-width: calc(100cqw - 2 * var(--pp-edge))`), clear of the punched strip and margin line. `.tracker-grid` is `188px` rail + `minmax(0,1fr)`; `.tracker-main` centers itself in the remaining space (`max-width: 980px; margin: 0 auto`). Keep this consistent across all three trackers (engines/models/silicon) and their release/hub pages.
+5. **Tracker layout = version rail + centered main panel, inside the paper page column.** On tracker pages (`/trackers/**`) the version-history timeline is a navigation rail, not part of the main panel. The pages sit on the paper system (`TrackerLayout` → `NightPage` → `PaperLayout`: the paper nav and footer, then a row linking the three trackers and the field guides); under it `.wrap` takes the page column (`max-width: calc(100cqw - 2 * var(--pp-edge))`), clear of the punched strip and margin line. `.tracker-grid` is the `--pp-tracker-rail-w` rail + `minmax(0,1fr)` with `--pp-tracker-gap`; `.tracker-main` centers itself in the remaining space (`max-width: var(--pp-tracker-main-w)`; `margin: 0 auto`). Its blueprint is `tracker`. Keep this consistent across all three trackers (engines/models/silicon) and their release/hub pages.
 
 ## Figures (drawings, covers, animation)
 
@@ -52,14 +52,22 @@ The design-system page contains the live component specimens and starting recipe
 
 ## Component blueprints
 
-A shared component's structure is a spec in `astro/src/blueprints/` (parts, how each sizes, which
-token sets each size; never colours, motion or content). Change the spec and the component together:
-`npm run blueprint:check` measures the rendered component against it, `npm run blueprint -- <id>`
-draws its A3 blueprint sheet (read it), `npm run blueprint:selftest` proves the check still catches
-a broken spec. They need the dev server. Every component with a spec shows its blueprint on
-`/design-system/` (`<BlueprintView>` around its specimen, then the spec as code) and has its sheet
-stored in `public/blueprints/<id>.png` (`npm run blueprint -- <id> --store`): the drawing, the stored
-sheet and the spec are its visual reference. See `astro/src/blueprints/README.md`.
+A blueprint names every part of a shared component, piece of page chrome or page template, how each
+part sizes, and the one token behind each size; it is the translator between someone reading the
+drawing and the code. Use the `blueprint` skill (`.claude/skills/blueprint/SKILL.md`, a playbook of
+the web design agent); its source is the experience vault's `Playbooks/blueprint`, and the kernel
+copies in `astro/src/blueprints/` are never edited here (`npm run blueprint:sync -- <vault>`). Specs are
+`astro/src/blueprints/<id>.ts` (structure only: never colours, motion or content). A request is matched
+to one row of `astro/src/blueprints/INDEX.md` or the person is asked. With the dev server up:
+`npm run blueprint:check` measures every blueprint on its real page at 1280 and 390 px, including that each
+token drives its size (a literal that equals the token fails); `blueprint:selftest` proves it still
+catches six breakages; `npm run blueprint -- <id|all> --store` draws the A3 sheets into
+`public/blueprints/` (read them). Every blueprint shows at `/lab/blueprints/<id>/`, and a component's
+also under it on `/design-system/` (`<BlueprintView>`). Change spec, component, revision and stored
+sheet together. `npm run check` runs `blueprint:index:check` (index current, every shared component
+covered or named with its reason, no component selector in the renderers) and `site:tokens` (no
+colour or pixel literal in components/ui, components/layout, layouts or a component blueprint's
+sources; every other file's counts only go down).
 
 ## Writing posts
 

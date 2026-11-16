@@ -9,7 +9,8 @@
   --bp-arrow: 7px;
   --bp-gap: 4px;
   --bp-fs: calc(var(--nt-fs-caption) / 0.7);
-  --bp-room: var(--hf-space-16);
+  /* A template's page is drawn at this fraction of its window width. */
+  --bp-page-scale: 0.5;
   --bp-ink: var(--nt-ink-2);
   --bp-ink-soft: var(--nt-ink-muted);
 }
@@ -17,5 +18,6 @@
 @media (max-width: 480px) {
   :root {
     --bp-zoom: 1;
+    --bp-page-scale: 0.8;
   }
 }

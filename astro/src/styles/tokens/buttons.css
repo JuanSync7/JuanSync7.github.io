@@ -22,6 +22,10 @@
   --pa-tracking: 0.025em;
   --pa-min-height: var(--nt-hit);
   --pa-padding-y: var(--hf-space-3);
+  /* PixelButton: padding round the label and how far the face sits inside its edge. */
+  --pb-padding-x: calc(var(--hf-space-6) + 2px);
+  --pb-padding-y: var(--hf-space-4);
+  --pb-inset: 3px;
   --pa-padding-x: var(--hf-space-5);
   --pa-gap: var(--hf-space-5);
   --pa-line-width: 1px;

@@ -89,7 +89,7 @@ const { current } = Astro.props;
   .pp-nav-inner {
     /* The scrim sits on the content column only, so the strip and frame run up behind the gutters. */
     background: var(--nt-scrim);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(var(--pp-nav-blur));
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -116,7 +116,7 @@ const { current } = Astro.props;
   ul {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--hf-space-2) calc(var(--hf-space-6) - 2px);
+    gap: var(--hf-space-2) var(--pp-nav-link-gap);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -186,7 +186,7 @@ const { current } = Astro.props;
   .bars::after {
     display: block;
     width: var(--hf-space-5);
-    height: 2px;
+    height: var(--pp-bar-h);
     background: var(--pp-ink-strong);
     border-radius: 1px;
     transition: transform var(--pp-dur-step);
@@ -204,11 +204,11 @@ const { current } = Astro.props;
   }
 
   .bars::before {
-    top: -6px;
+    top: calc(var(--pp-bar-gap) * -1);
   }
 
   .bars::after {
-    top: 6px;
+    top: var(--pp-bar-gap);
   }
 
   [data-open] .bars {
@@ -216,11 +216,11 @@ const { current } = Astro.props;
   }
 
   [data-open] .bars::before {
-    transform: translateY(6px) rotate(45deg);
+    transform: translateY(var(--pp-bar-gap)) rotate(45deg);
   }
 
   [data-open] .bars::after {
-    transform: translateY(-6px) rotate(-45deg);
+    transform: translateY(calc(var(--pp-bar-gap) * -1)) rotate(-45deg);
   }
 
   /* On a phone the links fold into a menu button, as in an app. The scrim is dropped there so

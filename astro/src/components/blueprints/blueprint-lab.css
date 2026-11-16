@@ -1,0 +1,194 @@
+/* The blueprint pages in the lab: a short head, the steps of a change, cards of every blueprint,
+   and the translator's index. Hairlines on the ground; the drawings carry the drafting lettering. */
+.bpl-head,
+.bpl-section > p,
+.bpl-section > h2 {
+  max-width: var(--nt-measure);
+}
+.bpl-head {
+  display: grid;
+  gap: var(--hf-space-5);
+  margin-bottom: var(--hf-space-16);
+}
+.bpl-head > a,
+.bpl-head > span,
+.bpl-meta,
+.bpl-section h2 span,
+.bpl-card-no,
+.bpl-steps strong {
+  font: var(--nt-fs-meta) / var(--nt-lh-body) var(--nt-mono);
+}
+.bpl-head > a {
+  color: var(--nt-ink-muted);
+}
+.bpl-head > span,
+.bpl-section h2 span {
+  color: var(--nt-signal-text);
+}
+.bpl-head h1 {
+  font-family: var(--nt-display);
+  font-size: var(--nt-fs-h1);
+  letter-spacing: var(--nt-tracking-display);
+  line-height: var(--nt-lh-heading);
+}
+.bpl-head p,
+.bpl-section > p {
+  color: var(--nt-ink-soft);
+}
+.bpl-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hf-space-3) var(--hf-space-6);
+  color: var(--nt-ink-muted);
+}
+.bpl-section {
+  display: grid;
+  gap: var(--hf-space-6);
+  margin-bottom: var(--hf-space-16);
+}
+.bpl-section h2 {
+  display: flex;
+  gap: var(--hf-space-4);
+  align-items: baseline;
+  font-family: var(--nt-display);
+  font-size: var(--nt-fs-h3);
+  color: var(--nt-ink-strong);
+}
+.bpl-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--nt-card-min)), 1fr));
+  gap: var(--hf-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.bpl-steps li {
+  display: grid;
+  gap: var(--hf-space-2);
+  padding: var(--hf-space-4);
+  border: 1px solid var(--nt-line-2);
+  color: var(--nt-ink-soft);
+}
+.bpl-steps strong {
+  color: var(--nt-ink-strong);
+  font-weight: normal;
+}
+.bpl-example {
+  margin: 0;
+  padding: var(--hf-space-4);
+  border-left: 1px solid var(--nt-signal);
+  color: var(--nt-ink-2);
+}
+.bpl-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--nt-card-min)), 1fr));
+  gap: var(--hf-space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.bpl-card a {
+  display: grid;
+  gap: var(--hf-space-2);
+  height: 100%;
+  padding: var(--hf-space-3);
+  border: 1px solid var(--nt-line-2);
+  color: var(--nt-ink-soft);
+  text-decoration: none;
+}
+.bpl-card a:hover,
+.bpl-card a:focus-visible {
+  border-color: var(--nt-signal);
+}
+.bpl-card img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 420 / 297;
+  border: 1px solid var(--nt-line);
+}
+.bpl-card-no {
+  color: var(--nt-ink-muted);
+}
+.bpl-card h3 {
+  font-family: var(--nt-drafting);
+  font-size: var(--bp-fs);
+  font-weight: normal;
+  text-transform: uppercase;
+  color: var(--nt-ink-strong);
+}
+.bpl-index {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--nt-fs-caption);
+}
+.bpl-index th,
+.bpl-index td {
+  padding: var(--hf-space-2);
+  border-bottom: 1px solid var(--nt-line-2);
+  text-align: left;
+  vertical-align: top;
+  font-weight: normal;
+  overflow-wrap: anywhere;
+}
+.bpl-index th {
+  font-family: var(--nt-mono);
+  color: var(--nt-ink-muted);
+}
+.bpl-term {
+  border: 1px solid var(--nt-code-line);
+  border-radius: var(--hf-radius-md);
+  background: var(--nt-code-ground);
+  color: var(--nt-code-ink);
+  overflow: hidden;
+}
+.bpl-term-bar {
+  display: flex;
+  gap: var(--hf-space-2);
+  align-items: center;
+  padding: var(--hf-space-2) var(--hf-space-3);
+  border-bottom: 1px solid var(--nt-code-line);
+  font: var(--nt-fs-caption) / 1 var(--nt-mono);
+  color: var(--nt-code-muted);
+}
+.bpl-term-bar i {
+  width: var(--hf-space-3);
+  height: var(--hf-space-3);
+  border-radius: 50%;
+  background: var(--nt-term-red);
+}
+.bpl-term-bar i:nth-child(2) {
+  background: var(--nt-term-amber);
+}
+.bpl-term-bar i:nth-child(3) {
+  background: var(--nt-term-green);
+}
+.bpl-term pre {
+  margin: 0;
+  padding: var(--hf-space-4);
+  font: var(--nt-fs-caption) / var(--nt-lh-body) var(--nt-mono);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+/* On a phone each row of the index becomes a card, every value labelled by its column. */
+@media (max-width: 720px) {
+  .bpl-index thead {
+    display: none;
+  }
+  .bpl-index tr {
+    display: grid;
+    padding: var(--hf-space-2) 0;
+    border-bottom: 1px solid var(--nt-line-2);
+  }
+  .bpl-index td {
+    display: grid;
+    grid-template-columns: var(--hf-space-24) minmax(0, 1fr);
+    gap: var(--hf-space-2);
+    border: none;
+    padding: var(--hf-space-1) 0;
+  }
+  .bpl-index td::before {
+    content: attr(data-label);
+    font-family: var(--nt-mono);
+    color: var(--nt-ink-muted);
+  }
+}

@@ -132,6 +132,35 @@
   --pp-doc-nav-w: 220px;
   --pp-doc-toc-w: 180px;
   --pp-doc-gap: 40px;
+  /* The nav's links, and the home hero's lead. */
+  --pp-nav-link-gap: calc(var(--hf-space-6) - 2px);
+  --pp-lead-w: 600px;
+  /* Tracker pages: the version rail, the gap beside it, the widest the main panel goes. */
+  --pp-tracker-rail-w: 188px;
+  --pp-tracker-gap: 56px;
+  --pp-tracker-main-w: 1200px;
+  /* Notepad furniture: the double margin line, where it and the punched strip sit from the page
+     column's edge, and the strip's holes. */
+  --pp-margin-line-w: 3px;
+  --pp-margin-min: 10px;
+  --pp-margin-inset: 28px;
+  --pp-strip-inset: 78px;
+  --pp-holes: radial-gradient(circle at 19px 30px, var(--pp-ground) 0 7px, color-mix(in srgb, var(--pp-hole-edge) 30%, transparent) 7.5px 9.5px, transparent 10px);
+  /* A row's bottom padding sits 2px short, so the next hairline lands on the baseline grid. */
+  --pp-row-pad-end: calc(var(--hf-space-5) - 2px);
+  --pp-rise-y: 24px;
+  --pp-flip-shadow: drop-shadow(12px 0 28px color-mix(in srgb, var(--pp-ink-shadow) 45%, transparent));
+  /* The nav: its glass blur and the menu button's three bars. */
+  --pp-nav-blur: 12px;
+  --pp-bar-h: 2px;
+  --pp-bar-gap: 6px;
+  /* The home hero: where copy and stage start to wrap, the logo's shadow, the chalk's reach and
+     the opaque end of its masks. */
+  --pp-hero-copy-basis: 380px;
+  --pp-hero-stage-basis: 300px;
+  --pp-logo-shadow: drop-shadow(6px 14px 14px color-mix(in srgb, var(--pp-ink-shadow) 26%, transparent));
+  --pp-chalk-bleed: 60px;
+  --pp-mask: #000;
 }
 
 :root[data-theme='light'] {

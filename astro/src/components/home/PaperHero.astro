@@ -115,7 +115,7 @@ const smears = Array.from({ length: 38 }, () => ({
   }
 
   .pp-hero .copy {
-    flex: 1 1 380px;
+    flex: 1 1 var(--pp-hero-copy-basis);
     min-width: 0;
     display: flex;
     flex-direction: column;
@@ -124,7 +124,7 @@ const smears = Array.from({ length: 38 }, () => ({
   }
 
   .pp-hero .copy > .pp-lead {
-    max-width: 600px;
+    max-width: var(--pp-lead-w);
   }
 
   .pp-hero .actions {
@@ -136,7 +136,7 @@ const smears = Array.from({ length: 38 }, () => ({
 
   .pp-hero .stage {
     position: relative;
-    flex: 1 1 300px;
+    flex: 1 1 var(--pp-hero-stage-basis);
     min-width: 0;
     max-width: var(--pp-stage-w);
     height: var(--pp-stage-h);
@@ -167,8 +167,7 @@ const smears = Array.from({ length: 38 }, () => ({
     width: var(--pp-strip-w);
     display: var(--pp-notepad-display);
     background:
-      radial-gradient(circle at 19px 30px, var(--pp-ground) 0 7px, color-mix(in srgb, var(--pp-hole-edge) 30%, transparent) 7.5px 9.5px, transparent 10px) 0 0 /
-        var(--pp-strip-w) var(--pp-hole-pitch) repeat-y,
+      var(--pp-holes) 0 0 / var(--pp-strip-w) var(--pp-hole-pitch) repeat-y,
       var(--pp-strip);
     background-position: 0 calc(var(--pp-strip-phase, 0) * -1px), 0 0;
     clip-path: var(--pp-clip-strip);
@@ -182,7 +181,7 @@ const smears = Array.from({ length: 38 }, () => ({
     left: var(--pp-line-x, 0px);
     top: 0;
     bottom: 0;
-    width: 3px;
+    width: var(--pp-margin-line-w);
     display: var(--pp-notepad-display);
     border-left: 1px solid color-mix(in srgb, var(--pp-signal) var(--pp-margin-mix), transparent);
     border-right: 1px solid color-mix(in srgb, var(--pp-signal) var(--pp-margin-mix), transparent);
@@ -237,7 +236,7 @@ const smears = Array.from({ length: 38 }, () => ({
     }
     25%,
     100% {
-      filter: drop-shadow(6px 14px 14px color-mix(in srgb, var(--pp-ink-shadow) 26%, transparent));
+      filter: var(--pp-logo-shadow);
     }
   }
 
@@ -258,13 +257,13 @@ const smears = Array.from({ length: 38 }, () => ({
     display: var(--pp-chalk-display);
     overflow: hidden;
     pointer-events: none;
-    mask-image: linear-gradient(180deg, transparent calc(var(--pp-hb) - 2%), #000 calc(var(--pp-hb) + 6%));
+    mask-image: linear-gradient(180deg, transparent calc(var(--pp-hb) - 2%), var(--pp-mask) calc(var(--pp-hb) + 6%));
   }
 
   .pp-erv {
     position: absolute;
     inset: 0;
-    mask-image: radial-gradient(ellipse closest-side at 50% 50%, #000 50%, transparent 100%);
+    mask-image: radial-gradient(ellipse closest-side at 50% 50%, var(--pp-mask) 50%, transparent 100%);
   }
 
   .pp-smear {
@@ -282,7 +281,7 @@ const smears = Array.from({ length: 38 }, () => ({
 
   .pp-erl {
     position: absolute;
-    inset: -60px;
+    inset: calc(var(--pp-chalk-bleed) * -1);
     filter: url('#pp-chalk');
   }
 
