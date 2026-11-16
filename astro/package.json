@@ -93,6 +93,7 @@
     "lettering:build": "npx tsx scripts/lettering/build.mjs",
     "lettering:check": "npx tsx scripts/lettering/build.mjs --check",
     "lettering:sheet": "node scripts/lettering/specimen.mjs",
+    "lettering:sync": "node scripts/lettering/sync.mjs",
     "lego:selftest": "node scripts/lego/check.mjs --selftest",
     "lego:sheet": "node scripts/lego/sheet.mjs",
     "lego:reference": "npx tsx scripts/lego/reference.mjs"

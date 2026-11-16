@@ -35,7 +35,7 @@ Claude wrote while building the first drawings, a trial until he adopts or drops
 | ISO 128-40, -44 | Sections: cutting plane thin chain, thick at its ends, arrows, letters, "A-A" | `plan()` | followed |
 | ISO 128-50 | Hatching: thin, 45°, even spacing; very thin sections may be filled solid | `hatch` | hatched; solid fill for thin sections not used |
 | ISO 129-1 | Dimensioning: value placement and reading direction, extension gaps, arrowheads | `dim`, `dimLines`, `arrow` | followed |
-| ISO 3098 | Lettering type B: letter shapes on the grid, heights 1.8, 2.5, 3.5, 5, 7 mm, line width h/10, spacing 2d, words 6d | the lettering library `src/lib/lettering` (font `ISO Lettering B`, token `--nt-drafting`), `lettering:check` | followed: drawn from the standard's construction rules, not certified against its figures |
+| ISO 3098 | Lettering type B: letter shapes on the grid, heights 1.8, 2.5, 3.5, 5, 7 mm, line width h/10, spacing 2d, words 6d | the vault playbook `Playbooks/lettering` (rules R-LET), synced into `src/lib/lettering`; font `ISO Lettering B`, token `--nt-drafting`, `lettering:check` | followed: drawn from the standard's construction rules, not certified against its figures |
 
 ## If you catch yourself
 
