@@ -16,9 +16,26 @@ Claude wrote while building the first drawings, a trial until he adopts or drops
 | R-DRW-9 | A drawing is monochrome: ink lines on the ground, told apart by weight, dashes and hatching. The accent colour is used only when a drawing is put on display to point at one thing, and then nowhere else on it. | A drawing is a record to measure against; colour on it reads as meaning that is not there. | 2026-11-16, Juan: "for the proper dimensional drawing there will be no accent, unless we want to use display then we only the accent". | [stated] | kernel: `draftScene` draws in ink only (the figure audit's "no signal at rest" warning is expected) |
 | R-DRW-10 | Claude never fills the "Checked" cell. It stays empty until a person has checked the drawing against its sources. | A checked box that nobody checked is a false record. | The first drawing sheet. | [proposed] | review |
 | R-DRW-11 | A dimension that disagrees with the research goes back to the sketch. Never move a dimension line or its value by hand. | Dimensions are measured from the sketch's geometry; a hand-moved value is a drawing that lies. | Design of `draftLayout`. | [proposed] | code: dimensions are computed, not written |
-| R-DRW-12 | Every size on a drawing is a variable (L1 overall length, H1 overall height, W1 overall span, C1… chords at the section), named at its dimension line and valued in the drawing's table in studs, real mm and LEGO mm. A value nobody knows is written `[TBD]`, never guessed. | A named size can be referred to and changed in one place; a number on a line is only a number. | 2026-11-16: Juan liked the dimensional-drawing principle of enesozturk/dimensional-drawing (MIT), whose house rule is variables, not literal numbers. | [stated] for the principle, [proposed] for the names | kernel: `plan()` in `kit/draftplan.ts` makes the variables from the geometry |
+| R-DRW-12 | A drawing of a physical part is dimensioned as ISO 129-1 does it: each size once, in mm with no unit (the sheet says MM once), the value above its line and along it, read from the bottom or the right; extension lines leave a 1 mm gap at the part and run 2 mm past the line; arrowheads 3 mm at 15°. No variables table: names with a table are for UI blueprints, where the values are tokens that change. | A machinist reads the number where the size is; a table beside it is clutter. | 2026-11-16, Juan chose the standard ("chose 1 … having both is not that and clutter the page"), after a first version with L1, W1 and a table. | [stated] | kernel: `dim` in `kit/draftplan.ts`, `dimLines` and `arrow` in `kit/draftlines.ts` |
 | R-DRW-13 | A part whose shape is its point (a wing element) gets section A-A: a cutting-plane line on the plan with arrows in the viewing direction, and the cut profile drawn at twice the scale, hatched at 45°. The sketch's `cut` puts the plane where every element is cut cleanly. | The elevations show a wing element edge-on and dashed; only a section shows its profile. | The rear wing's first section, through the actuator, overlapped it with the second element; at z = 5 the three profiles read cleanly. | [proposed] | kernel; the sketch's `cut` |
 | R-DRW-14 | The isometric view is exploded: each part moves by its sketch's `explode` offset, the way it comes apart when built. | It shows the sub-assemblies the LEGO is planned in, which no orthographic view can. | 2026-11-16, from the same repository's exploded layers. | [proposed] | kernel |
+| R-DRW-15 | Where an ISO drawing standard covers it, the drawing follows the standard, because each one is settled practice. The register below says which part of the kit holds each, and what is not yet followed. | The standards exist because generations of drawings were misread without them. | 2026-11-16, Juan: "the standard is there because this is the beaten practice, so the rules and code make sense to follow this in our agent + playbook". | [stated] | this register, reviewed with `LOOK.md` |
+
+## Standards register (R-DRW-15)
+
+| Standard | What it sets | Held by | Status |
+|---|---|---|---|
+| ISO 216 | A-series paper (A3 420 × 297 mm) | `A3` in `kit/draftplan.ts` | followed |
+| ISO 5457 | Sheet layout: frame 20/10 mm, 0.7 mm frame line, grid reference border of 50 mm fields, centring marks | `kit/draftsheet.ts` | followed |
+| ISO 7200 | Title block: eight mandatory fields, identification number bottom right, no scale or projection fields | `titleFields` | followed |
+| ISO 5455 | Standard scales (1:2, 1:5, 1:10, 1:20 …) | `plan()` grows margins to the next one | followed |
+| ISO 5456-2 | Projection: first angle, its symbol | `TURN`, `symbolLines` | followed; symbol proportions not yet checked against the standard |
+| ISO 128-2, -20 | Line types and widths: thick 0.5, thin 0.25 (2:1) | `WEIGHT`, `fit` | followed |
+| ISO 128-3, -30 | Views: placement, names | `plan()` | followed |
+| ISO 128-40, -44 | Sections: cutting plane thin chain, thick at its ends, arrows, letters, "A-A" | `plan()` | followed |
+| ISO 128-50 | Hatching: thin, 45°, even spacing; very thin sections may be filled solid | `hatch` | hatched; solid fill for thin sections not used |
+| ISO 129-1 | Dimensioning: value placement and reading direction, extension gaps, arrowheads | `dim`, `dimLines`, `arrow` | followed |
+| ISO 3098 | Lettering: letter shapes, heights 1.8, 2.5, 3.5, 5, 7 mm, stroke h/10 | heights in `kit/draftsheet.ts` | heights followed; letter shapes not (the site's monospace) |
 
 ## If you catch yourself
 
@@ -29,7 +46,7 @@ Claude wrote while building the first drawings, a trial until he adopts or drops
 | printing an odd scale such as 1:13 | let the layout grow its margins to the next standard scale (R-DRW-6) |
 | writing a view name or a value into the canvas | set it as DOM from `draftLayout` (R-DRW-8) |
 | nudging a dimension because it "looks wrong" | fix the sketch and draw again (R-DRW-11) |
-| writing a number on a dimension line | name it (L1, C2 …) and put the value in the table (R-DRW-12) |
+| naming sizes L1, W1 with a table on a part drawing | write the value on its line, in mm, as ISO 129-1 does (R-DRW-12) |
 | colouring a lamp or a flap to make the drawing livelier | ink only; the accent is for display (R-DRW-9) |
 | boxing each view to make the sheet look tidier | views float, aligned by projection; the boxes belong to the frame, grid border and title block (R-DRW-7) |
 | ticking "Checked" | leave it for a person (R-DRW-10) |

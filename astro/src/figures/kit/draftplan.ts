@@ -6,23 +6,21 @@ import { LEGO_SKETCHES, type Sketch } from './legosketches';
 /** The layout of a sketch's drawing (kit/legodraft draws it): first-angle orthographic views
  *  (side elevation; end elevation from the nose on its right; plan below it), section A-A at
  *  twice the drawing's scale, an exploded isometric view and the projection symbol, laid out on
- *  A3 at a standard scale. Every size is a variable (L1, H1, W1, C1 …), named on the drawing and
- *  valued in its table. Units are studs, y down, the drawing area's top left at the origin. */
+ *  A3 at a standard scale. Sizes are dimensioned as ISO 129-1 does it: the value in mm above its
+ *  line, along it, read from the bottom or the right. Units are studs, y down, the drawing
+ *  area's top left at the origin. */
 
 export type DraftView = 'side' | 'end' | 'plan' | 'exploded';
 /** A word on the drawing, at a point given in fractions of the drawing area; `at` is the side of
- *  the point the word sits on. Pages set these as DOM, the review sheet on its canvas. */
+ *  the point the word sits on (`centre`: on it), and `angle` (degrees, clockwise on the page)
+ *  turns it to run along its dimension line. Pages set these as DOM, the review sheet on its
+ *  canvas. */
 export interface Label {
   text: string;
   x: number;
   y: number;
-  at: 'above' | 'below' | 'left' | 'right';
-}
-export interface Variable {
-  sym: string;
-  what: string;
-  studs: number;
-  mm: number;
+  at: 'above' | 'below' | 'left' | 'right' | 'centre';
+  angle?: number;
 }
 export interface Layout {
   sketch: Sketch;
@@ -31,7 +29,6 @@ export interface Layout {
   h: number;
   scale: number;
   labels: Label[];
-  variables: Variable[];
 }
 
 /** An A3 sheet, landscape, in mm (ISO 5457): a 20 mm filing margin on the left, 10 mm elsewhere,
@@ -121,17 +118,23 @@ export function plan(id: string): Plan {
   const secDraw = ([x, y]: P2): P2 => [x2 + DETAIL * (x - sec.x), y0 - DETAIL * (y - sec.y)];
   const labels: Label[] = [];
   const label = (text: string, [x, y]: P2, side: Label['at']): void => void labels.push({ text, x: x / w, y: y / h, at: side }); // prettier-ignore
-  const variables: Variable[] = [];
   const thin: P2[] = [];
   const d = 0.16 * m;
-  const dim = (sym: string, what: string, a: P2, b: P2, out: P2, side: Label['at'], studs: number): void => {
-    thin.push(...dimLines(a, b, out, m));
-    label(sym, [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], side);
-    variables.push({ sym, what, studs: Math.round(studs * 100) / 100, mm: Math.round(studs * sketch.scale * 1000) });
+  // Paper millimetres in drawing units: arrowheads 3, extension gap 1 and overshoot 2, text 3.5 high.
+  const pmm = w / AREA.w;
+  const dim = (a: P2, b: P2, n: P2, away: number, studs: number): void => {
+    thin.push(...dimLines(a, b, n, away, 3 * pmm, pmm, 2 * pmm));
+    const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+    let [ux, uy] = [(b[0] - a[0]) / len, (b[1] - a[1]) / len];
+    if (ux < -1e-6 || (Math.abs(ux) <= 1e-6 && uy > 0)) [ux, uy] = [-ux, -uy];
+    const [tx, ty] = [uy * 2.75 * pmm, -ux * 2.75 * pmm];
+    const [mx, my] = [(a[0] + b[0]) / 2 + tx, (a[1] + b[1]) / 2 + ty];
+    const text = String(Math.round(studs * sketch.scale * 1000));
+    labels.push({ text, x: mx / w, y: my / h, at: 'centre', angle: (Math.atan2(uy, ux) * 180) / Math.PI });
   };
-  dim('L1', 'Overall length', [x0 - S.x / 2, y0 + S.y / 2 + d], [x0 + S.x / 2, y0 + S.y / 2 + d], [0, d], 'below', S.x);
-  dim('H1', 'Overall height', [x0 - S.x / 2 - d, y0 + S.y / 2], [x0 - S.x / 2 - d, y0 - S.y / 2], [-d, 0], 'left', S.y);
-  dim('W1', 'Overall span', [x1 - E.x / 2, y0 + E.y / 2 + d], [x1 + E.x / 2, y0 + E.y / 2 + d], [0, d], 'below', E.x);
+  dim([x0 - S.x / 2, y0 + S.y / 2 + d], [x0 + S.x / 2, y0 + S.y / 2 + d], [0, 1], d, S.x);
+  dim([x0 - S.x / 2 - d, y0 + S.y / 2], [x0 - S.x / 2 - d, y0 - S.y / 2], [-1, 0], d, S.y);
+  dim([x1 - E.x / 2, y0 + E.y / 2 + d], [x1 + E.x / 2, y0 + E.y / 2 + d], [0, 1], d, E.x);
   // Each element's chord where A-A cuts it, front to back: the first below it, the rest above.
   const foils = parts.flatMap((p) => (p.kind === 'foil' && p.z0 <= sketch.cut && sketch.cut <= p.z1 ? [p] : []));
   foils.sort((a, b) => a.le[0] - b.le[0]);
@@ -140,9 +143,9 @@ export function plan(id: string): Plan {
     const len = Math.hypot(te[0] - le[0], te[1] - le[1]);
     let [nx, ny] = [-(te[1] - le[1]) / len, (te[0] - le[0]) / len];
     if ((k === 0) !== ny > 0) [nx, ny] = [-nx, -ny];
-    const off = 0.05 * m;
+    const off = (p.t + p.camber) * len + 8 * pmm; // clear of the profile, with room for the value
     const shift = ([x, y]: P2): P2 => [x + nx * off, y + ny * off];
-    dim(`C${k + 1}`, `Chord, element ${k + 1}, at A-A`, shift(le), shift(te), [nx * off, ny * off], ny > 0 ? 'below' : 'above', len / DETAIL); // prettier-ignore
+    dim(shift(le), shift(te), [nx, ny], off, len / DETAIL);
   });
   // Centre lines on the plane of symmetry, and the cutting plane A-A with its viewing arrows.
   const [lo, hi, mid, e] = [model.min, model.max, model.getCenter(new Vector3()), 0.05 * m];
@@ -151,17 +154,20 @@ export function plan(id: string): Plan {
   const ends = [lo.x - 3 * e, hi.x + 3 * e].map((x) => draw('plan', new Vector3(x, hi.y, sketch.cut)));
   const [a = [0, 0], b = [0, 0]] = ends;
   thin.push(...chain(a, b, m));
+  // ISO 128-44: the cutting plane is thick where it ends.
+  const [cx, cy] = [(b[0] - a[0]) / Math.hypot(b[0] - a[0], b[1] - a[1]), (b[1] - a[1]) / Math.hypot(b[0] - a[0], b[1] - a[1])]; // prettier-ignore
+  const ticks: P2[] = [a, [a[0] + cx * 5 * pmm, a[1] + cy * 5 * pmm], b, [b[0] - cx * 5 * pmm, b[1] - cy * 5 * pmm]];
   const look = draw('plan', new Vector3(lo.x, hi.y, sketch.cut - 1));
   const there = draw('plan', new Vector3(lo.x, hi.y, sketch.cut));
   const [ux, uy] = [(look[0] - there[0]) / Math.hypot(look[0] - there[0], look[1] - there[1]), (look[1] - there[1]) / Math.hypot(look[0] - there[0], look[1] - there[1])]; // prettier-ignore
   for (const end of ends) {
     const tip: P2 = [end[0] + ux * 2 * e, end[1] + uy * 2 * e];
-    thin.push(end, tip, ...arrow(tip, ux, uy, m));
+    thin.push(end, tip, ...arrow(tip, ux, uy, 3 * pmm));
     label('A', tip, uy < 0 ? 'above' : 'below');
   }
   // The section's outline, hatched, and the symbol.
-  const thick = section.map(secDraw);
-  thin.push(...hatch(thick, 0.012 * m));
+  const thick = [...section.map(secDraw), ...ticks];
+  thin.push(...hatch(section.map(secDraw), 0.012 * m));
   const sx = x2 + c2 / 2;
   const sy = y1 + r1 / 2;
   thin.push(...symbolLines(sx - 1.8 * sym, sy - sym, sx, sy));
@@ -172,10 +178,10 @@ export function plan(id: string): Plan {
   label(`Section A-A (1:${scale / DETAIL})`, [x2, y0 + secH / 2 + 0.12 * m], 'below');
   label('Plan', [x0, y1 + P.y / 2], 'below');
   label('Exploded isometric', [x1, y1 + X.y / 2], 'below');
-  return { layout: { sketch, w, h, scale, labels, variables }, at, thin, thick };
+  return { layout: { sketch, w, h, scale, labels }, at, thin, thick };
 }
 
-/** Where the drawing's words go, and its variables. */
+/** Where the drawing's words go. */
 export const draftLayout = (id: string): Layout => plan(id).layout;
 
 /** ISO 7200's title block, as rows of [field, value, width in mm] across its 180 mm: the eight

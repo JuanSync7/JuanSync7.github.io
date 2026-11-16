@@ -7,7 +7,7 @@ import { AREA, partsOf, plan, TURN, VIEWS, type Layout } from './draftplan';
 import { hexOf } from './ink';
 import { sketchGeometry } from './legosketch';
 
-export { A3, AREA, draftLayout, titleFields, type Label, type Layout, type Variable } from './draftplan';
+export { A3, AREA, draftLayout, titleFields, type Label, type Layout } from './draftplan';
 
 /** ISO 128 line widths on the A3 sheet (mm): thick for visible outlines and the cut, thin (half)
  *  for hidden, centre, dimension and hatching lines. */

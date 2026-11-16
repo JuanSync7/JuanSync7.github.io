@@ -23,21 +23,21 @@ export function chain(a: P2, b: P2, m: number): P2[] {
   return pts;
 }
 
-/** An arrowhead at `tip`, pointing along (ux, uy). */
-export function arrow(tip: P2, ux: number, uy: number, m: number): P2[] {
-  const head = 0.05 * m;
+/** An arrowhead at `tip` pointing along (ux, uy): two strokes `head` long at 15° (ISO 129-1). */
+export function arrow(tip: P2, ux: number, uy: number, head: number): P2[] {
   const [x, y] = tip;
-  return [-0.35, 0.35].flatMap((k): P2[] => [[x, y], [x - head * (ux - k * uy), y - head * (uy + k * ux)]]); // prettier-ignore
+  const k = Math.tan((15 * Math.PI) / 180);
+  return [-k, k].flatMap((t): P2[] => [[x, y], [x - head * (ux - t * uy), y - head * (uy + t * ux)]]); // prettier-ignore
 }
 
-/** A dimension from a to b: extension lines from the part (`out` points away from it), the line
- *  itself and an arrowhead at each end. */
-export function dimLines(a: P2, b: P2, out: P2, m: number): P2[] {
+/** A dimension from a to b, `away` from the part along the unit normal (nx, ny): extension lines
+ *  that leave a `gap` at the part and run `over` past the line, the line, and an arrowhead at
+ *  each end (ISO 129-1). Lengths in drawing units. */
+export function dimLines(a: P2, b: P2, [nx, ny]: P2, away: number, head: number, gap: number, over: number): P2[] {
   const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
   const [ux, uy] = [(b[0] - a[0]) / len, (b[1] - a[1]) / len];
-  const [ex, ey] = out;
-  const ext = ([x, y]: P2): P2[] => [[x - ex * 0.9, y - ey * 0.9], [x + ex * 0.2, y + ey * 0.2]]; // prettier-ignore
-  return [...ext(a), ...ext(b), a, b, ...arrow(a, -ux, -uy, m), ...arrow(b, ux, uy, m)];
+  const ext = ([x, y]: P2): P2[] => [[x - nx * (away - gap), y - ny * (away - gap)], [x + nx * over, y + ny * over]]; // prettier-ignore
+  return [...ext(a), ...ext(b), a, b, ...arrow(a, -ux, -uy, head), ...arrow(b, ux, uy, head)];
 }
 
 /** The first-angle symbol in a box: a truncated cone's elevation, narrow end left, and its end
