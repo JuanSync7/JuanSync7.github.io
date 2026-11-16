@@ -1,5 +1,6 @@
 // Component blueprints, measured from the components as they render on /design-system/.
-//   npm run blueprint -- <id> [--url=http://127.0.0.1:4321]   the A3 sheet: figures-out/blueprint-<id>.png
+//   npm run blueprint -- <id> [--store] [--url=…]   the A3 sheet: figures-out/blueprint-<id>.png, or with
+//                                                   --store public/blueprints/<id>.png (the design system's copy)
 //   npm run blueprint:check [-- --url=…]                        every spec against its component
 // Needs the dev server and Playwright's Chromium (PLAYWRIGHT_BROWSERS_PATH as for other sheets).
 import { chromium } from 'playwright';
@@ -56,6 +57,8 @@ if (!id) {
 }
 const data = await page.evaluate(async (k) => (await import('/src/blueprints/sheet.ts')).blueprintSheet(k), id);
 await browser.close();
-mkdirSync('figures-out', { recursive: true });
-writeFileSync(`figures-out/blueprint-${id}.png`, Buffer.from(data.split(',')[1], 'base64'));
-console.log(`wrote figures-out/blueprint-${id}.png`);
+// --store keeps the sheet with the design system, linked from its blueprint on /design-system/.
+const out = args.includes('--store') ? `public/blueprints/${id}.png` : `figures-out/blueprint-${id}.png`;
+mkdirSync(out.slice(0, out.lastIndexOf('/')), { recursive: true });
+writeFileSync(out, Buffer.from(data.split(',')[1], 'base64'));
+console.log(`wrote ${out}`);

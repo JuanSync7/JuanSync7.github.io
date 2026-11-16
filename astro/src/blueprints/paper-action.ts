@@ -10,7 +10,7 @@ export const PAPER_ACTION: Blueprint = {
     'src/components/ui/paper-action.css',
     'src/styles/tokens/buttons.css',
   ],
-  demo: '.ds-actions .paper-action',
+  demo: '[data-blueprint="paper-action"] .paper-action',
   parts: [
     { name: 'Action', selector: '', sizing: 'hug' },
     { name: 'Face', selector: '.pa-face', sizing: 'fill' },

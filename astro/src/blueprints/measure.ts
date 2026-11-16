@@ -29,12 +29,17 @@ function find(root: Element, selector: string): HTMLElement {
   return el;
 }
 
-/** A token's value in px, read where the part can see it. */
+/** The CSS zoom an element is drawn at (a blueprint view enlarges its specimen with `zoom`). */
+export function zoomOf(el: Element): number {
+  return 'currentCSSZoom' in el && typeof el.currentCSSZoom === 'number' ? el.currentCSSZoom : 1;
+}
+
+/** A token's value in CSS px, read where the part can see it. */
 function tokenPx(el: HTMLElement, token: string): number {
   const probe = document.createElement('span');
   probe.style.cssText = `position:absolute;visibility:hidden;display:block;width:var(${token})`;
   el.appendChild(probe);
-  const w = probe.getBoundingClientRect().width;
+  const w = probe.getBoundingClientRect().width / zoomOf(probe);
   probe.remove();
   return w;
 }
@@ -82,25 +87,33 @@ function sizingOf(demo: HTMLElement, selector: string, slot: boolean): Sizing {
   return got;
 }
 
+/** Measures the spec's demo on this page (the specimen in its blueprint view). */
 export function measure(id: string): Measured {
   const spec = BLUEPRINTS[id];
   if (!spec) throw new Error(`blueprint: no spec ${id}`);
   const root = document.querySelector(spec.demo);
   if (!(root instanceof HTMLElement)) throw new Error(`blueprint: no ${spec.demo} on this page`);
+  return measureEl(spec, root);
+}
+
+/** Measures one rendered instance. Boxes are in CSS px, undoing any zoom it is drawn at; set
+ *  `sizing` false to skip the sizing test (it copies the component off screen). */
+export function measureEl(spec: Blueprint, root: HTMLElement, sizing = true): Measured {
   const r = root.getBoundingClientRect();
+  const z = zoomOf(root);
   const boxes: Record<string, Box> = {};
   for (const p of spec.parts) {
     const b = find(root, p.selector).getBoundingClientRect();
-    boxes[p.selector] = { x: b.left - r.left, y: b.top - r.top, w: b.width, h: b.height };
+    boxes[p.selector] = { x: (b.left - r.left) / z, y: (b.top - r.top) / z, w: b.width / z, h: b.height / z };
   }
   const sizes = spec.sizes.map((s) => {
     const el = find(root, s.part);
     return { ...s, actual: actual(el, s.measure), expected: tokenPx(el, s.token) };
   });
-  const sizing = spec.parts.map((p) => ({ part: p.selector, name: p.name, want: p.sizing, got: sizingOf(root, p.selector, p.slot === true) })); // prettier-ignore
+  const sizingResults = spec.parts.map((p) => ({ part: p.selector, name: p.name, want: p.sizing, got: sizing ? sizingOf(root, p.selector, p.slot === true) : p.sizing })); // prettier-ignore
   const problems = [
     ...sizes.filter((s) => Math.abs(s.actual - s.expected) > 0.5).map((s) => `${s.measure} of ${s.part || 'root'} is ${s.actual}px, ${s.token} is ${s.expected}px`), // prettier-ignore
-    ...sizing.filter((s) => s.want !== s.got).map((s) => `${s.name} should ${s.want} but ${s.got}s`),
+    ...sizingResults.filter((s) => s.want !== s.got).map((s) => `${s.name} should ${s.want} but ${s.got}s`),
   ];
-  return { spec, boxes, sizes, sizing, problems };
+  return { spec, boxes, sizes, sizing: sizingResults, problems };
 }

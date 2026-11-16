@@ -56,7 +56,10 @@ A shared component's structure is a spec in `astro/src/blueprints/` (parts, how 
 token sets each size; never colours, motion or content). Change the spec and the component together:
 `npm run blueprint:check` measures the rendered component against it, `npm run blueprint -- <id>`
 draws its A3 blueprint sheet (read it), `npm run blueprint:selftest` proves the check still catches
-a broken spec. They need the dev server. See `astro/src/blueprints/README.md`.
+a broken spec. They need the dev server. Every component with a spec shows its blueprint on
+`/design-system/` (`<BlueprintView>` around its specimen, then the spec as code) and has its sheet
+stored in `public/blueprints/<id>.png` (`npm run blueprint -- <id> --store`): the drawing, the stored
+sheet and the spec are its visual reference. See `astro/src/blueprints/README.md`.
 
 ## Writing posts
 

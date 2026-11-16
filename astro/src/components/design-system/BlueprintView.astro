@@ -1,0 +1,57 @@
+---
+import { BLUEPRINTS } from '../../blueprints';
+import './blueprint-view.css';
+
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+const spec = BLUEPRINTS[id];
+if (!spec) throw new Error(`BlueprintView: no blueprint ${id}`);
+const measures: Record<string, string> = {
+  'padding-x': 'Padding, across',
+  'padding-y': 'Padding, down',
+  gap: 'Gap between slots',
+  'min-height': 'Minimum height',
+  border: 'Line width',
+  radius: 'Corner radius',
+  'edge-x': 'Printed edge, across',
+  'edge-y': 'Printed edge, down',
+};
+---
+
+<figure class="bp" data-blueprint={id}>
+  <div class="bp-stage">
+    <div class="bp-sheet">
+      <div class="bp-zoom"><slot /></div>
+      <div class="bp-overlay" aria-hidden="true"></div>
+    </div>
+  </div>
+  <figcaption class="bp-foot">
+    <table class="bp-table bp-sizes">
+      <caption>Sizes, each set by one token</caption>
+      <thead><tr><th>Token</th><th>Sets</th><th>Rendered</th></tr></thead>
+      <tbody>
+        {spec.sizes.map((s) => <tr><td>{s.token}</td><td>{measures[s.measure] ?? s.measure}</td><td data-rendered={s.token}>-</td></tr>)}
+      </tbody>
+    </table>
+    <table class="bp-table">
+      <caption>Parts and how they size</caption>
+      <thead><tr><th>Part</th><th>Sizing</th></tr></thead>
+      <tbody>{spec.parts.map((p) => <tr><td>{p.name}{p.slot ? ' (slot)' : ''}</td><td>{p.sizing}</td></tr>)}</tbody>
+    </table>
+    <dl class="bp-block">
+      <div><dt>Title</dt><dd>{spec.title}</dd></div>
+      <div><dt>Document</dt><dd>Component blueprint</dd></div>
+      <div><dt>No.</dt><dd>{spec.number}</dd></div>
+      <div><dt>Rev</dt><dd>{spec.revision}</dd></div>
+      <div><dt>Issued</dt><dd>{spec.drawn}</dd></div>
+      <div><dt>Sheet</dt><dd><a href={`/blueprints/${id}.png`}>A3 drawing</a></dd></div>
+    </dl>
+  </figcaption>
+</figure>
+
+<script>
+  import { drawBlueprints } from '../../blueprints/overlay';
+  drawBlueprints();
+</script>
