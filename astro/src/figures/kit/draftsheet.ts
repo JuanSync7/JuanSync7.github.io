@@ -1,10 +1,10 @@
 import { Color, OrthographicCamera, Scene, WebGLRenderer } from 'three';
 import { hexOf } from './ink';
-import { A3, AREA, draftScene, VIEW_NAMES, type Layout } from './legodraft';
+import { A3, AREA, draftScene, type Layout } from './legodraft';
 
 /** A sketch's drawing on a whole A3 sheet, for review (`npm run lego:sheet -- <sketch> drawing`):
- *  the frame, the drawing (kit/legodraft) in its area, and the text a page would set as DOM:
- *  view names, dimension values, the projection label, notes and the title block. */
+ *  the frame, the drawing (kit/legodraft) in its area, and the words a page would set as DOM:
+ *  the layout's labels, the notes, the table of variables and the title block. */
 
 type Ctx = CanvasRenderingContext2D;
 
@@ -96,6 +96,22 @@ function gridBorder(ctx: Ctx, mm: number): void {
   ctx.restore();
 }
 
+/** The variables: symbol, meaning, studs, real mm and LEGO mm, one row each. */
+function variableTable(ctx: Ctx, l: Layout, x0: number, y0: number, mm: number): void {
+  const cols: [string, number][] = [['SYM', 12], ['WHAT', 44], ['STUDS', 16], ['REAL MM', 16], ['LEGO MM', 16]]; // prettier-ignore
+  const rows = [cols.map(([c]) => c), ...l.variables.map((v) => [v.sym, v.what.toUpperCase(), v.studs.toFixed(2), String(v.mm), String(Math.round(v.studs * 8))])]; // prettier-ignore
+  const rh = A3.block / Math.max(rows.length, 7);
+  rows.forEach((row, r) => {
+    let x = x0;
+    row.forEach((cell, c) => {
+      const cw = (cols[c]?.[1] ?? 10) * mm;
+      ctx.strokeRect(x, y0 + r * rh * mm, cw, rh * mm);
+      text(ctx, cell, x + 1.5 * mm, y0 + (r + 0.5) * rh * mm, Math.min(2.4, rh * 0.5) * mm);
+      x += cw;
+    });
+  });
+}
+
 /** The whole sheet as a PNG data URL, `width` pixels wide. */
 export function drawingSheet(id: string, width = 2400): string {
   const mm = width / A3.w;
@@ -124,26 +140,25 @@ export function drawingSheet(id: string, width = 2400): string {
   ctx.fillStyle = hexOf('ink2');
   titleBlock(ctx, layout, id, mm);
   gridBorder(ctx, mm);
-  // Names: above the top row's views, below the bottom row's.
   const at = (fx: number, fy: number): [number, number] => [ax + fx * aw, ay + fy * ah];
-  for (const { view, rect } of layout.views) {
-    const top = view === 'side' || view === 'end';
-    const [x, y] = at((rect.x0 + rect.x1) / 2, top ? rect.y0 : rect.y1);
-    text(ctx, VIEW_NAMES[view].toUpperCase(), x, y + (top ? -8 : 7) * mm, 3.5 * mm, 'center');
+  const size = 3.2 * mm;
+  const nudge = { above: [0, -1], below: [0, 1], left: [-1, 0], right: [1, 0] } as const;
+  for (const l of layout.labels) {
+    const [x, y] = at(l.x, l.y);
+    const [dx, dy] = nudge[l.at];
+    const align = l.at === 'left' ? 'right' : l.at === 'right' ? 'left' : 'center';
+    text(ctx, l.text.toUpperCase(), x + dx * 2.5 * mm, y + dy * (1.5 * mm + size / 2), size, align);
   }
-  for (const d of layout.dims) {
-    const [x, y] = at(d.x, d.y);
-    text(ctx, String(d.mm), d.vertical ? x - 2.4 * mm : x, d.vertical ? y : y - 2.4 * mm, 3 * mm, 'center', d.vertical ? -Math.PI / 2 : 0); // prettier-ignore
-  }
-  const [sx, sy] = at((layout.symbol.x0 + layout.symbol.x1) / 2, layout.symbol.y1);
-  text(ctx, 'FIRST ANGLE', sx, sy + 4 * mm, 2.6 * mm, 'center');
+  const top = A3.h - A3.edge - A3.block;
   const notes = [
     'NOTES',
-    `1. DIMENSIONS IN MM, FULL SIZE. 1 STUD = ${Math.round(layout.sketch.scale * 1000)} MM (8 MM IN LEGO).`,
-    `2. HIDDEN EDGES DASHED. CENTRE LINES CHAIN.${layout.sketch.parts.some((p) => p.tone === 'signal' && !p.context) ? ' LAMPS IN THE SIGNAL COLOUR.' : ''}`,
-    '3. PROPORTIONS FROM THE RULES AS REPORTED. NO PHOTOGRAPH TRACED.',
+    '1. SIZES ARE VARIABLES. VALUES IN THE TABLE.',
+    `2. 1 STUD = ${Math.round(layout.sketch.scale * 1000)} MM REAL, 8 MM IN LEGO.`,
+    '3. HIDDEN EDGES DASHED. CENTRE LINES CHAIN.',
+    '4. FROM THE RULES AS REPORTED. NO PHOTO TRACED.',
   ];
-  notes.forEach((n, k) => text(ctx, n, ax + 4 * mm, (A3.h - A3.edge - A3.block + 6 + k * 8) * mm, 2.8 * mm));
+  notes.forEach((n, k) => text(ctx, n, ax + 4 * mm, (top + 5 + k * 7) * mm, 2.6 * mm));
+  variableTable(ctx, layout, (A3.left + 80) * mm, top * mm, mm);
   const url = out.toDataURL('image/png');
   disposers.forEach((d) => d());
   r.dispose();

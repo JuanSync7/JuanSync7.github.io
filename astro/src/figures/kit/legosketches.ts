@@ -11,6 +11,8 @@ export interface Sketch {
   scale: number;
   /** When the sketch was last drawn, for its drawing's title block. */
   drawn: string;
+  /** Where section A-A cuts across the span (z, studs): through every element. */
+  cut: number;
   parts: SketchPart[];
 }
 
@@ -39,6 +41,7 @@ const PILLAR = (z: number): SketchPart => ({
   z,
   t: 0.16,
   tone: 'line4',
+  explode: [0, -1, 0],
 });
 
 export const LEGO_SKETCHES: Record<string, Sketch> = {
@@ -47,6 +50,7 @@ export const LEGO_SKETCHES: Record<string, Sketch> = {
     title: 'Rear wing, 2026 rules',
     scale: 0.135,
     drawn: '2026-11-14',
+    cut: 5,
     parts: [
       // The three elements: main plane, a larger second element, a short steep third.
       {
@@ -59,14 +63,52 @@ export const LEGO_SKETCHES: Record<string, Sketch> = {
         spoon: 0.2,
         tone: 'inkSoft',
       },
-      { kind: 'foil', le: [36.35, 5.38], te: [37.98, 5.88], ...span, t: 0.09, camber: 0.06, tone: 'ink2' },
-      { kind: 'foil', le: [37.7, 5.98], te: [38.78, 6.72], ...span, t: 0.08, camber: 0.05, tone: 'ink2' },
+      {
+        kind: 'foil',
+        le: [36.35, 5.38],
+        te: [37.98, 5.88],
+        ...span,
+        t: 0.09,
+        camber: 0.06,
+        tone: 'ink2',
+        explode: [0, 0.7, 0],
+      },
+      {
+        kind: 'foil',
+        le: [37.7, 5.98],
+        te: [38.78, 6.72],
+        ...span,
+        t: 0.08,
+        camber: 0.05,
+        tone: 'ink2',
+        explode: [0, 1.4, 0],
+      },
       // Endplates, with the light on each trailing edge, and the central actuator fairing.
-      { kind: 'plate', outline: ENDPLATE, z: span.z0 - 0.08, t: 0.14, tone: 'inkSoft' },
-      { kind: 'plate', outline: ENDPLATE, z: span.z1 + 0.08, t: 0.14, tone: 'inkSoft' },
-      { kind: 'post', x0: 38.82, x1: 39.0, y0: 4.35, y1: 5.1, z0: span.z0 - 0.17, z1: span.z0 + 0.01, tone: 'signal' },
-      { kind: 'post', x0: 38.82, x1: 39.0, y0: 4.35, y1: 5.1, z0: span.z1 - 0.01, z1: span.z1 + 0.17, tone: 'signal' },
-      { kind: 'pod', x0: 36.6, x1: 38.4, y: 5.95, z: 7, r: 0.2, tone: 'line4' },
+      { kind: 'plate', outline: ENDPLATE, z: span.z0 - 0.08, t: 0.14, tone: 'inkSoft', explode: [0, 0, -1.2] },
+      { kind: 'plate', outline: ENDPLATE, z: span.z1 + 0.08, t: 0.14, tone: 'inkSoft', explode: [0, 0, 1.2] },
+      {
+        kind: 'post',
+        x0: 38.82,
+        x1: 39.0,
+        y0: 4.35,
+        y1: 5.1,
+        z0: span.z0 - 0.17,
+        z1: span.z0 + 0.01,
+        tone: 'signal',
+        explode: [0, 0, -1.2],
+      },
+      {
+        kind: 'post',
+        x0: 38.82,
+        x1: 39.0,
+        y0: 4.35,
+        y1: 5.1,
+        z0: span.z1 - 0.01,
+        z1: span.z1 + 0.17,
+        tone: 'signal',
+        explode: [0, 0, 1.2],
+      },
+      { kind: 'pod', x0: 36.6, x1: 38.4, y: 5.95, z: 7, r: 0.2, tone: 'line4', explode: [0, 0.7, 0] },
       // Two straight pillars from the crash structure, longer in chord where they meet the wing.
       PILLAR(6.25),
       PILLAR(7.75),
@@ -82,6 +124,7 @@ export const LEGO_SKETCHES: Record<string, Sketch> = {
     title: 'Front wing, 2026 rules',
     scale: 0.135,
     drawn: '2026-11-14',
+    cut: 3.5,
     parts: [
       // The main plane, low and fixed, an arrowhead in plan: its leading edge swept back toward
       // the tips, its middle (under the nose) raised a little.
@@ -91,14 +134,34 @@ export const LEGO_SKETCHES: Record<string, Sketch> = {
         [0.7, 6.1],
         [7.9, 13.3],
       ].flatMap(([z0 = 0, z1 = 0]): SketchPart[] => [
-        { kind: 'foil', le: [2.05, 0.98], te: [3.4, 1.36], z0, z1, t: 0.07, camber: 0.05, tone: 'ink2' },
-        { kind: 'foil', le: [3.15, 1.45], te: [4.15, 1.98], z0, z1, t: 0.07, camber: 0.05, tone: 'ink2' },
+        {
+          kind: 'foil',
+          le: [2.05, 0.98],
+          te: [3.4, 1.36],
+          z0,
+          z1,
+          t: 0.07,
+          camber: 0.05,
+          tone: 'ink2',
+          explode: [0, 0.6, 0],
+        },
+        {
+          kind: 'foil',
+          le: [3.15, 1.45],
+          te: [4.15, 1.98],
+          z0,
+          z1,
+          t: 0.07,
+          camber: 0.05,
+          tone: 'ink2',
+          explode: [0, 1.2, 0],
+        },
       ]),
       // Endplates and the broad footplates under them.
-      { kind: 'plate', outline: FW_ENDPLATE, z: 0.62, t: 0.12, tone: 'inkSoft' },
-      { kind: 'plate', outline: FW_ENDPLATE, z: 13.38, t: 0.12, tone: 'inkSoft' },
-      { kind: 'post', x0: 0.4, x1: 4.3, y0: 0.12, y1: 0.2, z0: 0, z1: 1.3, tone: 'line4' },
-      { kind: 'post', x0: 0.4, x1: 4.3, y0: 0.12, y1: 0.2, z0: 12.7, z1: 14, tone: 'line4' },
+      { kind: 'plate', outline: FW_ENDPLATE, z: 0.62, t: 0.12, tone: 'inkSoft', explode: [0, 0, -1.2] },
+      { kind: 'plate', outline: FW_ENDPLATE, z: 13.38, t: 0.12, tone: 'inkSoft', explode: [0, 0, 1.2] },
+      { kind: 'post', x0: 0.4, x1: 4.3, y0: 0.12, y1: 0.2, z0: 0, z1: 1.3, tone: 'line4', explode: [0, -0.6, -1.2] },
+      { kind: 'post', x0: 0.4, x1: 4.3, y0: 0.12, y1: 0.2, z0: 12.7, z1: 14, tone: 'line4', explode: [0, -0.6, 1.2] },
       // The nose, its two pylons down to the main plane, and the front tyres.
       { kind: 'post', x0: 1.2, x1: 9.5, y0: 2.1, y1: 3.2, z0: 6.1, z1: 7.9, tone: 'line3', context: true },
       { kind: 'plate', outline: [[1.4, 0.9], [2.3, 0.9], [2.6, 2.2], [1.6, 2.2]], z: 6.4, t: 0.12, tone: 'line4' }, // prettier-ignore

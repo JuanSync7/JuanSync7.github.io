@@ -22,17 +22,19 @@ Commands run in `astro/` with the dev server up. Each stage ends with its sheet 
    use, say so (R-DRW-2). Pick the scale the parent model uses (metres per stud).
 2. **Sketch.** Add the part to `kit/legosketches.ts` in the model's frame (studs; x along, y up,
    z across): wing elements as `foil`, thin parts as `plate`, blocks as `post`, fairings as
-   `pod`, tyres as `wheel`. Give it `title`, `scale` and `drawn`. Mark the neighbours that only
-   place it (`context: true`, R-DRW-3). `npm run lego:sheet -- <sketch> sketch` (four views) and
+   `pod`, tyres as `wheel`. Give it `title`, `scale`, `drawn` and `cut` (where section A-A goes,
+   R-DRW-13), and each part that comes apart its `explode` offset (R-DRW-14). Mark the neighbours
+   that only place it (`context: true`, R-DRW-3). `npm run lego:sheet -- <sketch> sketch` (four views) and
    `sketch3d` (360°); read both.
 3. **Draw.** `npm run lego:sheet -- <sketch> drawing`: the A3 general-arrangement drawing
-   (first-angle views, dimensions, frame, grid reference border, title block). Answer `LOOK.md`
+   (first-angle views, section A-A, exploded isometric, sizes as variables with their table,
+   frame, grid reference border, title block; monochrome, R-DRW-9). Answer `LOOK.md`
    for it. A dimension that disagrees with step 1 goes back to the sketch, never to the drawing.
 4. **Compare.** Plan the LEGO (parent workflow, stage 2), then
    `npm run lego:sheet -- <sketch> compare` lays the sketch in the signal colour over the plan's
    wireframe. Where they part ways, change the plan or name the gap in the hand-over.
 5. **Publish (when asked).** A drawing on a page is the `lego-drawing` figure: the canvas draws
-   the lines, the page sets every word as DOM from `draftLayout(<sketch>)` (R-DRW-8). Run
+   the lines, the page sets every word and the variables table as DOM from `draftLayout(<sketch>)` (R-DRW-8). Run
    `npm run figure -- lego-drawing --url=…` and look at the page at desktop and phone width.
 6. **Hand over.** The sketch, the drawing sheet read, its sources, the gaps between the sketch
    and the LEGO, and what was not verified. The drawing's "Checked" cell stays empty until a

@@ -23,8 +23,9 @@ import { plastic } from './legoscene';
  *  frame (studs; x along the car, y up, z across). The LEGO plan is then drawn against it
  *  (`compare`). A sketch says where its numbers come from. */
 
-/** `context`: a neighbour drawn to place the part (a tyre, a crash structure), left off its drawing. */
-export type SketchPart = { tone: NightKey; context?: boolean } & (
+/** `context`: a neighbour drawn to place the part (a tyre, a crash structure), left off its drawing.
+ *  `explode`: how far the part moves (studs) in its drawing's exploded view. */
+export type SketchPart = { tone: NightKey; context?: boolean; explode?: [number, number, number] } & (
   | {
       /** A wing element: an inverted, cambered section from its leading edge to its trailing
        *  edge (x, y), across z0..z1. `spoon` raises the leading edge toward the tips; `sweep`
@@ -80,6 +81,15 @@ function loft(rings: [number, number, number][][]): BufferGeometry {
   return g;
 }
 
+type Foil = Extract<SketchPart, { kind: 'foil' }>;
+
+/** A wing element's leading edge (x, y) at z, after its spoon and sweep. */
+export function leadingEdge(p: Foil, z: number): [number, number] {
+  const u = (2 * (z - p.z0)) / (p.z1 - p.z0) - 1;
+  const back = (p.sweep ?? 0) >= 0 ? (u + 1) / 2 : (1 - u) / 2;
+  return [p.le[0] + Math.abs(p.sweep ?? 0) * back, p.le[1] + (p.spoon ?? 0) * u * u];
+}
+
 /** One sketch part as a closed solid, in the model's frame. */
 export function sketchGeometry(p: SketchPart): BufferGeometry {
   switch (p.kind) {
@@ -87,9 +97,7 @@ export function sketchGeometry(p: SketchPart): BufferGeometry {
       const sec = section(p.t, p.camber);
       const rings = Array.from({ length: 17 }, (_, k) => {
         const z = p.z0 + ((p.z1 - p.z0) * k) / 16;
-        const u = (2 * (z - p.z0)) / (p.z1 - p.z0) - 1;
-        const back = (p.sweep ?? 0) >= 0 ? (u + 1) / 2 : (1 - u) / 2;
-        const le: [number, number] = [p.le[0] + Math.abs(p.sweep ?? 0) * back, p.le[1] + (p.spoon ?? 0) * u * u];
+        const le = leadingEdge(p, z);
         const [dx, dy] = [p.te[0] - le[0], p.te[1] - le[1]];
         return sec.map(([a, b]): [number, number, number] => [le[0] + a * dx - b * dy, le[1] + a * dy + b * dx, z]);
       });

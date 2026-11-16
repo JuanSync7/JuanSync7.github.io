@@ -3,18 +3,13 @@ import NightPage from '../../layouts/NightPage.astro';
 import NightNav from '../../components/layout/NightNav.astro';
 import NightFooter from '../../components/layout/NightFooter.astro';
 import FigureCanvas from '../../components/ui/FigureCanvas.tsx';
-import { AREA, VIEW_NAMES, draftLayout } from '../../figures/kit/legodraft';
+import { AREA, draftLayout } from '../../figures/kit/legodraft';
 import { build } from '../../figures/kit/legoswap';
 import { F1 } from '../../figures/kit/legoformula';
 
 // The drawing's text is DOM, set from the same layout the figure draws by, so it lines up.
 const layout = draftLayout('rearwing');
 const pct = (f: number): string => `${(f * 100).toFixed(2)}%`;
-const names = layout.views.map(({ view, rect }) => {
-  const top = view === 'side' || view === 'end';
-  return { name: VIEW_NAMES[view], x: pct((rect.x0 + rect.x1) / 2), y: pct(top ? rect.y0 : rect.y1), top };
-});
-const symbol = { x: pct((layout.symbol.x0 + layout.symbol.x1) / 2), y: pct(layout.symbol.y1) };
 const pieces = build(F1).length;
 const stud = Math.round(layout.sketch.scale * 1000);
 const steps = [
@@ -57,27 +52,43 @@ npm run figure -- lego-f1                 # the build, audited`;
       <p>
         This is the rear wing the LEGO F1 was built against, drawn to the 2026 rules as reported. It uses first-angle projection, the British
         and European habit. The side elevation is the main view. What you see from the nose sits to its right, and what you see from above sits
-        below it. Hidden edges are dashed, the chain line is the centre of the car, and the two coloured marks on the endplates are its lights.
+        below it. Section A-A cuts through the three elements at twice the size, so each profile can be read, and the exploded view pulls the
+        parts apart the way they are built. Every size is a variable on the drawing and a value in the table under it.
       </p>
       <figure class="lg-sheet">
         <div class="lg-draw" style={`aspect-ratio: ${AREA.w} / ${AREA.h}`}>
           <FigureCanvas client:visible id="lego-drawing" />
-          {names.map((n) => <span class:list={['lg-tag', n.top ? 'lg-above' : 'lg-below']} style={`left: ${n.x}; top: ${n.y}`}>{n.name}</span>)}
           {
-            layout.dims.map((d) => (
-              <span class:list={['lg-dim', d.vertical && 'lg-vertical']} style={`left: ${pct(d.x)}; top: ${pct(d.y)}`}>
-                {d.mm}
+            layout.labels.map((l) => (
+              <span class:list={['lg-tag', `lg-${l.at}`]} style={`left: ${pct(l.x)}; top: ${pct(l.y)}`}>
+                {l.text}
               </span>
             ))
           }
-          <span class="lg-tag lg-below" style={`left: ${symbol.x}; top: ${symbol.y}`}>First angle</span>
         </div>
         <div class="lg-foot">
           <ol class="lg-notes">
-            <li>Dimensions in mm, full size. One stud is {stud} mm of the real car and 8 mm in LEGO.</li>
-            <li>Hidden edges dashed, centre lines chain-dotted, lights in the signal colour.</li>
+            <li>Sizes are variables. Their values are in the table.</li>
+            <li>One stud is {stud} mm of the real car and 8 mm in LEGO.</li>
+            <li>Hidden edges dashed, centre lines chain-dotted.</li>
             <li>Proportions from the rules as reported. No photograph was traced.</li>
           </ol>
+          <table class="lg-vars">
+            <thead><tr><th>Sym</th><th>What</th><th>Studs</th><th>Real mm</th><th>LEGO mm</th></tr></thead>
+            <tbody>
+              {
+                layout.variables.map((v) => (
+                  <tr>
+                    <td>{v.sym}</td>
+                    <td>{v.what}</td>
+                    <td>{v.studs.toFixed(2)}</td>
+                    <td>{v.mm}</td>
+                    <td>{Math.round(v.studs * 8)}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
           <dl class="lg-block">
             <div class="lg-title"><dt>Title</dt><dd>{layout.sketch.title}</dd></div>
             <div><dt>Drawing no.</dt><dd>JS-LEGO-REARWING-01</dd></div>
@@ -189,8 +200,7 @@ npm run figure -- lego-f1                 # the build, audited`;
   .lg-draw {
     position: relative;
   }
-  .lg-tag,
-  .lg-dim {
+  .lg-tag {
     position: absolute;
     font-family: var(--nt-mono);
     font-size: min(var(--nt-fs-caption), 2.2cqw);
@@ -200,21 +210,21 @@ npm run figure -- lego-f1                 # the build, audited`;
     pointer-events: none;
   }
   .lg-above {
-    transform: translate(-50%, -160%);
+    transform: translate(-50%, -130%);
   }
   .lg-below {
-    transform: translate(-50%, 50%);
+    transform: translate(-50%, 30%);
   }
-  .lg-dim {
-    transform: translate(-50%, -120%);
+  .lg-left {
+    transform: translate(-130%, -50%);
   }
-  .lg-dim.lg-vertical {
-    transform: translate(-120%, -50%) rotate(-90deg) translateY(-50%);
-    transform-origin: 100% 50%;
+  .lg-right {
+    transform: translate(30%, -50%);
   }
   .lg-foot {
     display: grid;
-    grid-template-columns: 1fr minmax(0, 1.4fr);
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr) minmax(0, 1.2fr);
+    align-items: start;
     gap: var(--hf-space-6);
     border-top: 1px solid var(--nt-line-3);
     padding-top: var(--hf-space-4);
@@ -224,6 +234,23 @@ npm run figure -- lego-f1                 # the build, audited`;
     padding-left: var(--hf-space-5);
     font: var(--nt-fs-caption) / var(--nt-lh-body) var(--nt-mono);
     color: var(--nt-ink-muted);
+  }
+  .lg-vars {
+    width: 100%;
+    border-collapse: collapse;
+    font: var(--nt-fs-caption) / var(--nt-lh-body) var(--nt-mono);
+    color: var(--nt-ink-2);
+  }
+  .lg-vars th,
+  .lg-vars td {
+    padding: 0 var(--hf-space-2);
+    border: 1px solid var(--nt-line-2);
+    text-align: left;
+  }
+  .lg-vars th {
+    text-transform: uppercase;
+    color: var(--nt-ink-muted);
+    font-weight: normal;
   }
   .lg-block {
     display: grid;

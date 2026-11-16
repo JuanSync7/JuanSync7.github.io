@@ -15,6 +15,10 @@ what the sheet shows: the view, and its grid reference where that helps.
 
 ## The numbers
 
+- Is every size a variable at its line, with its value in the table, and every unknown `[TBD]`?
+- Does section A-A cut every element cleanly, and do its chords match the sketch?
+- Does the exploded view come apart the way the LEGO is built?
+
 - Do the overall dimensions match the research at the stated scale? Name the source for each.
 - Is the scale a standard one, and does the title block say the same scale as the layout?
 
