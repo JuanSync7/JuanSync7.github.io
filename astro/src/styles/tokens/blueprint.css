@@ -1,0 +1,23 @@
+/* Component blueprints on /design-system/ (src/blueprints): the specimen is enlarged by
+   --bp-zoom and drawn over in drafting line weights, ISO 128's thick and thin in a 2:1 ratio,
+   and lettered in the ISO 3098 font at --bp-fs. Monochrome, as engineering drawings are. */
+:root {
+  --bp-zoom: 2;
+  --bp-thick: 2px;
+  --bp-thin: 1px;
+  --bp-dash: 6px;
+  --bp-arrow: 7px;
+  --bp-gap: 4px;
+  --bp-fs: calc(var(--nt-fs-caption) / 0.7);
+  /* A template's page is drawn at this fraction of its window width. */
+  --bp-page-scale: 0.5;
+  --bp-ink: var(--nt-ink-2);
+  --bp-ink-soft: var(--nt-ink-muted);
+}
+/* On a phone the specimen is drawn 1:1, and the whole sheet scales to the column. */
+@media (max-width: 480px) {
+  :root {
+    --bp-zoom: 1;
+    --bp-page-scale: 0.8;
+  }
+}

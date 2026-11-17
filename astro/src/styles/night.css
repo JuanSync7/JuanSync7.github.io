@@ -31,8 +31,8 @@ body.night {
 }
 
 .night :focus-visible {
-  outline: 2px solid var(--nt-signal);
-  outline-offset: 3px;
+  outline: var(--hf-focus-w) solid var(--nt-signal);
+  outline-offset: var(--hf-focus-offset);
 }
 
 .night h1,

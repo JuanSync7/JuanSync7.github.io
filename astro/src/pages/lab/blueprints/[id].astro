@@ -1,0 +1,76 @@
+---
+import NightPage from '../../../layouts/NightPage.astro';
+import NightNav from '../../../components/layout/NightNav.astro';
+import NightFooter from '../../../components/layout/NightFooter.astro';
+import BlueprintView from '../../../components/design-system/BlueprintView.astro';
+import Specimen from '../../../components/blueprints/Specimen.astro';
+import TranslatorTable from '../../../components/blueprints/TranslatorTable.astro';
+import { ALL, type Blueprint } from '../../../blueprints';
+import { MEASURE_WORDS } from '../../../blueprints/catalogue';
+import { ROWS, specFile, specSource } from '../../../blueprints/catalogue-data';
+import '../../../components/blueprints/blueprint-lab.css';
+
+export function getStaticPaths() {
+  return ALL.map((b) => ({ params: { id: b.id }, props: { spec: b } }));
+}
+interface Props {
+  spec: Blueprint;
+}
+const { spec } = Astro.props;
+const rows = ROWS.filter((r) => r.blueprint === spec.id);
+const first = rows.find((r) => r.measure === 'gap') ?? rows[0];
+const sheets = spec.views.map((v) => ({ name: v.name, href: `/blueprints/${spec.id}${v.name === 'desktop' ? '' : `-${v.name}`}.png` }));
+---
+
+<NightPage title={`${spec.title} · Blueprints · Lab · Juan Kok`} description={spec.summary}>
+  <NightNav current="lab" />
+  <main class="nt-wrap nt-section">
+    <header class="bpl-head">
+      <a href="/lab/blueprints/">← all blueprints</a>
+      <span>// blueprint · {spec.number} · rev {spec.revision}</span>
+      <h1>{spec.title}</h1>
+      <p>{spec.summary}</p>
+      <div class="bpl-meta">
+        <span>{spec.kind === 'component' ? 'component' : 'page'}</span><span>{spec.parts.length} parts</span><span>{spec.sizes.length} sizes</span>
+        {spec.views[0]?.route ? <a href={spec.views[0].route}>see it live →</a> : null}
+      </div>
+    </header>
+
+    <section class="bpl-section" aria-labelledby="bpl-drawing">
+      <h2 id="bpl-drawing"><span>01</span> The drawing</h2>
+      <p>
+        {spec.kind === 'component'
+          ? 'The live component, enlarged, with its blueprint drawn over it: slots dashed and named with how they size, each length named by its token.'
+          : 'The real page in a frame at its window width, with its blueprint over it: each part outlined and numbered, each size lettered. The table gives every letter’s token and what rendered.'}
+      </p>
+      {spec.kind === 'component' ? (
+        <BlueprintView id={spec.id}><Specimen id={spec.id} /></BlueprintView>
+      ) : (
+        spec.views.map((v) => <BlueprintView id={spec.id} view={v.name} />)
+      )}
+    </section>
+
+    <section class="bpl-section" aria-labelledby="bpl-ask">
+      <h2 id="bpl-ask"><span>02</span> Asking for a change</h2>
+      {first ? (
+        <p class="bpl-example">
+          “Make the {first.partName.toLowerCase()}’s {MEASURE_WORDS[first.measure]} smaller” is <code>{first.token}</code>, set in{' '}
+          <code>{first.defined.replace(/^src\//, '')}</code>.
+          {first.sharedWith.length ? ` The same token sizes ${first.sharedWith.join(', ')}, so they change too.` : ' Nothing else on this list uses it.'}
+        </p>
+      ) : null}
+      <TranslatorTable rows={rows} />
+    </section>
+
+    <section class="bpl-section" aria-labelledby="bpl-spec">
+      <h2 id="bpl-spec"><span>03</span> The spec</h2>
+      <p>The file an agent reads and edits. The drawing, the tables and the check all come from it.</p>
+      <div class="bpl-term">
+        <div class="bpl-term-bar"><i></i><i></i><i></i><span>{specFile(spec.id)}</span></div>
+        <pre><code>{specSource(spec.id)}</code></pre>
+      </div>
+      <p>Sheets on A3: {sheets.map((s, i) => <>{i ? ' · ' : ''}<a href={s.href}>{s.name}</a></>)}. Code: {spec.source.map((f) => f.replace(/^src\//, '')).join(', ')}.</p>
+    </section>
+  </main>
+  <NightFooter />
+</NightPage>

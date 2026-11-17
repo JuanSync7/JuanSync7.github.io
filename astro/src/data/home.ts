@@ -176,6 +176,7 @@ export const FOOTER_GROUPS = [
       { label: 'Lab', href: '/lab/' },
       { label: 'Vault', href: '/vault/' },
       { label: 'Anatomy', href: '/anatomy/chip-package/' },
+      { label: 'Design system', href: '/design-system/' },
     ],
   },
   {
@@ -185,7 +186,6 @@ export const FOOTER_GROUPS = [
       { label: 'Thinking', href: '/#thinking' },
       { label: 'Experience', href: '/#experience' },
       { label: 'Work', href: '/#work' },
-      { label: 'Design system', href: '/design-system/' },
     ],
   },
 ] as const;

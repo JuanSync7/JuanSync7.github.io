@@ -1,0 +1,275 @@
+/* A component's blueprint over its live specimen: see src/blueprints and tokens/blueprint.css. */
+.bp {
+  /* The column sets the width, never the drawing: overlay.ts fits the sheet into it. */
+  contain: inline-size;
+  position: relative;
+  min-width: 0;
+  margin: 0;
+  border: var(--bp-thin) solid var(--nt-line-3);
+  font-family: var(--nt-drafting);
+  color: var(--bp-ink);
+  text-transform: uppercase;
+}
+.bp-stage {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+/* The drawing: specimen and overlay, scaled as one by --bp-fit when the column is too narrow. */
+.bp-sheet {
+  position: relative;
+  flex: none;
+  zoom: var(--bp-fit, 1);
+  /* view.ts pads it to hold the drawing: dimensions, notes and part names. */
+}
+.bp-zoom {
+  width: max-content;
+  zoom: var(--bp-zoom);
+  /* The specimen is shown, not used: the drawing is the point here. */
+  pointer-events: none;
+}
+/* A 1:1 copy, out of sight, that the token table is measured from. */
+.bp-probe {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: max-content;
+  visibility: hidden;
+  pointer-events: none;
+}
+.bp-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.bp-overlay > div {
+  position: absolute;
+}
+.bp-edge {
+  border: var(--bp-thin) solid var(--bp-ink-soft);
+  border-radius: var(--pa-radius);
+}
+.bp-slot {
+  border: var(--bp-thin) dashed var(--bp-ink);
+}
+.bp-leader,
+.bp-ext.bp-v {
+  border-left: var(--bp-thin) solid var(--bp-ink-soft);
+}
+.bp-ext.bp-h {
+  border-top: var(--bp-thin) solid var(--bp-ink-soft);
+}
+.bp-dim.bp-h {
+  border-top: var(--bp-thin) solid var(--bp-ink);
+}
+.bp-dim.bp-v {
+  border-left: var(--bp-thin) solid var(--bp-ink);
+}
+/* Arrowheads: a 30° wedge at each end of the line, inside it, or outside when it is short. */
+.bp-dim::before,
+.bp-dim::after {
+  content: '';
+  position: absolute;
+  border: calc(var(--bp-arrow) * 0.27) solid transparent;
+}
+.bp-h.bp-dim::before {
+  left: 0;
+  top: calc(var(--bp-arrow) * -0.27 - var(--bp-thin) / 2);
+  border-left: none;
+  border-right: var(--bp-arrow) solid var(--bp-ink);
+}
+.bp-h.bp-dim::after {
+  right: 0;
+  top: calc(var(--bp-arrow) * -0.27 - var(--bp-thin) / 2);
+  border-left: var(--bp-arrow) solid var(--bp-ink);
+}
+.bp-v.bp-dim::before {
+  top: 0;
+  left: calc(var(--bp-arrow) * -0.27 - var(--bp-thin) / 2);
+  border-bottom: var(--bp-arrow) solid var(--bp-ink);
+}
+.bp-v.bp-dim::after {
+  bottom: 0;
+  left: calc(var(--bp-arrow) * -0.27 - var(--bp-thin) / 2);
+  border-top: var(--bp-arrow) solid var(--bp-ink);
+}
+.bp-h.bp-dim.bp-out::before {
+  right: 100%;
+  left: auto;
+  border-right: none;
+  border-left: var(--bp-arrow) solid var(--bp-ink);
+}
+.bp-h.bp-dim.bp-out::after {
+  left: 100%;
+  right: auto;
+  border-left: none;
+  border-right: var(--bp-arrow) solid var(--bp-ink);
+}
+.bp-v.bp-dim.bp-out::before {
+  bottom: 100%;
+  top: auto;
+  border-bottom: none;
+  border-top: var(--bp-arrow) solid var(--bp-ink);
+}
+.bp-v.bp-dim.bp-out::after {
+  top: 100%;
+  bottom: auto;
+  border-top: none;
+  border-bottom: var(--bp-arrow) solid var(--bp-ink);
+}
+.bp-label {
+  font-size: var(--bp-fs);
+  line-height: 1;
+  white-space: nowrap;
+}
+.bp-label[data-side='centre'] {
+  transform: translate(-50%, -50%);
+}
+.bp-label[data-side='vertical'] {
+  transform: translate(-50%, -50%) rotate(-90deg);
+}
+.bp-label[data-side='below'] {
+  transform: translate(-50%, var(--bp-gap));
+}
+.bp-part {
+  border: var(--bp-thin) solid var(--bp-ink);
+}
+/* A part's number in a circle, as on a parts list. */
+.bp-balloon {
+  display: grid;
+  place-items: center;
+  width: calc(var(--bp-fs) * 1.5);
+  height: calc(var(--bp-fs) * 1.5);
+  transform: translate(-50%, -50%);
+  border: var(--bp-thin) solid var(--bp-ink);
+  border-radius: 50%;
+  background: var(--nt-bg);
+  font-size: var(--bp-fs);
+  line-height: 1;
+}
+/* A template's real page, at its window width, scaled to the drawing. */
+.bp-frame-wrap {
+  overflow: hidden;
+  border: var(--bp-thin) solid var(--nt-line-3);
+}
+.bp-frame {
+  display: block;
+  border: 0;
+  transform: scale(var(--bp-page-scale));
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+.bp-status {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: var(--nt-fs-caption);
+  color: var(--bp-ink-soft);
+}
+.bp-foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--hf-space-5);
+  padding: var(--hf-space-4);
+  border-top: var(--bp-thin) solid var(--nt-line-3);
+}
+.bp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--bp-fs);
+}
+.bp-table caption {
+  text-align: left;
+  color: var(--bp-ink-soft);
+  padding-bottom: var(--hf-space-2);
+}
+.bp-table th,
+.bp-table td {
+  padding: var(--hf-space-1) var(--hf-space-2);
+  border: var(--bp-thin) solid var(--nt-line-2);
+  text-align: left;
+  font-weight: normal;
+}
+.bp-table th {
+  color: var(--bp-ink-soft);
+}
+.bp-table td {
+  overflow-wrap: anywhere;
+}
+.bp-sizes {
+  grid-column: 1 / -1;
+}
+.bp-sizes td:nth-child(4) {
+  white-space: nowrap;
+}
+.bp-sizes tr[data-state='off'] td {
+  text-decoration: underline wavy;
+}
+.bp-block {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  border: var(--bp-thick) solid var(--nt-line-3);
+}
+.bp-block > div {
+  flex: 1 1 auto;
+  padding: var(--hf-space-1) var(--hf-space-2);
+  border: var(--bp-thin) solid var(--nt-line-2);
+}
+.bp-block > div:first-child {
+  flex-grow: 3;
+}
+.bp-block dt {
+  font-size: var(--nt-fs-caption);
+  color: var(--bp-ink-soft);
+}
+.bp-block dd {
+  margin: 0;
+  font-size: var(--bp-fs);
+  white-space: nowrap;
+}
+@media (max-width: 720px) {
+  .bp-foot {
+    grid-template-columns: 1fr;
+    padding: var(--hf-space-3);
+  }
+}
+/* On a phone a row of the size table becomes a card: mark, token and value, then the part and what it sets. */
+@media (max-width: 480px) {
+  .bp-sizes thead {
+    display: none;
+  }
+  .bp-sizes tr {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: 'mark token value' 'part part sets';
+    border: var(--bp-thin) solid var(--nt-line-2);
+    border-top: none;
+  }
+  .bp-sizes tbody tr:first-child {
+    border-top: var(--bp-thin) solid var(--nt-line-2);
+  }
+  .bp-sizes td {
+    border: none;
+  }
+  .bp-sizes td:nth-child(1) {
+    grid-area: mark;
+  }
+  .bp-sizes td:nth-child(2) {
+    grid-area: part;
+    color: var(--bp-ink-soft);
+    padding-top: 0;
+  }
+  .bp-sizes td:nth-child(3) {
+    grid-area: sets;
+    color: var(--bp-ink-soft);
+    padding-top: 0;
+  }
+  .bp-sizes td:nth-child(4) {
+    grid-area: token;
+  }
+  .bp-sizes td:nth-child(5) {
+    grid-area: value;
+  }
+}

@@ -1,0 +1,18 @@
+---
+import PaperAction from '../ui/PaperAction.astro';
+import PixelButton from '../ui/PixelButton.astro';
+import SectionHead from '../ui/SectionHead.astro';
+import Sticker from '../ui/Sticker.astro';
+
+/** A component's specimen for its blueprint view on the lab: the same example the design system
+ *  shows, so the drawing and the check measure the same thing. */
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+---
+
+{id === 'paper-action' && <PaperAction href="/vault/architecture/" variant="paper">Explore the system</PaperAction>}
+{id === 'pixel-button' && <PixelButton href="/blog/" variant="outline">Get in touch</PixelButton>}
+{id === 'section-head' && <SectionHead label="// a shared pattern" title="Make it understandable." accent="Then make it work." lead="A familiar opening, wherever you are on the site." />}
+{id === 'sticker' && <Sticker kind="piano" />}

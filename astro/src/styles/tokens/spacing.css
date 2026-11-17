@@ -2,6 +2,9 @@
 
 :root {
   /* Spacing scale (4px base) */
+  /* The keyboard focus ring: its line and how far it stands off. */
+  --hf-focus-w: 2px;
+  --hf-focus-offset: 3px;
   --hf-space-1: 4px;
   --hf-space-2: 8px;
   --hf-space-3: 12px;

@@ -290,7 +290,7 @@ const { current } = Astro.props;
   .bars::after {
     display: block;
     width: var(--hf-space-4);
-    height: 2px;
+    height: var(--pp-bar-h);
     background: var(--pp-ink-strong);
     border-radius: 1px;
     transition: transform var(--pp-dur-step);
@@ -308,11 +308,11 @@ const { current } = Astro.props;
   }
 
   .bars::before {
-    top: -5px;
+    top: calc(-1 * var(--pp-bar-gap));
   }
 
   .bars::after {
-    top: 5px;
+    top: var(--pp-bar-gap);
   }
 
   [data-open] .bars {
@@ -320,11 +320,11 @@ const { current } = Astro.props;
   }
 
   [data-open] .bars::before {
-    transform: translateY(5px) rotate(45deg);
+    transform: translateY(var(--pp-bar-gap)) rotate(45deg);
   }
 
   [data-open] .bars::after {
-    transform: translateY(-5px) rotate(-45deg);
+    transform: translateY(calc(-1 * var(--pp-bar-gap))) rotate(-45deg);
   }
 
   /* Mid widths: the role line goes before the links get crowded. */

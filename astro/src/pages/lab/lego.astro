@@ -1,0 +1,340 @@
+---
+import NightPage from '../../layouts/NightPage.astro';
+import NightNav from '../../components/layout/NightNav.astro';
+import NightFooter from '../../components/layout/NightFooter.astro';
+import FigureCanvas from '../../components/ui/FigureCanvas.tsx';
+import { AREA, draftLayout, titleFields } from '../../figures/kit/drawing/scene';
+import { build } from '../../figures/kit/legoswap';
+import { F1 } from '../../figures/kit/legoformula';
+
+// The drawing's text is DOM, set from the same layout the figure draws by, so it lines up.
+const layout = draftLayout('rearwing');
+const pct = (f: number): string => `${(f * 100).toFixed(2)}%`;
+const pieces = build(F1).length;
+const stud = Math.round(layout.sketch.scale * 1000);
+const steps = [
+  ['Brief', 'Name the object and what makes it read as itself. Pick a scale: one stud is its real width over the studs you can spare.'],
+  ['Sketch', 'Find the real proportions and write down where each number came from. Model the real thing in simple solids, not in bricks.'],
+  ['Draw', 'Turn the sketch into a first-angle drawing with its dimensions, and read it the way a stranger would.'],
+  ['Plan', 'Write the model as shapes a builder knows, and lay them over the sketch to see where they part ways.'],
+  ['Pieces', 'If a shape has no piece, add the piece to the catalogue first, from LEGO’s own sizes. Never fake one.'],
+  ['Check', 'Swap the shapes for pieces. Nothing may clip, float or sit off the grid, and the check is never bent to pass.'],
+  ['Build', 'Mount the model as a figure that builds itself piece by piece, and run the figure audit.'],
+  ['Look', 'Read every sheet before the next stage. When something is wrong, go back to the stage that made it.'],
+];
+const commands = `npm run lego:sheet -- rearwing sketch     # the real part, four views
+npm run lego:sheet -- rearwing drawing    # this sheet, on A3
+npm run lego:sheet -- rearwing compare    # the plan laid over the sketch
+npm run lego:check                        # clipping, floating, off the grid
+npm run figure -- lego-f1                 # the build, audited`;
+---
+
+<NightPage
+  title="Designing in LEGO · Lab · Juan Kok"
+  description="How the LEGO models on this site are made: a first-angle engineering drawing of the real part, a plan in shapes checked against it, then pieces, checked before any is drawn."
+>
+  <NightNav current="lab" />
+  <main class="nt-wrap nt-section">
+    <header class="lg-head">
+      <a href="/lab/">← the lab</a>
+      <span>// lab · lego</span>
+      <h1>Draw it first.<br />Then build it in LEGO.</h1>
+      <p>
+        Every LEGO model here starts the way an engineer starts a part. First a drawing of the real thing, in views that each show one face
+        true to size. Then a plan in simple shapes, held up against the drawing. Only then does it become bricks, and a script checks every
+        brick before one is drawn.
+      </p>
+      <div class="lg-meta"><span>first-angle projection</span><span>1 stud = {stud} mm</span><span>{pieces} pieces</span></div>
+    </header>
+
+    <section class="lg-section" aria-labelledby="lg-drawing">
+      <h2 id="lg-drawing"><span>01</span> The drawing</h2>
+      <p>
+        This is the rear wing the LEGO F1 was built against, drawn to the 2026 rules as reported. It uses first-angle projection, the British
+        and European habit. The side elevation is the main view. What you see from the nose sits to its right, and what you see from above sits
+        below it. Section A-A cuts through the three elements at twice the size, so each profile can be read, and the exploded view pulls the
+        parts apart the way they are built. Every size is written on its dimension line in millimetres, as a standard drawing does.
+      </p>
+      <figure class="lg-sheet">
+        <div class="lg-draw" style={`aspect-ratio: ${AREA.w} / ${AREA.h}`}>
+          <FigureCanvas client:visible id="lego-drawing" />
+          {
+            layout.labels.map((l) => (
+              <span class:list={['lg-tag', `lg-${l.at}`]} style={`left: ${pct(l.x)}; top: ${pct(l.y)}; --lg-turn: ${l.angle ?? 0}deg`}>
+                {l.text}
+              </span>
+            ))
+          }
+        </div>
+        <div class="lg-foot">
+          <ol class="lg-notes">
+            <li>Dimensions in mm, full size of the real part.</li>
+            <li>One stud is {stud} mm of the real car and 8 mm in LEGO.</li>
+            <li>Proportions from the rules as reported. No photograph was traced.</li>
+          </ol>
+          <dl class="lg-block">
+            {
+              titleFields(layout).flatMap((row) =>
+                row.map(([field, value, width]) => (
+                  <div style={`--lg-span: ${width / 5}`}>
+                    <dt>{field}</dt>
+                    <dd>{value}</dd>
+                  </div>
+                )),
+              )
+            }
+          </dl>
+        </div>
+      </figure>
+      <p class="lg-aside">
+        Read the projection symbol first. In third angle, the American habit, the same drawing puts the plan above the side elevation and the
+        nose view on its left. Misread it and the part comes back mirrored.
+      </p>
+    </section>
+
+    <section class="lg-section" aria-labelledby="lg-build">
+      <h2 id="lg-build"><span>02</span> The build</h2>
+      <p>
+        The drawing is read in studs. The wing is planned as shapes a builder knows (plates, tiles, brackets turned on their side, flaps on
+        hinges), laid over the drawing to compare, then swapped into pieces. The checks refuse anything that clips, floats or sits off the
+        grid. Below is the whole car, built and taken apart in the order a person would.
+      </p>
+      <div class="lg-stage"><FigureCanvas client:visible id="lego-f1" /></div>
+    </section>
+
+    <section class="lg-section" aria-labelledby="lg-playbook">
+      <h2 id="lg-playbook"><span>03</span> The playbook</h2>
+      <p>The same eight steps for anything, a car or a building. Each one ends with its sheet read before the next starts.</p>
+      <ol class="lg-steps">
+        {
+          steps.map(([name, text]) => (
+            <li>
+              <strong>{name}</strong>
+              <span>{text}</span>
+            </li>
+          ))
+        }
+      </ol>
+      <div class="lg-terminal">
+        <div class="lg-terminal-bar"><span class="lg-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>astro/ · the sheets</span></div>
+        <pre tabindex="0"><code>{commands}</code></pre>
+      </div>
+    </section>
+  </main>
+  <NightFooter />
+</NightPage>
+
+<style>
+  .lg-head,
+  .lg-section > p,
+  .lg-section > h2 {
+    max-width: var(--nt-measure);
+  }
+  .lg-head {
+    display: grid;
+    gap: var(--hf-space-5);
+    margin-bottom: var(--hf-space-16);
+  }
+  .lg-head > a,
+  .lg-head > span,
+  .lg-meta,
+  .lg-section h2 span {
+    font: var(--nt-fs-meta) / var(--nt-lh-body) var(--nt-mono);
+  }
+  .lg-head > a {
+    color: var(--nt-ink-muted);
+  }
+  .lg-head > span,
+  .lg-section h2 span {
+    color: var(--nt-signal-text);
+  }
+  .lg-head h1 {
+    font-family: var(--nt-display);
+    font-size: var(--nt-fs-h1);
+    letter-spacing: var(--nt-tracking-display);
+    line-height: var(--nt-lh-heading);
+  }
+  .lg-head p,
+  .lg-section > p {
+    color: var(--nt-ink-soft);
+  }
+  .lg-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--hf-space-3) var(--hf-space-6);
+    color: var(--nt-ink-muted);
+  }
+  .lg-section {
+    display: grid;
+    gap: var(--hf-space-6);
+    margin-bottom: var(--hf-space-16);
+  }
+  .lg-section h2 {
+    display: flex;
+    gap: var(--hf-space-4);
+    align-items: baseline;
+    font-family: var(--nt-display);
+    font-size: var(--nt-fs-h3);
+    color: var(--nt-ink-strong);
+  }
+  .lg-sheet {
+    margin: 0;
+    border: 1px solid var(--nt-line-3);
+    padding: var(--hf-space-4);
+    container-type: inline-size;
+  }
+  .lg-draw {
+    position: relative;
+  }
+  .lg-tag {
+    position: absolute;
+    font-family: var(--nt-drafting);
+    font-size: min(calc(var(--nt-fs-caption) / 0.7), 3cqw);
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--nt-ink-2);
+    pointer-events: none;
+  }
+  .lg-above {
+    transform: translate(-50%, -130%);
+  }
+  .lg-below {
+    transform: translate(-50%, 30%);
+  }
+  .lg-left {
+    transform: translate(-130%, -50%);
+  }
+  .lg-right {
+    transform: translate(30%, -50%);
+  }
+  .lg-centre {
+    transform: translate(-50%, -50%) rotate(var(--lg-turn));
+  }
+  .lg-foot {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: var(--hf-space-6);
+    border-top: 1px solid var(--nt-line-3);
+    padding-top: var(--hf-space-4);
+  }
+  .lg-notes {
+    margin: 0;
+    padding-left: var(--hf-space-5);
+    font: var(--nt-fs-small) / var(--nt-lh-body) var(--nt-drafting);
+    text-transform: uppercase;
+    color: var(--nt-ink-muted);
+  }
+  .lg-block {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(36, minmax(0, 1fr));
+    margin: 0;
+    border: 1px solid var(--nt-line-3);
+  }
+  .lg-block > div {
+    grid-column: span var(--lg-span);
+    padding: var(--hf-space-2) var(--hf-space-3);
+    border: 1px solid var(--nt-line-2);
+  }
+  .lg-block dt {
+    font: var(--nt-fs-caption) var(--nt-drafting);
+    text-transform: uppercase;
+    color: var(--nt-ink-muted);
+  }
+  .lg-block dd {
+    margin: 0;
+    text-transform: uppercase;
+    font: var(--nt-fs-ui) var(--nt-drafting);
+    color: var(--nt-ink);
+  }
+  .lg-block > div:first-child dd {
+    font-size: var(--nt-fs-h5);
+  }
+  .lg-aside {
+    font-size: var(--nt-fs-small);
+  }
+  .lg-stage {
+    aspect-ratio: 3 / 2;
+  }
+  .lg-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--nt-card-min)), 1fr));
+    gap: var(--hf-space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+  }
+  .lg-steps li {
+    display: grid;
+    gap: var(--hf-space-2);
+    border-top: 1px solid var(--nt-line-3);
+    padding-top: var(--hf-space-3);
+    counter-increment: step;
+  }
+  .lg-steps strong::before {
+    content: '0' counter(step) ' · ';
+    font: var(--nt-fs-meta) var(--nt-mono);
+    color: var(--nt-signal-text);
+  }
+  .lg-steps strong {
+    font-family: var(--nt-display);
+    color: var(--nt-ink-strong);
+  }
+  .lg-steps span {
+    font-size: var(--nt-fs-small);
+    color: var(--nt-ink-soft);
+  }
+  .lg-terminal {
+    border: 1px solid var(--nt-code-line);
+    background: var(--nt-code-ground);
+  }
+  .lg-terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--hf-space-4);
+    padding: var(--hf-space-3) var(--hf-space-4);
+    border-bottom: 1px solid var(--nt-code-line);
+    font: var(--nt-fs-caption) var(--nt-mono);
+    color: var(--nt-code-muted);
+  }
+  .lg-dots {
+    display: flex;
+    gap: var(--hf-space-2);
+  }
+  .lg-dots i {
+    width: var(--hf-space-3);
+    height: var(--hf-space-3);
+    border-radius: var(--hf-radius-pill);
+    background: var(--nt-term-red);
+  }
+  .lg-dots i:nth-child(2) {
+    background: var(--nt-term-amber);
+  }
+  .lg-dots i:nth-child(3) {
+    background: var(--nt-term-green);
+  }
+  .lg-terminal pre {
+    margin: 0;
+    padding: var(--hf-space-5);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font: var(--nt-fs-small) / var(--nt-lh-body) var(--nt-mono);
+    color: var(--nt-code-ink);
+  }
+  @media (max-width: 720px) {
+    .lg-foot {
+      grid-template-columns: 1fr;
+    }
+    .lg-block {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .lg-block > div {
+      grid-column: auto;
+    }
+    .lg-block > div:first-child {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

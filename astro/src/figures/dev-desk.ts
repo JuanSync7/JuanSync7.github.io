@@ -112,7 +112,7 @@ export default defineThreeFigure<State>({
     const s = f.state;
     // The loop opens on a finished reply, which clears for the next prompt: the scene is busy the
     // moment it is seen.
-    const u = f.still && f.t === REST ? STILL_AT : (f.t + OPEN_AT) % SCREEN_LOOP;
+    const u = f.still && Math.abs(f.t - REST) < 1e-3 ? STILL_AT : (f.t + OPEN_AT) % SCREEN_LOOP;
     // Camera from the front left, low over the desk, fitted to the scene; only on a resize.
     const size = `${f.w}x${f.h}`;
     if (size !== s.fit) {

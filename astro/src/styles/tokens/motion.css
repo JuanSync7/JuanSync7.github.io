@@ -5,6 +5,8 @@
 :root {
   /* A shared element (a post card's cover) travelling to its place on the next page. */
   --nt-dur-morph: 460ms;
+  /* A row's hairline turning signal on hover. */
+  --nt-dur-hover: 250ms;
   /* Decelerating: fast start, soft landing, no overshoot. */
   --nt-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }

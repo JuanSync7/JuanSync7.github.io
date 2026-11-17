@@ -9,7 +9,7 @@
 .vg-head,
 .vg-content,
 .vg-end {
-  max-width: calc(var(--nt-measure) + var(--hf-space-20));
+  max-width: var(--pr-guide-w);
   margin-inline: auto;
 }
 
