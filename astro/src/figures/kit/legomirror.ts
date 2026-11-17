@@ -1,3 +1,4 @@
+// One source: JuanSync7/frontend-kit, bricks/src (@juansync7/bricks). A project's copy is synced from it, never edited.
 import { mirrorPose } from './legopose.ts';
 import { PROFILE, type Dir, type Shape } from './legoswap.ts';
 

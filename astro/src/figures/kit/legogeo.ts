@@ -1,3 +1,4 @@
+// One source: JuanSync7/frontend-kit, bricks/src (@juansync7/bricks). A project's copy is synced from it, never edited.
 import { BoxGeometry, BufferGeometry, CylinderGeometry, ExtrudeGeometry, Shape, Vector2 } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 

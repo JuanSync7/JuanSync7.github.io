@@ -1,10 +1,11 @@
+// One source: JuanSync7/frontend-kit, bricks/src (@juansync7/bricks). A project's copy is synced from it, never edited.
 import { clashes } from './legoclash.ts';
 import { dot, jointsOf, spot, type Joint } from './legojoint.ts';
 import { cellsOf, HOLE_Y, key, turn, type Piece } from './legoset.ts';
 
 /** The checks every LEGO model must pass, kept apart from the catalogue and the swap so the code
- *  that builds a model is not the code that judges it. Pure; run in node by `npm run lego:check`
- *  and at build by every LEGO figure (`mustHold`, which throws, so the figure audit fails). */
+ *  that builds a model is not the code that judges it. Pure, so a project runs it in node over its
+ *  models, and at build in every figure (`mustHold`, which throws). */
 
 /** Technic holes: the axis x of each, its height, and the z span it runs through. */
 const holesOf = (p: Piece): { x: number; y: number; z0: number; z1: number }[] =>

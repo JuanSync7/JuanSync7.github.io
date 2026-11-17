@@ -1,10 +1,13 @@
 // Swaps every LEGO model into catalogue pieces and runs the checks: no clipping, no floating
-// piece, every block piece on whole studs and plates. `--selftest` proves each check still
-// catches a model that breaks it. Node strips the kit's types, so there is no build step.
+// piece, every block piece on whole studs and plates, and every piece a catalogue shape (a real
+// part: the catalogue is frontend-kit's bricks package, synced by lego:sync). `--selftest` proves
+// each still catches a model of the site's that breaks it; the joint rig's fixtures are the
+// package's own selftest. Node strips the kit's types, so there is no build step.
+import { CATALOGUE_KEYS } from '../../src/figures/kit/legocatalogue.ts';
 import { inspect } from '../../src/figures/kit/legocheck.ts';
 import { LEGO_MODELS, LEGO_QUEUES } from '../../src/figures/kit/legomodels.ts';
+import { partKey } from '../../src/figures/kit/legoset.ts';
 import { build } from '../../src/figures/kit/legoswap.ts';
-import { br, flap, hg, jumper, leaf, RIG, side } from '../../src/figures/kit/legorig.ts';
 
 const brick = (x, y, z) => ({ kind: 'block', x, y, z, w: 2, d: 1, h: 3, tone: 'ink' });
 /** Each fixture adds one fault to a passing model and names the check that must catch it. */
@@ -27,24 +30,19 @@ const FIXTURES = [
     expect: 'floating',
     add: [{ kind: 'block', x: 20, y: 16, z: 0, w: 4, d: 14, h: 1, tone: 'ink' }],
   },
-];
-
-// Each joint fixture breaks the joint rig (kit/legorig.ts, which must pass as built) one way.
-const through = { kind: 'sub', id: 'through', pose: { r: [1, 0, 0, 0, 1, 0, 0, 0, 1], o: [0, 0, -0.3] }, shapes: [{ kind: 'part', part: 'tile', x: 2, y: 4, z: 0, w: 1, d: 1, h: 1, tone: 'ink' }] }; // prettier-ignore
-const JOINTS = [
-  { name: 'a tile half a stud over with no jumper', expect: 'floating', shapes: RIG.filter((s) => s !== jumper) },
-  { name: "a tile through a bracket's flange", expect: 'clipping', shapes: [...RIG, through] },
-  { name: 'a tile on side studs with no bracket', expect: 'floating', shapes: [RIG[0], br, hg, side({ ...br, x: 5 }), flap(0.3, leaf)] }, // prettier-ignore
   {
-    name: 'a flap turned down into the base',
-    expect: 'clipping',
-    shapes: [RIG[0], br, hg, side(br), flap(-0.5, leaf)],
+    name: 'a 1 x 5 plate, which LEGO does not make',
+    expect: 'catalogue',
+    add: [{ kind: 'part', part: 'plate', x: 20, y: 16, z: 5, w: 5, d: 1, h: 1, tone: 'ink' }],
   },
-  { name: 'a flap with no hinge to hang on', expect: 'floating', shapes: [RIG[0], br, hg, side(br), flap(0.3, leaf.slice(1))] }, // prettier-ignore
-  { name: 'two plates in one cell of a flap', expect: 'clipping', shapes: [...RIG.slice(0, 4), flap(0.3, [...leaf, { ...leaf[1], y: 1 }])] }, // prettier-ignore
 ];
 
-const report = (shapes) => inspect(build(shapes));
+/** The checks, and the pieces that are not catalogue shapes. */
+const check = (pieces) => ({
+  ...inspect(pieces),
+  catalogue: pieces.map(partKey).filter((k) => !CATALOGUE_KEYS.has(k)),
+});
+const report = (shapes) => check(build(shapes));
 let failed = 0;
 if (process.argv.includes('--selftest')) {
   const base = LEGO_MODELS.f1;
@@ -54,26 +52,15 @@ if (process.argv.includes('--selftest')) {
     console.log(`${caught ? 'ok  ' : 'FAIL'}  ${f.expect} catches ${f.name}`);
     if (!caught) failed++;
   }
-  const rig = report(RIG);
-  const clean = !rig.clipping.length && !rig.floating.length && !rig.offGrid.length;
-  console.log(`${clean ? 'ok  ' : 'FAIL'}  the joint rig passes as built`);
-  if (!clean) {
-    console.log(JSON.stringify(rig, null, 1));
-    failed++;
-  }
-  for (const f of JOINTS) {
-    const caught = report(f.shapes)[f.expect].length > 0;
-    console.log(`${caught ? 'ok  ' : 'FAIL'}  ${f.expect} catches ${f.name}`);
-    if (!caught) failed++;
-  }
 } else {
   for (const [id, shapes] of Object.entries(LEGO_MODELS)) {
     const pieces = build(shapes, LEGO_QUEUES[id]);
-    const r = inspect(pieces);
+    const r = check(pieces);
     const bad = [
       ...r.offGrid.map((s) => `off grid  ${s}`),
       ...r.clipping.map((s) => `clipping  ${s}`),
       ...r.floating.map((s) => `floating  ${s}`),
+      ...[...new Set(r.catalogue)].map((k) => `not a catalogue shape  ${k}`),
     ];
     const kinds = {};
     for (const p of pieces) kinds[p.kind] = (kinds[p.kind] ?? 0) + 1;

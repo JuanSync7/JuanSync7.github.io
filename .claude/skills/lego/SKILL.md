@@ -45,19 +45,23 @@ server up (`npx astro dev --port 4321 --host 127.0.0.1`).
 3. **Isometric model.** `npm run lego:sheet -- <model> solid`: each shape as one smooth solid,
    turned through twelve angles plus top, low and under views. Fix proportions and silhouette here, while they
    are cheap to change. Use `--only=45 --tile=1400` for a close view.
-4. **Catalogue.** If the model needs a shape no piece has, add the piece to the catalogue first
-   (`kit/legoset.ts` cells and studs, `kit/legomesh.ts` geometry, a sample in
-   `kit/legostudio.ts`), then `npm run lego:sheet -- <model> catalogue` and read it. Never fake a
-   shape with a piece that is not in the catalogue.
+4. **Catalogue.** The catalogue is the `bricks` package in `JuanSync7/frontend-kit`; this site
+   has a synced copy (`kit/lego*.ts` with the one-source line, `scripts/lego/ldraw-parts.json`).
+   If the model needs a shape no piece has, find the real LEGO part first, then add it in
+   frontend-kit's `bricks/` as its README says (`src/legoset.ts` cells and studs,
+   `src/legomesh.ts` or `src/legodetail.ts` geometry, one `CATALOGUE` entry, its number in
+   `parts/ldraw-parts.json`) and run its `npm run selftest` and `npm run reference -- <ldraw dir>`
+   there. Then `npm run lego:sync -- <frontend-kit>` here, `npm run lego:sheet -- <model>
+   catalogue`, and read it. Never fake a shape with a piece LEGO does not make.
 5. **Swap and check.** `npm run lego:check`: the model is swapped into pieces and checked for
-   clipping, floating pieces and pieces off the grid. Fix the design, never the check. Then
+   clipping, floating pieces, pieces off the grid, and pieces that are not catalogue shapes. Fix the design, never the check. Then
    `npm run lego:sheet -- <model> lego` and read the LEGO through 360°.
-6. **Real parts.** Every piece is our own geometry, built from LEGO's published sizes. Where a
-   shape has a real LEGO part, name it in `scripts/lego/ldraw-parts.json` (LDraw number) and run
-   `npm run lego:reference -- <ldraw dir>` against a local copy of the library (library.ldraw.org,
-   or the GitHub mirror gkjohnson/ldraw-parts-library; never committed). A piece that does not
-   match is fixed in our catalogue to match the real part (as the wedge tip and the slope lips
-   were), never by loosening the comparison.
+6. **Real parts.** Every piece is our own geometry, built from LEGO's published sizes, and every
+   catalogue shape is a real part. When a piece changes, run frontend-kit's reference compare
+   (`npm run reference -- <ldraw dir>` in `bricks/`) against a local copy of the LDraw library
+   (library.ldraw.org, or the GitHub mirror gkjohnson/ldraw-parts-library; never committed). A
+   piece that does not match is fixed in the catalogue to match the real part (as the wedge tip,
+   the slope lips and the 2 x 2 dome were), never by loosening the comparison.
 7. **Figure.** Mount the model in a three.js figure with the standard build animation (a LEGO
    base present from the first frame, pieces dropping on in order, the finished model holding,
    pieces lifting off last-on-first-off while the base stays) and `mustHold` at build.
@@ -65,11 +69,15 @@ server up (`npx astro dev --port 4321 --host 127.0.0.1`).
 8. **Look.** Answer `LOOK.md` with the sheets as evidence. Fix the cause of anything wrong and
    return to the stage where it was made.
 9. **Hand over.** The model file, any new pieces, the figure, the sheets read, and what is still
-   unverified. Run `npm run lego:selftest` and `npm run check` before calling it done.
+   unverified. Run `npm run lego:selftest`, `npm run lego:sync -- <frontend-kit> --check` and
+   `npm run check` before calling it done; a catalogue change also passes frontend-kit's
+   `npm run check`.
 
 ## Tools and limits
 
 `checks/README.md` maps each rule to the command that holds it. `kernel/INDEX.md` lists the
 functions; read it instead of the code. Kit files stay under 200 lines, the figure under 350.
-The checks (`kit/legocheck.ts`, `scripts/lego/check.mjs`) judge the model; a model author does
-not edit them to pass. A change to a check comes with a fixture in `--selftest` that it catches.
+The checks (`legocheck.ts` in frontend-kit, `scripts/lego/check.mjs` here) judge the model; a
+model author does not edit them to pass. A change to a check comes with a fixture that it
+catches: in frontend-kit's `bricks/scripts/selftest.mjs` for the catalogue's checks and the joint
+rig, in `--selftest` here for the site's models.

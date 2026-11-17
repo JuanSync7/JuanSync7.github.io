@@ -1,3 +1,4 @@
+// One source: JuanSync7/frontend-kit, bricks/src (@juansync7/bricks). A project's copy is synced from it, never edited.
 import { PLATE, turn, type Piece } from './legoset.ts';
 
 /** Sub-assemblies: a part of a model built on its own grid (studs up, as usual) and then fixed to

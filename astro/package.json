@@ -100,7 +100,7 @@
     "blueprint:selftest": "node scripts/blueprints/run.mjs --selftest",
     "lego:selftest": "node scripts/lego/check.mjs --selftest",
     "lego:sheet": "node scripts/lego/sheet.mjs",
-    "lego:reference": "npx tsx scripts/lego/reference.mjs",
+    "lego:sync": "node scripts/lego/sync.mjs",
     "blueprint:index": "npx tsx scripts/blueprints/index.mjs",
     "blueprint:index:check": "npx tsx scripts/blueprints/index.mjs --check",
     "blueprint:sync": "node scripts/blueprints/sync.mjs"

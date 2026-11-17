@@ -1,3 +1,4 @@
+// One source: JuanSync7/frontend-kit, bricks/src (@juansync7/bricks). A project's copy is synced from it, never edited.
 import { CylinderGeometry, type BufferGeometry } from 'three';
 import { box, fall, join, LIP, plan, profile, SEG, STUD_H, STUD_R, studsAt, type BodyOpts, type Part } from './legogeo';
 import { FLANGE_T, flangeOf, KNUCKLE_OUT, KNUCKLE_R, KNUCKLE_Y } from './legopose';
@@ -35,10 +36,8 @@ export function detail(p: Piece, o: BodyOpts): Part[] {
       // A short round foot, then the taper up to the stud (as the real cone).
       return one([new CylinderGeometry(0.5 - g, 0.5 - g, LIP, 20).translate(0.5, LIP / 2, 0.5), new CylinderGeometry(STUD_R, 0.5 - g, top - LIP, 20).translate(0.5, LIP + (top - LIP) / 2, 0.5), ...studs()]); // prettier-ignore
     case 'bar':
-      return one([
-        new CylinderGeometry(0.1, 0.1, top, 10).translate(0.5, top / 2, 0.5),
-        new CylinderGeometry(0.16, 0.16, 0.12, 10).translate(0.5, top - 0.06, 0.5),
-      ]);
+      // A plain bar, 3.2 mm across (0.4 of a stud), as Bar 4L (30374).
+      return one([new CylinderGeometry(0.2, 0.2, top, 16).translate(0.5, top / 2, 0.5)]);
     case 'bracket': {
       // The base, the flange half a plate thick just outside its front edge, the flange's studs
       // pointing out (-z).

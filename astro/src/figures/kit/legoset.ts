@@ -1,8 +1,15 @@
-import type { NightKey } from '../../styles/tokens/palette.ts';
+// One source: JuanSync7/frontend-kit, bricks/src (@juansync7/bricks). A project's copy is synced from it, never edited.
 import type { Pose } from './legopose.ts';
 
+/** A piece's colour, by name. A project names its colours by merging into `Tones` from a file of
+ *  its own (`declare module './legoset.ts' { interface Tones extends Record<MyColour, true> {} }`);
+ *  until one does, a colour is any string. */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface Tones {}
+export type Tone = [keyof Tones] extends [never] ? string : Extract<keyof Tones, string>;
+
 /** The LEGO parts catalogue as data: what each piece kind fills, where its studs are. Pure: no
- *  three, so `scripts/lego/check.mjs` runs it in node. The checks are in `legocheck.ts`.
+ *  three, so the checks run it in node with no build. The checks are in `legocheck.ts`.
  *
  *  Units: x and z in studs, y in plates (a brick is 3 plates; a plate is 0.4 of a stud). A cell
  *  is one stud by one stud by one plate. Every piece names a catalogue kind, its corner on the
@@ -27,11 +34,11 @@ export type Kind =
   | 'axle' // a cross axle along z
   | 'slope33' // 3 deep, 1 stud row then a 33 degree face, 3 plates tall
   | 'inv45' // inverted 45 degree slope, 2 deep: flat studded top, the underside rising away
-  | 'curve3' // curved slope, 3 long, 2 plates tall
+  | 'curve3' // curved slope, 3 long, a brick tall (50950)
   | 'quarter' // 1 x 1 quarter-round tile: a rounded corner
   | 'roundtile' // round tile, 1 x 1 or 2 x 2: lights, wheel caps, a camera lens
   | 'cone' // 1 x 1 cone, 3 plates, an open stud on top
-  | 'bar' // a thin bar standing in a stud, h plates long: antennas, stalks
+  | 'bar' // a bar 3.2 mm across standing in a hollow stud, h plates long (Bar 4L, 10 plates): antennas, stalks
   | 'bracket' // a plate w x d, every cell studded, a flange `flange` studs tall just outside its front edge (local v = 0), studs out: see legopose
   | 'hinge' // a click hinge plate 2 x 1, its knuckle along its far side (local v = 1), one finger or two: see legopose
   | 'jumper'; // a 1 x 2 plate with one stud in its centre: what sits on it moves half a stud
@@ -47,7 +54,7 @@ export interface Piece {
   d: number;
   h: number;
   rot: 0 | 1 | 2 | 3;
-  tone: NightKey;
+  tone: Tone;
   /** Wedges: which side is cut. */
   hand?: 'L' | 'R';
   /** Wheels and axles: the axis height in plates and the radius in studs. */
@@ -182,7 +189,7 @@ export const socketsOf = (p: Piece): string[] =>
           return key(x, p.y, z);
         });
 
-/** A catalogue shape's name in the parts lists and scripts/lego/ldraw-parts.json: kind, short x
+/** A catalogue shape's name in the parts lists and parts/ldraw-parts.json: kind, short x
  *  long side, plates high, and what tells real parts apart (a wedge's hand, a bracket's flange, a
  *  hinge's fingers); a wheel by radius and width, an axle by length. */
 export function partKey(p: Piece): string {

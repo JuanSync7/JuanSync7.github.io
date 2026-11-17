@@ -1,3 +1,4 @@
+// One source: JuanSync7/frontend-kit, bricks/src (@juansync7/bricks). A project's copy is synced from it, never edited.
 /** The standard LEGO build animation, shared by every LEGO figure: the base (order 0) is there
  *  from the first frame and never moves; each piece drops onto the studs below it in its turn,
  *  falling under gravity and settling; the finished model holds; then the pieces lift off, last on

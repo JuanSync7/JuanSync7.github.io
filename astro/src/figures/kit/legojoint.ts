@@ -1,3 +1,4 @@
+// One source: JuanSync7/frontend-kit, bricks/src (@juansync7/bricks). A project's copy is synced from it, never edited.
 import { apply, FLANGE_T, flangeOf, KNUCKLE_OUT, KNUCKLE_Y, local, rotate, type V3 } from './legopose.ts';
 import { PLATE, socketsOf, studsOf, type Piece } from './legoset.ts';
 

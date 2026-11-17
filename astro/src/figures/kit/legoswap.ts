@@ -1,6 +1,6 @@
-import type { NightKey } from '../../styles/tokens/palette.ts';
+// One source: JuanSync7/frontend-kit, bricks/src (@juansync7/bricks). A project's copy is synced from it, never edited.
 import { compose, hingeRow, PLATE_Y, type Pose } from './legopose.ts';
-import { PLATE, type Kind, type Piece } from './legoset.ts';
+import { PLATE, type Kind, type Piece, type Tone } from './legoset.ts';
 
 /** The swap: a model is designed as shapes (the isometric model, drawn with the angles LEGO
  *  pieces have), and each shape turns into the catalogue pieces that make that shape. A block
@@ -14,7 +14,7 @@ interface At {
   x: number;
   y: number;
   z: number;
-  tone: NightKey;
+  tone: Tone;
 }
 export type Shape =
   | (At & { kind: 'block'; w: number; d: number; h: number; top?: 'studs' | 'tiles' | 'grille'; root?: boolean; lay?: 'x' | 'z' }) // prettier-ignore
@@ -23,8 +23,8 @@ export type Shape =
   | (At & { kind: 'round'; size: 1 | 2; h: number; cap?: boolean })
   | (At & { kind: 'technic'; len: number; rows: number })
   | (At & { kind: 'part'; part: Kind; w: number; d: number; h: number; dir?: Dir; hand?: 'L' | 'R'; root?: boolean; flange?: number; fingers?: 1 | 2 }) // prettier-ignore
-  | { kind: 'wheel'; x: number; cy: number; z: number; width: number; r: number; tone: NightKey }
-  | { kind: 'axle'; x: number; cy: number; z: number; len: number; tone: NightKey }
+  | { kind: 'wheel'; x: number; cy: number; z: number; width: number; r: number; tone: Tone }
+  | { kind: 'axle'; x: number; cy: number; z: number; len: number; tone: Tone }
   /** A sub-assembly: shapes on their own grid, fixed to the model by `pose` (see legopose). */
   | { kind: 'sub'; id: string; pose: Pose; shapes: Shape[] };
 
@@ -33,7 +33,7 @@ export const PROFILE = {
   slope45: { run: 2, h: 3 },
   slope33: { run: 3, h: 3 },
   inv45: { run: 2, h: 3 },
-  curve3: { run: 3, h: 2 },
+  curve3: { run: 3, h: 3 },
   cheese: { run: 1, h: 2 },
   curve2: { run: 2, h: 2 },
   curve4: { run: 4, h: 3 },
@@ -41,9 +41,10 @@ export const PROFILE = {
 
 /** Rectangles a course is packed with, biggest first: sizes LEGO makes (no 2 x 8 tile). */
 const SIZES: [number, number][] = [[8, 2], [6, 2], [4, 2], [3, 2], [2, 2], [8, 1], [6, 1], [4, 1], [3, 1], [2, 1], [1, 1]]; // prettier-ignore
-// No 2 x 8 tile; and the only grille tile LEGO makes is 1 x 2, laid either way.
+// No 2 x 8 tile; and the only grille tile LEGO makes is 1 x 2, laid either way (a cell left over
+// takes a plain 1 x 1 tile).
 const GRILLE: [number, number][] = [[2, 1], [1, 2], [1, 1]]; // prettier-ignore
-const sizesOf = (kind: Kind): [number, number][] =>
+export const sizesOf = (kind: Kind): [number, number][] =>
   kind === 'tile' ? SIZES.slice(1) : kind === 'grille' ? GRILLE : SIZES;
 
 const base = (kind: Kind, a: At, w: number, d: number, h: number, rot: Piece['rot'] = 0): Piece => ({
@@ -76,7 +77,7 @@ function course(kind: Kind, s: At & { w: number; d: number }, y: number, odd: bo
         for (let u = 0; fits && u < w; u++) for (let v = 0; fits && v < d; v++) fits = free.has(`${i + u},${j + v}`);
         if (!fits) continue;
         for (let u = 0; u < w; u++) for (let v = 0; v < d; v++) free.delete(`${i + u},${j + v}`);
-        out.push(base(kind, { ...s, x: s.x + i, z: s.z + j, y }, w, d, h));
+        out.push(base(kind === 'grille' && w * d === 1 ? 'tile' : kind, { ...s, x: s.x + i, z: s.z + j, y }, w, d, h));
         break;
       }
     }

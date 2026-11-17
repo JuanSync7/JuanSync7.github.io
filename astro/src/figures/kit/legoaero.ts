@@ -1,3 +1,4 @@
+// One source: JuanSync7/frontend-kit, bricks/src (@juansync7/bricks). A project's copy is synced from it, never edited.
 import { onHinge } from './legopose.ts';
 import { piece, type Shape } from './legoswap.ts';
 

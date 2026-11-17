@@ -1,3 +1,4 @@
+// One source: JuanSync7/frontend-kit, bricks/src (@juansync7/bricks). A project's copy is synced from it, never edited.
 import { BufferGeometry, CylinderGeometry, Float32BufferAttribute, RingGeometry, Vector3 } from 'three';
 import { join, SEG } from './legogeo';
 

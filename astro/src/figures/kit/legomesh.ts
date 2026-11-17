@@ -1,3 +1,4 @@
+// One source: JuanSync7/frontend-kit, bricks/src (@juansync7/bricks). A project's copy is synced from it, never edited.
 import { BoxGeometry, BufferGeometry, CylinderGeometry, LatheGeometry, SphereGeometry, Vector2 } from 'three';
 import { detail } from './legodetail';
 import {
@@ -25,8 +26,8 @@ export { GAP, STUD_H, STUD_R, join, type BodyOpts, type Part } from './legogeo';
  *  (`studs: false`, no gap, one body per shape) so the two views share their geometry. A piece
  *  can have more than one part (a wheel is a tyre and a rim); `tone` overrides the piece's own. */
 
-/** A real tyre's inner radius against its outer: both F1 wheels are on 30 mm rims (56904,
- *  56145) in 43 mm tyres. */
+/** A real tyre's inner radius against its outer: both catalogue wheels are on 30 mm rims
+ *  (56904, 56145) in 43 mm tyres. */
 const RIM = 0.7;
 /** The tyre: a lathe of a rounded section between the rim and the tread, with two grooves. */
 function tyre(r: number, d: number): BufferGeometry {

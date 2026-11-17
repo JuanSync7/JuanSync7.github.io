@@ -161,10 +161,18 @@ Every part of a scene sits inside what holds it: use `kit/bounds.ts` (`mustSit`,
 
 Anything built in LEGO uses `.claude/skills/lego/SKILL.md`: plan the model as shapes (wireframe,
 then the smooth isometric model turned through 360°), swap it into catalogue pieces, and pass
-`npm run lego:check` (no clipping, nothing floating, every piece on the grid) before it is drawn.
+`npm run lego:check` (no clipping, nothing floating, every piece on the grid, every piece a
+catalogue shape) before it is drawn.
 Every LEGO figure calls `mustHold` at build, draws only pieces (its base included) and uses the
 standard build animation. Read the `npm run lego:sheet` sheets at each stage. The checks
-(`kit/legocheck.ts`, `scripts/lego/check.mjs`) change only with a fixture in `lego:selftest`.
+(`kit/legocheck.ts`, `scripts/lego/check.mjs`) change only with a fixture in a selftest.
+The catalogue (every piece kind, its cells, studs, geometry and real part, the swap, the poses,
+joints and checks) is the `bricks` package of `JuanSync7/frontend-kit` (`@juansync7/bricks`, MIT).
+`kit/lego{set,catalogue,swap,mirror,pose,joint,clash,check,aero,geo,under,detail,mesh,play,rig}.ts`
+and `scripts/lego/ldraw-parts.json` are synced copies, never edited here
+(`npm run lego:sync -- <frontend-kit>`, `--check` to compare); a piece is added or changed there,
+with its selftest and reference compare, then synced. The site's colours reach it through
+`kit/legotones.ts`.
 Anything not studs-up (an endplate on its side, a flap on a hinge) is a sub-assembly fixed by
 `onSide`/`onHinge` (`kit/legopose.ts`); the checks join pieces on world-space studs, side studs and
 hinges and test overlaps between sub-assemblies (`legojoint.ts`, `legoclash.ts`).
@@ -178,8 +186,9 @@ The drawing rules themselves (projection, lines, the sheet, scales, dimensions, 
 `drawing` skill, `.claude/skills/drawing/`, a synced copy of the vault's `Playbooks/drawing`, never
 edited here (`npm run drawing:sync -- <vault>`); the LEGO playbook keeps only R-DRW-1, 3, 8 and 14.
 Every piece is drawn from our own geometry, made from LEGO's published sizes (the 8 mm stud,
-real undersides in `kit/legounder.ts`); nothing from the LDraw library ships with the site.
-`scripts/lego/ldraw-parts.json` names the real part each catalogue shape stands for, and
-`npm run lego:reference -- <ldraw dir>` compares our pieces with them in a local copy of the
-library (size, top surface, studs, nothing outside the shape's cells). Run it when a piece changes.
+real undersides in `kit/legounder.ts`); nothing from the LDraw library ships with the site. Every
+catalogue shape is a real LEGO part: the part map names it, and frontend-kit's reference compare
+(`npm run reference -- <ldraw dir>` in `bricks/`) measures it against that part in a local copy of
+the library (size, top surface, studs, nothing outside the shape's cells). Run it when a piece
+changes.
 

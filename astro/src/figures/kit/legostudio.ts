@@ -13,7 +13,8 @@ import {
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { hexOf } from './ink';
 import { mustHold } from './legocheck';
-import { KINDS, type Kind, type Piece } from './legoset';
+import { CATALOGUE } from './legocatalogue';
+import { partKey, type Piece } from './legoset';
 import { smoothModel, wireModel } from './legoplan';
 import { legoModel } from './legoscene';
 import { LEGO_MODELS } from './legomodels';
@@ -57,36 +58,8 @@ const ORBIT: View[] = [
   { label: 'under', az: 210, el: -35 },
 ];
 
-const one = (kind: Kind, w: number, d: number, h: number, extra: Partial<Piece> = {}): Piece => ({
-  kind, x: 0, y: 0, z: 0, w, d, h, rot: 0, tone: 'inkSoft', ...extra,
-}); // prettier-ignore
-/** One of each piece, as the catalogue sheet shows them. */
-const SAMPLE: Record<Kind, Piece> = {
-  brick: one('brick', 2, 2, 3),
-  plate: one('plate', 4, 2, 1),
-  tile: one('tile', 2, 2, 1),
-  grille: one('grille', 2, 1, 1),
-  technic: one('technic', 2, 1, 3),
-  slope45: one('slope45', 2, 2, 3),
-  slope33: one('slope33', 3, 1, 3),
-  inv45: one('inv45', 2, 2, 3),
-  curve3: one('curve3', 3, 1, 2),
-  quarter: one('quarter', 1, 1, 1),
-  roundtile: one('roundtile', 2, 2, 1),
-  cone: one('cone', 1, 1, 3),
-  bar: one('bar', 1, 1, 8),
-  cheese: one('cheese', 1, 1, 2),
-  curve2: one('curve2', 2, 1, 2),
-  curve4: one('curve4', 4, 1, 3),
-  wedge: one('wedge', 4, 2, 1, { hand: 'R' }),
-  round: one('round', 2, 2, 3),
-  dome: one('dome', 4, 4, 5),
-  wheel: one('wheel', 0, 2, 0, { cy: 6.75, r: 2.7, tone: 'line2' }),
-  axle: one('axle', 0, 6, 0, { cy: 1, r: 0.12 }),
-  bracket: one('bracket', 2, 2, 1),
-  hinge: one('hinge', 2, 1, 1),
-  jumper: one('jumper', 1, 2, 1),
-};
+/** Every catalogue shape, as the catalogue sheet shows them, each named by its part key. */
+const SAMPLES: Piece[] = CATALOGUE.map((p) => ({ ...p, tone: p.kind === 'wheel' ? 'line2' : 'inkSoft' }));
 
 /** A camera looking at `box` from azimuth `az` (0 = from the nose, -x) and elevation `el`. */
 function aim(box: Box3, v: View, aspect: number): OrthographicCamera {
@@ -146,12 +119,12 @@ export function sheet(id: string, mode: Mode, tile = 360, only = ''): string {
     frame = sketchModel(partsOf(sketch), true, own);
     models = [mode === 'solid' ? smoothModel(shapes, own) : legoModel(pieces, own, true).group];
   } else if (mode === 'catalogue') {
-    models = KINDS.map((kind) => legoModel([SAMPLE[kind]], own, true).group);
+    models = SAMPLES.map((p) => legoModel([p], own, true).group);
   } else {
     const m = mode === 'wire' ? wireModel(shapes, 'ink2', own) : mode === 'solid' ? smoothModel(shapes, own) : legoModel(pieces, own, true).group; // prettier-ignore
     models = [m];
   }
-  const all = mode === 'wire' || mode === 'sketch' || mode === 'compare' ? PLAN : mode === 'catalogue' ? KINDS.map((k): View => ({ label: k, az: 35, el: 30 })) : ORBIT; // prettier-ignore
+  const all = mode === 'wire' || mode === 'sketch' || mode === 'compare' ? PLAN : mode === 'catalogue' ? SAMPLES.map((p): View => ({ label: partKey(p), az: 35, el: 30 })) : ORBIT; // prettier-ignore
   const views = only ? all.filter((v) => only.split(',').includes(v.label.replace('°', ''))) : all;
   const cols = Math.min(views.length, mode === 'wire' || mode === 'sketch' || mode === 'compare' ? 2 : 5);
   const rows = Math.ceil(views.length / cols);
@@ -175,7 +148,7 @@ export function sheet(id: string, mode: Mode, tile = 360, only = ''): string {
   ctx.fillStyle = hexOf('ground');
   ctx.fillRect(0, 0, out.width, out.height);
   views.forEach((v, k) => {
-    const g = models[mode === 'catalogue' ? KINDS.indexOf(v.label as Kind) : 0] ?? new Group();
+    const g = models[mode === 'catalogue' ? SAMPLES.findIndex((p) => partKey(p) === v.label) : 0] ?? new Group();
     scene.add(g);
     const box = new Box3().setFromObject(frame ?? g);
     if (box.isEmpty()) box.set(new Vector3(-1, -1, -1), new Vector3(1, 1, 1));
