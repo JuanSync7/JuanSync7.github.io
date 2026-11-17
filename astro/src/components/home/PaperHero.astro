@@ -48,13 +48,14 @@ const smears = Array.from({ length: 38 }, () => ({
       <div class="pp-cwrap">
         <div class="pp-crumple">
           <div class="copy">
-            <p class="pp-label pp-rise">// {HERO.place} · {HERO.role}</p>
-            <h1 class="pp-hero-heading pp-rise d1">{HERO.lead} {HERO.accent}</h1>
-            <p class="pp-lead pp-rise d2">{HERO.body} At <strong>{HERO.at}</strong>{HERO.after}</p>
+            <p class="pp-label pp-rise">// {HERO.label}</p>
+            <h1 class="pp-hero-heading pp-rise d1">{HERO.lead} <span class="accent">{HERO.accent}</span></h1>
+            <p class="pp-lead pp-rise d2">{HERO.body}</p>
             <div class="actions pp-rise d3">
               <PixelButton href={HERO.primary.href}>{HERO.primary.label}</PixelButton>
-              <PixelButton href={HERO.secondary.href} variant="outline">{HERO.secondary.label}</PixelButton>
+              <PixelButton href={HERO.secondary.href} variant="outline">{HERO.secondary.label} ↓</PixelButton>
             </div>
+            <p class="pp-label now pp-rise d3">Currently · {HERO.now.role} at {HERO.now.org}</p>
           </div>
           <div class="stage pp-rise d2">
             <Monogram class="logo" label="SJ circuit logo" intro="always" gloss />
@@ -125,7 +126,17 @@ const smears = Array.from({ length: 38 }, () => ({
   }
 
   .pp-hero .copy > .pp-lead {
+    width: 100%;
     max-width: var(--pp-lead-w);
+  }
+
+  .pp-hero .accent {
+    color: var(--pp-signal-text);
+  }
+
+  .pp-hero .now {
+    margin: 0;
+    color: var(--pp-ink-muted);
   }
 
   .pp-hero .actions {
