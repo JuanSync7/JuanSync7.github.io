@@ -8,7 +8,6 @@ import {
   type HardwareView,
 } from '../../figures/kit/hardware/types';
 import { HARDWARE_INFO } from '../../data/hardware';
-import './page-ink.css';
 
 interface Props {
   kind: HardwareKind;

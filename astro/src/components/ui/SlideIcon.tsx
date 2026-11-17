@@ -3,7 +3,6 @@ import { SLIDE_ICONS, type SlideIconId } from '../../data/slide-icons';
 import { slideDrawing } from '../../figures/kit/slides/models';
 import { slidePalette } from '../../figures/kit/slides/svg';
 import { SLIDE_DEFAULT, SLIDE_SIZE, SLIDE_WEIGHT, type SlideTone } from '../../figures/kit/slides/types';
-import './page-ink.css';
 
 interface Props {
   id: SlideIconId;
@@ -11,8 +10,6 @@ interface Props {
   accent?: boolean;
   decorative?: boolean;
   className?: string;
-  /** Show the exported colours instead of the page's (a download preview). */
-  exact?: boolean;
 }
 export default function SlideIcon({
   id,
@@ -20,7 +17,6 @@ export default function SlideIcon({
   accent = SLIDE_DEFAULT.accent,
   decorative = false,
   className,
-  exact = false,
 }: Props) {
   const palette = slidePalette({ tone, accent });
   const name = SLIDE_ICONS.find((icon) => icon.id === id)?.name ?? id;
@@ -34,9 +30,7 @@ export default function SlideIcon({
       strokeWidth={SLIDE_WEIGHT}
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={
-        [className, !exact && tone === 'night' ? 'page-ink' : undefined].filter(Boolean).join(' ') || undefined
-      }
+      className={className}
       role={decorative ? undefined : 'img'}
       aria-label={decorative ? undefined : name}
       aria-hidden={decorative || undefined}

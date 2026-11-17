@@ -1,6 +1,0 @@
-/* An icon drawn in the night palette takes the page's colours the way a figure does (see
-   --pp-figure-filter): ink on cream with the signal orange by day, the same on gunmetal by night. */
-.page-ink {
-  filter: var(--pp-figure-filter, none);
-  mix-blend-mode: var(--pp-figure-blend, normal);
-}
