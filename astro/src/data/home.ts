@@ -155,3 +155,46 @@ export const FOOTER = {
   joke: 'No EDA tools were used in the making of this site — just vim, coffee and spite.',
   part: 'JUAN-SOC-1999-X1 · rev. 2026 · ed. 03',
 } as const;
+
+/** The header carries the pages; the footer carries every destination, grouped. */
+export const HEADER_LINKS = [
+  { label: 'About', href: '/about/' },
+  { label: 'Work', href: '/#work' },
+  { label: 'Writing', href: '/blog/' },
+  { label: 'Learn', href: '/learn/' },
+  { label: 'Lab', href: '/lab/' },
+  { label: 'Vault', href: '/vault/' },
+] as const;
+
+export const FOOTER_GROUPS = [
+  {
+    label: '// pages',
+    links: [
+      { label: 'About', href: '/about/' },
+      { label: 'Writing', href: '/blog/' },
+      { label: 'Learn', href: '/learn/' },
+      { label: 'Lab', href: '/lab/' },
+      { label: 'Vault', href: '/vault/' },
+      { label: 'Anatomy', href: '/anatomy/chip-package/' },
+    ],
+  },
+  {
+    label: '// on the home page',
+    links: [
+      { label: 'System', href: '/#system' },
+      { label: 'Thinking', href: '/#thinking' },
+      { label: 'Experience', href: '/#experience' },
+      { label: 'Work', href: '/#work' },
+      { label: 'Design system', href: '/design-system/' },
+    ],
+  },
+] as const;
+
+/** The footer's title block, as on an engineering drawing. */
+export const TITLE_BLOCK = [
+  { label: 'Drawn by', value: 'Juan Kok' },
+  { label: 'Part no.', value: 'JUAN-SOC-1999-X1' },
+  { label: 'Rev', value: '2026' },
+  { label: 'Edition', value: '03' },
+  { label: 'Sheet', value: '1 of 1' },
+] as const;

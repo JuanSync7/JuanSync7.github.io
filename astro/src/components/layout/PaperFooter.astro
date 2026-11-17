@@ -1,45 +1,145 @@
 ---
-import { FOOTER, NAV } from '../../data/home';
-import { IDENTITY } from '../../data/site';
+import { FOOTER, FOOTER_GROUPS, TITLE_BLOCK } from '../../data/home';
+import { CONTACT, IDENTITY } from '../../data/site';
+import Monogram from '../ui/Monogram.astro';
+
+/** The footer is the title block of an engineering drawing: who drew the sheet, an index of
+ *  every destination, and the part, revision and sheet cells along the bottom edge. */
+const elsewhere = [
+  { label: 'GitHub', href: `https://github.com/${CONTACT.github}`, external: true },
+  { label: 'LinkedIn', href: CONTACT.linkedinUrl, external: true },
+  { label: 'Email', href: `mailto:${CONTACT.email}`, external: false },
+  { label: 'CV (pdf)', href: IDENTITY.cvFile, external: false },
+];
+const year = new Date().getFullYear();
 ---
 
 <footer class="pp-foot">
   <div class="pp-wrap inner">
-    <nav aria-label="Site">
-      <a href="/">home</a>
-      {NAV.map((l) => <a href={l.href}>{l.label}</a>)}
-      <a href="/design-system">design system</a>
-      <a href={IDENTITY.cvFile}>cv.pdf</a>
-    </nav>
-    <p class="hand">{FOOTER.joke}</p>
-    <p class="pp-caption">{FOOTER.part}</p>
+    <div class="sheet">
+      <div class="who">
+        <a class="brand" href="/" aria-label="Juan Kok, home">
+          <span class="mark"><Monogram intro="none" /></span>
+          <span class="name">Juan Kok</span>
+        </a>
+        <p class="pitch">Senior Design &amp; AI Engineer. I build the AI platform, agents and governance for a chip-design company.</p>
+        <p class="hand">{FOOTER.joke}</p>
+      </div>
+
+      {FOOTER_GROUPS.map((g) => (
+        <nav class="group" aria-label={g.label.replace('// ', '')}>
+          <p class="head">{g.label}</p>
+          <ul>
+            {g.links.map((l) => (
+              <li><a href={l.href}>{l.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+      ))}
+
+      <nav class="group" aria-label="elsewhere">
+        <p class="head">// elsewhere</p>
+        <ul>
+          {elsewhere.map((l) => (
+            <li>
+              <a href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener noreferrer' : undefined}>
+                {l.label}{l.external && <span class="out" aria-hidden="true">↗</span>}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+
+    <dl class="block">
+      {TITLE_BLOCK.map((c) => (
+        <div class="cell">
+          <dt>{c.label}</dt>
+          <dd>{c.value}</dd>
+        </div>
+      ))}
+      <div class="cell">
+        <dt>©</dt>
+        <dd>{year}</dd>
+      </div>
+      <div class="cell top">
+        <dt>Return</dt>
+        <dd><a href="#site-top" data-to-top>Back to top <span aria-hidden="true">↑</span></a></dd>
+      </div>
+    </dl>
   </div>
 </footer>
 
+<script is:inline>
+  (function () {
+    // The link works without script. With it, the page glides to the top instead of jumping.
+    function bind() {
+      var a = document.querySelector('[data-to-top]');
+      if (!a || a.dataset.bound) return;
+      a.dataset.bound = '1';
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: 0, behavior: still ? 'auto' : 'smooth' });
+      });
+    }
+    bind();
+    document.addEventListener('astro:page-load', bind);
+  })();
+</script>
+
 <style>
-  .pp-foot {
-    border-top: 1px solid var(--pp-rule);
+  .inner {
+    padding-top: var(--hf-space-12);
+    padding-bottom: var(--hf-space-10);
   }
 
-  .inner {
+  /* The sheet: who drew it, then the index. Columns are transparent, split by hairlines. */
+  .sheet {
+    display: grid;
+    grid-template-columns: minmax(0, var(--pp-foot-brand-w)) repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--pp-outline);
+    border-bottom: 1px solid var(--pp-rule);
+  }
+
+  .who,
+  .group {
+    padding: var(--hf-space-6) var(--hf-space-6) var(--hf-space-8);
+  }
+
+  .who {
     display: flex;
     flex-direction: column;
     gap: var(--hf-space-4);
-    padding-top: var(--hf-space-8);
-    padding-bottom: var(--hf-space-12);
+    padding-left: 0;
   }
 
-  nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--hf-space-2) var(--hf-space-6);
-    font-family: var(--pp-mono);
-    font-size: var(--pp-fs-caption);
-    font-weight: var(--pp-w-label);
+  .group {
+    border-left: 1px solid var(--pp-rule);
   }
 
-  nav a {
-    color: var(--pp-ink-muted);
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--hf-space-3);
+  }
+
+  .mark {
+    display: block;
+    height: var(--pp-foot-mark-h);
+  }
+
+  .name {
+    font-size: var(--pp-fs-lead);
+    font-weight: var(--pp-w-title);
+    letter-spacing: var(--pp-tracking-mark);
+    color: var(--pp-ink-strong);
+  }
+
+  .pitch {
+    font-size: var(--pp-fs-small);
+    line-height: var(--pp-lh-lead);
+    color: var(--pp-ink);
   }
 
   .hand {
@@ -51,5 +151,174 @@ import { IDENTITY } from '../../data/site';
     text-shadow: 0 0 1px color-mix(in srgb, var(--pp-ink-strong) 35%, transparent);
     transform: rotate(-1deg);
     transform-origin: left center;
+  }
+
+  .head {
+    margin-bottom: var(--hf-space-4);
+    font-family: var(--pp-mono);
+    font-size: var(--pp-fs-caption);
+    font-weight: var(--pp-w-label);
+    color: var(--pp-signal-text);
+  }
+
+  ul {
+    display: grid;
+    gap: var(--hf-space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .group a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--hf-space-1);
+    padding: var(--hf-space-1) 0;
+    font-size: var(--pp-fs-small);
+    font-weight: var(--pp-w-nav);
+    color: var(--pp-ink-muted);
+    text-decoration: underline 1px transparent;
+    text-underline-offset: var(--hf-space-1);
+    transition:
+      color var(--pa-motion-duration) ease,
+      text-decoration-color var(--pa-motion-duration) ease;
+  }
+
+  .group a:hover {
+    color: var(--pp-ink-strong);
+    text-decoration-color: var(--pp-signal);
+  }
+
+  .out {
+    font-size: var(--pp-fs-micro);
+    color: var(--pp-signal-text);
+  }
+
+  /* The title block: one row of labelled cells along the bottom edge of the sheet. */
+  .block {
+    display: grid;
+    grid-template-columns: repeat(5, auto) auto 1fr;
+    margin: 0;
+    border-bottom: 1px solid var(--pp-outline);
+  }
+
+  .cell {
+    padding: var(--hf-space-3) var(--hf-space-5);
+    border-left: 1px solid var(--pp-rule);
+  }
+
+  .cell:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .cell.top {
+    text-align: right;
+    padding-right: 0;
+  }
+
+  dt {
+    font-family: var(--pp-mono);
+    font-size: var(--pp-fs-micro);
+    font-weight: var(--pp-w-label);
+    letter-spacing: var(--pp-tracking-micro);
+    text-transform: uppercase;
+    color: var(--pp-ink-muted);
+  }
+
+  dd {
+    margin: var(--hf-space-1) 0 0;
+    font-family: var(--pp-mono);
+    font-size: var(--pp-fs-caption);
+    font-weight: var(--pp-w-label);
+    color: var(--pp-ink-strong);
+    white-space: nowrap;
+  }
+
+  dd a {
+    color: var(--pp-ink-strong);
+  }
+
+  dd a:hover {
+    color: var(--pp-signal-text);
+  }
+
+  /* Tablet: who spans the top and the three indexes share the row under it. */
+  @media (max-width: 999px) {
+    .sheet {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .who {
+      grid-column: 1 / -1;
+      padding-right: 0;
+      border-bottom: 1px solid var(--pp-rule);
+    }
+
+    .group:nth-child(2) {
+      border-left: 0;
+      padding-left: 0;
+    }
+
+    .block {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .cell {
+      border-top: 1px solid var(--pp-rule);
+    }
+
+    .cell:nth-child(-n + 4) {
+      border-top: 0;
+    }
+
+    .cell:nth-child(4n + 1) {
+      padding-left: 0;
+      border-left: 0;
+    }
+
+    .cell.top {
+      grid-column: span 2;
+    }
+  }
+
+  /* Phone: indexes two up, the title block as a two-column table. */
+  @media (max-width: 599px) {
+    .sheet {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .group:nth-child(4) {
+      grid-column: 1 / -1;
+      border-left: 0;
+      padding-left: 0;
+      border-top: 1px solid var(--pp-rule);
+    }
+
+    .block {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cell:nth-child(n) {
+      padding-left: var(--hf-space-4);
+      border-left: 1px solid var(--pp-rule);
+      border-top: 1px solid var(--pp-rule);
+    }
+
+    .cell:nth-child(odd) {
+      padding-left: 0;
+      border-left: 0;
+    }
+
+    .cell:nth-child(-n + 2) {
+      border-top: 0;
+    }
+
+    .cell.top {
+      grid-column: 1 / -1;
+      text-align: left;
+      padding-left: 0;
+      border-left: 0;
+    }
   }
 </style>

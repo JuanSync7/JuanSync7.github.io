@@ -1,33 +1,47 @@
 ---
-import { NAV } from '../../data/home';
+import { HEADER_LINKS } from '../../data/home';
 import { IDENTITY } from '../../data/site';
+import Monogram from '../ui/Monogram.astro';
+import PixelButton from '../ui/PixelButton.astro';
 
 interface Props {
+  /** The page this is, by its lower-case nav label ('writing', 'learn', ...). */
   current?: string;
 }
 
 const { current } = Astro.props;
 ---
 
-<header class="pp-nav">
+<header id="site-top" class="pp-nav">
   <div class="pp-wrap pp-nav-inner">
-    <a class="mark" href="/" aria-label={`${IDENTITY.shortName}, home`}>S<span>J</span></a>
-    <button class="menu" type="button" aria-expanded="false" aria-controls="pp-menu" aria-label="Menu">
-      <span class="bars" aria-hidden="true"></span>
-    </button>
-    <nav id="pp-menu" aria-label="Primary">
+    <a class="brand" href="/" aria-label="Juan Kok, home">
+      <span class="brand-mark"><Monogram intro="none" /></span>
+      <span class="brand-text">
+        <span class="brand-name">Juan Kok</span>
+        <span class="brand-role">// AI engineer</span>
+      </span>
+    </a>
+
+    <nav id="pp-menu" class="links" aria-label="Primary">
       <ul>
-        {NAV.map((l) => (
+        {HEADER_LINKS.map((l) => (
           <li>
-            <a href={l.href} aria-current={l.label === current ? 'page' : undefined}>{l.label}</a>
+            <a href={l.href} aria-current={l.label.toLowerCase() === current ? 'page' : undefined}>{l.label}</a>
           </li>
         ))}
       </ul>
+      <PixelButton class="cv cv-menu" href={IDENTITY.cvFile}>Download CV ↓</PixelButton>
     </nav>
-    <a class="cv" href={IDENTITY.cvFile}>cv.pdf</a>
-    <button class="theme" type="button" data-theme-toggle aria-label="Switch between light and dark theme">
-      <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" /><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8" /></svg><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" /></svg>
-    </button>
+
+    <div class="tools">
+      <button class="icon theme" type="button" data-theme-toggle aria-label="Switch between light and dark theme">
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" /><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8" /></svg><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" /></svg>
+      </button>
+      <PixelButton class="cv cv-bar" href={IDENTITY.cvFile}>CV ↓</PixelButton>
+      <button class="icon menu" type="button" aria-expanded="false" aria-controls="pp-menu" aria-label="Menu">
+        <span class="bars" aria-hidden="true"></span>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -64,12 +78,22 @@ const { current } = Astro.props;
         m.setAttribute('aria-expanded', String(open));
       }
       m.addEventListener('click', function () { set(!nav.hasAttribute('data-open')); });
-      nav.addEventListener('click', function (e) { if (e.target.closest('nav a')) set(false); });
+      nav.addEventListener('click', function (e) { if (e.target.closest('.links a')) set(false); });
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape') set(false); });
+    }
+    // The bar draws its hairline once the page has scrolled under it.
+    function stuck() {
+      var nav = document.querySelector('.pp-nav');
+      if (!nav || nav.dataset.watch) return;
+      nav.dataset.watch = '1';
+      function on() { nav.toggleAttribute('data-stuck', window.scrollY > 4); }
+      on();
+      window.addEventListener('scroll', on, { passive: true });
     }
     apply();
     menu();
-    document.addEventListener('astro:page-load', function () { apply(); menu(); });
+    stuck();
+    document.addEventListener('astro:page-load', function () { apply(); menu(); stuck(); });
     document.addEventListener('astro:after-swap', function () {
       try {
         var t = localStorage.getItem('pp-theme');
@@ -86,71 +110,159 @@ const { current } = Astro.props;
     z-index: var(--hf-z-nav);
   }
 
+  /* One bar, three zones: who (left), where (centre), tools (right). The scrim sits on the
+     content column only, so the punched strip and margin line run up behind the gutters. */
   .pp-nav-inner {
-    /* The scrim sits on the content column only, so the strip and frame run up behind the gutters. */
-    background: var(--nt-scrim);
-    backdrop-filter: blur(12px);
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    gap: var(--hf-space-2) var(--hf-space-4);
-    padding-top: var(--hf-space-4);
-    padding-bottom: var(--hf-space-4);
+    gap: var(--hf-space-6);
+    min-height: var(--pp-nav-h);
+    background: var(--nt-scrim);
+    backdrop-filter: blur(var(--pp-nav-blur));
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--pa-motion-duration) ease;
   }
 
-  .mark {
-    font-size: var(--pp-fs-mark);
-    font-weight: var(--pp-w-heading);
+  [data-stuck] .pp-nav-inner {
+    border-bottom-color: var(--pp-rule);
+  }
+
+  /* Who: the monogram, the name, and the role in the code-comment voice. */
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--hf-space-3);
+    justify-self: start;
+    color: var(--pp-ink-strong);
+  }
+
+  .brand-mark {
+    display: block;
+    height: var(--pp-nav-mark-h);
+  }
+
+  .brand-text {
+    display: grid;
+    line-height: var(--pp-lh-h2);
+  }
+
+  .brand-name {
+    font-size: var(--pp-fs-title);
+    font-weight: var(--pp-w-title);
     letter-spacing: var(--pp-tracking-mark);
     color: var(--pp-ink-strong);
   }
 
-  .mark span {
-    color: var(--pp-signal);
+  .brand-role {
+    font-family: var(--pp-mono);
+    font-size: var(--pp-fs-micro);
+    font-weight: var(--pp-w-label);
+    color: var(--pp-ink-muted);
   }
 
-  nav {
-    margin-left: auto;
+  .brand:hover .brand-name {
+    color: var(--pp-ink-strong);
+  }
+
+  /* Where: the pages. The current one carries an orange tab that sits on the bar's hairline. */
+  .links {
+    align-self: stretch;
+    display: flex;
   }
 
   ul {
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--hf-space-2) calc(var(--hf-space-6) - 2px);
+    align-items: stretch;
+    gap: var(--hf-space-1);
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  nav a,
-  .cv,
-  .theme {
-    font-family: var(--pp-mono);
-    font-size: var(--pp-fs-caption);
-    font-weight: var(--pp-w-label);
+  .links li {
+    display: flex;
+  }
+
+  .links ul a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 var(--hf-space-3);
+    font-size: var(--pp-fs-nav);
+    font-weight: var(--pp-w-nav);
     color: var(--pp-ink-muted);
+    transition: color var(--pa-motion-duration) ease;
   }
 
-  nav a:hover,
-  .cv:hover {
-    color: var(--pp-signal-text);
+  .links ul a::after {
+    content: '';
+    position: absolute;
+    left: var(--hf-space-3);
+    right: var(--hf-space-3);
+    bottom: -1px;
+    height: var(--pp-nav-tab);
+    background: var(--pp-signal);
+    transform: scaleX(0);
+    transition: transform var(--pa-motion-duration) var(--pp-ease-rise);
   }
 
-  nav a[aria-current='page'] {
+  .links ul a:hover {
     color: var(--pp-ink-strong);
   }
 
-  .theme {
-    min-height: var(--nt-hit);
-    padding: 0 var(--hf-space-3);
-    background: transparent;
-    border: 1px solid var(--pp-outline);
-    border-radius: var(--pp-radius-md);
-    cursor: pointer;
+  .links ul a:hover::after {
+    transform: scaleX(0.5);
   }
 
-  .theme:hover {
-    border-color: var(--pp-signal);
+  .links ul a[aria-current='page'] {
+    color: var(--pp-ink-strong);
+  }
+
+  .links ul a[aria-current='page']::after {
+    transform: scaleX(1);
+  }
+
+  /* The CV is the hero's pixel button at bar height. It is another component's element, so
+     these rules are global and name the bar to outrank the button's own. */
+  :global(.pp-nav .cv) {
+    min-height: var(--pp-nav-icon);
+    padding: var(--hf-space-2) var(--hf-space-4);
+    font-size: var(--pp-fs-caption);
+  }
+
+  :global(.pp-nav .links .cv-menu) {
+    display: none;
+  }
+
+  /* Tools: theme and CV, one height. */
+  .tools {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--hf-space-3);
+  }
+
+  .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--pp-nav-icon);
+    height: var(--pp-nav-icon);
+    padding: 0;
+    color: var(--pp-ink-muted);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--pp-radius-md);
+    cursor: pointer;
+    transition:
+      color var(--pa-motion-duration) ease,
+      border-color var(--pa-motion-duration) ease;
+  }
+
+  .icon:hover {
+    color: var(--pp-ink-strong);
+    border-color: var(--pp-outline);
   }
 
   .sun,
@@ -162,7 +274,6 @@ const { current } = Astro.props;
     stroke-width: 1.8;
     stroke-linecap: round;
     stroke-linejoin: round;
-    vertical-align: middle;
   }
 
   .moon {
@@ -171,21 +282,14 @@ const { current } = Astro.props;
 
   .menu {
     display: none;
-    min-height: var(--nt-hit);
-    min-width: var(--nt-hit);
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: 1px solid var(--pp-outline);
-    border-radius: var(--pp-radius-md);
-    cursor: pointer;
+    border-color: var(--pp-outline);
   }
 
   .bars,
   .bars::before,
   .bars::after {
     display: block;
-    width: var(--hf-space-5);
+    width: var(--hf-space-4);
     height: 2px;
     background: var(--pp-ink-strong);
     border-radius: 1px;
@@ -204,11 +308,11 @@ const { current } = Astro.props;
   }
 
   .bars::before {
-    top: -6px;
+    top: -5px;
   }
 
   .bars::after {
-    top: 6px;
+    top: 5px;
   }
 
   [data-open] .bars {
@@ -216,50 +320,69 @@ const { current } = Astro.props;
   }
 
   [data-open] .bars::before {
-    transform: translateY(6px) rotate(45deg);
+    transform: translateY(5px) rotate(45deg);
   }
 
   [data-open] .bars::after {
-    transform: translateY(-6px) rotate(-45deg);
+    transform: translateY(-5px) rotate(-45deg);
   }
 
-  /* On a phone the links fold into a menu button, as in an app. The scrim is dropped there so
-     the margin line and punched strip run to the very top of the page. */
-  @media (max-width: 699px) {
+  /* Mid widths: the role line goes before the links get crowded. */
+  @media (max-width: 1099px) {
+    .brand-role {
+      display: none;
+    }
+
+    .links ul a {
+      padding: 0 var(--hf-space-2);
+    }
+
+    .links ul a::after {
+      left: var(--hf-space-2);
+      right: var(--hf-space-2);
+    }
+  }
+
+  /* On a phone the pages fold into a menu, as in an app: a list under the bar with the CV at
+     its foot. The scrim is dropped so the margin line and punched strip run to the top. */
+  @media (max-width: 799px) {
     .pp-nav {
       position: static;
     }
 
     .pp-nav-inner {
+      grid-template-columns: 1fr auto;
+      grid-template-rows: var(--pp-nav-h) auto;
       background: none;
       backdrop-filter: none;
-      flex-wrap: wrap;
-    }
-
-    .cv {
-      margin-left: auto;
+      row-gap: 0;
     }
 
     .menu {
       display: inline-flex;
-      order: 4;
     }
 
-    .theme {
-      order: 3;
-    }
-
-    nav {
+    :global(.pp-nav .tools .cv-bar) {
       display: none;
-      flex-basis: 100%;
-      margin-left: 0;
-      order: 5;
-      border-top: 1px solid var(--pp-rule);
-      padding-top: var(--hf-space-3);
     }
 
-    [data-open] nav {
-      display: block;
+    .tools {
+      grid-row: 1;
+      grid-column: 2;
+    }
+
+    .links {
+      display: none;
+      grid-row: 2;
+      grid-column: 1 / -1;
+      flex-direction: column;
+      gap: var(--hf-space-4);
+      padding: var(--hf-space-2) 0 var(--hf-space-6);
+      border-top: 1px solid var(--pp-rule);
+    }
+
+    [data-open] .links {
+      display: flex;
     }
 
     ul {
@@ -267,10 +390,41 @@ const { current } = Astro.props;
       gap: 0;
     }
 
-    nav a {
-      display: block;
+    .links ul a {
+      flex: 1;
       padding: var(--hf-space-3) 0;
-      font-size: var(--pp-fs-body);
+      font-size: var(--pp-fs-lead);
+      border-bottom: 1px solid var(--pp-rule);
+    }
+
+    .links ul a::after {
+      left: 0;
+      right: auto;
+      top: 0;
+      bottom: 0;
+      width: var(--pp-nav-tab);
+      height: auto;
+      transform: scaleY(0);
+    }
+
+    .links ul a[aria-current='page'] {
+      padding-left: var(--hf-space-4);
+    }
+
+    .links ul a[aria-current='page']::after {
+      transform: scaleY(1);
+    }
+
+    :global(.pp-nav .links .cv-menu) {
+      display: inline-block;
+      align-self: start;
+      min-height: var(--nt-hit);
+      padding: var(--hf-space-3) var(--hf-space-6);
+      font-size: var(--pp-fs-label);
+    }
+
+    .links ul a:hover::after {
+      transform: scaleY(0);
     }
   }
 
@@ -279,7 +433,7 @@ const { current } = Astro.props;
       display: none;
     }
     :global(:root:not([data-theme='light'])) .moon {
-      display: inline-block;
+      display: block;
     }
   }
 
@@ -288,6 +442,6 @@ const { current } = Astro.props;
   }
 
   :global(:root[data-theme='dark']) .moon {
-    display: inline-block;
+    display: block;
   }
 </style>
