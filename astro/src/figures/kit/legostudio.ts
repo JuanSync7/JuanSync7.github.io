@@ -20,7 +20,7 @@ import { LEGO_MODELS } from './legomodels';
 import { build } from './legoswap';
 import { drawingSheet, partsListSheet } from './draftsheet';
 import { sketchModel } from './legosketch';
-import { LEGO_SKETCHES } from './legosketches';
+import { LEGO_SKETCHES, partsOf } from './legosketches';
 
 /** The review bench for LEGO models, used by `npm run lego:sheet` (never by a page): the
  *  wireframe plan in four views, then the smooth isometric model and the LEGO each turned
@@ -123,16 +123,18 @@ export function sheet(id: string, mode: Mode, tile = 360, only = ''): string {
   let models: Group[];
   // A sketch frames its own parts.
   let frame: Group | null = null;
+  // In the line modes the sketch is drawn per view (below), with that view's silhouettes.
+  const lined = sketch && (mode === 'sketch' || mode === 'compare') ? sketch : null;
   if (sketch && (mode === 'sketch' || mode === 'sketch3d' || mode === 'compare')) {
     // In `compare` the sketch is drawn in the signal colour over the plan's wireframe.
-    const ref = sketchModel(sketch.parts, mode !== 'sketch3d', own, mode === 'compare' ? 'signal' : undefined);
-    frame = ref;
-    const m = new Group().add(ref);
+    frame = sketchModel(partsOf(sketch), true, own);
+    const m = new Group();
+    if (mode === 'sketch3d') m.add(sketchModel(sketch.parts, false, own));
     if (mode === 'compare') m.add(wireModel(shapes, 'inkSoft', own));
     models = [m];
   } else if (sketch && (mode === 'solid' || mode === 'lego')) {
-    // The plan or the LEGO, framed on the part the sketch draws.
-    frame = sketchModel(sketch.parts, true, own);
+    // The plan or the LEGO, framed on the part the sketch draws (not its context).
+    frame = sketchModel(partsOf(sketch), true, own);
     models = [mode === 'solid' ? smoothModel(shapes, own) : legoModel(pieces, own, true).group];
   } else if (mode === 'catalogue') {
     models = KINDS.map((kind) => legoModel([SAMPLE[kind]], own, true).group);
@@ -168,7 +170,11 @@ export function sheet(id: string, mode: Mode, tile = 360, only = ''): string {
     scene.add(g);
     const box = new Box3().setFromObject(frame ?? g);
     if (box.isEmpty()) box.set(new Vector3(-1, -1, -1), new Vector3(1, 1, 1));
-    r.render(scene, aim(box, v, aspect));
+    const cam = aim(box, v, aspect);
+    const ref = lined ? sketchModel(lined.parts, true, own, mode === 'compare' ? 'signal' : undefined, cam.getWorldDirection(new Vector3())) : null; // prettier-ignore
+    if (ref) g.add(ref);
+    r.render(scene, cam);
+    if (ref) g.remove(ref);
     const x = (k % cols) * tile;
     const y = Math.floor(k / cols) * (th + 22);
     ctx.drawImage(r.domElement, x, y);

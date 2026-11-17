@@ -88,14 +88,17 @@ export const F1: Shape[] = [
     flap('front-flap', FW_HINGE, 0.27, 5, (h) => flap('second', h, 0.22, 5, undefined, 1), 1),
   ]),
   { kind: 'part', part: 'plate', x: 1, y: 2, z: 6, w: 1, d: 2, h: 1, tone: 'line4' },
-  { kind: 'block', x: 1, y: 3, z: 6, w: 1, d: 2, h: 5, tone: 'line4' },
-  // Nose: a plate over the pillars and the front axle, a chamfered underside, a rounded tip.
-  { kind: 'block', x: 1, y: 8, z: 6, w: 8, d: 2, h: 1, tone: 'inkMuted' },
-  { kind: 'ramp', x: 4, y: 5, z: 6, profile: 'inv45', wid: 2, dir: 'x-', tone: 'inkMuted' },
-  { kind: 'part', part: 'quarter', x: 1, y: 9, z: 6, w: 1, d: 1, h: 1, dir: 'x-', tone: 'inkSoft' },
-  { kind: 'part', part: 'quarter', x: 1, y: 9, z: 7, w: 1, d: 1, h: 1, dir: 'z+', tone: 'inkSoft' },
-  { kind: 'block', x: 2, y: 9, z: 6, w: 3, d: 2, h: 1, top: 'tiles', tone: 'inkSoft' },
-  { kind: 'ramp', x: 5, y: 9, z: 6, profile: 'curve4', wid: 2, dir: 'x-', tone: 'inkSoft' },
+  { kind: 'block', x: 1, y: 3, z: 6, w: 1, d: 2, h: 3, tone: 'line4' },
+  // Nose, to the drawing of `nose`: low at the tip on its pylon (top 3.2 studs, drawn 3.0 to
+  // 3.5), a curved rise, then a plate bridging onto the front axle's mount (top 4.0, drawn 4.0).
+  { kind: 'block', x: 1, y: 6, z: 6, w: 6, d: 2, h: 1, tone: 'inkMuted' },
+  { kind: 'part', part: 'quarter', x: 1, y: 7, z: 6, w: 1, d: 1, h: 1, dir: 'x-', tone: 'inkSoft' },
+  { kind: 'part', part: 'quarter', x: 1, y: 7, z: 7, w: 1, d: 1, h: 1, dir: 'z+', tone: 'inkSoft' },
+  { kind: 'block', x: 2, y: 7, z: 6, w: 1, d: 2, h: 1, top: 'tiles', tone: 'inkSoft' },
+  { kind: 'ramp', x: 3, y: 7, z: 6, profile: 'curve2', wid: 2, dir: 'x-', tone: 'inkSoft' },
+  { kind: 'block', x: 5, y: 7, z: 6, w: 2, d: 2, h: 1, tone: 'inkMuted' },
+  { kind: 'block', x: 5, y: 8, z: 6, w: 4, d: 2, h: 1, tone: 'inkMuted' },
+  { kind: 'block', x: 5, y: 9, z: 6, w: 4, d: 2, h: 1, top: 'tiles', tone: 'inkSoft' },
   // Dash in front of the cockpit, the halo's pillar on it.
   { kind: 'block', x: 9, y: 8, z: 5, w: 6, d: 4, h: 3, tone: 'inkSoft' },
   { kind: 'block', x: 9, y: 11, z: 6, w: 5, d: 2, h: 1, top: 'tiles', tone: 'inkSoft' },
@@ -113,9 +116,11 @@ export const F1: Shape[] = [
   { kind: 'round', x: 21, y: 16, z: 6, size: 1, h: 1, tone: 'line4' },
   { kind: 'part', part: 'tile', x: 21, y: 17, z: 6, w: 1, d: 2, h: 1, tone: 'ink2' },
   { kind: 'ramp', x: 22, y: 13, z: 6, profile: 'curve4', wid: 2, dir: 'x+', tone: 'inkSoft' },
-  // Engine cover spine with the shark fin, curved shoulders either side, the tail onto the gearbox.
-  { kind: 'block', x: 26, y: 8, z: 6, w: 6, d: 2, h: 5, tone: 'inkSoft' },
-  { kind: 'part', part: 'fin', x: 26, y: 13, z: 6, w: 6, d: 2, h: 6, tone: 'ink2' },
+  // Engine cover spine falling to the gearbox as the drawing of `bodywork` does (4.8 studs at
+  // x = 27, 3.2 at 32; drawn 4.7 and 3.3), a low shark fin on it, curved shoulders either side.
+  { kind: 'block', x: 26, y: 8, z: 6, w: 2, d: 2, h: 4, tone: 'inkSoft' },
+  { kind: 'ramp', x: 28, y: 8, z: 6, profile: 'curve4', wid: 2, dir: 'x+', tone: 'inkSoft' },
+  { kind: 'part', part: 'fin', x: 26, y: 12, z: 6, w: 2, d: 2, h: 3, tone: 'ink2' },
   ...sym([
     { kind: 'block', x: 26, y: 8, z: 5, w: 4, d: 1, h: 2, tone: 'inkSoft' },
     { kind: 'ramp', x: 26, y: 10, z: 5, profile: 'curve4', wid: 1, dir: 'x+', tone: 'inkSoft' },

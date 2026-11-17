@@ -18,6 +18,7 @@ import {
   Vector3,
 } from 'three';
 import type { NightKey } from '../../styles/tokens/palette';
+import { edgeModel, viewEdges } from './draftedges';
 import { hexOf } from './ink';
 import { plastic } from './legoscene';
 
@@ -160,15 +161,25 @@ function solidOf(p: SketchPart): BufferGeometry {
   }
 }
 
-/** The sketch as lines (its hard edges) or as solids. */
-export function sketchModel(parts: SketchPart[], lines: boolean, own: (d: () => void) => void, tone?: NightKey): Group {
+/** The sketch as lines (its hard edges, and with `look` its silhouette from there) or as solids. */
+export function sketchModel(
+  parts: SketchPart[],
+  lines: boolean,
+  own: (d: () => void) => void,
+  tone?: NightKey,
+  look?: Vector3,
+): Group {
   const g = new Group();
   for (const p of parts) {
     const geo = sketchGeometry(p);
     own(() => geo.dispose());
     if (lines) {
       const mat = new LineBasicMaterial({ color: hexOf(tone ?? p.tone) });
-      const e = new LineSegments(new EdgesGeometry(geo, 24), mat);
+      // Seen along `look`, a smooth part draws its silhouette too, or it has no outline.
+      const edges = look
+        ? new BufferGeometry().setAttribute('position', new Float32BufferAttribute(viewEdges(edgeModel(geo), look), 3))
+        : new EdgesGeometry(geo, 24);
+      const e = new LineSegments(edges, mat);
       own(() => {
         e.geometry.dispose();
         mat.dispose();
