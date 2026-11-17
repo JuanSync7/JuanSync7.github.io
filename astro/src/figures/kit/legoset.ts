@@ -22,7 +22,7 @@ export type Kind =
   | 'curve4' // curved slope, 4 long, 3 plates tall
   | 'wedge' // a tapered plate, cut on one side (hand R or L)
   | 'round' // round plate or brick, 1 x 1 or 2 x 2
-  | 'dome' // a round dome, any even size: a roof, an onion spire
+  | 'dome' // a smooth dome: 4 x 4 for a roof (86500); 2 x 2 for an onion spire (the real one, 30367, has a centred stud we do not model yet)
   | 'helmet' // a 2 x 2 dome with a visor: a driver's helmet
   | 'uplate' // a U-shaped plate: a ring with two legs (the F1 halo)
   | 'wheel' // rim and tyre on an axle along z

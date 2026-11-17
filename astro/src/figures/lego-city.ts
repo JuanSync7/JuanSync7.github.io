@@ -11,7 +11,7 @@ import type { Piece } from './kit/legoset';
 import { build } from './kit/legoswap';
 import { mulberry32 } from './kit/rng';
 
-/** A LEGO city built by hand on its baseplate, with the catalogue's pieces: the street layer
+/** A LEGO city built by hand on its base, with the catalogue's real pieces: the street layer
  *  (smooth road tiles, studded pavements and block plates) is there from the first frame; nine
  *  builders raise the nine blocks course by course while a tenth sets cars and lamps on the
  *  streets: a church with an onion spire, a stadium of stands, a museum under its dome, a
@@ -37,7 +37,7 @@ const city = (): Piece[] => build(cityShapes(mulberry32(7311)), cityQueue);
 export default defineThreeFigure<State>({
   id: 'lego-city',
   title: 'LEGO city',
-  alt: 'A LEGO city built brick by brick on its baseplate, then taken apart and built again.',
+  alt: 'A LEGO city built brick by brick on its base, then taken apart and built again.',
   idea: 'A platform is assembled from small standard parts on a fixed base, piece by piece, and can be taken apart and rebuilt.',
   motion: 'ambient',
   answers: false,

@@ -5,8 +5,8 @@ import type { Piece } from './legoset.ts';
 import type { Shape } from './legoswap.ts';
 import type { Rng } from './rng.ts';
 
-/** The LEGO city as a model for the generic pipeline: a 44 x 44 baseplate (the root), the street
- *  layer on it (smooth road tiles with pale lane marks, studded pavements and block plates, a
+/** The LEGO city as a model for the generic pipeline: a 44 x 44 base of real plates, two courses (the root),
+ *  the street layer on it (smooth road tiles with pale lane marks, studded pavements and block plates, a
  *  plate wherever a car or lamp stands), nine blocks of buildings planned as voxels and laid as
  *  plates two to a voxel, and the shaped parts (`legoparts.ts`). `cityQueue` gives the build its
  *  nine builders, one per block, and a tenth for the street; the street layer is the base, there
@@ -39,6 +39,22 @@ function rectangles(cells: Map<string, NightKey>): { x: number; z: number; w: nu
   return out;
 }
 
+/** The base under the street layer: two courses of 2 x 8 plates, the lower along x and the upper
+ *  across it, each row's seams four studs off the row before so no seam runs through both. A
+ *  plate below the street layer, so nothing above moves; there is no 44 x 44 plate to stand in. */
+function base(): Shape[] {
+  const out: Shape[] = [];
+  for (let k = 0; k < GRID; k += 2) {
+    let at = 0;
+    for (const len of (k / 2) % 2 ? [4, 8, 8, 8, 8, 8] : [8, 8, 8, 8, 8, 4]) {
+      out.push({ kind: 'part', part: 'plate', x: at, y: -1, z: k, w: len, d: 2, h: 1, tone: 'line2' });
+      out.push({ kind: 'part', part: 'plate', x: k, y: 0, z: at, w: 2, d: len, h: 1, tone: 'line2' });
+      at += len;
+    }
+  }
+  return out.map((s, i) => (i === 0 ? { ...s, root: true } : s));
+}
+
 const ROAD: NightKey[] = ['line3', 'inkFaint'];
 
 export function cityShapes(rng: Rng): Shape[] {
@@ -59,9 +75,7 @@ export function cityShapes(rng: Rng): Shape[] {
     if (l === 0) for (const [x, z] of p.cells) studded.add(`${x}|${z}`);
     e.shapes.push(...p.make(yOf(l + 1)));
   }
-  const shapes: Shape[] = [
-    { kind: 'part', part: 'plate', x: 0, y: 0, z: 0, w: GRID, d: GRID, h: 1, tone: 'line2', root: true },
-  ];
+  const shapes: Shape[] = [...base()];
   // The street layer: roads smooth, everything else (and the road under a car or lamp) studded.
   const street = new Map<string, NightKey>();
   const smooth = new Map<string, NightKey>();

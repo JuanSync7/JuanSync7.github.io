@@ -129,14 +129,10 @@ export function gable(e: Edit, x0: number, z0: number, w: number, d: number, l0:
   }
 }
 
-/** A dome on voxel layer l0: a round drum and a dome over it, centred on (cx, cz). */
-export function dome(e: Edit, cx: number, cz: number, r: number, l0: number, t: T): void {
-  const y = yOf(l0);
-  const size = 2 * r;
-  e.shapes.push(
-    { kind: 'part', part: 'round', x: cx - r, y, z: cz - r, w: size, d: size, h: 3, tone: t },
-    { kind: 'part', part: 'dome', x: cx - r, y: y + 3, z: cz - r, w: size, d: size, h: 2 * r + 1, tone: t },
-  );
+/** A dome on voxel layer l0, centred on (cx, cz): the 4 x 4 smooth dome LEGO makes (86500), so
+ *  a larger roof steps in to it rather than inventing a bigger dome. */
+export function dome(e: Edit, cx: number, cz: number, l0: number, t: T): void {
+  e.shapes.push({ kind: 'part', part: 'dome', x: cx - 2, y: yOf(l0), z: cz - 2, w: 4, d: 4, h: 5, tone: t });
 }
 
 /** An onion spire on voxel layer l0: a round 2 x 2 brick and a dome, the one bright mark. */

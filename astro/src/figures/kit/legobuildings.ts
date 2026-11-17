@@ -124,7 +124,8 @@ function block(e: Edit, kind: Kind, x: number, z: number): void {
     tower(e, x + 1, z + 1, 8, 8, 2, 5, 'inkSoft');
     for (let a = 1; a < 10; a += 2) for (let l = 2; l <= 5; l++) put(e, l, x + a, z, 'ink2');
     fill(e, 6, x + 1, z, 8, 1, 'inkMuted');
-    dome(e, x + 5, z + 5, 4, 6, 'inkMuted');
+    fill(e, 6, x + 2, z + 2, 6, 6, 'inkMuted');
+    dome(e, x + 5, z + 5, 7, 'inkMuted');
     lamp(e, x, z + 9);
     lamp(e, x + 9, z + 9);
   } else {
