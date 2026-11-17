@@ -41,10 +41,10 @@
   --pp-signal-shadow: #a8340c;
   --pp-signal-text: light-dark(#a8340c, #ff5a1f);
   --pp-on-signal: #1a0800;
-  --pp-sheet: light-dark(#f6f0e3, #1d2128);
   --pp-strip: light-dark(#ece2cd, #272c34);
   --pp-hole-edge: light-dark(#46341e, #07080b);
   --pp-ink-shadow: light-dark(#281e12, #000000);
+  --pp-curl-gleam: light-dark(#fffdf6, #3a414c);
   --pp-chalk-a: #e2d9c6;
   --pp-chalk-b: #c4c8d0;
   --pp-chalk-c: #a8adb5;
@@ -126,9 +126,8 @@
   --pp-note-gap: 90px;
   --pp-dur-brush: 1100ms;
   --pp-ease-brush: cubic-bezier(0.6, 0, 0.3, 1);
-  --pp-dur-flip: 850ms;
-  --pp-ease-flip: cubic-bezier(0.55, 0, 0.25, 1);
-  --pp-flip-depth: 2400px;
+  --pp-dur-flip: 1100ms;
+  --pp-curl-blur: 14px;
   --pp-doc-nav-w: 220px;
   --pp-doc-toc-w: 180px;
   --pp-doc-gap: 40px;
@@ -149,7 +148,6 @@
   /* A row's bottom padding sits 2px short, so the next hairline lands on the baseline grid. */
   --pp-row-pad-end: calc(var(--hf-space-5) - 2px);
   --pp-rise-y: 24px;
-  --pp-flip-shadow: drop-shadow(12px 0 28px color-mix(in srgb, var(--pp-ink-shadow) 45%, transparent));
   /* The nav: its glass blur and the menu button's three bars. */
   --pp-nav-blur: 12px;
   --pp-bar-h: 2px;
@@ -158,7 +156,10 @@
      the opaque end of its masks. */
   --pp-hero-copy-basis: 380px;
   --pp-hero-stage-basis: 300px;
-  --pp-logo-shadow: drop-shadow(6px 14px 14px color-mix(in srgb, var(--pp-ink-shadow) 26%, transparent));
+  /* The torn hero sheet's shadow, scaled by --pp-rip-shade as it rips out. */
+  --pp-logo-shadow-x: 6px;
+  --pp-logo-shadow-y: 14px;
+  --pp-logo-shadow-blur: 14px;
   --pp-chalk-bleed: 60px;
   --pp-mask: #000;
 }

@@ -61,7 +61,7 @@ The top bar of every page: monogram, links, CV and theme button; a menu button o
 |---|---|---|---|---|---|---|
 | 2 Row | inner row | padding across | `--pp-pad` | src/styles/tokens/paper.css:96 | var(--hf-space-6) → 24px | paper-footer, blog-post, learn-article, writing-index, learn-index, lab, read in 4 files |
 | 2 Row | inner row | padding down | `--hf-space-4` | src/styles/tokens/spacing.css:11 | 16px | section-head, presentation, read in 37 files |
-| 4 Links | menu, nav links | gap | `--pp-nav-link-gap` | src/styles/tokens/paper.css:136 | calc(var(--hf-space-6) - 2px) | - |
+| 4 Links | menu, nav links | gap | `--pp-nav-link-gap` | src/styles/tokens/paper.css:135 | calc(var(--hf-space-6) - 2px) | - |
 | 5 Theme button | dark mode, light mode, sun, moon | least height | `--nt-hit` | src/styles/tokens/spacing.css:29 | 44px | pixel-button, read in 21 files |
 | 5 Theme button | dark mode, light mode, sun, moon | corner radius | `--pp-radius-md` | src/styles/tokens/paper.css:101 | 8px | pixel-button, read in 3 files |
 | 6 Menu button | hamburger | least height | `--nt-hit` | src/styles/tokens/spacing.css:29 | 44px | pixel-button, read in 21 files |
@@ -84,7 +84,7 @@ The landing page: a hero of copy and a drawing side by side, then the notepad se
 | 2 Hero | opening, top section | padding down | `--hf-space-8` | src/styles/tokens/spacing.css:14 | 32px | paper-footer, writing-index, learn-index, read in 29 files |
 | 3 Hero row | notepad sheet | gap | `--hf-space-6` | src/styles/tokens/spacing.css:13 | 24px | read in 35 files |
 | 5 Stage | drawing, logo, picture | widest width | `--pp-stage-w` | src/styles/tokens/paper.css:124 | 540px | - |
-| 6 Lead | intro, paragraph | widest width | `--pp-lead-w` | src/styles/tokens/paper.css:137 | 600px | - |
+| 6 Lead | intro, paragraph | widest width | `--pp-lead-w` | src/styles/tokens/paper.css:136 | 600px | - |
 | 7 Actions | buttons | gap | `--hf-space-3` | src/styles/tokens/spacing.css:10 | 12px | lab, read in 43 files |
 
 ## Blog post page (`blog-post`, JS-TP-0001 rev B)
@@ -98,10 +98,10 @@ A post in the docs layout: other posts on the left, the article, its contents on
 | 4 Page column | page, main | distance from the left edge | `--pp-edge` | not defined in the token files |  | learn-article, read in 3 files |
 | 4 Page column | page, main | distance from the right edge | `--pp-edge` | not defined in the token files |  | learn-article, read in 3 files |
 | 4 Page column | page, main | padding across | `--pp-pad` | src/styles/tokens/paper.css:96 | var(--hf-space-6) → 24px | paper-nav, paper-footer, learn-article, writing-index, learn-index, lab, read in 4 files |
-| 6 Posts pane | sidebar, left column, navigation | width | `--pp-doc-nav-w` | src/styles/tokens/paper.css:132 | 220px | learn-article |
-| 5 Document grid | layout, three columns | gap | `--pp-doc-gap` | src/styles/tokens/paper.css:134 | 40px | learn-article |
-| 5 Document grid | layout, three columns | gap | `--pp-doc-gap` | src/styles/tokens/paper.css:134 | 40px | learn-article |
-| 8 On this page | contents, table of contents, right column | width | `--pp-doc-toc-w` | src/styles/tokens/paper.css:133 | 180px | learn-article |
+| 6 Posts pane | sidebar, left column, navigation | width | `--pp-doc-nav-w` | src/styles/tokens/paper.css:131 | 220px | learn-article |
+| 5 Document grid | layout, three columns | gap | `--pp-doc-gap` | src/styles/tokens/paper.css:133 | 40px | learn-article |
+| 5 Document grid | layout, three columns | gap | `--pp-doc-gap` | src/styles/tokens/paper.css:133 | 40px | learn-article |
+| 8 On this page | contents, table of contents, right column | width | `--pp-doc-toc-w` | src/styles/tokens/paper.css:132 | 180px | learn-article |
 | 7 Article column | article, middle column, text column | gap | `--hf-space-10` | src/styles/tokens/spacing.css:15 | 40px | learn-article, read in 16 files |
 | 10 Cover | hero image, figure | corner radius | `--hf-radius-2xl` | src/styles/tokens/spacing.css:46 | 20px | learn-article, read in 7 files |
 
@@ -116,10 +116,10 @@ An explainer in the docs layout, its body on a paper sheet, next reads at the en
 | 4 Page column | page, main | distance from the left edge | `--pp-edge` | not defined in the token files |  | blog-post, read in 3 files |
 | 4 Page column | page, main | distance from the right edge | `--pp-edge` | not defined in the token files |  | blog-post, read in 3 files |
 | 4 Page column | page, main | padding across | `--pp-pad` | src/styles/tokens/paper.css:96 | var(--hf-space-6) → 24px | paper-nav, paper-footer, blog-post, writing-index, learn-index, lab, read in 4 files |
-| 6 Guides pane | sidebar, left column, navigation | width | `--pp-doc-nav-w` | src/styles/tokens/paper.css:132 | 220px | blog-post |
-| 5 Document grid | layout, three columns | gap | `--pp-doc-gap` | src/styles/tokens/paper.css:134 | 40px | blog-post |
-| 5 Document grid | layout, three columns | gap | `--pp-doc-gap` | src/styles/tokens/paper.css:134 | 40px | blog-post |
-| 8 On this page | contents, right column | width | `--pp-doc-toc-w` | src/styles/tokens/paper.css:133 | 180px | blog-post |
+| 6 Guides pane | sidebar, left column, navigation | width | `--pp-doc-nav-w` | src/styles/tokens/paper.css:131 | 220px | blog-post |
+| 5 Document grid | layout, three columns | gap | `--pp-doc-gap` | src/styles/tokens/paper.css:133 | 40px | blog-post |
+| 5 Document grid | layout, three columns | gap | `--pp-doc-gap` | src/styles/tokens/paper.css:133 | 40px | blog-post |
+| 8 On this page | contents, right column | width | `--pp-doc-toc-w` | src/styles/tokens/paper.css:132 | 180px | blog-post |
 | 7 Article column | article, middle column | gap | `--hf-space-10` | src/styles/tokens/spacing.css:15 | 40px | blog-post, read in 16 files |
 | 10 Cover | hero image, figure | corner radius | `--hf-radius-2xl` | src/styles/tokens/spacing.css:46 | 20px | blog-post, read in 7 files |
 
@@ -175,9 +175,9 @@ A tracker release: the version rail on the left, the main panel centred beside i
 
 | Part | Also called | Size | Token | Defined at | Resolves to | Also changes |
 |---|---|---|---|---|---|---|
-| 3 Version rail | timeline, versions, left column | width | `--pp-tracker-rail-w` | src/styles/tokens/paper.css:139 | 188px | - |
-| 2 Tracker grid | layout | gap | `--pp-tracker-gap` | src/styles/tokens/paper.css:140 | 56px | - |
-| 4 Main panel | release, content | widest width | `--pp-tracker-main-w` | src/styles/tokens/paper.css:141 | 1200px | - |
+| 3 Version rail | timeline, versions, left column | width | `--pp-tracker-rail-w` | src/styles/tokens/paper.css:138 | 188px | - |
+| 2 Tracker grid | layout | gap | `--pp-tracker-gap` | src/styles/tokens/paper.css:139 | 56px | - |
+| 4 Main panel | release, content | widest width | `--pp-tracker-main-w` | src/styles/tokens/paper.css:140 | 1200px | - |
 
 ## Lab index page (`lab`, JS-TP-0008 rev A)
 
