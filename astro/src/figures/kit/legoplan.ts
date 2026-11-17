@@ -27,12 +27,10 @@ function solidOf(s: Shape): Piece[] {
     case 'round': {
       const cyl: Piece[] =
         s.h > 0 ? [{ ...at, kind: 'round', x: s.x, y: s.y, z: s.z, w: s.size, d: s.size, h: s.h }] : [];
-      return s.cap ? [...cyl, { ...at, kind: 'helmet', x: s.x, y: s.y + s.h, z: s.z, w: 2, d: 2, h: 3 }] : cyl;
+      return s.cap ? [...cyl, { ...at, kind: 'dome', x: s.x, y: s.y + s.h, z: s.z, w: 2, d: 2, h: 3 }] : cyl;
     }
     case 'technic':
       return [{ ...at, kind: 'brick', x: s.x, y: s.y, z: s.z, w: s.len, d: s.rows, h: 3 }];
-    case 'halo':
-      return [{ ...at, kind: 'uplate', x: s.x, y: s.y, z: s.z, w: s.len, d: s.wid, h: 1, rot: ROT[s.dir] }];
     case 'part':
       return [{ ...at, kind: s.part, x: s.x, y: s.y, z: s.z, w: s.w, d: s.d, h: s.h, rot: ROT[s.dir ?? 'x+'], ...(s.hand ? { hand: s.hand } : {}) }]; // prettier-ignore
     case 'wheel':

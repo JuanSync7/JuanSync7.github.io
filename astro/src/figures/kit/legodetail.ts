@@ -1,10 +1,10 @@
 import { CylinderGeometry, type BufferGeometry } from 'three';
 import { box, fall, join, LIP, plan, profile, SEG, STUD_H, STUD_R, studsAt, type BodyOpts, type Part } from './legogeo';
-import { flangeOf, KNUCKLE_Y } from './legopose';
+import { FLANGE_T, flangeOf, KNUCKLE_OUT, KNUCKLE_R, KNUCKLE_Y } from './legopose';
 import { footprint, PLATE, type Piece } from './legoset';
 
 /** Geometry for the detail pieces: the gentler and inverted slopes, the 3-long curve, rounded
- *  tiles, the cone, the bar and the fin. Same frame as `legomesh.ts`: footprint (0, 0) to (w, d),
+ *  tiles, the cone and the bar. Same frame as `legomesh.ts`: footprint (0, 0) to (w, d),
  *  bottom at y = 0; a ramp's high end at u = 0. */
 export function detail(p: Piece, o: BodyOpts): Part[] {
   const { w, d, h } = p;
@@ -39,24 +39,29 @@ export function detail(p: Piece, o: BodyOpts): Part[] {
         new CylinderGeometry(0.1, 0.1, top, 10).translate(0.5, top / 2, 0.5),
         new CylinderGeometry(0.16, 0.16, 0.12, 10).translate(0.5, top - 0.06, 0.5),
       ]);
-    case 'fin': {
-      const t = 0.12;
-      const fin = profile([[g, 0], [w - g, 0], [w - g, top], [w - 0.7, top], [g, 0.25]], d, d / 2 - t); // prettier-ignore
-      return one([fin, box(g, 0, d / 2 - 0.2, w - g, 0.12, d / 2 + 0.2)]);
-    }
     case 'bracket': {
-      // The base, the flange on its front edge, and the flange's studs pointing out (-z).
-      const f = flangeOf(p);
-      const side = Array.from({ length: w * f }, (_, k) => new CylinderGeometry(STUD_R, STUD_R, STUD_H, SEG).rotateX(Math.PI / 2).translate((k % w) + 0.5, Math.floor(k / w) + 0.5, g - STUD_H / 2)); // prettier-ignore
-      return one([box(g, 0, g, w - g, PLATE, d - g), box(g, 0, g, w - g, f, PLATE), ...side, ...studs()]);
+      // The base, the flange half a plate thick just outside its front edge, the flange's studs
+      // pointing out (-z).
+      const [f, t] = [flangeOf(p), FLANGE_T];
+      const side = Array.from({ length: w * f }, (_, k) => new CylinderGeometry(STUD_R, STUD_R, STUD_H, SEG).rotateX(Math.PI / 2).translate((k % w) + 0.5, Math.floor(k / w) + 0.5, -t - STUD_H / 2)); // prettier-ignore
+      return one([box(g, 0, g, w - g, PLATE, d - g), box(g, 0, -t, w - g, f, g), ...side, ...studs()]);
     }
     case 'jumper':
       // The plate, and its one stud in the middle (always drawn: no shared stud stands there).
       return one([box(g, 0, g, w - g, top, d - g), new CylinderGeometry(STUD_R, STUD_R, STUD_H, SEG).translate(w / 2, top + STUD_H / 2, d / 2)]); // prettier-ignore
     case 'hinge': {
-      // The plate and its knuckle: fingers along the far edge, in the first half of each stud so
-      // the partner's fingers (turned round) fall between them.
-      const fingers = Array.from({ length: w }, (_, k) => new CylinderGeometry(KNUCKLE_Y, KNUCKLE_Y, 0.4, SEG).rotateZ(Math.PI / 2).translate(k + 0.25, KNUCKLE_Y, d)); // prettier-ignore
+      // The plate and its knuckle on the far side, as the real click hinges: two thin fingers
+      // near the middle (60471), or one between them with its locking teeth on top (44567).
+      const two = (p.fingers ?? 2) === 2;
+      const spans = two ? [[0.5, 0.72], [1.28, 1.5]] : [[0.76, 1.24]]; // prettier-ignore
+      const at = d + KNUCKLE_OUT;
+      const fingers = spans.flatMap(([u0 = 0, u1 = 0]) => [
+        new CylinderGeometry(KNUCKLE_R, KNUCKLE_R, u1 - u0, SEG)
+          .rotateZ(Math.PI / 2)
+          .translate((u0 + u1) / 2, KNUCKLE_Y, at),
+        box(u0, 0, d - g, u1, PLATE, at),
+        ...(two ? [] : [box(u0, KNUCKLE_Y, at - 0.2, u1, 0.67, at + 0.2), box(0.5, 0, d - g, 1.5, 0.44, d + 0.3)]),
+      ]);
       return one([box(g, 0, g, w - g, top, d - g), ...fingers, ...studs()]);
     }
     default:

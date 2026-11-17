@@ -1,6 +1,6 @@
 import { both } from './legomirror.ts';
 import { flap } from './legoaero.ts';
-import { onSide } from './legopose.ts';
+import { onSide, type Pose } from './legopose.ts';
 import { rearWing } from './legorearwing.ts';
 import { piece, type Shape } from './legoswap.ts';
 
@@ -27,12 +27,14 @@ const WHEEL = { r: 2.7, cy: 6.75 };
 const FRONT = 8;
 const REAR = 33;
 const sym = (list: Shape[]): Shape[] => list.flatMap((s) => both(s, W));
+const HALF: Pose = { r: [1, 0, 0, 0, 1, 0, 0, 0, 1], o: [0, 0, 0.5] };
 
 // Front wing: the endplate bracket stands on the footplate; the flaps' hinge on the main plane.
-const FW_BRACKET: Shape = { kind: 'part', part: 'bracket', x: 0, y: 1, z: 0, w: 4, d: 2, h: 1, flange: 2, tone: 'line4' }; // prettier-ignore
-const FW_HINGE: Shape = { kind: 'part', part: 'hinge', x: 1, y: 2, z: 1, w: 5, d: 1, h: 1, dir: 'z-', tone: 'line4' };
-/** The front endplate: tiles straight on the bracket's 4 x 2 flange, one plate thick, its top
- *  front corner rounded (the drawing's 12 mm plate is 54 mm here; a plate under them doubled it). */
+const FW_BRACKET: Shape = { kind: 'part', part: 'bracket', x: 0, y: 1, z: 1, w: 2, d: 1, h: 1, flange: 2, tone: 'line4' }; // prettier-ignore
+const FW_BRACKET2: Shape = { ...FW_BRACKET, x: 2 };
+const FW_HINGE: Shape = { kind: 'part', part: 'hinge', x: 1, y: 2, z: 2, w: 4, d: 1, h: 1, dir: 'z-', tone: 'line4' };
+/** The front endplate: tiles straight on the 4 x 2 flange of two brackets (99207), one plate
+ *  thick, its top front corner rounded (the drawing's 12 mm plate is 54 mm here). */
 const FW_ENDPLATE: Shape = {
   kind: 'sub',
   id: 'front-endplate',
@@ -52,8 +54,8 @@ export const F1: Shape[] = [
     // Floor edges under the spine, cut back toward the nose, and a bargeboard ahead of each pod.
     { kind: 'wedge', x: 13, y: 0, z: 2, len: 4, wid: 2, dir: 'x-', hand: 'R', tone: 'line4' },
     { kind: 'block', x: 17, y: 0, z: 2, w: 12, d: 2, h: 1, tone: 'line4' },
-    { kind: 'part', part: 'fin', x: 10, y: 3, z: 3, w: 3, d: 1, h: 3, tone: 'ink2' },
-    { kind: 'part', part: 'fin', x: 10, y: 3, z: 4, w: 3, d: 1, h: 2, tone: 'ink2' },
+    { kind: 'ramp', x: 10, y: 3, z: 3, profile: 'slope33', wid: 1, dir: 'x-', tone: 'ink2' },
+    { kind: 'ramp', x: 11, y: 3, z: 4, profile: 'curve2', wid: 1, dir: 'x-', tone: 'ink2' },
     { kind: 'wedge', x: 29, y: 0, z: 3, len: 4, wid: 2, dir: 'x+', hand: 'L', tone: 'line4' },
     // Axle mounts: a lower wishbone on the floor, the technic brick, an upper wishbone, each
     // wishbone one plate laid across the car so it reaches from the hub to the chassis.
@@ -63,9 +65,9 @@ export const F1: Shape[] = [
     { kind: 'block', x: REAR - 1, y: 3, z: 3, w: 2, d: 4, h: 2, lay: 'z', tone: 'line4' },
     { kind: 'technic', x: REAR - 1, y: 5, z: 5, len: 2, rows: 2, tone: 'line4' },
     { kind: 'block', x: REAR - 1, y: 8, z: 3, w: 2, d: 3, h: 1, lay: 'z', tone: 'line4' },
-    // Brake-duct winglets on the upper wishbones.
-    { kind: 'part', part: 'fin', x: FRONT - 1, y: 9, z: 2, w: 2, d: 1, h: 2, tone: 'ink2' },
-    { kind: 'part', part: 'fin', x: REAR - 1, y: 9, z: 3, w: 2, d: 1, h: 3, tone: 'ink2' },
+    // Brake-duct winglets on the upper wishbones, rising to the back.
+    { kind: 'ramp', x: FRONT - 1, y: 9, z: 2, profile: 'curve2', wid: 1, dir: 'x-', tone: 'ink2' },
+    { kind: 'ramp', x: REAR - 1, y: 9, z: 3, profile: 'slope45', wid: 1, dir: 'x-', tone: 'ink2' },
     // Tiles where the floor shows between the wheels and the pods.
     { kind: 'block', x: 6, y: 3, z: 3, w: 1, d: 4, h: 1, top: 'tiles', tone: 'line3' },
     { kind: 'block', x: 9, y: 3, z: 3, w: 1, d: 2, h: 1, top: 'tiles', tone: 'line3' },
@@ -75,18 +77,23 @@ export const F1: Shape[] = [
   { kind: 'block', x: 20, y: 3, z: 5, w: 12, d: 4, h: 5, tone: 'inkMuted' },
   // Front wing, to the drawing of the `frontwing` sketch (kit/legosketches.ts): a footplate on the
   // ground at each tip with the endplate's bracket on it; the main plane an arrowhead of two
-  // tapered plates, swept back to the tips; on its back row the hinge for the two active flaps,
-  // each a stud in chord at the drawing's angles, the second hung from the first, both inside the
-  // endplate's length; a pylon from the middle up to the nose.
+  // tapered plates, swept back to the tips; on its back row the click hinges for the two active
+  // flaps, each a stud in chord at the drawing's angles, the second hung from the first. Each
+  // hinge's knuckle takes a stud, so the flaps reach 1.4 studs past the drawing's endplate, and
+  // they span z 2 to 6, clear of the front tyre; a pylon from the middle up to the nose.
   ...sym([
     { kind: 'part', part: 'plate', x: 0, y: 0, z: 0, w: 4, d: 2, h: 1, tone: 'line4' },
     FW_BRACKET,
-    { kind: 'part', part: 'tile', x: 0, y: 2, z: 1, w: 1, d: 1, h: 1, tone: 'line4' },
+    FW_BRACKET2,
+    // Tiles over the brackets' studs, the first across onto the main plane: it ties the tip to it.
+    { kind: 'part', part: 'tile', x: 0, y: 2, z: 1, w: 1, d: 2, h: 1, tone: 'line4' },
+    { kind: 'part', part: 'tile', x: 1, y: 2, z: 1, w: 3, d: 1, h: 1, tone: 'line4' },
     FW_ENDPLATE,
     { kind: 'part', part: 'plate', x: 0, y: 1, z: 2, w: 2, d: 1, h: 1, tone: 'line4' },
     { kind: 'wedge', x: 0, y: 1, z: 3, len: 4, wid: 2, dir: 'z-', hand: 'L', tone: 'line4' },
     FW_HINGE,
-    flap('front-flap', FW_HINGE, 0.27, 5, (h) => flap('second', h, 0.22, 5, undefined, 1), 1),
+    { kind: 'block', x: 1, y: 3, z: 2, w: 1, d: 4, h: 1, top: 'tiles', tone: 'line4' },
+    flap('front-flap', FW_HINGE, 0.27, 4, (h) => flap('second', h, 0.22, 4)),
   ]),
   { kind: 'part', part: 'plate', x: 1, y: 2, z: 6, w: 1, d: 2, h: 1, tone: 'line4' },
   { kind: 'block', x: 1, y: 3, z: 6, w: 1, d: 2, h: 3, tone: 'line4' },
@@ -105,7 +112,8 @@ export const F1: Shape[] = [
   { kind: 'block', x: 9, y: 11, z: 6, w: 5, d: 2, h: 1, top: 'tiles', tone: 'inkSoft' },
   ...sym([{ kind: 'ramp', x: 9, y: 11, z: 5, profile: 'cheese', wid: 5, dir: 'z-', tone: 'inkSoft' }]),
   { kind: 'block', x: 14, y: 11, z: 5, w: 1, d: 4, h: 2, tone: 'inkSoft' },
-  // Cockpit: the seat, the helmet a plate proud of the side walls, the walls' rounded fronts.
+  // Cockpit: the seat, the helmet (a 2 x 2 dome, 30367) a plate proud of the side walls, the
+  // walls' rounded fronts.
   { kind: 'block', x: 15, y: 8, z: 6, w: 4, d: 2, h: 2, tone: 'line4' },
   { kind: 'round', x: 16, y: 10, z: 6, size: 2, h: 0, cap: true, tone: 'signal' },
   { kind: 'ramp', x: 18, y: 10, z: 6, profile: 'cheese', wid: 2, dir: 'x-', tone: 'line4' },
@@ -121,14 +129,23 @@ export const F1: Shape[] = [
   // x = 27, 3.2 at 32; drawn 4.7 and 3.3), a low shark fin on it, curved shoulders either side.
   { kind: 'block', x: 26, y: 8, z: 6, w: 2, d: 2, h: 4, tone: 'inkSoft' },
   { kind: 'ramp', x: 28, y: 8, z: 6, profile: 'curve4', wid: 2, dir: 'x+', tone: 'inkSoft' },
-  { kind: 'part', part: 'fin', x: 26, y: 12, z: 6, w: 2, d: 2, h: 3, tone: 'ink2' },
+  // The shark fin: a 1 x 2 slope on the centre line, half a stud over on two jumper plates.
+  ...[26, 27].map((x): Shape => ({ kind: 'part', part: 'jumper', x, y: 12, z: 6, w: 1, d: 2, h: 1, tone: 'inkSoft' })),
+  { kind: 'sub', id: 'shark-fin', pose: HALF, shapes: [{ kind: 'ramp', x: 26, y: 13, z: 6, profile: 'slope45', wid: 1, dir: 'x-', tone: 'ink2' }] }, // prettier-ignore
   ...sym([
     { kind: 'block', x: 26, y: 8, z: 5, w: 4, d: 1, h: 2, tone: 'inkSoft' },
     { kind: 'ramp', x: 26, y: 10, z: 5, profile: 'curve4', wid: 1, dir: 'x+', tone: 'inkSoft' },
     { kind: 'ramp', x: 30, y: 8, z: 5, profile: 'curve2', wid: 1, dir: 'x+', tone: 'inkSoft' },
   ]),
-  // Halo: front on its pillar, legs back to the airbox.
-  { kind: 'halo', x: 14, y: 13, z: 5, len: 7, wid: 4, dir: 'x-', tone: 'line4' },
+  // Halo: a ring of plates, a 2 x 4 at the front on its pillar and a 1 x 4 leg each side back to
+  // the airbox, tied by 1 x 6 tiles along the legs, its front corners rounded.
+  { kind: 'part', part: 'plate', x: 14, y: 13, z: 5, w: 2, d: 4, h: 1, tone: 'line4' },
+  { kind: 'part', part: 'tile', x: 14, y: 14, z: 6, w: 2, d: 2, h: 1, tone: 'line4' },
+  ...sym([
+    { kind: 'part', part: 'plate', x: 17, y: 13, z: 5, w: 4, d: 1, h: 1, tone: 'line4' },
+    { kind: 'part', part: 'tile', x: 15, y: 14, z: 5, w: 6, d: 1, h: 1, tone: 'line4' },
+    { kind: 'part', part: 'quarter', x: 14, y: 14, z: 5, w: 1, d: 1, h: 1, dir: 'x-', tone: 'line4' },
+  ]),
   ...sym([
     // Sidepods: an undercut of inverted slopes, a bridging course, a rounded shoulder, louvres,
     // a mirror on its stalk, and a tail that narrows (a wedge) and falls (a curve).
@@ -173,9 +190,10 @@ export const F1: Shape[] = [
     { kind: 'block', x: 32, y: 5, z: 3, w: 2, d: 2, h: 1, top: 'tiles', tone: 'line4' },
     { kind: 'block', x: 32, y: 9, z: 4, w: 2, d: 2, h: 1, top: 'tiles', tone: 'line4' },
   ]),
-  // Axles and wheels: narrower front tyres, wider rears.
-  { kind: 'axle', x: FRONT, cy: WHEEL.cy, z: 0, len: W, tone: 'line4' },
-  { kind: 'axle', x: REAR, cy: WHEEL.cy, z: 0, len: W, tone: 'line4' },
-  ...sym([{ kind: 'wheel', x: FRONT, cy: WHEEL.cy, z: 0, width: 2, r: WHEEL.r, tone: 'line2' }]),
-  ...sym([{ kind: 'wheel', x: REAR, cy: WHEEL.cy, z: 0, width: 3, r: WHEEL.r, tone: 'line2' }]),
+  // Axles (Technic axle 12, 3708) and wheels: 30 mm rims in 43 mm tyres, the front 14 mm wide
+  // (56904 with 56898), the rear 22 mm (56145 with 44309).
+  { kind: 'axle', x: FRONT, cy: WHEEL.cy, z: 1, len: 12, tone: 'line4' },
+  { kind: 'axle', x: REAR, cy: WHEEL.cy, z: 1, len: 12, tone: 'line4' },
+  ...sym([{ kind: 'wheel', x: FRONT, cy: WHEEL.cy, z: 0, width: 1.9, r: WHEEL.r, tone: 'line2' }]),
+  ...sym([{ kind: 'wheel', x: REAR, cy: WHEEL.cy, z: 0, width: 2.7, r: WHEEL.r, tone: 'line2' }]),
 ];

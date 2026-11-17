@@ -50,34 +50,53 @@ export const local = (p: Piece, u: number, y: number, v: number): V3 => {
   return [x, p.y * PLATE + y, z];
 };
 
-/** The flange of a bracket stands on the edge of its base (local v = 0), `flange` studs tall (1
- *  unless the piece says), a row of studs facing out (local -z) centred in each stud of height. */
+/** The flange of a bracket stands just outside the front edge of its base (local v = 0), half a
+ *  plate thick (as the real 99780, 99207 and 3956 are), `flange` studs tall from the base's bottom
+ *  (1 unless the piece says), a row of studs facing out (local -z) centred in each stud of height. */
 export const flangeOf = (p: Piece): number => p.flange ?? 1;
+export const FLANGE_T = PLATE / 2;
 
 /** The frame of a sub-assembly fixed to the side studs of bracket `b`: its own studs-up face
  *  pointing out of the flange, its rows going up the flange (or down, `down`). Its first row of
  *  sockets sits on the flange's studs. */
 export function onSide(b: Piece, down = false): Pose {
-  const a0 = local(b, 0, 0, 0);
-  const a = sub(local(b, 1, 0, 0), a0);
-  const n = sub(local(b, 0, 0, -1), a0);
+  const a0 = local(b, 0, 0, -FLANGE_T);
+  const a = sub(local(b, 1, 0, -FLANGE_T), a0);
+  const n = sub(local(b, 0, 0, -FLANGE_T - 1), a0);
   const ex: V3 = down ? [-a[0], -a[1], -a[2]] : a;
   const ez = cross(ex, n);
-  const o: V3 = down ? local(b, b.w, flangeOf(b), 0) : a0;
+  const o: V3 = down ? local(b, b.w, flangeOf(b), -FLANGE_T) : a0;
   return frame(ex, n, ez, o);
 }
 
-/** A hinge plate's knuckle: along its far edge (local v = d), half a plate up. */
-export const KNUCKLE_Y = PLATE / 2;
+/** A hinge plate's knuckle, as the real click hinges 60471 and 44567 have it: its axis along the
+ *  plate's far side (local v = d), half a stud out from it and three quarters of a plate up, the
+ *  fingers 0.3 of a stud round it. Two halves turned to face each other share one axis, their
+ *  plates a stud apart when flat. */
+export const KNUCKLE_Y = 0.75 * PLATE;
+export const KNUCKLE_OUT = 0.5;
+export const KNUCKLE_R = 0.3;
 
 /** The frame of a sub-assembly hung on hinge plate `h`, turned up by `angle` radians about the
- *  knuckle: its root is a hinge plate at its own (0, 0, 0) facing x- (knuckle at its z = 0). */
+ *  knuckle: its root is a hinge plate at its own (0, 0, 0) facing x- (its knuckle's axis at its
+ *  z = -KNUCKLE_OUT). */
 export function onHinge(h: Piece, angle: number): Pose {
-  const a0 = local(h, 0, KNUCKLE_Y, h.d);
-  const a = sub(local(h, 1, KNUCKLE_Y, h.d), a0);
-  const n = sub(local(h, 0, KNUCKLE_Y, h.d + 1), a0);
+  const a0 = local(h, 0, KNUCKLE_Y, h.d + KNUCKLE_OUT);
+  const a = sub(local(h, 1, KNUCKLE_Y, h.d + KNUCKLE_OUT), a0);
+  const n = sub(local(h, 0, KNUCKLE_Y, h.d + KNUCKLE_OUT + 1), a0);
   const [c, s] = [Math.cos(angle), Math.sin(angle)];
   const ez: V3 = [c * n[0], c * n[1] + s, c * n[2]];
   const ey = cross(ez, a);
-  return frame(a, ey, ez, sub(a0, [ey[0] * KNUCKLE_Y, ey[1] * KNUCKLE_Y, ey[2] * KNUCKLE_Y]));
+  const o = [0, 1, 2].map((k) => (a0[k] ?? 0) - (ey[k] ?? 0) * KNUCKLE_Y + (ez[k] ?? 0) * KNUCKLE_OUT) as V3;
+  return frame(a, ey, ez, o);
+}
+
+/** A row of hinges `w` long as real click hinges: one 2 x 1 every two studs, all on one axis. */
+export function hingeRow(one: Piece): Piece[] {
+  if (one.w % 2) throw new Error(`lego: a hinge row ${one.w} long is not whole 2 x 1 hinges`);
+  const [ox, oz] = turn({ ...one, x: 0, z: 0, w: 2 }, 0, 0);
+  return Array.from({ length: one.w / 2 }, (_, k) => {
+    const [x, z] = turn(one, 2 * k, 0);
+    return { ...one, w: 2, x: x - ox, z: z - oz };
+  });
 }

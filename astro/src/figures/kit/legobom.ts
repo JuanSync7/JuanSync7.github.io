@@ -1,7 +1,7 @@
 import parts from '../../../scripts/lego/ldraw-parts.json';
 import { titleRows } from './draftbase';
 import { LEGO_MODELS, LEGO_QUEUES } from './legomodels';
-import type { Kind, Piece } from './legoset';
+import { partKey, type Kind, type Piece } from './legoset';
 import { build } from './legoswap';
 import { notes, sheet, text, titleBlock } from './sheetframe';
 
@@ -14,10 +14,17 @@ const NAME: Record<Kind, string> = {
   brick: 'Brick', plate: 'Plate', tile: 'Tile', grille: 'Tile, grille', technic: 'Technic brick',
   slope45: 'Slope 45', slope33: 'Slope 33', inv45: 'Slope 45, inverted', cheese: 'Slope 30, 1 x 1',
   curve2: 'Slope, curved', curve3: 'Slope, curved', curve4: 'Slope, curved', wedge: 'Wedge plate',
-  quarter: 'Tile, quarter round', round: 'Brick, round', roundtile: 'Tile, round', cone: 'Cone',
-  dome: 'Dome', helmet: 'Dome with visor', bar: 'Bar', fin: 'Fin', uplate: 'Plate, U-shaped',
+  quarter: 'Tile, quarter round', round: 'Round', roundtile: 'Tile, round', cone: 'Cone',
+  dome: 'Dome', bar: 'Bar',
   wheel: 'Wheel and tyre', axle: 'Technic axle', bracket: 'Bracket', hinge: 'Hinge plate', jumper: 'Jumper plate',
 }; // prettier-ignore
+
+/** What tells two parts of one kind apart, after the kind's name. */
+const detail = (p: Piece): string =>
+  p.kind === 'wedge' ? (p.hand === 'R' ? ', right' : ', left')
+  : p.kind === 'bracket' ? `, flange ${p.flange ?? 1} up`
+  : p.kind === 'hinge' ? ((p.fingers ?? 2) === 2 ? ', 2 fingers on side' : ', 1 finger on side')
+  : ''; // prettier-ignore
 
 /** Each model's parts list as a document of the drawing set. */
 const DOCS: Record<string, { title: string; number: string }> = {
@@ -31,10 +38,10 @@ export function bomRows(id: string): string[][] {
   const rows = new Map<string, { row: string[]; n: number }>();
   for (const p of build(LEGO_MODELS[id] ?? [], LEGO_QUEUES[id]) as Piece[]) {
     const [a, b] = [p.w, p.d].sort((m, n) => m - n);
-    const key = `${p.kind} ${a}x${b} h${p.h}${p.kind === 'wedge' ? ` ${p.hand}` : ''}`;
-    const hand = p.kind === 'wedge' ? (p.hand === 'R' ? ', right' : ', left') : '';
-    const size = p.kind === 'wheel' || p.kind === 'axle' ? '-' : `${a} x ${b}`;
-    const row = [`${NAME[p.kind]}${hand}`, size, String(p.h), p.tone, '', real[key] ?? '-'];
+    const key = partKey(p);
+    const size = p.kind === 'wheel' ? `${2 * (p.r ?? 1)} x ${p.d}` : p.kind === 'axle' ? `${p.d}L` : `${a} x ${b}`;
+    const name = p.kind === 'round' ? (p.h === 1 ? 'Plate, round' : 'Brick, round') : `${NAME[p.kind]}${detail(p)}`;
+    const row = [name, size, String(p.h), p.tone, '', real[key] ?? '-'];
     const k = `${key} ${p.tone}`;
     rows.set(k, { row, n: (rows.get(k)?.n ?? 0) + 1 });
   }
@@ -51,7 +58,7 @@ export function bomSheet(id: string, width = 2400, page = 1): string {
   const sheets = Math.max(1, Math.ceil(rows.length / (2 * PER)));
   const s = sheet(width);
   const { ctx, mm, ax, ay } = s;
-  const t = { title: `${doc.title}, parts list`, type: 'Parts list', drawn: '2026-11-17', revision: 'A', number: doc.number }; // prettier-ignore
+  const t = { title: `${doc.title}, parts list`, type: 'Parts list', drawn: '2026-11-17', revision: 'B', number: doc.number }; // prettier-ignore
   titleBlock(ctx, titleRows({ ...t, sheet: page, sheets }), mm);
   const start = (page - 1) * 2 * PER;
   [0, 1].forEach((g) => {

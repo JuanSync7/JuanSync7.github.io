@@ -14,7 +14,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { body } from '../../src/figures/kit/legomesh.ts';
-import { cellsOf, studsOf } from '../../src/figures/kit/legoset.ts';
+import { cellsOf, partKey, studsOf } from '../../src/figures/kit/legoset.ts';
 import { build } from '../../src/figures/kit/legoswap.ts';
 import { LEGO_MODELS, LEGO_STANDS } from '../../src/figures/kit/legomodels.ts';
 
@@ -28,6 +28,7 @@ const TABLE = JSON.parse(readFileSync(join(ROOT, 'scripts/lego/ldraw-parts.json'
 const LDU = 1 / 20; // one stud is 20 LDraw units; a plate is 8
 const PLATE = 0.4;
 const UNDER = ['inv45']; // shapes told apart by their underside
+const BEYOND = ['bracket', 'hinge', 'wedge']; // shapes with something past their cells, or short of them
 const TOL = 0.05; // studs: the mean height difference our piece may show against the real part
 
 // ---- reading LDraw: every triangle of a part, and where its top studs stand -------------------
@@ -110,45 +111,63 @@ function hits(tris, x, z) {
 /** Which way round a part (a) sits best on its catalogue shape (b): the mean height difference,
  *  in studs, over a 4 x 4 grid of samples per stud where the part has material (the full height where the
  *  shape has none). Holes the hand-made shape lacks cost nothing. This picks the turn. */
-function mismatch(a, b, p) {
-  const top = p.h * PLATE;
+function mismatch(
+  a,
+  b,
+  p,
+  area = [
+    [0, p.w],
+    [0, p.d],
+  ],
+  top = p.h * PLATE,
+) {
   // Under a stud the body's top is the stud's own business (a hollow stud is a hole): skip it.
   const studs = studsOf({ ...p, x: 0, y: 0, z: 0, rot: 0 }).at;
   const underStud = (x, z) => studs.some(([i, j]) => Math.hypot(x - i - 0.5, z - j - 0.5) < 0.32);
   let sum = 0;
   let n = 0;
-  for (let i = 0; i < p.w * 4; i++)
-    for (let j = 0; j < p.d * 4; j++) {
-      const [x, z] = [(i + 0.5) / 4, (j + 0.5) / 4];
-      if (!UNDER.includes(p.kind) && underStud(x, z)) continue;
-      const [ha, hb] = [hits(a, x, z), hits(b, x, z)];
-      if (!ha) continue;
-      n++;
-      if (!hb) sum += top;
-      else if (!UNDER.includes(p.kind)) sum += Math.abs(Math.min(ha[1], top) - Math.min(hb[1], top));
-      else if (hb[0] > 0.01) sum += Math.abs(ha[0] - hb[0]);
-      // Where our underside sits flat on the base, the real part's hollow there does not count.
-      else n--;
-    }
+  for (const [x, z] of samples(area)) {
+    if (!UNDER.includes(p.kind) && underStud(x, z)) continue;
+    const [ha, hb] = [hits(a, x, z), hits(b, x, z)];
+    if (!ha) continue;
+    n++;
+    if (!hb) sum += top;
+    else if (!UNDER.includes(p.kind)) sum += Math.abs(Math.min(ha[1], top) - Math.min(hb[1], top));
+    else if (hb[0] > 0.01) sum += Math.abs(ha[0] - hb[0]);
+    // Where our underside sits flat on the base, the real part's hollow there does not count.
+    else n--;
+  }
   return n ? sum / n : Infinity;
+}
+/** Sample points, four to a stud each way, over [[x0, x1], [z0, z1]] (whole studs). */
+function samples([[x0, x1], [z0, z1]]) {
+  const out = [];
+  for (let x = Math.floor(x0 * 4) / 4 + 0.125; x < x1; x += 0.25)
+    for (let z = Math.floor(z0 * 4) / 4 + 0.125; z < z1; z += 0.25) out.push([x, z]);
+  return out;
 }
 /** Samples where the part has material outside the cells the catalogue gives its shape: there it
  *  could cut into a neighbour the checks believe is clear. A stud may rise above its own cell. */
-function outside(tris, p) {
+function outside(
+  tris,
+  p,
+  area = [
+    [0, p.w],
+    [0, p.d],
+  ],
+) {
   const cells = new Set(cellsOf({ ...p, x: 0, y: 0, z: 0, rot: 0 }));
   const studs = new Set(studsOf({ ...p, x: 0, y: 0, z: 0, rot: 0 }).at.map(([x, z]) => `${x},${z}`));
   const bad = [];
-  for (let i = 0; i < p.w * 4; i++)
-    for (let j = 0; j < p.d * 4; j++) {
-      const [x, z] = [(i + 0.5) / 4, (j + 0.5) / 4];
-      const h = hits(tris, x, z);
-      if (!h) continue;
-      const [cx, cz] = [Math.floor(x), Math.floor(z)];
-      let plates = 0;
-      while (cells.has(`${cx},${plates},${cz}`)) plates++;
-      const room = plates * PLATE + (studs.has(`${cx},${cz}`) ? 0.21 : 0) + 0.02;
-      if (plates === 0 || h[1] > room || h[0] < -0.02) bad.push(`(${x}, ${z})`);
-    }
+  for (const [x, z] of samples(area)) {
+    const h = hits(tris, x, z);
+    if (!h) continue;
+    const [cx, cz] = [Math.floor(x), Math.floor(z)];
+    let plates = 0;
+    while (cells.has(`${cx},${plates},${cz}`)) plates++;
+    const room = plates * PLATE + (studs.has(`${cx},${cz}`) ? 0.21 : 0) + 0.02;
+    if (plates === 0 || h[1] > room || h[0] < -0.02) bad.push(`(${x}, ${z})`);
+  }
   return bad;
 }
 const trisOf = (geo) => {
@@ -159,31 +178,71 @@ const trisOf = (geo) => {
   return t;
 };
 
+/** A wheel or an axle turns, so only its size is compared: diameter, width or length, each within
+ *  0.1 of a stud (a wheel's real width sits in its slot of whole studs). */
+function roundFit(p, number) {
+  const raw = flatten(`${number}.dat`);
+  const ob = boundsOf(
+    body(p, { studs: false, gap: 0 })
+      .flatMap((q) => trisOf(q.geo))
+      .flat(),
+  );
+  const ext = (b) => b.map(([lo, hi]) => hi - lo);
+  const ours = ext(ob);
+  for (let k = 0; k < 4; k++) {
+    const real = ext(boundsOf(raw.tris.flat().map((v) => toOurs(v, k))));
+    const off = Math.max(...real.map((v, c) => Math.abs(v - ours[c])));
+    if (off <= 0.1) return { score: off };
+  }
+  const real = ext(boundsOf(raw.tris.flat().map((v) => toOurs(v, 0))));
+  return { error: `${number} is ${real.map((v) => v.toFixed(2)).join(' x ')}, the shape ${ours.map((v) => v.toFixed(2)).join(' x ')}` }; // prettier-ignore
+}
+
 function fit(p, number) {
+  if (p.kind === 'wheel' || p.kind === 'axle') return roundFit(p, number);
   const raw = flatten(`${number}.dat`);
   const ours = body(p, { studs: false, gap: 0 }).flatMap((q) => trisOf(q.geo));
   const want = new Set(studsOf({ ...p, x: 0, y: 0, z: 0, rot: 0 }).at.map(([x, z]) => `${x},${z}`));
+  // The real part is laid where our own body lies (a bracket's flange stands in front of its base
+  // cells, a hinge's knuckle beyond them), and must be the same size.
+  const ob = boundsOf(ours.flat());
+  const area = BEYOND.includes(p.kind)
+    ? [ob[0], ob[2]]
+    : [
+        [0, p.w],
+        [0, p.d],
+      ];
   let best = null;
   for (let k = 0; k < 4; k++) {
     let tris = raw.tris.map((t) => t.map((v) => toOurs(v, k)).reverse());
     const b = boundsOf(tris.flat());
-    const shift = [-b[0][0], -b[1][0], -b[2][0]];
+    const [x0, z0] = [area[0][0], area[1][0]];
+    const shift = [x0 - b[0][0], -b[1][0], z0 - b[2][0]];
     tris = tris.map((t) => t.map((v) => v.map((c, i) => c + shift[i])));
-    if (Math.abs(b[0][1] - b[0][0] - p.w) > 0.05 || Math.abs(b[2][1] - b[2][0] - p.d) > 0.05) continue;
-    const studs = raw.studs.map((v) => toOurs(v, k)).map(([x, , z]) => `${Math.round(x + shift[0] - 0.5)},${Math.round(z + shift[2] - 0.5)}`); // prettier-ignore
-    const score = mismatch(tris, ours, p);
+    // A part's own extent, or its footprint where nothing of it reaches past the cells.
+    const want = (c) => (BEYOND.includes(p.kind) ? ob[c][1] - ob[c][0] : c === 0 ? p.w : p.d);
+    const size = (c) => Math.abs(b[c][1] - b[c][0] - want(c)) > 0.05;
+    if (size(0) || size(2)) continue;
+    // A stud between cells (a jumper's, a 2 x 2 dome's crown) is the piece's own: drawn, not joined.
+    const between = (v) => Math.abs(v - Math.round(v)) < 0.1;
+    const at = raw.studs.map((v) => toOurs(v, k)).map(([x, , z]) => [x + shift[0], z + shift[2]]);
+    const studs = at.filter(([x, z]) => !between(x) || !between(z)).map(([x, z]) => `${Math.round(x - 0.5)},${Math.round(z - 0.5)}`); // prettier-ignore
+    const score = mismatch(tris, ours, p, area, ob[1][1]);
     if (!best || score < best.score) best = { k, tris, studs, score, height: b[1][1] - b[1][0] };
   }
-  if (!best) return { error: `${number} is not ${p.w} x ${p.d} studs` };
+  if (!best)
+    return {
+      error: `${number} is not ${(ob[0][1] - ob[0][0]).toFixed(2)} x ${(ob[2][1] - ob[2][0]).toFixed(2)} studs`,
+    };
   if (best.score > TOL) return { error: `${number} is not this shape (mean height off by ${best.score.toFixed(3)})` };
-  const out = outside(best.tris, p);
+  const out = outside(best.tris, p, area);
   if (out.length)
     return {
       error: `${number} reaches outside the shape's cells at ${out.slice(0, 4).join(' ')}${out.length > 4 ? ` and ${out.length - 4} more` : ''}`,
     };
   // Studs: the plain ones were taken off (drawn shared, and hidden once covered); a hollow stud
   // stays in the part, where its top rises above the shape. Together they are the shape's studs.
-  const top = p.h * PLATE;
+  const top = ob[1][1];
   const own = [...want].filter((c) => {
     const [x, z] = c.split(',').map(Number);
     const h = hits(best.tris, x + 0.5 + 0.22, z + 0.5);
@@ -214,7 +273,7 @@ if (process.env.LDDEBUG) {
   process.exit(0);
 }
 
-const shapeKey = (p) => `${p.kind} ${Math.min(p.w, p.d)}x${Math.max(p.w, p.d)} h${p.h}${p.hand ? ` ${p.hand}` : ''}`;
+const shapeKey = partKey;
 const seen = new Set();
 const unmatched = new Map();
 let failed = 0;
@@ -222,7 +281,7 @@ let compared = 0;
 const stands = Object.entries(LEGO_STANDS).map(([id, s]) => [`${id} stand`, s]);
 for (const [model, shapes] of [...Object.entries(LEGO_MODELS), ...stands]) {
   for (const p of build(shapes)) {
-    const id = [p.kind, p.w, p.d, p.h, p.hand ?? ''].join('|');
+    const id = shapeKey(p);
     if (seen.has(id)) continue;
     seen.add(id);
     const number = TABLE[shapeKey(p)];

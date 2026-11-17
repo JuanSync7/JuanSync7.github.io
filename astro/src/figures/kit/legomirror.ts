@@ -38,8 +38,6 @@ export function mirror(s: Shape, width: number): Shape {
       return { ...s, z: width - s.z - s.size };
     case 'technic':
       return { ...s, z: width - s.z - s.rows };
-    case 'halo':
-      return { ...s, z: width - s.z - s.wid };
     case 'wheel':
       return { ...s, z: width - s.z - s.width };
     case 'axle':

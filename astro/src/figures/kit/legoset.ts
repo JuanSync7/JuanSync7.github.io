@@ -22,9 +22,7 @@ export type Kind =
   | 'curve4' // curved slope, 4 long, 3 plates tall
   | 'wedge' // a tapered plate, cut on one side (hand R or L)
   | 'round' // round plate or brick, 1 x 1 or 2 x 2
-  | 'dome' // a smooth dome: 4 x 4 for a roof (86500); 2 x 2 for an onion spire (the real one, 30367, has a centred stud we do not model yet)
-  | 'helmet' // a 2 x 2 dome with a visor: a driver's helmet
-  | 'uplate' // a U-shaped plate: a ring with two legs (the F1 halo)
+  | 'dome' // a smooth dome: 4 x 4 for a roof (86500); 2 x 2 on a round brick's neck with a centred stud on top (30367): a spire, a helmet
   | 'wheel' // rim and tyre on an axle along z
   | 'axle' // a cross axle along z
   | 'slope33' // 3 deep, 1 stud row then a 33 degree face, 3 plates tall
@@ -34,12 +32,11 @@ export type Kind =
   | 'roundtile' // round tile, 1 x 1 or 2 x 2: lights, wheel caps, a camera lens
   | 'cone' // 1 x 1 cone, 3 plates, an open stud on top
   | 'bar' // a thin bar standing in a stud, h plates long: antennas, stalks
-  | 'fin' // a thin upright fin rising toward its back end: a shark fin, a strake
-  | 'bracket' // a plate w x 2 with a flange one stud tall on its front edge (local v = 0), studs out
-  | 'hinge' // a hinge plate w x 1, its knuckle along its far edge (local v = 1): see legopose
+  | 'bracket' // a plate w x d, every cell studded, a flange `flange` studs tall just outside its front edge (local v = 0), studs out: see legopose
+  | 'hinge' // a click hinge plate 2 x 1, its knuckle along its far side (local v = 1), one finger or two: see legopose
   | 'jumper'; // a 1 x 2 plate with one stud in its centre: what sits on it moves half a stud
 
-export const KINDS: Kind[] = ['brick', 'plate', 'tile', 'grille', 'technic', 'slope45', 'slope33', 'inv45', 'cheese', 'curve2', 'curve3', 'curve4', 'wedge', 'quarter', 'round', 'roundtile', 'cone', 'dome', 'helmet', 'bar', 'fin', 'uplate', 'wheel', 'axle', 'bracket', 'hinge', 'jumper']; // prettier-ignore
+export const KINDS: Kind[] = ['brick', 'plate', 'tile', 'grille', 'technic', 'slope45', 'slope33', 'inv45', 'cheese', 'curve2', 'curve3', 'curve4', 'wedge', 'quarter', 'round', 'roundtile', 'cone', 'dome', 'bar', 'wheel', 'axle', 'bracket', 'hinge', 'jumper']; // prettier-ignore
 
 export interface Piece {
   kind: Kind;
@@ -62,6 +59,8 @@ export interface Piece {
   order?: number;
   /** Brackets: how many studs tall the flange stands (1 when not given). */
   flange?: number;
+  /** Hinges: the half with two fingers (60471, the default) or one (44567), which turns on it. */
+  fingers?: 1 | 2;
   /** A piece of a sub-assembly: its name, and where its grid sits in the model's. */
   sub?: string;
   pose?: Pose;
@@ -72,7 +71,7 @@ export const PLATE = 0.4;
 export const HOLE_Y = 1.75;
 const WEDGE_TIP = 1; // as the real wing plates (41769, 41770): one stud wide at the tip
 // A jumper's one stud is off the grid (between its cells): it is a joint of its own (legojoint).
-const SMOOTH: Kind[] = ['jumper', 'tile', 'grille', 'cheese', 'curve2', 'curve3', 'curve4', 'dome', 'helmet', 'uplate', 'wheel', 'axle', 'quarter', 'roundtile', 'bar', 'fin']; // prettier-ignore
+const SMOOTH: Kind[] = ['jumper', 'tile', 'grille', 'cheese', 'curve2', 'curve3', 'curve4', 'dome', 'wheel', 'axle', 'quarter', 'roundtile', 'bar']; // prettier-ignore
 /** Ramps whose top carries studs only on their first row. */
 const STUD_ROW: Kind[] = ['slope45', 'slope33'];
 
@@ -84,16 +83,18 @@ export function turn(p: Piece, u: number, v: number): [number, number] {
   return [p.x + u, p.z + v];
 }
 
-/** A wedge's outline in its own frame: full width at u = 0, a half-stud tip at u = w. */
+/** A wedge's width at its wide end: the real 2 x 2 wings (24299, 24307) stop 0.07 short. */
+const wideOf = (p: Piece): number => (p.w === 2 && p.d === 2 ? 1.93 : p.d);
+/** A wedge's outline in its own frame: its wide end at u = 0, a one-stud tip at u = w. */
 export function wedgeOutline(p: Piece): [number, number][] {
-  const { w, d } = p;
+  const [w, d, e] = [p.w, p.d, wideOf(p)];
   return p.hand === 'L'
-    ? [[0, 0], [w, d - WEDGE_TIP], [w, d], [0, d]]
-    : [[0, 0], [w, 0], [w, WEDGE_TIP], [0, d]]; // prettier-ignore
+    ? [[0, d - e], [w, d - WEDGE_TIP], [w, d], [0, d]]
+    : [[0, 0], [w, 0], [w, WEDGE_TIP], [0, e]]; // prettier-ignore
 }
 
 /** The width of a wedge at u, measured from its straight side. */
-const wedgeWidth = (p: Piece, u: number): number => p.d - ((p.d - WEDGE_TIP) * u) / p.w;
+const wedgeWidth = (p: Piece, u: number): number => wideOf(p) - ((wideOf(p) - WEDGE_TIP) * u) / p.w;
 
 /** Footprint cells (local i, j) a piece fills, and those that carry a stud. */
 export function footprint(p: Piece): { fill: [number, number][]; studs: [number, number][] } {
@@ -110,8 +111,6 @@ export function footprint(p: Piece): { fill: [number, number][]; studs: [number,
         touched = near < wedgeWidth(p, i);
         inside = far <= wedgeWidth(p, i + 1);
       }
-      if (p.kind === 'uplate') touched = j === 0 || j === p.d - 1 || i === p.w - 1;
-      if (p.kind === 'bracket' && j === 0) inside = false; // the flange stands on that row
       if (!touched) continue;
       fill.push([i, j]);
       const studded = !SMOOTH.includes(p.kind) && (!STUD_ROW.includes(p.kind) || i === 0);
@@ -120,9 +119,6 @@ export function footprint(p: Piece): { fill: [number, number][]; studs: [number,
   }
   return { fill, studs };
 }
-
-/** How many plates a piece stands at column i: a fin rises along its length, the rest are flat. */
-export const heightAt = (p: Piece, i: number): number => (p.kind === 'fin' ? Math.ceil((p.h * (i + 1)) / p.w) : p.h);
 
 export const key = (x: number, y: number, z: number): string => `${x},${y},${z}`;
 export const cellOf = (p: Piece, i: number, j: number): [number, number] => {
@@ -142,7 +138,7 @@ export function cellsOf(p: Piece): string[] {
       for (let y = Math.floor((cy - r) / PLATE); y < Math.ceil((cy + r) / PLATE); y++) {
         const dx = Math.max(x - p.x, 0, p.x - (x + 1));
         const dy = Math.max(y * PLATE - cy, 0, cy - (y + 1) * PLATE);
-        if (dx * dx + dy * dy < r * r) for (let z = p.z; z < p.z + p.d; z++) out.push(key(x, y, z));
+        if (dx * dx + dy * dy < r * r) for (let z = Math.floor(p.z); z < p.z + p.d; z++) out.push(key(x, y, z));
       }
     }
     return out;
@@ -150,10 +146,22 @@ export function cellsOf(p: Piece): string[] {
   const out: string[] = [];
   for (const [i, j] of footprint(p).fill) {
     const [x, z] = cellOf(p, i, j);
-    // A flange of f studs rises 2.5 f plates from the bracket's bottom: whole cells over the base.
-    const flange = p.kind === 'bracket' && j === 0 ? Math.ceil((p.flange ?? 1) / PLATE) - 1 : 0;
-    for (let y = p.y; y < p.y + heightAt(p, i) + flange; y++) out.push(key(x, y, z));
+    for (let y = p.y; y < p.y + p.h; y++) out.push(key(x, y, z));
   }
+  // A bracket's flange, with its side studs, takes the row of cells in front of the base, from
+  // the base's bottom up the flange's f studs (2.5 f plates).
+  if (p.kind === 'bracket')
+    for (let i = 0; i < p.w; i++) {
+      const [x, z] = cellOf(p, i, -1);
+      for (let y = p.y; y < p.y + Math.ceil((p.flange ?? 1) / PLATE); y++) out.push(key(x, y, z));
+    }
+  // A hinge's knuckle takes the row behind its plate, two plates up (it rises half a plate over
+  // the plate's top); the turned-round partner's knuckle shares it.
+  if (p.kind === 'hinge')
+    for (let i = 0; i < p.w; i++) {
+      const [x, z] = cellOf(p, i, p.d);
+      out.push(key(x, p.y, z), key(x, p.y + 1, z));
+    }
   return out;
 }
 
@@ -173,3 +181,13 @@ export const socketsOf = (p: Piece): string[] =>
           const [x, z] = cellOf(p, i, j);
           return key(x, p.y, z);
         });
+
+/** A catalogue shape's name in the parts lists and scripts/lego/ldraw-parts.json: kind, short x
+ *  long side, plates high, and what tells real parts apart (a wedge's hand, a bracket's flange, a
+ *  hinge's fingers); a wheel by radius and width, an axle by length. */
+export function partKey(p: Piece): string {
+  if (p.kind === 'wheel' || p.kind === 'axle') return p.kind === 'wheel' ? `wheel r${p.r ?? 1} x${p.d}` : `axle ${p.d}`;
+  const [a, b] = [p.w, p.d].sort((m, n) => m - n);
+  const more = p.kind === 'wedge' ? ` ${p.hand}` : p.kind === 'bracket' ? ` flange${p.flange ?? 1}` : p.kind === 'hinge' ? ` fingers${p.fingers ?? 2}` : ''; // prettier-ignore
+  return `${p.kind} ${a}x${b} h${p.h}${more}`;
+}

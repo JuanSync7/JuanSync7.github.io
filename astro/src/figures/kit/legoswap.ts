@@ -1,5 +1,5 @@
 import type { NightKey } from '../../styles/tokens/palette.ts';
-import { compose, PLATE_Y, type Pose } from './legopose.ts';
+import { compose, hingeRow, PLATE_Y, type Pose } from './legopose.ts';
 import { PLATE, type Kind, type Piece } from './legoset.ts';
 
 /** The swap: a model is designed as shapes (the isometric model, drawn with the angles LEGO
@@ -22,8 +22,7 @@ export type Shape =
   | (At & { kind: 'wedge'; len: number; wid: number; dir: Dir; hand: 'L' | 'R' })
   | (At & { kind: 'round'; size: 1 | 2; h: number; cap?: boolean })
   | (At & { kind: 'technic'; len: number; rows: number })
-  | (At & { kind: 'halo'; len: number; wid: number; dir: Dir })
-  | (At & { kind: 'part'; part: Kind; w: number; d: number; h: number; dir?: Dir; hand?: 'L' | 'R'; root?: boolean; flange?: number }) // prettier-ignore
+  | (At & { kind: 'part'; part: Kind; w: number; d: number; h: number; dir?: Dir; hand?: 'L' | 'R'; root?: boolean; flange?: number; fingers?: 1 | 2 }) // prettier-ignore
   | { kind: 'wheel'; x: number; cy: number; z: number; width: number; r: number; tone: NightKey }
   | { kind: 'axle'; x: number; cy: number; z: number; len: number; tone: NightKey }
   /** A sub-assembly: shapes on their own grid, fixed to the model by `pose` (see legopose). */
@@ -152,19 +151,19 @@ export function swap(s: Shape): Piece[] {
         y += h;
         left -= h;
       }
-      if (s.cap) out.push(base('helmet', { ...s, y }, 2, 2, 3));
+      if (s.cap) out.push(base('dome', { ...s, y }, 2, 2, 3));
       return out;
     }
     case 'technic':
       return Array.from({ length: s.rows }, (_, k) => base('technic', { ...s, z: s.z + k }, s.len, 1, 3));
-    case 'halo':
-      return [base('uplate', s, s.len, s.wid, 1, ROT[s.dir])];
-    case 'part':
-      return [{ ...base(s.part, s, s.w, s.d, s.h, ROT[s.dir ?? 'x+']), ...(s.hand ? { hand: s.hand } : {}), ...(s.root ? { root: true } : {}), ...(s.flange ? { flange: s.flange } : {}) }]; // prettier-ignore
+    case 'part': {
+      const one: Piece = { ...base(s.part, s, s.w, s.d, s.h, ROT[s.dir ?? 'x+']), ...(s.hand ? { hand: s.hand } : {}), ...(s.root ? { root: true } : {}), ...(s.flange ? { flange: s.flange } : {}), ...(s.fingers ? { fingers: s.fingers } : {}) }; // prettier-ignore
+      return s.part === 'hinge' ? hingeRow(one) : [one];
+    }
     case 'wheel':
       return [{ kind: 'wheel', x: s.x, y: 0, z: s.z, w: 0, d: s.width, h: 0, rot: 0, tone: s.tone, cy: s.cy, r: s.r }];
     case 'axle':
-      return [{ kind: 'axle', x: s.x, y: 0, z: s.z, w: 0, d: s.len, h: 0, rot: 0, tone: s.tone, cy: s.cy, r: 0.12 }];
+      return [{ kind: 'axle', x: s.x, y: 0, z: s.z, w: 0, d: s.len, h: 0, rot: 0, tone: s.tone, cy: s.cy, r: 0.3 }];
     case 'sub':
       return s.shapes.flatMap(swap).map((p) => ({ ...p, root: false, sub: p.sub ? `${s.id}/${p.sub}` : s.id, pose: compose(s.pose, p.pose) })); // prettier-ignore
   }

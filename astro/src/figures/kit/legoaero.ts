@@ -3,28 +3,30 @@ import { piece, type Shape } from './legoswap.ts';
 
 /** Wing parts any LEGO car uses: hinged flaps, as sub-assemblies. */
 
-/** A flap: a hinge plate (`chord` deep, 1 or 2) turned round on its partner, tiled on top. A
- *  next flap hangs from a hinge on this one's back row, a plate higher, so a slot opens under it;
- *  on a one-stud flap that hinge is the whole of its top, so the next flap starts a stud back. */
+/** A flap: a row of click hinges with one finger (44567), turned round on the row of two-finger
+ *  hinges (60471) it hangs from, `span` studs long and a stud in chord, tiled on top. A next flap
+ *  hangs from a two-finger row laid on this one in place of the tiles, so the slot between them
+ *  is the stud the knuckles take, and the next flap stands a plate higher. `extra` shapes go on the
+ *  flap's own grid on the next flap's row, in place of its tiles. */
 export function flap(
   id: string,
   hinge: Shape,
   angle: number,
   span: number,
   next?: (h: Shape) => Shape,
-  chord = 2,
+  extra: Shape[] = [],
 ): Shape {
   // prettier-ignore
-  const tiles = (d: number): Shape => ({ kind: 'block', x: 0, y: 1, z: 0, w: span, d, h: 1, top: 'tiles', tone: 'ink2' }); // prettier-ignore
-  const back: Shape = { kind: 'part', part: 'hinge', x: 0, y: 1, z: chord - 1, w: span, d: 1, h: 1, tone: 'line4' };
-  const top = chord === 2 ? [tiles(1)] : [];
+  const row = (y: number, fingers: 1 | 2): Shape => ({ kind: 'part', part: 'hinge', x: 0, y, z: 0, w: span, d: 1, h: 1, fingers, tone: 'line4', ...(fingers === 1 ? { dir: 'x-' } : {}) }); // prettier-ignore
+  const back = row(1, 2);
+  const tiles = (y: number): Shape => flapTiles(y, 0, span);
   return {
     kind: 'sub',
     id,
     pose: onHinge(piece(hinge), angle),
-    shapes: [
-      { kind: 'part', part: 'hinge', x: 0, y: 0, z: 0, w: span, d: chord, h: 1, dir: 'x-', tone: 'line4' },
-      ...(next ? [...top, back, next(back)] : [tiles(chord)]),
-    ],
+    shapes: [row(0, 1), ...(next ? [back, ...(extra.length ? extra : [tiles(2)]), next(back)] : [tiles(1)])],
   };
 }
+
+/** Tiles over `w` studs of a flap's top row (y plates up its grid), from `x`. */
+export const flapTiles = (y: number, x: number, w: number): Shape => ({ kind: 'block', x, y, z: 0, w, d: 1, h: 1, top: 'tiles', tone: 'ink2' }); // prettier-ignore

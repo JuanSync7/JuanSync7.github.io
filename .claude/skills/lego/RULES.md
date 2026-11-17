@@ -17,6 +17,12 @@ Each rule says what it is held by. A rule held by a check is not a judgment call
   LEGO's published sizes. Our own geometry only; the LDraw library is a local reference
   (`npm run lego:reference`), never shipped.
 
+- Every catalogue shape stands for a real LEGO part: it is named in
+  `scripts/lego/ldraw-parts.json` (by `partKey`) and matches that part in `lego:reference`. A
+  shape LEGO does not make is not in the catalogue; build the look from real ones instead (a
+  shark fin is a 45° slope centred on jumpers, a halo a ring of plates and tiles). (Check:
+  `lego:reference`, "no real part named" must be empty.)
+
 ## Sub-assemblies: sideways and hinged
 
 - What is not studs-up is a sub-assembly (`kind: 'sub'`): shapes on their own grid, studs up as
@@ -24,6 +30,11 @@ Each rule says what it is held by. A rule held by a check is not a judgment call
   hand: `onSide(piece(bracket))` puts the sub-assembly's studs-up face out of a bracket's flange,
   its first row of sockets on the flange's studs; `onHinge(piece(hinge), angle)` hangs it on a
   hinge plate's knuckle, its root a hinge plate facing x- at its own (0, 0, 0).
+- Brackets and hinges are the real ones. A bracket (99780, 99207) has a studded base and its
+  flange half a plate thick just outside the base's front edge, so what hangs on it stands that
+  far out. A hinge is a 2 x 1 click hinge with fingers on its side (60471 two fingers, under;
+  44567 one finger, the half that turns), its axis half a stud past the plate: two halves leave a
+  stud between their plates, and a row of them is an even number of studs long.
 - Use one for anything thin and upright (endplates, fences, a vertical fin) or set at an angle
   (flaps, a raked wing): a stack of plates on its edge is thick and stepped; a plate on its side is
   one plate thick and smooth.
@@ -32,11 +43,14 @@ Each rule says what it is held by. A rule held by a check is not a judgment call
 - Half a stud: a `jumper` (a 1 x 2 plate with one centre stud) lets a sub-assembly sit half a
   stud over (a pose that moves it 0.5). Use it where whole studs leave a visible gap, such as
   wing elements that must reach the endplates between two brackets.
-- A flap that should leave a slot under it hangs from a hinge on a riser, a plate above what it
-  follows. A cascade hangs each element from a hinge on the one before.
+- A flap is a row of one-finger hinges a stud in chord, tiled; the stud between it and what it
+  hangs from is its slot. A cascade lays a two-finger row on each element in place of its tiles
+  and hangs the next from it: each element is a stud behind and a plate above the one before,
+  so plan the wing's length for it.
 - Sub-assemblies may not overlap each other or the model: each cell is a box turned with its
   sub-assembly, tested by separating axes, faces that touch allowed; hinge partners are let off
-  at the knuckle; a bracket's flange counts as the plate it is, not its whole row. (Check:
+  at the knuckle; a bracket's flange counts as the half plate it is, a knuckle as the square
+  inside its round finger. (Check:
   `clipping`, `kit/legoclash.ts`.) Do not tile over a hinge's studs where
   the flap swings past them: the check will say so.
 
@@ -44,8 +58,8 @@ Each rule says what it is held by. A rule held by a check is not a judgment call
 
 - Draw the plan with the angles the catalogue has: 45° and 33° slopes, the inverted 45° for
   undersides, the 1 × 1 slope (`cheese`, also a rounded edge along a top), the 2-, 3- and 4-long
-  curves, tapered plates (`wedge`), quarter and round tiles, rounds, domes, cones, bars, fins,
-  wheels. A ramp is one piece deep; a longer fall is several ramps stepped down.
+  curves, tapered plates (`wedge`, 2 x 4 and 2 x 2), quarter and round tiles, rounds, domes,
+  cones, bars, wheels. A ramp is one piece deep; a longer fall is several ramps stepped down.
 - Detail is shape, not count: rounded edges (a row of `cheese` along a top edge), undercuts
   (`inv45`), tapers in plan (`wedge`), smooth tops where a builder would tile, small parts that
   name the object (fins, winglets, a T-camera). More pieces follow from that.
@@ -79,6 +93,7 @@ Each rule says what it is held by. A rule held by a check is not a judgment call
 | "The check is too strict for this model." | Fix the design. Change a check only with a selftest fixture. | Checks |
 | "I'll skip the wire and solid sheets and go straight to LEGO." | Plan first: proportions are cheap in shapes, dear in pieces. | Workflow |
 | "The base is just a stand; a box is fine." | Build it from plates and tiles. | Pieces |
+| "No piece has this shape; I'll add a kind that looks right." | Find the real part and match it in `lego:reference`, or build the shape from real parts. | Pieces |
 | "I'll stack plates on edge for the endplate." | A bracket and a plate on its side: thinner and smooth. | Sub-assemblies |
 | "I'll work out this pose by hand." | `onSide` / `onHinge` from the holding piece; the joint checks then agree with the drawing. | Sub-assemblies |
 | "More pieces will make it more detailed." | Detail comes from the joints and shapes; the count follows. | Shapes |

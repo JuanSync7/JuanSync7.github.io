@@ -8,7 +8,7 @@ import { piece, type Shape } from './legoswap.ts';
  *  draws it. */
 
 const tone = 'ink2';
-export const br: Shape = { kind: 'part', part: 'bracket', x: 2, y: 2, z: 0, w: 2, d: 2, h: 1, tone };
+export const br: Shape = { kind: 'part', part: 'bracket', x: 2, y: 2, z: 1, w: 2, d: 1, h: 1, tone };
 export const hg: Shape = { kind: 'part', part: 'hinge', x: 2, y: 2, z: 4, w: 2, d: 1, h: 1, tone };
 const tile: Shape = { kind: 'part', part: 'tile', x: 0, y: 0, z: 0, w: 2, d: 1, h: 1, tone: 'inkStrong' };
 export const side = (b: Shape): Shape => ({ kind: 'sub', id: 'side', pose: onSide(piece(b)), shapes: [tile] });

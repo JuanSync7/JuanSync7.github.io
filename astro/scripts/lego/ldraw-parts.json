@@ -1,5 +1,5 @@
 {
-  "about": "Each catalogue shape (kind, short x long side in studs, height in plates, hand) and the real LEGO part (LDraw number) drawn for it. Every piece is drawn from our own geometry (kit/legomesh.ts); `npm run lego:reference` compares it with these parts in a local copy of the LDraw library.",
+  "about": "Each catalogue shape (kit/legoset.ts `partKey`: kind, short x long side in studs, height in plates, and a wedge's hand, a bracket's flange or a hinge's fingers) and the real LEGO part (LDraw number) drawn for it. Every piece is drawn from our own geometry (kit/legomesh.ts); `npm run lego:reference` compares it with these parts in a local copy of the LDraw library.",
   "parts": {
     "brick 1x1 h3": "3005",
     "brick 1x2 h3": "3004",
@@ -49,6 +49,17 @@
     "cone 1x1 h3": "4589",
     "dome 4x4 h5": "86500",
     "wedge 2x4 h1 R": "41770",
-    "wedge 2x4 h1 L": "41769"
+    "wedge 2x4 h1 L": "41769",
+    "hinge 1x2 h1 fingers2": "60471",
+    "hinge 1x2 h1 fingers1": "44567b",
+    "bracket 1x2 h1 flange1": "99780",
+    "bracket 1x2 h1 flange2": "99207",
+    "wheel r2.7 x1.9": "56904c01",
+    "wheel r2.7 x2.7": "56145c02",
+    "axle 12": "3708",
+    "jumper 1x2 h1": "15573",
+    "wedge 2x2 h1 R": "24299",
+    "wedge 2x2 h1 L": "24307",
+    "dome 2x2 h3": "30367b"
   }
 }

@@ -1,5 +1,5 @@
-import { apply, flangeOf, local, rotate, type V3 } from './legopose.ts';
-import { cellsOf, PLATE, type Piece } from './legoset.ts';
+import { apply, FLANGE_T, flangeOf, KNUCKLE_OUT, KNUCKLE_R, KNUCKLE_Y, local, rotate, type V3 } from './legopose.ts';
+import { cellOf, cellsOf, footprint, PLATE, type Piece } from './legoset.ts';
 
 /** Clipping between sub-assemblies: their grids do not line up, so each cell a piece takes is a
  *  box turned with its sub-assembly, and two boxes of different sub-assemblies may not overlap
@@ -17,20 +17,28 @@ interface Box {
 const dot = (a: V3, b: V3): number => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 const cross = (a: V3, b: V3): V3 => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
 
-function boxesOf(p: Piece, i: number): Box[] {
+export function boxesOf(p: Piece, i: number): Box[] {
   const q = p.pose;
   const ax = ([[1, 0, 0], [0, 1, 0], [0, 0, 1]] as V3[]).map((v) => (q ? rotate(q, v) : v)) as [V3, V3, V3]; // prettier-ignore
   const box = (lo: V3, hi: V3): Box => ({ c: apply(q, [0, 1, 2].map((k) => ((lo[k] ?? 0) + (hi[k] ?? 0)) / 2) as V3), ax, e: [0, 1, 2].map((k) => Math.max(0, ((hi[k] ?? 0) - (lo[k] ?? 0)) / 2 - GRACE)) as V3, i }); // prettier-ignore
   if (p.kind === 'bracket') {
-    // A bracket's flange is a plate's thickness, not its whole row: it stands as it is.
-    const corners = [local(p, 0, PLATE, 0), local(p, p.w, flangeOf(p), PLATE)];
+    // A bracket's flange is half a plate thick, just outside the base: it stands as it is.
+    const corners = [local(p, 0, 0, -FLANGE_T), local(p, p.w, flangeOf(p), 0)];
     const lo = [0, 1, 2].map((k) => Math.min(...corners.map((c) => c[k] ?? 0))) as V3;
     const hi = [0, 1, 2].map((k) => Math.max(...corners.map((c) => c[k] ?? 0))) as V3;
-    const base = cellsOf(p).filter((c) => Number(c.split(',')[1]) === p.y);
-    return [box(lo, hi), ...base.map((c) => {
-      const [x = 0, y = 0, z = 0] = c.split(',').map(Number);
-      return box([x, y * PLATE, z], [x + 1, (y + 1) * PLATE, z + 1]);
-    })]; // prettier-ignore
+    const base = footprint(p).fill.map(([i, j]) => cellOf(p, i, j));
+    return [box(lo, hi), ...base.map(([x, z]) => box([x, p.y * PLATE, z], [x + 1, (p.y + 1) * PLATE, z + 1]))]; // prettier-ignore
+  }
+  if (p.kind === 'hinge') {
+    // A hinge's knuckle is a round finger on the axis, not the whole row it is given: the square
+    // inside its circle, which stays inside it however the hinge is turned.
+    const r = KNUCKLE_R * Math.SQRT1_2;
+    const [y0, v0] = [KNUCKLE_Y - r, p.d + KNUCKLE_OUT - r];
+    const corners = [local(p, 0, y0, v0), local(p, p.w, y0 + 2 * r, v0 + 2 * r)];
+    const lo = [0, 1, 2].map((k) => Math.min(...corners.map((c) => c[k] ?? 0))) as V3;
+    const hi = [0, 1, 2].map((k) => Math.max(...corners.map((c) => c[k] ?? 0))) as V3;
+    const base = footprint(p).fill.map(([i, j]) => cellOf(p, i, j));
+    return [box(lo, hi), ...base.map(([x, z]) => box([x, p.y * PLATE, z], [x + 1, (p.y + 1) * PLATE, z + 1]))]; // prettier-ignore
   }
   return cellsOf(p).map((c) => {
     const [x = 0, y = 0, z = 0] = c.split(',').map(Number);
@@ -38,7 +46,7 @@ function boxesOf(p: Piece, i: number): Box[] {
   });
 }
 
-function overlaps(a: Box, b: Box): boolean {
+export function overlaps(a: Box, b: Box): boolean {
   const axes: V3[] = [...a.ax, ...b.ax];
   for (const u of a.ax)
     for (const v of b.ax) {

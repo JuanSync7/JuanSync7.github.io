@@ -1,6 +1,20 @@
 import { BoxGeometry, BufferGeometry, CylinderGeometry, LatheGeometry, SphereGeometry, Vector2 } from 'three';
 import { detail } from './legodetail';
-import { box, fall, GAP, join, LIP, plan, profile, SEG, studsAt, type BodyOpts, type Part } from './legogeo';
+import {
+  box,
+  fall,
+  GAP,
+  join,
+  LIP,
+  plan,
+  profile,
+  SEG,
+  STUD_H,
+  STUD_R,
+  studsAt,
+  type BodyOpts,
+  type Part,
+} from './legogeo';
 import { hollow } from './legounder';
 import { footprint, HOLE_Y, PLATE, wedgeOutline, type Kind, type Piece } from './legoset';
 
@@ -11,9 +25,12 @@ export { GAP, STUD_H, STUD_R, join, type BodyOpts, type Part } from './legogeo';
  *  (`studs: false`, no gap, one body per shape) so the two views share their geometry. A piece
  *  can have more than one part (a wheel is a tyre and a rim); `tone` overrides the piece's own. */
 
+/** A real tyre's inner radius against its outer: both F1 wheels are on 30 mm rims (56904,
+ *  56145) in 43 mm tyres. */
+const RIM = 0.7;
 /** The tyre: a lathe of a rounded section between the rim and the tread, with two grooves. */
 function tyre(r: number, d: number): BufferGeometry {
-  const ri = r * 0.64;
+  const ri = r * RIM;
   const c = Math.min(0.35, d * 0.18);
   const pts: [number, number][] = [
     [ri, 0], [r - c, 0], [r - c * 0.3, c * 0.3], [r, c], [r, d * 0.3], [r - 0.06, d * 0.33], [r, d * 0.36],
@@ -25,16 +42,16 @@ function tyre(r: number, d: number): BufferGeometry {
   ).rotateX(Math.PI / 2);
 }
 
-/** The rim: a dished disc on each face with five spokes and a hub. */
+/** The rim: a dished disc on each face with six spokes and a hub. */
 function rim(r: number, d: number): BufferGeometry {
-  const ri = r * 0.64;
+  const ri = r * RIM;
   const parts: BufferGeometry[] = [
     new CylinderGeometry(ri, ri, d * 0.8, 24).rotateX(Math.PI / 2).translate(0, 0, d / 2),
   ];
   for (const z of [0.02, d - 0.02]) {
     parts.push(new CylinderGeometry(0.28, 0.28, 0.12, 12).rotateX(Math.PI / 2).translate(0, 0, z));
-    for (let k = 0; k < 5; k++) {
-      const a = (k / 5) * Math.PI * 2;
+    for (let k = 0; k < 6; k++) {
+      const a = (k / 6) * Math.PI * 2;
       parts.push(
         new BoxGeometry(ri * 0.95, 0.16, 0.08)
           .translate(ri * 0.47, 0, 0)
@@ -45,14 +62,6 @@ function rim(r: number, d: number): BufferGeometry {
   }
   return join(parts);
 }
-
-/** A helmet's visor: a band of the dome's sphere, a hair proud of it, across the front (-x). */
-const visor = (r: number, squash: number): BufferGeometry =>
-  new SphereGeometry(r * 1.015, 24, 6, -Math.PI / 3, (Math.PI * 2) / 3, Math.PI * 0.3, Math.PI * 0.14).scale(
-    1,
-    squash,
-    1,
-  );
 
 /** The parts of a piece of kind `kind` and size w x d x h plates, studded or smooth. */
 export function body(p: Piece, o: BodyOpts = { studs: true, gap: GAP }): Part[] {
@@ -93,30 +102,23 @@ export function body(p: Piece, o: BodyOpts = { studs: true, gap: GAP }): Part[] 
       const c = new CylinderGeometry(w / 2 - g, w / 2 - g, top, 24).translate(w / 2, top / 2, d / 2);
       return merge([c, ...studded()]);
     }
-    case 'dome':
-    case 'helmet': {
+    case 'dome': {
+      // The 2 x 2 (30367) is a lathe of the real one's profile (its round wall, its shoulder and a
+      // flat crown carrying one stud); the 4 x 4 (86500) a flatter dome on a short wall.
+      if (w === 2) {
+        const prof: [number, number][] = [[0, 0], [1, 0], [1, 0.55], [0.95, 0.71], [0.88, 0.81], [0.73, 1.04], [0.64, 1.12], [0.5, 1.19], [0.4, top], [0, top]]; // prettier-ignore
+        const shell = new LatheGeometry(
+          prof.map(([r, y]) => new Vector2(Math.max(0, r - g), y)),
+          28,
+        );
+        const stud = new CylinderGeometry(STUD_R, STUD_R, STUD_H, 16).translate(0, top + STUD_H / 2, 0);
+        return [{ geo: join([shell, stud]).translate(1, 0, 1) }];
+      }
       const seg = Math.max(24, w * 6);
-      const s = new SphereGeometry(w / 2 - g, seg, 12, 0, Math.PI * 2, 0, Math.PI / 2).scale(
-        1,
-        (top - 0.3) / (w / 2),
-        1,
-      );
-      const neck = new CylinderGeometry(w / 2 - g, w / 2 - g, 0.3, seg).translate(0, 0.15, 0);
-      const shell: Part = { geo: join([neck, s.translate(0, 0.3, 0)]).translate(w / 2, 0, d / 2) };
-      if (kind === 'dome') return [shell];
-      return [shell, { geo: visor(w / 2 - g, (top - 0.3) / (w / 2)).translate(w / 2, 0.3, d / 2), tone: 'dark' }];
-    }
-    case 'uplate': {
-      const a = d / 2;
-      const pts: [number, number][] = [
-        [0, g],
-        [w - a, g],
-      ];
-      for (let k = 1; k < SEG; k++) pts.push([w - a + (a - g) * Math.sin((k / SEG) * Math.PI), a - (a - g) * Math.cos((k / SEG) * Math.PI)]); // prettier-ignore
-      pts.push([w - a, d - g], [0, d - g], [0, d - 1 + g], [w - a, d - 1 + g]);
-      for (let k = SEG - 1; k > 0; k--) pts.push([w - a + (a - 1) * Math.sin((k / SEG) * Math.PI), a - (a - 1) * Math.cos((k / SEG) * Math.PI)]); // prettier-ignore
-      pts.push([w - a, 1 - g], [0, 1 - g]);
-      return merge([plan(pts, top)]);
+      const n = 0.3;
+      const s = new SphereGeometry(w / 2 - g, seg, 12, 0, Math.PI * 2, 0, Math.PI / 2).scale(1, (top - n) / (w / 2), 1); // prettier-ignore
+      const neck = new CylinderGeometry(w / 2 - g, w / 2 - g, n, seg).translate(0, n / 2, 0);
+      return [{ geo: join([neck, s.translate(0, n, 0)]).translate(w / 2, 0, d / 2) }];
     }
     case 'wheel': {
       const r = p.r ?? 1;
@@ -125,8 +127,8 @@ export function body(p: Piece, o: BodyOpts = { studs: true, gap: GAP }): Part[] 
     }
     case 'axle': {
       const cy = (p.cy ?? 0) * PLATE;
-      const r = p.r ?? 0.12;
-      return merge([box(-r, cy - r / 3, 0, r, cy + r / 3, d), box(-r / 3, cy - r, 0, r / 3, cy + r, d)]);
+      const r = p.r ?? 0.3;
+      return merge([box(-r, cy - r / 2.6, 0, r, cy + r / 2.6, d), box(-r / 2.6, cy - r, 0, r / 2.6, cy + r, d)]);
     }
     default:
       return detail(p, o);
