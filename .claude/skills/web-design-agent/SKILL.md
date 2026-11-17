@@ -11,7 +11,7 @@ biome generation or placement changes. Room work also reads
 `../tabletop-room/SKILL.md` and its rules, look questions and kernel index.
 
 **File budgets come first.** Every source file has a line budget, and the numbers live in the
-lint config, not here: `astro/eslint.config.mjs` (`max-lines`, and its larger override for
+lint config, not here: `astro/eslint.config.js` (`max-lines`, and its larger override for
 three.js figures) and the figure check's `length` rule. Read them before writing. A file that
 would go past its budget is doing two jobs: name the second file and plan the split by job before
 writing, never by packing lines after lint fails.
