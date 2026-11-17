@@ -66,6 +66,7 @@ const WITHOUT = {
   'NightLayout.astro': 'the figure bench only (/figures), not a public page',
   'Layout.astro': 'legacy',
   'page-curl.ts': 'the page-swap motion script for PaperLayout; it lays nothing out',
+  'island-unmount.ts': 'holds a React island\'s unmount until it has hydrated, for PaperLayout; it lays nothing out',
 };
 const LEGACY = [
   'CubeSwapDemo',
