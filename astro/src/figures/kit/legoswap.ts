@@ -1,6 +1,6 @@
 import type { NightKey } from '../../styles/tokens/palette.ts';
 import { compose, PLATE_Y, type Pose } from './legopose.ts';
-import type { Kind, Piece } from './legoset.ts';
+import { PLATE, type Kind, type Piece } from './legoset.ts';
 
 /** The swap: a model is designed as shapes (the isometric model, drawn with the angles LEGO
  *  pieces have), and each shape turns into the catalogue pieces that make that shape. A block
@@ -168,12 +168,13 @@ export function swap(s: Shape): Piece[] {
 }
 
 /** A whole model: every shape swapped, the build order set course by course from the bottom
- *  (in shape order within a course), axles and wheels last, as a builder fits them. With `queue`,
+ *  (in shape order within a course), axles and wheels last, as a builder fits them; a sub-assembly
+ *  goes on no lower than where its pose fixes it (its bracket or hinge), never before. With `queue`,
  *  pieces go to builders working side by side, each through its own pieces in that order; a piece
  *  whose queue is null is the base, there before anyone starts (order 0). */
 export function build(shapes: Shape[], queue?: (p: Piece) => string | null): Piece[] {
   const pieces = shapes.flatMap((s, i) => swap(s).map((p) => ({ p, i })));
-  const level = (p: Piece): number => (p.kind === 'axle' ? 1e3 : p.kind === 'wheel' ? 1e3 + 1 : PLATE_Y(p));
+  const level = (p: Piece): number => (p.kind === 'axle' ? 1e3 : p.kind === 'wheel' ? 1e3 + 1 : Math.max(PLATE_Y(p), (p.pose?.o[1] ?? -1e3) / PLATE)); // prettier-ignore
   const groups = new Map<string, { p: Piece; i: number }[]>();
   for (const e of pieces) {
     const q = queue ? queue(e.p) : '';

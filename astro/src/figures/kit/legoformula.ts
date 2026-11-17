@@ -17,8 +17,10 @@ import { piece, type Shape } from './legoswap.ts';
  *  front and on the airbox. Slopes, curves, wedges and quarter tiles give the surfaces their
  *  angles: the nose's chamfered underside, the sidepods' undercut and coke-bottle tail, the
  *  engine cover's fall to the shark fin, the diffuser's kick. Thin and angled parts are
- *  sub-assemblies: the endplates are a plate and tiles on their side on brackets, and the wings'
- *  flaps hang from hinges over a slot, the front wing's two in a cascade. */
+ *  sub-assemblies: the endplates are tiles (and a plate behind them where the flange cannot reach)
+ *  on their side on brackets, and the wings' flaps hang from hinges over a slot, the front wing's
+ *  two in a cascade. Both wings are planned from their drawings (JS-LEGO-0001 and -0002, the
+ *  `rearwing` and `frontwing` sketches); the hand-over of each rebuild lists where they differ. */
 
 const W = 14;
 const WHEEL = { r: 2.7, cy: 6.75 };
@@ -29,16 +31,16 @@ const sym = (list: Shape[]): Shape[] => list.flatMap((s) => both(s, W));
 // Front wing: the endplate bracket stands on the footplate; the flaps' hinge on the main plane.
 const FW_BRACKET: Shape = { kind: 'part', part: 'bracket', x: 0, y: 1, z: 0, w: 4, d: 2, h: 1, flange: 2, tone: 'line4' }; // prettier-ignore
 const FW_HINGE: Shape = { kind: 'part', part: 'hinge', x: 1, y: 2, z: 1, w: 5, d: 1, h: 1, dir: 'z-', tone: 'line4' };
-/** The front endplate on its bracket: a plate and tiles, its top front corner rounded. */
+/** The front endplate: tiles straight on the bracket's 4 x 2 flange, one plate thick, its top
+ *  front corner rounded (the drawing's 12 mm plate is 54 mm here; a plate under them doubled it). */
 const FW_ENDPLATE: Shape = {
   kind: 'sub',
   id: 'front-endplate',
   pose: onSide(piece(FW_BRACKET)),
   shapes: [
-    { kind: 'part', part: 'plate', x: 0, y: 0, z: 0, w: 4, d: 2, h: 1, tone: 'inkSoft' },
-    { kind: 'part', part: 'quarter', x: 0, y: 1, z: 1, w: 1, d: 1, h: 1, dir: 'z+', tone: 'inkSoft' },
-    { kind: 'part', part: 'tile', x: 1, y: 1, z: 1, w: 3, d: 1, h: 1, tone: 'inkSoft' },
-    { kind: 'part', part: 'tile', x: 0, y: 1, z: 0, w: 4, d: 1, h: 1, tone: 'inkSoft' },
+    { kind: 'part', part: 'tile', x: 0, y: 0, z: 0, w: 4, d: 1, h: 1, tone: 'inkSoft' },
+    { kind: 'part', part: 'quarter', x: 0, y: 0, z: 1, w: 1, d: 1, h: 1, dir: 'z+', tone: 'inkSoft' },
+    { kind: 'part', part: 'tile', x: 1, y: 0, z: 1, w: 3, d: 1, h: 1, tone: 'inkSoft' },
   ],
 };
 
@@ -71,10 +73,11 @@ export const F1: Shape[] = [
   // Survival cell and engine on the floor.
   { kind: 'block', x: 9, y: 3, z: 5, w: 11, d: 4, h: 5, tone: 'inkMuted' },
   { kind: 'block', x: 20, y: 3, z: 5, w: 12, d: 4, h: 5, tone: 'inkMuted' },
-  // Front wing, to the reference sketch `frontwing` (kit/legosketches.ts): a footplate on the
+  // Front wing, to the drawing of the `frontwing` sketch (kit/legosketches.ts): a footplate on the
   // ground at each tip with the endplate's bracket on it; the main plane an arrowhead of two
   // tapered plates, swept back to the tips; on its back row the hinge for the two active flaps,
-  // the second hung from the first; a pylon from the middle up to the nose.
+  // each a stud in chord at the drawing's angles, the second hung from the first, both inside the
+  // endplate's length; a pylon from the middle up to the nose.
   ...sym([
     { kind: 'part', part: 'plate', x: 0, y: 0, z: 0, w: 4, d: 2, h: 1, tone: 'line4' },
     FW_BRACKET,
@@ -82,7 +85,7 @@ export const F1: Shape[] = [
     FW_ENDPLATE,
     { kind: 'wedge', x: 0, y: 1, z: 2, len: 5, wid: 2, dir: 'z-', hand: 'L', tone: 'line4' },
     FW_HINGE,
-    flap('front-flap', FW_HINGE, 0.18, 5, (h) => flap('second', h, 0.18, 5, undefined, 1)),
+    flap('front-flap', FW_HINGE, 0.27, 5, (h) => flap('second', h, 0.22, 5, undefined, 1), 1),
   ]),
   { kind: 'part', part: 'plate', x: 1, y: 2, z: 6, w: 1, d: 2, h: 1, tone: 'line4' },
   { kind: 'block', x: 1, y: 3, z: 6, w: 1, d: 2, h: 5, tone: 'line4' },
