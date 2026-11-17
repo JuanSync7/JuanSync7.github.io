@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type RefObject } from 'react';
 import { loadFigure } from '../figures/registry';
+import { whenIdle, whenNear } from './figureAhead';
 import { follow } from '../figures/kit/motion';
 import type { Figure, FigureInstance, FrameInput } from '../figures/types';
 
@@ -22,6 +23,10 @@ export interface LoopOptions {
   onReadout?: (text: string) => void;
   /** Handed to the figure every frame as `data`. Changing it redraws, never remounts. */
   data?: unknown;
+  /** Build the figure ahead of the reader: once its canvas is within this margin of the view
+   *  (an IntersectionObserver rootMargin, e.g. '150% 0px'), mount it at an idle moment and paint
+   *  one frame, so it is already drawn when it scrolls in. Its clock still starts only in view. */
+  ahead?: string;
 }
 
 export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions): Figure | null {
@@ -34,7 +39,7 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
   readRef.current = o.onReadout;
   // In still mode there is no frame loop, so new data has to ask for a frame itself.
   const redrawRef = useRef<(() => void) | null>(null);
-  const { id, freezeAt, fixtures } = o;
+  const { id, freezeAt, fixtures, ahead } = o;
   const px = o.pointerAt?.[0];
   const py = o.pointerAt?.[1];
 
@@ -144,7 +149,11 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
       if (still) draw(0);
     };
 
-    loadFigure(id, fixtures)
+    // Ahead mode: the code loads now; the build waits until the canvas is near the view and
+    // the page is idle, so a heavy scene never blocks a scroll that is still far from it.
+    let warmed = false;
+    Promise.all([loadFigure(id, fixtures), whenNear(canvas, ahead, cleanups)])
+      .then(([fig]) => whenIdle(ahead, cleanups).then(() => fig))
       .then((fig) => {
         if (disposed) return;
         inst = fig.mount(canvas);
@@ -155,6 +164,13 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
           size = [r.width, r.height, Math.min(window.devicePixelRatio || 1, DPR_CAP)];
           inst?.resize(size[0], size[1], size[2]);
           if (still) settle();
+          // Paint the first frame now, in view or not, so the picture is there (and its shaders
+          // compiled) before the reader reaches it. Time does not move until it is seen.
+          else if (!warmed && size[0] > 0 && size[1] > 0) {
+            warmed = true;
+            draw(STEP);
+            canvas.dataset.ready = '1';
+          }
         });
         ro.observe(canvas);
         cleanups.push(() => ro.disconnect());
@@ -200,7 +216,7 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
       cleanups.forEach((fn) => fn());
       inst?.dispose();
     };
-  }, [ref, id, freezeAt, fixtures, px, py]);
+  }, [ref, id, freezeAt, fixtures, px, py, ahead]);
 
   useEffect(() => {
     redrawRef.current?.();
