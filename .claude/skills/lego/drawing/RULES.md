@@ -1,4 +1,11 @@
-# Drawing rules
+# Drawing rules: LEGO
+
+The engineering drawing rules themselves (R-DRW-2, 4 to 7, 9 to 13, 15 to 22: projection, line
+weights, the sheet, scales, dimensions, sections, the GA set and its parts list) are the
+`drawing` skill (`.claude/skills/drawing/`), synced from the experience vault's
+`Playbooks/drawing` with `npm run drawing:sync -- <vault>`; never edit that copy here. Its
+`STANDARDS.md` is the ISO register. The rules below are how this site turns a drawing into LEGO,
+and are changed here.
 
 Each rule says what holds it. Evidence: `[stated]` is Juan's own ask, `[proposed]` is a rule
 Claude wrote while building the first drawings, a trial until he adopts or drops it.
@@ -6,47 +13,17 @@ Claude wrote while building the first drawings, a trial until he adopts or drops
 | id | Rule | Why | Case that created it | Evidence | Held by |
 |---|---|---|---|---|---|
 | R-DRW-1 | Draw the real part before planning its LEGO: a sketch in `kit/legosketches.ts`, in the model's frame and units, from sketch to wireframe to 3D iso. | A LEGO plan drawn from memory looks blocky and wrong in ways nobody can name; a sketch gives the plan something to be measured against. | 2026-11-13, of the F1's rear wing: "take from a picture, and try to do a proper sketch in wire frame then 3D iso"; then "the same for the frontwing". | [stated] | review: the `compare` sheet |
-| R-DRW-2 | Every number in a sketch names its source in the sketch's comment. When no photograph was used, the comment and the drawing's notes say so. | A sketch that looks exact but rests on a guess passes the guess on to every stage after it. | The 2026 wings: no usable photograph, so the proportions came from the rules as reported. | [proposed] | review; note 3 on the drawing sheet |
 | R-DRW-3 | Neighbours that only place the part (tyres, a crash structure, a nose) are `context: true`: drawn in the sketch sheets, left off the drawing. | Context makes the sketch readable and the drawing unreadable: the tyres set the scale and the part shrinks to a corner. | The rear wing's first drawing. | [proposed] | code: `draftScene` and `draftLayout` skip context parts |
-| R-DRW-4 | A drawing is first-angle orthographic projection: the side elevation as the main view, the end elevation from the nose on its right, the plan below it, an isometric view, and the first-angle symbol (the cone's narrow end away from its circles). | It is the UK and European convention, and a reader who knows it reads the part without being told which view is which. | 2026-11-14: "do you also proper a blueprint like all the various view", then "yes" to the drawing sheet. | [stated] | kernel: `kit/legodraft.ts` lays out every drawing this way |
-| R-DRW-5 | Line types and weights follow ISO 128: visible outlines and the section's cut thick (0.5 mm on A3); hidden edges thin and dashed; centre and cutting-plane lines thin chain (long, short); dimension, extension and hatching lines thin (0.25 mm); the frame 0.7 mm. Dimension lines carry arrowheads, and extension lines leave a gap at the part. | Weight says what a line is before its dash does; one weight for all of them flattens the drawing. | 2026-11-14 (line types); 2026-11-16, Juan: "fix 1, 2" (the title block, and thick and thin lines). | [stated] | kernel: `WEIGHT` in `kit/legodraft.ts`, widths set in paper millimetres by `fit` |
-| R-DRW-6 | A drawing prints at a standard scale on A3 (1:1, 1:2, 1:5, 1:10, 1:20 …). The margins grow to fit it; the drawing never stretches to fill the sheet. | A drawing at 1:13 cannot be measured with a scale rule. | The rear wing first came out at 1:20 with wide margins; tighter view spacing brought it to 1:10. | [proposed] | kernel: `plan()` in `kit/legodraft.ts` |
-| R-DRW-7 | The sheet follows ISO 5457 (frame with a 20 mm filing margin and 10 mm elsewhere, a grid reference border of 50 mm fields from the centre lines, numbers along and letters up with no I or O, centring marks) and its title block ISO 7200: the eight mandatory fields (legal owner, identification number of at most 16 characters, date of issue, sheet number, title, creator, approval person, document type) plus revision, status and paper, the identification number bottom right. Scale and projection are not title-block fields: they sit by the projection symbol. Lettering heights come from ISO 3098's series (1.8, 2.5, 3.5, 5, 7 mm). | That is what a proper drawing sheet carries, and "the lamp is at D6" is something two people can point at. | 2026-11-14, Juan: "dont they also have proper boxes for the different views"; 2026-11-16: "fix 1" (the title block was missing mandatory fields). | [stated] | `titleFields` in `kit/draftplan.ts` (the sheet and the page both read it); `kit/draftsheet.ts` |
 | R-DRW-8 | No words inside a figure canvas. On a page, view names, dimension values and the title block are DOM set from `draftLayout(<sketch>)`, the layout the figure draws by. | The site's rule for every figure; text in a canvas is unreadable to a screen reader and does not scale. | The lab's LEGO page. | [stated] (site `CLAUDE.md`, figures) | review |
-| R-DRW-9 | A drawing is monochrome: ink lines on the ground, told apart by weight, dashes and hatching. The accent colour is used only when a drawing is put on display to point at one thing, and then nowhere else on it. | A drawing is a record to measure against; colour on it reads as meaning that is not there. | 2026-11-16, Juan: "for the proper dimensional drawing there will be no accent, unless we want to use display then we only the accent". | [stated] | kernel: `draftScene` draws in ink only (the figure audit's "no signal at rest" warning is expected) |
-| R-DRW-10 | Claude never fills the "Checked" cell. It stays empty until a person has checked the drawing against its sources. | A checked box that nobody checked is a false record. | The first drawing sheet. | [proposed] | review |
-| R-DRW-11 | A dimension that disagrees with the research goes back to the sketch. Never move a dimension line or its value by hand. | Dimensions are measured from the sketch's geometry; a hand-moved value is a drawing that lies. | Design of `draftLayout`. | [proposed] | code: dimensions are computed, not written |
-| R-DRW-12 | A drawing of a physical part is dimensioned as ISO 129-1 does it: each size once, in mm with no unit (the sheet says MM once), the value above its line and along it, read from the bottom or the right; extension lines leave a 1 mm gap at the part and run 2 mm past the line; arrowheads 3 mm at 15°. No variables table: names with a table are for UI blueprints, where the values are tokens that change. | A machinist reads the number where the size is; a table beside it is clutter. | 2026-11-16, Juan chose the standard ("chose 1 … having both is not that and clutter the page"), after a first version with L1, W1 and a table. | [stated] | kernel: `dim` in `kit/draftplan.ts`, `dimLines` and `arrow` in `kit/draftlines.ts` |
-| R-DRW-13 | A part whose shape is its point (a wing element) gets section A-A: a cutting-plane line on the plan with arrows in the viewing direction, and the cut profile drawn at twice the scale, hatched at 45°. The sketch's `cut` puts the plane where every element is cut cleanly. | The elevations show a wing element edge-on and dashed; only a section shows its profile. | The rear wing's first section, through the actuator, overlapped it with the second element; at z = 5 the three profiles read cleanly. | [proposed] | kernel; the sketch's `cut` |
 | R-DRW-14 | The isometric view is exploded: each part moves by its sketch's `explode` offset, the way it comes apart when built. | It shows the sub-assemblies the LEGO is planned in, which no orthographic view can. | 2026-11-16, from the same repository's exploded layers. | [proposed] | kernel |
-| R-DRW-15 | Where an ISO drawing standard covers it, the drawing follows the standard, because each one is settled practice. The register below says which part of the kit holds each, and what is not yet followed. | The standards exist because generations of drawings were misread without them. | 2026-11-16, Juan: "the standard is there because this is the beaten practice, so the rules and code make sense to follow this in our agent + playbook". | [stated] | this register, reviewed with `LOOK.md` |
-
-## Standards register (R-DRW-15)
-
-| Standard | What it sets | Held by | Status |
-|---|---|---|---|
-| ISO 216 | A-series paper (A3 420 × 297 mm) | `A3` in `kit/draftplan.ts` | followed |
-| ISO 5457 | Sheet layout: frame 20/10 mm, 0.7 mm frame line, grid reference border of 50 mm fields, centring marks | `kit/draftsheet.ts` | followed |
-| ISO 7200 | Title block: eight mandatory fields, identification number bottom right, no scale or projection fields | `titleFields` | followed |
-| ISO 5455 | Standard scales (1:2, 1:5, 1:10, 1:20 …) | `plan()` grows margins to the next one | followed |
-| ISO 5456-2 | Projection: first angle, its symbol | `TURN`, `symbolLines` | followed; symbol proportions not yet checked against the standard |
-| ISO 128-2, -20 | Line types and widths: thick 0.5, thin 0.25 (2:1) | `WEIGHT`, `fit` | followed |
-| ISO 128-3, -30 | Views: placement, names | `plan()` | followed |
-| ISO 128-40, -44 | Sections: cutting plane thin chain, thick at its ends, arrows, letters, "A-A" | `plan()` | followed |
-| ISO 128-50 | Hatching: thin, 45°, even spacing; very thin sections may be filled solid | `hatch` | hatched; solid fill for thin sections not used |
-| ISO 129-1 | Dimensioning: value placement and reading direction, extension gaps, arrowheads | `dim`, `dimLines`, `arrow` | followed |
-| ISO 3098 | Lettering type B: letter shapes on the grid, heights 1.8, 2.5, 3.5, 5, 7 mm, line width h/10, spacing 2d, words 6d | the vault playbook `Playbooks/lettering` (rules R-LET), synced into `src/lib/lettering`; font `ISO Lettering B`, token `--nt-drafting`, `lettering:check` | followed: drawn from the standard's construction rules, not certified against its figures |
 
 ## If you catch yourself
 
+The drawing skill's `SKILL.md` has the table for the drawing rules; these are the LEGO ones.
+
 | If you catch yourself | Do this instead |
 |---|---|
-| eyeballing the shape from memory because there is no photo | find the published numbers, write each one's source, and say "no photograph traced" (R-DRW-2) |
+| planning a LEGO part straight from memory | sketch the real part first and draw it (R-DRW-1) |
 | deleting the tyres from the sketch because they crowd the drawing | mark them `context: true` (R-DRW-3) |
-| printing an odd scale such as 1:13 | let the layout grow its margins to the next standard scale (R-DRW-6) |
 | writing a view name or a value into the canvas | set it as DOM from `draftLayout` (R-DRW-8) |
-| nudging a dimension because it "looks wrong" | fix the sketch and draw again (R-DRW-11) |
-| naming sizes L1, W1 with a table on a part drawing | write the value on its line, in mm, as ISO 129-1 does (R-DRW-12) |
-| colouring a lamp or a flap to make the drawing livelier | ink only; the accent is for display (R-DRW-9) |
-| boxing each view to make the sheet look tidier | views float, aligned by projection; the boxes belong to the frame, grid border and title block (R-DRW-7) |
-| ticking "Checked" | leave it for a person (R-DRW-10) |
+| drawing the isometric view assembled when the LEGO is built in sub-assemblies | give each part its `explode` offset (R-DRW-14) |

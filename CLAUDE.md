@@ -174,6 +174,9 @@ first-angle engineering drawing (`.claude/skills/lego/drawing/SKILL.md`, `npm ru
 ISO 3098 lettering (`--nt-drafting`). Its one source is the experience vault's playbook
 `Playbooks/lettering`; `astro/src/lib/lettering` and `scripts/lettering` are synced copies, never edited
 here (`npm run lettering:sync -- <vault>`, then `lettering:build`; `lettering:check` is in `npm run check`).
+The drawing rules themselves (projection, lines, the sheet, scales, dimensions, the GA set) are the
+`drawing` skill, `.claude/skills/drawing/`, a synced copy of the vault's `Playbooks/drawing`, never
+edited here (`npm run drawing:sync -- <vault>`); the LEGO playbook keeps only R-DRW-1, 3, 8 and 14.
 Every piece is drawn from our own geometry, made from LEGO's published sizes (the 8 mm stud,
 real undersides in `kit/legounder.ts`); nothing from the LDraw library ships with the site.
 `scripts/lego/ldraw-parts.json` names the real part each catalogue shape stands for, and

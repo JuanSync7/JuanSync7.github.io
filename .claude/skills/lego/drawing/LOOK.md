@@ -1,29 +1,23 @@
 # Look
 
-Read the drawing sheet (`npm run lego:sheet -- <sketch> drawing`) and answer each question with
-what the sheet shows: the view, and its grid reference where that helps.
+Answer the drawing skill's `LOOK.md` (`.claude/skills/drawing/LOOK.md`) for every sheet first.
+These are the questions that only a drawing made for LEGO raises.
 
-## The views
+## The sketch and the drawing
 
-- Read the projection symbol first. Is the end elevation to the right of the side elevation, and
-  the plan below it?
-- Does each view line up with its neighbour: the plan exactly as long as the side elevation and
-  under it, the end elevation exactly as tall and beside it?
-- Does the isometric view read as the object with no labels?
-- Is every hidden edge dashed, and only where something really hides it? Is any edge missing?
-- Does the chain line sit on the plane of symmetry in the plan and the end elevation?
+- Are the neighbours that only place the part (tyres, a crash structure) drawn in the sketch
+  sheets and left off the drawing (R-DRW-3)?
+- Does the exploded isometric view come apart the way the LEGO is built, sub-assembly by
+  sub-assembly (R-DRW-14)?
 
-## The numbers
+## The LEGO against the drawing
 
-- Is every size written once, in mm, on its own line as ISO 129-1 does it (R-DRW-12), with no table?
-- Does section A-A cut every element cleanly, and do its chords match the sketch?
-- Does the exploded view come apart the way the LEGO is built?
+- On the `compare` sheet, where does the plan's wireframe leave the sketch, by how many studs or
+  plates, and is each gap named in the hand-over (R-DRW-1)?
+- Does the `bom` sheet list every piece the `lego` sheet shows, each with its real part where
+  one is named?
 
-- Do the overall dimensions match the research at the stated scale? Name the source for each.
-- Is the scale a standard one, and does the title block say the same scale as the layout?
+## On a page
 
-## The sheet
-
-- Does any word touch a line or another word, at desktop and phone width on the page?
-- Is the title block complete (ISO 7200), with the approval left for a person (R-DRW-10)?
-- Do the notes say where the proportions came from, and whether a photograph was traced?
+- Is every word DOM set from `draftLayout`, none inside the canvas (R-DRW-8)? Does any word touch
+  a line or another word at desktop and phone width?
