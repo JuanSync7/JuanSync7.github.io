@@ -370,28 +370,106 @@ body.paper {
 }
 
 /* Page swaps: the page you leave curls away from its bottom-right corner and the next page
-   shows through behind the fold (going back, the earlier page lays itself back down). The
-   frames come from components/layout/page-curl.ts; this sets the stacking and the paper back of
-   the folded flap, and holds the start of the turn until the first frame lands. Only on Astro's
-   page swaps (data-astro-transition), never on a theme change. */
+   shows behind the fold (going back, the earlier page lays itself back down). Layers and
+   frames: components/layout/page-curl.ts and curl-kernel.ts. Every layer here is moved by
+   transforms only; the clips are overflow boxes, so nothing repaints while the page turns.
+   The box sizes (--pp-curl-box-w, -h) come from the kernel at each turn. A layer that must not
+   show before its first frame lands starts at opacity 0. Everything keys on data-astro-pp-turn,
+   which page-curl.ts sets for its own turn only: never on a theme change. */
 @media (prefers-reduced-motion: no-preference) {
-  html[data-astro-transition]::view-transition-old(root),
-  html[data-astro-transition]::view-transition-new(root) {
+  html[data-astro-pp-turn]::view-transition {
+    background: var(--pp-ground);
+  }
+
+  html[data-astro-pp-turn]::view-transition-group(*) {
+    z-index: 4;
+  }
+
+  html[data-astro-pp-turn]::view-transition-group(root) {
+    z-index: 2;
+    width: var(--pp-curl-box-w);
+    height: var(--pp-curl-box-h);
+    overflow: clip;
+    transform-origin: 0 0;
+    animation: none;
+  }
+
+  html[data-astro-pp-turn='back']::view-transition-group(root) {
+    opacity: 0;
+  }
+
+  html[data-astro-pp-turn]::view-transition-image-pair(root) {
+    inset: auto;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    transform-origin: 0 0;
+  }
+
+  html[data-astro-pp-turn]::view-transition-old(root),
+  html[data-astro-pp-turn]::view-transition-new(root) {
     animation: none;
     mix-blend-mode: normal;
   }
 
-  html[data-astro-transition='forward']::view-transition-old(root),
-  html[data-astro-transition='back']::view-transition-new(root) {
-    z-index: 2;
+  /* The root image without the sheet is only the ground: hide it, it would cover the sheet. */
+  html[data-astro-pp-turn='forward']::view-transition-new(root),
+  html[data-astro-pp-turn='back']::view-transition-old(root) {
+    opacity: 0;
   }
 
-  html[data-astro-transition='back']::view-transition-new(root) {
-    clip-path: inset(0 100% 0 0);
+  html[data-astro-pp-turn]::view-transition-group(pp-under) {
+    z-index: 1;
+    animation: none;
+    background-color: var(--pp-ground);
   }
 
-  html[data-astro-transition] .pp-curl {
+  html[data-astro-pp-turn]::view-transition-old(pp-under),
+  html[data-astro-pp-turn]::view-transition-new(pp-under) {
+    animation: none;
+  }
+
+  html[data-astro-pp-turn] .pp-curl {
     view-transition-name: pp-curl;
+  }
+
+  html[data-astro-pp-turn]::view-transition-group(pp-curl) {
+    z-index: 3;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: clip;
+    transform-origin: 0 0;
+    opacity: 0;
+    animation: none;
+    filter: drop-shadow(0 0 var(--pp-curl-blur) color-mix(in srgb, var(--pp-ink-shadow) 38%, transparent));
+  }
+
+  /* The paper back, measured from the fold (its top edge): a crease shadow tight against the
+     fold, a soft sheen where the paper turns to the light, then the page's own colour. */
+  html[data-astro-pp-turn]::view-transition-image-pair(pp-curl) {
+    inset: auto;
+    left: 0;
+    top: 0;
+    width: var(--pp-curl-box-w);
+    height: var(--pp-curl-box-h);
+    transform-origin: 0 0;
+    background:
+      linear-gradient(
+        to bottom,
+        transparent var(--pp-curl-sheen-in),
+        color-mix(in srgb, var(--pp-curl-gleam) 30%, transparent) var(--pp-curl-sheen-peak),
+        transparent var(--pp-curl-sheen-out)
+      ),
+      linear-gradient(to bottom, color-mix(in srgb, var(--pp-ink-shadow) 26%, transparent), transparent var(--pp-curl-crease)),
+      var(--pp-ground);
+  }
+
+  html[data-astro-pp-turn]::view-transition-old(pp-curl),
+  html[data-astro-pp-turn]::view-transition-new(pp-curl) {
+    display: none;
   }
 }
 
@@ -399,23 +477,6 @@ body.paper {
   position: fixed;
   inset: 0;
   pointer-events: none;
-}
-
-::view-transition-group(pp-curl) {
-  z-index: 3;
-  animation: none;
-  filter: drop-shadow(0 0 var(--pp-curl-blur) color-mix(in srgb, var(--pp-ink-shadow) 38%, transparent));
-}
-
-::view-transition-old(pp-curl),
-::view-transition-new(pp-curl) {
-  animation: none;
-}
-
-::view-transition-image-pair(pp-curl) {
-  transform-origin: 0 0;
-  clip-path: inset(0 0 100% 0);
-  background-color: var(--pp-ground);
 }
 
 @keyframes pp-brush {

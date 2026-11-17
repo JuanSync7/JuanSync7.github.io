@@ -144,8 +144,8 @@ judging pages`, `Voxel and LEGO scenes`, `Stickers and icons` and `Shipping the 
   turn the page like a notepad sheet (asked for 17 Nov 2026): the old page lifts from its
   bottom-right corner with a slight fold, its paper back (the page's own colour) folds over it,
   and the next page is revealed behind the fold; going back lays the page down again
-  (`components/layout/page-curl.ts`, `--pp-dur-flip`). Figures on the incoming page wait for
-  the turn to finish (`page-turn.ts`), so the turn never stutters. A post card's cover travels
+  (the `page-turn` skill). The turn is the entrance: the incoming page's own entrance
+  animations are finished at once, and its figures start after the turn. A post card's cover travels
   into the post (`--nt-dur-morph`, `--nt-ease-out`). Scroll position is read, never hijacked: the reading
   progress hairline is CSS-only. Under `prefers-reduced-motion` nothing animates.
 - **Drawings** are figures, made with the figure skill; text never goes inside a canvas.

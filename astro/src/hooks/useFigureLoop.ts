@@ -148,7 +148,10 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
     // Loading and mounting a figure is the heaviest thing a page does; done during a page turn
     // it would freeze the turn, so a figure on the incoming page starts once the turn is over.
     afterTurn()
-      .then(() => loadFigure(id, fixtures))
+      .then(() => {
+        performance.mark('pp-figure-load');
+        return loadFigure(id, fixtures);
+      })
       .then((fig) => {
         if (disposed) return;
         inst = fig.mount(canvas);
