@@ -95,6 +95,14 @@ jobs:
         with:
           name: vault-presentation
           path: astro/presentation-out
+      - name: Page turn (layers, pixels, order, compositor, interruptions)
+        run: npm run turn:browser
+      - name: Page turn sheets
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: page-turn-review
+          path: astro/figures-out/page-turn
       - name: Slide icon vector and ZIP checks
         run: npm run slides:check
       - name: Open icon catalog and staging transaction

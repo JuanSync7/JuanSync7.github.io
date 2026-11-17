@@ -92,6 +92,17 @@ not a free-text category in one file. `npm run lessons:check` checks the whole c
 - Don't add backwards-compat shims to legacy `*.jsx` files — they're being replaced wholesale.
 
 
+## Page turns
+
+Moving between pages turns the page like a notepad sheet (asked for 17 Nov 2026). Before changing
+the curl, view-transition names or layers, the theme brush, entrance animations on a page arrived
+at by a turn, `astro:*` navigation handlers, or when islands and figures start during navigation,
+read `.claude/skills/page-turn/SKILL.md` and its `RULES.md`. The geometry is the pure kernel
+`astro/src/components/layout/curl-kernel.ts`; every layer moves by transforms only, so the turn
+runs on the compositor. `npm run turn:selftest` (in `npm run check`) holds the kernel against its
+fixtures; after a build, `npm run turn:browser` holds pixels, order and timing in a browser and
+writes contact sheets to `figures-out/page-turn/`, which must be read.
+
 ## Seeded tabletop-room work
 
 Changes to `pixel-still`, room controls, materials or lighting also use

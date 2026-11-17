@@ -37,8 +37,14 @@ const { current } = Astro.props;
       var b = document.querySelector('[data-theme-toggle]');
       if (!b || b.dataset.bound) return;
       b.dataset.bound = '1';
-      b.addEventListener('click', function () {
+      b.addEventListener('click', function toggle() {
         var root = document.documentElement;
+        // A theme change is a view transition of its own; started mid page turn it would cut the
+        // turn off. Wait for the turn (page-curl.ts) to finish.
+        if (root.hasAttribute('data-astro-pp-turn')) {
+          document.addEventListener('pp:turned', toggle, { once: true });
+          return;
+        }
         var dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
         var next = dark ? 'light' : 'dark';
         function change() {

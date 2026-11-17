@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type RefObject } from 'react';
 import { loadFigure } from '../figures/registry';
 import { follow } from '../figures/kit/motion';
+import { afterTurn } from '../components/layout/page-turn';
 import type { Figure, FigureInstance, FrameInput } from '../figures/types';
 
 /** The one clock every figure runs on. It owns time, the pointer, sizing, offscreen sleep
@@ -144,7 +145,13 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
       if (still) draw(0);
     };
 
-    loadFigure(id, fixtures)
+    // Loading and mounting a figure is the heaviest thing a page does; done during a page turn
+    // it would freeze the turn, so a figure on the incoming page starts once the turn is over.
+    afterTurn()
+      .then(() => {
+        performance.mark('pp-figure-load');
+        return loadFigure(id, fixtures);
+      })
       .then((fig) => {
         if (disposed) return;
         inst = fig.mount(canvas);
