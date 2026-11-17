@@ -31,7 +31,7 @@ export default function AtlasLibrary({ kind, mode, onSelect }: Props) {
           <button className="atlas-card" type="button" aria-controls="atlas-inspector" aria-pressed={kind === id} onClick={() => onSelect(id)}>
             <span className="atlas-card-meta"><span>{String(HARDWARE_KINDS.indexOf(id) + 1).padStart(2, '0')}</span><span>{HARDWARE_INFO[id].category}</span></span>
             <span className="atlas-icon"><HardwareIcon kind={id} mode={mode} decorative /></span>
-            <span className="atlas-card-name">{HARDWARE_INFO[id].title}<span aria-hidden="true">↗</span></span>
+            <span className="atlas-card-name">{HARDWARE_INFO[id].title}</span>
             <span className="atlas-card-note">{HARDWARE_INFO[id].note}</span>
           </button>
         </li>)}

@@ -91,7 +91,7 @@ export default function SlideLibrary() {
         {found.map((icon) => (
           <li key={icon.id} className="slide-card" data-icon={icon.id}>
             <div className="slide-icon-preview">
-              <SlideIcon id={icon.id} {...options} />
+              <SlideIcon id={icon.id} {...options} exact />
             </div>
             <div className="slide-card-label">
               <span>{icon.group}</span>

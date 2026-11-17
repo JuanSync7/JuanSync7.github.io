@@ -16,7 +16,12 @@ export default defineConfig({
     sitemap({ filter: (page) => !page.includes('/figures/') && !page.includes('/lab/blueprints/check/') }),
   ],
   output: 'static',
-  markdown: { rehypePlugins: [rehypeTableLabels, rehypeCodeHang] },
+  // Code carries both Shiki themes as CSS variables, so the terminal window follows the page's
+  // light or dark theme (night-prose.css picks one with light-dark()).
+  markdown: {
+    rehypePlugins: [rehypeTableLabels, rehypeCodeHang],
+    shikiConfig: { themes: { light: 'github-light', dark: 'github-dark' }, defaultColor: false },
+  },
   vite: {
     // Pre-bundle the figure runtime's dependencies at server start. Otherwise Vite finds
     // `three` the first time a three.js figure is requested, re-bundles mid-session and

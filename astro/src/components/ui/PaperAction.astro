@@ -31,7 +31,7 @@ type Props = LinkProps | ButtonProps;
 const { href, variant = 'paper', class: className, id, type = 'button', disabled, target, rel } = Astro.props;
 const Tag = href === undefined ? 'button' : 'a';
 const linkRel = [rel, target === '_blank' ? 'noopener noreferrer' : undefined].filter(Boolean).join(' ') || undefined;
-const hasIcon = Astro.slots.has('icon') || href !== undefined;
+const hasIcon = Astro.slots.has('icon');
 ---
 
 <Tag
@@ -50,6 +50,6 @@ const hasIcon = Astro.slots.has('icon') || href !== undefined;
 >
   <span class="pa-face">
     <span class="pa-label"><slot /></span>
-    {hasIcon && <span class="pa-icon" aria-hidden="true"><slot name="icon">↗</slot></span>}
+    {hasIcon && <span class="pa-icon" aria-hidden="true"><slot name="icon" /></span>}
   </span>
 </Tag>

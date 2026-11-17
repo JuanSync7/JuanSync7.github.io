@@ -26,11 +26,11 @@ const subjects = LEARN_SUBJECTS.map((s) => ({ ...LEARN_SUBJECT[s], count: entrie
           <li>
             <span class="subject">{s.label}</span>
             <span class="count">{s.count} {s.count === 1 ? 'guide' : 'guides'}</span>
-            <a href={s.tracker.href}>{s.tracker.name} tracker →</a>
+            <a href={s.tracker.href}>{s.tracker.name} tracker</a>
           </li>
         ))}
       </ul>
-      <PostGrid client:visible posts={cards} labels={LEARN_SUBJECT_LABEL} cta="Read the guide →" />
+      <PostGrid client:visible posts={cards} labels={LEARN_SUBJECT_LABEL} cta="Read the guide" />
     </section>
     <Trackers />
   </main>

@@ -72,7 +72,7 @@ export default function HardwareAtlas() {
                 if (index >= 0) setPick(index);
               }} />
           </div>
-          <div className="atlas-stage-foot"><span>{mode} / {view}</span><span>Point at a part, or choose its name →</span></div>
+          <div className="atlas-stage-foot"><span>{mode} / {view}</span><span>Point at a part, or choose its name</span></div>
         </div>
         <div className="atlas-detail">
           <span className="atlas-eyebrow">{HARDWARE_INFO[kind].category} · {String(Object.keys(HARDWARE_INFO).indexOf(kind) + 1).padStart(2, '0')}</span>

@@ -47,7 +47,7 @@ export const colorGroups = [
   { title: 'Night · text & lines', test: (n: string) => /^--nt-(ink|rule|line)/.test(n) },
   { title: 'Night · signal & overlays', test: (n: string) => /^--nt-(signal|dot|scrim)/.test(n) },
   { title: 'Paper · reading in light mode', test: (n: string) => n.startsWith('--nt-paper') },
-  { title: 'Terminal · dark in both modes', test: (n: string) => /^--nt-(code|term)/.test(n) },
+  { title: 'Terminal · the night window', test: (n: string) => /^--nt-(code|term)/.test(n) },
 ];
 export const pageRecipe = `---
 import NightPage from '../layouts/NightPage.astro';

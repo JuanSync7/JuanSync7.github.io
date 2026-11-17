@@ -83,7 +83,7 @@ html.paper {
   --nt-code-ground: var(--pp-term-ground);
   --nt-code-line: var(--pp-term-line);
   --nt-code-ink: var(--pp-term-ink);
-  --nt-code-muted: var(--pp-term-dot-2);
+  --nt-code-muted: var(--pp-term-muted);
   --nt-term-red: var(--pp-term-dot-1);
   --nt-term-amber: var(--pp-term-dot-2);
   --nt-term-green: var(--pp-term-dot-3);
