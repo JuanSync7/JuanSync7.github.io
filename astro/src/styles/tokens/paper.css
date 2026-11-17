@@ -41,10 +41,10 @@
   --pp-signal-shadow: #a8340c;
   --pp-signal-text: light-dark(#a8340c, #ff5a1f);
   --pp-on-signal: #1a0800;
-  --pp-sheet: light-dark(#f6f0e3, #1d2128);
   --pp-strip: light-dark(#ece2cd, #272c34);
   --pp-hole-edge: light-dark(#46341e, #07080b);
   --pp-ink-shadow: light-dark(#281e12, #000000);
+  --pp-curl-gleam: light-dark(#fffdf6, #3a414c);
   --pp-chalk-a: #e2d9c6;
   --pp-chalk-b: #c4c8d0;
   --pp-chalk-c: #a8adb5;
@@ -126,9 +126,8 @@
   --pp-note-gap: 90px;
   --pp-dur-brush: 1100ms;
   --pp-ease-brush: cubic-bezier(0.6, 0, 0.3, 1);
-  --pp-dur-flip: 850ms;
-  --pp-ease-flip: cubic-bezier(0.55, 0, 0.25, 1);
-  --pp-flip-depth: 2400px;
+  --pp-dur-flip: 1100ms;
+  --pp-curl-blur: 14px;
   --pp-doc-nav-w: 220px;
   --pp-doc-toc-w: 180px;
   --pp-doc-gap: 40px;

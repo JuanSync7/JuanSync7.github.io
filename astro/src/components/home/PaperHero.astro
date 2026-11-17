@@ -110,6 +110,7 @@ const smears = Array.from({ length: 38 }, () => ({
     margin: 0 calc(var(--pp-pad) * -1) 0 calc(var(--hf-space-6) * -3 - var(--hf-space-1));
     padding: calc(var(--hf-space-20) - var(--hf-space-2)) var(--pp-pad) var(--hf-space-20) calc(var(--hf-space-20) - var(--hf-space-1));
     clip-path: var(--pp-clip-sheet);
+    background-color: color-mix(in srgb, var(--pp-ground) var(--pp-rip-fill), transparent);
     transform-origin: 0 0;
     transform: translateY(var(--pp-ty)) rotate(calc(var(--pp-th) * -1deg));
   }
@@ -156,6 +157,10 @@ const smears = Array.from({ length: 38 }, () => ({
   /* Light: the hero page rips out of the notepad, hinged top-left, and leaves its punched strip. */
   .pp-cwrap {
     position: relative;
+    filter: drop-shadow(
+      calc(var(--pp-rip-shade) * 6px) calc(var(--pp-rip-shade) * 14px) calc(var(--pp-rip-shade) * 14px)
+        color-mix(in srgb, var(--pp-ink-shadow) calc(var(--pp-rip-shade) * 26%), transparent)
+    );
   }
 
   .pp-cwrap::before {
@@ -190,14 +195,17 @@ const smears = Array.from({ length: 38 }, () => ({
     pointer-events: none;
   }
 
+  /* The sheet's fill and shadow are animated as plain amounts and turned into colour outside the
+     keyframes. A keyframe that holds a light-dark() colour keeps the theme it was first resolved
+     in, so a sheet torn in one theme would stay that colour after a switch. */
   @keyframes pp-rip {
     0% {
       --pp-th: 0;
       --pp-ty: 0%;
-      background-color: color-mix(in srgb, var(--pp-sheet) 0%, transparent);
+      --pp-rip-fill: 0%;
     }
     8% {
-      background-color: var(--pp-sheet);
+      --pp-rip-fill: 100%;
     }
     70% {
       --pp-th: 10;
@@ -206,7 +214,7 @@ const smears = Array.from({ length: 38 }, () => ({
     100% {
       --pp-th: 17;
       --pp-ty: -140%;
-      background-color: var(--pp-sheet);
+      --pp-rip-fill: 100%;
     }
   }
 
@@ -233,11 +241,11 @@ const smears = Array.from({ length: 38 }, () => ({
   @keyframes pp-ripshadow {
     0%,
     6% {
-      filter: drop-shadow(0 0 0 color-mix(in srgb, var(--pp-ink-shadow) 0%, transparent));
+      --pp-rip-shade: 0;
     }
     25%,
     100% {
-      filter: drop-shadow(6px 14px 14px color-mix(in srgb, var(--pp-ink-shadow) 26%, transparent));
+      --pp-rip-shade: 1;
     }
   }
 
