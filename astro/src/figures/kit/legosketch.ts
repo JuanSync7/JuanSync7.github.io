@@ -1,6 +1,7 @@
 import {
   BoxGeometry,
   BufferGeometry,
+  CatmullRomCurve3,
   CylinderGeometry,
   DoubleSide,
   EdgesGeometry,
@@ -12,7 +13,9 @@ import {
   LineSegments,
   Mesh,
   Shape,
+  TubeGeometry,
   Vector2,
+  Vector3,
 } from 'three';
 import type { NightKey } from '../../styles/tokens/palette';
 import { hexOf } from './ink';
@@ -43,8 +46,22 @@ export type SketchPart = { tone: NightKey; context?: boolean; explode?: [number,
   | { kind: 'plate'; outline: [number, number][]; z: number; t: number }
   | { kind: 'post'; x0: number; x1: number; y0: number; y1: number; z0: number; z1: number }
   | { kind: 'pod'; x0: number; x1: number; y: number; z: number; r: number }
-  | { kind: 'wheel'; x: number; y: number; r: number; z0: number; z1: number }
+  /** A tyre (`rim`: the rim's radius, for a tyre on its wheel with rounded shoulders). */
+  | { kind: 'wheel'; x: number; y: number; r: number; z0: number; z1: number; rim?: number }
+  /** A body lofted along x through rounded-box sections, centred on z: each station is
+   *  [x, bottom y, top y, half-width]. A nose, a survival cell, a sidepod, an engine cover. */
+  | { kind: 'hull'; z: number; stations: [number, number, number, number][] }
+  /** A round tube along a smooth curve through `points`: a halo, a roll hoop, a pillar. */
+  | { kind: 'tube'; points: [number, number, number][]; r: number }
+  /** A flat panel: its outline in plan (x, z) at height y, `t` thick. A floor. */
+  | { kind: 'deck'; outline: [number, number][]; y: number; t: number }
 );
+
+/** A rounded box's outline (a superellipse of power 4), `n` points round it. */
+function rounded(n = 24): [number, number][] {
+  const r = (c: number): number => Math.sign(c) * Math.abs(c) ** 0.5;
+  return Array.from({ length: n }, (_, k) => [r(Math.cos((2 * Math.PI * k) / n)), r(Math.sin((2 * Math.PI * k) / n))]);
+}
 
 /** A cambered section (unit chord): upper surface back, lower surface forward, camber below. */
 function section(t: number, camber: number, n = 14): [number, number][] {
@@ -114,8 +131,25 @@ export function sketchGeometry(p: SketchPart): BufferGeometry {
       const prof = Array.from({ length: 13 }, (_, k) => new Vector2(p.r * Math.sin((Math.PI * k) / 12) ** 0.8, (len * k) / 12)); // prettier-ignore
       return new LatheGeometry(prof, 20).rotateZ(-Math.PI / 2).translate(p.x0, p.y, p.z);
     }
-    case 'wheel':
-      return new CylinderGeometry(p.r, p.r, p.z1 - p.z0, 40).rotateX(Math.PI / 2).translate(p.x, p.y, (p.z0 + p.z1) / 2); // prettier-ignore
+    case 'wheel': {
+      if (!p.rim) return new CylinderGeometry(p.r, p.r, p.z1 - p.z0, 40).rotateX(Math.PI / 2).translate(p.x, p.y, (p.z0 + p.z1) / 2); // prettier-ignore
+      // Rim face set in, sidewall out to rounded shoulders, the tread, and back.
+      const [s, k] = [0.12 * (p.z1 - p.z0), 0.3 * (p.z1 - p.z0)];
+      const prof = [[0.5 * p.rim, p.z0 + k], [p.rim, p.z0 + k], [p.rim, p.z0], [p.r - s, p.z0], [p.r, p.z0 + s], [p.r, p.z1 - s], [p.r - s, p.z1], [p.rim, p.z1], [p.rim, p.z1 - k], [0.5 * p.rim, p.z1 - k]]; // prettier-ignore
+      return new LatheGeometry(prof.map(([r = 0, z = 0]) => new Vector2(r, z)), 48).rotateX(Math.PI / 2).translate(p.x, p.y, 0); // prettier-ignore
+    }
+    case 'hull': {
+      const ring = rounded();
+      return loft(p.stations.map(([x, y0, y1, hw]) => ring.map(([u, v]): [number, number, number] => [x, (y0 + y1) / 2 + (v * (y1 - y0)) / 2, p.z + u * hw]))); // prettier-ignore
+    }
+    case 'tube': {
+      const curve = new CatmullRomCurve3(p.points.map(([x, y, z]) => new Vector3(x, y, z)));
+      return new TubeGeometry(curve, 8 * p.points.length, p.r, 16, false);
+    }
+    case 'deck': {
+      const s = new Shape(p.outline.map(([x, z]) => new Vector2(x, z)));
+      return new ExtrudeGeometry(s, { depth: p.t, bevelEnabled: false }).rotateX(Math.PI / 2).translate(0, p.y + p.t, 0); // prettier-ignore
+    }
   }
 }
 

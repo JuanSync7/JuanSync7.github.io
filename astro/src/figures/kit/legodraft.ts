@@ -1,7 +1,8 @@
-import { DoubleSide, EdgesGeometry, GreaterDepth, Group, Mesh, MeshBasicMaterial, Quaternion, Vector3 } from 'three';
+import { DoubleSide, GreaterDepth, Group, Matrix4, Mesh, MeshBasicMaterial, Quaternion, Vector3 } from 'three';
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
 import { LineSegments2 } from 'three/examples/jsm/lines/LineSegments2.js';
 import { LineSegmentsGeometry } from 'three/examples/jsm/lines/LineSegmentsGeometry.js';
+import { edgeModel, viewEdges } from './draftedges';
 import type { P2 } from './draftlines';
 import { AREA, partsOf, plan, TURN, VIEWS, type Layout } from './draftplan';
 import { hexOf } from './ink';
@@ -47,23 +48,25 @@ export function draftScene(
   };
   const parts = partsOf(layout.sketch).map((p) => {
     const solid = sketchGeometry(p);
-    const edges = new EdgesGeometry(solid, 24);
-    const lines = new LineSegmentsGeometry().fromEdgesGeometry(edges);
-    edges.dispose();
-    own(() => [solid, lines].forEach((g) => g.dispose()));
-    return { solid, lines, explode: p.explode ?? [0, 0, 0] };
+    own(() => solid.dispose());
+    return { solid, edges: edgeModel(solid), explode: p.explode ?? [0, 0, 0] };
   });
   const group = new Group();
   for (const view of VIEWS) {
     const copy = new Group();
+    // Each view draws its own silhouettes: the viewer looks along +z of the turned model.
+    const look = new Vector3(0, 0, 1).applyMatrix4(new Matrix4().copy(TURN[view]).invert());
     for (const p of parts) {
-      const hidden = fat(p.lines, mats.hidden, 2).computeLineDistances();
-      const piece = new Group().add(new Mesh(p.solid, mats.hide), fat(p.lines, mats.edge, 1), hidden);
+      const lines = new LineSegmentsGeometry().setPositions(viewEdges(p.edges, look));
+      own(() => lines.dispose());
+      const hidden = fat(lines, mats.hidden, 2).computeLineDistances();
+      const piece = new Group().add(new Mesh(p.solid, mats.hide), fat(lines, mats.edge, 1), hidden);
       if (view === 'exploded') piece.position.set(...p.explode);
       copy.add(piece);
     }
     const a = at[view];
-    const c = a.box.getCenter(new Vector3());
+    const c = a.box.getCenter(new Vector3()).multiplyScalar(a.k);
+    copy.scale.setScalar(a.k);
     copy.quaternion.copy(new Quaternion().setFromRotationMatrix(TURN[view]));
     copy.position.set(a.x - c.x, -a.y - c.y, -c.z);
     group.add(copy);
