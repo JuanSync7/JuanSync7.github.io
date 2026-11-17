@@ -2,6 +2,15 @@
 
 Apply each scene family’s rules and evidence requirements within its own playbook.
 
+## Code
+
+Case: 17 November 2026. Juan asked that the file-length limits be a top-level rule of this agent
+with its own check. Twice that day a file went over its budget and was split only after lint failed.
+
+| ID | Requirement / rationale | Failure case | Implementation / proof |
+|---|---|---|---|
+| WEB-BUDGET | Before writing, read the file budgets (lint `max-lines`, with its larger three.js override). A file that would go past its budget is doing two jobs: name the second file and split by job before writing, never by packing lines. The numbers live only in the lint config, so changing one is one edit. | A split chosen after lint fails, or lines packed to fit. | `astro/eslint.config.js` and the figure check's `length` rule; `npm run lint`; `npm run budget:selftest` proves a file one line over each budget still fails |
+
 ## Room lighting and seeded interiors
 
 Case: 9 November 2026 request about flat lighting, monochrome depth and seeded room variety.

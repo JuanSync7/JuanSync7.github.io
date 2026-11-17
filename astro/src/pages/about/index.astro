@@ -2,38 +2,86 @@
 import NightPage from '../../layouts/NightPage.astro';
 import NightNav from '../../components/layout/NightNav.astro';
 import NightFooter from '../../components/layout/NightFooter.astro';
+import Repos from '../../components/home/Repos.astro';
 import { PROFILE } from '../../data/profile';
+import { CASES, THINKING } from '../../data/home';
+import { VAULT_STATEMENT } from '../../data/about';
 import '../../styles/night-prose.css';
 
 const cv = PROFILE.cv_file;
+// Each principle carries the case that taught it, when there is one: the claim, then the evidence.
+const caseFor = (i: number) => CASES.items.find((c) => c.principle === i);
 ---
 
 <NightPage title="About · Juan Kok" description={PROFILE.role_line}>
   <NightNav current="about" />
   <main class="nt-wrap about">
-    <a class="back" href="/#experience">← Back to the landing page</a>
+    <a class="back" href="/">← Back to the landing page</a>
     <header class="head">
       <p class="meta">about</p>
       <h1>About Juan</h1>
       <p class="excerpt">{PROFILE.role_line}</p>
     </header>
     <article class="prose">
-      {PROFILE.experience.map((r) => (
-        <section>
-          <h2>{r.title}</h2>
-          <p class="where">{r.org}{r.place ? ` · ${r.place}` : ''} · {r.dates}</p>
-          {r.summary ? <p>{r.summary}</p> : null}
-          {r.points ? r.points.map((p) => (
+      <section id="vault">
+        <h2>{VAULT_STATEMENT.title}</h2>
+        {VAULT_STATEMENT.paragraphs.map((p) => <p>{p}</p>)}
+      </section>
+
+      <section id="thinking">
+        <h2>How I think</h2>
+        <p class="lead">{THINKING.title} {THINKING.accent}</p>
+        <p>{THINKING.body}</p>
+        {THINKING.principles.map((p, i) => {
+          const c = caseFor(i);
+          return (
             <>
-              <h3>{p.tag}</h3>
-              <p>{p.text}</p>
+              <h3>{p.title}</h3>
+              <p>{p.body}</p>
+              {c ? (
+                <details class="case">
+                  <summary>The case: {c.title}</summary>
+                  <p><span class="beat">The obvious fix</span>{c.noticed}</p>
+                  <p><span class="beat">What I did</span>{c.did}</p>
+                </details>
+              ) : null}
             </>
-          )) : null}
-        </section>
-      ))}
-      <p><a href={cv}>The same record as a CV (PDF)</a></p>
+          );
+        })}
+
+        <h3>{THINKING.ready.title}</h3>
+        <ol>{THINKING.ready.points.map((p) => <li>{p}</li>)}</ol>
+
+        <h3>{THINKING.lessons.title}</h3>
+        <table class="lessons">
+          <thead>
+            <tr><th scope="col">In silicon</th><th scope="col">In AI systems</th></tr>
+          </thead>
+          <tbody>
+            {THINKING.lessons.rows.map(([chip, ai]) => (
+              <tr><td>{chip}</td><td>{ai}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <section id="experience">
+        <h2>Experience</h2>
+        {PROFILE.experience.map((r) => (
+          <>
+            <h3>{r.title}</h3>
+            <p class="where">{r.org}{r.place ? ` · ${r.place}` : ''} · {r.dates}</p>
+            {r.summary ? <p>{r.summary}</p> : null}
+            {r.points ? r.points.map((p) => (
+              <p><span class="beat">{p.tag}</span>{p.text}</p>
+            )) : null}
+          </>
+        ))}
+        <p><a href={cv}>The same record as a CV (PDF) ↓</a></p>
+      </section>
     </article>
   </main>
+  <Repos />
   <NightFooter />
 </NightPage>
 
@@ -42,14 +90,15 @@ const cv = PROFILE.cv_file;
     display: flex;
     flex-direction: column;
     gap: var(--hf-space-10);
-    max-width: 760px;
+    max-width: var(--pr-guide-w);
     padding-top: var(--nt-section-y-tight);
-    padding-bottom: var(--nt-section-y);
   }
 
   .back,
   .meta,
-  .where {
+  .where,
+  .beat,
+  summary {
     font-family: var(--nt-mono);
     font-size: var(--nt-fs-caption);
     color: var(--nt-ink-muted);
@@ -72,12 +121,71 @@ const cv = PROFILE.cv_file;
     letter-spacing: var(--nt-tracking-display);
   }
 
-  .excerpt {
+  .excerpt,
+  .lead {
     font-size: var(--nt-fs-intro);
     color: var(--nt-ink-soft);
   }
 
+  section {
+    scroll-margin-top: var(--hf-space-20);
+  }
+
+  /* The prose rhythm (night-prose.css) spaces the article's children; the sections keep it inside. */
+  section > * + *,
+  .case > * + * {
+    margin-top: var(--hf-space-5);
+  }
+
+  section > h2:first-child {
+    margin-top: 0;
+  }
+
+  section + section {
+    margin-top: var(--hf-space-14);
+  }
+
   .where {
     margin: 0 0 var(--hf-space-3);
+  }
+
+  .beat {
+    display: block;
+    margin-bottom: var(--hf-space-1);
+  }
+
+  /* A case sits under the principle it proved, closed until asked for. */
+  .case {
+    margin: 0 0 var(--hf-space-5);
+    padding: 0 var(--hf-space-4);
+    border-left: 1px solid var(--nt-signal);
+  }
+
+  summary {
+    display: flex;
+    align-items: center;
+    min-height: var(--nt-hit);
+    color: var(--nt-signal-text);
+    cursor: pointer;
+  }
+
+  .lessons {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .lessons th,
+  .lessons td {
+    padding: var(--hf-space-3) var(--hf-space-4) var(--hf-space-3) 0;
+    border-bottom: 1px solid var(--nt-line);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .lessons th {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-caption);
+    font-weight: normal;
+    color: var(--nt-ink-muted);
   }
 </style>
