@@ -132,6 +132,19 @@
   --pp-doc-nav-w: 220px;
   --pp-doc-toc-w: 180px;
   --pp-doc-gap: 40px;
+
+  /* Site chrome: the header bar and the title-block footer. */
+  --pp-nav-h: 72px;
+  --pp-nav-mark-h: 34px;
+  --pp-nav-blur: 12px;
+  --pp-nav-tab: 2px;
+  --pp-nav-icon: 36px;
+  --pp-fs-nav: 15px;
+  --pp-fs-micro: 11px;
+  --pp-w-nav: 600;
+  --pp-tracking-micro: 0.08em;
+  --pp-foot-mark-h: 40px;
+  --pp-foot-brand-w: 340px;
 }
 
 :root[data-theme='light'] {
