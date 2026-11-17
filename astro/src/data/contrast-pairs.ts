@@ -36,6 +36,8 @@ export const CONTRAST: ContrastGroup[] = [
         note: 'fills, rules and large type only; small text stays in ink',
       },
       { role: 'Button label on orange', fg: '--pp-on-signal', ground: '--pp-signal', need: 'text' },
+      { role: 'Paper button label', fg: '--pp-ink-strong', ground: '--pp-face', need: 'text' },
+      { role: 'Paper button border', fg: '--pp-face-line', ground: '--pp-ground', need: 'large' },
       { role: 'Diagram arrows', fg: '--pp-arrow', ground: '--pp-ground', need: 'large' },
       { role: 'Code', fg: '--pp-term-ink', ground: '--pp-term-ground', need: 'text' },
       { role: 'Code comments', fg: '--pp-term-muted', ground: '--pp-term-ground', need: 'text' },
