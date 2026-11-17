@@ -28,7 +28,9 @@ import { plastic } from './legoscene';
 
 /** `context`: a neighbour drawn to place the part (a tyre, a crash structure), left off its drawing.
  *  `explode`: how far the part moves (studs) in its drawing's exploded view. */
-export type SketchPart = { tone: NightKey; context?: boolean; explode?: [number, number, number] } & (
+/** `mirror`: drawn reflected across the plane z = mirror (the right side's copy of a part
+ *  sketched on the left). */
+export type SketchPart = { tone: NightKey; context?: boolean; explode?: [number, number, number]; mirror?: number } & (
   | {
       /** A wing element: an inverted, cambered section from its leading edge to its trailing
        *  edge (x, y), across z0..z1. `spoon` raises the leading edge toward the tips; `sweep`
@@ -107,8 +109,13 @@ export function leadingEdge(p: Foil, z: number): [number, number] {
   return [p.le[0] + Math.abs(p.sweep ?? 0) * back, p.le[1] + (p.spoon ?? 0) * u * u];
 }
 
-/** One sketch part as a closed solid, in the model's frame. */
+/** One sketch part as a closed solid, in the model's frame, reflected when it is a mirror copy. */
 export function sketchGeometry(p: SketchPart): BufferGeometry {
+  const g = solidOf(p);
+  return p.mirror === undefined ? g : g.translate(0, 0, -p.mirror).scale(1, 1, -1).translate(0, 0, p.mirror);
+}
+
+function solidOf(p: SketchPart): BufferGeometry {
   switch (p.kind) {
     case 'foil': {
       const sec = section(p.t, p.camber);

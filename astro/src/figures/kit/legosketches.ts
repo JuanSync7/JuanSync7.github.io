@@ -23,8 +23,9 @@ export interface Sketch {
   /** Where section A-A cuts across the span (z, studs), for a part whose shape is its section. */
   cut?: number;
   /** For a general arrangement: the sketches it is made of, in item-number order, with how
-   *  many of each the parts list counts (one sketch may draw several, such as four wheels). */
-  of?: { id: string; qty: number }[];
+   *  many of each the parts list counts; `mirror` adds each part's reflection across that z
+   *  (a tyre sketched on the left makes the pair). */
+  of?: { id: string; qty: number; mirror?: number }[];
   /** Where an assembly's leader to this part ends, when the part's top over its middle is hidden
    *  in side elevation (a nose behind its tyre): a point on the part, model frame. */
   callout?: [number, number, number];
@@ -35,17 +36,20 @@ export interface Sketch {
 
 export const LEGO_SKETCHES: Record<string, Sketch> = { ...CAR_SKETCHES, ...WING_SKETCHES };
 
-/** The items of an assembly in number order: each sketch it is made of, with its quantity. */
-export function itemsOf(s: Sketch): { item: number; id: string; sketch: Sketch; qty: number }[] {
-  return (s.of ?? []).flatMap(({ id, qty }, k) => {
+/** The items of an assembly in number order: each sketch it is made of, its quantity, and the
+ *  parts it draws in the assembly (its context left out, its mirror copies added). */
+export function itemsOf(s: Sketch): { item: number; id: string; sketch: Sketch; qty: number; parts: SketchPart[] }[] {
+  return (s.of ?? []).flatMap(({ id, qty, mirror }, k) => {
     const sketch = LEGO_SKETCHES[id];
-    return sketch ? [{ item: k + 1, id, sketch, qty }] : [];
+    if (!sketch) return [];
+    const own = partsOf(sketch);
+    const parts = mirror === undefined ? own : [...own, ...own.map((p): SketchPart => ({ ...p, mirror }))];
+    return [{ item: k + 1, id, sketch, qty, parts }];
   });
 }
 
 /** The parts a drawing shows: its own parts that are not context, and for an assembly every
- *  part of every sketch it is made of (their context parts left out too). */
+ *  part of every item. */
 export function partsOf(s: Sketch): SketchPart[] {
-  const own = s.parts.filter((p) => !p.context);
-  return [...own, ...itemsOf(s).flatMap(({ sketch }) => partsOf(sketch))];
+  return [...s.parts.filter((p) => !p.context), ...itemsOf(s).flatMap((i) => i.parts)];
 }

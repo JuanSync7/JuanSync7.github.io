@@ -128,8 +128,8 @@ function callouts(
   label: (text: string, at: P2, side: Label['at']) => void,
 ): void {
   let k = 0;
-  const targets = itemsOf(sketch).map(({ item, sketch: s }) => {
-    const mine = geos.slice(k, (k += s.parts.filter((p) => !p.context).length));
+  const targets = itemsOf(sketch).map(({ item, sketch: s, parts }) => {
+    const mine = geos.slice(k, (k += parts.length));
     const [called, box] = [s.callout, boxOf(mine, new Matrix4())];
     return { item, at: side(called ? new Vector3(...called) : topOverMiddle(mine, box)) };
   });

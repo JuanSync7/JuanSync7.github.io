@@ -68,16 +68,17 @@ export function boxOf(geos: BufferGeometry[], t: Matrix4): Box3 {
 
 /** A dimension as ISO 129-1 draws it: the line from a to b (already set `away` from the feature
  *  along n), extension lines back to the feature, arrowheads, and the value in mm above the line
- *  and along it, read from the bottom or the right. `pmm` is a paper millimetre in studs. */
+ *  and along it, read from the bottom or the right, after its `prefix` (Ø for a diameter). `pmm`
+ *  is a paper millimetre in studs. */
 export function dimmer(sketch: Sketch, w: number, h: number, pmm: number, thin: P2[], labels: Label[]) {
-  return (a: P2, b: P2, n: P2, away: number, studs: number): void => {
+  return (a: P2, b: P2, n: P2, away: number, studs: number, prefix = ''): void => {
     thin.push(...dimLines(a, b, n, away, 3 * pmm, pmm, 2 * pmm));
     const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
     let [ux, uy] = [(b[0] - a[0]) / len, (b[1] - a[1]) / len];
     if (ux < -1e-6 || (Math.abs(ux) <= 1e-6 && uy > 0)) [ux, uy] = [-ux, -uy];
     const [tx, ty] = [uy * 2.75 * pmm, -ux * 2.75 * pmm];
     const [mx, my] = [(a[0] + b[0]) / 2 + tx, (a[1] + b[1]) / 2 + ty];
-    const text = String(Math.round(studs * sketch.scale * 1000));
+    const text = prefix + String(Math.round(studs * sketch.scale * 1000));
     labels.push({ text, x: mx / w, y: my / h, at: 'centre', angle: (Math.atan2(uy, ux) * 180) / Math.PI });
   };
 }

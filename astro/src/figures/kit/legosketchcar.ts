@@ -48,7 +48,8 @@ export const CAR_SKETCHES: Record<string, Sketch> = {
       { id: 'bodywork', qty: 1 },
       { id: 'floor', qty: 1 },
       { id: 'rearwing', qty: 1 },
-      { id: 'wheels', qty: 4 },
+      { id: 'frontwheel', qty: 2, mirror: 7 },
+      { id: 'rearwheel', qty: 2, mirror: 7 },
     ],
     notes: [
       "Wheelbase at most 3400 and width 1900 (FIA, 2026). Drawn at 3375, the LEGO model's.",
@@ -115,12 +116,20 @@ export const CAR_SKETCHES: Record<string, Sketch> = {
       { kind: 'plate', outline: [[30.3, 0.25], [34.6, 1.3], [34.6, 1.62], [30.3, 0.37]], z: 7, t: 5, tone: 'line3' }, // prettier-ignore
     ],
   },
-  wheels: {
+  frontwheel: {
     ...base,
-    title: 'Wheels and tyres, front and rear',
+    title: 'Front wheel and tyre',
     number: 'JS-LEGO-0008',
     doc: 'detail',
-    notes: ['18-inch rims. Tyres 280 x 705 front, 375 x 710 rear (Pirelli, 2026, as reported).'],
-    parts: WHEELS,
+    notes: ['18-inch rim. Tyre 280 wide, 705 across (Pirelli, 2026, as reported).'],
+    parts: [tyre(8, 0.705, 0.28, true)],
+  },
+  rearwheel: {
+    ...base,
+    title: 'Rear wheel and tyre',
+    number: 'JS-LEGO-0009',
+    doc: 'detail',
+    notes: ['18-inch rim. Tyre 375 wide, 710 across (Pirelli, 2026, as reported).'],
+    parts: [tyre(33, 0.71, 0.375, true)],
   },
 };
