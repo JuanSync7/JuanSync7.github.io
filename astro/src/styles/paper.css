@@ -415,7 +415,7 @@ body.paper {
 ::view-transition-image-pair(pp-curl) {
   transform-origin: 0 0;
   clip-path: inset(0 0 100% 0);
-  background-color: var(--pp-sheet);
+  background-color: var(--pp-ground);
 }
 
 @keyframes pp-brush {

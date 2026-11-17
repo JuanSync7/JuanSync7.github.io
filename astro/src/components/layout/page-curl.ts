@@ -79,9 +79,11 @@ export function curlFrame(p: number, w: number, h: number): Frame {
   const d = Math.hypot(w, h) * 0.6;
   const s = (frac: number): string => `${(f0 + d * frac).toFixed(1)}px`;
   const angle = `${theta.toFixed(4)}rad`;
+  // The paper back is the page's own colour: a crease shadow tight against the fold, then a
+  // soft sheen where the paper turns towards the light, and nothing over the rest of the flap.
   const back = [
-    `linear-gradient(${angle}, ${gleam(0)} ${s(0)}, ${gleam(55)} ${s(0.05)}, ${gleam(0)} ${s(0.35)})`,
-    `linear-gradient(${angle}, ${shade(34)} ${s(0)}, ${shade(0)} ${s(0.07)}, ${shade(0)} ${s(0.45)}, ${shade(16)} ${s(1)})`,
+    `linear-gradient(${angle}, ${gleam(0)} ${s(0.02)}, ${gleam(30)} ${s(0.06)}, ${gleam(0)} ${s(0.22)})`,
+    `linear-gradient(${angle}, ${shade(26)} ${s(0)}, ${shade(0)} ${s(0.04)})`,
   ].join(', ');
 
   return { keep, lifted, fold, back };
