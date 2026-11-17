@@ -29,7 +29,7 @@ export type Kind =
   | 'curve4' // curved slope, 4 long, 3 plates tall
   | 'wedge' // a tapered plate, cut on one side (hand R or L)
   | 'round' // round plate or brick, 1 x 1 or 2 x 2
-  | 'dome' // a smooth dome: 4 x 4 for a roof (86500); 2 x 2 on a round brick's neck with a centred stud on top (30367): a spire, a helmet
+  | 'dome' // a smooth dome: 4 x 4 for a roof (86500); 2 x 2 a round half with one stud on its crown (30367): a spire, a helmet
   | 'wheel' // rim and tyre on an axle along z
   | 'axle' // a cross axle along z
   | 'slope33' // 3 deep, 1 stud row then a 33 degree face, 3 plates tall
