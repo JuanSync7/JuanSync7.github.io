@@ -1,13 +1,20 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
 import rehypeCodeHang from './src/plugins/rehype-code-hang.mjs';
 import rehypeTableLabels from './src/plugins/rehype-table-labels.mjs';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://juansync7.github.io',
-  integrations: [react(), mdx()],
+  // The sitemap lets search engines find every page, the design system and the lab's included;
+  // the figure bench and the blueprint check page are tools, not pages to list.
+  integrations: [
+    react(),
+    mdx(),
+    sitemap({ filter: (page) => !page.includes('/figures/') && !page.includes('/lab/blueprints/check/') }),
+  ],
   output: 'static',
   markdown: { rehypePlugins: [rehypeTableLabels, rehypeCodeHang] },
   vite: {
