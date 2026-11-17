@@ -112,9 +112,9 @@ try {
   assert.equal(await legacy.locator('canvas').count(), 0);
 
   // Astro navigation must reattach copy handlers when returning to the reference.
-  await page.getByRole('link', { name: 'juan_kok, home' }).click();
+  await page.locator('header').getByRole('link', { name: 'Juan Kok, home' }).click();
   await page.waitForURL(`${base}/`);
-  await page.locator('footer').getByRole('link', { name: 'design system', exact: true }).click();
+  await page.locator('footer').getByRole('link', { name: 'Design system', exact: true }).click();
   await page.waitForURL(/design-system/);
   await page.waitForFunction(() => document.querySelector('[data-design-system]')?.dataset.ready === 'true');
   await page.getByRole('button', { name: 'Copy var(--nt-ground)', exact: true }).click();

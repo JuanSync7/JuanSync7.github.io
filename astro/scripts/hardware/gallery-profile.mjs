@@ -42,6 +42,9 @@ try {
     assert.equal(report.frameDeltas.length, 8, 'Gallery retains all eight seeds');
     assert.ok(report.frameDeltas.every(n => n === 0), 'Seed thumbnails do no frame work while idle');
     await page.locator('.lab-thumb').first().click();
+    // The main figure draws only while it is on screen. The profile scroll above leaves it
+    // wherever the page's height allows, so bring it into view before waiting on it.
+    await page.locator('.lab-main').scrollIntoViewIfNeeded();
     await page.locator('.lab-main [data-figure="hardware-atlas~8"] canvas[data-ready="1"]').waitFor();
     const main = page.locator('.lab-main canvas');
     const before = await main.evaluate(c => c.toDataURL());

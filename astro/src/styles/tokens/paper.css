@@ -131,8 +131,7 @@
   --pp-doc-nav-w: 220px;
   --pp-doc-toc-w: 180px;
   --pp-doc-gap: 40px;
-  /* The nav's links, and the home hero's lead. */
-  --pp-nav-link-gap: calc(var(--hf-space-6) - 2px);
+  /* The home hero's lead. */
   --pp-lead-w: 600px;
   /* Tracker pages: the version rail, the gap beside it, the widest the main panel goes. */
   --pp-tracker-rail-w: 188px;
@@ -151,7 +150,7 @@
   /* The nav: its glass blur and the menu button's three bars. */
   --pp-nav-blur: 12px;
   --pp-bar-h: 2px;
-  --pp-bar-gap: 6px;
+  --pp-bar-gap: 5px;
   /* The home hero: where copy and stage start to wrap, the logo's shadow, the chalk's reach and
      the opaque end of its masks. */
   --pp-hero-copy-basis: 380px;
@@ -162,6 +161,18 @@
   --pp-logo-shadow-blur: 14px;
   --pp-chalk-bleed: 60px;
   --pp-mask: #000;
+
+  /* Site chrome: the header bar and the title-block footer. */
+  --pp-nav-h: 72px;
+  --pp-nav-mark-h: 34px;
+  --pp-nav-tab: 2px;
+  --pp-nav-icon: 36px;
+  --pp-fs-nav: 15px;
+  --pp-fs-micro: 11px;
+  --pp-w-nav: 600;
+  --pp-tracking-micro: 0.08em;
+  --pp-foot-mark-h: 40px;
+  --pp-foot-brand-w: 340px;
 }
 
 :root[data-theme='light'] {
