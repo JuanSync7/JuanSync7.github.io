@@ -15,7 +15,7 @@ what the sheet shows: the view, and its grid reference where that helps.
 
 ## The numbers
 
-- Is every size a variable at its line, with its value in the table, and every unknown `[TBD]`?
+- Is every size written once, in mm, on its own line as ISO 129-1 does it (R-DRW-12), with no table?
 - Does section A-A cut every element cleanly, and do its chords match the sketch?
 - Does the exploded view come apart the way the LEGO is built?
 
@@ -25,5 +25,5 @@ what the sheet shows: the view, and its grid reference where that helps.
 ## The sheet
 
 - Does any word touch a line or another word, at desktop and phone width on the page?
-- Is the title block complete, with "Checked" left for a person?
+- Is the title block complete (ISO 7200), with the approval left for a person (R-DRW-10)?
 - Do the notes say where the proportions came from, and whether a photograph was traced?
