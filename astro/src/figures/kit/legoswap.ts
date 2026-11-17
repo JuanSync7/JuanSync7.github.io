@@ -44,7 +44,8 @@ export const PROFILE = {
 const SIZES: [number, number][] = [[8, 2], [6, 2], [4, 2], [3, 2], [2, 2], [8, 1], [6, 1], [4, 1], [3, 1], [2, 1], [1, 1]]; // prettier-ignore
 // No 2 x 8 tile; and the only grille tile LEGO makes is 1 x 2, laid either way.
 const GRILLE: [number, number][] = [[2, 1], [1, 2], [1, 1]]; // prettier-ignore
-const sizesOf = (kind: Kind): [number, number][] => (kind === 'tile' ? SIZES.slice(1) : kind === 'grille' ? GRILLE : SIZES);
+const sizesOf = (kind: Kind): [number, number][] =>
+  kind === 'tile' ? SIZES.slice(1) : kind === 'grille' ? GRILLE : SIZES;
 
 const base = (kind: Kind, a: At, w: number, d: number, h: number, rot: Piece['rot'] = 0): Piece => ({
   kind,
