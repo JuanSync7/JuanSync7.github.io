@@ -13,7 +13,8 @@
    handed to the Web Animations API, because a fold at a true angle needs trigonometry that a
    CSS keyframe cannot hold. */
 
-import { isTransitionBeforeSwapEvent } from 'astro:transitions/client';
+import { isTransitionBeforePreparationEvent, isTransitionBeforeSwapEvent } from 'astro:transitions/client';
+import { holdTurn } from './page-turn';
 
 interface Pt {
   x: number;
@@ -127,9 +128,39 @@ function turn(vt: Turn, back: boolean): void {
   vt.finished.finally(() => running.forEach((a) => a.cancel())).catch(() => undefined);
 }
 
+const NAMED = '[style*="view-transition-name"]';
+
+const names = (doc: Document): Set<string> =>
+  new Set(Array.from(doc.querySelectorAll<HTMLElement>(NAMED), (el) => el.style.viewTransitionName));
+
+/** Only a cover on both pages travels on its own (a post card's cover into its post). Any other
+ *  named element would be lifted out of its page and float over the turn, so it loses its name
+ *  and turns with the page it belongs to. */
+function keepShared(next: Document): void {
+  const before = names(document);
+  const after = names(next);
+  for (const el of document.querySelectorAll<HTMLElement>(NAMED)) {
+    if (!after.has(el.style.viewTransitionName)) el.style.viewTransitionName = 'none';
+  }
+  for (const el of next.querySelectorAll<HTMLElement>(NAMED)) {
+    if (!before.has(el.style.viewTransitionName)) el.style.viewTransitionName = 'none';
+  }
+}
+
+document.addEventListener('astro:before-preparation', (e) => {
+  if (!isTransitionBeforePreparationEvent(e)) return;
+  const load = e.loader;
+  e.loader = async () => {
+    await load();
+    keepShared(e.newDocument);
+  };
+});
+
 document.addEventListener('astro:before-swap', (e) => {
   if (!isTransitionBeforeSwapEvent(e) || !('startViewTransition' in document)) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const vt: unknown = e.viewTransition;
-  if (isTurn(vt)) turn(vt, e.direction === 'back');
+  if (!isTurn(vt)) return;
+  holdTurn(vt.finished);
+  turn(vt, e.direction === 'back');
 });
