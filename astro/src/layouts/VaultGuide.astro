@@ -35,7 +35,7 @@ const heading = title ?? guide.title;
       <p class="pr-comment">Public guide. Diagrams and example records are illustrative; no private vault is connected.</p>
       <PaperAction href="/vault/" variant="outline">Back to the overview</PaperAction>
       <nav aria-label="Read another vault guide">
-        {VAULT_GUIDES.filter((item) => item.slug !== slug).map((item) => <a href={`/vault/${item.slug}/`}>{item.title} <span aria-hidden="true">→</span></a>)}
+        {VAULT_GUIDES.filter((item) => item.slug !== slug).map((item) => <a href={`/vault/${item.slug}/`}>{item.title}</a>)}
       </nav>
     </footer>
   </article>

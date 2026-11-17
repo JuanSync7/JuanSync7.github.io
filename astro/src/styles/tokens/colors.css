@@ -165,8 +165,8 @@
   --nt-paper-signal-line: #9ec8bd;
   --nt-paper-signal-panel: #cfdcd2;
 
-  /* Code keeps a dark terminal window wherever it sits, paper included ("if there is code, it
-     goes in a macOS-style terminal window"). */
+  /* The night terminal window for code ("if there is code, it goes in a macOS-style terminal
+     window"). On paper pages these map onto --pp-term-*, which turn white on a light page. */
   --nt-code-ground: #0b0d13;
   --nt-code-line: #1c2030;
   --nt-code-ink: #e6e8ee;

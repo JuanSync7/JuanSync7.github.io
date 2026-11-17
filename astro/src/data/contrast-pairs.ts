@@ -1,0 +1,76 @@
+/** The colour pairs the site relies on to be read, each with what WCAG 2.2 (ISO/IEC 40500:2025)
+ *  asks of it. `text` is body-size text (1.4.3: 4.5:1 AA, 1.4.6: 7:1 AAA). `large` is large text or
+ *  a graphic or control boundary someone needs to see (1.4.3 large text and 1.4.11: 3:1).
+ *  `decorative` carries no requirement: the ratio is shown, nothing depends on it.
+ *  `npm run standards:check` fails when a pair drops below its requirement in either theme. */
+
+export type Need = 'text' | 'large' | 'decorative';
+
+export interface ContrastPair {
+  role: string;
+  fg: string;
+  ground: string;
+  need: Need;
+  /** Why a decorative pair needs nothing, or where a large-only colour is allowed. */
+  note?: string;
+}
+
+export interface ContrastGroup {
+  title: string;
+  pairs: ContrastPair[];
+}
+
+export const CONTRAST: ContrastGroup[] = [
+  {
+    title: 'Paper system · every public page',
+    pairs: [
+      { role: 'Headings', fg: '--pp-ink-strong', ground: '--pp-ground', need: 'text' },
+      { role: 'Body text', fg: '--pp-ink', ground: '--pp-ground', need: 'text' },
+      { role: 'Comments, captions', fg: '--pp-ink-muted', ground: '--pp-ground', need: 'text' },
+      { role: 'Orange text', fg: '--pp-signal-text', ground: '--pp-ground', need: 'text' },
+      {
+        role: 'Orange fills and rules',
+        fg: '--pp-signal',
+        ground: '--pp-ground',
+        need: 'large',
+        note: 'fills, rules and large type only; small text stays in ink',
+      },
+      { role: 'Button label on orange', fg: '--pp-on-signal', ground: '--pp-signal', need: 'text' },
+      { role: 'Diagram arrows', fg: '--pp-arrow', ground: '--pp-ground', need: 'large' },
+      { role: 'Code', fg: '--pp-term-ink', ground: '--pp-term-ground', need: 'text' },
+      { role: 'Code comments', fg: '--pp-term-muted', ground: '--pp-term-ground', need: 'text' },
+      {
+        role: 'Outline hairline',
+        fg: '--pp-outline',
+        ground: '--pp-ground',
+        need: 'decorative',
+        note: 'the label identifies an outlined control; the line only groups it',
+      },
+      {
+        role: 'Rule hairline',
+        fg: '--pp-rule',
+        ground: '--pp-ground',
+        need: 'decorative',
+        note: 'separates rows that already read apart',
+      },
+    ],
+  },
+  {
+    title: 'Night system · the figure bench',
+    pairs: [
+      { role: 'Headings', fg: '--nt-ink-strong', ground: '--nt-ground', need: 'text' },
+      { role: 'Body text', fg: '--nt-ink', ground: '--nt-ground', need: 'text' },
+      { role: 'Comments, captions', fg: '--nt-ink-muted', ground: '--nt-ground', need: 'text' },
+      { role: 'Teal text', fg: '--nt-signal-text', ground: '--nt-ground', need: 'text' },
+      { role: 'Code', fg: '--nt-code-ink', ground: '--nt-code-ground', need: 'text' },
+      { role: 'Code comments', fg: '--nt-code-muted', ground: '--nt-code-ground', need: 'text' },
+    ],
+  },
+];
+
+/** WCAG 2.2 thresholds: [AA, AAA]; null where the criterion has no AAA level. */
+export const NEED: Record<Need, [number, number | null] | null> = {
+  text: [4.5, 7],
+  large: [3, 4.5],
+  decorative: null,
+};

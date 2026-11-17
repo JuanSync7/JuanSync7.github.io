@@ -55,6 +55,19 @@ implements." The direction is his; propose, don't impose.
 - "A proper learning article with words gets the paper-and-ink style of my /learn articles,
   with just a highlight colour."
 - "If there is code, it goes in a macOS-style terminal window."
+- (17 Nov 2026) The terminal follows the theme: "i want a the white version when the background is
+  light." A warm white window on the cream page, the dark window on the night page.
+
+**Buttons, arrows and the header** (17 Nov 2026)
+- "a lot of the buttons have arrows for no reason." An arrow stays only where it says something the
+  label does not: ↗ on a link that leaves the site, ↓ on a download, → or ← on a pager or a
+  next/previous control. Internal links, actions, copy buttons and card calls to action carry none.
+  PaperAction shows an icon only when one is passed.
+- The design system's own buttons are the site's buttons: PixelButton, not a one-off style.
+- "make the header cover fully across the width of the page": the nav's scrim runs edge to edge,
+  over the punched strip and margin line, so content scrolling under it is covered.
+- Icons drawn in the night palette (HardwareIcon, SlideIcon) take the page's colours through the
+  figure filter, like every figure. Only a download preview shows the exported colours (`exact`).
 
 **Lines you can see** (3 Oct 2026)
 - "I like to be able to see the lines and characters, or a low-poly drawing, so that it

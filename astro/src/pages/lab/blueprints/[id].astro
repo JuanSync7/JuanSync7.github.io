@@ -32,7 +32,7 @@ const sheets = spec.views.map((v) => ({ name: v.name, href: `/blueprints/${spec.
       <p>{spec.summary}</p>
       <div class="bpl-meta">
         <span>{spec.kind === 'component' ? 'component' : 'page'}</span><span>{spec.parts.length} parts</span><span>{spec.sizes.length} sizes</span>
-        {spec.views[0]?.route ? <a href={spec.views[0].route}>see it live →</a> : null}
+        {spec.views[0]?.route ? <a href={spec.views[0].route}>see it live</a> : null}
       </div>
     </header>
 

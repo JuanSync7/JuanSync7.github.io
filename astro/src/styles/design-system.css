@@ -33,17 +33,6 @@
   align-items: center;
   gap: var(--hf-space-6);
 }
-.night .ds-button {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--nt-hit);
-  padding: var(--hf-space-3) var(--hf-space-5);
-  border: 1px solid var(--nt-signal-line-2);
-  border-radius: var(--hf-radius-pill);
-  background: var(--nt-signal-soft);
-  color: var(--nt-signal-text);
-  font-size: var(--nt-fs-small);
-}
 .night .ds-text-link {
   display: inline-flex;
   align-items: center;
@@ -268,10 +257,6 @@
   color: var(--nt-ink-2);
   font-size: var(--nt-fs-small);
   cursor: pointer;
-}
-.ds-code summary > span {
-  float: right;
-  color: var(--nt-ink-muted);
 }
 .ds-code[open] summary {
   border-bottom: 1px solid var(--nt-code-line);

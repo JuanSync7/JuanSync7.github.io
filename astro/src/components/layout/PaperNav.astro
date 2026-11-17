@@ -104,28 +104,29 @@ const { current } = Astro.props;
 </script>
 
 <style>
+  /* The scrim runs the full width of the page (17 Nov 2026), so content scrolling under the bar
+     is covered edge to edge, the punched strip and margin line included. */
   .pp-nav {
     position: sticky;
     top: 0;
     z-index: var(--hf-z-nav);
-  }
-
-  /* One bar, three zones: who (left), where (centre), tools (right). The scrim sits on the
-     content column only, so the punched strip and margin line run up behind the gutters. */
-  .pp-nav-inner {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    gap: var(--hf-space-6);
-    min-height: var(--pp-nav-h);
     background: var(--nt-scrim);
     backdrop-filter: blur(var(--pp-nav-blur));
     border-bottom: 1px solid transparent;
     transition: border-color var(--pa-motion-duration) ease;
   }
 
-  [data-stuck] .pp-nav-inner {
+  .pp-nav[data-stuck] {
     border-bottom-color: var(--pp-rule);
+  }
+
+  /* One bar, three zones: who (left), where (centre), tools (right). */
+  .pp-nav-inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: var(--hf-space-6);
+    min-height: var(--pp-nav-h);
   }
 
   /* Who: the monogram, the name, and the role in the code-comment voice. */
@@ -348,13 +349,13 @@ const { current } = Astro.props;
   @media (max-width: 799px) {
     .pp-nav {
       position: static;
+      background: none;
+      backdrop-filter: none;
     }
 
     .pp-nav-inner {
       grid-template-columns: 1fr auto;
       grid-template-rows: var(--pp-nav-h) auto;
-      background: none;
-      backdrop-filter: none;
       row-gap: 0;
     }
 

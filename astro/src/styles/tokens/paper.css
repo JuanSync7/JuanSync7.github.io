@@ -17,12 +17,15 @@
   --pp-ink-muted: light-dark(#555a62, #a8adb5);
   --pp-rule: light-dark(#d9cfbb, #2e343c);
   --pp-margin-mix: 38%;
-  --pp-term-ground: light-dark(#16191e, #0f1216);
-  --pp-term-line: light-dark(#2e343c, #2e343c);
-  --pp-term-ink: #fbf7ee;
+  /* The code terminal follows the theme: a warm white window on the cream page, the dark window
+     on the night page. */
+  --pp-term-ground: light-dark(#fffcf5, #0f1216);
+  --pp-term-line: light-dark(#d9cfbb, #2e343c);
+  --pp-term-ink: light-dark(#16191e, #fbf7ee);
+  --pp-term-muted: light-dark(#555a62, #8a909a);
   --pp-term-dot-1: light-dark(#f04a0e, #ff5a1f);
-  --pp-term-dot-2: #8a909a;
-  --pp-term-dot-3: #d9d2c3;
+  --pp-term-dot-2: light-dark(#8a909a, #8a909a);
+  --pp-term-dot-3: light-dark(#b9ae99, #d9d2c3);
   --pp-outline: light-dark(#b9ae99, #3e4551);
   --pp-arrow: light-dark(#7a7468, #7b838f);
   --pp-sticker-edge: #fbf7ee;

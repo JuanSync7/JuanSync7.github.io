@@ -73,14 +73,20 @@
   line-height: 1.55;
 }
 
-/* Code is always a terminal window (owner's rule, 3 Oct 2026): dark ground from the palette in
-   both themes, three dots in a title bar, a rule under it. Shared by posts and field guides. */
+/* Code is always a terminal window (owner's rule, 3 Oct 2026): a white window on a light page
+   and a dark one on a dark page (17 Nov 2026), three dots in a title bar, a rule under it. Shared
+   by posts and field guides. */
 .night .prose pre:not(.mermaid) {
   position: relative;
   padding: var(--hf-space-12) var(--hf-space-5) var(--hf-space-5);
   border-color: var(--nt-code-line);
   background: var(--nt-code-ground) !important;
   color: var(--nt-code-ink);
+}
+
+/* Shiki writes both themes as variables; the page's colour scheme picks one. */
+.night .prose pre.astro-code span {
+  color: light-dark(var(--shiki-light), var(--shiki-dark));
 }
 
 .night .prose pre:not(.mermaid)::before {

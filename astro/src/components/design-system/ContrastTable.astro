@@ -1,0 +1,83 @@
+---
+import { CONTRAST, NEED, type Need } from '../../data/contrast-pairs';
+import { colourOf, contrast, hexOf, type Theme } from '../../lib/design-tokens';
+import { SITE_TOKENS } from '../../lib/site-tokens';
+import './standards.css';
+
+/** Every colour pair the site relies on, measured with the WCAG 2.2 formula in both themes. */
+const map = new Map(SITE_TOKENS.map((t) => [t.name, t]));
+const grade = (r: number, need: Need): string => {
+  const n = NEED[need];
+  if (!n) return 'decorative';
+  if (n[1] !== null && r >= n[1]) return 'AAA';
+  return r >= n[0] ? 'AA' : 'below AA';
+};
+const ratio = (fg: string, ground: string, theme: Theme) => {
+  const f = colourOf(fg, theme, map);
+  const g = colourOf(ground, theme, map);
+  return f && g ? contrast(f, g) : NaN;
+};
+/** The night system is remapped onto the paper tokens on this page, so its samples show the
+ *  night values themselves rather than the variables. */
+const sampleStyle = (fg: string, ground: string, night: boolean) => {
+  if (!night) return `color: var(${fg}); background: var(${ground})`;
+  const f = colourOf(fg, 'dark', map);
+  const g = colourOf(ground, 'dark', map);
+  return f && g ? `color: ${hexOf(f)}; background: ${hexOf(g)}` : '';
+};
+const NEEDS: Record<Need, string> = {
+  text: 'text · 4.5:1',
+  large: 'large text, graphics · 3:1',
+  decorative: 'none',
+};
+---
+
+{
+  CONTRAST.map((group) => (
+    <div class="std-table-wrap">
+      <h4>{group.title}</h4>
+      <table class="std-table">
+        <thead>
+          <tr>
+            <th scope="col">Role</th>
+            <th scope="col">Sample</th>
+            <th scope="col">Tokens</th>
+            <th scope="col">Light page</th>
+            <th scope="col">Dark page</th>
+            <th scope="col">Needs</th>
+          </tr>
+        </thead>
+        <tbody>
+          {group.pairs.map((p) => (
+            <tr>
+              <th scope="row">
+                {p.role}
+                {p.note && <small>{p.note}</small>}
+              </th>
+              <td data-label="Sample">
+                <span class="std-sample" style={sampleStyle(p.fg, p.ground, group.title.startsWith('Night'))}>
+                  Aa
+                </span>
+              </td>
+              <td data-label="Tokens">
+                <code>{p.fg}</code>
+                <span class="std-on">on</span>
+                <code>{p.ground}</code>
+              </td>
+              {(['light', 'dark'] as const).map((theme) => {
+                const r = ratio(p.fg, p.ground, theme);
+                return (
+                  <td class="std-ratio" data-grade={grade(r, p.need)} data-label={theme === 'light' ? 'Light page' : 'Dark page'}>
+                    <strong>{r.toFixed(2)}:1</strong>
+                    <span>{grade(r, p.need)}</span>
+                  </td>
+                );
+              })}
+              <td class="std-need" data-label="Needs">{NEEDS[p.need]}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  ))
+}
