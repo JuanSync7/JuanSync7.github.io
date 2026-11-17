@@ -1,10 +1,11 @@
+// One source: the experience vault's Playbooks/drawing/kernel. A project's copy is synced from it, never edited.
 import { Box3, Euler, Matrix4, type BufferGeometry } from 'three';
-import { dimLines, type P2 } from './draftlines';
-import type { Sketch } from './legosketches';
+import { dimLines, type P2 } from './lines';
+import type { Sketch } from './sketch';
 
-/** What every drawing layout shares (kit/draftplan lays out a part's drawing, kit/draftga a
+/** What every drawing layout shares (plan.ts lays out a part's drawing, ga.ts a
  *  general arrangement): the sheet, the views and how each turns the model, and dimensions as
- *  ISO 129-1 sets them. Units are studs, y down, the drawing area's top left at the origin. */
+ *  ISO 129-1 sets them. Units are the model's (a LEGO model's are studs), y down, the drawing area's top left at the origin. */
 
 export type DraftView = 'side' | 'end' | 'plan' | 'exploded';
 /** A word on the drawing, at a point given in fractions of the drawing area; `at` is the side of
@@ -21,7 +22,7 @@ export interface Label {
 }
 export interface Layout {
   sketch: Sketch;
-  /** The drawing area's size in studs (its shape is AREA's), and the scale it prints at on A3. */
+  /** The drawing area's size in model units (its shape is AREA's), and the scale it prints at on A3. */
   w: number;
   h: number;
   scale: number;
@@ -69,16 +70,16 @@ export function boxOf(geos: BufferGeometry[], t: Matrix4): Box3 {
 /** A dimension as ISO 129-1 draws it: the line from a to b (already set `away` from the feature
  *  along n), extension lines back to the feature, arrowheads, and the value in mm above the line
  *  and along it, read from the bottom or the right, after its `prefix` (Ø for a diameter). `pmm`
- *  is a paper millimetre in studs. */
+ *  is a paper millimetre in model units. */
 export function dimmer(sketch: Sketch, w: number, h: number, pmm: number, thin: P2[], labels: Label[]) {
-  return (a: P2, b: P2, n: P2, away: number, studs: number, prefix = ''): void => {
+  return (a: P2, b: P2, n: P2, away: number, units: number, prefix = ''): void => {
     thin.push(...dimLines(a, b, n, away, 3 * pmm, pmm, 2 * pmm));
     const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
     let [ux, uy] = [(b[0] - a[0]) / len, (b[1] - a[1]) / len];
     if (ux < -1e-6 || (Math.abs(ux) <= 1e-6 && uy > 0)) [ux, uy] = [-ux, -uy];
     const [tx, ty] = [uy * 2.75 * pmm, -ux * 2.75 * pmm];
     const [mx, my] = [(a[0] + b[0]) / 2 + tx, (a[1] + b[1]) / 2 + ty];
-    const text = prefix + String(Math.round(studs * sketch.scale * 1000));
+    const text = prefix + String(Math.round(units * sketch.scale * 1000));
     labels.push({ text, x: mx / w, y: my / h, at: 'centre', angle: (Math.atan2(uy, ux) * 180) / Math.PI });
   };
 }

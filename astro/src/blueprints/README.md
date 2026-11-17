@@ -13,7 +13,7 @@ file. The rules and the kernel's one source are the experience vault's playbook
 | `<id>.ts` | One spec per blueprint: parts (number, plain name, other names, sizing), sizes (measure, part, token), views, title-block fields. Structure only: never colours, motion or content. |
 | `index.ts` | Every spec, in order: components, page chrome, templates. |
 | `INDEX.md` | The translator's index, generated (`npm run blueprint:index`); match a request to one row. |
-| `sheet.ts` | The A3 sheet, on the site's sheet frame (`figures/kit/sheetframe.ts`) in the ISO 3098 lettering. |
+| `sheet.ts` | The A3 sheet, on the site's sheet frame (`figures/kit/drawing/frame.ts`, synced from the vault's drawing kernel) in the ISO 3098 lettering. |
 | `view.ts` | The live views (`<BlueprintView>`): a component's specimen enlarged, a template's page in a frame, with the drawing over it and the table filled from what rendered. |
 | `harness.ts` | Measures every blueprint on its real page in hidden frames, for `/lab/blueprints/check/` and the scripts. |
 | `catalogue-data.ts` | The index's data for the lab pages, read when the site builds. |

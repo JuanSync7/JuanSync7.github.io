@@ -2,13 +2,13 @@ import { OrthographicCamera, Vector2 } from 'three';
 import { defineThreeFigure } from './defineThree';
 import { clear } from './kit/draw';
 import { tone } from './kit/ink';
-import { AREA, draftScene, solidLines, type Layout } from './kit/legodraft';
+import { AREA, draftScene, solidLines, type Layout } from './kit/draft';
 
 /** The general-arrangement drawing of the rear wing that the LEGO F1's wing was built against:
  *  first-angle projection (side elevation, end elevation on its right, plan below it), an
  *  isometric view, hidden edges dashed, centre lines chain-dotted, overall dimension lines and
  *  the projection symbol. It holds still, as a drawing does. Its text (view names, dimension
- *  values, title block) is DOM the page lays over it from the same layout (kit/legodraft). */
+ *  values, title block) is DOM the page lays over it from the same layout (kit/drawing/plan). */
 
 const SKETCH = 'rearwing';
 

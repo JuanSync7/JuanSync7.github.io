@@ -1,3 +1,4 @@
+// One source: the experience vault's Playbooks/drawing/kernel. A project's copy is synced from it, never edited.
 import { Box3, Matrix4, Vector3, type BufferGeometry } from 'three';
 import {
   AREA,
@@ -12,11 +13,12 @@ import {
   type Label,
   type Layout,
   type Plan,
-} from './draftbase';
-import { gaPlan } from './draftga';
-import { arrow, chain, hatch, sectionAt, symbolLines, type P2 } from './draftlines';
-import { leadingEdge, sketchGeometry } from './legosketch';
-import { LEGO_SKETCHES, partsOf, type Sketch } from './legosketches';
+} from './base';
+import { gaPlan } from './ga';
+import { arrow, chain, hatch, sectionAt, symbolLines, type P2 } from './lines';
+import { leadingEdge, sketchGeometry } from './parts';
+import { SKETCHES } from './host';
+import { partsOf, type Sketch } from './sketch';
 
 export {
   A3,
@@ -30,11 +32,11 @@ export {
   type Label,
   type Layout,
   type Plan,
-} from './draftbase';
-export { partsOf } from './legosketches';
+} from './base';
+export { partsOf } from './sketch';
 
-/** The layout of a sketch's drawing (kit/legodraft draws it). A general arrangement is laid out
- *  by kit/draftga; a part or an assembly here: first-angle orthographic views (side elevation;
+/** The layout of a sketch's drawing (scene.ts draws it). A general arrangement is laid out
+ *  by ga.ts; a part or an assembly here: first-angle orthographic views (side elevation;
  *  end elevation from the nose on its right; plan below it), section A-A at twice the drawing's
  *  scale where the sketch has a cut, an exploded isometric view and the projection symbol, on A3
  *  at a standard scale. Sizes are dimensioned as ISO 129-1 does it. */
@@ -45,8 +47,8 @@ export { partsOf } from './legosketches';
 const MM = { pad: 4, name: 7, dims: 14, gapX: 22, gap: 14, gapY: 8, chords: 28, sym: 9 };
 
 export function plan(id: string): Plan {
-  const sketch = LEGO_SKETCHES[id];
-  if (!sketch) throw new Error(`lego: no sketch ${id}`);
+  const sketch = SKETCHES[id];
+  if (!sketch) throw new Error(`drawing: no sketch ${id}`);
   return sketch.doc === 'ga' ? gaPlan(sketch) : partPlan(sketch);
 }
 

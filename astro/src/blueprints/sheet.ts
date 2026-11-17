@@ -1,6 +1,6 @@
 import { hexOf } from '../figures/kit/ink';
-import { WEIGHT } from '../figures/kit/legodraft';
-import { notes, sheet, text, titleBlock } from '../figures/kit/sheetframe';
+import { WEIGHT } from '../figures/kit/drawing/scene';
+import { notes, sheet, text, titleBlock } from '../figures/kit/drawing/frame';
 import { layout, sizeKey, type Drawing } from './drawing';
 import type { Box, Measured, P } from './measure';
 

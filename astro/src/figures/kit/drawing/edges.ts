@@ -1,3 +1,4 @@
+// One source: the experience vault's Playbooks/drawing/kernel. A project's copy is synced from it, never edited.
 import { BufferGeometry, EdgesGeometry, Vector3 } from 'three';
 import { mergeVertices } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 

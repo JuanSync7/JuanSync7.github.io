@@ -1,9 +1,9 @@
 import parts from '../../../scripts/lego/ldraw-parts.json';
-import { titleRows } from './draftbase';
+import { titleRows } from './drawing/base';
 import { LEGO_MODELS, LEGO_QUEUES } from './legomodels';
 import { partKey, type Kind, type Piece } from './legoset';
 import { build } from './legoswap';
-import { notes, sheet, text, titleBlock } from './sheetframe';
+import { notes, sheet, text, titleBlock } from './drawing/frame';
 
 /** A LEGO model's parts list (ISO 7573), the bill of materials a builder works from: one row per
  *  catalogue shape and colour, how many, and the real LEGO part it stands for (its LDraw number,

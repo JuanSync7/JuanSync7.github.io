@@ -1,11 +1,13 @@
+// One source: the experience vault's Playbooks/drawing/kernel. A project's copy is synced from it, never edited.
 import { Color, OrthographicCamera, Scene, WebGLRenderer } from 'three';
-import { AREA, draftScene, titleFields } from './legodraft';
-import { DOC } from './draftplan';
-import { itemsOf, LEGO_SKETCHES } from './legosketches';
-import { notes, sheet, text, titleBlock } from './sheetframe';
+import { AREA, draftScene, titleFields } from './scene';
+import { DOC } from './plan';
+import { SKETCHES, unitNote } from './host';
+import { itemsOf } from './sketch';
+import { notes, sheet, text, titleBlock } from './frame';
 
-/** A sketch's drawing on a whole A3 sheet, for review (`npm run lego:sheet -- <sketch> drawing`):
- *  the frame (kit/sheetframe), the drawing (kit/legodraft) in its area, and the words a page
+/** A sketch's drawing on a whole A3 sheet, for review (on juansync.dev `npm run lego:sheet --
+ *  <sketch> drawing`): the frame (frame.ts), the drawing (scene.ts) in its area, and the words a page
  *  would set as DOM: the layout's labels, the notes and the title block. */
 
 /** The whole sheet as a PNG data URL, `width` pixels wide. */
@@ -34,11 +36,7 @@ export function drawingSheet(id: string, width = 2400): string {
     const turn = ((l.angle ?? 0) * Math.PI) / 180;
     text(ctx, l.text.toUpperCase(), x + dx * 2.5 * mm, y + dy * (1.5 * mm + size / 2), size, align, turn);
   }
-  notes(s, [
-    'Dimensions in mm, full size of the real part.',
-    `1 stud = ${Math.round(layout.sketch.scale * 1000)} mm real, 8 mm in LEGO.`,
-    ...layout.sketch.notes,
-  ]);
+  notes(s, ['Dimensions in mm, full size of the real part.', unitNote(layout.sketch.scale), ...layout.sketch.notes]);
   const url = s.canvas.toDataURL('image/png');
   disposers.forEach((d) => d());
   r.dispose();
@@ -48,8 +46,8 @@ export function drawingSheet(id: string, width = 2400): string {
 /** A general arrangement's second sheet: its parts list (ISO 7573), one row per item, read from
  *  the top, each naming the drawing that details it. */
 export function partsListSheet(id: string, width = 2400): string {
-  const sketch = LEGO_SKETCHES[id];
-  if (!sketch) throw new Error(`lego: no sketch ${id}`);
+  const sketch = SKETCHES[id];
+  if (!sketch) throw new Error(`drawing: no sketch ${id}`);
   const s = sheet(width);
   const { ctx, mm, ax, ay } = s;
   const layout = { sketch, w: 0, h: 0, scale: 1, labels: [] };
@@ -66,6 +64,6 @@ export function partsListSheet(id: string, width = 2400): string {
       x += cw;
     });
   });
-  notes(s, ['Items as numbered on sheet 1.', 'Quantities are per car.']);
+  notes(s, ['Items as numbered on sheet 1.', 'Quantities are per assembly.']);
   return s.canvas.toDataURL('image/png');
 }

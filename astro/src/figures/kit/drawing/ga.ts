@@ -1,8 +1,9 @@
+// One source: the experience vault's Playbooks/drawing/kernel. A project's copy is synced from it, never edited.
 import { Box3, Matrix4, Vector3, type BufferGeometry } from 'three';
-import { AREA, boxOf, dimmer, SCALES, TURN, VIEWS, type DraftView, type Label, type Plan } from './draftbase';
-import { chain, symbolLines, type P2 } from './draftlines';
-import { sketchGeometry } from './legosketch';
-import { itemsOf, partsOf, type Sketch } from './legosketches';
+import { AREA, boxOf, dimmer, SCALES, TURN, VIEWS, type DraftView, type Label, type Plan } from './base';
+import { chain, symbolLines, type P2 } from './lines';
+import { sketchGeometry } from './parts';
+import { itemsOf, partsOf, type Sketch } from './sketch';
 
 /** A general arrangement (ISO 10209): the whole assembly in first-angle views at a standard
  *  scale, overall sizes only (length, height, wheelbase, width, both tracks), each item called
@@ -24,7 +25,7 @@ export function gaPlan(sketch: Sketch): Plan {
   const below = 3 * MM.row + MM.name + 4;
   // The largest standard scale the views fit; the isometric at the largest scale under it that fits its cell.
   const fit = (n: number, kIso: number): [number, number] | null => {
-    const u = (1000 * sketch.scale) / n; // paper mm per stud
+    const u = (1000 * sketch.scale) / n; // paper mm per model unit
     const c1 = Math.max(E.x, X.x * kIso) * u;
     const r1 = Math.max(P.y * u + MM.name, X.y * kIso * u + 3 * MM.name + 12);
     const w = 2 * MM.pad + S.x * u + MM.gapX + c1;
@@ -40,7 +41,7 @@ export function gaPlan(sketch: Sketch): Plan {
       }
   const [slackX, slackY] = fit(scale, k) ?? [0, 0];
   const u = (1000 * sketch.scale) / scale;
-  const pmm = 1 / u; // a paper millimetre in studs
+  const pmm = 1 / u; // a paper millimetre in model units
   const [w, h] = [AREA.w * pmm, AREA.h * pmm];
   const left = (MM.pad + slackX / 2) * pmm;
   const top = (MM.pad + slackY / 2 + MM.callouts) * pmm;
@@ -90,7 +91,7 @@ export function gaPlan(sketch: Sketch): Plan {
     dim([a[0], rowAt(n + 1)], [b[0], rowAt(n + 1)], [0, 1], (n + 1) * MM.row * pmm, zb - za);
   });
   dim([x1 - E.x / 2, rowAt(3)], [x1 + E.x / 2, rowAt(3)], [0, 1], 3 * MM.row * pmm, E.x);
-  // Centre lines: the car's in plan and end view, each wheel's in side elevation.
+  // Centre lines: the object's in plan and end view, each wheel's in side elevation.
   const m = 100 * pmm;
   thin.push(...chain(draw('plan', new Vector3(lo.x - 4 * pmm, hi.y, mid.z)), draw('plan', new Vector3(hi.x + 4 * pmm, hi.y, mid.z)), m)); // prettier-ignore
   thin.push(...chain(draw('end', new Vector3(lo.x, lo.y - 4 * pmm, mid.z)), draw('end', new Vector3(lo.x, hi.y + 4 * pmm, mid.z)), m)); // prettier-ignore

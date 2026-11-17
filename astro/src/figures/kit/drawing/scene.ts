@@ -1,26 +1,26 @@
+// One source: the experience vault's Playbooks/drawing/kernel. A project's copy is synced from it, never edited.
 import { DoubleSide, GreaterDepth, Group, Matrix4, Mesh, MeshBasicMaterial, Quaternion, Vector3 } from 'three';
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
 import { LineSegments2 } from 'three/examples/jsm/lines/LineSegments2.js';
 import { LineSegmentsGeometry } from 'three/examples/jsm/lines/LineSegmentsGeometry.js';
-import { edgeModel, viewEdges } from './draftedges';
-import type { P2 } from './draftlines';
-import { AREA, partsOf, plan, TURN, VIEWS, type Layout } from './draftplan';
-import { hexOf } from './ink';
-import { sketchGeometry } from './legosketch';
+import { edgeModel, viewEdges } from './edges';
+import type { P2 } from './lines';
+import { AREA, partsOf, plan, TURN, VIEWS, type Layout } from './plan';
+import { hexOf } from './host';
+import { sketchGeometry } from './parts';
 
-export { A3, AREA, draftLayout, titleFields, type Label, type Layout } from './draftplan';
+export { A3, AREA, draftLayout, titleFields, type Label, type Layout } from './plan';
 
 /** ISO 128 line widths on the A3 sheet (mm): thick for visible outlines and the cut, thin (half)
  *  for hidden, centre, dimension and hatching lines. */
 export const WEIGHT = { thick: 0.5, thin: 0.25 };
 
-/** A reference sketch drawn as an engineer's general-arrangement drawing, laid out by
- *  kit/draftplan: one turned copy of the part per view, visible edges thick, hidden edges thin and
+/** A reference sketch drawn as an engineering drawing, laid out by plan.ts: one turned copy of the part per view, visible edges thick, hidden edges thin and
  *  dashed (a depth-only pass, then edges where something is nearer), the section and the thin
  *  line work flat on top. `fit` sets line widths from the area's size in pixels, so they keep
  *  their paper millimetres at any size (never under a pixel).
  *  Monochrome: a drawing has no accent. No words are drawn here (the layout's labels say where
- *  they go). Studs, x right, y up, the area's top left at the origin. */
+ *  they go). Model units, x right, y up, the area's top left at the origin. */
 export function draftScene(
   id: string,
   own: (d: () => void) => void,

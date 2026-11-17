@@ -9,9 +9,11 @@ status: "[adopted] the deck Engineering drawing is a draft; R-DRW-4, 5, 7, 9, 12
 An engineering drawing is the yardstick a model is measured against: the real object's sizes,
 on a sheet anyone trained can read. The rules are in `RULES.md` (generated from the deck: never
 edit it), the ISO standards each one follows in `STANDARDS.md`, and the questions to read a
-sheet by in `LOOK.md`. A project gets a synced copy of these four files (R-DRW-22) and keeps its
-own rules for how it builds the object apart; on juansync.dev that is the LEGO skill's
-`drawing/` playbook, and its kernel (`astro/src/figures/kit/draft*.ts`) is the worked example.
+sheet by in `LOOK.md`. The code that lays out and renders the drawings is
+`kernel/` (start at `kernel/README.md`: the host contract, then `kernel/INDEX.md`). A project
+gets a synced copy of these four files and the kernel (R-DRW-22), writes the kernel's one
+`host.ts`, and keeps its own rules for how it builds the object apart; on juansync.dev that is
+the LEGO skill's `drawing/` playbook, and the F1 car's sheets are the worked example.
 
 The words on a drawing follow the lettering playbook (`Playbooks/lettering`, R-LET).
 
@@ -23,13 +25,14 @@ Each stage ends with its sheet read.
    photograph you may use. Write each number with its source; when there is no photograph, say
    so (R-DRW-2). Pick the scale the model uses.
 2. **Model the real thing.** Build it as geometry in the project's own frame and units, from
-   the research, not from memory. Mark each item: its title, its drawing number, its document
+   the research, not from memory: a `Sketch` of parts (`kernel/sketch.ts`, `kernel/parts.ts`). Mark each item: its title, its drawing number, its document
    kind (general arrangement, assembly or detail), where a section cuts it (R-DRW-13), and how
    many there are and whether one is a mirror image (R-DRW-19).
 3. **Review views.** Read the wireframe (top, side, front, isometric) and the shaded model
    turned through 360 degrees. They judge shape and carry no dimensions (R-DRW-21); a change of
    shape is made here, once.
-4. **Draw.** Each sheet is computed from the model, never drawn by hand (R-DRW-11): first-angle
+4. **Draw.** Each sheet is computed from the model by the kernel (`plan`, `draftScene`,
+   `drawingSheet`), never drawn by hand (R-DRW-11): first-angle
    views (R-DRW-4), outlines and silhouettes per view (R-DRW-16), line weights (R-DRW-5), a
    standard scale laid out in paper millimetres (R-DRW-6, R-DRW-17), dimensions as ISO 129-1
    writes them (R-DRW-12), the ISO 5457 sheet and ISO 7200 title block (R-DRW-7), in ink only

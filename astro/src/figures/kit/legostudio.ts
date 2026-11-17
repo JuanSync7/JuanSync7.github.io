@@ -19,7 +19,7 @@ import { smoothModel, wireModel } from './legoplan';
 import { legoModel } from './legoscene';
 import { LEGO_MODELS } from './legomodels';
 import { build } from './legoswap';
-import { drawingSheet, partsListSheet } from './draftsheet';
+import { drawingSheet, partsListSheet } from './drawing/sheet';
 import { bomSheet } from './legobom';
 import { sketchModel, type SketchPart } from './legosketch';
 import { itemsOf, LEGO_SKETCHES, partsOf, type Sketch } from './legosketches';
@@ -99,7 +99,7 @@ export function sheet(id: string, mode: Mode, tile = 360, only = ''): string {
   if (mode === 'parts') return partsListSheet(id, tile < 1200 ? 2400 : tile);
   if (mode === 'bom') return bomSheet(id, 2400, Number(only) || 1);
   const sketch = LEGO_SKETCHES[id];
-  const shapes = LEGO_MODELS[sketch ? sketch.model : id];
+  const shapes = LEGO_MODELS[sketch?.model ?? id];
   if (!shapes) throw new Error(`lego: no model ${id}`);
   const disposers: (() => void)[] = [];
   const own = (d: () => void): void => void disposers.push(d);

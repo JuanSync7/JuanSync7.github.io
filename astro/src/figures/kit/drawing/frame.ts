@@ -1,9 +1,10 @@
-import { hexOf } from './ink';
-import { A3, AREA } from './draftplan';
-import { WEIGHT } from './legodraft';
+// One source: the experience vault's Playbooks/drawing/kernel. A project's copy is synced from it, never edited.
+import { hexOf } from './host';
+import { A3, AREA } from './plan';
+import { WEIGHT } from './scene';
 
 /** An A3 drawing sheet on a 2D canvas, shared by every review sheet that is an engineering
- *  drawing (a LEGO sketch's drawing, a component's blueprint): the ISO 5457 frame, grid
+ *  drawing (a part's drawing, its parts list, or a project's own sheet such as a component's blueprint): the ISO 5457 frame, grid
  *  reference border and centring marks, an ISO 7200 title block, notes, and words in the ISO 3098
  *  lettering ('ISO Lettering B', capital height 0.7 of the font size). Units: `mm` canvas pixels
  *  per paper millimetre. */

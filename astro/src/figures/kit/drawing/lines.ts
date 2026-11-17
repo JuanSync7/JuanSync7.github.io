@@ -1,6 +1,7 @@
+// One source: the experience vault's Playbooks/drawing/kernel. A project's copy is synced from it, never edited.
 import { BufferGeometry, Float32BufferAttribute } from 'three';
 
-/** Line work for drawings (kit/draftplan): centre lines, dimensions, the projection symbol and
+/** Line work for drawings (plan.ts, ga.ts): centre lines, dimensions, the projection symbol and
  *  sections, as flat lists of 2D segment end points in drawing units (y down). Lengths scale with
  *  `m`, the drawing's unit of spacing. */
 
