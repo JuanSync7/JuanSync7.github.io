@@ -1,0 +1,105 @@
+import type { Diagram } from '../diagram';
+
+// "Agents you can repeat": who coordinates workers, where a rule lives, and one request through the
+// design. Each was a text tree in a terminal window; the content is boxes and lines, so it is a diagram.
+export const DIAGRAMS: readonly Diagram[] = [
+  {
+    id: 'agents-orchestrator',
+    w: 760,
+    h: 544,
+    key: 'arrows run the way work is handed on · lit = the agent that judges and remembers',
+    caption: 'The resident agent decides what to split and what to keep; a script, not another agent, starts the workers, enforces limits and collects their results.',
+    nodes: [
+      { id: 'person', title: 'A person', sub: 'asks, and accepts the result', kind: 'box', x: 270, y: 16, w: 220, h: 64 },
+      { id: 'resident', title: 'Resident agent', sub: 'identity, memory, playbooks', kind: 'lit', x: 250, y: 160, w: 260, h: 72 },
+      { id: 'script', title: 'Orchestrate script', sub: 'starts workers, limits, collects', kind: 'box', x: 250, y: 312, w: 260, h: 72 },
+      { id: 'w1', title: 'Worker', sub: 'one brief, no memory', kind: 'box', x: 16, y: 464, w: 200, h: 64 },
+      { id: 'w2', title: 'Worker', sub: 'one brief, no memory', kind: 'box', x: 280, y: 464, w: 200, h: 64 },
+      { id: 'w3', title: 'Worker', sub: 'one brief, no memory', kind: 'box', x: 544, y: 464, w: 200, h: 64 },
+    ],
+    edges: [
+      { pts: [[380, 84], [380, 156]], both: true },
+      { pts: [[380, 236], [380, 308]], both: true },
+      { pts: [[300, 388], [300, 424], [116, 424], [116, 460]], both: true },
+      { pts: [[380, 388], [380, 460]], both: true },
+      { pts: [[460, 388], [460, 424], [644, 424], [644, 460]], both: true },
+    ],
+    labels: [
+      { text: 'the ask · the result', x: 392, y: 112, w: 200, align: 'left' },
+      { text: 'briefs · results', x: 392, y: 264, w: 200, align: 'left' },
+    ],
+    steps: [
+      { label: 'the person', text: 'A person asks the resident agent for the work and accepts the result.' },
+      { label: 'the resident', text: 'The resident holds the identity, the memory and the playbooks. It decides how to split the work, judges what comes back and decides what to keep.', core: true },
+      { label: 'the script', text: 'A script starts the workers, enforces their limits and collects their results. These are fixed steps, so no model makes them.' },
+      { label: 'the workers', text: 'Each worker gets one brief, has no memory of its own, and hands its result back.' },
+    ],
+  },
+  {
+    id: 'agents-rule-levels',
+    w: 760,
+    h: 544,
+    key: 'arrows run from a wider level to a narrower one · lit = the shared decks',
+    caption: 'A rule lives at the level where its decision is made: the company’s decks, protocols and toolbox, then an agent that narrows them, a playbook, and a single step.',
+    nodes: [
+      { id: 'company', title: 'Company', sub: 'every agent, every project', kind: 'box', x: 270, y: 16, w: 220, h: 56 },
+      { id: 'decks', title: 'Decks', sub: 'shared rules per kind of work', kind: 'lit', x: 16, y: 152, w: 168, h: 72 },
+      { id: 'protocols', title: 'Protocols', sub: 'handover, review, escalation', kind: 'box', x: 208, y: 152, w: 168, h: 72 },
+      { id: 'toolbox', title: 'Toolbox', sub: 'installed, licensed, reachable', kind: 'box', x: 400, y: 152, w: 168, h: 72 },
+      { id: 'agent', title: 'Agent', sub: 'narrows the decks; its tools', kind: 'box', x: 592, y: 152, w: 152, h: 72 },
+      { id: 'playbook', title: 'Playbook', sub: 'craft rules for one job', kind: 'box', x: 592, y: 304, w: 152, h: 72 },
+      { id: 'step', title: 'Step', sub: 'a rule for one step only', kind: 'box', x: 592, y: 456, w: 152, h: 72 },
+    ],
+    edges: [
+      { pts: [[300, 76], [300, 112], [100, 112], [100, 148]] },
+      { pts: [[340, 76], [340, 112], [292, 112], [292, 148]] },
+      { pts: [[420, 76], [420, 112], [484, 112], [484, 148]] },
+      { pts: [[460, 76], [460, 112], [668, 112], [668, 148]] },
+      { pts: [[668, 228], [668, 300]] },
+      { pts: [[668, 380], [668, 452]] },
+    ],
+    labels: [],
+    steps: [
+      { label: 'company', text: 'The company holds the decks (shared rules for one kind of work, loaded by any agent doing it), the protocols for how agents deal with each other and with people, and the toolbox of what is installed, licensed and reachable.', core: true },
+      { label: 'agent', text: 'An agent narrows the decks for its job and lists the tools it may call.' },
+      { label: 'playbook and step', text: 'A playbook holds the craft rules for one responsibility; a rule that matters in one step only lives in that step.' },
+    ],
+  },
+  {
+    id: 'agents-company-request',
+    w: 760,
+    h: 528,
+    key: 'arrows run the way the request and its results move · lit = the project’s resident agent',
+    caption: 'One request through the design: the project’s agent frames it, a script runs two workers, a shared front-end agent draws the figure, and the result lands on a record another engineer reviews.',
+    nodes: [
+      { id: 'a', title: 'Engineer A', sub: 'asks for a status page', kind: 'box', x: 16, y: 16, w: 168, h: 64 },
+      { id: 'repo', title: 'Repo agent', sub: 'resident; frames the ask', kind: 'lit', x: 288, y: 16, w: 200, h: 64 },
+      { id: 'shop', title: 'Front-end agent', sub: 'shared by every project', kind: 'box', x: 576, y: 16, w: 168, h: 64 },
+      { id: 'script', title: 'Orchestrate script', sub: 'starts workers, collects', kind: 'box', x: 288, y: 160, w: 200, h: 64 },
+      { id: 'w1', title: 'Worker 1', sub: 'page text; owns page.md', kind: 'box', x: 120, y: 304, w: 200, h: 64 },
+      { id: 'w2', title: 'Worker 2', sub: 'data table; owns data.json', kind: 'box', x: 456, y: 304, w: 200, h: 64 },
+      { id: 'ledger', title: 'Ledger node', sub: 'evidence cited', kind: 'box', x: 288, y: 448, w: 200, h: 64 },
+      { id: 'b', title: 'Engineer B', sub: 'the fresh reviewer', kind: 'box', x: 576, y: 448, w: 168, h: 64 },
+    ],
+    edges: [
+      { pts: [[188, 48], [284, 48]], both: true },
+      { pts: [[492, 48], [572, 48]], both: true },
+      { pts: [[388, 84], [388, 156]], both: true },
+      { pts: [[340, 228], [340, 264], [220, 264], [220, 300]], both: true },
+      { pts: [[436, 228], [436, 264], [556, 264], [556, 300]], both: true },
+      { pts: [[388, 228], [388, 444]] },
+      { pts: [[572, 480], [492, 480]] },
+    ],
+    labels: [
+      { text: 'ask · confirm', x: 188, y: 22, w: 96, align: 'center' },
+      { text: 'figure', x: 492, y: 22, w: 80, align: 'center' },
+      { text: 'checks, then evidence', x: 396, y: 400, w: 180, align: 'left' },
+      { text: 'reviews', x: 492, y: 454, w: 80, align: 'center' },
+    ],
+    steps: [
+      { label: 'the ask', text: 'Engineer A asks the firmware project’s repo agent for a status page with a figure of the boot sequence; the agent frames the ask with the five questions, and A confirms.', core: true },
+      { label: 'the work', text: 'An orchestrate script starts two workers, one owning the page text and one the data table. The repo agent calls the shared front-end agent, which brings its own playbooks, takes the project’s context, and hands back a figure that passed the figure audit.' },
+      { label: 'the record', text: 'The results are checked and reviewed, and land on a ledger node with the evidence cited. Engineer B, not the one who asked, is the reviewer.' },
+    ],
+  },
+];

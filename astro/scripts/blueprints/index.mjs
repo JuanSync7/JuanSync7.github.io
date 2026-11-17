@@ -65,6 +65,7 @@ const WITHOUT = {
   'PaperLayout.astro': 'the page chrome; measured through every page template',
   'NightLayout.astro': 'the figure bench only (/figures), not a public page',
   'Layout.astro': 'legacy',
+  'page-curl.ts': 'the page-swap motion script for PaperLayout; it lays nothing out',
 };
 const LEGACY = [
   'CubeSwapDemo',

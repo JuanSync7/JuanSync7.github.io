@@ -1,6 +1,6 @@
 ---
 title: "Agents you can repeat"
-summary: "The agents I trust aren't the clever ones. They're the ones whose every decision a script could make has been taken away from them."
+summary: "The agents I trust aren't the clever ones; they're the ones with every decision a script could make taken away."
 eyebrow: "Agents"
 date: 2026-10-24
 subject: agents
@@ -9,17 +9,19 @@ featured: true
 shelfNotes: ["one job walks the graph, station by station", "the lit station is the one at work"]
 ---
 
-I have agents doing real work across my projects: writing code, filing notes, reviewing each other, drawing figures for my site. A lot of it is good. The trouble is the work that was good once and different the next time. In one project a question that blocked every task sat unanswered for a day; then the agent went ahead on a guess it never wrote down, and the guess was wrong. In an experiment, a rule written in the prompt was ignored in 19 of 20 runs. Agreed decisions lived in a chat and were gone when the session ended. And the agent I needed wasn't always the one called at the right time.
+import Diagram from '../../components/learn/Diagram.astro';
+
+I have agents doing real work across my projects: writing code, filing notes, reviewing each other, drawing figures for my site. A lot of it is good. The trouble is the work that was good once and different the next time: an agent that guessed, a rule it ignored, a decision it forgot, the wrong agent called.
 
 None of that was the model, the AI itself, being stupid. Traced back, each failure ends in the same place: a decision that lived in prose, where nothing could hold it.
 
-A foundry, the factory that makes chips, ships a **rule deck**: thousands of geometry rules that every chip layout must pass before the factory will build it. I come from chip design, and this is the part I miss most in software. The designer never edits the deck. A program checks every layout against it, every time. A rule that can't be met needs a named person to sign a waiver. That leaves the designer's judgment for the part no deck can decide: the architecture. A judge the builder can't touch, and judgment kept for what needs it: that's the shape this article builds for agents.
+A foundry, the factory that makes chips, ships a **rule deck**: thousands of geometry rules that every chip layout must pass before the factory will build it. I come from chip design. The designer never edits the deck. A program checks every layout against it, every time. A rule that can't be met needs a named person to sign a waiver. That leaves the designer's judgment for the part no deck can decide: the architecture. A judge the builder can't touch, and judgment kept for what needs it: that's the shape this article builds for agents.
 
-It goes from the smallest piece up: one rule, the check that holds it, the kernel an agent builds with, what the front end shows about taste, the playbook that packages them, the agent that owns playbooks, the workers it hands work to, the decks a company shares, one run from start to end, and how parts are tested and promoted. Then it ties the work to a record, scales it to many people, tests each part, and ends with how someone who doesn't write code can use all of it.
+It builds that shape from the smallest piece up, one rule first, and ends with how someone who doesn't write code can use it.
 
 ## What went wrong first
 
-First, the failures the shape answers. Toyota's engineers have a method for this: ask "why?" five times, each answer feeding the next question, until you reach a cause you can fix. Here it is on two of them, rebuilt from the records.
+First, the failures the shape answers, told properly. Toyota's engineers have a method for this: ask "why?" five times, each answer feeding the next question, until you reach a cause you can fix. Here it is on two of them, rebuilt from the records.
 
 **Too many agents.**
 
@@ -70,9 +72,9 @@ Each answer is the same move: take a decision out of prose and give it to someth
 
 A **rule** is one line of guidance with its reasons attached: an id, the rule, why it exists, the case that created it, and how sure we are of it. A real one, from my rules for building agents:
 
-| id | Rule | Why | Case that created it | Evidence | Could a script check it? |
-|---|---|---|---|---|---|
-| R-AGT-30 | Read a run's result from its output file and its real exit code, never from the task status or from text the command echoed. | The status says the wrapper finished, not that the work passed. | A background run was reported as a success because the command echoed the code; the real exit was 1. | adopted | yes: the runner records the exit code in a typed record |
+| Rule | Why | Case that created it | Evidence | Could a script check it? |
+|---|---|---|---|---|
+| Read a run's result from its output file and its real exit code, never from the task status or from text the command echoed. | The status says the wrapper finished, not that the work passed. | A background run was reported as a success because the command echoed the code; the real exit was 1. | adopted | yes: the runner records the exit code in a typed record |
 
 Two columns do the work. **Case** ties the rule to a real failure, so the list grows only as fast as real failures do, and a rule can be retired once its case passes without it. **Evidence** says whether I've confirmed it (`stated`, `adopted`) or it's still on trial (`observed x1`, then `observed x2` once a second project reports it). A trial rule is followed, and reported when it doesn't fit.
 
@@ -80,7 +82,7 @@ The last column matters most. "Could a script check it?" is asked of every rule,
 
 ## The check: a rule a script decides
 
-A **check** is code that judges output: same input, same verdict, no model call. A rule in a prompt is a request; a check is a fact. My rule experiments measured both sides. On a small task, no rules scored 7.8 of 10 checks passed, 13 rules 9.1 and 30 rules 9.0, so rules in the prompt do help. But one rule hardly held at all: 19 of 20 runs still kept a setting written into the code as a backup, which the rules forbade. A check catches that every time, without a model call.
+A rule in a prompt is a request. A **check** is a fact: code that judges output, same input, same verdict, no model call. My rule experiments measured both sides. On a small task, no rules scored 7.8 of 10 checks passed, 13 rules 9.1 and 30 rules 9.0, so rules in the prompt do help. But one rule hardly held at all: 19 of 20 runs still kept a setting written into the code as a backup, which the rules forbade. A check catches that every time, without a model call.
 
 Checks come from failures, not from what looks correct:
 
@@ -103,7 +105,7 @@ The check judges. The agent still needs something to build with.
 
 ## The kernel: what the agent builds with
 
-A **kernel** is code the agent builds with: functions that turn a decision into output. Like a check, it gives the same result for the same input every time; the word for that is *deterministic*. What separates them is direction: the kernel builds, the check judges, and a review by a fresh reader answers what neither can decide.
+What the agent builds with is its **kernel**: functions that turn a decision into output. Like a check, it gives the same result for the same input every time; the word for that is *deterministic*. What separates them is direction: the kernel builds, the check judges, and a review by a fresh reader answers what neither can decide.
 
 Two habits make a kernel cheap for an agent to use. The first is a one-screen index at the top: every function on one line, its traps written where they bite, and the instruction "read this index; do not read the code under it". The agent learns everything it can call in a couple of thousand tokens (the units a model reads, and is billed by) instead of reading the source. Two lines from one such index:
 
@@ -126,7 +128,7 @@ Both habits come from the front end, the part of software people see, which is t
 
 Drawing good figures looks like the last thing you could hand to rules. Yet the best agent-drawn figures I've seen came from a stack of them.
 
-Hairline, an open-source figure playbook that someone else wrote (MIT-licensed, not mine), is built like this, as Claude read it for me. Its kernel is a 24 KB file with that 80-line index on top. Its checks, a validate script and a look script, are separate files the agent is told not to edit, and the look script runs on every figure and every revision. Its craft list, the rules that need judgment, is held to ten. Its examples set the bar in numbers: "the examples cover 36%" of the frame, and a new figure is measured against that. And it has a table that fires at the moment of temptation, written the way the agent would think it:
+Hairline, an open-source figure playbook that someone else wrote (MIT-licensed, not mine), is built like this, as Claude read it for me. Its kernel is a 24 KB file with an index of about 80 lines on top. Its checks, a validate script and a look script, are separate files the agent is told not to edit, and the look script runs on every figure and every revision. Its craft list, the rules that need judgment, is held to ten. Its examples set the bar in numbers: "the examples cover 36%" of the frame, and a new figure is measured against that. And it has a table that fires at the moment of temptation, written the way the agent would think it:
 
 | If you catch yourself | Do this instead |
 |---|---|
@@ -142,7 +144,7 @@ A kernel, checks, examples and a short craft list now have to travel together. T
 
 ## The playbook: one responsibility, packaged
 
-A **playbook** is one responsibility of an agent, packaged as a folder: what to do, the craft rules, what a reviewer should look for, and the code. It's loaded whenever that responsibility comes up, and it's kept under version control with the agent. This is the layout I've agreed on; it's not yet a built template.
+Put those pieces in one folder for one responsibility of an agent and you have a **playbook**: what to do, the craft rules, what a reviewer should look for, and the code. It's loaded whenever that responsibility comes up, and it's kept under version control with the agent. This is the layout I've agreed on; it's not yet a built template.
 
 ```
 explain-oom/                 one responsibility (an example name)
@@ -167,7 +169,7 @@ One playbook is one job. Someone has to own several, remember things between run
 
 ## The agent: an identity, not a topic
 
-An **agent** is an identity that holds playbooks. Identity means a name the system can check, with four things attached: **scope** (what it's responsible for), **memory** (what it alone writes), **permissions** (what it may do, enforced outside the model) and **accountability** (the person who owns it and authorises what it does). Today an agent has the first two; it still runs with my permissions, and records name me, not the agent.
+Give a set of playbooks a name the system can check and they become an **agent**. Identity means a name the system can check, with four things attached: **scope** (what it's responsible for), **memory** (what it alone writes), **permissions** (what it may do, enforced outside the model) and **accountability** (the person who owns it and authorises what it does). Today an agent has the first two; it still runs with my permissions, and records name me, not the agent.
 
 Whether to make one is the first root cause again. Climb a ladder and stop at the lowest rung that works:
 
@@ -188,17 +190,11 @@ A good resident spends its time choosing and judging. Doing all the work itself 
 
 ## Workers and the orchestrator
 
-A **worker** is a short-lived agent: a brief goes in, a result comes out, and it ends. It has no memory of its own and works under its parent's identity. Between the resident and its workers sits the **orchestrator**, and I first pictured it as another agent. It doesn't need to be. Starting workers, waiting, collecting, retrying and enforcing limits are fixed steps, so by the ladder they belong in a script. What to split, what to accept and what to remember stay with the resident.
+Not every agent has to last. A **worker** lives for one brief: the brief goes in, a result comes out, and it ends. It has no memory of its own and works under its parent's identity. Between the resident and its workers sits the **orchestrator**, and I first pictured it as another agent. It doesn't need to be. Starting workers, waiting, collecting, retrying and enforcing limits are fixed steps, so by the ladder they belong in a script. What to split, what to accept and what to remember stay with the resident.
 
-```
-Resident (identity, memory home, playbooks)
-├─ talks to the person, judges, decides what to keep
-└─ orchestrate playbook
-   ├─ script: starts workers, enforces limits, collects results
-   └─ workers (one brief each, no memory) → results back to the resident
-```
+<Diagram id="agents-orchestrator" />
 
-I've run this once, with my vault agent as the resident. It gave four workers three incoming messages to file and a set of agreed rule changes. Each brief named the only files that worker could edit, so no two workers touched one file. Workers couldn't save changes to the history or edit the shared log, and they answered in a fixed form with room for "problems with my brief" and "what I didn't verify".
+I've run this once, with the agent that files my notes as the resident. It gave four workers three incoming messages to file and a set of agreed rule changes. Each brief named the only files that worker could edit, so no two workers touched one file. Workers couldn't save changes to the history or edit the shared log, and they answered in a fixed form with room for "problems with my brief" and "what I didn't verify".
 
 ```
 workers        4, started at once by one script
@@ -219,19 +215,9 @@ Workers, residents and shop agents all follow some of the same rules. Those rule
 
 ## Decks: rules the whole company shares
 
-A **deck** is a shared set of rules for one kind of work: writing code, writing documents, building agents, drawing diagrams. It isn't the foundry's deck; that one is the checks. A deck is closer to a design team's guidelines: written by whoever owns that kind of work, loaded by every agent that does it, and emptied into checks one rule at a time. A rule lives at the level where its decision is made:
+Some rules belong to no single agent. They go in a **deck**, a shared set of rules for one kind of work: writing code, writing documents, building agents, drawing diagrams. It isn't the foundry's deck; that one is the checks. A deck is closer to a design team's guidelines: written by whoever owns that kind of work, loaded by every agent that does it, and emptied into checks one rule at a time. A rule lives at the level where its decision is made:
 
-```
-Company
-├─ decks        shared rules for a kind of work, loaded by any agent doing it
-├─ protocols    how agents deal with each other and with people:
-│               handover, review, escalation
-├─ toolbox      what is installed, licensed and reachable
-└─ agent        rules that narrow the decks for this agent's job,
-   │            and the list of tools it may call
-   └─ playbook  craft rules for one responsibility
-      └─ step   a rule that matters in one step only
-```
+<Diagram id="agents-rule-levels" />
 
 Tools sit at three levels, and I've proposed that the line between them is a permission. The company has a toolbox. An agent has a list of what it may call. A playbook owns its kernel and checks and lists which of the agent's tools it uses. No deck grants a tool, and a playbook can't add one; a playbook that needs a new tool means the agent's edge is moving, and that's for its owner to decide.
 
@@ -262,11 +248,11 @@ That's one run made repeatable. The parts that run it still change, and each cha
 
 ## Tests for the parts, and how a part moves up or down
 
-An **eval** tests a playbook or an agent, not one piece of its output: golden tasks with fixed inputs and known answers, plus simulated users who poke at it the way a person or another model would. Evals run before a part is promoted and after every change to its prompt, its model or its tools. They follow the same rules as checks: break the playbook on purpose and the suite must fail; a suite that passes over zero tasks has failed; and the judge scores against a reference a person wrote, never the agent judging itself.
+Checks judge one piece of output. An **eval** judges the part that made it, a playbook or an agent: golden tasks with fixed inputs and known answers, plus simulated users who poke at it the way a person or another model would. Evals run before a part is promoted and after every change to its prompt, its model or its tools. They follow the same rules as checks: break the playbook on purpose and the suite must fail; a suite that passes over zero tasks has failed; and the judge scores against a reference a person wrote, never the agent judging itself.
 
 Then each part has a way up and a way down.
 
-**A rule moves up** on evidence. A trial rule seen in one project is `observed x1`; a second project makes it `observed x2`; then I adopt or drop it. My exit-code rule was reported by two projects on the same day and I adopted it that day. **It moves down** into a check when a script can decide it. I define and prove a check in my vault first, then move it into keel, my project template, so every new project gets it; the move is a move, not a copy, so there's one version. **It leaves** when its case still passes without it. The signs a list is too long can be measured: a rule never fires in evals, two rules conflict, an agent cites a rule it didn't apply, adding a rule makes old cases fail, or a rule describes one incident rather than a pattern.
+**A rule moves up** on evidence. A trial rule seen in one project is `observed x1`; a second project makes it `observed x2`; then I adopt or drop it. My exit-code rule was reported by two projects on the same day and I adopted it that day. **It moves down** into a check when a script can decide it. I define and prove a check in my own notes project first, then move it into keel, my project template, so every new project gets it; the move is a move, not a copy, so there's one version. **It leaves** when its case still passes without it. The signs a list is too long can be measured: a rule never fires in evals, two rules conflict, an agent cites a rule it didn't apply, adding a rule makes old cases fail, or a rule describes one incident rather than a pattern.
 
 **An agent moves up** through stages, in a design for a company agent registry that isn't built yet:
 
@@ -305,18 +291,7 @@ With identity, rules and a record, the last question is what happens with many p
 
 Follow one request through the design. None of it has run end to end; the closest is the single filing run above. An engineer in a firmware project asks for a status page with a figure of the boot sequence.
 
-```
-engineer A ──ask──▶ repo agent (resident, firmware project)
-    ├─ frames the ask: five questions, predicted answers, A confirms
-    ├─ orchestrate script ─▶ worker 1: page text   (owns page.md)
-    │                      ▶ worker 2: data table  (owns data.json)
-    ├─ calls shop agent: front end
-    │    ├─ brings its playbooks: figure kernel, figure checks, examples
-    │    ├─ takes context from the firmware project
-    │    └─ hands back a figure that passed the figure audit
-    ├─ ◀── results; checks; fresh review
-    └─ ledger node "status page": evidence cited, reviewer is engineer B
-```
+<Diagram id="agents-company-request" />
 
 Now make it a hundred engineers in forty projects, and look at what multiplies and what stays single:
 
@@ -378,8 +353,15 @@ ok
 
 ## What to remember
 
-- A rule a script can decide belongs in a check, and the builder never edits the check.
-- Make a new agent only for a new edge (permissions, data, owner), never for a topic; coordination is a script.
-- Every rule carries the case that created it, rules move up on evidence, and an agent can always be demoted without asking.
+- Each failure traced back to a decision that lived in prose; the fix is to give that decision to something that can hold it.
+- A rule a script can decide belongs in a check, proved by watching it fail, and the builder never edits the check.
+- The kernel builds and the check judges; what looks like the model's taste is a person's taste, written down as rules, code and examples.
+- A playbook is one responsibility; a new agent needs a new edge (permissions, data, owner), never a new topic, and coordinating workers is a script's job.
+- A rule lives at the level where its decision is made, and a run stops for a person only when a step can't be undone, touches security, leaves the workspace, rests on guesses or spends past a limit.
+- Every rule carries its case, rules move up on evidence, and an agent can always be demoted without asking.
+- What grows with a company is cheap and short-lived; what holds quality (decks, checks, shared agents, the record) stays single.
+- You don't need to read code to use any of this, only to know which parts of your work are fixed and which need judgment.
 
-For where the split between fixed steps and agents comes from, read Anthropic's essay *Building effective agents*.
+That's the foundry's bargain, made for agents. Nobody asks the designer to be careful. They get a deck they can't edit, and their judgment is kept for the architecture.
+
+To read next: Anthropic's essay *Building effective agents*, on where the split between fixed steps and agents comes from.
