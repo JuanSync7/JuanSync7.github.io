@@ -97,8 +97,17 @@ function template(fig: HTMLElement, spec: Blueprint, view: View): () => void {
   return watch(fig, redraw);
 }
 
+/** Redraws when the figure's width changes. Its height follows the drawing (the fit scales the
+ *  sheet, the sheet sets the height), so reacting to height too can feed back on itself: on a slow
+ *  runner the fit flips between two values and the figure never holds still. */
 function watch(fig: HTMLElement, redraw: () => void): () => void {
-  const ro = new ResizeObserver(redraw);
+  let width = -1;
+  const ro = new ResizeObserver((entries) => {
+    const w = Math.round(entries[entries.length - 1]?.contentRect.width ?? 0);
+    if (w === width) return;
+    width = w;
+    redraw();
+  });
   ro.observe(fig);
   void document.fonts.ready.then(redraw);
   return () => ro.disconnect();

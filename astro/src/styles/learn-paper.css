@@ -3,8 +3,8 @@
    style of my /learn articles, with just a highlight colour"; 24 Oct 2026: paper body, night
    chrome). A reader in dark mode keeps the night page's own ground, as a post does (25 Oct 2026:
    the paper showed white on a phone in dark mode). Inside .paper the night tokens are remapped, so
-   night-prose.css sets the type either way. Code stays in a dark terminal window in both ("if there
-   is code, it goes in a macOS-style terminal window"). The --bg / --panel / ... names are what
+   night-prose.css sets the type either way. Code sits in a terminal window that follows the theme ("if
+   there is code, it goes in a macOS-style terminal window"), white on light and dark on dark. The --bg / --panel / ... names are what
    Mermaid.astro reads. */
 
 .night .paper {

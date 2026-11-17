@@ -151,7 +151,7 @@ export default function LessonLog({ lessons, note, allHref }: Props) {
       <div className="log-foot">
         <p className="log-note">{note}</p>
         <a className="log-all" href={allHref}>
-          See all lessons →
+          See all lessons
         </a>
       </div>
       <p className="nt-sr" aria-live="polite">

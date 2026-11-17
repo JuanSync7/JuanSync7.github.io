@@ -66,7 +66,7 @@ export default function VaultFileCabinet() {
           })}
         </nav>
       </div>
-      <div className="vc-readout"><span className="pr-comment">// open a folder</span><p className="pr-title">{FOLDERS[displayed.selected]?.note ?? 'Choose a thread.'}</p><span className="pr-comment">Hover, focus or tap to explore ↗</span></div>
+      <div className="vc-readout"><span className="pr-comment">// open a folder</span><p className="pr-title">{FOLDERS[displayed.selected]?.note ?? 'Choose a thread.'}</p><span className="pr-comment">Hover, focus or tap to explore</span></div>
     </div>
   );
 }

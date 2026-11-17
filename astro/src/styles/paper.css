@@ -83,7 +83,7 @@ html.paper {
   --nt-code-ground: var(--pp-term-ground);
   --nt-code-line: var(--pp-term-line);
   --nt-code-ink: var(--pp-term-ink);
-  --nt-code-muted: var(--pp-term-dot-2);
+  --nt-code-muted: var(--pp-term-muted);
   --nt-term-red: var(--pp-term-dot-1);
   --nt-term-amber: var(--pp-term-dot-2);
   --nt-term-green: var(--pp-term-dot-3);
@@ -430,4 +430,17 @@ body.paper {
 
 .pp-figure-defs {
   position: absolute;
+}
+
+/* An icon drawn in the night palette (HardwareIcon, a SlideIcon in its night tone) takes the page's
+   colours the way a figure does (see --pp-figure-filter): ink on cream with the signal orange by day,
+   the same on gunmetal by night. A download preview leaves it off to show the exported colours. */
+.page-ink {
+  filter: var(--pp-figure-filter, none);
+  mix-blend-mode: var(--pp-figure-blend, normal);
+}
+
+span.page-ink {
+  display: inline-flex;
+  flex-shrink: 0;
 }

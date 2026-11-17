@@ -31,7 +31,7 @@ try {
   await page.locator('.atlas-inspector').screenshot({ path: 'hardware-out/workbench-desktop.png' });
   const wholePaths = await page.locator('.atlas-grid svg path').count();
   assert.ok(wholePaths > 1000, 'The gallery contains the detailed structural drawings');
-  await page.getByRole('button', { name: 'Isolate part ↗', exact: true }).click();
+  await page.getByRole('button', { name: 'Isolate part', exact: true }).click();
   await page.waitForFunction(() => new URL(location.href).searchParams.get('isolate') === '1');
   await page.locator('.atlas-parts button').nth(3).click();
   await page.waitForFunction(() => document.querySelector('.atlas-stage canvas')?.getAttribute('data-readout') === 'Silicon die');
@@ -42,7 +42,7 @@ try {
   await page.getByRole('button', { name: 'icon', exact: true }).click();
   await page.waitForFunction(() => new URL(location.href).searchParams.get('detail') === '0');
   await page.getByRole('button', { name: 'engineering', exact: true }).click();
-  await page.getByRole('button', { name: 'View assembly ↙', exact: true }).click();
+  await page.getByRole('button', { name: 'View assembly', exact: true }).click();
 
   await page.getByRole('searchbox').fill('no-such-hardware');
   assert.equal(await page.locator('.atlas-card').count(), 0);
@@ -59,7 +59,7 @@ try {
   await page.getByRole('button', { name: 'wireframe', exact: true }).click();
   await page.waitForFunction((before) => document.querySelector('.atlas-stage canvas')?.toDataURL() !== before, original);
   await page.getByRole('button', { name: 'front', exact: true }).click();
-  await page.getByRole('button', { name: 'Assemble ↘', exact: true }).click();
+  await page.getByRole('button', { name: 'Assemble', exact: true }).click();
   await page.waitForFunction(() => new URL(location.href).searchParams.get('open') === '0');
 
   const individual = page.waitForEvent('download');

@@ -1,0 +1,64 @@
+---
+import CodeExample from './CodeExample.astro';
+import { DTCG_FILES, SITE_DTCG, SITE_TOKENS } from '../../lib/site-tokens';
+import './standards.css';
+
+/** The site's tokens as W3C Design Tokens: the files, a sample, and what stays CSS-only. */
+const types = new Map<string, number>();
+for (const group of Object.values(SITE_DTCG.foundation))
+  for (const t of Object.values(group as Record<string, { $type?: string }>)) {
+    const k = t.$type ?? 'reference';
+    types.set(k, (types.get(k) ?? 0) + 1);
+  }
+const pick = (g: string, k: string) => (SITE_DTCG.foundation[g] as Record<string, unknown> | undefined)?.[k];
+const sample = JSON.stringify(
+  { pp: { 'ink-strong': pick('pp', 'ink-strong'), 'w-nav': pick('pp', 'w-nav') }, nt: { 'dur-morph': pick('nt', 'dur-morph') } },
+  null,
+  2,
+);
+const reasons = new Map<string, string[]>();
+for (const s of SITE_DTCG.skipped) reasons.set(s.reason, [...(reasons.get(s.reason) ?? []), s.name]);
+---
+
+<div class="std-export">
+  <dl class="std-counts">
+    <div><dt>CSS tokens</dt><dd>{SITE_TOKENS.length}</dd></div>
+    <div><dt>Exported</dt><dd>{SITE_DTCG.exported}</dd></div>
+    <div><dt>CSS-only</dt><dd>{SITE_DTCG.skipped.length}</dd></div>
+    {[...types].sort((a, b) => b[1] - a[1]).map(([k, n]) => <div><dt>{k}</dt><dd>{n}</dd></div>)}
+  </dl>
+  <ul class="std-files">
+    {
+      Object.keys(DTCG_FILES).map((f) => (
+        <li>
+          <a href={`/tokens/${f}`} download>
+            {f}
+          </a>
+          <span>
+            {f.endsWith('resolver.json')
+              ? 'joins the set and the theme'
+              : f.includes('.dark.')
+                ? 'the colours on a dark page'
+                : f.includes('.light.')
+                  ? 'the same colours on a light page'
+                  : 'every exported token'}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+  <CodeExample title="juansync.tokens.json · three tokens" code={sample} />
+  <details class="ds-disclosure">
+    <summary>CSS-only · {SITE_DTCG.skipped.length} tokens the format cannot hold yet</summary>
+    {
+      [...reasons].map(([reason, names]) => (
+        <div class="std-skip">
+          <p>
+            {names.length} · {reason}
+          </p>
+          <code>{names.join('  ')}</code>
+        </div>
+      ))
+    }
+  </details>
+</div>
