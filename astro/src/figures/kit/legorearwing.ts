@@ -22,7 +22,7 @@ const ACTUATOR: Shape[] = [
   flapTiles(2, 4, 2),
 ]; // prettier-ignore
 /** The second element, hung from the main plane, the third (short and steep) hung from it. */
-const SECOND = flap('second', HINGE, 0.28, SPAN, (h) => flap('third', h, 0.36, SPAN), ACTUATOR);
+const SECOND = flap('second', HINGE, 0.28, SPAN, { make: (h) => flap('third', h, 0.36, SPAN), top: ACTUATOR });
 
 /** The endplate on the bracket's side studs, a row below its foot and three up the flange: its
  *  leading edge raked back over the tyre (a tapered plate, the middle row a stud short), a plate

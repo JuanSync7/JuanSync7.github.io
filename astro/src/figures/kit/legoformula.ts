@@ -32,7 +32,7 @@ const HALF: Pose = { r: [1, 0, 0, 0, 1, 0, 0, 0, 1], o: [0, 0, 0.5] };
 // Front wing: the endplate bracket stands on the footplate; the flaps' hinge on the main plane.
 const FW_BRACKET: Shape = { kind: 'part', part: 'bracket', x: 0, y: 1, z: 1, w: 2, d: 1, h: 1, flange: 2, tone: 'line4' }; // prettier-ignore
 const FW_BRACKET2: Shape = { ...FW_BRACKET, x: 2 };
-const FW_HINGE: Shape = { kind: 'part', part: 'hinge', x: 1, y: 2, z: 2, w: 4, d: 1, h: 1, dir: 'z-', tone: 'line4' };
+const FW_HINGE: Shape = { kind: 'part', part: 'hinge', x: 1, y: 2, z: 1, w: 6, d: 1, h: 1, dir: 'z-', tone: 'line4' };
 /** The front endplate: tiles straight on the 4 x 2 flange of two brackets (99207), one plate
  *  thick, its top front corner rounded (the drawing's 12 mm plate is 54 mm here). */
 const FW_ENDPLATE: Shape = {
@@ -78,25 +78,27 @@ export const F1: Shape[] = [
   // Front wing, to the drawing of the `frontwing` sketch (kit/legosketches.ts): a footplate on the
   // ground at each tip with the endplate's bracket on it; the main plane an arrowhead of two
   // tapered plates, swept back to the tips; on its back row the click hinges for the two active
-  // flaps, each a stud in chord at the drawing's angles, the second hung from the first. Each
-  // hinge's knuckle takes a stud, so the flaps reach 1.4 studs past the drawing's endplate, and
-  // they span z 2 to 6, clear of the front tyre; a pylon from the middle up to the nose.
+  // flaps, each a stud in chord at the drawing's angles, the second hung from the first. The first
+  // runs from the endplate to the nose (z 1 to 7, the drawing's 0.7 to 6.1); the second, a stud
+  // further back, is 4 long (z 2 to 6) to stay clear of the front tyre. Each hinge's knuckle takes
+  // a stud, so the second flap ends 1.4 studs behind the drawn endplate: real hinges at this scale
+  // cannot stack the elements closer. The pylon stands on both hinge rows up to the nose.
   ...sym([
     { kind: 'part', part: 'plate', x: 0, y: 0, z: 0, w: 4, d: 2, h: 1, tone: 'line4' },
     FW_BRACKET,
     FW_BRACKET2,
-    // Tiles over the brackets' studs, the first across onto the main plane: it ties the tip to it.
+    // A tile from the first bracket's stud across onto the main plane: it ties the tip to it. The
+    // first flap's hinge row takes the next stud; the flap swings over the other two.
     { kind: 'part', part: 'tile', x: 0, y: 2, z: 1, w: 1, d: 2, h: 1, tone: 'line4' },
-    { kind: 'part', part: 'tile', x: 1, y: 2, z: 1, w: 3, d: 1, h: 1, tone: 'line4' },
     FW_ENDPLATE,
     { kind: 'part', part: 'plate', x: 0, y: 1, z: 2, w: 2, d: 1, h: 1, tone: 'line4' },
     { kind: 'wedge', x: 0, y: 1, z: 3, len: 4, wid: 2, dir: 'z-', hand: 'L', tone: 'line4' },
     FW_HINGE,
-    { kind: 'block', x: 1, y: 3, z: 2, w: 1, d: 4, h: 1, top: 'tiles', tone: 'line4' },
-    flap('front-flap', FW_HINGE, 0.27, 4, (h) => flap('second', h, 0.22, 4)),
+    { kind: 'block', x: 1, y: 3, z: 1, w: 1, d: 5, h: 1, top: 'tiles', tone: 'line4' },
+    flap('front-flap', FW_HINGE, 0.27, 6, { at: 1, span: 4, make: (h) => flap('second', h, 0.22, 4) }),
   ]),
-  { kind: 'part', part: 'plate', x: 1, y: 2, z: 6, w: 1, d: 2, h: 1, tone: 'line4' },
-  { kind: 'block', x: 1, y: 3, z: 6, w: 1, d: 2, h: 3, tone: 'line4' },
+  { kind: 'part', part: 'plate', x: 1, y: 3, z: 6, w: 1, d: 2, h: 1, tone: 'line4' },
+  { kind: 'block', x: 1, y: 4, z: 6, w: 1, d: 2, h: 2, tone: 'line4' },
   // Nose, to the drawing of `nose`: low at the tip on its pylon (top 3.2 studs, drawn 3.0 to
   // 3.5), a curved rise, then a plate bridging onto the front axle's mount (top 4.0, drawn 4.0).
   { kind: 'block', x: 1, y: 6, z: 6, w: 6, d: 2, h: 1, tone: 'inkMuted' },

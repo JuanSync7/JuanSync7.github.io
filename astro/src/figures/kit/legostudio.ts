@@ -21,8 +21,8 @@ import { LEGO_MODELS } from './legomodels';
 import { build } from './legoswap';
 import { drawingSheet, partsListSheet } from './draftsheet';
 import { bomSheet } from './legobom';
-import { sketchModel } from './legosketch';
-import { LEGO_SKETCHES, partsOf } from './legosketches';
+import { sketchModel, type SketchPart } from './legosketch';
+import { itemsOf, LEGO_SKETCHES, partsOf, type Sketch } from './legosketches';
 
 /** The review bench for LEGO models, used by `npm run lego:sheet` (never by a page): the
  *  wireframe plan in four views, then the smooth isometric model and the LEGO each turned
@@ -57,6 +57,9 @@ const ORBIT: View[] = [
   { label: 'low', az: 30, el: 4 },
   { label: 'under', az: 210, el: -35 },
 ];
+
+/** A sketch's own parts with its context, and for a general arrangement every item's parts. */
+const everyPart = (s: Sketch): SketchPart[] => [...s.parts, ...itemsOf(s).flatMap((i) => i.parts)];
 
 /** Every catalogue shape, as the catalogue sheet shows them, each named by its part key. */
 const SAMPLES: Piece[] = CATALOGUE.map((p) => ({ ...p, tone: p.kind === 'wheel' ? 'line2' : 'inkSoft' }));
@@ -111,7 +114,7 @@ export function sheet(id: string, mode: Mode, tile = 360, only = ''): string {
     // In `compare` the sketch is drawn in the signal colour over the plan's wireframe.
     frame = sketchModel(partsOf(sketch), true, own);
     const m = new Group();
-    if (mode === 'sketch3d') m.add(sketchModel(sketch.parts, false, own));
+    if (mode === 'sketch3d') m.add(sketchModel(everyPart(sketch), false, own));
     if (mode === 'compare') m.add(wireModel(shapes, 'inkSoft', own));
     models = [m];
   } else if (sketch && (mode === 'solid' || mode === 'lego')) {
@@ -153,7 +156,7 @@ export function sheet(id: string, mode: Mode, tile = 360, only = ''): string {
     const box = new Box3().setFromObject(frame ?? g);
     if (box.isEmpty()) box.set(new Vector3(-1, -1, -1), new Vector3(1, 1, 1));
     const cam = aim(box, v, aspect);
-    const ref = lined ? sketchModel(lined.parts, true, own, mode === 'compare' ? 'signal' : undefined, cam.getWorldDirection(new Vector3())) : null; // prettier-ignore
+    const ref = lined ? sketchModel(everyPart(lined), true, own, mode === 'compare' ? 'signal' : undefined, cam.getWorldDirection(new Vector3())) : null; // prettier-ignore
     if (ref) g.add(ref);
     r.render(scene, cam);
     if (ref) g.remove(ref);
