@@ -4,6 +4,7 @@
 //   length     every wire runs at least MIN_WIRE (the length of Slurm → EDA tools)      R-DIAG-1
 //   clearance  a wire passes no box it does not join closer than WIRE_CLEARANCE         R-DIAG-3
 //   corner     a wire meets a box at least CORNER_INSET from its corners                R-DIAG-4
+//   overlap    no two wires share a run or run side by side closer than WIRE_CLEARANCE R-DIAG-6
 //   label      a label is never cut by a wire, never sits on a box, and sits next to a wire  R-DIAG-15
 //   crossings  at most the diagram's allowed crossings                                  R-DIAG-8
 //   joined     every box but a band or a frame is touched by a wire                     R-DIAG-11
@@ -79,6 +80,24 @@ function check(diagram, { nodes, edges, labels, unitsPerPx, maxCrossings }) {
     if (reach > LABEL_REACH) fail('label', `"${l.text}" is ${reach.toFixed(0)} from the nearest wire, over ${LABEL_REACH}`);
   }
 
+  // Two wires never lie on top of each other or run side by side closer than the clear gap: a run
+  // two wires share hides one of them (R-DIAG-6).
+  for (let i = 0; i < allSegs.length; i++) {
+    for (let j = i + 1; j < allSegs.length; j++) {
+      if (allSegs[i].e === allSegs[j].e) continue;
+      const [[ax, ay], [bx, by]] = allSegs[i].s;
+      const [[cx, cy], [dx, dy]] = allSegs[j].s;
+      const h1 = ay === by, h2 = cy === dy;
+      if (h1 !== h2) continue;
+      const [a0, a1] = h1 ? [Math.min(ax, bx), Math.max(ax, bx)] : [Math.min(ay, by), Math.max(ay, by)];
+      const [c0, c1] = h1 ? [Math.min(cx, dx), Math.max(cx, dx)] : [Math.min(cy, dy), Math.max(cy, dy)];
+      const shared = Math.min(a1, c1) - Math.max(a0, c0);
+      const apart = h1 ? Math.abs(ay - cy) : Math.abs(ax - cx);
+      if (shared > 0 && apart < WIRE_CLEARANCE)
+        fail('overlap', `${wireName(allSegs[i].e)} and ${wireName(allSegs[j].e)} run ${apart.toFixed(0)} apart for ${shared.toFixed(0)}, under ${WIRE_CLEARANCE}`);
+    }
+  }
+
   let crossings = 0;
   for (let i = 0; i < allSegs.length; i++) {
     for (let j = i + 1; j < allSegs.length; j++) {
@@ -118,5 +137,5 @@ if (failures.length) {
   console.error(`diagrams: ${failures.length} rule failure(s):\n${failures.join('\n')}`);
   process.exit(1);
 }
-console.log(`system map: ${EDGES.length} wires and ${LABELS.length} labels pass (length ≥ ${MIN_WIRE}, clearance ≥ ${WIRE_CLEARANCE}, corners ≥ ${CORNER_INSET}, ${mapCrossings}/${MAX_CROSSINGS} crossings)`);
+console.log(`system map: ${EDGES.length} wires and ${LABELS.length} labels pass (length ≥ ${MIN_WIRE}, clearance ≥ ${WIRE_CLEARANCE}, no shared runs, corners ≥ ${CORNER_INSET}, ${mapCrossings}/${MAX_CROSSINGS} crossings)`);
 console.log(`learn diagrams: ${diagrams.length} pass the same rules (${diagrams.map((d) => d.id).join(', ') || 'none'})`);
