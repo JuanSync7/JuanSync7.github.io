@@ -1,5 +1,6 @@
 ---
 import { EDGES, LABELS, MAP_H, MAP_W, NODES, STEPS } from '../../data/system-map';
+import { SYSTEM } from '../../data/home';
 
 // The map is words and connections, so it is DOM, not a figure (CLAUDE.md, Figures 2):
 // boxes are real text, and one SVG layer underneath carries the connectors.
@@ -11,7 +12,7 @@ const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([
 
 <section id="system" class="nt-wrap system">
   <div class="cap">
-    <span class="label">// 0x00 · the system I'm building</span>
+    <span class="label">|← {SYSTEM.caption} →|</span>
     <span class="key">arrows flow the way data moves · dashed = next</span>
   </div>
 
@@ -66,6 +67,7 @@ const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([
       </li>
     ))}
   </ol>
+  <p class="legend">{SYSTEM.legend}</p>
   <p class="vault-link"><a href="/vault/">Inside the experience vault: the graph, retrieval and checks</a></p>
 </section>
 
@@ -78,6 +80,12 @@ const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([
     gap: var(--hf-space-6);
     padding-top: var(--nt-section-y-tight);
     padding-bottom: var(--nt-section-y);
+  }
+
+  .legend {
+    max-width: var(--nt-measure);
+    margin: 0;
+    color: var(--nt-ink-soft);
   }
 
   .vault-link {

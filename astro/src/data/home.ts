@@ -12,6 +12,8 @@ export interface Principle {
 }
 
 export interface Case {
+  /** The principle (its index in THINKING.principles) this case taught. */
+  principle: number;
   title: string;
   noticed: string;
   did: string;
@@ -27,21 +29,51 @@ export interface Role {
 
 
 export const HERO = {
-  place: 'Reading, UK',
-  role: PROFILE.role_line,
-  lead: 'From individual productivity',
-  accent: 'to company-wide.',
-  body: "I build the system that puts AI to work across a chip-design company: governed agents on every engineer's machine, knowledge siloed by project, one gateway for every model, and a ledger that ties each customer requirement to the work and evidence behind it.",
-  at: 'Aion Silicon',
-  after: ', after three years designing chips.',
-  primary: { label: 'See the system', href: '#system' },
-  secondary: { label: 'Get in touch', href: '#contact' },
+  label: 'AI engineer · Reading, UK',
+  lead: 'Chip-design rigour,',
+  accent: 'applied to AI.',
+  body: 'AI engineer with an ASIC background.',
+  // The one line that names the current employer on the home page. Change it here when that changes.
+  now: { role: 'AI engineer', org: 'Aion Silicon' },
+  primary: { label: 'See my work', href: '#work' },
+  secondary: { label: 'Download CV', href: PROFILE.cv_file },
+} as const;
+
+/** The system map's caption and legend: the pattern, not one company's setup. */
+export const SYSTEM = {
+  caption: 'From individual productivity to company-wide intelligence.',
+  legend:
+    "Governed agents on every engineer's machine, knowledge siloed by project, one gateway for every model, and a ledger that ties each customer requirement to the work and evidence behind it.",
+  steps: 'Read it step by step',
+} as const;
+
+/** The home page's short case for the vault; the full statement is VAULT_STATEMENT (about.ts), on /about. */
+export const VAULT = {
+  label: '// 0x01 · the vault',
+  title: 'Years of experience used to be the measure.',
+  accent: 'Now it’s the vault.',
+  definition:
+    'An experience vault is an engineer’s own record of every problem solved, decision made and lesson learnt, in a form any AI can use.',
+  me: 'I build AI systems that scale with what engineers know, starting with my own.',
+  cta: { label: 'Why the vault matters', href: '/about/#vault' },
+} as const;
+
+/** The home page's hook for how I think: where the habit comes from, and why it matters with agents. */
+export const PATCH = {
+  label: '// 0x03 · how I think',
+  title: 'You can’t patch silicon.',
+  lead: 'Agents now build in hours. That makes the decision before it the part worth getting right.',
+  decide: { label: 'decide', who: 'me', steps: 'spec · explore · verify · verify · verify' },
+  build: { label: 'build', who: 'agents', step: 'tape-out' },
+  close: 'Decide slowly,',
+  accent: 'then move fast.',
+  cta: { label: 'How I think', href: '/about/#thinking' },
 } as const;
 
 export const NAV = [
   { label: 'system', href: '/#system' },
   { label: 'thinking', href: '/#thinking' },
-  { label: 'experience', href: '/#experience' },
+  { label: 'experience', href: '/about/#experience' },
   { label: 'about', href: '/about/' },
   { label: 'work', href: '/#work' },
   { label: 'lab', href: '/lab/' },
@@ -54,7 +86,7 @@ export const NAV = [
 ] as const;
 
 export const THINKING = {
-  label: '// 0x01 · how I think',
+  label: '// how I think',
   title: 'Decide slowly,',
   accent: 'then move fast.',
   body: 'Before you build is the cheap window. I lay everything out up front (the plan, the workflows, the system) while being wrong still costs an edit, and everyone can see it and push back. Once a project ramps up, every mistake costs more and the team ends up firefighting.',
@@ -93,21 +125,24 @@ export const THINKING = {
 } as const;
 
 export const CASES = {
-  label: '// 0x02 · problems, reasoned through',
+  label: '// problems, reasoned through',
   title: 'The obvious fix is usually wrong.',
   body: 'Three problems from the last year, and what changed once I looked past the first answer.',
   items: [
     {
+      principle: 1,
       title: 'An agent that keeps its own ledger',
       noticed: 'Hashing every record, like a blockchain, proves nothing was changed after it was written. It doesn’t prove the record was true. And one writer checking itself is the opposite of what makes a blockchain trustworthy.',
       did: 'Designed Jarvis around independent checkers and a mirror of the ledger the writer can’t rewrite. Work done outside the system gets recorded, but it can’t turn a task green until it’s checked inside.',
     },
     {
+      principle: 4,
       title: 'RAG answers that weren’t good enough',
       noticed: 'The instinct is to blame the model. Measuring first showed 18% of the corpus had silently converted to empty text, and the reranker added to improve results was cutting nDCG by 39%.',
       did: 'Fixed the conversion and made it provable, which became doc2md’s lossless gate. From then on, a change stayed only if the benchmark backed it.',
     },
     {
+      principle: 3,
       title: 'Coding agents next to customer IP',
       noticed: 'Rules written into a prompt aren’t controls. A model can be talked out of an instruction; a hook outside the model can’t be.',
       did: 'Enforced the policy outside the model: IT-managed rules users can’t override, hooks that block secrets, every action logged per person. Then wrote down what isn’t covered yet, so IT never claims more than the system delivers.',
@@ -116,7 +151,7 @@ export const CASES = {
 } as const;
 
 export const EXPERIENCE = {
-  label: '// 0x03 · experience',
+  label: '// 0x02 · what I do',
   title: 'Forward-deployed, in-house.',
   roles: PROFILE.experience.map(({ title, org, place, summary, points }): Role => ({
     title,
@@ -127,18 +162,18 @@ export const EXPERIENCE = {
   })),
 } as const;
 
-/** The landing's view of the current role: one big figure and one short line per area. The full
- *  text of each area stays in profile.json and is read on /about. `tag` matches a profile point. */
+/** The landing's view of what I do: one short line per area and the repo that backs it (`repo` names a
+ *  REPOS item; null when the evidence is private work with no repo). The full text of each area stays
+ *  in profile.json and is read on /about. `tag` matches a profile point. */
 export const EXPERIENCE_TILES = [
-  { kind: 'adoption', tag: 'adoption & governance', stat: '~100', title: 'Claude Code, company-wide', caption: 'engineers using it daily, under a policy IT owns and users cannot override.' },
-  { kind: 'knowledge', tag: 'knowledge', stat: '1 RAG', title: 'Company knowledge', caption: 'one company-wide base on AWS Bedrock, plus a private one per customer project.' },
-  { kind: 'measurement', tag: 'measurement', stat: '−39%', title: 'Measured first', caption: 'the nDCG a reranker was costing, found before anyone shipped it.' },
-  { kind: 'agents', tag: 'agents', stat: '1 graph', title: 'Agentic delivery', caption: 'owned tasks with typed inputs and outputs, traced to the customer requirement.' },
-  { kind: 'platform', tag: 'platform', stat: '1 API', title: 'One gateway', caption: 'every team reaches any model, Bedrock or self-hosted, through LiteLLM.' },
-  { kind: 'visibility', tag: 'visibility', stat: '3.3M', title: 'Licence analytics', caption: 'Slurm jobs analysed to forecast licence use and cut memory waste.' },
+  { kind: 'adoption', repo: 'claude-code-linux-setup', tag: 'adoption & governance', stat: '~100', title: 'Claude Code, company-wide', caption: 'engineers using it daily, under a policy IT owns and users cannot override.' },
+  { kind: 'knowledge', repo: 'doc2md', tag: 'knowledge', stat: '1 RAG', title: 'Company knowledge', caption: 'one company-wide base on AWS Bedrock, plus a private one per customer project.' },
+  { kind: 'measurement', repo: 'doc2md', tag: 'measurement', stat: '−39%', title: 'Measured first', caption: 'the nDCG a reranker was costing, found before anyone shipped it.' },
+  { kind: 'agents', repo: 'project-keel', tag: 'agents', stat: '1 graph', title: 'Agentic delivery', caption: 'owned tasks with typed inputs and outputs, traced to the customer requirement.' },
+  { kind: 'platform', repo: 'bedrock-platform', tag: 'platform', stat: '1 API', title: 'One gateway', caption: 'every team reaches any model, Bedrock or self-hosted, through LiteLLM.' },
+  { kind: 'visibility', repo: null, tag: 'visibility', stat: '3.3M', title: 'Licence analytics', caption: 'Slurm jobs analysed to forecast licence use and cut memory waste.' },
 ] as const;
 
-export const EXPERIENCE_CTA = { label: 'Read the full story', href: '/about/' } as const;
 
 export const OFF_HOURS = {
   title: 'Hobbies',
@@ -183,9 +218,9 @@ export const FOOTER_GROUPS = [
     label: '// on the home page',
     links: [
       { label: 'System', href: '/#system' },
-      { label: 'Thinking', href: '/#thinking' },
-      { label: 'Experience', href: '/#experience' },
+      { label: 'The vault', href: '/#the-vault' },
       { label: 'Work', href: '/#work' },
+      { label: 'Thinking', href: '/#thinking' },
     ],
   },
 ] as const;
