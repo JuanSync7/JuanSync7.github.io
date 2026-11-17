@@ -19,6 +19,7 @@ import { legoModel } from './legoscene';
 import { LEGO_MODELS } from './legomodels';
 import { build } from './legoswap';
 import { drawingSheet, partsListSheet } from './draftsheet';
+import { bomSheet } from './legobom';
 import { sketchModel } from './legosketch';
 import { LEGO_SKETCHES, partsOf } from './legosketches';
 
@@ -26,7 +27,17 @@ import { LEGO_SKETCHES, partsOf } from './legosketches';
  *  wireframe plan in four views, then the smooth isometric model and the LEGO each turned
  *  through 360 degrees, and the catalogue of pieces. Every stage is read before the next. */
 
-export type Mode = 'wire' | 'solid' | 'lego' | 'catalogue' | 'sketch' | 'sketch3d' | 'compare' | 'drawing' | 'parts';
+export type Mode =
+  | 'wire'
+  | 'solid'
+  | 'lego'
+  | 'catalogue'
+  | 'sketch'
+  | 'sketch3d'
+  | 'compare'
+  | 'drawing'
+  | 'parts'
+  | 'bom';
 interface View {
   label: string;
   az: number;
@@ -113,6 +124,7 @@ export function sheet(id: string, mode: Mode, tile = 360, only = ''): string {
   // A sketch's drawing is a whole A3 sheet, `tile` pixels wide when that is given.
   if (mode === 'drawing') return drawingSheet(id, tile < 1200 ? 2400 : tile);
   if (mode === 'parts') return partsListSheet(id, tile < 1200 ? 2400 : tile);
+  if (mode === 'bom') return bomSheet(id, 2400, Number(only) || 1);
   const sketch = LEGO_SKETCHES[id];
   const shapes = LEGO_MODELS[sketch ? sketch.model : id];
   if (!shapes) throw new Error(`lego: no model ${id}`);

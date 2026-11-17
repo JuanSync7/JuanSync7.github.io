@@ -5,6 +5,7 @@ import {
   dimmer,
   DOC,
   SCALES,
+  titleRows,
   TURN,
   VIEWS,
   type DraftView,
@@ -17,7 +18,19 @@ import { arrow, chain, hatch, sectionAt, symbolLines, type P2 } from './draftlin
 import { leadingEdge, sketchGeometry } from './legosketch';
 import { LEGO_SKETCHES, partsOf, type Sketch } from './legosketches';
 
-export { A3, AREA, DOC, TURN, VIEWS, type DraftView, type Label, type Layout, type Plan } from './draftbase';
+export {
+  A3,
+  AREA,
+  DOC,
+  titleRows,
+  TURN,
+  type TitleData,
+  VIEWS,
+  type DraftView,
+  type Label,
+  type Layout,
+  type Plan,
+} from './draftbase';
 export { partsOf } from './legosketches';
 
 /** The layout of a sketch's drawing (kit/legodraft draws it). A general arrangement is laid out
@@ -178,18 +191,6 @@ export const draftLayout = (id: string): Layout => plan(id).layout;
  *  general arrangement is two sheets of one document: the drawing, then its parts list. */
 export function titleFields(l: Layout, sheet = 1): [string, string, number][][] {
   const s = l.sketch;
-  const sheets = s.doc === 'ga' ? 2 : 1;
-  return [
-    [
-      ['Title', s.title, 120],
-      ['Document type', sheet === 2 ? 'Parts list' : DOC[s.doc], 60],
-    ],
-    [
-      ['Creator', 'Claude', 45],
-      ['Approval person', '-', 45],
-      ['Document status', 'In work', 45],
-      ['Paper', 'A3', 45],
-    ],
-    [['Legal owner', 'Juan Kok', 50], ['Date of issue', s.drawn, 40], ['Rev', s.revision, 15], ['Sheet', `${sheet}/${sheets}`, 20], ['Identification no.', s.number, 55]], // prettier-ignore
-  ];
+  const type = sheet === 2 ? 'Parts list' : DOC[s.doc];
+  return titleRows({ ...s, type, sheet, sheets: s.doc === 'ga' ? 2 : 1 });
 }

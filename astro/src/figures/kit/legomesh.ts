@@ -68,8 +68,14 @@ export function body(p: Piece, o: BodyOpts = { studs: true, gap: GAP }): Part[] 
     case 'tile':
       return merge([o.under ? hollow(w, d, top, g) : box(g, 0, g, w - g, top, d - g), ...studded()]);
     case 'grille': {
-      const ribs = Array.from({ length: w * 2 }, (_, k) => box(k * 0.5 + 0.08, top - 0.12, g + 0.1, k * 0.5 + 0.3, top, d - g - 0.1)); // prettier-ignore
-      return merge([box(g, 0, g, w - g, top - 0.12, d - g), ...ribs]);
+      // As the real 1 x 2 grille tile (2412b): two slots a stud along its length, open through,
+      // between three bars, closed at each end by a half-height block.
+      const long = w >= d;
+      const [L, S] = long ? [w, d] : [d, w];
+      const at = (a0: number, s0: number, a1: number, s1: number, y1: number): BufferGeometry =>
+        long ? box(a0, 0, s0, a1, y1, s1) : box(s0, 0, a0, s1, y1, a1);
+      const bars = Array.from({ length: S }, (_, j) => [0, 0.4, 0.8].map((z) => at(g, j + Math.max(z, g), L - g, j + Math.min(z + 0.2, 1 - g), top))).flat(); // prettier-ignore
+      return merge([...bars, at(g, g, 0.25, S - g, top / 2), at(L - 0.25, g, L - g, S - g, top / 2)]);
     }
     case 'technic': {
       const holes = Array.from({ length: w - 1 }, (_, k) => [g - 0.01, d - g + 0.01].map((z) => new CylinderGeometry(0.25, 0.25, 0.04, SEG).rotateX(Math.PI / 2).translate(k + 1, HOLE_Y * PLATE, z))).flat(); // prettier-ignore

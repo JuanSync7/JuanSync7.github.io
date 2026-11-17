@@ -50,7 +50,7 @@ export const F1: Shape[] = [
   { kind: 'block', x: 30, y: 1, z: 4, w: 6, d: 6, h: 2, tone: 'line3' },
   ...sym([
     // Floor edges under the spine, cut back toward the nose, and a bargeboard ahead of each pod.
-    { kind: 'wedge', x: 13, y: 0, z: 1, len: 4, wid: 3, dir: 'x-', hand: 'R', tone: 'line4' },
+    { kind: 'wedge', x: 13, y: 0, z: 2, len: 4, wid: 2, dir: 'x-', hand: 'R', tone: 'line4' },
     { kind: 'block', x: 17, y: 0, z: 2, w: 12, d: 2, h: 1, tone: 'line4' },
     { kind: 'part', part: 'fin', x: 10, y: 3, z: 3, w: 3, d: 1, h: 3, tone: 'ink2' },
     { kind: 'part', part: 'fin', x: 10, y: 3, z: 4, w: 3, d: 1, h: 2, tone: 'ink2' },
@@ -83,7 +83,8 @@ export const F1: Shape[] = [
     FW_BRACKET,
     { kind: 'part', part: 'tile', x: 0, y: 2, z: 1, w: 1, d: 1, h: 1, tone: 'line4' },
     FW_ENDPLATE,
-    { kind: 'wedge', x: 0, y: 1, z: 2, len: 5, wid: 2, dir: 'z-', hand: 'L', tone: 'line4' },
+    { kind: 'part', part: 'plate', x: 0, y: 1, z: 2, w: 2, d: 1, h: 1, tone: 'line4' },
+    { kind: 'wedge', x: 0, y: 1, z: 3, len: 4, wid: 2, dir: 'z-', hand: 'L', tone: 'line4' },
     FW_HINGE,
     flap('front-flap', FW_HINGE, 0.27, 5, (h) => flap('second', h, 0.22, 5, undefined, 1), 1),
   ]),
@@ -166,7 +167,6 @@ export const F1: Shape[] = [
     { kind: 'block', x: 24, y: 3, z: 4, w: 4, d: 1, h: 1, top: 'tiles', tone: 'line3' },
     { kind: 'block', x: 28, y: 3, z: 3, w: 2, d: 2, h: 1, top: 'tiles', tone: 'line3' },
     { kind: 'block', x: 30, y: 3, z: 4, w: 2, d: 1, h: 1, top: 'tiles', tone: 'line3' },
-    { kind: 'block', x: 15, y: 1, z: 2, w: 2, d: 1, h: 1, top: 'tiles', tone: 'line4' },
     { kind: 'block', x: 17, y: 1, z: 2, w: 12, d: 1, h: 1, top: 'tiles', tone: 'line4' },
     { kind: 'block', x: 7, y: 5, z: 2, w: 2, d: 3, h: 1, top: 'tiles', tone: 'line4' },
     { kind: 'block', x: 7, y: 9, z: 3, w: 2, d: 3, h: 1, top: 'tiles', tone: 'line4' },

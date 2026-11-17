@@ -82,3 +82,29 @@ export function dimmer(sketch: Sketch, w: number, h: number, pmm: number, thin: 
     labels.push({ text, x: mx / w, y: my / h, at: 'centre', angle: (Math.atan2(uy, ux) * 180) / Math.PI });
   };
 }
+
+/** The same block for any document of the set: a drawing's sheet or a parts list. */
+export interface TitleData {
+  title: string;
+  type: string;
+  drawn: string;
+  revision: string;
+  number: string;
+  sheet: number;
+  sheets: number;
+}
+export function titleRows(t: TitleData): [string, string, number][][] {
+  return [
+    [
+      ['Title', t.title, 120],
+      ['Document type', t.type, 60],
+    ],
+    [
+      ['Creator', 'Claude', 45],
+      ['Approval person', '-', 45],
+      ['Document status', 'In work', 45],
+      ['Paper', 'A3', 45],
+    ],
+    [['Legal owner', 'Juan Kok', 50], ['Date of issue', t.drawn, 40], ['Rev', t.revision, 15], ['Sheet', `${t.sheet}/${t.sheets}`, 20], ['Identification no.', t.number, 55]], // prettier-ignore
+  ];
+}
