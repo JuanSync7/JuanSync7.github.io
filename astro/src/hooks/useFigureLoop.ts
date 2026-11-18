@@ -79,7 +79,9 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
       const ps = pulses.map((p) => ({ x: p.x, y: p.y, age: t - p.born }));
       return { t, dt, hover, pointer: { ...pointer }, pulses: ps, still, unseen, data: dataRef.current };
     };
-    const draw = (dt: number, unseen = false): void => {
+    // `warm` is the one frame painted ahead of the reader (build and shader compile): it is kept
+    // out of the per-frame average, which the audit budgets, and recorded on its own.
+    const draw = (dt: number, unseen = false, warm = false): void => {
       if (!inst || broken) return;
       const s = performance.now();
       let r: string | void;
@@ -90,6 +92,10 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
         return;
       }
       const ms = performance.now() - s;
+      if (warm) {
+        canvas.dataset.msWarm = ms.toFixed(2);
+        return;
+      }
       frames += 1;
       sum += ms;
       max = Math.max(max, ms);
@@ -168,7 +174,7 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
           // compiled) before the reader reaches it. Time does not move until it is seen.
           else if (!warmed && size[0] > 0 && size[1] > 0) {
             warmed = true;
-            draw(STEP);
+            draw(STEP, false, true);
             canvas.dataset.ready = '1';
           }
         });
