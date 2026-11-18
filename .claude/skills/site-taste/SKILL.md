@@ -22,6 +22,12 @@ options, not taste.
 
 ## Stated
 
+**One signal colour, orange** (18 Nov 2026)
+- "can we remove all the teal i feel like we dont need it and it confuses the system like the
+  slideicon i can see a teal again." The signal is the paper orange everywhere: the night tokens,
+  the figure palette, slide and hardware icons. This settles the old lime-or-teal question; the
+  quotes about a teal city below are history.
+
 **Presentation pages and readable hierarchy** (6 Nov 2026)
 - A landing page makes a concise, high-level pitch; buttons lead to subpages for the full explanation.
   Keep the problem, purpose and useful next action clear before the technical detail.
@@ -145,14 +151,14 @@ judging pages`, `Voxel and LEGO scenes`, `Stickers and icons` and `Shipping the 
 ## Built
 
 - **Night system** (`astro/src/styles/tokens/`, `night.css`, `NightLayout`, `NightPage`):
-  near-black ground, cool grey lines and inks, one teal signal (`--nt-signal`). Every colour,
+  near-black ground, cool grey lines and inks, one orange signal (`--nt-signal`, teal until 18 Nov 2026). Every colour,
   size, gap, radius and duration is a token; a value that is not one gets added as one first
   (CLAUDE.md, styling rules).
 - **Type**: Geist for text, Space Grotesk for display, JetBrains Mono for labels and meta.
   Large display sizes, 16px body at 1.6, a 640px reading measure. Labels are mono; the
   code-comment voice (`// 0x01 · how I think`) carries over from the old site.
 - **Lines**: 1px hairlines in the line tokens; a card or panel is a hairline rectangle on the
-  ground, not a filled slab with a shadow. Focus is a 2px teal ring.
+  ground, not a filled slab with a shadow. Focus is a 2px signal ring.
 - **Motion**: a figure moves only when the motion means something (figure skill). Page swaps
   crossfade, the nav holds still, a post card's cover travels into the post
   (`--nt-dur-morph`, `--nt-ease-out`). Scroll position is read, never hijacked: the reading
@@ -174,10 +180,7 @@ judging pages`, `Voxel and LEGO scenes`, `Stickers and icons` and `Shipping the 
 
 Leave these visible, don't settle them yourself:
 
-- **Lime or teal as his brand.** On 3 Oct he said "The lime palette is my personal brand";
-  the October redesign, the monogram and everything since are teal. The site is teal; whether
-  lime is retired was not answered.
-- **How much teal.** The figure skill wants one bright mark; the home hero runs teal and white
+- **How much signal.** The figure skill wants one bright mark; the home hero runs the signal and white
   as the city's energy, at his request. Whether that is a showpiece exception or a site-wide
   licence is unsettled.
 - **Signature pieces from the old site.** On 3 Oct he named "the lime accent on near-black,

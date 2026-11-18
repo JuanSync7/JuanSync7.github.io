@@ -96,7 +96,7 @@
   --lofi-bean: #8B4513;
   --lofi-bean-line: #5a2a08;
 
-  /* Night system (2026 redesign): near-black ground, cool greys, one teal signal.
+  /* Night system (2026 redesign): near-black ground, cool greys, one orange signal (teal until 18 Nov 2026).
      Mirrored in palette.ts as `night`; figures read colours only through that object. */
   /* Tabletop-room material and lighting palette (colour mode only). */
   --nt-room-ivory: #eee4cd;
@@ -126,7 +126,7 @@
   --nt-ground-2: #090a0f;
   --nt-panel: #0b0d13;
   --nt-panel-2: #0e1118;
-  --nt-panel-signal: #0c1514;
+  --nt-panel-signal: #150d0a;
   --nt-rule: #161922;
   --nt-line: #1c2030;
   --nt-line-2: #23283a;
@@ -138,14 +138,14 @@
   --nt-ink-soft: #a3a9ba;
   --nt-ink-muted: #8b92a5;
   --nt-ink-faint: #7d8496;
-  --nt-signal: #2dd4bf;
+  --nt-signal: #ff5a1f;
   --nt-signal-text: var(--nt-signal);
-  --nt-signal-ink: #061210;
-  --nt-signal-line: #1b3a36;
-  --nt-signal-line-2: #1f4a44;
-  --nt-signal-soft: rgba(45, 212, 191, 0.12);
-  --nt-signal-faint: rgba(45, 212, 191, 0.05);
-  --nt-signal-glow: rgba(45, 212, 191, 0.45);
+  --nt-signal-ink: #1a0800;
+  --nt-signal-line: #3d1a0c;
+  --nt-signal-line-2: #52220f;
+  --nt-signal-soft: rgba(255, 90, 31, 0.12);
+  --nt-signal-faint: rgba(255, 90, 31, 0.05);
+  --nt-signal-glow: rgba(255, 90, 31, 0.45);
   --nt-dot: rgba(255, 255, 255, 0.05);
   --nt-scrim: rgba(7, 8, 12, 0.6);
   --nt-scrim-strong: rgba(7, 8, 12, 0.88);
@@ -161,9 +161,9 @@
   --nt-paper-ink: #34302a;
   --nt-paper-ink-2: #4c4840;
   --nt-paper-ink-muted: #5a564d;
-  --nt-paper-signal: #0a7164;
-  --nt-paper-signal-line: #9ec8bd;
-  --nt-paper-signal-panel: #cfdcd2;
+  --nt-paper-signal: #a8340c;
+  --nt-paper-signal-line: #e3b39c;
+  --nt-paper-signal-panel: #e8d2c3;
 
   /* The night terminal window for code ("if there is code, it goes in a macOS-style terminal
      window"). On paper pages these map onto --pp-term-*, which turn white on a light page. */

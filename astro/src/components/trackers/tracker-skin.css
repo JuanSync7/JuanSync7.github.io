@@ -173,7 +173,7 @@ h2.section em{font-style:italic;color:var(--txt)}
 /* ===== light mode (driven by data-theme on <html>; toggle lives in the nav) ===== */
 :root[data-theme="light"]{
   --bg:#dcd8cc; --panel:#e6e2d6; --panel2:#d4cfc1; --line:#c8c3b4;
-  --txt:#34302a; --txt2:#4c4840; --muted:#5a564d; --amber:#5f6b54; --teal:#0a7164;
+  --txt:#34302a; --txt2:#4c4840; --muted:#5a564d; --amber:#5f6b54; --teal:#a8340c;
   --accent:var(--teal); --accent2:var(--teal); --bad:#b0432c; --chip:#d4cfc1; --hover:#d1ccbd;
 }
 [data-theme="light"] body{
@@ -185,7 +185,7 @@ h2.section em{font-style:italic;color:var(--txt)}
     var(--bg);
 }
 [data-theme="light"] .sitenav{background:rgba(220,216,204,.72)}
-[data-theme="light"] .navlinks a.active{border-color:#9ec8bd}
+[data-theme="light"] .navlinks a.active{border-color:#e3b39c}
 [data-theme="light"] .tab:hover{border-color:#d3d3ce}
 [data-theme="light"] .modal{background:rgba(28,28,31,.42)}
 [data-theme="light"] .sect li,[data-theme="light"] .perf{color:#33343a}

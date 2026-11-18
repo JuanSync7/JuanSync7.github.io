@@ -3,7 +3,7 @@ import { deskTones, night, roomTones, type DeskTone, type RoomTone, type NightKe
 /** The only way a figure gets a colour. Every value comes from the night tokens, so a
  *  figure can't drift off-palette; the audit rejects any colour literal in a figure.
  *
- *  The palette is deliberately small: ground, a cool grey for every line, and one teal
+ *  The palette is deliberately small: ground, a cool grey for every line, and one orange
  *  signal. The signal is information: it marks the one thing to look at. */
 
 const cache = new Map<string, string>();

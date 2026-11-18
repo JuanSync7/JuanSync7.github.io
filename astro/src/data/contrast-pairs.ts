@@ -61,7 +61,7 @@ export const CONTRAST: ContrastGroup[] = [
       { role: 'Headings', fg: '--nt-ink-strong', ground: '--nt-ground', need: 'text' },
       { role: 'Body text', fg: '--nt-ink', ground: '--nt-ground', need: 'text' },
       { role: 'Comments, captions', fg: '--nt-ink-muted', ground: '--nt-ground', need: 'text' },
-      { role: 'Teal text', fg: '--nt-signal-text', ground: '--nt-ground', need: 'text' },
+      { role: 'Signal text (figure bench)', fg: '--nt-signal-text', ground: '--nt-ground', need: 'text' },
       { role: 'Code', fg: '--nt-code-ink', ground: '--nt-code-ground', need: 'text' },
       { role: 'Code comments', fg: '--nt-code-muted', ground: '--nt-code-ground', need: 'text' },
     ],
