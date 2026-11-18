@@ -120,6 +120,10 @@
     {
       "from": "/learn/where-the-gpu-memory-goes/",
       "to": "/library/where-the-gpu-memory-goes/"
+    },
+    {
+      "from": "/learn/",
+      "to": "/library/articles/"
     }
   ],
   "feedIds": {

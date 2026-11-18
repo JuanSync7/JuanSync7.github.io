@@ -15,9 +15,9 @@ import { fileURLToPath } from 'node:url';
 const APP = fileURLToPath(new URL('../../', import.meta.url));
 /** Collections whose entries are pieces of the library, and the addresses that are not pieces. */
 export const KINDS = { blog: 'post', learn: 'article' };
-export const RESERVED = ['lessons'];
-/** Old pages that stay where they are until their own decision is made. */
-const STAYS = ['/learn/', '/learn/art-gallery/'];
+export const RESERVED = ['lessons', 'articles'];
+/** An old page that stays where it is: a reference sheet, not a piece of the library. */
+const STAYS = ['/learn/art-gallery/'];
 
 export function readPieces(app) {
   return Object.entries(KINDS).flatMap(([dir, kind]) =>
@@ -118,6 +118,7 @@ function selftest() {
   const source = {
     duplicate: [[...pieces, { slug: 'one', kind: 'article' }], legacy],
     reserved: [[...pieces, { slug: 'lessons', kind: 'post' }], legacy],
+    'reserved kind index': [[...pieces, { slug: 'articles', kind: 'article' }], legacy],
     empty: [[], legacy],
     'dead forward': [pieces, { ...legacy, forwards: [...legacy.forwards, { from: '/blog/gone/', to: '/library/gone/' }] }],
     'forward twice': [pieces, { ...legacy, forwards: [...legacy.forwards, legacy.forwards[1]] }],
@@ -129,8 +130,9 @@ function selftest() {
   const forwarder = (to) => `<!doctype html><meta http-equiv="refresh" content="0;url=https://example.test${to}"><link rel="canonical" href="https://example.test${to}">`;
   const item = (slug, id) => `<item><link>https://example.test/library/${slug}/</link><guid isPermaLink="true">${id}</guid></item>`;
   const good = {
-    'library/index.html': '<a href="/library/one">one</a><a href="/learn/">guides</a><img src="/blog/pic.webp">',
+    'library/index.html': '<a href="/library/one">one</a><a href="/library/articles/">guides</a><img src="/blog/pic.webp">',
     'library/lessons/index.html': '<a href="/library/#lessons">back</a>',
+    'library/articles/index.html': '<a href="/library/two">two</a>',
     'library/one/index.html': '<a href="/library/two/">two</a>',
     'library/two/index.html': '<a href="/learn/art-gallery">art</a>',
     'blog/index.html': forwarder('/library/'),
@@ -148,6 +150,8 @@ function selftest() {
     'forwarder in the sitemap': { 'sitemap-0.xml': '<loc>https://example.test/blog/one/</loc>' },
     'old link': { 'library/one/index.html': '<a href="/blog/one">one</a>' },
     'old link with a hash': { 'library/lessons/index.html': '<a href="/blog/#lessons">back</a>' },
+    'old articles index link': { 'library/one/index.html': '<a href="/learn/">guides</a>' },
+    'kind index missing': { 'library/articles/index.html': null },
     'old article link': { 'library/one/index.html': '<a href="/learn/two/">two</a>' },
     'feed item missing': { 'rss.xml': `<rss>${item('one', legacy.feedIds.one)}</rss>` },
     'feed id changed': { 'rss.xml': `<rss>${item('one', 'https://example.test/library/one/')}${item('two', legacy.feedIds.two)}</rss>` },

@@ -1,17 +1,17 @@
 import { onPage, type Blueprint } from './types';
 
-/** The learn index (/learn/): a SectionHead and the grid of guide cards on the page column. */
+/** The articles index (/library/articles/): a SectionHead and the grid of guide cards on the page column. */
 export const LEARN_INDEX: Blueprint = {
   id: 'learn-index',
   kind: 'template',
-  title: 'Learn index page',
+  title: 'Articles index page',
   summary: 'The list of guides: a heading, then a grid of guide cards.',
   source: [
-    'src/pages/learn/index.astro',
+    'src/pages/library/articles.astro',
     'src/components/writing/PostGrid.tsx',
     'src/components/writing/post-grid.css',
   ],
-  views: onPage('/learn/', 'main'),
+  views: onPage('/library/articles/', 'main'),
   parts: [
     { id: 1, name: 'Page', selector: '', sizing: 'fill', aliases: ['main'] },
     { id: 2, name: 'Guides section', selector: 'section.block', sizing: 'fill', aliases: ['section'] },

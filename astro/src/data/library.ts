@@ -8,6 +8,7 @@ export const LIBRARY = {
   posts: '/library/#posts',
   lessonLog: '/library/#lessons',
   lessons: '/library/lessons/',
+  articles: '/library/articles/',
 } as const;
 
 export function pieceHref(slug: string): string {

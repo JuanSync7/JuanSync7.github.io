@@ -1,7 +1,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { LEARN_SUBJECTS } from '../content/config';
 import type { FeaturedPage, PostSummary } from '../components/writing/types';
-import { pieceHref } from './library';
+import { LIBRARY, pieceHref } from './library';
 
 /** The words and the order of the learn pages. Each subject names the weekly tracker that
  *  follows it, so an explainer and the week's news about the same thing link to each other. */
@@ -16,7 +16,7 @@ export const LEARN_SUBJECT: Record<LearnSubject, { label: string; tracker: { nam
 export const LEARN_COPY = {
   title: 'Field guides',
   body: 'Long explainers on how inference runs, how the silicon under it is built, and how I build with agents. Each subject has a weekly tracker that follows it.',
-  all: { label: 'All field guides', href: '/learn/' },
+  all: { label: 'All field guides', href: LIBRARY.articles },
 } as const;
 
 export const LEARN_SUBJECT_LABEL: Record<string, string> = Object.fromEntries(

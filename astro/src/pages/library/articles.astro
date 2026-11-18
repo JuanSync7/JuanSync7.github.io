@@ -16,12 +16,12 @@ const cards = entries.map(learnCard);
 const subjects = LEARN_SUBJECTS.map((s) => ({ ...LEARN_SUBJECT[s], count: entries.filter((e) => e.data.subject === s).length }));
 ---
 
-<NightPage title="Learn · Juan Kok" description={LEARN_COPY.body}>
-  <NightNav current="learn" />
+<NightPage title={`${LEARN_COPY.title} · Juan Kok`} description={LEARN_COPY.body}>
+  <NightNav current="library" />
   <main>
     <section class="nt-wrap nt-section block">
       <a class="back" href={LIBRARY.href}>← {LIBRARY.label}</a>
-      <SectionHead as="h1" label="// learn" title={LEARN_COPY.title} lead={LEARN_COPY.body} />
+      <SectionHead as="h1" label="// articles" title={LEARN_COPY.title} lead={LEARN_COPY.body} />
       <ul class="subjects">
         {subjects.map((s) => (
           <li>

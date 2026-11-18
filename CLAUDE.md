@@ -79,10 +79,11 @@ sources; every other file's counts only go down).
 
 Posts (`src/content/blog/`) and articles (`src/content/learn/`) are pieces of one library. Every
 piece is read at `/library/<slug>`, whatever its kind, so a slug names one piece across both
-collections and `lessons` is reserved (`/library/lessons/`). Build a link with `pieceHref`
+collections; `lessons` and `articles` are reserved for the kind indexes (`/library/lessons/`,
+`/library/articles/`, the field guides by subject). Build a link with `pieceHref`
 (`src/data/library.ts`), never a literal. `src/pages/library/[slug].astro` picks `PostPage` or
-`ArticlePage` (`src/components/library/`) by kind. `/learn/` (the field-guide index) and
-`/learn/art-gallery/` stay where they are.
+`ArticlePage` (`src/components/library/`) by kind. Only `/learn/art-gallery/`, a reference
+sheet, keeps an old address.
 
 `src/data/library-legacy.json` is frozen: the addresses the site served before the library, each
 built as a forwarding page (`redirects` in `astro.config.mjs`), and the feed id each piece had,

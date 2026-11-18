@@ -44,8 +44,8 @@ const lessons: Lesson[] = (await getCollection('lessons'))
     </section>
 
     <section id="posts" class="nt-wrap nt-section block">
-      <SectionHead label="// posts" title={POSTS_COPY.title} lead={POSTS_COPY.body} />
-      <PostGrid client:visible posts={posts} labels={CATEGORY_LABEL} />
+      <SectionHead label="// writing" title={POSTS_COPY.title} lead={POSTS_COPY.body} />
+      <PostGrid client:visible posts={posts} labels={CATEGORY_LABEL} cta="Read" />
     </section>
 
     <Trackers />

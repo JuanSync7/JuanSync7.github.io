@@ -144,7 +144,7 @@ The list of writing: a hero, then featured, lessons and posts sections on the pa
 | 3 Posts section | posts, all posts | padding down | `--hf-space-12` | src/styles/tokens/spacing.css:16 | 48px | paper-footer, learn-index, presentation, read in 14 files |
 | 3 Posts section | posts, all posts | gap | `--hf-space-8` | src/styles/tokens/spacing.css:14 | 32px | home, learn-index, read in 30 files |
 
-## Learn index page (`learn-index`, JS-TP-0005 rev A)
+## Articles index page (`learn-index`, JS-TP-0005 rev A)
 
 The list of guides: a heading, then a grid of guide cards.
 

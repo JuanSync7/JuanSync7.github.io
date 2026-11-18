@@ -7,7 +7,7 @@ export const WRITING_HERO = {
   title: 'Where silicon meets syntax.',
   body: 'Explainers on how AI inference really works, from the transistor to the token. Plus chip design, tooling, and the lessons I pick up building with agents.',
   primary: { label: 'Start with inference', href: '/library/inference-end-to-end' },
-  secondary: { label: 'Browse all posts', href: '#posts' },
+  secondary: { label: 'Browse all writing', href: '#posts' },
   hint: 'Move across the lattice. Click to send a pulse.',
 } as const;
 
@@ -24,7 +24,7 @@ export const LESSONS_COPY = {
 } as const;
 
 export const POSTS_COPY = {
-  title: 'All posts',
+  title: 'All writing',
   body: 'Newest first. Every cover is a live drawing: point at it and it answers.',
 } as const;
 
