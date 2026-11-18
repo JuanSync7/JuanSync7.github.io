@@ -44,7 +44,7 @@ const lessons: Lesson[] = (await getCollection('lessons'))
 
     <section id="featured" class="nt-wrap nt-section block">
       <SectionHead label="// featured" title={FEATURED.title} lead={FEATURED.body}>
-        <a class="all" href={LEARN_COPY.all.href}>{LEARN_COPY.all.label} →</a>
+        <a class="all" href={LEARN_COPY.all.href}>{LEARN_COPY.all.label}</a>
       </SectionHead>
       <FeaturedBook client:visible pages={featured} />
     </section>

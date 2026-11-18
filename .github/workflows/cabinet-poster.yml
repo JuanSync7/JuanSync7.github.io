@@ -35,6 +35,14 @@ jobs:
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run presentation:browser -- --cabinet-poster-only
+      # The poster's hash and bytes go into the log too, so the export can be verified, and
+      # brought back where artifact storage cannot be reached, without downloading the zip.
+      - name: Print poster hash and bytes
+        run: |
+          sha256sum presentation-out/cabinet-poster.png
+          echo "::group::cabinet-poster.png base64"
+          echo "POSTER-BASE64 $(base64 -w 0 presentation-out/cabinet-poster.png)"
+          echo "::endgroup::"
       - uses: actions/upload-artifact@v4
         with:
           name: cabinet-poster-export

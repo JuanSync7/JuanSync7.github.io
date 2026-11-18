@@ -1,6 +1,6 @@
 ---
 name: figure
-description: Use whenever a drawing is needed on juansync.dev — a post cover, a hero, a slide's figure, an illustration inside a post, any animated canvas or 3D piece, or a new seeded template for the /lab catalogue — or when one is changed. Draws one figure (or one template: a grammar that draws a different figure from every seed) in the site's minimal style, with one teal signal, in one of nine techniques (wireframe, low-poly, pixel, perspective, hairline, ink, field, trace or three.js) as one file in astro/src/figures, and loops on the audit until it passes and its sheet has been looked at.
+description: Use whenever a drawing is needed on juansync.dev — a post cover, a hero, a slide's figure, an illustration inside a post, any animated canvas or 3D piece, or a new seeded template for the /lab catalogue — or when one is changed. Draws one figure (or one template: a grammar that draws a different figure from every seed) in the site's minimal style, with one orange signal, in one of nine techniques (wireframe, low-poly, pixel, perspective, hairline, ink, field, trace or three.js) as one file in astro/src/figures, and loops on the audit until it passes and its sheet has been looked at.
 argument-hint: "[what the figure is for]"
 ---
 

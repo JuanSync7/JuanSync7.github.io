@@ -44,7 +44,7 @@ export const night = {
   ground2: '#090a0f',
   panel: '#0b0d13',
   panel2: '#0e1118',
-  panelSignal: '#0c1514',
+  panelSignal: '#150d0a',
   rule: '#161922',
   line: '#1c2030',
   line2: '#23283a',
@@ -56,9 +56,9 @@ export const night = {
   inkSoft: '#a3a9ba',
   inkMuted: '#8b92a5',
   inkFaint: '#7d8496',
-  signal: '#2dd4bf',
-  signalInk: '#061210',
-  signalLine: '#1b3a36',
+  signal: '#ff5a1f',
+  signalInk: '#1a0800',
+  signalLine: '#3d1a0c',
   // Muted biome colours for the voxel world requested in the lab.
   worldMoss: '#678479',
   worldLeaf: '#387d70',
@@ -137,7 +137,7 @@ export const deskTones = {
   codeGutter: '#1d2026',
   codeInk: '#c9ced8',
   codeInkSoft: '#646b78',
-  signalNight: '#2dd4bf',
+  signalNight: '#ff5a1f',
 } as const;
 export type DeskTone = keyof typeof deskTones;
 /** Existing paper tokens, mirrored for portable slide SVGs as well as CSS previews. */
@@ -145,7 +145,7 @@ export const paper = {
   ground: '#dcd8cc',
   ink: '#34302a',
   inkMuted: '#5a564d',
-  signal: '#0a7164',
+  signal: '#a8340c',
 } as const;
 
 /** Compose a translucent variant of a 6-digit hex colour. a ∈ [0,1]; returns an

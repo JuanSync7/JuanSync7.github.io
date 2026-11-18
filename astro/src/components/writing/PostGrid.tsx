@@ -19,7 +19,7 @@ function spot(e: PointerEvent<HTMLAnchorElement>): void {
 
 /** Every post as a hairline grid of cards, each with its own live cover figure, filtered by
  *  category. Changing the filter re-deals the cards with a short stagger. */
-export default function PostGrid({ posts, labels, cta = 'Read post →' }: Props) {
+export default function PostGrid({ posts, labels, cta = 'Read post' }: Props) {
   const [filter, setFilter] = useState('all');
   const [deal, setDeal] = useState(0);
   const cats = Array.from(new Set(posts.map((p) => p.category)));

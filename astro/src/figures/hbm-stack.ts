@@ -40,7 +40,7 @@ interface State {
   cam: Camera;
   key: string;
   plain: Sprite[];
-  lit: { part: string; sprites: Map<number, Sprite> };
+  lit: { part: string; layer: number; sprites: Map<number, Sprite> };
   ghost: Sprite | undefined;
   springs: Spring[];
   due: { at: number; goal: number }[];
@@ -86,7 +86,7 @@ export default defineCanvasFigure<State>({
   id: 'hbm-stack',
   title: 'HBM stack',
   alt: 'A line drawing in perspective of one high-bandwidth memory stack cut open and lifted apart: a slice of silicon interposer with its wiring and deep-trench capacitors, a field of bumps, the base logic die with its PHY and test pads, seven DRAM dies and a thick top die, each pierced by rows of copper through-silicon vias with a layer of microbumps between every pair, and the outline of the mould they were cast in. One part at a time is outlined in teal.',
-  idea: 'An HBM stack that opens: its dies lift apart on staggered springs, top first, so the vias through them and the bumps between them show, and the teal walks down naming each part; pointer height picks a layer, a click closes it back up.',
+  idea: 'An HBM stack that opens: its dies lift apart on staggered springs, top first, so the vias through them and the bumps between them show, and the signal walks down naming each part; pointer height picks a layer, a click closes it back up.',
   style: 'perspective',
   motion: 'ambient',
   answers: true,
@@ -105,7 +105,7 @@ export default defineCanvasFigure<State>({
       cam,
       key: '',
       plain: [],
-      lit: { part: '', sprites: new Map() },
+      lit: { part: '', layer: -1, sprites: new Map() },
       ghost: undefined,
       springs: ASSEMBLIES.map(() => spring(1)),
       due: ASSEMBLIES.map(() => ({ at: 0, goal: 1 })),
@@ -122,7 +122,7 @@ export default defineCanvasFigure<State>({
     if (s.key !== key) {
       s.key = key;
       s.plain = ASSEMBLIES.map((a) => sprite(a, s.cam, dpr, '', s.open));
-      s.lit = { part: '', sprites: new Map() };
+      s.lit = { part: '', layer: -1, sprites: new Map() };
     }
     // The switch: the page's, if it holds one; otherwise a click flips it.
     const young = pulses.reduce((m, p) => Math.min(m, p.age), Infinity);
@@ -163,12 +163,13 @@ export default defineCanvasFigure<State>({
         if (a.pick && d < best) [best, lit, under] = [d, a.pick, i];
       });
     } else if (openness > 0.5) lit = HBM_PARTS[(Math.floor(t / TOUR) + FIRST) % HBM_PARTS.length] ?? 'mould';
-    if (s.lit.part !== lit) {
+    // Pointed at, only that layer lights its part; otherwise the part lights through the stack.
+    if (s.lit.part !== lit || s.lit.layer !== under) {
       const sprites = new Map<number, Sprite>();
       ASSEMBLIES.forEach((a, i) => {
-        if (a.parts.includes(lit)) sprites.set(i, sprite(a, s.cam, dpr, lit, s.open));
+        if (a.parts.includes(lit) && (under < 0 || i === under)) sprites.set(i, sprite(a, s.cam, dpr, lit, s.open));
       });
-      s.lit = { part: lit, sprites };
+      s.lit = { part: lit, layer: under, sprites };
       s.ghost = lit === 'mould' && MOULD ? sprite(MOULD, s.cam, dpr, lit, s.open, true) : undefined;
     }
     ASSEMBLIES.forEach((a, i) => {

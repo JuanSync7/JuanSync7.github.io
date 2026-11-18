@@ -22,6 +22,12 @@ options, not taste.
 
 ## Stated
 
+**One signal colour, orange** (18 Nov 2026)
+- "can we remove all the teal i feel like we dont need it and it confuses the system like the
+  slideicon i can see a teal again." The signal is the paper orange everywhere: the night tokens,
+  the figure palette, slide and hardware icons. This settles the old lime-or-teal question; the
+  quotes about a teal city below are history.
+
 **Presentation pages and readable hierarchy** (6 Nov 2026)
 - A landing page makes a concise, high-level pitch; buttons lead to subpages for the full explanation.
   Keep the problem, purpose and useful next action clear before the technical detail.
@@ -55,6 +61,19 @@ implements." The direction is his; propose, don't impose.
 - "A proper learning article with words gets the paper-and-ink style of my /learn articles,
   with just a highlight colour."
 - "If there is code, it goes in a macOS-style terminal window."
+- (17 Nov 2026) The terminal follows the theme: "i want a the white version when the background is
+  light." A warm white window on the cream page, the dark window on the night page.
+
+**Buttons, arrows and the header** (17 Nov 2026)
+- "a lot of the buttons have arrows for no reason." An arrow stays only where it says something the
+  label does not: ↗ on a link that leaves the site, ↓ on a download, → or ← on a pager or a
+  next/previous control. Internal links, actions, copy buttons and card calls to action carry none.
+  PaperAction shows an icon only when one is passed.
+- The design system's own buttons are the site's buttons: PixelButton, not a one-off style.
+- "make the header cover fully across the width of the page": the nav's scrim runs edge to edge,
+  over the punched strip and margin line, so content scrolling under it is covered.
+- Icons drawn in the night palette (HardwareIcon, SlideIcon) take the page's colours through the
+  figure filter, like every figure. Only a download preview shows the exported colours (`exact`).
 
 **Lines you can see** (3 Oct 2026)
 - "I like to be able to see the lines and characters, or a low-poly drawing, so that it
@@ -132,14 +151,14 @@ judging pages`, `Voxel and LEGO scenes`, `Stickers and icons` and `Shipping the 
 ## Built
 
 - **Night system** (`astro/src/styles/tokens/`, `night.css`, `NightLayout`, `NightPage`):
-  near-black ground, cool grey lines and inks, one teal signal (`--nt-signal`). Every colour,
+  near-black ground, cool grey lines and inks, one orange signal (`--nt-signal`, teal until 18 Nov 2026). Every colour,
   size, gap, radius and duration is a token; a value that is not one gets added as one first
   (CLAUDE.md, styling rules).
 - **Type**: Geist for text, Space Grotesk for display, JetBrains Mono for labels and meta.
   Large display sizes, 16px body at 1.6, a 640px reading measure. Labels are mono; the
   code-comment voice (`// 0x01 · how I think`) carries over from the old site.
 - **Lines**: 1px hairlines in the line tokens; a card or panel is a hairline rectangle on the
-  ground, not a filled slab with a shadow. Focus is a 2px teal ring.
+  ground, not a filled slab with a shadow. Focus is a 2px signal ring.
 - **Motion**: a figure moves only when the motion means something (figure skill). Page swaps
   crossfade, the nav holds still, a post card's cover travels into the post
   (`--nt-dur-morph`, `--nt-ease-out`). Scroll position is read, never hijacked: the reading
@@ -161,10 +180,7 @@ judging pages`, `Voxel and LEGO scenes`, `Stickers and icons` and `Shipping the 
 
 Leave these visible, don't settle them yourself:
 
-- **Lime or teal as his brand.** On 3 Oct he said "The lime palette is my personal brand";
-  the October redesign, the monogram and everything since are teal. The site is teal; whether
-  lime is retired was not answered.
-- **How much teal.** The figure skill wants one bright mark; the home hero runs teal and white
+- **How much signal.** The figure skill wants one bright mark; the home hero runs the signal and white
   as the city's energy, at his request. Whether that is a showpiece exception or a site-wide
   licence is unsettled.
 - **Signature pieces from the old site.** On 3 Oct he named "the lime accent on near-black,

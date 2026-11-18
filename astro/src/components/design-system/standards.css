@@ -1,0 +1,150 @@
+/* The standards section of the design system: the WCAG 2.2 contrast table and the DTCG export. */
+.std-table-wrap {
+  margin-top: var(--hf-space-8);
+  overflow-x: auto;
+}
+.std-table-wrap h4 {
+  margin: 0 0 var(--hf-space-3);
+  font: var(--nt-fs-caption) / var(--nt-lh-body) var(--nt-mono);
+  color: var(--nt-ink-muted);
+}
+.std-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--nt-fs-small);
+}
+.std-table th,
+.std-table td {
+  padding: var(--hf-space-3);
+  border-bottom: 1px solid var(--nt-line);
+  text-align: left;
+  vertical-align: top;
+}
+.std-table thead th {
+  font: var(--nt-fs-caption) / var(--nt-lh-body) var(--nt-mono);
+  color: var(--nt-ink-muted);
+  font-weight: normal;
+}
+.std-table tbody th {
+  color: var(--nt-ink-strong);
+  font-weight: normal;
+}
+.std-table small {
+  display: block;
+  color: var(--nt-ink-muted);
+}
+.std-table code {
+  display: block;
+  font-size: var(--nt-fs-caption);
+  white-space: nowrap;
+}
+.std-on {
+  display: block;
+  color: var(--nt-ink-muted);
+  font-size: var(--nt-fs-caption);
+}
+.std-sample {
+  display: inline-grid;
+  place-items: center;
+  width: var(--hf-space-10);
+  height: var(--hf-space-10);
+  border: 1px solid var(--nt-line);
+  border-radius: var(--hf-radius-sm);
+  font-weight: 600;
+}
+.std-ratio strong {
+  display: block;
+  color: var(--nt-ink-strong);
+  font-weight: 600;
+}
+.std-ratio span,
+.std-need {
+  color: var(--nt-ink-muted);
+  font: var(--nt-fs-caption) / var(--nt-lh-body) var(--nt-mono);
+}
+.std-ratio[data-grade='below AA'] strong {
+  color: var(--nt-signal-text);
+}
+.std-export {
+  display: grid;
+  gap: var(--hf-space-5);
+  margin-top: var(--hf-space-6);
+}
+.std-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hf-space-3);
+  margin: 0;
+}
+.std-counts div {
+  padding: var(--hf-space-2) var(--hf-space-4);
+  border: 1px solid var(--nt-line);
+  border-radius: var(--hf-radius-sm);
+}
+.std-counts dt {
+  font: var(--nt-fs-caption) / var(--nt-lh-body) var(--nt-mono);
+  color: var(--nt-ink-muted);
+}
+.std-counts dd {
+  margin: 0;
+  color: var(--nt-ink-strong);
+  font-weight: 600;
+}
+.std-files {
+  display: grid;
+  gap: var(--hf-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.std-files li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hf-space-3);
+}
+.std-files a {
+  font-family: var(--nt-mono);
+  color: var(--nt-ink-strong);
+}
+.std-files span {
+  color: var(--nt-ink-muted);
+}
+.std-skip p {
+  margin: var(--hf-space-4) 0 var(--hf-space-1);
+  color: var(--nt-ink);
+}
+.std-skip code {
+  display: block;
+  font-size: var(--nt-fs-caption);
+  color: var(--nt-ink-muted);
+  white-space: pre-wrap;
+  word-spacing: var(--hf-space-2);
+}
+
+/* On a phone each row is a card and every value carries its column's name. */
+@media (max-width: 639px) {
+  .std-table thead {
+    display: none;
+  }
+  .std-table tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--hf-space-2) var(--hf-space-4);
+    padding: var(--hf-space-4) 0;
+    border-bottom: 1px solid var(--nt-line);
+  }
+  .std-table th,
+  .std-table td {
+    padding: 0;
+    border: 0;
+  }
+  .std-table tbody th {
+    grid-column: 1 / -1;
+  }
+  .std-table td::before {
+    content: attr(data-label);
+    display: block;
+    font: var(--nt-fs-caption) / var(--nt-lh-body) var(--nt-mono);
+    color: var(--nt-ink-muted);
+  }
+}

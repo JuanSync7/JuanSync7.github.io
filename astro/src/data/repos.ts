@@ -12,7 +12,7 @@ export interface Repo {
 }
 
 export const REPOS = {
-  label: '// 0x04 · the repos',
+  label: '// the repos',
   title: 'What the system is made of.',
   profile: { label: 'github.com/JuanSync7', href: 'https://github.com/JuanSync7' },
   items: [
