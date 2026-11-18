@@ -508,12 +508,12 @@
   overflow: hidden;
 }
 .ds-monogram {
+  display: flex;
+  justify-content: center;
+  gap: var(--hf-space-16);
   height: var(--nt-thumb-min);
+  padding-block: var(--hf-space-6);
   color: var(--nt-signal-text);
-}
-.ds-monogram svg {
-  display: block;
-  margin: auto;
 }
 .ds-figure {
   aspect-ratio: 16 / 9;
