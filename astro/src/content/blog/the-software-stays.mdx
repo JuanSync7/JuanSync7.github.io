@@ -1,0 +1,70 @@
+---
+title: "The software stays, and so does code"
+excerpt: "AI hasn't made software or code matter less, because every agent still builds on one and speaks the other."
+category: thoughts
+date: 2026-11-14
+readTime: "7 min"
+tags: ["Agents", "Playbooks", "Software", "Learning"]
+---
+
+import Diagram from '../../components/learn/Diagram.astro';
+
+Four lines in every five. That's how much of my PowerPoint playbook turned out to be code when I finally sat down and counted, 2,866 lines of it against 712 lines of words.
+
+An AI agent is a model that carries out a task by running programs, not only by answering in text. A playbook is the package it follows for one kind of job, its steps, its rules and the code it builds with, and this one builds slide decks. I wasn't surprised by the count, and that was the strange part. I keep a running list of lessons on this site, and one of them says "Script 80%. Let the model judge 20%." Months later the playbook had landed almost exactly on it.
+
+It matters because people mostly share what they've learned about AI as a prompt. Copy this, the post says, and you'll get what I got. Try that with a slide deck. Ask a model for one with nothing else to go on and the design follows the shape of your topic, and every detail gets squeezed onto every slide. Ask again tomorrow and you'll get a different deck. That's no use for a brand, or a taste people recognise as yours.
+
+For a year and a half I've worked with both the leading paid models and open-source ones. The models also got better and easier to direct, and that made some of the tooling I'd built around them obsolete. What lasted is what a better model can't bring by itself, which is my taste, the steps I want followed and the style I want things in. None of that ever lived in a prompt.
+
+The story most people tell runs the other way. If a model can make the output and write the code, why keep the tools, and why should anyone outside engineering learn what code is? I just don't see it in my own work.
+
+I play piano from chord charts. A chart doesn't write out the notes. It gives the chords, the bars, where to repeat and where to stop, and inside that I improvise. The piano never surprises me, because a key gives the same note every time, and that's the only reason improvising works at all. The software underneath is the piano, and the playbook is the chart the model improvises inside. The chart is never perfect, so I keep improving it and compacting it. As models get better, some of its rules drop off, and others become code, because code is cheap and certain, and a rule the model reads is only followed most of the time.
+
+## The model still needs an instrument
+
+Ask an agent for a deck and it doesn't paint pixels. It writes a PowerPoint file with ready-made code built for that one job. It's the same with every design, 3D and spreadsheet tool I use. The model drives, and the software does the part that has to come out the same way every time. Without it, the model would be rebuilding what already exists.
+
+Chip design makes this plainest, and it's where I come from. Before a chip is made, it goes through layers of EDA tools, the software chip designers check their work with. The first checks the design's code itself, and simulation then checks that it behaves as expected. Then the design is turned into the real circuit, and every path a signal can take through it, millions or even billions of them, is checked against its constraints. Each layer is built to be cautious. When a tool isn't sure, it assumes the worse case, so a chip that passes really will work. A model might get there one day, but no company can pay for thousands of attempts on every design when a tool already does it.
+
+<Diagram id="eda-layers" />
+
+So the software stays. But it doesn't tell the model what to make, and that part has to be written down.
+
+## What a rule in a prompt is worth
+
+The obvious way to make a playbook behave is to give it more rules, so I tested how far rules go. The model wrote the same small program again and again, and code I'd first tested on deliberately broken samples scored every run out of 10.
+
+| Rules in the prompt | Runs | Average score out of 10 |
+|---|---|---|
+| none | 10 | 7.8 |
+| 13 | 10 | 9.1 |
+| 30 | 10 | 9.0 |
+
+So rules help. But a rule said that when a setting is missing, the script must stop and say so, not quietly carry on with a backup value written into the code. Across the 20 runs that had the rule, 19 kept the backup anyway. A check caught it every time.
+
+Slides have rules like that too, such as a minimum font size, and my slide playbook is built around that result. I didn't write a line of its code. I gave the agent the design, the requirements and the purpose, and directed it. Every rule that code could decide moved out of the words and into code. Some became the kernel, the building blocks the agent must use for each kind of slide. The rest became the checks, a script that inspects the finished deck for colours, contrast, font sizes, overflowing text, overlapping boxes and words per slide. A slide with too many words is refused, never shrunk. Run the same build twice and you get almost the same deck. The model still makes some choices, but everything the kernel and checks decide comes out the same.
+
+What stays in words is short. Numbered steps take the agent from the ask to the hand-over, and each one directs rather than describes. "Build each slide with the kernel, then run the checks" tells the agent what to do. "The kernel holds the slide builders" only tells it what exists, and an agent reads straight past that. Beside the steps sit my taste, written as rules, and a gallery of examples to copy from. The one judgment left, whether a slide actually lands, the agent makes by looking at every slide before it hands over.
+
+<Diagram id="deck-playbook" />
+
+## Same brief, with and without
+
+Whenever a model gets an upgrade, this is how I find out which rules can drop off. I put the same brief through the agent with the playbook and without it. With it, every deck comes out in my design, and nothing gets past the limits I set. A rule the new model already follows without being told is a rule the playbook no longer needs.
+
+<Diagram id="with-without-playbook" />
+
+That comparison is the playbook's eval, a test of the whole playbook rather than of one check. Today I judge it by eye, and a blind judge that can't tell the decks apart is next.
+
+## The layer that didn't go away
+
+Four lines in five makes sense once you see the layers. A chip only runs very simple instructions, long strings of ones and zeros. Programming languages let people write those instructions without spelling out the ones and zeros, and a model adds one more layer on top, where I describe what I want in English and it writes the code. The layer underneath didn't go away. The playbook still ended up as code, and even its part in words is written the way code is, as numbered steps, one instruction at a time.
+
+<Diagram id="language-layers" />
+
+So you won't need to write code. You'll need to know what it's for, because that's the shape your instructions have to take before an agent can follow them every time. A chord chart already teaches most of it. A chord symbol works like a function, a name that stands for a set of notes. A repeat sign is a loop, first and second endings are a branch, and the last bar is the exit. Under all of it sits one habit, breaking a problem into parts and deciding how you'll know each one worked.
+
+So the next time someone hands you a prompt and says it will get you what they got, ask what it stands on. In my work it stands on tools that do the exact part exactly, and on a playbook that says what should happen and how you'll know it did. I tested that in [The same drawing, fifty times](/blog/the-same-drawing-fifty-times/). If you want the whole shape of an agent built this way, from one rule up, it's in [Agents you can repeat](/learn/agents-you-can-repeat).
+
+The models will keep getting better at improvising. Someone still has to write the chart.
