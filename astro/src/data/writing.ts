@@ -1,12 +1,12 @@
 /**
- * The words on the writing page (/blog). Post titles, dates and read times come from the
+ * The words on the library page (/library). Post titles, dates and read times come from the
  * blog collection; this file holds what the page says around them.
  */
 
 export const WRITING_HERO = {
   title: 'Where silicon meets syntax.',
   body: 'Explainers on how AI inference really works, from the transistor to the token. Plus chip design, tooling, and the lessons I pick up building with agents.',
-  primary: { label: 'Start with inference', href: '/learn/inference-end-to-end' },
+  primary: { label: 'Start with inference', href: '/library/inference-end-to-end' },
   secondary: { label: 'Browse all posts', href: '#posts' },
   hint: 'Move across the lattice. Click to send a pulse.',
 } as const;
@@ -50,4 +50,5 @@ export const CATEGORY_LABEL: Record<string, string> = {
   tutorials: 'tutorial',
   thoughts: 'thoughts',
   projects: 'project',
+  article: 'article',
 };

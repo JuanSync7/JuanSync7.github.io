@@ -1,5 +1,4 @@
 ---
-import { getCollection } from 'astro:content';
 import NightPage from '../layouts/NightPage.astro';
 import NightNav from '../components/layout/NightNav.astro';
 import NightFooter from '../components/layout/NightFooter.astro';
@@ -16,6 +15,7 @@ import SlideIcon from '../components/ui/SlideIcon';
 import PostGrid from '../components/writing/PostGrid';
 import type { PostSummary } from '../components/writing/types';
 import { CATEGORY_LABEL } from '../data/writing';
+import { libraryCards } from '../data/library-cards';
 import CodeExample from '../components/design-system/CodeExample.astro';
 import BlueprintView from '../components/design-system/BlueprintView.astro';
 import SourceFiles from '../components/design-system/SourceFiles.astro';
@@ -69,7 +69,7 @@ const paperType = paperRaw.filter((t) => /^--pp-(fs|w|lh|tracking)-/.test(t.name
 const paperSpace = paperRaw.filter((t) => /^--pp-(radius|shadow-step|dur|measure|pad)/.test(t.name));
 const pages = [
   { name: 'Home', href: '/', path: 'pages/index.astro', kind: 'System overview', note: 'Night chrome, large display type, live city and a DOM system map.' },
-  { name: 'Writing', href: '/blog/', path: 'pages/blog/index.astro', kind: 'Browse & discover', note: 'Featured pages, filterable post cards and the lesson log.' },
+  { name: 'Library', href: '/library/', path: 'pages/library/index.astro', kind: 'Browse & discover', note: 'Featured pages, filterable post cards and the lesson log.' },
   { name: 'Learn', href: '/learn/', path: 'pages/learn/index.astro', kind: 'Read & understand', note: 'Night index; article bodies follow the reader’s light or dark preference.' },
   { name: 'Trackers', href: '/trackers/', path: 'layouts/TrackerLayout.astro', kind: 'Compare releases', note: 'Shared tracker navigation, a left version rail and centered release detail.' },
   { name: 'Lab', href: '/lab/', path: 'pages/lab/index.astro', kind: 'Explore & reuse', note: 'Seeded figure templates and an exportable hardware icon kit.' },
@@ -88,8 +88,7 @@ import PaperAction from '../components/ui/PaperAction.astro';
   </header>
   <!-- Keep the overview concise. Put implementation and evidence in linked guides. -->
 </PresentationLayout>`;
-const entries = (await getCollection('blog')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime()).slice(0, 2);
-const posts: PostSummary[] = entries.map((e) => ({ slug: e.slug, title: e.data.title, excerpt: e.data.excerpt, category: e.data.category, date: e.data.date.toISOString().slice(0, 10), read: e.data.readTime, cover: e.data.cover ?? null, href: e.data.externalUrl ?? `/blog/${e.slug}` }));
+const posts: PostSummary[] = (await libraryCards()).slice(0, 2);
 const postRecipe = `---\nimport PostGrid from '../components/writing/PostGrid';\nimport { CATEGORY_LABEL } from '../data/writing';\nconst posts = ${JSON.stringify(posts, null, 2)};\n---\n<PostGrid posts={posts} labels={CATEGORY_LABEL} client:visible />`;
 ---
 

@@ -24,7 +24,7 @@ async function startPreview(site) {
     const deadline = Date.now() + 20000;
     while (Date.now() < deadline) {
       if (child.exitCode !== null) throw new Error(`Preview exited: ${output}`);
-      try { if ((await fetch(`${url}/blog/lessons/`)).ok) return { child, url }; } catch { /* Server is still starting. */ }
+      try { if ((await fetch(`${url}/library/lessons/`)).ok) return { child, url }; } catch { /* Server is still starting. */ }
       await new Promise((ready) => setTimeout(ready, 200));
     }
     throw new Error(`Preview did not become ready: ${output}`);
@@ -44,7 +44,7 @@ const suppliedUrl = process.argv.find((arg) => arg.startsWith('--url='))?.slice(
 const preview = suppliedUrl ? null : await startPreview(site);
 const base = suppliedUrl ?? preview.url;
 const output = process.argv.find((arg) => arg.startsWith('--screenshots='))?.slice(14);
-const url = new URL('/blog/lessons/', base).href;
+const url = new URL('/library/lessons/', base).href;
 let browser;
 const failures = [];
 const expected = (category = '', tags = []) => lessons.filter((lesson) => (!category || lesson.category === category)
@@ -86,14 +86,14 @@ try {
   await page.locator('[data-lesson-controls]').waitFor({ state: 'visible' });
   await assertItems(page, category.id, pair.tags.slice(0, 2));
   await page.locator('.lesson-back').click();
-  await page.waitForURL('**/blog/#lessons');
+  await page.waitForURL('**/library/#lessons');
   await page.goBack();
   await page.locator('[data-lesson-controls]').waitFor({ state: 'visible' });
   await assertItems(page, category.id, pair.tags.slice(0, 2));
   // A jump to a distinct earlier visit must remain a router navigation, even at the same path.
   await page.locator('.lesson-back').click();
-  await page.waitForURL('**/blog/#lessons');
-  await page.locator('a[href="/blog/lessons/"]').click();
+  await page.waitForURL('**/library/#lessons');
+  await page.locator('a[href="/library/lessons/"]').click();
   await page.locator('[data-lesson-controls]').waitFor({ state: 'visible' });
   await page.selectOption('[name="category"]', category.id);
   await page.evaluate(() => window.history.go(-3));

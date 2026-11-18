@@ -7,8 +7,9 @@ import PostGrid from '../../components/writing/PostGrid.tsx';
 import Trackers from '../../components/writing/Trackers.astro';
 import { LEARN_SUBJECTS } from '../../content/config';
 import { LEARN_COPY, LEARN_SUBJECT, LEARN_SUBJECT_LABEL, learnCard, learnEntries } from '../../data/learn';
+import { LIBRARY } from '../../data/library';
 
-// Every field guide, newest first, in the same card grid as the writing page, filtered by
+// Every field guide, newest first, in the same card grid as the library page, filtered by
 // subject. Each subject names the tracker that follows it week by week.
 const entries = await learnEntries();
 const cards = entries.map(learnCard);
@@ -19,7 +20,7 @@ const subjects = LEARN_SUBJECTS.map((s) => ({ ...LEARN_SUBJECT[s], count: entrie
   <NightNav current="learn" />
   <main>
     <section class="nt-wrap nt-section block">
-      <a class="back" href="/blog/">← Writing</a>
+      <a class="back" href={LIBRARY.href}>← {LIBRARY.label}</a>
       <SectionHead as="h1" label="// learn" title={LEARN_COPY.title} lead={LEARN_COPY.body} />
       <ul class="subjects">
         {subjects.map((s) => (

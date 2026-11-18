@@ -1,13 +1,13 @@
 import { onPage, type Blueprint } from './types';
 
-/** A /learn article: the blog post's notepad and docs layout, with the body on a sheet of paper. */
+/** An article of the library: the blog post's notepad and docs layout, with the body on a sheet of paper. */
 export const LEARN_ARTICLE: Blueprint = {
   id: 'learn-article',
   kind: 'template',
   title: 'Learn article page',
   summary: 'An explainer in the docs layout, its body on a paper sheet, next reads at the end.',
-  source: ['src/pages/learn/[...slug].astro', 'src/components/docs/DocLayout.astro', 'src/components/docs/docs.css', 'src/styles/learn-paper.css', 'src/styles/tokens/paper.css', 'src/layouts/PaperLayout.astro'], // prettier-ignore
-  views: onPage('/learn/how-inference-chips-are-built/', '.pp-page'),
+  source: ['src/components/library/ArticlePage.astro', 'src/components/docs/DocLayout.astro', 'src/components/docs/docs.css', 'src/styles/learn-paper.css', 'src/styles/tokens/paper.css', 'src/layouts/PaperLayout.astro'], // prettier-ignore
+  views: onPage('/library/how-inference-chips-are-built/', '.pp-page'),
   parts: [
     { id: 1, name: 'Page', selector: '', sizing: 'fill', aliases: ['notepad', 'sheet', 'window'] },
     { id: 2, name: 'Margin line', selector: '', pseudo: '::before', sizing: 'fixed', views: ['desktop'], aliases: ['orange line', 'red line', 'punch hole line'] }, // prettier-ignore

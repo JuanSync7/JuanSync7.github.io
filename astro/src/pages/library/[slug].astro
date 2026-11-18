@@ -1,0 +1,38 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import PostPage from '../../components/library/PostPage.astro';
+import ArticlePage from '../../components/library/ArticlePage.astro';
+import { learnEntries } from '../../data/learn';
+import { libraryPosts } from '../../data/library-cards';
+
+// One address for every piece, whatever its kind: the kind picks the page, not the address.
+export async function getStaticPaths() {
+  const posts = await libraryPosts();
+  const articles = await learnEntries();
+  return [
+    ...posts.map((entry, i) => ({
+      params: { slug: entry.slug },
+      props: { kind: 'post' as const, entry, newer: posts[i - 1] ?? null, older: posts[i + 1] ?? null, all: posts },
+    })),
+    ...articles.map((entry) => ({ params: { slug: entry.slug }, props: { kind: 'article' as const, entry, all: articles } })),
+  ];
+}
+
+interface PostProps {
+  kind: 'post';
+  entry: CollectionEntry<'blog'>;
+  newer: CollectionEntry<'blog'> | null;
+  older: CollectionEntry<'blog'> | null;
+  all: CollectionEntry<'blog'>[];
+}
+interface ArticleProps {
+  kind: 'article';
+  entry: CollectionEntry<'learn'>;
+  all: CollectionEntry<'learn'>[];
+}
+type Props = PostProps | ArticleProps;
+
+const props = Astro.props;
+---
+
+{props.kind === 'post' ? <PostPage entry={props.entry} newer={props.newer} older={props.older} all={props.all} /> : <ArticlePage entry={props.entry} all={props.all} />}

@@ -1,6 +1,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { LEARN_SUBJECTS } from '../content/config';
 import type { FeaturedPage, PostSummary } from '../components/writing/types';
+import { pieceHref } from './library';
 
 /** The words and the order of the learn pages. Each subject names the weekly tracker that
  *  follows it, so an explainer and the week's news about the same thing link to each other. */
@@ -43,11 +44,11 @@ export function learnCard(e: CollectionEntry<'learn'>): PostSummary {
     date: fmt.format(e.data.date),
     read: readTime(e.body),
     cover: e.data.cover ?? null,
-    href: `/learn/${e.slug}`,
+    href: pieceHref(e.slug),
   };
 }
 
-/** The writing page's shelf: the featured article of each subject, in subject order. A subject
+/** The library page's shelf: the featured article of each subject, in subject order. A subject
  *  with two featured articles fails the build: the rule is one way in per subject. */
 export function learnShelf(entries: readonly CollectionEntry<'learn'>[]): FeaturedPage[] {
   return LEARN_SUBJECTS.flatMap((s) => {
@@ -62,7 +63,7 @@ export function learnShelf(entries: readonly CollectionEntry<'learn'>[]): Featur
       }
       return {
         slug: e.slug,
-        href: `/learn/${e.slug}`,
+        href: pieceHref(e.slug),
         title: e.data.title,
         kind: LEARN_SUBJECT[s].label,
         date: fmt.format(e.data.date),

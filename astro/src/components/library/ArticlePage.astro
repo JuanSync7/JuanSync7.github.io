@@ -1,5 +1,5 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 import NightPage from '../../layouts/NightPage.astro';
 import NightNav from '../../components/layout/NightNav.astro';
 import NightFooter from '../../components/layout/NightFooter.astro';
@@ -7,15 +7,10 @@ import DocLayout from '../../components/docs/DocLayout.astro';
 import { learnGroups } from '../../data/docnav';
 import FigureCanvas from '../../components/ui/FigureCanvas.tsx';
 import Mermaid from '../../components/trackers/Mermaid.astro';
-import { LEARN_COPY, LEARN_SUBJECT, learnEntries, readTime } from '../../data/learn';
+import { LEARN_COPY, LEARN_SUBJECT, readTime } from '../../data/learn';
+import { pieceHref } from '../../data/library';
 import '../../styles/night-prose.css';
 import '../../styles/learn-paper.css';
-
-export async function getStaticPaths() {
-  const entries = await getCollection('learn');
-  const all = await learnEntries();
-  return entries.map((entry) => ({ params: { slug: entry.slug }, props: { entry, all } }));
-}
 
 interface Props {
   entry: CollectionEntry<'learn'>;
@@ -35,7 +30,7 @@ const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', y
   <NightNav current="learn" />
   <div class="nt-progress" aria-hidden="true"></div>
   <main class="nt-wrap guide">
-    <DocLayout section="Field guides" home={{ href: LEARN_COPY.all.href, label: `← ${LEARN_COPY.all.label}` }} groups={learnGroups(all)} current={`/learn/${entry.slug}`} headings={headings}>
+    <DocLayout section="Field guides" home={{ href: LEARN_COPY.all.href, label: `← ${LEARN_COPY.all.label}` }} groups={learnGroups(all)} current={pieceHref(entry.slug)} headings={headings}>
     <div class="guide-col">
     <a class="back" href={LEARN_COPY.all.href}>← {LEARN_COPY.all.label}</a>
     <header class="head">

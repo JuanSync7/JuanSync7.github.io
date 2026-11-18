@@ -1,14 +1,14 @@
 import { onPage, type Blueprint } from './types';
 
-/** The writing index (/blog/): the hero, then sections on the page column (featured, lessons,
+/** The writing index (/library/): the hero, then sections on the page column (featured, lessons,
  *  posts), each a SectionHead over its content. */
 export const WRITING_INDEX: Blueprint = {
   id: 'writing-index',
   kind: 'template',
   title: 'Writing index page',
   summary: 'The list of writing: a hero, then featured, lessons and posts sections on the page column.',
-  source: ['src/pages/blog/index.astro', 'src/components/writing/WritingHero.astro', 'src/components/writing/post-grid.css', 'src/styles/night.css'], // prettier-ignore
-  views: onPage('/blog/', 'main'),
+  source: ['src/pages/library/index.astro', 'src/components/writing/WritingHero.astro', 'src/components/writing/post-grid.css', 'src/styles/night.css'], // prettier-ignore
+  views: onPage('/library/', 'main'),
   parts: [
     { id: 1, name: 'Page', selector: '', sizing: 'fill', aliases: ['main'] },
     { id: 2, name: 'Hero', selector: '.hero', sizing: 'fill', aliases: ['opening'] },

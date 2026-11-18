@@ -17,7 +17,6 @@ const blog = defineCollection({
     tags: z.array(z.string()).default([]),
     featured: z.boolean().default(false),
     size: z.enum(['large', 'medium', 'small']).default('small'),
-    externalUrl: z.string().optional(),
     art: artMotif.optional(),
     bg: artBg.optional(),
     /** The post's cover: a figure id in src/figures (group 'cover'), or a template instance
