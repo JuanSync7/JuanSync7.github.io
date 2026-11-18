@@ -32,6 +32,8 @@ const EMITTED = ['title', 'summary', 'eyebrow', 'date', 'updated', 'subject', 'c
 const ADAPTER = { kind: 'article', folder: 'Articles', collection: 'learn' };
 const ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const DIAGRAM = /^<Diagram id="([a-z0-9]+(?:-[a-z0-9]+)*)" \/>$/;
+/** Where a public link may point: the web, a page of the site, a heading of the same page. */
+const LINK = /^(https:\/\/|\/(?!\/)|#)/;
 const isDate = (value) => {
   if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   const date = new Date(value + 'T00:00:00Z');
@@ -72,6 +74,8 @@ function checkBody(lines, id, diagrams) {
     const prose = line.replace(/`[^`]*`/g, '');
     if (/^\s*(import|export)\s/.test(prose)) throw new Error(id + ': an import or export line in the public body');
     if (/[{}]/.test(prose)) throw new Error(id + ': a brace outside code in the public body');
+    const targets = [...prose.matchAll(/\]\(\s*<?([^)\s>]*)/g), ...prose.matchAll(/^\s*\[[^\]]*\]:\s*<?(\S*)/g)].map((match) => match[1]);
+    if (targets.some((target) => !LINK.test(target))) throw new Error(id + ': a link that points at neither the site nor the web');
     if (/<[A-Za-z/!]/.test(prose)) {
       const match = DIAGRAM.exec(line);
       if (!match) throw new Error(id + ': markup in the public body that is not a diagram by id');
@@ -103,6 +107,7 @@ function parsePiece(source, id, context) {
   for (const key of ['id', 'kind', 'title', 'summary', 'topic', 'status', 'subject', 'eyebrow', 'cover']) {
     if (key in data && !text(data[key])) throw new Error(id + ': invalid ' + key);
   }
+  if (['title', 'summary', 'eyebrow', 'cover'].some((key) => key in data && /\[\[|%%|\]\(/.test(data[key]))) throw new Error(id + ': a link or comment in the record');
   if (data.id !== id) throw new Error(id + ': the id is not the file name');
   if (!context.vocabulary.kinds.some((kind) => kind.id === data.kind)) throw new Error(id + ': unknown kind');
   if (data.kind !== ADAPTER.kind) throw new Error(id + ': this folder holds only the kind ' + ADAPTER.kind);
@@ -197,7 +202,7 @@ async function selftest() {
   const target = join(site, 'src', 'content', 'learn');
   const id = 'check-inputs';
   const record = { id, kind: 'article', title: 'Check inputs', summary: 'Inputs decide the result.', topic: 'software-engineering', tags: ['testing'], date: '2026-10-19', status: 'published', related: ['older-post'], subject: 'agents' };
-  const body = ['Read the input first.', '', '<Diagram id="input-path" />', '', FENCE, 'import x from "y"; const a = { b: 1 };', FENCE, '', 'Use `{braces}` in code only.'].join('\n');
+  const body = ['Read the input first.', '', '<Diagram id="input-path" />', '', FENCE, 'import x from "y"; const a = { b: 1 };', FENCE, '', 'See [the site](/library/older-post), [a heading](#top) and [the web](https://example.org/a).', '', 'Use `{braces}` in code only.'].join('\n');
   const SECRET = 'Made from a private experiment note';
   const note = (data = record, text = body, tail = SECRET) => ['---', 'status: draft', '---', SECRET, MARKER, JSON.stringify(data), FENCE, '', BODY, text, PRIVATE, tail, ''].join('\n');
   const put = (text, name = id) => writeFile(join(source, name + '.md'), text);
@@ -277,6 +282,13 @@ async function selftest() {
       'diagram the site lacks': [note(record, body.replace('input-path', 'node-only')), 'diagram the site does not have'],
       'unclosed code block': [note(record, body + '\n' + FENCE), 'unclosed code block'],
       'empty body': [note(record, ''), 'empty public body'],
+      'link to a file': [note(record, body + '\nSee [the source](../../Notes/Research/x.md).'), 'neither the site nor the web'],
+      'image from a file': [note(record, body + '\n![a chart](Notes/Assets/x.png)'), 'neither the site nor the web'],
+      'link by reference': [note(record, body + '\n\n[source]: Notes/Research/x.md'), 'neither the site nor the web'],
+      'link to another host scheme': [note(record, body + '\nSee [it](//files.example/x).'), 'neither the site nor the web'],
+      'vault link in the title': [note({ ...record, title: 'From [[Notes/Research/x]]' }), 'link or comment in the record'],
+      'comment in the summary': [note({ ...record, summary: 'Inputs %% hidden %% decide.' }), 'link or comment in the record'],
+      'link in the eyebrow': [note({ ...record, eyebrow: '[x](Notes/y.md)' }), 'link or comment in the record'],
       'record that is not JSON': [note().replace(JSON.stringify(record), '{oops'), 'not JSON'],
       'record that is a list': [note([]), 'expected an object'],
     };
