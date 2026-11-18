@@ -1,18 +1,25 @@
 ---
 import PaperHead from './PaperHead.astro';
-import PaperAction from '../ui/PaperAction.astro';
 import FigureCanvas from '../ui/FigureCanvas';
-import { EXPERIENCE, EXPERIENCE_TILES, EXPERIENCE_CTA } from '../../data/home';
+import { EXPERIENCE, EXPERIENCE_TILES, THINKING } from '../../data/home';
+import { REPOS } from '../../data/repos';
 
-const [current, ...before] = EXPERIENCE.roles;
+// A tile's evidence: its public repo on GitHub, or the write-up on /about when the repo is private.
+const evidence = (name: string | null): { name: string; href: string; out: boolean } | null => {
+  const repo = REPOS.items.find((r) => r.name === name);
+  if (!repo) return null;
+  const url = 'url' in repo ? repo.url : undefined;
+  return url ? { name: repo.name, href: url, out: true } : { name: repo.name, href: '/about/#repos', out: false };
+};
+const parts = [
+  { label: 'stack', items: THINKING.stack },
+  { label: 'domain', items: THINKING.domain },
+];
 ---
 
-<section id="experience" class="pp-section">
+<section id="work" class="pp-section">
   <div class="pp-wrap">
     <PaperHead note="chips first, then the AI platform" label={EXPERIENCE.label} title={EXPERIENCE.title} />
-    {current ? (
-      <p class="now pp-label">{current.title} · {current.org}{current.place ? ` · ${current.place}` : ''}</p>
-    ) : null}
     <div class="grid">
       {EXPERIENCE_TILES.map((t) => (
         <article class="tile">
@@ -20,23 +27,27 @@ const [current, ...before] = EXPERIENCE.roles;
           <p class="pp-label tag">{t.tag}</p>
           <h3 class="pp-title">{t.title}</h3>
           <p class="pp-small cap">{t.caption}</p>
+          {(() => {
+            const e = evidence(t.repo);
+            return e ? (
+              <a class="pp-label repo" href={e.href}>repo · {e.name}{e.out ? ' ↗' : ''}</a>
+            ) : null;
+          })()}
         </article>
       ))}
     </div>
-    <div class="before">
-      {before.map((r) => (
-        <p class="step"><span class="pp-title">{r.title}</span><span class="pp-label">{r.org}</span></p>
+    <dl class="parts">
+      {parts.map((p) => (
+        <div class="part">
+          <dt class="pp-label">{p.label}</dt>
+          <dd class="pp-label list">{p.items.join(' · ')}</dd>
+        </div>
       ))}
-    </div>
-    <div class="cta"><PaperAction href={EXPERIENCE_CTA.href} variant="signal">{EXPERIENCE_CTA.label}</PaperAction></div>
+    </dl>
   </div>
 </section>
 
 <style>
-  .now {
-    margin: 0 0 var(--hf-space-5);
-  }
-
   .grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -75,24 +86,36 @@ const [current, ...before] = EXPERIENCE.roles;
     max-width: 44ch;
   }
 
-  .before {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--hf-space-3) var(--hf-space-8);
-    margin-top: var(--hf-space-6);
-    padding-top: var(--hf-space-5);
-    border-top: 1px solid var(--pp-rule);
+  .repo {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--nt-hit);
+    margin-top: auto;
+    color: var(--pp-signal-text);
   }
 
-  .step {
+  /* The tools, as a parts list on a drawing: a label and a run of names, no chips. */
+  .parts {
     display: flex;
     flex-direction: column;
-    gap: var(--hf-space-1);
+    gap: var(--hf-space-3);
+    margin: var(--hf-space-6) 0 0;
+  }
+
+  .part {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--hf-space-1) var(--hf-space-6);
+  }
+
+  .part dt {
+    flex: 0 0 var(--hf-space-20);
     margin: 0;
   }
 
-  .cta {
-    margin-top: var(--hf-space-6);
+  .list {
+    margin: 0;
+    color: var(--pp-ink-muted);
   }
 
   @media (max-width: 900px) {

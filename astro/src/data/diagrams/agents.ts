@@ -115,7 +115,7 @@ export const DIAGRAMS: readonly Diagram[] = [
     caption:
       'A rule lives at the level where its decision is made, from the company’s shared rules, protocols and toolbox down to an agent that narrows them, a playbook, and a single step.',
     nodes: [
-      { id: 'company', title: 'Company', sub: 'every agent, every project', kind: 'box', x: 270, y: 16, w: 220, h: 56 },
+      { id: 'company', title: 'Company', sub: 'every agent, every project', kind: 'box', x: 220, y: 16, w: 320, h: 56 },
       {
         id: 'decks',
         title: 'Shared rules',
@@ -162,32 +162,28 @@ export const DIAGRAMS: readonly Diagram[] = [
     edges: [
       {
         pts: [
-          [300, 76],
-          [300, 112],
+          [236, 76],
+          [236, 112],
           [100, 112],
           [100, 148],
         ],
       },
       {
         pts: [
-          [340, 76],
-          [340, 112],
-          [292, 112],
+          [292, 76],
           [292, 148],
         ],
       },
       {
         pts: [
-          [420, 76],
-          [420, 112],
-          [484, 112],
+          [484, 76],
           [484, 148],
         ],
       },
       {
         pts: [
-          [460, 76],
-          [460, 112],
+          [524, 76],
+          [524, 112],
           [668, 112],
           [668, 148],
         ],

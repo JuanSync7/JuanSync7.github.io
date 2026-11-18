@@ -1,0 +1,57 @@
+---
+import PaperHead from './PaperHead.astro';
+import PaperAction from '../ui/PaperAction.astro';
+import FigureCanvas from '../ui/FigureCanvas';
+import { VAULT } from '../../data/home';
+---
+
+<section id="the-vault" class="pp-section">
+  <div class="pp-wrap vault">
+    <div class="copy">
+      <PaperHead label={VAULT.label} title={VAULT.title} accent={VAULT.accent} />
+      <p class="pp-body definition">{VAULT.definition}</p>
+      <p class="pp-body me">{VAULT.me}</p>
+      <div><PaperAction href={VAULT.cta.href} variant="signal">{VAULT.cta.label}</PaperAction></div>
+    </div>
+    <div class="safe"><FigureCanvas id="vault-safe" client:visible /></div>
+  </div>
+</section>
+
+<style>
+  .vault {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: center;
+    gap: var(--hf-space-8);
+  }
+
+  .copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-4);
+  }
+
+  .copy :global(.head) {
+    margin-bottom: 0;
+  }
+
+  .definition,
+  .me {
+    max-width: var(--nt-measure);
+    margin: 0;
+  }
+
+  .me {
+    color: var(--pp-ink-muted);
+  }
+
+  .safe {
+    aspect-ratio: 0.95;
+  }
+
+  @media (max-width: 820px) {
+    .vault {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
