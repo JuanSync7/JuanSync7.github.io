@@ -4,7 +4,7 @@ import { box, line, poly } from './kit/draw';
 import { ink, mix } from './kit/ink';
 import { follow, smoothstep } from './kit/motion';
 import { drawPapers, stack, tones, type Stack } from './kit/papers';
-import { around, dial, drum, handle, reach, seat, slab, type Plane } from './kit/safe';
+import { around, dial, drum, fillStroke, handle, reach, seat, slab, type Plane } from './kit/safe';
 
 // The safe's frame: x across, y up, z out of the door. The door is hinged on the opening's left edge.
 const OPEN = { x0: -0.92, x1: 0.92, y0: 0.5, y1: 2.0, z: 0.9 };
@@ -30,6 +30,16 @@ seat(
   GAP,
 );
 seat([-1.2, 1.2, OPEN.y1 + FRAME, 2.2], { 'name plate': PLATE }, 0.03);
+// The door turns about the barrels' axis, at the outer corner of its hinge edge, so the edge
+// touches the barrels at every angle; a bracket on a leaf ties each barrel back to the body.
+const BARREL = 0.07;
+const PIVOT = { x: OPEN.x0 - BARREL, z: OPEN.z + DOOR_T };
+const HINGES = [
+  [OPEN.y0 + 0.16, OPEN.y0 + 0.44],
+  [OPEN.y1 - 0.44, OPEN.y1 - 0.16],
+] as const;
+const leaf = ([y0, y1]: readonly [number, number]) => [PIVOT.x - 0.18, PIVOT.x, y0 + 0.03, y1 - 0.03] as const;
+seat([-1.2, OPEN.x0, OPEN.y0, OPEN.y1], { 'lower leaf': leaf(HINGES[0]), 'upper leaf': leaf(HINGES[1]) }, 0.02);
 // The bolts are drawn in before the door moves: the unlock ends where the swing starts.
 const UNLOCK = [0.3, 0.42] as const;
 
@@ -47,13 +57,7 @@ function drawInside(ctx: CanvasRenderingContext2D, cam: Camera, stacks: readonly
   const p = (x: number, y: number, z: number): ScreenPoint => project(cam, x, y, z);
   const { x0, x1, y0, y1, z } = OPEN;
   const back = -0.72;
-  const wall = (pts: ScreenPoint[], t: number) => {
-    poly(ctx, pts);
-    ctx.fillStyle = mix('ground', 'panel', t);
-    ctx.fill();
-    ctx.strokeStyle = ink.line(0.3);
-    ctx.stroke();
-  };
+  const wall = (pts: ScreenPoint[], t: number) => fillStroke(ctx, pts, mix('ground', 'panel', t), ink.line(0.3));
   ctx.save();
   opening(ctx, cam);
   ctx.clip();
@@ -92,14 +96,33 @@ function drawBody(ctx: CanvasRenderingContext2D, cam: Camera) {
   line(ctx, p(1.2, 0.4, 0.82), p(1.2, 2.14, 0.82), ink.line(0.18));
 }
 
+function hinges(ctx: CanvasRenderingContext2D, cam: Camera) {
+  for (const h of HINGES) {
+    const [u0, u1, v0, v1] = leaf(h);
+    const p = (x: number, y: number) => project(cam, x, y, OPEN.z);
+    fillStroke(ctx, [p(u0, v0), p(u1, v0), p(u1, v1), p(u0, v1)], mix('ground', 'panel2', 0.7), ink.line(0.6));
+    box(ctx, cam, PIVOT.x - BARREL, OPEN.z, PIVOT.x, PIVOT.z, h[0] + 0.05, h[1] - 0.05, tones(0.6));
+    const ring = (th: number, y: number) =>
+      project(cam, PIVOT.x + BARREL * Math.cos(th), y, PIVOT.z + BARREL * Math.sin(th));
+    drum(ctx, ring, h[0], h[1], mix('ground', 'panel', 0.5), mix('ground', 'panel2', 0.8), ink.line(0.75));
+  }
+}
+
 function drawDoor(ctx: CanvasRenderingContext2D, cam: Camera, k: number) {
   const a = smoothstep(UNLOCK[1], 1, k) * SWING;
   // The dial runs a combination (one way, back, then home) until its zero sits under the index.
   const u = smoothstep(0, UNLOCK[0], k);
   const turn = (1.1 + Math.sin(u * Math.PI * 2) * 1.4) * (1 - u);
   const unlock = smoothstep(UNLOCK[0], UNLOCK[1], k);
-  const q: Plane = (uu, v, n) =>
-    project(cam, OPEN.x0 + uu * Math.cos(a) - n * Math.sin(a), v, OPEN.z + uu * Math.sin(a) + n * Math.cos(a));
+  const q: Plane = (uu, v, n) => {
+    const [rx, rz] = [uu + BARREL, n - DOOR_T];
+    return project(
+      cam,
+      PIVOT.x + rx * Math.cos(a) - rz * Math.sin(a),
+      v,
+      PIVOT.z + rx * Math.sin(a) + rz * Math.cos(a),
+    );
+  };
   const outer = Math.cos(a) - Math.sin(a) > 0;
   const plug = () => {
     if (a < 0.01) return;
@@ -125,7 +148,10 @@ function drawDoor(ctx: CanvasRenderingContext2D, cam: Camera, k: number) {
   };
   // Painter's order: the far side of the door first. Past 45° the face and its hardware are
   // behind the slab and the plug is in front of it.
-  if (!outer) hardware();
+  if (!outer) {
+    hinges(ctx, cam);
+    hardware();
+  }
   if (outer) plug();
   slab(ctx, q, plate, outer);
   if (outer) {
@@ -140,15 +166,7 @@ function drawDoor(ctx: CanvasRenderingContext2D, cam: Camera, k: number) {
     ctx.stroke();
     hardware();
   } else plug();
-  // Two hinge barrels stand proud of the hinge edge.
-  for (const [y0, y1] of [
-    [OPEN.y0 + 0.16, OPEN.y0 + 0.44],
-    [OPEN.y1 - 0.44, OPEN.y1 - 0.16],
-  ] as const) {
-    const ring = (th: number, s: number) =>
-      project(cam, OPEN.x0 - 0.03 + 0.06 * Math.cos(th), s, OPEN.z + 0.1 + 0.06 * Math.sin(th));
-    drum(ctx, ring, y0, y1, mix('ground', 'panel', 0.5), mix('ground', 'panel2', 0.8), ink.line(0.75));
-  }
+  if (outer) hinges(ctx, cam);
 }
 
 export default defineCanvasFigure<State>({

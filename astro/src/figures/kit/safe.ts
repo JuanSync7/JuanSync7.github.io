@@ -49,7 +49,8 @@ function hull(pts: ScreenPoint[]): ScreenPoint[] {
   return [...half(s), ...half([...s].reverse())];
 }
 
-function fillStroke(ctx: CanvasRenderingContext2D, pts: readonly ScreenPoint[], fill: string, edge: string) {
+/** A filled, outlined polygon: a panel, a leaf, a plate. */
+export function fillStroke(ctx: CanvasRenderingContext2D, pts: readonly ScreenPoint[], fill: string, edge: string) {
   poly(ctx, pts);
   ctx.fillStyle = fill;
   ctx.fill();
