@@ -8,8 +8,13 @@
   align-items: start;
 }
 
+/* The article holds its reading measure and centres in its track, so a wider screen puts the
+   extra width into the space either side of it rather than into longer lines. */
 .doc-main {
+  justify-self: center;
+  width: 100%;
   min-width: 0;
+  max-width: var(--pp-doc-measure);
 }
 
 .doc-pane,
