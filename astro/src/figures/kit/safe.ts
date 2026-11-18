@@ -6,6 +6,31 @@ import { ink, mix } from './ink';
 export type Plane = (u: number, v: number, n: number) => ScreenPoint;
 
 const TAU = Math.PI * 2;
+const BALL = 0.05;
+
+/** How far each part reaches from its centre on its face, at any turn of it. */
+export const reach = { dial: (r: number) => r, handle: (r: number) => r * 1.08 + BALL };
+
+/** A rectangle on a face: [u0, u1, v0, v1]. */
+export type Rect = readonly [number, number, number, number];
+export const around = (cu: number, cv: number, r: number): Rect => [cu - r, cu + r, cv - r, cv + r];
+
+/** Parts sit on what holds them (CLAUDE.md, the bounds rule, here for a canvas figure): each part
+ *  stays inside `host` by `gap`, and no two parts come closer than `gap`. Throws at load, so the
+ *  figure fails its audit instead of drawing a dial through a handle. */
+export function seat(host: Rect, parts: Record<string, Rect>, gap: number): void {
+  const list = Object.entries(parts);
+  for (const [what, [u0, u1, v0, v1]] of list) {
+    const out = Math.max(host[0] + gap - u0, u1 - (host[1] - gap), host[2] + gap - v0, v1 - (host[3] - gap));
+    if (out > 1e-9) throw new Error(`bounds: ${what} pokes ${out.toFixed(3)} past its face`);
+  }
+  list.forEach(([a, p], i) =>
+    list.slice(i + 1).forEach(([b, q]) => {
+      const clear = Math.max(q[0] - p[1], p[0] - q[1], q[2] - p[3], p[2] - q[3]);
+      if (clear < gap) throw new Error(`bounds: ${a} and ${b} are ${clear.toFixed(3)} apart, need ${gap}`);
+    }),
+  );
+}
 
 /** Monotone-chain convex hull: the outline of a drum is the hull of both of its end rings. */
 function hull(pts: ScreenPoint[]): ScreenPoint[] {
@@ -33,8 +58,7 @@ function fillStroke(ctx: CanvasRenderingContext2D, pts: readonly ScreenPoint[], 
 }
 
 /** A short cylinder: `ring(th, s)` is the point at angle `th` round the axis and `s` along it.
- *  Draws the side as the hull of both ends, then `detail`, then the cap at `s1`, the end turned
- *  to the eye. */
+ *  Draws the side as the hull of both ends, then `detail`, then the end turned to the eye. */
 export function drum(
   ctx: CanvasRenderingContext2D,
   ring: (th: number, s: number) => ScreenPoint,
@@ -46,10 +70,14 @@ export function drum(
   detail?: () => void,
 ): void {
   const at = (s: number) => Array.from({ length: 36 }, (_, i) => ring((i / 36) * TAU, s));
-  fillStroke(ctx, hull([...at(s0), ...at(s1)]), side, edge);
+  const near = (pts: ScreenPoint[]) => pts.reduce((d, p) => d + p[2], 0) / pts.length;
+  const [a, b] = [at(s0), at(s1)];
+  fillStroke(ctx, hull([...a, ...b]), side, edge);
   // Anything drawn on the side now (knurls) is hidden by the cap where it runs round the back.
   detail?.();
-  fillStroke(ctx, at(s1), cap, edge);
+  // The cap is whichever end is nearer the eye: a dial on a door that has swung past 45° shows
+  // the end against the door, not its face.
+  fillStroke(ctx, near(b) >= near(a) ? b : a, cap, edge);
 }
 
 /** A slab on a plane, `[u0, u1, v0, v1, n0, n1]`: its `u1` end, its top and whichever broad face
@@ -143,7 +171,7 @@ export function handle(
       q(cu + rad * Math.sin(th) + du * sign, cv + rad * Math.cos(th) + dv * sign, s);
     fillStroke(ctx, [tipAt(0.04, 1), tipAt(r, 1), tipAt(r, -1), tipAt(0.04, -1)], steel(0.7), ink.line(0.75));
     const [x, y] = q(cu + r * 1.08 * Math.sin(th), cv + r * 1.08 * Math.cos(th), s);
-    const [ex] = q(cu + r * 1.08 * Math.sin(th) + 0.06, cv + r * 1.08 * Math.cos(th), s);
+    const [ex] = q(cu + r * 1.08 * Math.sin(th) + BALL, cv + r * 1.08 * Math.cos(th), s);
     dot(ctx, x, y, Math.abs(ex - x), steel(0.85));
     ctx.strokeStyle = ink.line(0.75);
     ctx.stroke();
