@@ -2,7 +2,7 @@ import { defineCanvasFigure } from './define';
 import { isometric, project, type Camera, type ScreenPoint } from './kit/camera';
 import { box, line, poly } from './kit/draw';
 import { ink, mix } from './kit/ink';
-import { follow, smoothstep } from './kit/motion';
+import { smoothstep } from './kit/motion';
 import { drawPapers, stack, tones, type Stack } from './kit/papers';
 import { around, dial, drum, fillStroke, handle, reach, seat, slab, type Plane } from './kit/safe';
 
@@ -13,10 +13,8 @@ const DOOR_T = 0.2;
 const PLUG = [0.08, DOOR_W - 0.08, OPEN.y0 + 0.08, OPEN.y1 - 0.08, -0.14, 0] as const;
 const SWING = (100 * Math.PI) / 180;
 const SHELF = 1.36;
-// The door's face inside its inset line, and what sits on it. Checked at load: each part keeps
-// GAP from the inset line and from its neighbour, at any turn of the dial or the handle.
-const INSET = 0.1;
-const GAP = 0.05;
+// The door's face and what sits on it, checked at load: each part keeps GAP from the inset line and its neighbour.
+const [INSET, GAP] = [0.1, 0.05];
 const DIAL = { u: DOOR_W / 2, v: 1.58, r: 0.25 };
 const HANDLE = { u: DOOR_W / 2, v: 0.93, r: 0.2 };
 const FRAME = 0.07;
@@ -30,10 +28,14 @@ seat(
   GAP,
 );
 seat([-1.2, 1.2, OPEN.y1 + FRAME, 2.2], { 'name plate': PLATE }, 0.03);
-// The door turns about the barrels' axis, at the outer corner of its hinge edge, so the edge
-// touches the barrels at every angle; a bracket on a leaf ties each barrel back to the body.
-const BARREL = 0.07;
-const PIVOT = { x: OPEN.x0 - BARREL, z: OPEN.z + DOOR_T };
+// The door turns about the barrels' axis. They stand proud of its face, as on a real safe, and reach its
+// outer corner at every angle; a bracket on a leaf ties each barrel back to the body.
+const [HINGE_U, HINGE_N] = [0.05, 0.06];
+// At 45° the face is edge-on and the barrels change sides of the door: with HINGE_N >= HINGE_U they
+// only touch its outline then, so nothing jumps; past it the door covers them as it turns.
+if (HINGE_N < HINGE_U) throw new Error('bounds: hinge barrels would jump across the door at 45°');
+const BARREL = Math.hypot(HINGE_U, HINGE_N);
+const PIVOT = { x: OPEN.x0 - HINGE_U, z: OPEN.z + DOOR_T + HINGE_N };
 const HINGES = [
   [OPEN.y0 + 0.16, OPEN.y0 + 0.44],
   [OPEN.y1 - 0.44, OPEN.y1 - 0.16],
@@ -42,6 +44,7 @@ const leaf = ([y0, y1]: readonly [number, number]) => [PIVOT.x - 0.18, PIVOT.x, 
 seat([-1.2, OPEN.x0, OPEN.y0, OPEN.y1], { 'lower leaf': leaf(HINGES[0]), 'upper leaf': leaf(HINGES[1]) }, 0.02);
 // The bolts are drawn in before the door moves: the unlock ends where the swing starts.
 const UNLOCK = [0.3, 0.42] as const;
+const [OPEN_S, CLOSE_S] = [2.6, 1.2];
 
 interface State {
   k: number;
@@ -101,7 +104,7 @@ function hinges(ctx: CanvasRenderingContext2D, cam: Camera) {
     const [u0, u1, v0, v1] = leaf(h);
     const p = (x: number, y: number) => project(cam, x, y, OPEN.z);
     fillStroke(ctx, [p(u0, v0), p(u1, v0), p(u1, v1), p(u0, v1)], mix('ground', 'panel2', 0.7), ink.line(0.6));
-    box(ctx, cam, PIVOT.x - BARREL, OPEN.z, PIVOT.x, PIVOT.z, h[0] + 0.05, h[1] - 0.05, tones(0.6));
+    box(ctx, cam, PIVOT.x - HINGE_U, OPEN.z, PIVOT.x, PIVOT.z, h[0] + 0.05, h[1] - 0.05, tones(0.6));
     const ring = (th: number, y: number) =>
       project(cam, PIVOT.x + BARREL * Math.cos(th), y, PIVOT.z + BARREL * Math.sin(th));
     drum(ctx, ring, h[0], h[1], mix('ground', 'panel', 0.5), mix('ground', 'panel2', 0.8), ink.line(0.75));
@@ -115,7 +118,7 @@ function drawDoor(ctx: CanvasRenderingContext2D, cam: Camera, k: number) {
   const turn = (1.1 + Math.sin(u * Math.PI * 2) * 1.4) * (1 - u);
   const unlock = smoothstep(UNLOCK[0], UNLOCK[1], k);
   const q: Plane = (uu, v, n) => {
-    const [rx, rz] = [uu + BARREL, n - DOOR_T];
+    const [rx, rz] = [uu + HINGE_U, n - DOOR_T - HINGE_N];
     return project(
       cam,
       PIVOT.x + rx * Math.cos(a) - rz * Math.sin(a),
@@ -192,7 +195,9 @@ export default defineCanvasFigure<State>({
   draw: ({ ctx, w, h, t, dt, still, pointer, state }) => {
     // Hover opens it. With no hover (a phone) it opens once it has been on screen a moment.
     const target = pointer.active || (w < 420 && t > 1.4) ? 1 : 0;
-    state.k = still ? target : follow(state.k, target, dt, target > state.k ? 1.1 : 3);
+    // A steady clock through the sequence (dial, bolts, swing), so the door never jumps.
+    const step = dt / (target > state.k ? OPEN_S : CLOSE_S);
+    state.k = still ? target : Math.min(1, Math.max(0, state.k + (target > state.k ? step : -step)));
     const cam = isometric(w * 0.6, h * 0.7, Math.min(w * 0.2, h * 0.22));
     drawBody(ctx, cam);
     const open = smoothstep(0.42, 1, state.k);
