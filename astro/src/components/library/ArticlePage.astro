@@ -7,6 +7,7 @@ import DocLayout from '../../components/docs/DocLayout.astro';
 import { learnGroups } from '../../data/docnav';
 import FigureCanvas from '../../components/ui/FigureCanvas.tsx';
 import Mermaid from '../../components/trackers/Mermaid.astro';
+import Diagram from '../../components/learn/Diagram.astro';
 import { LEARN_COPY, LEARN_SUBJECT, readTime } from '../../data/learn';
 import { pieceHref } from '../../data/library';
 import '../../styles/night-prose.css';
@@ -49,7 +50,7 @@ const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', y
     ) : null}
     <div class="paper">
       <article class="prose">
-        <Content />
+        <Content components={{ Diagram }} />
       </article>
     </div>
     <nav class="next" aria-label="More on this subject">

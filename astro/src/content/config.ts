@@ -56,6 +56,11 @@ const learn = defineCollection({
     art: artMotif.optional(),
     bg: artBg.optional(),
     date: z.coerce.date(),
+    /** Set only on an article written by scripts/library/sync.mjs: the library's shared shelf and tags. */
+    updated: z.coerce.date().optional(),
+    topic: z.string().refine((id) => lessonTaxonomy.categories.some((category) => category.id === id), 'Unknown topic').optional(),
+    tags: z.array(z.string().refine((id) => lessonTaxonomy.tags.some((tag) => tag.id === id), 'Unknown tag')).min(1).max(5).refine((tags) => new Set(tags).size === tags.length, 'Duplicate tags').optional(),
+    related: z.array(z.string()).optional(),
   }),
 });
 

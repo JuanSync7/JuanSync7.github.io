@@ -92,6 +92,17 @@ only with a reason in the commit message. `npm run library:check` (slugs, the le
 `library:selftest` are in `npm run check`; `npm run library:pages` runs after a build and in CI
 (every piece built, every old address forwards, no page links to an old address, feed ids kept).
 
+An article can be maintained in the experience vault instead of here: its note in the vault's
+`Site/Articles/` holds one public record, the body, and a private trail of what it was made from.
+`npm run library:sync -- --vault <vault>` compares, `--write` writes `src/content/learn/<id>.mdx`,
+and the first front-matter line of a written file says so: change the note, never that file. The
+sync refuses private text in the public part (a wiki link, a comment, a private heading, code the
+page would run) and never strips it, validates every note before writing one, and replaces only a
+file it wrote; moving a hand-written article into the vault is a reviewed change that removes the
+old file first. The body names a diagram by id (`<Diagram id="…" />`, no import): the drawing stays
+in `src/data/diagrams/`. The vault's `Notes/Protocols/Site pieces.md` owns the record;
+`library:sync:selftest` (in `npm run check`) proves each refusal. CI never reads the vault.
+
 ## Writing lessons
 
 Before generating, backfilling or editing a lesson, read the experience vault's
