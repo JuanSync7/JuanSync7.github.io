@@ -46,8 +46,8 @@ const stickers = [
     <h2 class="pp-hand headline">{CONTACT_SECTION.title} {CONTACT_SECTION.accent}</h2>
     <p class="pp-body lead">{CONTACT_SECTION.body}</p>
     <div class="scenes">
-      <div class="scene"><FigureCanvas id="lego-city" client:visible /></div>
-      <div class="scene"><FigureCanvas id="dev-desk" client:visible /></div>
+      <div class="scene"><FigureCanvas id="lego-city" ahead="150% 0px" client:idle /></div>
+      <div class="scene"><FigureCanvas id="dev-desk" ahead="150% 0px" client:idle /></div>
     </div>
     <ul>
       {links.map((l) => (
@@ -63,7 +63,7 @@ const stickers = [
 </section>
 
 <section id="city" class="pp-section">
-  <div class="pp-wrap city"><HeroCity client:visible /></div>
+  <div class="pp-wrap city"><HeroCity client:idle /></div>
 </section>
 
 <style>

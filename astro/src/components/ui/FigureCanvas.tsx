@@ -20,23 +20,42 @@ interface Props {
   data?: unknown;
   /** Called with the figure's read-out whenever it changes: what is under the pointer. */
   onReadout?: (text: string) => void;
+  /** Build and paint the figure before it scrolls into view, once within this margin (e.g.
+   *  '150% 0px'). For heavy scenes further down a page; pair with client:idle. */
+  ahead?: string;
 }
 
 /** Mounts one figure from the registry on a canvas that fills its box. The box sets the
  *  size: give the wrapper a height or an aspect-ratio. */
-export default function FigureCanvas({ id, className, label, readout = false, freezeAt, pointerAt, fixtures, data, onReadout }: Props) {
+export default function FigureCanvas({
+  id,
+  className,
+  label,
+  readout = false,
+  freezeAt,
+  pointerAt,
+  fixtures,
+  data,
+  onReadout,
+  ahead,
+}: Props) {
   const ref = useRef<HTMLCanvasElement>(null);
   const [text, setText] = useState('rest');
   const report = (r: string): void => {
     if (readout) setText(r);
     onReadout?.(r);
   };
-  const figure = useFigureLoop(ref, { id, freezeAt, pointerAt, fixtures, data, onReadout: report });
+  const figure = useFigureLoop(ref, { id, freezeAt, pointerAt, fixtures, data, onReadout: report, ahead });
   return (
     <div className={`figure-canvas${className ? ` ${className}` : ''}`} data-figure={id} data-style={figure?.style}>
       {/* The canvas is an image only once its figure, and so its alt text, has loaded; until
           then it is hidden from assistive tech rather than an image with no name. */}
-      <canvas ref={ref} role={figure ? 'img' : undefined} aria-label={label ?? figure?.alt} aria-hidden={figure ? undefined : true} />
+      <canvas
+        ref={ref}
+        role={figure ? 'img' : undefined}
+        aria-label={label ?? figure?.alt}
+        aria-hidden={figure ? undefined : true}
+      />
       {/* The read-out follows the pointer: a visual aid, not news to announce. */}
       {readout ? (
         <span className="figure-readout" aria-hidden="true">

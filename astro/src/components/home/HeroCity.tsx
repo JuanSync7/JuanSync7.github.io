@@ -3,6 +3,8 @@ import FigureCanvas from '../ui/FigureCanvas';
 import './hero-city.css';
 
 type Look = 'solid' | 'wire';
+/** Built this far ahead of the view, so the city is drawn before the reader reaches it. */
+const AHEAD = '150% 0px';
 const LOOKS: { id: Look; label: string }[] = [
   { id: 'solid', label: 'solid' },
   { id: 'wire', label: 'wire' },
@@ -15,7 +17,7 @@ export default function HeroCity() {
   const [look, setLook] = useState<Look>('solid');
   return (
     <div className="hero-city">
-      <FigureCanvas id="system-stack" data={{ look }} />
+      <FigureCanvas id="system-stack" data={{ look }} ahead={AHEAD} />
       <div className="hero-city-looks" role="group" aria-label="How the city is drawn">
         {LOOKS.map((l) => (
           <button key={l.id} type="button" aria-pressed={look === l.id} onClick={() => setLook(l.id)}>

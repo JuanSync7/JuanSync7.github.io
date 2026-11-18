@@ -98,6 +98,8 @@ const FAR = 15.5;
 /** The overview aims at the hub's middle, so the airport above and the islands below both fit. */
 const LOOK = -0.05;
 const NEAR = [6.8, 3.8];
+/** The opening shot: close on the hub's middle level, then the camera pulls back to the overview. */
+const OPEN = 2.4;
 
 interface Stack {
   spec: Spec;
@@ -127,6 +129,8 @@ interface State {
   across: (readonly [Vec3, Vec3])[];
   view: { x: number; y: number; z: number; dist: number; orbit: number };
   look: Look | '';
+  /** The opening pull-back is under way: it eases out slower than a pointer flight. */
+  opening: boolean;
 }
 
 const m4 = new Matrix4();
@@ -247,8 +251,9 @@ export default defineThreeFigure<State>({
       path,
       packet,
       over: new PerspectiveCamera(30, 1, 0.1, 60),
-      view: { x: 0, y: LOOK, z: 0, dist: FAR, orbit: 0 },
+      view: { x: 0, y: 0, z: 0, dist: OPEN, orbit: 0 },
       look: '',
+      opening: true,
     };
   },
   update: ({ scene, camera, t, dt, pointer, hover, still, data, state: s, w, h }) => {
@@ -270,7 +275,8 @@ export default defineThreeFigure<State>({
     const pick = pointer.active && hover > 0.3 ? pickAt(s.over, STACKS, pointer.x, pointer.y) : -1;
     const c = STACKS[pick];
     const goal = c ? [c.x, c.base, c.z, (NEAR[c.kind === 'hub' ? 0 : 1] ?? 5) * wide] : [0, LOOK, 0, FAR * wide];
-    const ease = (a: number, b = 0): number => (still ? b : follow(a, b, dt, 1.3));
+    s.opening = s.opening && !c && v.dist < FAR * wide * 0.97;
+    const ease = (a: number, b = 0): number => (still ? b : follow(a, b, dt, s.opening ? 0.65 : 1.3));
     [v.x, v.y, v.z, v.dist] = [ease(v.x, goal[0]), ease(v.y, goal[1]), ease(v.z, goal[2]), ease(v.dist, goal[3])];
     // Circle a stack slowly once close: the turn builds up a frame at a time and unwinds as
     // the camera pulls back, so the overview matches the one the pointer picks against.

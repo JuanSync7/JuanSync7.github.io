@@ -1,4 +1,9 @@
-/** Keep the no-JavaScript cabinet coupled to the actual renderer; never draw it twice. */
+/** Keep the no-JavaScript cabinet coupled to the actual renderer; never draw it twice.
+ *  The fingerprint covers the files that decide the cabinet's pixels: its figure, the drawing kit
+ *  it uses, the palette and the capture script. The shared plumbing that loads and runs every
+ *  figure (the clock, FigureCanvas, the bench, the registry) is left out on purpose (17 Nov 2026),
+ *  so a loading change elsewhere does not demand a new poster; the figure audit still watches how
+ *  every figure draws. */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -10,8 +15,7 @@ const manifestPath = resolve(site, 'scripts/presentation/cabinet-poster.json');
 const posterPath = resolve(site, 'public/vault/vault-cabinet.png');
 const sources = ['src/figures/vault-cabinet.ts', 'src/figures/kit/camera.ts', 'src/figures/kit/draw.ts',
   'src/figures/kit/ink.ts', 'src/figures/kit/motion.ts', 'src/figures/define.ts', 'src/styles/tokens/palette.ts',
-  'src/hooks/useFigureLoop.ts', 'src/components/ui/FigureCanvas.tsx', 'src/components/figures/FigureBench.tsx',
-  'src/figures/registry.ts', 'scripts/presentation/cabinet-poster-capture.mjs'];
+  'scripts/presentation/cabinet-poster-capture.mjs'];
 const hash = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const sourceHashes = () => Object.fromEntries(sources.map((path) => [path, hash(readFileSync(resolve(site, path)))]));
 
