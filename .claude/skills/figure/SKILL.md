@@ -1,8 +1,10 @@
 ---
 name: figure
-description: Use whenever a drawing is needed on juansync.dev — a post cover, a hero, a slide's figure, an illustration inside a post, any animated canvas or 3D piece, or a new seeded template for the /lab catalogue — or when one is changed. Draws one figure (or one template: a grammar that draws a different figure from every seed) in the site's minimal style, with one orange signal, in one of nine techniques (wireframe, low-poly, pixel, perspective, hairline, ink, field, trace or three.js) as one file in astro/src/figures, and loops on the audit until it passes and its sheet has been looked at.
+description: Use when a drawing is needed or changed on juansync.dev, such as a post cover, a hero, a slide's figure, an illustration in a post, an animated canvas or 3D piece, or a seeded template for /lab.
 argument-hint: "[what the figure is for]"
+status: "[adopted] the steps and R-FIG-14 to 26 are the site's figure skill as enforced by its audit, carried into the vault on 2026-11-18. R-FIG-1 to 13 are the deck's trial rules."
 ---
+
 
 # Figure
 
@@ -33,10 +35,10 @@ Work in this order. Stop where it says stop.
    Over 200 lines (350 for a scene) is two ideas: cut one, or move a reusable part into
    `kit/`. Lines are counted after Prettier (120 columns, `npm run format:figures`), so
    packing statements onto one line buys nothing; `npm run check` fails unformatted figures.
-2. **Read the neighbours.** `npm run figures:check -- --list` prints every figure by group
-   and style. Your figure's group (`cover`, `feature`, `hero`, `post`) must not repeat the
-   style of a date neighbour, and no style may cover more than a third of a group. Pick from
-   the styles the group is short of. `references/styles.md` has the catalogue.
+2. **Pick the style.** If the brief names a style or a look, use it. Otherwise pick the one
+   that suits the subject; `references/styles.md` has the catalogue. A style may repeat within a group.
+   One limit: a post cover must not share the style of the post before it by date
+   (`npm run figures:check -- --list` prints every figure by group and style).
 3. **Truth.** Collect the real behaviour of the subject: what moves, in what order, how far.
    The motion must be true to it (a systolic array's wave runs along the diagonal; decode is
    one token at a time).
@@ -108,7 +110,7 @@ passed" without reading the sheet is not done. Never describe a figure you did n
 
 ## Files
 
-- `references/rules.md`: the thirteen rules, each with how to keep it and what gets a figure rejected.
+- `references/rules.md`: the rules, generated from the vault's Making figures deck (R-FIG-14 to 26 are the audit's thirteen, R-FIG-1 to 13 the rules for real things, seeds and judging). Never edit it.
 - `references/styles.md`: the nine styles, when each suits a subject, and the recipe in kit calls.
 - `references/look.md`: what the sheet shows and the questions only eyes can answer.
 - `references/kit.md`: every kit call, the frame you are given, and the clock's guarantees.
@@ -117,22 +119,13 @@ passed" without reading the sheet is not done. Never describe a figure you did n
   check that has a fixture still catches it (every drawing check: colour, randomness, clock,
   DOM, words, glow, width, parse; and every look check except `reduced`, which guards the
   clock, not the figure). `fixtures/structural-sins.ts` proves imports, length and meta;
-  `fixtures/templates/same-every-seed.ts` proves the look's `seed` check; parse, variety,
+  `fixtures/templates/same-every-seed.ts` proves the look's `seed` check; parse,
   covers and template instances are proven inline. Run it after any change to the audit.
 
-## Explicit room-colour exception
+## Where this playbook lives
 
-For `pixel-still` room work, also read
-[`tabletop-room`](../tabletop-room/SKILL.md). The user requested themed full colour
-and a monochrome switch on 7 November 2026. Only this scene's colour mode uses the
-separate room material/light palette and its dedicated checks. The night palette,
-other figures and their global thresholds retain the rules above.
-
-## Requested voxel atmosphere
-
-For `voxel-scene` and `voxcel-island`, the user explicitly requested source glow, fog,
-cast shadows, evening/night light and matched visible weather on 9 November 2026.
-Use the [web design atmosphere playbook](../web-design-agent/playbooks/voxel-atmosphere.md)
-for this scoped treatment. Keep emission attached to actual scene sources, the existing
-night palette, and the unchanged generic audit limits. The generic no-glow restraint
-continues to govern other figures; this is not a site-wide bloom or palette exception.
+Its one source is the experience vault's `Playbooks/figure`. A project gets a synced copy (on juansync.dev
+`npm run figure:sync -- <vault>`, `--check` to compare) and never edits it there. The kernel is the project's
+own kit; `references/kit.md` lists it. A project's scoped exceptions (a full-colour room, a requested
+atmosphere) live beside the copy in `SITE.md`, which is the project's own and never synced: read it when the
+figure is one it names.

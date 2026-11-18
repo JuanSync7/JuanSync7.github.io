@@ -1,117 +1,51 @@
-# The rules
+# Rules: figure
 
-Thirteen rules, at three levels. **Invariants** are enforced by `check.mjs` or `look.mjs`
-and a figure that breaks one does not pass. **Craft** rules are judged from the sheet
-(`look.md`). **Framing** rules are decided before any code. Each rule says how to keep it
-with the kit and what gets a figure rejected.
-
-Sources: the restraint and the two clocks come from hairline (lucasmarkes/hairline); "the
-object is the explanation" and "verify like a critic" from anatomy (wheresryan22/anatomy);
-the brush and the noise from shan-shui-inf (LingDong-).
+Generated from the decks by `_scripts/playbook_pack.py render`; never edit it. To change a
+rule, change its deck row.
 
 ## Framing
 
-### 01 · object: the subject, drawn as a thing
-Find the object whose working is the idea, then draw that.
-- **Keep it:** write the `idea` field first: the object, what moves, what the motion means.
-  If you can't write it in one sentence, you don't have a concept yet.
-- **Rejected when:** boxes joined by arrows; a shape with a label on it; an icon (a padlock
-  for security); a figure you can't explain without its caption. If words are the content,
-  build a DOM diagram with real text instead.
-
-### 02 · one: one figure, one idea
-One object, one motion, one answer to the pointer.
-- **Keep it:** if a second idea creeps in, it is a second figure or nothing.
-- **Rejected when:** two things move for two reasons; the figure needs a legend.
-
-### 03 · variety: a page is a set, not a stamp
-Figures that sit together use different techniques. *(invariant: `variety`, `covers`)*
-- **Keep it:** run `npm run figures:check -- --list` before choosing. Within a group no style
-  covers more than a third; posts next to each other by date never share a style.
-- **Rejected when:** the same technique with a different shape, again and again. Changing
-  the model from a sphere to a torus is not variety; changing from wireframe to pixel is.
+- **R-FIG-14** (eval: deck case only (no eval yet)) Draw the subject as a thing whose working is the idea. Write the figure's `idea` field first: the object, what moves, what the motion means, in one sentence. *Why:* A figure that needs its caption to be understood is a diagram, and a diagram is a DOM layout with real text. Reject when: boxes joined by arrows, a shape with a label on it, an icon (a padlock for security), or a figure that can't be explained without its caption
+- **R-FIG-15** (eval: deck case only (no eval yet)) One figure, one idea: one object, one motion, one answer to the pointer. A second idea is a second figure or nothing. *Why:* Two things moving for two reasons split the eye and need a legend. Reject when: two things move for two reasons, or the figure needs a legend
+- **R-FIG-16** (eval: the site's figures:selftest, a planted fault per check; also held by figures:check covers) Give posts next to each other by date covers in different styles. Read the neighbours first (`npm run figures:check -- --list`). Within a group any style may repeat: choose the style the brief names, or the one that suits the subject. *Why:* Two covers side by side in one style read as a template on the writing page. Reject when: a cover in the same style as the post before it, or a style chosen against the brief to fill a gap in its group
 
 ## Invariants
 
-### 04 · palette: colour only from the tokens
-*(invariant: `colour`, `palette`)*
-- **Keep it:** `ink.line(a)`, `ink.signal(a)`, `ink.ground()`, `tone(key, a)`, `mix(a, b, t)`,
-  `hexOf(key)` for three.js. Need a new colour? Add a `--nt-*` token and its `night` mirror
-  first, in its own commit, and say why.
-- **Rejected when:** any colour literal in the file; any pixel whose hue is neither grey nor
-  the signal.
-
-### 05 · signal: the orange is information
-At rest, one bright mark says where to look. When the pointer chooses, the bright moves to
-what it chose. *(invariant: `signal` at most 35% of the ink; a figure with no signal warns)*
-- **Keep it:** decide what the one lit thing is (the decoding ridge, the active die, the
-  cursor). Everything else is grey at an opacity that says its depth.
-- **Rejected when:** the signal fills areas; two unrelated things are lit; the signal is
-  decoration.
-
-### 06 · weight: hairlines, no glow
-*(invariant: `width`, `glow`)*
-- **Keep it:** 1px strokes. Say importance with opacity and the signal; say depth by fading
-  far lines. Fills are ground or a face tone, used to hide what is behind (painter's order),
-  never to decorate.
-- **Rejected when:** `shadowBlur`, filters, gradients, blend modes, lines wider than 1.5px.
-
-### 07 · clock: the loop owns time
-*(invariant: `clock`, `dom`, `random`, `reduced`)*
-- **Keep it:** read `t`, `dt`, `hover`, `pointer`, `pulses`, `still` and `data` from the frame. A
-  continuous input follows on a spring or `follow`; a discrete change eases out over ~700 ms
-  (`kit/motion.ts`). Randomness is drawn from the seeded `rng` in `setup`; anything that
-  must vary over time samples `noise(x, t)` so it changes smoothly.
-- **Under `still`, snap:** with reduced motion a pointer move redraws once with `dt = 0`, so
-  anything eased with `follow` never moves. Write `x = still ? target : follow(x, target, dt)`.
-- **Rejected when:** timers, listeners, `Math.random`, wall-clock reads; anything that
-  re-randomises per frame (shimmer); anything still moving under reduced motion.
-
-### 08 · words: no text in the drawing
-*(invariant: `words`)*
-- **Keep it:** return a few characters from `draw` (`ridge 7`, `die 3·2`, `rest`); the page
-  receives them as the read-out (the bench shows it; a page may act on it through
-  `onReadout`, as the lesson log does). Number things with dots or position.
-- **Rejected when:** `fillText`; letters or digits drawn as paths; a figure that can't be read
-  without its read-out.
-
-### 09 · budget: small, fast, seeded
-*(invariant: `length`, `perf`, `blank`, `wash`)*
-- **Keep it:** under 200 non-blank lines (350 for a three.js scene), counted after Prettier; under 6 ms a frame on average (14 ms for three.js); ink
-  between 0.4% and 50% of the frame, ideally under 40%. Precompute geometry in `setup`;
-  `draw` only moves and paints.
-- **Rejected when:** thousands of marks for a texture you can't see at 358 px; a frame that
-  is mostly ink.
+- **R-FIG-17** (eval: the site's figures:selftest, a planted fault per check; also held by figures:check colour, figures:look palette) Take every colour from the tokens through the kit (`ink.line`, `ink.signal`, `ink.ground`, `tone`, `mix`, `hexOf`). A new colour is a new token, with its night mirror, added first. *Why:* One palette is what makes many figures one family, and the page filter can only map colours it knows. Reject when: a colour literal in the file, or a pixel whose hue is neither grey nor the signal
+- **R-FIG-18** (eval: the site's figures:selftest, a planted fault per check; also held by figures:look signal) Use the signal as information: at rest one bright mark says where to look, and when the pointer chooses, the bright moves to what it chose. Everything else is grey at an opacity that says its depth. *Why:* A signal that fills areas or lights two things says nothing about where to look. Reject when: the signal fills areas, two unrelated things are lit, or the signal is decoration
+- **R-FIG-19** (eval: the site's figures:selftest, a planted fault per check; also held by figures:check glow, figures:look width) Draw in hairlines with no glow: 1px strokes, importance said with opacity and the signal, depth with fading far lines. Fills hide what is behind, never decorate. *Why:* Glow, gradients and thick lines are someone else's style, and they hide the structure the figure is about. Reject when: shadowBlur, filters, gradients, blend modes, or lines wider than 1.5px
+- **R-FIG-20** (eval: the site's figures:selftest, a planted fault per check; also held by figures:check clock, figures:check random, figures:look reduced) Let the loop own time: read `t`, `dt`, `hover`, `pointer`, `pulses`, `still` from the frame, ease with the kit's springs, draw randomness once from the seeded `rng`, and snap to the target under `still`. *Why:* The same seed must draw the same figure, and reduced motion must mean still. Reject when: timers, listeners, Math.random, wall-clock reads, anything re-randomised per frame, or anything still moving under reduced motion
+- **R-FIG-21** (eval: the site's figures:selftest, a planted fault per check; also held by figures:check words) Put no text in the drawing: return a few characters from `draw` as the read-out (`ridge 7`, `rest`) and number things with dots or position. *Why:* Words in a canvas can't be read by a screen reader or recoloured, and a figure that needs them is a diagram. Reject when: fillText, letters or digits drawn as paths, or a figure that can't be read without its read-out
+- **R-FIG-22** (eval: the site's figures:selftest, a planted fault per check; also held by figures:check length, figures:look perf) Keep a figure small, fast and seeded: under 200 non-blank lines (350 for a three.js scene) after Prettier, under 6 ms a frame (14 ms for three.js), ink between 0.4% and 50% of the frame, geometry computed in `setup`. *Why:* A budget forces one idea per figure and keeps a page of figures fast. Reject when: thousands of marks for a texture you can't see at 358px, or a frame that is mostly ink
 
 ## Craft
 
-### 10 · rest: the still frame is the thumbnail
-Under reduced motion, and in every capture, the figure is its rest frame. It must hold up
-alone. *(look questions 1 and 2)*
-- **Keep it:** compose rest on purpose: an asymmetry, a lean, one thing lit. Readers with
-  reduced motion see the figure at 1.2 s (`REST_T` in the clock): that is the sheet's
-  "reduced motion" picture, so judge rest there too. The audit's rest and phone shots are
-  taken earlier, at 0.8 s, and must hold up as well.
-- **Rejected when:** rest is a flat grid, an empty field, or a frame that looks unfinished.
+- **R-FIG-23** (eval: deck case only (no eval yet)) Compose the rest frame on purpose: an asymmetry, a lean, one thing lit. Rest is the thumbnail, the reduced-motion picture and every capture. *Why:* Readers with reduced motion, and every screenshot, see only rest. Reject when: rest is a flat grid, an empty field, or a frame that looks unfinished
+- **R-FIG-24** (eval: deck case only (no eval yet)) Move only when the motion means something, and say what it means in the `idea` field. *Why:* Motion as wallpaper teaches the reader to ignore it. Reject when: motion as wallpaper, uniform speed everywhere, or anything faster than the eye can follow at rest
+- **R-FIG-25** (eval: deck case only (no eval yet)) Answer the pointer locally, with a falloff: the answer is near the pointer, fades with distance, stays in the frame, and is picked from the rest pose so it doesn't flicker. The read-out names what is under the pointer. *Why:* A whole figure changing at once says nothing about where the pointer is. Reject when: the whole figure changes at once, the answer leaves the frame, or the read-out is a sentence
+- **R-FIG-26** (eval: deck case only (no eval yet)) Make near brighter than far in every 3D figure: fade with depth, sort faces back to front, and fill a solid with ground before stroking it. *Why:* Depth is what makes a line drawing read as a solid. Reject when: a far edge crosses a near face, or every edge has the same weight
 
-### 11 · motion: it moves because it means something
-*(look question 3; invariant `motion` checks that ambient figures move and the others don't)*
-- **Keep it:** say what the motion means in the `idea` field, and make that true: the lit
-  ridge walks one step per token; the wave runs along the array's diagonal.
-- **Rejected when:** motion as wallpaper; uniform speed everywhere; anything faster than the
-  eye can follow at rest.
+## Before you draw
 
-### 12 · answer: local, with a falloff
-When a figure answers the pointer, the answer is near the pointer and falls off with
-distance, and the read-out names what is under it. *(invariant `answer` checks it changes)*
-- **Keep it:** `pointer.x`, `pointer.y` are 0..1 across the canvas; ease toward them; clamp
-  every lift so the far end of the answer still fits the frame. Pick from the rest pose, not
-  the pose on screen, or the hover flickers.
-- **Rejected when:** the whole figure changes at once; the answer leaves the frame; the
-  read-out is a sentence.
+- **R-FIG-1** (eval: deck case only (no eval yet)) Before drawing a real thing, find 3 to 5 references, including the plainest textbook diagram of it, and write down the visual rules they share. *Why:* Drawn from memory, a real thing comes out generic and is redone. Reject when: the template has no reference card, or its card lists no rules
+- **R-FIG-12** (eval: deck case only (no eval yet)) Judge from a numbered sheet early: show 8 to 12 panels before polishing and ask which numbers work. *Why:* One sheet and a list of numbers replaces several rounds of description. Reject when: a template is polished before a sheet was shown
 
-### 13 · depth: near is brighter than far
-Every 3D figure fades with depth and keeps the painter's order. *(look question 6)*
-- **Keep it:** `nearness(depth)` for opacity; sort faces back to front (`shadeMesh` does);
-  fill a solid with ground before stroking it so far lines don't show through.
-- **Rejected when:** a far edge crosses a near face; every edge has the same weight.
+## A real thing
+
+- **R-FIG-2** (eval: deck case only (no eval yet)) Draw each part as the thing it is, with its own parts; never a box or a hatch standing for it. *Why:* Boxes and lines read as a placeholder. Reject when: a named object is drawn as a plain box
+- **R-FIG-3** (eval: deck case only (no eval yet)) Fill each frame, plate or slice with a repeating pattern of the domain; leave no empty region inside a dense drawing. *Why:* Real layouts and cities have no holes; a gap reads as wrong. Reject when: a tile inside the subject's bounds has under a set share of ink
+- **R-FIG-4** (eval: deck case only (no eval yet)) Follow the domain's geometry: its routing directions, repetition and symmetry (no 45-degree chip wiring; one gate per bit slice; flipped rows share rails). *Why:* The eye knows the domain's rules even when it can't name them. Reject when: a segment breaks the domain's routing rule
+- **R-FIG-5** (eval: deck case only (no eval yet)) Connect every flow from a source to a sink (power from a station through a grid, roads in closed loops, belts and pipes between two parts), and let no two placed objects overlap (furniture clears door swings). *Why:* A line that ends in the air, or two things in one place, reads as broken. Reject when: an end point touches nothing, or two placed parts intersect
+- **R-FIG-6** (eval: deck case only (no eval yet)) Draw the paths the world has (roads, rails, runways); never draw a moving thing's trail or orbit. Light and blasts are particles or gradients travelling outward, never solid strokes. *Why:* A trail is not part of the world; a stroked ray reads as a diagram, not light. Reject when: a motion trail, orbit line or stroked ray is drawn
+- **R-FIG-8** (eval: deck case only (no eval yet)) For contrast, use dark solids banded in fine white stripes (ribs, louvres, floors) before reaching for a new colour. *Why:* The palette is grey plus one orange signal; stripes add contrast inside it. Reject when: contrast is added with a colour outside the tokens
+- **R-FIG-10** (eval: deck case only (no eval yet)) Prove generated structure is valid where the domain defines validity (a gate is complementary, a graph is connected) with a test over many seeds. *Why:* A drawing of a wrong circuit is wrong however it looks. Reject when: the test is missing or fails
+- **R-FIG-11** (eval: deck case only (no eval yet)) Show detail at the scale it reads: fine lines fade in as a level grows, and each level's detail matches the one around it. *Why:* Detail too small is noise; a plain level beside a detailed one looks unfinished. Reject when: one level is far sparser than the levels around it
+
+## Seeds and the camera
+
+- **R-FIG-7** (eval: deck case only (no eval yet)) Seed every level a viewer can see (count, place, links, shape, size, speed), weighted toward the simple case; the signal's place or motion is seeded too. *Why:* A fixed composition with jitter looks the same for every seed. Reject when: the signal's centroid does not move across the sampled frames of a moving figure
+- **R-FIG-9** (eval: deck case only (no eval yet)) Turn the camera by accumulated input, eased, never by elapsed time; when it flies to a subject, frame the subject whole. *Why:* A camera driven by time jumps when its target changes. Reject when: the turn rate or a per-frame jump is over its cap, or the subject leaves the frame
+
+## Reworking
+
+- **R-FIG-13** (eval: deck case only (no eval yet)) When reworking, keep what was judged good and change only what was judged weak. *Why:* A rework that drops the liked parts costs another round. Reject when: a part judged good was changed
