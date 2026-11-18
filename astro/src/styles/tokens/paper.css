@@ -138,7 +138,10 @@
   --pp-curl-blur: 14px;
   --pp-doc-nav-w: 220px;
   --pp-doc-toc-w: 180px;
-  --pp-doc-gap: 40px;
+  /* The least room between the article and the panels beside it; wider screens give more. */
+  --pp-doc-gap: 56px;
+  /* The article's reading measure: 70 to 81 characters a line at the body size (Juan, 18 Nov). */
+  --pp-doc-measure: 608px;
   /* The home hero's lead. */
   --pp-lead-w: 600px;
   /* Tracker pages: the version rail, the gap beside it, the widest the main panel goes. */
