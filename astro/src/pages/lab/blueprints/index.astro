@@ -58,7 +58,7 @@ const steps = [
             {g.items.map((b) => (
               <li class="bpl-card">
                 <a href={`/lab/blueprints/${b.id}/`}>
-                  <img src={`/blueprints/${b.id}.png`} alt={`The A3 blueprint of ${b.title}`} loading="lazy" width="420" height="297" />
+                  <img class="page-ink" src={`/blueprints/${b.id}.png`} alt={`The A3 blueprint of ${b.title}`} loading="lazy" width="420" height="297" />
                   <span class="bpl-card-no">{b.number} · rev {b.revision}</span>
                   <h3>{b.title}</h3>
                   <span>{b.summary}</span>

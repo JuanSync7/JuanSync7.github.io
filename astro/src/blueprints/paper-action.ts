@@ -6,7 +6,8 @@ export const PAPER_ACTION: Blueprint = {
   id: 'paper-action',
   kind: 'component',
   title: 'PaperAction',
-  summary: 'A printed paper button: a cream face on a printed edge, a label and an optional icon.',
+  summary:
+    'A printed paper button: a paper face on a printed edge (ivory by day, gunmetal by night), a label and an optional icon.',
   source: [
     'src/components/ui/PaperAction.astro',
     'src/components/ui/paper-action.css',

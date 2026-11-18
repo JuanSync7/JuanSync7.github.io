@@ -42,7 +42,7 @@ export const DIAGRAMS: readonly Diagram[] = [
     key: 'arrows run from a wider level to a narrower one · lit = the shared decks',
     caption: 'A rule lives at the level where its decision is made: the company’s decks, protocols and toolbox, then an agent that narrows them, a playbook, and a single step.',
     nodes: [
-      { id: 'company', title: 'Company', sub: 'every agent, every project', kind: 'box', x: 270, y: 16, w: 220, h: 56 },
+      { id: 'company', title: 'Company', sub: 'every agent, every project', kind: 'box', x: 220, y: 16, w: 320, h: 56 },
       { id: 'decks', title: 'Decks', sub: 'shared rules per kind of work', kind: 'lit', x: 16, y: 152, w: 168, h: 72 },
       { id: 'protocols', title: 'Protocols', sub: 'handover, review, escalation', kind: 'box', x: 208, y: 152, w: 168, h: 72 },
       { id: 'toolbox', title: 'Toolbox', sub: 'installed, licensed, reachable', kind: 'box', x: 400, y: 152, w: 168, h: 72 },
@@ -51,10 +51,10 @@ export const DIAGRAMS: readonly Diagram[] = [
       { id: 'step', title: 'Step', sub: 'a rule for one step only', kind: 'box', x: 592, y: 456, w: 152, h: 72 },
     ],
     edges: [
-      { pts: [[300, 76], [300, 112], [100, 112], [100, 148]] },
-      { pts: [[340, 76], [340, 112], [292, 112], [292, 148]] },
-      { pts: [[420, 76], [420, 112], [484, 112], [484, 148]] },
-      { pts: [[460, 76], [460, 112], [668, 112], [668, 148]] },
+      { pts: [[236, 76], [236, 112], [100, 112], [100, 148]] },
+      { pts: [[292, 76], [292, 148]] },
+      { pts: [[484, 76], [484, 148]] },
+      { pts: [[524, 76], [524, 112], [668, 112], [668, 148]] },
       { pts: [[668, 228], [668, 300]] },
       { pts: [[668, 380], [668, 452]] },
     ],

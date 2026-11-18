@@ -1,9 +1,9 @@
 /* Paper actions: existing cream/night inks, a printed edge and a shallow physical step. */
 :root {
-  --pa-paper-face: var(--nt-paper-panel);
-  --pa-paper-ink: var(--nt-paper-ink-strong);
-  --pa-paper-line: var(--nt-paper-ink-2);
-  --pa-paper-edge: var(--nt-paper-line);
+  --pa-paper-face: var(--pp-face);
+  --pa-paper-ink: var(--pp-ink-strong);
+  --pa-paper-line: var(--pp-face-line);
+  --pa-paper-edge: var(--pp-face-edge);
   --pa-signal-face: var(--nt-panel-signal);
   --pa-signal-ink: var(--nt-signal);
   --pa-signal-line: var(--nt-signal-line-2);

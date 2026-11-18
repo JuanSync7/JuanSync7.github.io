@@ -102,7 +102,7 @@ export const EDGES: readonly MapEdge[] = [
   { pts: [[164, 168], [224, 168]], arrow: true, both: true },
   // the work
   { pts: [[160, 330], [240, 330]], arrow: true },
-  { pts: [[244, 446], [164, 446]], arrow: true },
+  { pts: [[244, 440], [164, 440]], arrow: true },
   { pts: [[372, 330], [432, 330]], arrow: true },
   { pts: [[520, 356], [520, 416]], arrow: true },
   { pts: [[436, 446], [376, 446]], arrow: true },
