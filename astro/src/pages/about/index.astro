@@ -3,6 +3,7 @@ import NightPage from '../../layouts/NightPage.astro';
 import NightNav from '../../components/layout/NightNav.astro';
 import NightFooter from '../../components/layout/NightFooter.astro';
 import Repos from '../../components/home/Repos.astro';
+import ExperienceTimeline from '../../components/about/ExperienceTimeline.astro';
 import { PROFILE } from '../../data/profile';
 import { CASES, THINKING } from '../../data/home';
 import { VAULT_STATEMENT } from '../../data/about';
@@ -67,17 +68,7 @@ const caseFor = (i: number) => CASES.items.find((c) => c.principle === i);
 
       <section id="experience">
         <h2>Experience</h2>
-        {PROFILE.experience.map((r) => (
-          <>
-            <h3>{r.title}</h3>
-            <p class="where">{r.org}{r.place ? ` · ${r.place}` : ''} · {r.dates}</p>
-            {r.summary ? <p>{r.summary}</p> : null}
-            {r.points ? r.points.map((p) => (
-              <p><span class="beat">{p.tag}</span>{p.text}</p>
-            )) : null}
-          </>
-        ))}
-        <p><a href={cv}>The same record as a CV (PDF) ↓</a></p>
+        <ExperienceTimeline roles={PROFILE.experience} cv={cv} />
       </section>
     </article>
   </main>
@@ -96,7 +87,6 @@ const caseFor = (i: number) => CASES.items.find((c) => c.principle === i);
 
   .back,
   .meta,
-  .where,
   .beat,
   summary {
     font-family: var(--nt-mono);
@@ -143,10 +133,6 @@ const caseFor = (i: number) => CASES.items.find((c) => c.principle === i);
 
   section + section {
     margin-top: var(--hf-space-14);
-  }
-
-  .where {
-    margin: 0 0 var(--hf-space-3);
   }
 
   .beat {
