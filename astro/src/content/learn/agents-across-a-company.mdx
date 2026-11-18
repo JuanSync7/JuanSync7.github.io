@@ -1,0 +1,119 @@
+---
+title: "Agents across a company"
+summary: "When a hundred people share agents, what multiplies should be cheap and short-lived, and what holds quality should stay single."
+eyebrow: "Agents"
+date: 2026-11-17
+subject: agents
+cover: "workflow~7"
+---
+
+import Diagram from '../../components/learn/Diagram.astro';
+
+An AI agent is a model that carries out a task by running programs and editing files, a bit like a junior colleague who works very fast. In one experimental run I had four of them working at once, each on one narrow task, with a fifth agent splitting up the work and checking it. They were sorting incoming notes and rule changes into one of my projects, and they finished in 215 seconds with no two of them touching the same file, though the fifth still had 30 requests to sort out by hand afterwards. It worked because there was one person in the loop, and that person was me. I owned the agents, I owned the rules they followed, and I was the one who said the result was good.
+
+A company doesn't have one of me. It has many people, each with their own projects, and soon each with their own agents. [Agents you can repeat](/learn/agents-you-can-repeat/) builds the parts for one person. A **check** is code that judges an agent's work and gives the same verdict every time, a **playbook** is one packaged procedure with its own checks, and anything with a fixed answer belongs in a script, a small program that does the same thing every time. This article asks what changes when a hundred people share those parts, and it follows one agent the whole way through to answer it.
+
+Say an engineer at my company builds an agent that draws figures for project pages, diagrams of how a chip boots, charts of test results, that kind of thing. It's good, and other teams want it. Three questions arrive at once. What is it allowed to do? When should anyone trust it with real work? And when it does that work, where is the proof?
+
+The answer I keep landing on is one rule about growth. What multiplies with people should be cheap and short-lived, and what holds quality should stay single. The permissions and the stages below are still design. The record of work further down, which I call a ledger, is something I've built and use.
+
+## What the agent may do
+
+On one person's machine, the figure agent needs very little. It has a job and a folder where it keeps what it has learned. Shared across a company, it needs two more things. It needs **permissions**, a list of what it may do that the system enforces, because a model asked to stay inside a line will sometimes step over it. And it needs an **owner**, the person who answers for what it does. Today my own agents have the job and the folder. They run with my permissions, and every record they write names me.
+
+Permissions bite first on tools. A **tool** is anything an agent can call to act on the world, such as running the tests, taking a screenshot of a page, reading a ticket or saving a change to the shared history. I've proposed that tools sit at three levels, each narrower than the last.
+
+1. **The company's toolbox** is everything installed, licensed and reachable. At my company that means git, which keeps the history of every change, pytest for the tests, a browser for screenshots, Jira for tickets and Slurm for the compute cluster.
+2. **The agent's list** is the part of the toolbox it may call. In Claude Code an agent's definition has a `tools:` line naming what it may call, and nothing else is open to it. The figure agent might get the browser and the figure checks, and not the right to save changes into git.
+3. **The playbook** brings its own code, the kernel (the building blocks it must build with) and the checks that judge it, and notes which of the agent's tools it uses.
+
+The one rule that holds the levels together is that only the agent's owner can add to its list. A playbook can't grant itself a new tool, and neither can any shared set of rules. If the figure agent's playbook suddenly needs to save changes, the agent's job is growing, and that's for its owner to decide.
+
+Rules sit at levels the same way, and a rule lives at the level where its decision is made. "Never save straight onto the main branch", the shared copy of the code everyone builds from, applies to every agent that writes code, so it sits at the top with the rules for how agents hand work to each other and to people. "Use only the site's colours" belongs to the figure agent's drawing playbook. "Check the label fits before saving the figure" matters in one step, so it lives in that step.
+
+<Diagram id="agents-rule-levels" />
+
+With one person this is paperwork. With a hundred, someone has to answer a plain question. When an agent deletes the wrong thing, whose agent was it, and who said it could?
+
+## When to trust it with real work
+
+Anyone can build an agent in an afternoon now, and that's the problem. A company that lets every new agent loose on real work finds out which ones are bad the expensive way. A person joins a company on probation, so I've drafted a design where an agent does too. It moves through stages, and each stage widens who may use it. None of it is built.
+
+The figure agent would start as **proposed**, nobody may use it yet, and it needs an owner and a one-line purpose someone has reviewed. Next it goes into a **sandbox**, where only its owner uses it, on a copy of the data, with nothing sensitive in reach. Then it's **tested**. It runs a fixed set of tasks with known answers several times, its cost per task is measured, and someone tries hard to break it. That set of tasks is the agent's **eval**, and it runs again whenever the agent's prompt, model or tools change, because a new model version can break a playbook without anyone noticing. Only after that does it reach **production**, where other teams can send it work, and it stays there while spot checks on its real work hold up. When it's no longer needed it's **retired**, and its record is kept.
+
+| Stage | Who may use it |
+|---|---|
+| proposed | nobody |
+| sandbox | its owner, on a copy of the data |
+| tested | its owner and named testers |
+| production | anyone the system routes work to it for |
+| retired | nobody, though the record is kept |
+
+Two rules keep this honest. The owner can't move their own agent into production, so a second person signs that off, the same split Amazon's cloud service makes in its catalogue of agents, between whoever publishes an agent and whoever lets it in. And moving an agent back down needs nobody's approval. Anyone with a reason can send the figure agent back to the sandbox or retire it, because stopping must be cheap. If promotion is easy and demotion is hard, you end up with a crowd of agents nobody trusts and nobody dares switch off.
+
+## Where the proof lives
+
+The stages say whether the figure agent may work. They don't say what it did, and that's where most of the trust actually comes from. For that I've built an agentic ledger, one strict record per project that people and agents both write their work into. Unlike the stages, this part runs.
+
+The ledger is made of **nodes**, one piece of work each. Before anyone starts a node, the conditions that will count as done are agreed and written on it. Whoever does the work, a person, a fixed script or an agent, produces the evidence. A **gate** then reads that evidence and marks the node done only if the checks pass. Every node names who asked for it, who does it and who reviews it, and only the ledger's own program may write to it. Here is a node for lint, the automatic check of code against a rulebook of style and common mistakes.
+
+```
+node: lint check on one part of the design
+├─ done when    the lint run is clean, or each exception is signed off
+├─ doer         an agent (earlier a fixed script, before that a person)
+├─ asked by · doer · reviewer     the reviewer is never the doer
+├─ evidence     the lint tool's own output, kept in the ledger
+└─ verdict      done only if the gate reads a pass from that evidence
+```
+
+Building the lint node showed me the hole that matters most. The agent assigned to the node also registered the scripts that measured its work, so a script that simply printed PASS would pass. You could see it afterwards, but nothing stopped it. It's as if a chip team could edit the checks its own chip must pass before the factory will build it, which chip design never allows. The fix is that whoever plans the work locks each checking script with a fingerprint of its exact contents, and the ledger refuses a result from any other script.
+
+That hole is why the things that judge quality have to stay single and belong to someone other than the one doing the work. One person catches a hole like this by reading the code. A hundred people won't, so whoever owns the measuring script matters as much as the threshold it checks. The figure agent can do the work, and later perhaps more kinds of work, but the gate stays with someone else. An agent never writes "approved". A person stays the one who answers for it.
+
+## The figure agent, at work
+
+Put the pieces together and follow one request through the design. This is a walk through, not a run I've done. An engineer in a firmware project asks for a status page with a figure of how the chip boots.
+
+<Diagram id="agents-company-request" />
+
+The project's own agent, the one that lives in that project's code, takes the ask first. Before anything is built it answers five questions with its best guesses. What must this prove and to whom, what is the one moment that has to land, what won't we do, what is the smallest version, and how will we know it's done? The engineer confirms or corrects them, and that minute is the cheapest one in the whole job.
+
+Then a small coordinating script starts two short-lived worker agents, one writing the page and one building its data table, each owning its own file so they can't collide. The figure isn't this project's craft, so the project's agent calls the figure agent. It brings its own playbooks and memory, takes what it needs to know about the project from the request, and hands back a figure that has already passed its own checks. Everything lands on a ledger node with the evidence attached, and a second engineer, not the one who asked, reviews it.
+
+Nothing in that path asks anyone to trust a model's word. Each hand-over is either a check's output or a person's decision.
+
+## What multiplies and what stays single
+
+Now make it 100 engineers in 40 projects, and sort every part by whether it grows with people.
+
+| Multiplies with people | Stays one for the company |
+|---|---|
+| project agents, one per project | each shared set of rules, one per kind of work |
+| workers, as many per job as the work needs | each check, written once and shared by every project |
+| requests, recorded decisions, ledger nodes | the toolbox, and the rule that only owners grant tools |
+| | shared specialists, such as one figure agent for everyone |
+| | the ledger's single writer |
+
+The left column is cheap and short-lived. A worker lives for one brief, a project agent is light because what it knows is kept in files, and a node is one row. The right column holds the quality, and it doesn't grow at all. A fix to a check would reach all 40 projects through the starter template every new project is copied from, with no copies to drift apart. The figure agent's craft lessons go into its own memory, while the facts about each project stay in that project's records, so it doesn't fill up with 40 teams' details.
+
+If quality lived on the left, every new project would need its own careful setup, and the company would get worse as it grew. On the right, project 100 starts with everything the first 99 taught.
+
+Two things I can't answer yet. Whether a project agent holds up under real load from many people is untested, and whether the figure agent's memory stays clean across 40 projects is something only running it will show.
+
+## The case for less of this
+
+The strongest objection is that this is early. Models have improved fast enough that some of what I built around them has already gone obsolete, and five stages and a ledger with gates is a lot of structure to put around something that may not need it next year. A small team could hand everyone a capable agent, let them work, and fix problems as they show up. It would move faster this year, and some of the problems I'm designing for might never arrive.
+
+I take that seriously, and it's why most of this is still design. But the parts I'd keep are the ones that don't depend on how good the model is. A check gives the same answer whatever model produced the work. A second person approving production is about who answers for it, not about how capable the agent is. A record of who acted and who allowed it matters more as models get better, because more of the work will be theirs. Better models make some layers unnecessary, and they make an honest record more necessary.
+
+## What to remember
+
+- Once others use it, an agent needs enforced permissions and a named owner, not only a job and a folder.
+- Tools sit at three levels, and only an agent's owner can add to its list.
+- An agent earns real work in stages, a second person approves production, and anyone can send it back down.
+- The ledger ties work to evidence a gate can read, and the one doing the work never owns the script that measures it.
+- What multiplies with people should be cheap and short-lived, and what holds quality should stay single.
+
+Chip design settled this long ago. A designer never edits the rules a chip must pass, and their judgment is kept for the architecture. Shared agents need the same bargain. Everyone builds against the same checks, and nobody's agent gets to grade its own work.
+
+To read next, [Agents you can repeat](/learn/agents-you-can-repeat/) builds the parts this article assembles, one rule and one check at a time.

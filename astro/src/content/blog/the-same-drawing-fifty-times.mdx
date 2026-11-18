@@ -1,0 +1,99 @@
+---
+title: "The same drawing, fifty times"
+excerpt: "I asked agents for the same small drawing fifty times, and the prompt decided what got drawn while the playbook decided whether it held up on my site."
+category: thoughts
+date: 2026-11-18
+cover: pattern-cards~50
+readTime: "7 min"
+tags: ["Agents", "Playbooks", "Design", "Figures"]
+---
+
+import Diagram from '../../components/learn/Diagram.astro';
+
+<style is:global>{`
+  .shot { margin: var(--hf-space-24) 0; }
+  .shot img { display: block; width: 100%; height: auto; }
+  .shot .night { display: none; }
+  :root[data-theme='dark'] .shot .day { display: none; }
+  :root[data-theme='dark'] .shot .night { display: block; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) .shot .day { display: none; }
+    :root:not([data-theme='light']) .shot .night { display: block; }
+  }
+`}</style>
+
+Five AI agents drew five stacks of paper. I had given each of them, separately, the same request: "Make a figure for the documents section of my website. It should respond when the mouse moves over it." Every one came back with a pile of paper cards that fans out under the pointer. The colours changed from run to run. The idea never did.
+
+An agent here is an AI model that does a task by writing and running code, not only by answering in text. I'm a chip designer by training, and every drawing on this site is made by an agent, so the result bothered me more than it would bother most people. I wanted to know which part of the set-up decides what comes out. Is it the prompt, the words I type? Or is it the playbook, the package of steps, rules, ready-made code and checks the agent follows? So I gave the same request to agents set up in ten different ways, five runs each, and laid all fifty drawings side by side.
+
+## Naming the thing
+
+The model wasn't being random. With nothing to go on, it picked the most likely answer, and it picked the same one every time.
+
+Naming the object fixed that at once. I asked for a filing cabinet whose drawer nearest the pointer slides open, and five runs gave five four-drawer cabinets. Style words did much less. "Isometric" is the tilted 3D view of technical drawings, where nothing shrinks into the distance. I added it to the vague request, and then "3D isometric", five runs each. Four of the first five and all five of the second were still a stack of paper. The angle changed and the idea stayed.
+
+<figure class="shot">
+  <div class="term-window">
+    <img class="day" src="/blog/same-drawing/brief-3-light.webp" alt="Three rows of five drawings from the requests with a style word. The model alone drew stacks of paper at a tilted angle, and my playbook drew faceted low-poly stacks of sheets." loading="lazy" />
+    <img class="night" src="/blog/same-drawing/brief-3-dark.webp" alt="The same three rows on the night page." loading="lazy" />
+  </div>
+  <figcaption>The requests with a style word, fifteen runs. Each drawing is shown with the pointer on it.</figcaption>
+</figure>
+
+So the prompt picks the object. Then I tried a playbook.
+
+## Someone else's playbook
+
+Hairline is a drawing playbook by Lucas Marques, free for anyone to use and change. It has steps, rules, a kit of code to draw with, and a script that takes a picture of each drawing and checks it. I like its principles and have adopted them on this site. With the vague request, Hairline's five runs drew four different objects. Two drew binders on a shelf, and the others a filing drawer, an open book and a fan of sheets. All five were in one style, the same thin line and the same single highlight. Its first step makes the agent weigh three objects before it draws one, which is why the ideas spread out.
+
+Its checks earned their place too. In one run the drawing filled only 24% of its box, and the agent grew it to 33%. In another the folder tabs were painted over a drawer, and the agent moved them. The model alone never reported faults like these, because nothing asked it to look.
+
+The case for the prompt alone is strong, though. Two judges, each a fresh model that didn't know which set-up made which drawing, scored single drawings slightly higher without the playbook. Out of 10, the first gave the model alone 7.0 on average and Hairline 6.4, and the second 6.6 and 6.2. Hairline also cost one and a half to nearly two times as much, around 150,000 to 180,000 tokens a run against 100,000. A token is roughly three quarters of a word the model reads or writes, and tokens are what a run costs. If you need one good drawing, a well-aimed prompt gets you most of the way. Both judges still picked Hairline's five as the set that looked like one hand had drawn them.
+
+<figure class="shot">
+  <div class="term-window">
+    <img class="day" src="/blog/same-drawing/brief-2-light.webp" alt="Four rows of five drawings from the vague request. The model alone drew a stack of paper cards five times. Hairline drew binders, a drawer, a book and a fan of sheets in one style. The agents that read my rules uninvited drew papers in my colours. My own playbook drew books and pages." loading="lazy" />
+    <img class="night" src="/blog/same-drawing/brief-2-dark.webp" alt="The same four rows on the night page. Hairline's thin grey lines nearly disappear against the dark ground." loading="lazy" />
+  </div>
+  <figcaption>The vague request, twenty runs.</figcaption>
+</figure>
+
+One run of this test went wrong in a way that taught me something. My first five "model alone" agents didn't stay alone. My site keeps a file of standing instructions that every agent reads when it starts, and it tells any agent that draws to read my drawing rules first. So they did, without being asked. All five came back in my site's colours with one orange highlight. I had to run them again, told to read nothing at all.
+
+## Then I looked at my own page
+
+My site has two faces, a cream paper page by day and a dark page by night. Hairline brings its own dark colours, and on my night page its drawings almost vanished. Its faint grey lines, fine on its own pages, had too little contrast against my dark ground. That is a mismatch with my site, not a fault in Hairline.
+
+My own playbook doesn't have that problem, because it takes every colour from my site's design tokens. These are a different kind of token, the named colours the whole site is built from. So I ran it too. On the vague request it drew books and pages, each run copying the idea of whichever example drawing it opened first.
+
+Then I asked it for "3D isometric", meaning the line drawing I think of as mine. All five drew in a faceted low-poly style instead, built from flat triangles. The cause was a rule I had written myself. My playbook told the agent to look at the drawings already on the site and pick a style the group was short of, to stop the site looking samey. The agents did what my rule said, and it overrode what I had asked for. I took the rule out.
+
+## A pattern cut for someone else
+
+A tailor works from a pattern. The order names the garment, and the pattern decides how it fits. Hairline is a good pattern, cut for Lucas's pages. Mine is cut for mine, and the only thing that had made it fit badly was a rule I'd added myself.
+
+<Diagram id="same-drawing-parts" />
+
+With that rule gone, I gave my playbook the filing-cabinet request, the same request Hairline had. All five runs drew a tall four-drawer cabinet in the 3D isometric style, with one label lit orange, and all five keep their edges on both of my pages. The checks passed on the first try in every run. The agents still fixed things no check can see, by looking at a picture of their own drawing. They found folders drawn in the wrong order, a second bright mark, and tabs merging into a zigzag. Each run cost 146,000 to 157,000 tokens, about the same as Hairline.
+
+<figure class="shot">
+  <div class="term-window">
+    <img class="day" src="/blog/same-drawing/brief-1-light.webp" alt="Three rows of five drawings from the filing-cabinet request. The model alone drew rounded cabinets, Hairline drew cabinets with a drawer pulled out, and my playbook drew tall cabinets with one orange label." loading="lazy" />
+    <img class="night" src="/blog/same-drawing/brief-1-dark.webp" alt="The same three rows on the night page. Hairline's cabinets fade into the dark, while my playbook's cabinets keep their edges and their orange label." loading="lazy" />
+  </div>
+  <figcaption>The filing-cabinet request, fifteen runs. With the fifteen and twenty above, that makes the fifty.</figcaption>
+</figure>
+
+| The request | Model alone | Hairline | My playbook |
+|---|---|---|---|
+| A figure for the documents section | a stack of paper cards, 5 of 5 | four objects in one style | books and pages, from its examples |
+| The same, "isometric" or "3D isometric" | a stack of paper, 4 of 5 and 5 of 5 | not tried | low-poly instead of my line style, because of my own rule |
+| A filing cabinet, nearest drawer opens | a four-drawer cabinet, 5 of 5 | a cabinet with a drawer left open, 5 of 5 | a tall isometric cabinet, 5 of 5 |
+
+## What the paper stacks were
+
+One thing is still open. My five cabinets are close to twins. Taking the rule out made the style mine, and it may also have turned the set into a stamp, the same picture pressed again and again. Five runs each is a small sample, and most rows were never judged blind. I don't know yet whether a site full of these will read as a house style or a template.
+
+What I do know is what those five stacks of paper were. They weren't a lazy model. They were a model with nothing of mine to go on. The prompt told it what to draw. Everything that made the drawing mine had to come from somewhere else.
+
+The way the drawings on this site are made is in [How I draw the figures on this site](/blog/how-i-draw-figures/). Hairline is on GitHub as [lucasmarkes/hairline](https://github.com/lucasmarkes/hairline).

@@ -63,7 +63,8 @@
   color: var(--nt-ink-strong);
 }
 
-.night .prose pre {
+.night .prose pre,
+.night .prose .term-window {
   overflow-x: auto;
   padding: var(--hf-space-5);
   border: 1px solid var(--nt-line);
@@ -75,8 +76,10 @@
 
 /* Code is always a terminal window (owner's rule, 3 Oct 2026): a white window on a light page
    and a dark one on a dark page (17 Nov 2026), three dots in a title bar, a rule under it. Shared
-   by posts and field guides. */
-.night .prose pre:not(.mermaid) {
+   by posts and field guides. A post's evidence pictures sit in the same window (`.term-window`,
+   owner's ask, 18 Nov 2026). */
+.night .prose pre:not(.mermaid),
+.night .prose .term-window {
   position: relative;
   padding: var(--hf-space-12) var(--hf-space-5) var(--hf-space-5);
   border-color: var(--nt-code-line);
@@ -89,7 +92,8 @@
   color: light-dark(var(--shiki-light), var(--shiki-dark));
 }
 
-.night .prose pre:not(.mermaid)::before {
+.night .prose pre:not(.mermaid)::before,
+.night .prose .term-window::before {
   content: '';
   position: absolute;
   top: var(--hf-space-4);
@@ -103,7 +107,8 @@
     var(--hf-space-10) 0 0 var(--nt-term-green);
 }
 
-.night .prose pre:not(.mermaid)::after {
+.night .prose pre:not(.mermaid)::after,
+.night .prose .term-window::after {
   content: '';
   position: absolute;
   top: var(--hf-space-10);
