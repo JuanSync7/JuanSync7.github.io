@@ -1,6 +1,7 @@
 ---
 import { EDGES, LABELS, MAP_H, MAP_W, NODES, STEPS } from '../../data/system-map';
 import { SYSTEM } from '../../data/home';
+import PaperHead from './PaperHead.astro';
 
 // The map is words and connections, so it is DOM, not a figure (CLAUDE.md, Figures 2):
 // boxes are real text, and one SVG layer underneath carries the connectors.
@@ -11,10 +12,8 @@ const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([
 ---
 
 <section id="system" class="nt-wrap system">
-  <div class="cap">
-    <span class="label">|← {SYSTEM.caption} →|</span>
-    <span class="key">arrows flow the way data moves · dashed = next</span>
-  </div>
+  <PaperHead label={SYSTEM.label} title={SYSTEM.title} accent={SYSTEM.accent} lead={SYSTEM.lead} />
+  <p class="key">arrows flow the way data moves · dashed = next</p>
 
   {/* Screen readers get the steps below, in reading order; the map is the same story laid
       out for the eye, so it is hidden from them rather than read box by box. */}
@@ -67,7 +66,6 @@ const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([
       </li>
     ))}
   </ol>
-  <p class="legend">{SYSTEM.legend}</p>
   <p class="vault-link"><a href="/vault/">Inside the experience vault: the graph, retrieval and checks</a></p>
 </section>
 
@@ -82,12 +80,6 @@ const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([
     padding-bottom: var(--nt-section-y);
   }
 
-  .legend {
-    max-width: var(--nt-measure);
-    margin: 0;
-    color: var(--nt-ink-soft);
-  }
-
   .vault-link {
     font-family: var(--nt-mono);
     font-size: var(--nt-fs-meta);
@@ -100,21 +92,10 @@ const path = (pts: readonly (readonly [number, number])[]): string => pts.map(([
     color: var(--nt-signal-text);
   }
 
-  .cap {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: var(--hf-space-2) var(--hf-space-6);
+  .key {
+    margin: 0;
     font-family: var(--nt-mono);
     font-size: var(--nt-fs-caption);
-  }
-
-  .label {
-    color: var(--nt-signal-text);
-    font-size: var(--nt-fs-meta);
-  }
-
-  .key {
     color: var(--nt-ink-muted);
   }
 
