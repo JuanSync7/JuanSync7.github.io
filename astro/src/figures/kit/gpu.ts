@@ -2,8 +2,8 @@ let software: boolean | undefined;
 
 /** True when WebGL works but only in software (no GPU: a VM, an old machine, a CI runner). The
  *  browser refuses a context that asks to fail on a major performance caveat in exactly that
- *  case. Scenes take a lighter path there (no MSAA, the cheaper shadow filter); on a GPU both
- *  are nearly free, so what most readers see does not change. */
+ *  case. Heavy scenes (`heavy: true`, the studio kit) take a lighter path there (no MSAA, the
+ *  cheaper shadow filter); on a GPU both are nearly free, so what most readers see does not change. */
 export function softwareGL(): boolean {
   if (software !== undefined) return software;
   try {

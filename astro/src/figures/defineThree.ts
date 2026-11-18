@@ -38,6 +38,9 @@ export interface ThreeFrame<S> extends FrameInput {
 }
 
 export interface ThreeFigureSpec<S> extends Omit<FigureMeta, 'style'> {
+  /** A realistic, shadowed scene (the studio kit). On a software renderer it drops MSAA and
+   *  soft shadows to stay in the frame budget (kit/gpu.ts); everything else keeps both. */
+  heavy?: boolean;
   build(env: ThreeEnv): S;
   update(frame: ThreeFrame<S>): string | void;
   fallback(frame: CanvasFrame<null>): string | void;
@@ -93,7 +96,7 @@ export function defineThreeFigure<S>(spec: ThreeFigureSpec<S>): Figure {
         return flat.mount(canvas);
       }
       canvas.dataset.renderer = 'webgl';
-      const light = softwareGL();
+      const light = spec.heavy === true && softwareGL();
       canvas.dataset.gpu = light ? 'software' : 'hardware';
       const renderer = new WebGLRenderer({ canvas, antialias: !light, alpha: true });
       renderer.setClearColor(new Color(0x000000), 0);
