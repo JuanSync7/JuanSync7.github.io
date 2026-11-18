@@ -7,11 +7,11 @@
     "src/figures/vault-cabinet.ts": "d30ef50e7d6b8add1dc1bf45f54df8a7d8943ae6730ae53a766573503bde44e5",
     "src/figures/kit/camera.ts": "b916f9b6d61ca1aaa4a0f0454558f70df7a47b5b6d5b0fd45e419ec9ac943d8a",
     "src/figures/kit/draw.ts": "ff1513a0f8db0b2cf95208593e8643693f3afbdfc4395cc0acefe748d14662ae",
-    "src/figures/kit/ink.ts": "538e16d542b0f7fe8b3a27e9025f050b2f189651918fe01b07b6b066fbb7b9aa",
+    "src/figures/kit/ink.ts": "f64b8aa79bb89072e5ef7e14f39d42d8cf50f2dffa06404e7341b17117f06e4d",
     "src/figures/kit/motion.ts": "14769f492e2e5d8b760d9b35cb0e266cb5ffe327df283c1af763c561b46a1eb4",
     "src/figures/define.ts": "8e8a080c3a79789f84e9540d160ab01980d3266bb655fdf15ce889105c5d09fe",
-    "src/styles/tokens/palette.ts": "aaa1caa6707707778650cc41f3cdd1d986912c85ac3b7121586789c9b90cd165",
+    "src/styles/tokens/palette.ts": "cab6d695c92ef484515c7ca1bc9fff85eccef8392a441a9a10fceaa80346ffe4",
     "scripts/presentation/cabinet-poster-capture.mjs": "fc2e2a64edcddb6c23cd93e7a1471847559867761a812a62990b7549ef936433"
   },
-  "pngSha256": "f73e9e10f68134ab9b7e46018967bd1400f6f09cd8204d4141760fefe9587029"
+  "pngSha256": "54a287cd8da8d0ecb0055cb6796be1d0282eb4736a27b2a089ca52a70abce794"
 }
