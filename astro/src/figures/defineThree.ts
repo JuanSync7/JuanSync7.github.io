@@ -1,3 +1,4 @@
+import { softwareGL } from './kit/gpu';
 import {
   Color,
   Line,
@@ -92,7 +93,9 @@ export function defineThreeFigure<S>(spec: ThreeFigureSpec<S>): Figure {
         return flat.mount(canvas);
       }
       canvas.dataset.renderer = 'webgl';
-      const renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true });
+      const light = softwareGL();
+      canvas.dataset.gpu = light ? 'software' : 'hardware';
+      const renderer = new WebGLRenderer({ canvas, antialias: !light, alpha: true });
       renderer.setClearColor(new Color(0x000000), 0);
       const scene = new Scene();
       const camera = new PerspectiveCamera(30, 1, 0.1, 60);
