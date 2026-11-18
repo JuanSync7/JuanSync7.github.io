@@ -4,23 +4,23 @@ import PaperNav from '../components/layout/PaperNav.astro';
 import PaperFooter from '../components/layout/PaperFooter.astro';
 import PaperHero from '../components/home/PaperHero.astro';
 import SystemMap from '../components/home/SystemMap.astro';
-import PaperThinking from '../components/home/PaperThinking.astro';
-import PaperCases from '../components/home/PaperCases.astro';
+import PaperVault from '../components/home/PaperVault.astro';
 import PaperExperience from '../components/home/PaperExperience.astro';
-import Repos from '../components/home/Repos.astro';
+import PaperPatch from '../components/home/PaperPatch.astro';
 import PaperContact from '../components/home/PaperContact.astro';
 import { IDENTITY } from '../data/site';
 ---
 
+<!-- Who I am, what I believe, what I do, how I think, then the person and the way in. The long
+     story (the vault statement, the principles and their cases, experience, repos) is on /about. -->
 <PaperLayout title={`Juan Kok · ${IDENTITY.title}`}>
   <PaperNav />
   <main>
     <PaperHero />
     <SystemMap />
-    <PaperThinking />
-    <PaperCases />
+    <PaperVault />
     <PaperExperience />
-    <Repos />
+    <PaperPatch />
     <PaperContact />
   </main>
   <PaperFooter />

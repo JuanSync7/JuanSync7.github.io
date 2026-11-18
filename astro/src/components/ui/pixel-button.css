@@ -2,12 +2,12 @@
 .pixel-button {
   --pb-edge: var(--pp-signal);
   --pb-face: var(--pp-signal);
-  --pb-shadow: var(--pp-signal-shadow);
+  --pb-shadow: var(--pp-outline);
   --pb-ink: var(--pp-on-signal);
   position: relative;
   display: inline-block;
   min-height: var(--nt-hit);
-  padding: var(--hf-space-4) calc(var(--hf-space-6) + 2px);
+  padding: var(--pb-padding-y) var(--pb-padding-x);
   font-family: var(--pp-mono);
   font-size: var(--pp-fs-label);
   font-weight: var(--pp-w-label);
@@ -39,7 +39,7 @@
 }
 
 .pixel-button .pb-face {
-  inset: 3px;
+  inset: var(--pb-inset);
   background: var(--pb-face);
   border-radius: var(--pp-radius-sm);
 }
@@ -60,6 +60,6 @@
 }
 
 .pixel-button:active {
-  transform: translate(4px, 4px);
+  transform: translate(var(--pp-shadow-step), var(--pp-shadow-step));
   filter: drop-shadow(0 0 0 var(--pb-shadow));
 }

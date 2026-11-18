@@ -38,8 +38,8 @@ export default function AtlasControls({ mode, view, open, detail, isolate, onMod
           <button type="button" aria-pressed={detail} onClick={() => { if (!detail) onDetail(); }}>engineering</button>
         </div>
       </fieldset>
-      <button className="atlas-action" type="button" aria-pressed={isolate} onClick={onIsolate}>{isolate ? 'View assembly ↙' : 'Isolate part ↗'}</button>
-      <button className="atlas-action" type="button" aria-pressed={open} onClick={onOpen}>{open ? 'Assemble ↘' : 'Take apart ↗'}</button>
+      <button className="atlas-action" type="button" aria-pressed={isolate} onClick={onIsolate}>{isolate ? 'View assembly' : 'Isolate part'}</button>
+      <button className="atlas-action" type="button" aria-pressed={open} onClick={onOpen}>{open ? 'Assemble' : 'Take apart'}</button>
     </div>
   );
 }

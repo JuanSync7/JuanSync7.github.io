@@ -23,7 +23,10 @@ export function resolveToken(name, tokens, visited = new Set()) {
   return alias ? resolveToken(alias[1], tokens, new Set([...visited, name])) : value;
 }
 
-export function color(value) {
+/** A colour, or one side of a light-dark() pair: the light page's or the dark page's. */
+export function color(value, scheme = 'dark') {
+  const pair = /^light-dark\(\s*([^,()]+?)\s*,\s*([^,()]+?)\s*\)$/.exec(value);
+  if (pair) return color(scheme === 'light' ? pair[1] : pair[2], scheme);
   const hex = /^#([\da-f]{3}|[\da-f]{6}|[\da-f]{8})$/i.exec(value);
   if (hex) {
     const expanded = hex[1].length === 3 ? [...hex[1]].map((digit) => digit + digit).join('') : hex[1];
@@ -60,12 +63,14 @@ export function checkPalette(tokens, policy = contract) {
   if (!(light.title > light.body && light.body > light.comment)) errors.push('Title, body and comment luminance must descend distinctly');
   if (separation(light.title, light.body) < policy.minTitleBodyLuminanceRatio) errors.push('Title/body luminance separation is too small');
   if (separation(light.body, light.comment) < policy.minBodyCommentLuminanceRatio) errors.push('Body/comment luminance separation is too small');
-  for (const variant of policy.buttonVariants) {
-    const face = color(resolveToken(`--pa-${variant}-face`, tokens));
-    const foreground = composite(color(resolveToken(`--pa-${variant}-ink`, tokens)), face);
-    const ratio = separation(luminance(foreground), luminance(face));
-    if (ratio < policy.minNormalContrast) errors.push(`${variant} action text contrast ${ratio.toFixed(2)} is below ${policy.minNormalContrast}`);
-  }
+  // A face that follows the theme (light-dark) is checked on both pages.
+  for (const variant of policy.buttonVariants)
+    for (const scheme of ['light', 'dark']) {
+      const face = color(resolveToken(`--pa-${variant}-face`, tokens), scheme);
+      const foreground = composite(color(resolveToken(`--pa-${variant}-ink`, tokens), scheme), face);
+      const ratio = separation(luminance(foreground), luminance(face));
+      if (ratio < policy.minNormalContrast) errors.push(`${variant} action text contrast ${ratio.toFixed(2)} on a ${scheme} page is below ${policy.minNormalContrast}`);
+    }
   return { errors, ratios };
 }
 

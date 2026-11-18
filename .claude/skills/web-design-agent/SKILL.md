@@ -10,6 +10,12 @@ and page composition. Use the voxel-agent workflow when procedural world geometr
 biome generation or placement changes. Room work also reads
 `../tabletop-room/SKILL.md` and its rules, look questions and kernel index.
 
+**File budgets come first** (rule WEB-BUDGET in `RULES.md`). Every source file has a line budget, and the numbers live in the
+lint config, not here: `astro/eslint.config.js` (`max-lines`, and its larger override for
+three.js figures) and the figure check's `length` rule. Read them before writing. A file that
+would go past its budget is doing two jobs: name the second file and plan the split by job before
+writing, never by packing lines after lint fails.
+
 1. Record the user's correction, affected scenes, acceptance cases and current source.
 2. Reproduce the old result. Load references and extract the visual/physical constraints.
 3. Implement through the owning kernel and template. Keep mechanical limits in policy;
@@ -27,6 +33,7 @@ Choose the relevant playbook:
 - [Room lighting](playbooks/lighting.md): source, exposure, fill, shadows, colour, glow and atmosphere.
 - [Seeded rooms](playbooks/seeded-room.md): coordinated palettes, furniture design and functional placement.
 - [Voxel atmosphere](playbooks/voxel-atmosphere.md): lighting, weather, practical emission and GPU evidence.
+- [Blueprints](../blueprint/SKILL.md): a component's or page's parts, sizing and tokens, and design changes asked for by name.
 
 For rooms, start from `templates/lighting-brief.md`; use `kernel/INDEX.md` and
 `checks/README.md` for contracts and commands. Preserve the table as the primary

@@ -37,10 +37,10 @@ const nightWorld = worldContrast(1);
     <ViewTransitions />
   </head>
   <body class="paper night">
-    <!-- Figures are drawn in the night palette: near-black ground, light lines, teal signal. These
+    <!-- Figures are drawn in the night palette: near-black ground, light lines, orange signal. These
          two filters (see --pp-figure-filter) recolour them so a figure's ground, and the faces it
          fills with that ground to hide what is behind, match the page exactly: cream (F3ECDF) by
-         day, gunmetal (16191E) by night, with the signal orange in place of the teal. -->
+         day, gunmetal (16191E) by night, with the signal matched to the page's orange. -->
     <svg class="pp-figure-defs" width="0" height="0" aria-hidden="true" focusable="false">
       <filter id="pp-figure-day" color-interpolation-filters="sRGB">
         <feColorMatrix type="matrix" values={dayMatrix} />
@@ -60,5 +60,10 @@ const nightWorld = worldContrast(1);
     <div class="pp-page">
       <slot />
     </div>
+    <div class="pp-curl" aria-hidden="true"></div>
+    <script>
+      import '../components/layout/page-curl';
+      import '../components/layout/island-unmount';
+    </script>
   </body>
 </html>

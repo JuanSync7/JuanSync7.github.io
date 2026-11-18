@@ -46,14 +46,14 @@ const benefits = [
     <span data-section-rule aria-hidden="true"></span>
     <header class="vault-heading" data-reveal><p class="pr-comment">// 03 · open the system</p><h2 class="pr-title">The overview is<br />only the entrance.</h2><p class="pr-body">Choose the part you want to understand. The diagrams, explanations and working example live one level deeper.</p></header>
     <div class="vault-guide-grid">{VAULT_GUIDES.filter((guide) => guide.slug !== 'purpose').map((guide) => <a class="vault-guide-card" href={`/vault/${guide.slug}/`} data-reveal data-scroll-card>
-      <span class="vault-guide-card-top"><span class="pr-comment">{guide.kicker}</span><SlideIcon id={icons[guide.slug]} decorative /></span><h3 class="pr-title">{guide.title}</h3><p class="pr-body">{guide.summary}</p><span class="vault-guide-open pr-label">Read the guide <span aria-hidden="true">↗</span></span>
+      <span class="vault-guide-card-top"><span class="pr-comment">{guide.kicker}</span><span class="page-ink"><SlideIcon id={icons[guide.slug]} decorative /></span></span><h3 class="pr-title">{guide.title}</h3><p class="pr-body">{guide.summary}</p><span class="vault-guide-open pr-label">Read the guide</span>
     </a>)}</div>
   </section>
 
   <section id="purpose" class="vault-section vault-reason nt-wrap" data-presentation-section>
     <span data-section-rule aria-hidden="true"></span>
     <div class="vault-reason-copy" data-reveal><p class="pr-comment">// 04 · why I’m building it</p><h2 class="pr-title">Let past work help<br />with the next thing.</h2><p class="pr-body">The result is easier to remember than the reasoning behind it. I want to keep both, without making every new question start from the beginning.</p><p class="pr-body">The machine can help write the account. My own words, the evidence and the review still matter.</p><PaperAction href="/vault/purpose/" variant="signal">The thinking behind it</PaperAction></div>
-    <aside class="vault-reason-note" data-reveal><p class="pr-comment">// keep the distinction</p><p class="pr-title">A useful connection opens a source to inspect.</p><p class="pr-body">It gives the next question somewhere to go.</p><a href="/blog/second-brain-from-my-chats/" class="pr-comment">Read the origin story ↗</a></aside>
+    <aside class="vault-reason-note" data-reveal><p class="pr-comment">// keep the distinction</p><p class="pr-title">A useful connection opens a source to inspect.</p><p class="pr-body">It gives the next question somewhere to go.</p><a href="/blog/second-brain-from-my-chats/" class="pr-comment">Read the origin story</a></aside>
   </section>
 
   <section id="try-it" class="vault-section vault-ending nt-wrap" data-presentation-section>

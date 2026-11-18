@@ -62,6 +62,7 @@ function cornersOf(root: Group): Vector3[] {
 const corner = new Vector3();
 
 export default defineThreeFigure<State>({
+  heavy: true,
   id: 'dev-desk',
   title: 'Building with an AI',
   alt: 'An isometric desk with a landscape monitor showing a chat with an AI, a portrait monitor filling with code, a keyboard and a tower cabled to a rack of servers.',
@@ -112,7 +113,7 @@ export default defineThreeFigure<State>({
     const s = f.state;
     // The loop opens on a finished reply, which clears for the next prompt: the scene is busy the
     // moment it is seen.
-    const u = f.still && f.t === REST ? STILL_AT : (f.t + OPEN_AT) % SCREEN_LOOP;
+    const u = f.still && Math.abs(f.t - REST) < 1e-3 ? STILL_AT : (f.t + OPEN_AT) % SCREEN_LOOP;
     // Camera from the front left, low over the desk, fitted to the scene; only on a resize.
     const size = `${f.w}x${f.h}`;
     if (size !== s.fit) {

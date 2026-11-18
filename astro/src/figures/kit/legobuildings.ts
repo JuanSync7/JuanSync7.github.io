@@ -1,9 +1,10 @@
-import type { NightKey } from '../../styles/tokens/palette';
+import type { NightKey } from '../../styles/tokens/palette.ts';
 type T = NightKey;
-import { bench, car, dome, fill, lamp, put, spire, tree, type Edit } from './legoparts';
+import { bench, car, dome, fill, gable, lamp, put, spire, tree, type Edit } from './legoparts.ts';
 
 /** The architecture of the LEGO city: nine blocks of ten by ten studs, each its own building
- *  type, and the street furniture between them. Everything is voxels (layer, x, z) -> tone. */
+ *  type, and the street furniture between them. Walls and floors are voxels (layer, x, z) ->
+ *  tone; roofs, domes, spires, trees, lamps, benches and cars are shaped parts (`legoparts.ts`). */
 
 /** Storeys as walls (the cap is solid), with a window every other storey and column. */
 function tower(
@@ -29,16 +30,6 @@ function tower(
   }
 }
 
-/** A gable roof along x (or z) that closes in one row per layer. */
-function gable(e: Edit, x0: number, z0: number, w: number, d: number, l0: number, t: T, alongX = true): void {
-  const span = alongX ? d : w;
-  for (let k = 0; k * 2 < span; k++) {
-    for (let a = 0; a < (alongX ? w : d); a++) {
-      for (const s of [k, span - 1 - k]) put(e, l0 + k, alongX ? x0 + a : x0 + s, alongX ? z0 + s : z0 + a, t);
-    }
-  }
-}
-
 type Kind = 'twin' | 'church' | 'slab' | 'park' | 'skyscraper' | 'stadium' | 'houses' | 'museum' | 'factory';
 /** The view runs from the front corner over the middle to the back corner, so the back corner is
  *  the low park: a tall tower there would sit right behind the skyscraper and read as part of it. */
@@ -56,21 +47,21 @@ function block(e: Edit, kind: Kind, x: number, z: number): void {
     tower(e, x + 1, z + 1, 8, 8, 5, 16, 'ink2');
     tower(e, x + 2, z + 2, 6, 6, 17, 26, 'ink2');
     tower(e, x + 3, z + 3, 4, 4, 27, 33, 'inkSoft');
-    spire(e, x + 4, z + 4, 2, 34, 'inkMuted');
-    for (let l = 36; l <= 42; l++) put(e, l, x + 4, z + 4, l === 42 ? 'signal' : 'inkMuted');
+    spire(e, x + 4, z + 4, 34, 'inkMuted');
   } else if (kind === 'twin') {
     fill(e, 1, x, z, 10, 10, 'inkSoft');
-    tower(e, x, z, 4, 4, 2, 22 + Math.floor(r() * 3), 'ink2');
+    const tall = 22 + Math.floor(r() * 3);
+    tower(e, x, z, 4, 4, 2, tall, 'ink2');
     tower(e, x + 6, z + 6, 4, 4, 2, 15 + Math.floor(r() * 3), 'inkSoft');
-    fill(e, 11, x + 4, z + 1, 2, 2, 'line4');
+    fill(e, 11, x + 3, z + 1, 3, 2, 'line4');
     tower(e, x + 3, z + 5, 4, 2, 10, 12, 'inkMuted');
-    put(e, 23, x + 1, z + 1, 'signal');
+    put(e, tall + 1, x + 1, z + 1, 'signal');
     tree(e, x + 8, z + 1, 2);
   } else if (kind === 'slab') {
     tower(e, x, z + 2, 10, 5, 1, 14, 'ink2');
-    for (let l = 3; l <= 13; l += 3) for (let a = 1; a < 10; a += 3) fill(e, l, x + a, z + 7, 2, 1, 'line4');
+    for (let l = 3; l <= 13; l += 3) for (let a = 1; a < 10; a += 3) fill(e, l, x + a, z + 6, 2, 2, 'line4');
     fill(e, 15, x + 1, z + 3, 8, 3, 'inkMuted');
-    for (let a = 0; a < 3; a++) tree(e, x + 2 + a * 3, z + 4, 1);
+    tree(e, x + 2, z + 4, 1);
     tower(e, x + 6, z + 3, 3, 3, 16, 18, 'line4');
     gable(e, x + 6, z + 3, 3, 3, 19, 'inkMuted');
     lamp(e, x + 1, z + 8);
@@ -87,14 +78,13 @@ function block(e: Edit, kind: Kind, x: number, z: number): void {
     tree(e, x + 8, z + 8, 4);
     bench(e, x + 1, z + 3, true);
     bench(e, x + 7, z + 6, true);
-    lamp(e, x + 3, z + 3);
-    lamp(e, x + 6, z + 6);
+    lamp(e, x + 3, z + 7);
+    lamp(e, x + 6, z + 2);
   } else if (kind === 'church') {
     tower(e, x + 1, z + 3, 4, 7, 1, 5, 'inkSoft');
-    gable(e, x + 1, z + 3, 4, 7, 6, 'inkMuted', false);
+    gable(e, x + 1, z + 4, 4, 6, 6, 'inkMuted', false);
     tower(e, x + 1, z, 4, 4, 1, 12, 'ink2');
-    const top = spire(e, x + 2, z + 1, 2, 13, 'inkMuted');
-    for (let l = top; l < top + 3; l++) put(e, l, x + 2, z + 1, l === top + 2 ? 'signal' : 'inkMuted');
+    spire(e, x + 2, z + 1, 13, 'inkMuted');
     fill(e, 1, x + 6, z + 3, 4, 7, 'inkMuted');
     tree(e, x + 8, z + 4, 3);
     tree(e, x + 8, z + 8, 2);
@@ -102,11 +92,14 @@ function block(e: Edit, kind: Kind, x: number, z: number): void {
   } else if (kind === 'stadium') {
     fill(e, 1, x, z + 1, 10, 8, 'inkSoft');
     fill(e, 1, x + 2, z + 3, 6, 4, 'inkMuted');
+    // Stands rising toward the outside: each course one row narrower, on the course below.
     for (let k = 0; k < 3; k++) {
-      for (let a = k; a < 10 - k; a++)
-        for (const s of [z + 1 + k, z + 8 - k]) put(e, 2 + k, x + a, s, k === 2 ? 'ink2' : 'inkSoft');
-      for (let s = z + 1 + k; s <= z + 8 - k; s++)
-        for (const a of [x + k, x + 9 - k]) put(e, 2 + k, a, s, k === 2 ? 'ink2' : 'inkSoft');
+      for (let band = 0; band < 3 - k; band++) {
+        const t: T = band === 0 && k === 2 ? 'ink2' : 'inkSoft';
+        for (let a = band; a < 10 - band; a++) for (const s of [z + 1 + band, z + 8 - band]) put(e, 2 + k, x + a, s, t);
+        for (let s = z + 1 + band; s <= z + 8 - band; s++)
+          for (const a of [x + band, x + 9 - band]) put(e, 2 + k, a, s, t);
+      }
     }
     for (const [a, b] of [
       [x, z],
@@ -125,16 +118,14 @@ function block(e: Edit, kind: Kind, x: number, z: number): void {
     ] as const) {
       tower(e, x + a, z + b, 5, 5, 1, 5, t);
       gable(e, x + a, z + b, 5, 5, 6, hx ? 'signal' : 'line4', hx);
-      for (let l = 6; l < 9; l++) put(e, l, x + a + 3, z + b + 1, 'line4');
     }
-    tree(e, x + 4, z + 4, 2);
   } else if (kind === 'museum') {
     fill(e, 1, x, z, 10, 10, 'ink2');
     tower(e, x + 1, z + 1, 8, 8, 2, 5, 'inkSoft');
     for (let a = 1; a < 10; a += 2) for (let l = 2; l <= 5; l++) put(e, l, x + a, z, 'ink2');
     fill(e, 6, x + 1, z, 8, 1, 'inkMuted');
-    dome(e, x + 5, z + 5, 4, 6, 'inkMuted');
-    for (let l = 10; l <= 13; l++) put(e, l, x + 5, z + 5, l === 13 ? 'signal' : 'inkMuted');
+    fill(e, 6, x + 2, z + 2, 6, 6, 'inkMuted');
+    dome(e, x + 5, z + 5, 7, 'inkMuted');
     lamp(e, x, z + 9);
     lamp(e, x + 9, z + 9);
   } else {

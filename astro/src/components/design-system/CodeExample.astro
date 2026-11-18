@@ -3,7 +3,7 @@ interface Props { title: string; code: string; open?: boolean; }
 const { title, code, open = false } = Astro.props;
 ---
 <details class="ds-code" open={open}>
-  <summary>{title}<span aria-hidden="true">↗</span></summary>
+  <summary>{title}</summary>
   <div class="ds-terminal">
     <div class="ds-terminal-bar">
       <span class="ds-lights" aria-hidden="true"><i></i><i></i><i></i></span>

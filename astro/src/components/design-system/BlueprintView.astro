@@ -1,0 +1,94 @@
+---
+import { BLUEPRINTS } from '../../blueprints';
+import { sizeKey } from '../../blueprints/drawing';
+import { shownIn, type ViewName } from '../../blueprints/types';
+import './blueprint-view.css';
+
+interface Props {
+  id: string;
+  view?: ViewName;
+  /** Show the stored A3 sheet link (true where the sheet exists). */
+  sheet?: boolean;
+}
+const { id, view = 'desktop', sheet = true } = Astro.props;
+const spec = BLUEPRINTS[id];
+if (!spec) throw new Error(`BlueprintView: no blueprint ${id}`);
+const v = spec.views.find((x) => x.name === view) ?? spec.views[0];
+if (!v) throw new Error(`BlueprintView: ${id} has no views`);
+const part = (n: number): string => spec.parts.find((p) => p.id === n)?.name ?? `${n}`;
+const MEASURE: Record<string, string> = {
+  width: 'Width',
+  'max-width': 'Widest',
+  height: 'Height',
+  'min-height': 'Least height',
+  'inset-left': 'From the left edge',
+  'inset-right': 'From the right edge',
+  'padding-x': 'Padding across',
+  'padding-y': 'Padding down',
+  gap: 'Gap',
+  border: 'Line width',
+  radius: 'Corner radius',
+  'edge-x': 'Printed edge across',
+  'edge-y': 'Printed edge down',
+  'font-size': 'Type size',
+};
+const sheetName = view === 'desktop' ? id : `${id}-${view}`;
+---
+
+<figure class="bp" data-blueprint={id} data-view={v.name} data-kind={spec.kind}>
+  <div class="bp-stage">
+    <div class="bp-sheet">
+      {
+        spec.kind === 'component' ? (
+          <div class="bp-zoom">
+            <slot />
+          </div>
+        ) : (
+          <div class="bp-frame-wrap">
+            <iframe class="bp-frame" title={`${spec.title} at ${v.width} px`} loading="lazy" tabindex="-1" aria-hidden="true" />
+          </div>
+        )
+      }
+      <div class="bp-overlay" aria-hidden="true"></div>
+    </div>
+  </div>
+  <figcaption class="bp-foot">
+    <table class="bp-table bp-sizes">
+      <caption>Sizes, each set by one token</caption>
+      <thead><tr><th>Mark</th><th>Part</th><th>Sets</th><th>Token</th><th>Rendered</th></tr></thead>
+      <tbody>
+        {spec.sizes.filter((s) => shownIn(s, v.name)).map((s) => (
+          <tr data-size={sizeKey(s)}>
+            <td data-mark></td><td>{s.part} {part(s.part)}</td><td>{MEASURE[s.measure] ?? s.measure}</td><td>{s.token}</td><td data-rendered>-</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <table class="bp-table bp-parts">
+      <caption>Parts and how they size</caption>
+      <thead><tr><th>No.</th><th>Part</th><th>Sizing</th></tr></thead>
+      <tbody>{spec.parts.filter((p) => shownIn(p, v.name)).map((p) => <tr><td>{p.id}</td><td>{p.name}{p.slot ? ' (slot)' : ''}</td><td>{p.sizing}</td></tr>)}</tbody>
+    </table>
+    <dl class="bp-block">
+      <div><dt>Title</dt><dd>{spec.title}</dd></div>
+      <div><dt>Document</dt><dd>{spec.kind === 'component' ? 'Component blueprint' : 'Template blueprint'}</dd></div>
+      <div><dt>View</dt><dd>{v.name} · {v.width} px</dd></div>
+      <div><dt>No.</dt><dd>{spec.number}</dd></div>
+      <div><dt>Rev</dt><dd>{spec.revision}</dd></div>
+      <div><dt>Issued</dt><dd>{spec.drawn}</dd></div>
+      {sheet ? <div><dt>Sheet</dt><dd><a href={`/blueprints/${sheetName}.png`}>A3 drawing</a></dd></div> : null}
+    </dl>
+    <p class="bp-status" data-status>Measuring…</p>
+  </figcaption>
+</figure>
+
+<script>
+  import { startViews } from '../../blueprints/view';
+  // Pages swap through Astro's router: start on every page load, stop on the way out.
+  let stop: () => void = () => undefined;
+  document.addEventListener('astro:page-load', () => {
+    stop();
+    stop = startViews();
+  });
+  document.addEventListener('astro:before-swap', () => stop());
+</script>

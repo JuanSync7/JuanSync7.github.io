@@ -1,3 +1,4 @@
+import { softwareGL } from './gpu';
 import {
   AmbientLight,
   CanvasTexture,
@@ -5,6 +6,7 @@ import {
   DirectionalLight,
   Mesh,
   MeshBasicMaterial,
+  PCFShadowMap,
   PCFSoftShadowMap,
   PlaneGeometry,
   PMREMGenerator,
@@ -33,7 +35,7 @@ export function studio(
   aim: [number, number, number],
 ): void {
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = PCFSoftShadowMap;
+  renderer.shadowMap.type = softwareGL() ? PCFShadowMap : PCFSoftShadowMap;
   // Nothing that casts a shadow moves (a key's 2 mm dip does not count): draw the map once.
   renderer.shadowMap.autoUpdate = false;
   renderer.shadowMap.needsUpdate = true;

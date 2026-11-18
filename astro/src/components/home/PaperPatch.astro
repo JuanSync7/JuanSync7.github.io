@@ -1,0 +1,172 @@
+---
+import PaperHead from './PaperHead.astro';
+import PaperAction from '../ui/PaperAction.astro';
+import { PATCH } from '../../data/home';
+
+// The habit drawn as one dimension line: a long hatched span for deciding, a short arrow for building.
+// It is words and lines, so it is DOM with real text, not a figure (CLAUDE.md, Figures 3).
+const { decide, build } = PATCH;
+---
+
+<section id="thinking" class="pp-section">
+  <div class="pp-wrap">
+    <PaperHead label={PATCH.label} title={PATCH.title} lead={PATCH.lead} />
+
+    <div class="dim" role="img" aria-label={`Deciding, done by ${decide.who}, takes most of the length. Building, done by ${build.who}, is a short arrow at the end.`}>
+      <span class="pp-label over">{decide.label} · {decide.who}</span>
+      <span class="pp-label over hot">{build.label} · {build.who}</span>
+      <span class="extent"></span>
+      <span class="extent hot"></span>
+      <span class="span">
+        <svg class="hatch" width="100%" height="100%" aria-hidden="true" focusable="false">
+          <defs>
+            <pattern id="patch-hatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="9"></line>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#patch-hatch)"></rect>
+        </svg>
+      </span>
+      <span class="shot">
+        <svg width="100%" height="100%" aria-hidden="true" focusable="false">
+          <defs>
+            <marker id="patch-head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+              <path d="M0 0 L10 5 L0 10 Z"></path>
+            </marker>
+          </defs>
+          <line x1="2%" y1="50%" x2="94%" y2="50%" marker-end="url(#patch-head)"></line>
+        </svg>
+      </span>
+      <span class="pp-label under">{decide.steps}</span>
+      <span class="pp-label under hot">{build.step}</span>
+    </div>
+
+    <p class="pp-h2 close">{PATCH.close} <span class="accent">{PATCH.accent}</span></p>
+    <div><PaperAction href={PATCH.cta.href} variant="signal">{PATCH.cta.label}</PaperAction></div>
+  </div>
+</section>
+
+<style>
+  /* Four rows (label, extent line, the drawing, what happens), two columns at a 4 : 1 ratio. */
+  .dim {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 1fr);
+    grid-auto-flow: row;
+    gap: var(--hf-space-2) var(--hf-space-3);
+    margin: var(--hf-space-6) 0 var(--hf-space-8);
+  }
+
+  .over,
+  .under {
+    margin: 0;
+    text-align: center;
+    color: var(--pp-ink-muted);
+  }
+
+  .hot {
+    color: var(--pp-signal-text);
+  }
+
+  /* An extent line with a tick at each end, as on a drawing. */
+  .extent {
+    position: relative;
+    height: var(--hf-space-3);
+    border-bottom: 1px solid var(--pp-ink-muted);
+  }
+
+  .extent::before,
+  .extent::after {
+    content: '';
+    position: absolute;
+    bottom: calc(var(--hf-space-1) * -1);
+    height: var(--hf-space-3);
+    border-left: 1px solid var(--pp-ink-muted);
+  }
+
+  .extent::before {
+    left: 0;
+  }
+
+  .extent::after {
+    right: 0;
+  }
+
+  .extent.hot,
+  .extent.hot::before,
+  .extent.hot::after {
+    border-color: var(--pp-signal);
+  }
+
+  .span,
+  .shot {
+    display: block;
+    height: var(--hf-space-12);
+  }
+
+  .span {
+    border: 1px solid var(--pp-ink-muted);
+  }
+
+  .hatch line {
+    stroke: var(--pp-ink-muted);
+    stroke-width: 1;
+  }
+
+  .shot svg {
+    overflow: visible;
+  }
+
+  .shot line {
+    stroke: var(--pp-signal);
+    stroke-width: 2;
+  }
+
+  .shot path {
+    fill: var(--pp-signal);
+  }
+
+  .close {
+    margin: 0 0 var(--hf-space-5);
+  }
+
+  .accent {
+    color: var(--pp-signal-text);
+  }
+
+  /* As the drawing scrolls in, the deciding fills in slowly from the left; then the arrow fires. */
+  @keyframes patch-fill {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    .hatch {
+      animation: patch-fill linear both;
+      animation-timeline: view();
+      animation-range: entry 40% cover 45%;
+    }
+
+    .shot svg {
+      animation: patch-fill linear both;
+      animation-timeline: view();
+      animation-range: cover 45% cover 50%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hatch,
+    .shot svg {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .dim {
+      grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+    }
+  }
+</style>

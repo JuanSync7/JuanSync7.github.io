@@ -5,6 +5,7 @@ cache writers while rebuilding. `rooms:verify` remains the complete ordered gate
 
 | Contract | Command / evidence |
 | --- | --- |
+| WEB-BUDGET: every source file within its line budget (numbers in `eslint.config.js` only) | `npm run lint`; `npm run budget:selftest` (one line over each budget must fail); figures also `npm run figures:check` (rule `length`) |
 | Seed replay, four palettes/theme, three table designs, geometry cache independence | `npm run rooms:lighting` |
 | Light roles, one shadow caster, haze/halo budget, mirrored source, mode restoration and texture disposal | Same command; seven mutated output failures must be rejected |
 | Per-role wall/furniture/table and eye-ceiling values, eleven captured failures, eight mutated real images and exact mode restoration | `npm run rooms:tones`; 40 actual-kernel captures (36 overviews, four eye ceilings) with eroded ID masks, separate from the scene-wide histogram |

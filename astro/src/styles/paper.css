@@ -83,7 +83,7 @@ html.paper {
   --nt-code-ground: var(--pp-term-ground);
   --nt-code-line: var(--pp-term-line);
   --nt-code-ink: var(--pp-term-ink);
-  --nt-code-muted: var(--pp-term-dot-2);
+  --nt-code-muted: var(--pp-term-muted);
   --nt-term-red: var(--pp-term-dot-1);
   --nt-term-amber: var(--pp-term-dot-2);
   --nt-term-green: var(--pp-term-dot-3);
@@ -113,8 +113,8 @@ body.paper {
 }
 
 .paper :focus-visible {
-  outline: 2px solid var(--pp-signal);
-  outline-offset: 3px;
+  outline: var(--hf-focus-w) solid var(--pp-signal);
+  outline-offset: var(--hf-focus-offset);
 }
 
 .paper h1,
@@ -137,7 +137,8 @@ body.paper {
   overflow-x: clip;
   --pp-gutter: clamp(0px, calc((100cqw - var(--pp-measure-min)) / 2), var(--pp-gutter-max));
   --pp-edge: max(var(--pp-gutter), calc((100cqw - var(--pp-measure)) / 2));
-  --pp-margin-x: max(10px, calc(var(--pp-edge) - 28px));
+  --pp-margin-x: max(var(--pp-margin-min), calc(var(--pp-edge) - var(--pp-margin-inset)));
+  --pp-strip-x: calc(var(--pp-edge) - var(--pp-strip-inset));
 }
 
 .pp-wrap {
@@ -162,17 +163,16 @@ body.paper {
 
 .pp-page::before {
   left: var(--pp-margin-x);
-  width: 3px;
+  width: var(--pp-margin-line-w);
   border-left: 1px solid color-mix(in srgb, var(--pp-signal) var(--pp-margin-mix), transparent);
   border-right: 1px solid color-mix(in srgb, var(--pp-signal) var(--pp-margin-mix), transparent);
 }
 
 .pp-page::after {
-  left: calc(var(--pp-edge) - 78px);
+  left: var(--pp-strip-x);
   width: var(--pp-strip-w);
   background:
-    radial-gradient(circle at 19px 30px, var(--pp-ground) 0 7px, color-mix(in srgb, var(--pp-hole-edge) 30%, transparent) 7.5px 9.5px, transparent 10px) 0
-      0 / var(--pp-strip-w) var(--pp-hole-pitch) repeat-y,
+    var(--pp-holes) 0 0 / var(--pp-strip-w) var(--pp-hole-pitch) repeat-y,
     var(--pp-strip);
 }
 
@@ -253,11 +253,11 @@ body.paper {
   display: flex;
   gap: var(--hf-space-6);
   align-items: baseline;
-  padding: var(--hf-space-5) 0 calc(var(--hf-space-5) - 2px);
+  padding: var(--hf-space-5) 0 var(--pp-row-pad-end);
   border-top: 1px solid var(--pp-rule);
   transition:
-    border-color 250ms ease,
-    box-shadow 250ms ease;
+    border-color var(--nt-dur-hover) ease,
+    box-shadow var(--nt-dur-hover) ease;
 }
 
 .pp-row:hover {
@@ -271,7 +271,7 @@ body.paper {
 @keyframes pp-rise {
   from {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(var(--pp-rise-y));
   }
   to {
     opacity: 1;
@@ -312,6 +312,18 @@ body.paper {
   initial-value: 0%;
 }
 
+@property --pp-rip-fill {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
+@property --pp-rip-shade {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
 @property --pp-hb {
   syntax: '<percentage>';
   inherits: true;
@@ -333,7 +345,7 @@ body.paper {
 
 /* Theme change: the new theme is painted over the old one with a brush stroke, left to right.
    The mask is three times the viewport wide; its ragged edge crosses the screen as the mask
-   slides from 80% to 0%. Only while .pp-theming is set, so page swaps keep their crossfade. */
+   slides from 80% to 0%. Only while .pp-theming is set, so page swaps keep their page turn. */
 .pp-theming::view-transition-old(root),
 .pp-theming::view-transition-new(root) {
   animation: none;
@@ -348,56 +360,62 @@ body.paper {
   animation: pp-brush var(--pp-dur-brush) var(--pp-ease-brush) both;
 }
 
-.pp-theming .nav {
-  view-transition-name: none;
+/* A theme change paints the whole page as one sheet. Anything with its own view-transition-name
+   (a post card's cover) would be lifted out of the root snapshot and cross-fade on top, turning
+   before the brush reaches it, and a colour transition (a card's background) would still be
+   easing in where the brush has already painted. */
+.pp-theming * {
+  view-transition-name: none !important;
+  transition: none !important;
 }
 
-/* Page swaps: the page you leave turns over on its left edge, by the punched strip, and the
-   new page lies underneath. Only without reduced motion, and not for a theme change. */
+/* Page swaps: the page you leave curls away from its bottom-right corner and the next page
+   shows through behind the fold (going back, the earlier page lays itself back down). The
+   frames come from components/layout/page-curl.ts; this sets the stacking and the paper back of
+   the folded flap, and holds the start of the turn until the first frame lands. Only on Astro's
+   page swaps (data-astro-transition), never on a theme change. */
 @media (prefers-reduced-motion: no-preference) {
-  html:not(.pp-theming)::view-transition-old(root),
-  html:not(.pp-theming)::view-transition-new(root) {
+  html[data-astro-transition]::view-transition-old(root),
+  html[data-astro-transition]::view-transition-new(root) {
+    animation: none;
     mix-blend-mode: normal;
-    animation-duration: var(--pp-dur-flip);
-    animation-timing-function: var(--pp-ease-flip);
-    animation-fill-mode: both;
   }
 
-  html:not(.pp-theming)::view-transition-old(root) {
+  html[data-astro-transition='forward']::view-transition-old(root),
+  html[data-astro-transition='back']::view-transition-new(root) {
     z-index: 2;
-    transform-origin: 0 50%;
-    animation-name: pp-flip-out;
   }
 
-  html:not(.pp-theming)::view-transition-new(root) {
-    z-index: 1;
-    animation-name: pp-flip-in;
+  html[data-astro-transition='back']::view-transition-new(root) {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  html[data-astro-transition] .pp-curl {
+    view-transition-name: pp-curl;
   }
 }
 
-@keyframes pp-flip-out {
-  from {
-    transform: perspective(var(--pp-flip-depth)) rotateY(0deg);
-    filter: brightness(1) drop-shadow(0 0 0 transparent);
-    opacity: 1;
-  }
-  80% {
-    opacity: 1;
-  }
-  to {
-    transform: perspective(var(--pp-flip-depth)) rotateY(-100deg);
-    filter: brightness(0.7) drop-shadow(12px 0 28px color-mix(in srgb, var(--pp-ink-shadow) 45%, transparent));
-    opacity: 0;
-  }
+.pp-curl {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
 }
 
-@keyframes pp-flip-in {
-  from {
-    filter: brightness(0.82);
-  }
-  to {
-    filter: brightness(1);
-  }
+::view-transition-group(pp-curl) {
+  z-index: 3;
+  animation: none;
+  filter: drop-shadow(0 0 var(--pp-curl-blur) color-mix(in srgb, var(--pp-ink-shadow) 38%, transparent));
+}
+
+::view-transition-old(pp-curl),
+::view-transition-new(pp-curl) {
+  animation: none;
+}
+
+::view-transition-image-pair(pp-curl) {
+  transform-origin: 0 0;
+  clip-path: inset(0 0 100% 0);
+  background-color: var(--pp-ground);
 }
 
 @keyframes pp-brush {
@@ -412,4 +430,17 @@ body.paper {
 
 .pp-figure-defs {
   position: absolute;
+}
+
+/* An icon drawn in the night palette (HardwareIcon, a SlideIcon in its night tone) takes the page's
+   colours the way a figure does (see --pp-figure-filter): ink on cream with the signal orange by day,
+   the same on gunmetal by night. A download preview leaves it off to show the exported colours. */
+.page-ink {
+  filter: var(--pp-figure-filter, none);
+  mix-blend-mode: var(--pp-figure-blend, normal);
+}
+
+span.page-ink {
+  display: inline-flex;
+  flex-shrink: 0;
 }

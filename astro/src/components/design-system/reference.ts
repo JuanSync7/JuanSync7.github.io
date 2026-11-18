@@ -5,7 +5,8 @@ const files = import.meta.glob<string>(
     '/src/pages/anatomy/chip-package.astro',
     '/src/components/ui/*',
     '/src/layouts/*.astro',
-    '/src/components/layout/Night*.astro',
+    '/src/components/layout/{Night,Paper}*.astro',
+    '/src/data/home.ts',
     '/src/components/writing/post-grid.css',
     '/src/components/writing/PostGrid.tsx',
     '/src/styles/night*.css',
@@ -17,6 +18,7 @@ const files = import.meta.glob<string>(
     '/src/figures/kit/stickers.ts',
     '/src/styles/tokens/palette.ts',
     '/src/figures/kit/ink.ts',
+    '/src/blueprints/*.ts',
   ],
   { query: '?raw', import: 'default', eager: true },
 );
@@ -45,7 +47,7 @@ export const colorGroups = [
   { title: 'Night · text & lines', test: (n: string) => /^--nt-(ink|rule|line)/.test(n) },
   { title: 'Night · signal & overlays', test: (n: string) => /^--nt-(signal|dot|scrim)/.test(n) },
   { title: 'Paper · reading in light mode', test: (n: string) => n.startsWith('--nt-paper') },
-  { title: 'Terminal · dark in both modes', test: (n: string) => /^--nt-(code|term)/.test(n) },
+  { title: 'Terminal · the night window', test: (n: string) => /^--nt-(code|term)/.test(n) },
 ];
 export const pageRecipe = `---
 import NightPage from '../layouts/NightPage.astro';

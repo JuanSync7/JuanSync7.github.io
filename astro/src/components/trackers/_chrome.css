@@ -84,8 +84,8 @@
 
 
 /* Versioned tracker layout: timeline is a flush-left nav rail; main panel centers in the space beside it */
-.tracker-grid { display: grid; grid-template-columns: 188px minmax(0, 1fr); gap: 56px; align-items: start; }
-.tracker-main { width: 100%; min-width: 0; max-width: 1200px; margin: 0 auto; }
+.tracker-grid { display: grid; grid-template-columns: var(--pp-tracker-rail-w) minmax(0, 1fr); gap: var(--pp-tracker-gap); align-items: start; }
+.tracker-main { width: 100%; min-width: 0; max-width: var(--pp-tracker-main-w); margin: 0 auto; }
 .tracker-side { position: sticky; top: 84px; }
 .vtl-head { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
 .vtl { position: relative; }                         /* no left indent: text is flush-left */

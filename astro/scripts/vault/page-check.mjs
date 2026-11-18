@@ -20,7 +20,7 @@ for (const [, id] of html.matchAll(/href="#([^"]+)"/g)) assert(ids.includes(id),
 assert.match(html, /<title>The experience vault/);
 assert.match(html, /rel="canonical" href="https:\/\/juansync\.dev\/vault\/"/);
 assert.match(home, /href="\/vault\/"/);
-assert.match(html, /aria-current="page"[^>]*>vault</);
+assert.match(html, /aria-current="page"[^>]*>Vault</);
 assert.match(search, /Synthetic example · no private vault connection/);
 assert.match(search, /Queue retry experiment/);
 assert.match(search, /alias: retry policy/);
