@@ -15,6 +15,16 @@
   --pp-ink-strong: light-dark(#16191e, #fbf7ee);
   --pp-ink: light-dark(#33383f, #d9d2c3);
   --pp-ink-muted: light-dark(#555a62, #a8adb5);
+  /* The reading scale on posts and field guides, in contrast against the ground (both themes):
+     title 17, h2 16.5, h3 15, h4 14, body 13 (12 on cream, to keep ink on paper soft), side panels
+     7.5. The grounds top out near 17.6, so
+     the steps sit under it; size and weight carry the rest of the hierarchy. */
+  --pp-read-title: light-dark(#07080a, #fdfbf5);
+  --pp-read-h2: light-dark(#0c0d10, #fbf8ef);
+  --pp-read-h3: light-dark(#16191d, #efede6);
+  --pp-read-h4: light-dark(#1d1f23, #e9e5dc);
+  --pp-read-body: light-dark(#282b31, #e2ddd1);
+  --pp-read-nav: light-dark(#474b4f, #ada89e);
   --pp-rule: light-dark(#d9cfbb, #2e343c);
   --pp-margin-mix: 38%;
   /* The code terminal follows the theme: a warm white window on the cream page, the dark window
