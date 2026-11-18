@@ -1,161 +1,179 @@
 import { defineCanvasFigure } from './define';
 import { isometric, project, type Camera, type ScreenPoint } from './kit/camera';
-import { box, dot, line, poly } from './kit/draw';
+import { box, line, poly } from './kit/draw';
 import { ink, mix } from './kit/ink';
 import { follow, smoothstep } from './kit/motion';
+import { drawPapers, stack, tones, type Stack } from './kit/papers';
+import { around, dial, drum, fillStroke, handle, reach, seat, slab, type Plane } from './kit/safe';
 
 // The safe's frame: x across, y up, z out of the door. The door is hinged on the opening's left edge.
-const OPEN = { x0: -0.92, x1: 0.92, y0: 0.46, y1: 2.06, z: 0.9 };
+const OPEN = { x0: -0.92, x1: 0.92, y0: 0.5, y1: 2.0, z: 0.9 };
 const DOOR_W = OPEN.x1 - OPEN.x0;
-const DOOR_T = 0.16;
-const WHEEL = { u: 1.02, y: 1.26, r: 0.34 };
-const SPOKES = 6;
+const DOOR_T = 0.2;
+const PLUG = [0.08, DOOR_W - 0.08, OPEN.y0 + 0.08, OPEN.y1 - 0.08, -0.14, 0] as const;
 const SWING = (100 * Math.PI) / 180;
 const SHELF = 1.36;
+// The door's face inside its inset line, and what sits on it. Checked at load: each part keeps
+// GAP from the inset line and from its neighbour, at any turn of the dial or the handle.
+const INSET = 0.1;
+const GAP = 0.05;
+const DIAL = { u: DOOR_W / 2, v: 1.58, r: 0.25 };
+const HANDLE = { u: DOOR_W / 2, v: 0.93, r: 0.2 };
+const FRAME = 0.07;
+const PLATE = [-0.32, 0.32, OPEN.y1 + FRAME + 0.035, OPEN.y1 + FRAME + 0.095] as const;
+seat(
+  [INSET, DOOR_W - INSET, OPEN.y0 + INSET, OPEN.y1 - INSET],
+  {
+    dial: around(DIAL.u, DIAL.v, reach.dial(DIAL.r)),
+    handle: around(HANDLE.u, HANDLE.v, reach.handle(HANDLE.r)),
+  },
+  GAP,
+);
+seat([-1.2, 1.2, OPEN.y1 + FRAME, 2.2], { 'name plate': PLATE }, 0.03);
+// The door turns about the barrels' axis, at the outer corner of its hinge edge, so the edge
+// touches the barrels at every angle; a bracket on a leaf ties each barrel back to the body.
+const BARREL = 0.07;
+const PIVOT = { x: OPEN.x0 - BARREL, z: OPEN.z + DOOR_T };
+const HINGES = [
+  [OPEN.y0 + 0.16, OPEN.y0 + 0.44],
+  [OPEN.y1 - 0.44, OPEN.y1 - 0.16],
+] as const;
+const leaf = ([y0, y1]: readonly [number, number]) => [PIVOT.x - 0.18, PIVOT.x, y0 + 0.03, y1 - 0.03] as const;
+seat([-1.2, OPEN.x0, OPEN.y0, OPEN.y1], { 'lower leaf': leaf(HINGES[0]), 'upper leaf': leaf(HINGES[1]) }, 0.02);
+// The bolts are drawn in before the door moves: the unlock ends where the swing starts.
+const UNLOCK = [0.3, 0.42] as const;
 
-interface Sheet {
-  x0: number;
-  x1: number;
-  z0: number;
-  z1: number;
-  y: number;
-}
-interface Stack {
-  sheets: Sheet[];
-  lit: boolean;
-}
 interface State {
   k: number;
   stacks: Stack[];
 }
 
-function tones(alpha = 0.6) {
-  return {
-    top: mix('ground', 'panel2', 0.6),
-    left: mix('ground', 'panel', 0.75),
-    right: mix('ground', 'panel', 0.35),
-    edge: ink.line(alpha),
-    crease: ink.line(0.18),
-  };
-}
-
-// A stack of loose sheets on a floor, each nudged a little so it reads as paper, not a block.
-function stack(rng: () => number, x: number, z: number, y: number, n: number, lit: boolean): Stack {
-  const sheets = Array.from({ length: n }, (_, i) => {
-    const dx = (rng() - 0.5) * 0.06;
-    const dz = (rng() - 0.5) * 0.06;
-    return { x0: x - 0.36 + dx, x1: x + 0.36 + dx, z0: z - 0.3 + dz, z1: z + 0.3 + dz, y: y + i * 0.045 };
-  });
-  return { sheets, lit };
-}
-
-function face(ctx: CanvasRenderingContext2D, pts: readonly ScreenPoint[], fill: string, edge: string) {
-  poly(ctx, pts);
-  ctx.fillStyle = fill;
-  ctx.fill();
-  ctx.strokeStyle = edge;
-  ctx.stroke();
-}
-
-/** A point on the door: `u` along it from the hinge, `n` out from its inner face, `a` its swing. */
-function doorPoint(cam: Camera, u: number, y: number, n: number, a: number): ScreenPoint {
-  const x = OPEN.x0 + u * Math.cos(a) - n * Math.sin(a);
-  const z = OPEN.z + u * Math.sin(a) + n * Math.cos(a);
-  return project(cam, x, y, z);
-}
-
-function drawPapers(ctx: CanvasRenderingContext2D, cam: Camera, s: Stack, open: number) {
-  s.sheets.forEach((sh, i) => {
-    const top = i === s.sheets.length - 1;
-    const lift = top && s.lit ? open * 0.06 : 0;
-    const pull = top && s.lit ? open * 0.34 : 0;
-    const hot = top && s.lit && open > 0.5;
-    box(ctx, cam, sh.x0, sh.z0 + pull, sh.x1, sh.z1 + pull, sh.y + lift, sh.y + lift + 0.03, tones(hot ? 0.8 : 0.62));
-    if (!top) return;
-    // Ruled lines on the top sheet: notes, not money.
-    for (let r = 0; r < 4; r++) {
-      const z = sh.z0 + pull + 0.12 + r * 0.12;
-      const end = r === 3 ? sh.x0 + 0.34 : sh.x1 - 0.1;
-      const y = sh.y + lift + 0.031;
-      line(ctx, project(cam, sh.x0 + 0.1, y, z), project(cam, end, y, z), hot ? ink.signal(0.95) : ink.line(0.55));
-    }
-  });
+function opening(ctx: CanvasRenderingContext2D, cam: Camera) {
+  const { x0, x1, y0, y1, z } = OPEN;
+  poly(ctx, [project(cam, x0, y0, z), project(cam, x1, y0, z), project(cam, x1, y1, z), project(cam, x0, y1, z)]);
 }
 
 function drawInside(ctx: CanvasRenderingContext2D, cam: Camera, stacks: readonly Stack[], open: number) {
   const p = (x: number, y: number, z: number): ScreenPoint => project(cam, x, y, z);
   const { x0, x1, y0, y1, z } = OPEN;
   const back = -0.72;
+  const wall = (pts: ScreenPoint[], t: number) => fillStroke(ctx, pts, mix('ground', 'panel', t), ink.line(0.3));
   ctx.save();
-  poly(ctx, [p(x0, y0, z), p(x1, y0, z), p(x1, y1, z), p(x0, y1, z)]);
+  opening(ctx, cam);
   ctx.clip();
-  const hollow = mix('ground', 'panel', 0.2);
-  face(ctx, [p(x0, y0, back), p(x1, y0, back), p(x1, y1, back), p(x0, y1, back)], hollow, ink.line(0.3));
-  face(ctx, [p(x0, y0, back), p(x0, y0, z), p(x0, y1, z), p(x0, y1, back)], mix('ground', 'panel', 0.5), ink.line(0.3));
-  face(
-    ctx,
-    [p(x0, y0, back), p(x1, y0, back), p(x1, y0, z), p(x0, y0, z)],
-    mix('ground', 'panel2', 0.4),
-    ink.line(0.3),
-  );
+  wall([p(x0, y0, back), p(x1, y0, back), p(x1, y1, back), p(x0, y1, back)], 0.2);
+  wall([p(x0, y0, back), p(x0, y0, z), p(x0, y1, z), p(x0, y1, back)], 0.5);
+  wall([p(x0, y0, back), p(x1, y0, back), p(x1, y0, z), p(x0, y0, z)], 0.3);
+  // The jamb is as deep as the door's plug: its inner edge is where the door seats.
+  line(ctx, p(x0, y0, z - 0.14), p(x0, y1, z - 0.14), ink.line(0.35));
+  line(ctx, p(x0, y0, z - 0.14), p(x1, y0, z - 0.14), ink.line(0.35));
   // Lower papers, then the shelf over them, then the papers on the shelf.
   for (const s of stacks.slice(0, 2)) drawPapers(ctx, cam, s, open);
-  box(ctx, cam, x0, back, x1, z - 0.04, SHELF - 0.06, SHELF, tones(0.55));
+  box(ctx, cam, x0, back, x1, z - 0.18, SHELF - 0.06, SHELF, tones(0.55));
   for (const s of stacks.slice(2)) drawPapers(ctx, cam, s, open);
   ctx.restore();
 }
 
-function drawWheel(ctx: CanvasRenderingContext2D, cam: Camera, a: number, spin: number, lit: number) {
-  const n = DOOR_T + 0.1;
-  const at = (r: number, th: number): ScreenPoint =>
-    doorPoint(cam, WHEEL.u + r * Math.cos(th), WHEEL.y + r * Math.sin(th), n, a);
-  const style = lit > 0.5 ? ink.signal(0.95) : ink.line(0.75);
-  // The axle stands the wheel off the door.
-  line(ctx, doorPoint(cam, WHEEL.u, WHEEL.y, DOOR_T, a), at(0, 0), ink.line(0.6));
-  for (const r of [WHEEL.r, 0.08]) {
-    poly(
-      ctx,
-      Array.from({ length: 40 }, (_, i) => at(r, (i / 40) * Math.PI * 2)),
-    );
-    ctx.strokeStyle = style;
-    ctx.stroke();
-  }
-  for (let i = 0; i < SPOKES; i++) {
-    const th = spin + (i / SPOKES) * Math.PI * 2;
-    line(ctx, at(0.08, th), at(WHEEL.r * 1.32, th), style);
-    const [x, y] = at(WHEEL.r * 1.38, th);
-    dot(ctx, x, y, 2.2, style);
+/** The body: plinth, carcass and cap, the frame round the door, a blank name plate and side ribs. */
+function drawBody(ctx: CanvasRenderingContext2D, cam: Camera) {
+  const p = (x: number, y: number, z: number): ScreenPoint => project(cam, x, y, z);
+  for (const x of [-1.05, 0.88])
+    for (const z of [-0.68, 0.62]) box(ctx, cam, x, z, x + 0.18, z + 0.18, 0, 0.22, tones(0.3));
+  box(ctx, cam, -1.26, -0.96, 1.26, 0.96, 0.22, 0.34, tones(0.6));
+  box(ctx, cam, -1.2, -0.9, 1.2, OPEN.z, 0.34, 2.2, tones(0.64));
+  box(ctx, cam, -1.26, -0.96, 1.26, 0.96, 2.2, 2.3, tones(0.6));
+  const { x0, x1, y0, y1, z } = OPEN;
+  const m = FRAME;
+  poly(ctx, [p(x0 - m, y0 - m, z), p(x1 + m, y0 - m, z), p(x1 + m, y1 + m, z), p(x0 - m, y1 + m, z)]);
+  ctx.strokeStyle = ink.line(0.35);
+  ctx.stroke();
+  const [a, b, c, d] = PLATE;
+  poly(ctx, [p(a, c, z), p(b, c, z), p(b, d, z), p(a, d, z)]);
+  ctx.fillStyle = mix('ground', 'panel2', 0.7);
+  ctx.fill();
+  ctx.stroke();
+  for (const y of [0.95, 1.6]) line(ctx, p(1.2, y, -0.84), p(1.2, y, 0.84), ink.line(0.25));
+  line(ctx, p(1.2, 0.4, 0.82), p(1.2, 2.14, 0.82), ink.line(0.18));
+}
+
+function hinges(ctx: CanvasRenderingContext2D, cam: Camera) {
+  for (const h of HINGES) {
+    const [u0, u1, v0, v1] = leaf(h);
+    const p = (x: number, y: number) => project(cam, x, y, OPEN.z);
+    fillStroke(ctx, [p(u0, v0), p(u1, v0), p(u1, v1), p(u0, v1)], mix('ground', 'panel2', 0.7), ink.line(0.6));
+    box(ctx, cam, PIVOT.x - BARREL, OPEN.z, PIVOT.x, PIVOT.z, h[0] + 0.05, h[1] - 0.05, tones(0.6));
+    const ring = (th: number, y: number) =>
+      project(cam, PIVOT.x + BARREL * Math.cos(th), y, PIVOT.z + BARREL * Math.sin(th));
+    drum(ctx, ring, h[0], h[1], mix('ground', 'panel', 0.5), mix('ground', 'panel2', 0.8), ink.line(0.75));
   }
 }
 
 function drawDoor(ctx: CanvasRenderingContext2D, cam: Camera, k: number) {
-  const a = smoothstep(0.42, 1, k) * SWING;
-  const spin = smoothstep(0, 0.45, k) * Math.PI * 3;
-  const { y0, y1 } = OPEN;
-  const q = (u: number, y: number, n: number): ScreenPoint => doorPoint(cam, u, y, n, a);
-  const t = tones(0.7);
-  // The free edge, then whichever broad face is turned to us.
-  face(ctx, [q(DOOR_W, y0, 0), q(DOOR_W, y0, DOOR_T), q(DOOR_W, y1, DOOR_T), q(DOOR_W, y1, 0)], t.right, t.edge);
-  face(ctx, [q(0, y1, 0), q(DOOR_W, y1, 0), q(DOOR_W, y1, DOOR_T), q(0, y1, DOOR_T)], t.top, t.edge);
-  // The outer face is turned to the isometric eye (from +x, +z) until the door passes 45°.
+  const a = smoothstep(UNLOCK[1], 1, k) * SWING;
+  // The dial runs a combination (one way, back, then home) until its zero sits under the index.
+  const u = smoothstep(0, UNLOCK[0], k);
+  const turn = (1.1 + Math.sin(u * Math.PI * 2) * 1.4) * (1 - u);
+  const unlock = smoothstep(UNLOCK[0], UNLOCK[1], k);
+  const q: Plane = (uu, v, n) => {
+    const [rx, rz] = [uu + BARREL, n - DOOR_T];
+    return project(
+      cam,
+      PIVOT.x + rx * Math.cos(a) - rz * Math.sin(a),
+      v,
+      PIVOT.z + rx * Math.sin(a) + rz * Math.cos(a),
+    );
+  };
   const outer = Math.cos(a) - Math.sin(a) > 0;
-  const n = outer ? DOOR_T : 0;
-  face(ctx, [q(0, y0, n), q(DOOR_W, y0, n), q(DOOR_W, y1, n), q(0, y1, n)], t.left, t.edge);
-  const inset = (d: number) => [q(d, y0 + d, n), q(DOOR_W - d, y0 + d, n), q(DOOR_W - d, y1 - d, n), q(d, y1 - d, n)];
-  poly(ctx, inset(0.12));
-  ctx.strokeStyle = ink.line(0.28);
-  ctx.stroke();
-  if (outer) drawWheel(ctx, cam, a, spin, 1 - smoothstep(0.5, 0.75, k));
-  // Two hinge knuckles on the hinge edge.
-  for (const y of [y0 + 0.3, y1 - 0.3])
-    line(ctx, q(0, y - 0.14, DOOR_T * 0.5), q(0, y + 0.14, DOOR_T * 0.5), ink.line(0.85));
+  const plug = () => {
+    if (a < 0.01) return;
+    ctx.save();
+    // Until the plug has cleared the jamb, only the part inside the opening shows.
+    if (a < 1.05) {
+      opening(ctx, cam);
+      ctx.clip();
+    }
+    slab(ctx, q, PLUG, false);
+    // Locking bolts on the plug's free edge, drawn in as the handle turns.
+    const out = PLUG[1] + 0.03 + 0.1 * (1 - unlock);
+    for (const v of [PLUG[2] + 0.3, (OPEN.y0 + OPEN.y1) / 2, PLUG[3] - 0.3]) {
+      const ring = (th: number, s: number) => q(s, v + 0.045 * Math.cos(th), -0.07 + 0.045 * Math.sin(th));
+      drum(ctx, ring, PLUG[1], out, mix('ground', 'panel', 0.45), mix('ground', 'panel', 0.8), ink.line(0.7));
+    }
+    ctx.restore();
+  };
+  const plate = [0, DOOR_W, OPEN.y0, OPEN.y1, 0, DOOR_T];
+  const hardware = () => {
+    dial(ctx, q, DIAL.u, DIAL.v, DIAL.r, DOOR_T, turn);
+    handle(ctx, q, HANDLE.u, HANDLE.v, HANDLE.r, DOOR_T, (-Math.PI / 3) * unlock);
+  };
+  // Painter's order: the far side of the door first. Past 45° the face and its hardware are
+  // behind the slab and the plug is in front of it.
+  if (!outer) {
+    hinges(ctx, cam);
+    hardware();
+  }
+  if (outer) plug();
+  slab(ctx, q, plate, outer);
+  if (outer) {
+    const i = INSET;
+    poly(ctx, [
+      q(i, OPEN.y0 + i, DOOR_T),
+      q(DOOR_W - i, OPEN.y0 + i, DOOR_T),
+      q(DOOR_W - i, OPEN.y1 - i, DOOR_T),
+      q(i, OPEN.y1 - i, DOOR_T),
+    ]);
+    ctx.strokeStyle = ink.line(0.28);
+    ctx.stroke();
+    hardware();
+  } else plug();
+  if (outer) hinges(ctx, cam);
 }
 
 export default defineCanvasFigure<State>({
   id: 'vault-safe',
   title: 'The experience vault',
-  alt: 'An isometric hairline safe with a ship’s-wheel handle. On hover the wheel spins, the door swings open and stacks of written notes sit on the shelves inside, the top sheet lifting.',
-  idea: 'A vault keeps what an engineer knows: the wheel turns to unlock it, the door swings open, and inside are notes, not money, with one sheet lifting as the lesson you take out.',
+  alt: 'An isometric hairline vault safe with a combination dial and a three-spoke handle. On hover the dial turns until its zero meets the index, the handle turns, the bolts draw in, the door swings open on its hinges and stacks of written notes sit on the shelves inside, the top sheet lifting.',
+  idea: 'A vault keeps what an engineer knows: the dial finds the combination, the bolts draw in, the door swings open, and inside are notes, not money, with one sheet lifting as the lesson you take out.',
   style: 'hairline',
   motion: 'responsive',
   answers: true,
@@ -165,8 +183,8 @@ export default defineCanvasFigure<State>({
   setup: ({ rng }) => ({
     k: 0,
     stacks: [
-      stack(rng, -0.4, 0.42, 0.47, 7, true),
-      stack(rng, 0.3, 0.3, 0.47, 4, false),
+      stack(rng, -0.4, 0.42, 0.51, 7, true),
+      stack(rng, 0.3, 0.3, 0.51, 4, false),
       stack(rng, 0.26, 0.3, SHELF + 0.01, 3, false),
       stack(rng, -0.44, 0.46, SHELF + 0.01, 3, false),
     ],
@@ -174,15 +192,12 @@ export default defineCanvasFigure<State>({
   draw: ({ ctx, w, h, t, dt, still, pointer, state }) => {
     // Hover opens it. With no hover (a phone) it opens once it has been on screen a moment.
     const target = pointer.active || (w < 420 && t > 1.4) ? 1 : 0;
-    state.k = still ? target : follow(state.k, target, dt, target > state.k ? 1.6 : 3);
-    const cam = isometric(w * 0.62, h * 0.7, Math.min(w * 0.2, h * 0.23));
-    // Feet, then the body.
-    for (const x of [-1.05, 0.88])
-      for (const z of [-0.68, 0.62]) box(ctx, cam, x, z, x + 0.18, z + 0.18, 0, 0.24, tones(0.3));
-    box(ctx, cam, -1.2, -0.9, 1.2, OPEN.z, 0.22, 2.3, tones(0.64));
+    state.k = still ? target : follow(state.k, target, dt, target > state.k ? 1.1 : 3);
+    const cam = isometric(w * 0.6, h * 0.7, Math.min(w * 0.2, h * 0.22));
+    drawBody(ctx, cam);
     const open = smoothstep(0.42, 1, state.k);
     if (open > 0) drawInside(ctx, cam, state.stacks, open);
     drawDoor(ctx, cam, state.k);
-    return state.k < 0.02 ? 'rest' : state.k > 0.98 ? 'open' : 'opening';
+    return state.k < 0.02 ? 'rest' : state.k > 0.98 ? 'open' : state.k < 0.42 ? 'unlocking' : 'opening';
   },
 });

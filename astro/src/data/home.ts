@@ -32,17 +32,19 @@ export const HERO = {
   label: 'AI engineer · Reading, UK',
   lead: 'Chip-design rigour,',
   accent: 'applied to AI.',
-  body: 'AI engineer with an ASIC background.',
+  body: 'I trained as an ASIC designer and still think in blocks and wires. Now I build the AI platform for a chip-design company, and I hold it to the same standard as silicon.',
   // The one line that names the current employer on the home page. Change it here when that changes.
   now: { role: 'AI engineer', org: 'Aion Silicon' },
   primary: { label: 'See my work', href: '#work' },
   secondary: { label: 'Download CV', href: PROFILE.cv_file },
 } as const;
 
-/** The system map's caption and legend: the pattern, not one company's setup. */
+/** The system map's title and lead: the pattern, not one company's setup. */
 export const SYSTEM = {
-  caption: 'From individual productivity to company-wide intelligence.',
-  legend:
+  label: '// 0x00 · the system I build',
+  title: 'From individual productivity',
+  accent: 'to company-wide intelligence.',
+  lead:
     "Governed agents on every engineer's machine, knowledge siloed by project, one gateway for every model, and a ledger that ties each customer requirement to the work and evidence behind it.",
   steps: 'Read it step by step',
 } as const;
@@ -187,7 +189,7 @@ export const CONTACT_SECTION = {
 } as const;
 
 export const FOOTER = {
-  joke: 'No EDA tools were used in the making of this site — just vim, coffee and spite.',
+  joke: 'Built by agents, checked like silicon, and it still met timing.',
   part: 'JUAN-SOC-1999-X1 · rev. 2026 · ed. 03',
 } as const;
 

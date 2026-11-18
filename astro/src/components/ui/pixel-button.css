@@ -2,7 +2,7 @@
 .pixel-button {
   --pb-edge: var(--pp-signal);
   --pb-face: var(--pp-signal);
-  --pb-shadow: var(--pp-signal-shadow);
+  --pb-shadow: var(--pp-outline);
   --pb-ink: var(--pp-on-signal);
   position: relative;
   display: inline-block;

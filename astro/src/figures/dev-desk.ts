@@ -62,6 +62,7 @@ function cornersOf(root: Group): Vector3[] {
 const corner = new Vector3();
 
 export default defineThreeFigure<State>({
+  heavy: true,
   id: 'dev-desk',
   title: 'Building with an AI',
   alt: 'An isometric desk with a landscape monitor showing a chat with an AI, a portrait monitor filling with code, a keyboard and a tower cabled to a rack of servers.',
