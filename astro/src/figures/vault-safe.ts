@@ -4,6 +4,7 @@ import { box, line, poly } from './kit/draw';
 import { ink, mix } from './kit/ink';
 import { smoothstep } from './kit/motion';
 import { drawPapers, stack, tones, type Stack } from './kit/papers';
+import { cylinderInFront } from './kit/occlude';
 import { around, dial, drum, fillStroke, handle, reach, seat, slab, type Plane } from './kit/safe';
 
 // The safe's frame: x across, y up, z out of the door. The door is hinged on the opening's left edge.
@@ -11,6 +12,7 @@ const OPEN = { x0: -0.92, x1: 0.92, y0: 0.5, y1: 2.0, z: 0.9 };
 const DOOR_W = OPEN.x1 - OPEN.x0;
 const DOOR_T = 0.2;
 const PLUG = [0.08, DOOR_W - 0.08, OPEN.y0 + 0.08, OPEN.y1 - 0.08, -0.14, 0] as const;
+const PLUG_UN = [PLUG[0], PLUG[1], PLUG[4], PLUG[5]] as const;
 const SWING = (100 * Math.PI) / 180;
 const SHELF = 1.36;
 // The door's face and what sits on it, checked at load: each part keeps GAP from the inset line and its neighbour.
@@ -28,19 +30,15 @@ seat(
   GAP,
 );
 seat([-1.2, 1.2, OPEN.y1 + FRAME, 2.2], { 'name plate': PLATE }, 0.03);
-// The door turns about the barrels' axis. They stand proud of its face, as on a real safe, and reach its
-// outer corner at every angle; a bracket on a leaf ties each barrel back to the body.
-const [HINGE_U, HINGE_N] = [0.05, 0.06];
-// At 45° the face is edge-on and the barrels change sides of the door: with HINGE_N >= HINGE_U they
-// only touch its outline then, so nothing jumps; past it the door covers them as it turns.
-if (HINGE_N < HINGE_U) throw new Error('bounds: hinge barrels would jump across the door at 45°');
-const BARREL = Math.hypot(HINGE_U, HINGE_N);
-const PIVOT = { x: OPEN.x0 - HINGE_U, z: OPEN.z + DOOR_T + HINGE_N };
+// The barrels sit beside the door's hinge edge, as thick as the door, touching the edge and the
+// body face; the door turns about their axis. Each part is ordered against them every frame.
+const BARREL = DOOR_T / 2;
+const PIVOT = { x: OPEN.x0 - BARREL, z: OPEN.z + BARREL };
 const HINGES = [
   [OPEN.y0 + 0.16, OPEN.y0 + 0.44],
   [OPEN.y1 - 0.44, OPEN.y1 - 0.16],
 ] as const;
-const leaf = ([y0, y1]: readonly [number, number]) => [PIVOT.x - 0.18, PIVOT.x, y0 + 0.03, y1 - 0.03] as const;
+const leaf = ([y0, y1]: readonly [number, number]) => [PIVOT.x - 0.14, PIVOT.x, y0 + 0.03, y1 - 0.03] as const;
 seat([-1.2, OPEN.x0, OPEN.y0, OPEN.y1], { 'lower leaf': leaf(HINGES[0]), 'upper leaf': leaf(HINGES[1]) }, 0.02);
 // The bolts are drawn in before the door moves: the unlock ends where the swing starts.
 const UNLOCK = [0.3, 0.42] as const;
@@ -104,7 +102,6 @@ function hinges(ctx: CanvasRenderingContext2D, cam: Camera) {
     const [u0, u1, v0, v1] = leaf(h);
     const p = (x: number, y: number) => project(cam, x, y, OPEN.z);
     fillStroke(ctx, [p(u0, v0), p(u1, v0), p(u1, v1), p(u0, v1)], mix('ground', 'panel2', 0.7), ink.line(0.6));
-    box(ctx, cam, PIVOT.x - HINGE_U, OPEN.z, PIVOT.x, PIVOT.z, h[0] + 0.05, h[1] - 0.05, tones(0.6));
     const ring = (th: number, y: number) =>
       project(cam, PIVOT.x + BARREL * Math.cos(th), y, PIVOT.z + BARREL * Math.sin(th));
     drum(ctx, ring, h[0], h[1], mix('ground', 'panel', 0.5), mix('ground', 'panel2', 0.8), ink.line(0.75));
@@ -117,15 +114,14 @@ function drawDoor(ctx: CanvasRenderingContext2D, cam: Camera, k: number) {
   const u = smoothstep(0, UNLOCK[0], k);
   const turn = (1.1 + Math.sin(u * Math.PI * 2) * 1.4) * (1 - u);
   const unlock = smoothstep(UNLOCK[0], UNLOCK[1], k);
-  const q: Plane = (uu, v, n) => {
-    const [rx, rz] = [uu + HINGE_U, n - DOOR_T - HINGE_N];
-    return project(
-      cam,
-      PIVOT.x + rx * Math.cos(a) - rz * Math.sin(a),
-      v,
-      PIVOT.z + rx * Math.sin(a) + rz * Math.cos(a),
-    );
+  const at = (uu: number, n: number): [number, number] => {
+    const [rx, rz] = [uu + BARREL, n - BARREL];
+    return [PIVOT.x + rx * Math.cos(a) - rz * Math.sin(a), PIVOT.z + rx * Math.sin(a) + rz * Math.cos(a)];
   };
+  const q: Plane = (uu, v, n) => project(cam, at(uu, n)[0], v, at(uu, n)[1]);
+  // Is the barrel in front of the door part with this footprint (u0..u1 across, n0..n1 deep)?
+  const front = (u0: number, u1: number, n0: number, n1: number) =>
+    cylinderInFront(cam, [PIVOT.x, PIVOT.z], BARREL, [at(u0, n0), at(u1, n0), at(u1, n1), at(u0, n1)]);
   const outer = Math.cos(a) - Math.sin(a) > 0;
   const plug = () => {
     if (a < 0.01) return;
@@ -149,27 +145,31 @@ function drawDoor(ctx: CanvasRenderingContext2D, cam: Camera, k: number) {
     dial(ctx, q, DIAL.u, DIAL.v, DIAL.r, DOOR_T, turn);
     handle(ctx, q, HANDLE.u, HANDLE.v, HANDLE.r, DOOR_T, (-Math.PI / 3) * unlock);
   };
-  // Painter's order: the far side of the door first. Past 45° the face and its hardware are
-  // behind the slab and the plug is in front of it.
-  if (!outer) {
-    hinges(ctx, cam);
-    hardware();
-  }
-  if (outer) plug();
-  slab(ctx, q, plate, outer);
-  if (outer) {
-    const i = INSET;
+  const face = () => {
+    if (!outer) hardware();
+    slab(ctx, q, plate, outer);
+    if (!outer) return;
+    const [i, j] = [INSET, DOOR_W - INSET];
     poly(ctx, [
       q(i, OPEN.y0 + i, DOOR_T),
-      q(DOOR_W - i, OPEN.y0 + i, DOOR_T),
-      q(DOOR_W - i, OPEN.y1 - i, DOOR_T),
+      q(j, OPEN.y0 + i, DOOR_T),
+      q(j, OPEN.y1 - i, DOOR_T),
       q(i, OPEN.y1 - i, DOOR_T),
     ]);
     ctx.strokeStyle = ink.line(0.28);
     ctx.stroke();
     hardware();
-  } else plug();
-  if (outer) hinges(ctx, cam);
+  };
+  // Far to near: past 45° the plug is in front of the face. The hinges go in before the first
+  // part they are behind, judged from the geometry each frame, so they never jump.
+  const [p, f] = [
+    { draw: plug, front: front(...PLUG_UN) },
+    { draw: face, front: front(0, DOOR_W, 0, DOOR_T) },
+  ];
+  const parts = outer ? [p, f] : [f, p];
+  const behind = parts.findIndex((x) => !x.front);
+  parts.splice(behind < 0 ? parts.length : behind, 0, { draw: () => hinges(ctx, cam), front: true });
+  parts.forEach((x) => x.draw());
 }
 
 export default defineCanvasFigure<State>({
