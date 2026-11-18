@@ -166,6 +166,12 @@
   color: var(--pp-read-nav);
 }
 
+/* Group labels are h2s, so the page's heading rule out-ranks .doc-group-label; they sit between the
+   dimmed links and the current page. */
+.doc .doc-group-label {
+  color: var(--pp-ink);
+}
+
 .doc .doc-pane li a[aria-current='page'],
 .doc .doc-toc li a[aria-current='location'] {
   color: var(--pp-read-h2);
