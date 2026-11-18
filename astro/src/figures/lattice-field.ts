@@ -103,7 +103,7 @@ export default defineCanvasFigure<State>({
       ctx.fillStyle = ink.line(0.008 + shade * 0.024);
       ctx.fill();
       if (ff > 0.01) {
-        ctx.fillStyle = ink.signal(ff * 0.2);
+        ctx.fillStyle = ink.signal(ff * 0.1);
         ctx.fill();
       }
       ctx.strokeStyle = ff > 0.01 ? ink.signal(0.06 + ff * 0.62) : ink.line(0.05);

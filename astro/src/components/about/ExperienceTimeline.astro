@@ -1,0 +1,235 @@
+---
+import type { ProfileRole } from '../../data/profile';
+
+interface Props {
+  roles: readonly ProfileRole[];
+  cv: string;
+}
+
+const { roles, cv } = Astro.props;
+
+// Consecutive roles at one organisation read as one stay with promotions, so they are grouped:
+// the organisation once with its whole span, then each role as a step on its rail.
+interface Stay {
+  org: string;
+  place?: string;
+  span: string;
+  roles: ProfileRole[];
+}
+const ends = (dates: string): [string, string] => {
+  const [from = dates, to = dates] = dates.split(/\s+[–-]\s+/);
+  return [from, to];
+};
+const stays: Stay[] = [];
+for (const r of roles) {
+  const last = stays[stays.length - 1];
+  if (last && last.org === r.org) {
+    last.roles.push(r);
+    last.place ??= r.place;
+  } else stays.push({ org: r.org, place: r.place, span: r.dates, roles: [r] });
+}
+for (const s of stays) {
+  const first = s.roles[0];
+  const oldest = s.roles[s.roles.length - 1];
+  if (first && oldest && s.roles.length > 1) s.span = `${ends(oldest.dates)[0]} – ${ends(first.dates)[1]}`;
+}
+---
+
+<ol class="xp">
+  {
+    stays.map((s, i) => (
+      <li class="stay">
+        <div class="body">
+          <div class="stay-head">
+            <h3 class="org">{s.org}</h3>
+            <p class="rail">
+              <span class="span">{s.span}</span>
+              {s.place ? <span class="place">{s.place}</span> : null}
+            </p>
+          </div>
+          <ol class="roles">
+            {s.roles.map((r, j) => (
+              <li class:list={['role', { now: i === 0 && j === 0 }]}>
+                <p class="role-head">
+                  <span class="title">{r.title}</span>
+                  {s.roles.length > 1 ? <span class="when">{r.dates}</span> : null}
+                </p>
+                {r.summary ? <p class="summary">{r.summary}</p> : null}
+                {r.points ? (
+                  <ul class="points">
+                    {r.points.map((p) => (
+                      <li class="point">
+                        <span class="tag">{p.tag}</span>
+                        <span>{p.text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </li>
+            ))}
+          </ol>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+<p class="cv"><a href={cv}>The same record as a CV (PDF) ↓</a></p>
+
+<style>
+  /* Doubled classes out-rank the prose list rules (.night .prose ol, li + li) this sits inside. */
+  .xp.xp,
+  .roles.roles,
+  .points.points {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .xp {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-12);
+  }
+
+  .stay {
+    padding-top: var(--hf-space-5);
+    border-top: 1px solid var(--nt-line);
+  }
+
+  /* The prose rhythm spaces list items and paragraphs; inside the timeline the layout does. */
+  .stay.stay,
+  .role.role,
+  .point.point,
+  .summary,
+  .rail {
+    margin: 0;
+  }
+
+  .stay-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--hf-space-1) var(--hf-space-4);
+  }
+
+  .rail {
+    display: flex;
+    gap: var(--hf-space-3);
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-caption);
+    color: var(--nt-ink-muted);
+  }
+
+  .span {
+    color: var(--nt-ink);
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-4);
+  }
+
+  .org {
+    margin: 0;
+    font-size: var(--nt-fs-h3);
+    line-height: var(--nt-lh-tight);
+    color: var(--nt-ink-strong);
+  }
+
+  /* Each role is a step on a hairline; the current one is marked in the signal. */
+  .roles.roles {
+    margin-left: var(--hf-space-2);
+  }
+
+  .roles {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-6);
+    border-left: 1px solid var(--nt-line-2);
+  }
+
+  .role {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-3);
+    padding-left: var(--hf-space-5);
+  }
+
+  .role::before {
+    content: '';
+    position: absolute;
+    top: var(--hf-space-2);
+    left: calc(var(--hf-space-1) * -1.5);
+    width: var(--hf-space-3);
+    height: var(--hf-space-3);
+    border: 1px solid var(--nt-line-4);
+    border-radius: 50%;
+    background: var(--nt-ground);
+  }
+
+  .role.now::before {
+    border-color: var(--nt-signal);
+    background: var(--nt-signal);
+  }
+
+  .role-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--hf-space-1) var(--hf-space-4);
+    margin: 0;
+  }
+
+  .title {
+    font-weight: var(--pp-w-heading);
+    color: var(--nt-ink-strong);
+  }
+
+  .when,
+  .tag {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-caption);
+    color: var(--nt-ink-muted);
+  }
+
+  .summary {
+    color: var(--nt-ink-soft);
+  }
+
+  /* The current role's work, as labelled cards two up, so each line of work reads on its own. */
+  .points {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--hf-space-3);
+    margin-top: var(--hf-space-2);
+  }
+
+  .point {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-2);
+    padding: var(--hf-space-4);
+    border: 1px solid var(--nt-line);
+    border-radius: var(--pp-radius-sm);
+    font-size: var(--nt-fs-small);
+    line-height: var(--nt-lh-body);
+  }
+
+  .tag {
+    color: var(--nt-signal-text);
+  }
+
+  .cv {
+    margin: var(--hf-space-8) 0 0;
+  }
+
+  @media (max-width: 720px) {
+    .points {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

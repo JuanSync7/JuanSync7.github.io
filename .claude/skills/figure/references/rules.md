@@ -41,7 +41,7 @@ Figures that sit together use different techniques. *(invariant: `variety`, `cov
 - **Rejected when:** any colour literal in the file; any pixel whose hue is neither grey nor
   the signal.
 
-### 05 · signal: the teal is information
+### 05 · signal: the orange is information
 At rest, one bright mark says where to look. When the pointer chooses, the bright moves to
 what it chose. *(invariant: `signal` at most 35% of the ink; a figure with no signal warns)*
 - **Keep it:** decide what the one lit thing is (the decoding ridge, the active die, the

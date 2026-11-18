@@ -31,6 +31,18 @@ function neutralBand() {
 
 export const NEUTRAL = neutralBand();
 
+/** The signal's hue, read from the same night mirror, so the audit follows the palette when the
+ *  signal colour changes (teal until 18 Nov 2026, now orange) instead of a hand-copied number. */
+function signalHue() {
+  const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'src', 'styles', 'tokens', 'palette.ts'), 'utf8');
+  const hex = src.match(/export const night = \{[\s\S]*?\bsignal:\s*'#([0-9a-fA-F]{6})'/)?.[1];
+  if (!hex) throw new Error('palette.ts: night.signal not found');
+  const [r, g, b] = [0, 2, 4].map((k) => parseInt(hex.slice(k, k + 2), 16));
+  return hueOf(r, g, b);
+}
+
+export const SIGNAL_HUE = signalHue();
+
 export function decode(buf) {
   return PNG.sync.read(buf);
 }
@@ -70,7 +82,7 @@ export function measure(png, th) {
       const mx = Math.max(r, g, b);
       const s = mx === 0 ? 0 : (mx - Math.min(r, g, b)) / mx;
       if (s > th.chromaS && mx / 255 > th.chromaV) {
-        const dh = Math.abs(((hueOf(r, g, b) - th.signalHue + 540) % 360) - 180);
+        const dh = Math.abs(((hueOf(r, g, b) - SIGNAL_HUE + 540) % 360) - 180);
         const h = hueOf(r, g, b);
         if (dh <= th.signalHueTol) signal++;
         else if (!(h >= NEUTRAL.lo && h <= NEUTRAL.hi && s <= NEUTRAL.sMax)) off++;

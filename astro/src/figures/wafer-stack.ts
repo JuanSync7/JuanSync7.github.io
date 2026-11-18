@@ -128,7 +128,7 @@ export default defineCanvasFigure<State>({
     ctx.lineTo(c1[0], c1[1]);
     ctx.stroke();
     box(ctx, cam, x0, z0, x0 + cellSize, z0 + cellSize, lift, lift + 0.035, {
-      top: mix('panelSignal', 'signalLine', 0.5),
+      top: mix('panelSignal', 'signalLine', 0.9),
       left: mix('ground', 'panel', 0.9),
       right: mix('ground', 'panel', 0.5),
       edge: ink.signal(0.95),

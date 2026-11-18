@@ -30,7 +30,7 @@ The 8-bit button: a signal or outlined face inset on its edge, with a stepped ha
 | 1 Button | link, pixel button | padding down | `--pb-padding-y` | src/styles/tokens/buttons.css:27 | var(--hf-space-4) → 16px | - |
 | 1 Button | link, pixel button | least height | `--nt-hit` | src/styles/tokens/spacing.css:29 | 44px | read in 23 files |
 | 2 Edge | outline, border | corner radius | `--pp-radius-md` | src/styles/tokens/paper.css:109 | 8px | read in 2 files |
-| 3 Face | fill, background, outline variant | corner radius | `--pp-radius-sm` | src/styles/tokens/paper.css:108 | 5px | - |
+| 3 Face | fill, background, outline variant | corner radius | `--pp-radius-sm` | src/styles/tokens/paper.css:108 | 5px | read in 2 files |
 
 ## SectionHead (`section-head`, JS-UI-0003 rev A)
 
@@ -38,8 +38,8 @@ The opening of a section: a mono label, a two-tone heading and a lead, kept to t
 
 | Part | Also called | Size | Token | Defined at | Resolves to | Also changes |
 |---|---|---|---|---|---|---|
-| 1 Head | section heading, section head | widest width | `--nt-measure` | src/styles/tokens/spacing.css:28 | 640px | presentation, lab, read in 23 files |
-| 1 Head | section heading, section head | gap | `--hf-space-4` | src/styles/tokens/spacing.css:11 | 16px | paper-footer, presentation, read in 38 files |
+| 1 Head | section heading, section head | widest width | `--nt-measure` | src/styles/tokens/spacing.css:28 | 640px | presentation, lab, read in 22 files |
+| 1 Head | section heading, section head | gap | `--hf-space-4` | src/styles/tokens/spacing.css:11 | 16px | paper-footer, presentation, read in 39 files |
 | 2 Label | eyebrow, kicker, comment | type size | `--nt-fs-meta` | src/styles/tokens/typography.css:43 | 13px | read in 26 files |
 | 3 Title | heading, headline | type size | `--nt-fs-h2` | src/styles/tokens/typography.css:52 | clamp(30px, 3.6vw, 44px) | read in 5 files |
 | 4 Lead | intro, summary, subtitle | type size | `--nt-fs-intro` | src/styles/tokens/typography.css:48 | 18px | read in 9 files |
@@ -51,7 +51,7 @@ A die-cut sticker: hand-inked art at the sticker size, its caption under it.
 | Part | Also called | Size | Token | Defined at | Resolves to | Also changes |
 |---|---|---|---|---|---|---|
 | 2 Art | drawing, picture, icon | width | `--pp-sticker-size` | src/styles/tokens/paper.css:42 | clamp(76px, 9vw, 116px) | - |
-| 1 Sticker | badge, decal | gap | `--hf-space-2` | src/styles/tokens/spacing.css:9 | 8px | read in 39 files |
+| 1 Sticker | badge, decal | gap | `--hf-space-2` | src/styles/tokens/spacing.css:9 | 8px | read in 40 files |
 
 ## PaperNav (`paper-nav`, JS-LY-0001 rev B)
 
@@ -61,11 +61,11 @@ The top bar of every page: who, where and tools; a menu button on a phone.
 |---|---|---|---|---|---|---|
 | 2 Row | inner row, three zones | padding across | `--pp-pad` | src/styles/tokens/paper.css:104 | var(--hf-space-6) → 24px | paper-footer, blog-post, learn-article, writing-index, learn-index, lab, read in 4 files |
 | 2 Row | inner row, three zones | least height | `--pp-nav-h` | src/styles/tokens/paper.css:174 | 72px | - |
-| 3 Brand | who, name, home link | gap | `--hf-space-3` | src/styles/tokens/spacing.css:10 | 12px | paper-footer, home, lab, read in 44 files |
+| 3 Brand | who, name, home link | gap | `--hf-space-3` | src/styles/tokens/spacing.css:10 | 12px | paper-footer, home, lab, read in 45 files |
 | 4 Monogram | logo, SJ | height | `--pp-nav-mark-h` | src/styles/tokens/paper.css:175 | 34px | - |
-| 5 Pages | where, menu, nav links | gap | `--hf-space-1` | src/styles/tokens/spacing.css:8 | 4px | read in 34 files |
-| 6 Page link | tab | padding across | `--hf-space-3` | src/styles/tokens/spacing.css:10 | 12px | paper-footer, home, lab, read in 44 files |
-| 7 Tools | right side | gap | `--hf-space-3` | src/styles/tokens/spacing.css:10 | 12px | paper-footer, home, lab, read in 44 files |
+| 5 Pages | where, menu, nav links | gap | `--hf-space-1` | src/styles/tokens/spacing.css:8 | 4px | read in 35 files |
+| 6 Page link | tab | padding across | `--hf-space-3` | src/styles/tokens/spacing.css:10 | 12px | paper-footer, home, lab, read in 45 files |
+| 7 Tools | right side | gap | `--hf-space-3` | src/styles/tokens/spacing.css:10 | 12px | paper-footer, home, lab, read in 45 files |
 | 8 Theme button | dark mode, light mode, sun, moon | width | `--pp-nav-icon` | src/styles/tokens/paper.css:177 | 36px | - |
 | 8 Theme button | dark mode, light mode, sun, moon | height | `--pp-nav-icon` | src/styles/tokens/paper.css:177 | 36px | - |
 | 9 CV button | download CV | least height | `--pp-nav-icon` | src/styles/tokens/paper.css:177 | 36px | - |
@@ -78,13 +78,13 @@ The foot of every page as a drawing title block: who, three link indexes, then l
 | Part | Also called | Size | Token | Defined at | Resolves to | Also changes |
 |---|---|---|---|---|---|---|
 | 2 Inner column | footer column | padding across | `--pp-pad` | src/styles/tokens/paper.css:104 | var(--hf-space-6) → 24px | paper-nav, blog-post, learn-article, writing-index, learn-index, lab, read in 4 files |
-| 2 Inner column | footer column | padding down | `--hf-space-12` | src/styles/tokens/spacing.css:16 | 48px | writing-index, learn-index, presentation, read in 13 files |
+| 2 Inner column | footer column | padding down | `--hf-space-12` | src/styles/tokens/spacing.css:16 | 48px | writing-index, learn-index, presentation, read in 14 files |
 | 4 Who | brand column, name and pitch | width | `--pp-foot-brand-w` | src/styles/tokens/paper.css:183 | 340px | - |
-| 4 Who | brand column, name and pitch | gap | `--hf-space-4` | src/styles/tokens/spacing.css:11 | 16px | section-head, presentation, read in 38 files |
+| 4 Who | brand column, name and pitch | gap | `--hf-space-4` | src/styles/tokens/spacing.css:11 | 16px | section-head, presentation, read in 39 files |
 | 5 Monogram | logo, SJ | height | `--pp-foot-mark-h` | src/styles/tokens/paper.css:182 | 40px | - |
-| 6 Link index | pages, link group | padding across | `--hf-space-6` | src/styles/tokens/spacing.css:13 | 24px | home, read in 37 files |
-| 6 Link index | pages, link group | padding down | `--hf-space-6` | src/styles/tokens/spacing.css:13 | 24px | home, read in 37 files |
-| 8 Cell | drawn by, part no., rev | padding down | `--hf-space-3` | src/styles/tokens/spacing.css:10 | 12px | paper-nav, home, lab, read in 44 files |
+| 6 Link index | pages, link group | padding across | `--hf-space-6` | src/styles/tokens/spacing.css:13 | 24px | home, read in 38 files |
+| 6 Link index | pages, link group | padding down | `--hf-space-6` | src/styles/tokens/spacing.css:13 | 24px | home, read in 38 files |
+| 8 Cell | drawn by, part no., rev | padding down | `--hf-space-3` | src/styles/tokens/spacing.css:10 | 12px | paper-nav, home, lab, read in 45 files |
 
 ## Home page (`home`, JS-TP-0002 rev A)
 
@@ -92,11 +92,11 @@ The landing page: a hero of copy and a drawing side by side, then the notepad se
 
 | Part | Also called | Size | Token | Defined at | Resolves to | Also changes |
 |---|---|---|---|---|---|---|
-| 2 Hero | opening, top section | padding down | `--hf-space-8` | src/styles/tokens/spacing.css:14 | 32px | writing-index, learn-index, read in 29 files |
-| 3 Hero row | notepad sheet | gap | `--hf-space-6` | src/styles/tokens/spacing.css:13 | 24px | paper-footer, read in 37 files |
+| 2 Hero | opening, top section | padding down | `--hf-space-8` | src/styles/tokens/spacing.css:14 | 32px | writing-index, learn-index, read in 30 files |
+| 3 Hero row | notepad sheet | gap | `--hf-space-6` | src/styles/tokens/spacing.css:13 | 24px | paper-footer, read in 38 files |
 | 5 Stage | drawing, logo, picture | widest width | `--pp-stage-w` | src/styles/tokens/paper.css:132 | 540px | - |
 | 6 Lead | intro, paragraph | widest width | `--pp-lead-w` | src/styles/tokens/paper.css:143 | 600px | - |
-| 7 Actions | buttons | gap | `--hf-space-3` | src/styles/tokens/spacing.css:10 | 12px | paper-nav, paper-footer, lab, read in 44 files |
+| 7 Actions | buttons | gap | `--hf-space-3` | src/styles/tokens/spacing.css:10 | 12px | paper-nav, paper-footer, lab, read in 45 files |
 
 ## Blog post page (`blog-post`, JS-TP-0001 rev B)
 
@@ -141,8 +141,8 @@ The list of writing: a hero, then featured, lessons and posts sections on the pa
 | Part | Also called | Size | Token | Defined at | Resolves to | Also changes |
 |---|---|---|---|---|---|---|
 | 3 Posts section | posts, all posts | padding across | `--pp-pad` | src/styles/tokens/paper.css:104 | var(--hf-space-6) → 24px | paper-nav, paper-footer, blog-post, learn-article, learn-index, lab, read in 4 files |
-| 3 Posts section | posts, all posts | padding down | `--hf-space-12` | src/styles/tokens/spacing.css:16 | 48px | paper-footer, learn-index, presentation, read in 13 files |
-| 3 Posts section | posts, all posts | gap | `--hf-space-8` | src/styles/tokens/spacing.css:14 | 32px | home, learn-index, read in 29 files |
+| 3 Posts section | posts, all posts | padding down | `--hf-space-12` | src/styles/tokens/spacing.css:16 | 48px | paper-footer, learn-index, presentation, read in 14 files |
+| 3 Posts section | posts, all posts | gap | `--hf-space-8` | src/styles/tokens/spacing.css:14 | 32px | home, learn-index, read in 30 files |
 
 ## Learn index page (`learn-index`, JS-TP-0005 rev A)
 
@@ -151,8 +151,8 @@ The list of guides: a heading, then a grid of guide cards.
 | Part | Also called | Size | Token | Defined at | Resolves to | Also changes |
 |---|---|---|---|---|---|---|
 | 2 Guides section | section | padding across | `--pp-pad` | src/styles/tokens/paper.css:104 | var(--hf-space-6) → 24px | paper-nav, paper-footer, blog-post, learn-article, writing-index, lab, read in 4 files |
-| 2 Guides section | section | padding down | `--hf-space-12` | src/styles/tokens/spacing.css:16 | 48px | paper-footer, writing-index, presentation, read in 13 files |
-| 2 Guides section | section | gap | `--hf-space-8` | src/styles/tokens/spacing.css:14 | 32px | home, writing-index, read in 29 files |
+| 2 Guides section | section | padding down | `--hf-space-12` | src/styles/tokens/spacing.css:16 | 48px | paper-footer, writing-index, presentation, read in 14 files |
+| 2 Guides section | section | gap | `--hf-space-8` | src/styles/tokens/spacing.css:14 | 32px | home, writing-index, read in 30 files |
 
 ## Presentation page (`presentation`, JS-TP-0006 rev A)
 
@@ -163,10 +163,10 @@ A landing page that pitches, then leads to guides: hero copy beside a drawing, t
 | 2 Hero | opening, landing | padding down | `--nt-section-y` | src/styles/tokens/spacing.css:25 | clamp(72px, 9vw, 120px) | read in 9 files |
 | 2 Hero | opening, landing | padding down | `--nt-section-y-tight` | src/styles/tokens/spacing.css:26 | clamp(48px, 6vw, 72px) | vault-guide, read in 9 files |
 | 2 Hero | opening, landing | gap | `--hf-space-16` | src/styles/tokens/spacing.css:19 | 64px | read in 6 files |
-| 2 Hero | opening, landing | gap | `--hf-space-12` | src/styles/tokens/spacing.css:16 | 48px | paper-footer, writing-index, learn-index, read in 13 files |
-| 5 Lead | intro, body | widest width | `--nt-measure` | src/styles/tokens/spacing.css:28 | 640px | section-head, lab, read in 23 files |
-| 6 Actions | buttons | gap | `--hf-space-5` | src/styles/tokens/spacing.css:12 | 20px | vault-guide, read in 35 files |
-| 6 Actions | buttons | gap | `--hf-space-4` | src/styles/tokens/spacing.css:11 | 16px | section-head, paper-footer, read in 38 files |
+| 2 Hero | opening, landing | gap | `--hf-space-12` | src/styles/tokens/spacing.css:16 | 48px | paper-footer, writing-index, learn-index, read in 14 files |
+| 5 Lead | intro, body | widest width | `--nt-measure` | src/styles/tokens/spacing.css:28 | 640px | section-head, lab, read in 22 files |
+| 6 Actions | buttons | gap | `--hf-space-5` | src/styles/tokens/spacing.css:12 | 20px | vault-guide, read in 36 files |
+| 6 Actions | buttons | gap | `--hf-space-4` | src/styles/tokens/spacing.css:11 | 16px | section-head, paper-footer, read in 39 files |
 
 ## Vault guide page (`vault-guide`, JS-TP-0009 rev A)
 
@@ -177,7 +177,7 @@ A focused guide behind a presentation page: one reading column with its head, gu
 | 1 Guide | page, article | padding across | `--nt-gutter` | src/styles/tokens/spacing.css:24 | clamp(16px, 4vw, 48px) | read in 5 files |
 | 1 Guide | page, article | padding down | `--nt-section-y-tight` | src/styles/tokens/spacing.css:26 | clamp(48px, 6vw, 72px) | presentation, read in 9 files |
 | 2 Head | heading, title, intro | widest width | `--pr-guide-w` | src/styles/tokens/presentation.css:4 | calc(var(--nt-measure) + var(--hf-space-20)) | read in 2 files |
-| 2 Head | heading, title, intro | gap | `--hf-space-5` | src/styles/tokens/spacing.css:12 | 20px | presentation, read in 35 files |
+| 2 Head | heading, title, intro | gap | `--hf-space-5` | src/styles/tokens/spacing.css:12 | 20px | presentation, read in 36 files |
 | 4 Content | body, text | widest width | `--pr-guide-w` | src/styles/tokens/presentation.css:4 | calc(var(--nt-measure) + var(--hf-space-20)) | read in 2 files |
 
 ## Tracker page (`tracker`, JS-TP-0007 rev A)
@@ -197,5 +197,5 @@ The lab: a short head, then a grid of live figure cards that fills the column.
 | Part | Also called | Size | Token | Defined at | Resolves to | Also changes |
 |---|---|---|---|---|---|---|
 | 1 Page column | page, main | padding across | `--pp-pad` | src/styles/tokens/paper.css:104 | var(--hf-space-6) → 24px | paper-nav, paper-footer, blog-post, learn-article, writing-index, learn-index, read in 4 files |
-| 2 Head | heading, intro | widest width | `--nt-measure` | src/styles/tokens/spacing.css:28 | 640px | section-head, presentation, read in 23 files |
-| 2 Head | heading, intro | gap | `--hf-space-3` | src/styles/tokens/spacing.css:10 | 12px | paper-nav, paper-footer, home, read in 44 files |
+| 2 Head | heading, intro | widest width | `--nt-measure` | src/styles/tokens/spacing.css:28 | 640px | section-head, presentation, read in 22 files |
+| 2 Head | heading, intro | gap | `--hf-space-3` | src/styles/tokens/spacing.css:10 | 12px | paper-nav, paper-footer, home, read in 45 files |

@@ -52,7 +52,7 @@
   justify-content: space-between;
   font-family: var(--hf-mono);
   font-size: var(--hf-fs-sm);
-  color: var(--hf-accent-2);
+  color: var(--nt-signal-text);
   letter-spacing: var(--hf-tracking-wide);
 }
 .zsd-title { color: var(--hf-accent); }

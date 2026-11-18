@@ -5,7 +5,7 @@ each: when it suits a subject, the recipe in kit calls, the parameters that give
 character, what gets it rejected, and the figures that already use it (read one before
 writing another).
 
-All share the palette (ground, greys, one teal), 1px weight and the clock.
+All share the palette (ground, greys, one orange signal), 1px weight and the clock.
 
 ## wireframe
 **Suits:** an abstract structure that has a shape: a lattice, a mesh, a network of parts.

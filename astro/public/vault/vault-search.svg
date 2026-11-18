@@ -7,16 +7,16 @@
 text{font-family:'Geist Variable', 'Geist', system-ui, sans-serif;fill:#e6e8ee}
 .heading{font-family:'Space Grotesk Variable', 'Geist Variable', sans-serif;font-size:21px;font-weight:600}.meta,.label{font-family:'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;font-size:11px;fill:#a3a9ba}
 .name{font-size:14px;font-weight:600}.sub{font-family:'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;font-size:11px;fill:#a3a9ba}
-.caption{font-size:12px;fill:#a3a9ba}.reading{font-size:12px;fill:#2dd4bf}
-.wire{fill:none;stroke:#2dd4bf;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.caption{font-size:12px;fill:#a3a9ba}.reading{font-size:12px;fill:#ff5a1f}
+.wire{fill:none;stroke:#ff5a1f;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 </style>
 <rect width="760" height="551" fill="#07080c"/>
 <text x="24" y="36" class="heading" text-anchor="start">Experience vault / search</text>
 <text x="24" y="60" class="meta" text-anchor="start">Public system overview · schematic examples · no vault connection</text>
 <text x="24" y="84" class="meta" text-anchor="start">arrows = the next retrieval step · lit = inspecting the source and its trust</text>
 <defs>
-<marker id="vault-search-arrow" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#2dd4bf"/></marker>
-<marker id="vault-search-tail" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L6 3 L0 6 Z" fill="#2dd4bf"/></marker>
+<marker id="vault-search-arrow" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#ff5a1f"/></marker>
+<marker id="vault-search-tail" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L6 3 L0 6 Z" fill="#ff5a1f"/></marker>
 </defs>
 <g transform="translate(0 100)">
 <path class="wire" d="M212 60 L284 60" marker-end="url(#vault-search-arrow)"/>
@@ -41,7 +41,7 @@ text{font-family:'Geist Variable', 'Geist', system-ui, sans-serif;fill:#e6e8ee}
 <rect x="552" y="224" width="184" height="72" rx="10" fill="#0b0d13" stroke="#3a4054"/>
 <text x="564" y="254.5" class="name" text-anchor="start">Inspect graph routes</text>
 <text x="564" y="277.5" class="sub" text-anchor="start">groups + typed links</text>
-<rect x="288" y="224" width="184" height="72" rx="10" fill="#0c1514" stroke="#2dd4bf"/>
+<rect x="288" y="224" width="184" height="72" rx="10" fill="#150d0a" stroke="#ff5a1f"/>
 <text x="300" y="254.5" class="name" text-anchor="start">Read the evidence</text>
 <text x="300" y="277.5" class="sub" text-anchor="start">source + trust + age</text>
 <rect x="24" y="224" width="184" height="72" rx="10" fill="#0b0d13" stroke="#3a4054"/>
