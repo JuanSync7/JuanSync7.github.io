@@ -1,7 +1,6 @@
 import type { CollectionEntry } from 'astro:content';
-import { LEARN_SUBJECTS } from '../content/config';
 import { CATEGORY_LABEL } from './writing';
-import { LEARN_SUBJECT } from './learn';
+import { learnTopics } from './learn';
 import { pieceHref } from './library';
 
 export interface DocLink {
@@ -23,10 +22,7 @@ export function blogGroups(entries: readonly CollectionEntry<'blog'>[]): DocGrou
     .filter((g) => g.links.length > 0);
 }
 
-/** The field guides, grouped by subject in subject order. */
+/** The field guides, grouped by topic in the taxonomy's order. */
 export function learnGroups(entries: readonly CollectionEntry<'learn'>[]): DocGroup[] {
-  return LEARN_SUBJECTS.map((s) => ({
-    label: LEARN_SUBJECT[s].label,
-    links: entries.filter((e) => e.data.subject === s).map((e) => ({ href: pieceHref(e.slug), title: e.data.title })),
-  })).filter((g) => g.links.length > 0);
+  return learnTopics(entries).map((t) => ({ label: t.label, links: t.entries.map((e) => ({ href: pieceHref(e.slug), title: e.data.title })) }));
 }

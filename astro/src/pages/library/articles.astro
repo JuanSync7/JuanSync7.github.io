@@ -5,15 +5,14 @@ import NightFooter from '../../components/layout/NightFooter.astro';
 import SectionHead from '../../components/ui/SectionHead.astro';
 import PostGrid from '../../components/writing/PostGrid.tsx';
 import Trackers from '../../components/writing/Trackers.astro';
-import { LEARN_SUBJECTS } from '../../content/config';
-import { LEARN_COPY, LEARN_SUBJECT, LEARN_SUBJECT_LABEL, learnCard, learnEntries } from '../../data/learn';
+import { LEARN_COPY, TOPIC_LABEL, learnCard, learnEntries, learnTopics } from '../../data/learn';
 import { LIBRARY } from '../../data/library';
 
 // Every field guide, newest first, in the same card grid as the library page, filtered by
-// subject. Each subject names the tracker that follows it week by week.
+// topic. The trackers that follow the same ground week by week are at the foot.
 const entries = await learnEntries();
 const cards = entries.map(learnCard);
-const subjects = LEARN_SUBJECTS.map((s) => ({ ...LEARN_SUBJECT[s], count: entries.filter((e) => e.data.subject === s).length }));
+const topics = learnTopics(entries).map((t) => ({ label: t.label, count: t.entries.length }));
 ---
 
 <NightPage title={`${LEARN_COPY.title} · Juan Kok`} description={LEARN_COPY.body}>
@@ -22,16 +21,15 @@ const subjects = LEARN_SUBJECTS.map((s) => ({ ...LEARN_SUBJECT[s], count: entrie
     <section class="nt-wrap nt-section block">
       <a class="back" href={LIBRARY.href}>← {LIBRARY.label}</a>
       <SectionHead as="h1" label="// articles" title={LEARN_COPY.title} lead={LEARN_COPY.body} />
-      <ul class="subjects">
-        {subjects.map((s) => (
+      <ul class="topics">
+        {topics.map((t) => (
           <li>
-            <span class="subject">{s.label}</span>
-            <span class="count">{s.count} {s.count === 1 ? 'guide' : 'guides'}</span>
-            <a href={s.tracker.href}>{s.tracker.name} tracker</a>
+            <span class="topic">{t.label}</span>
+            <span class="count">{t.count} {t.count === 1 ? 'guide' : 'guides'}</span>
           </li>
         ))}
       </ul>
-      <PostGrid client:visible posts={cards} labels={LEARN_SUBJECT_LABEL} cta="Read the guide" />
+      <PostGrid client:visible posts={cards} labels={TOPIC_LABEL} cta="Read the guide" />
     </section>
     <Trackers />
   </main>
@@ -51,7 +49,7 @@ const subjects = LEARN_SUBJECTS.map((s) => ({ ...LEARN_SUBJECT[s], count: entrie
     color: var(--nt-ink-muted);
   }
 
-  .subjects {
+  .topics {
     display: flex;
     flex-wrap: wrap;
     gap: var(--hf-space-3) var(--hf-space-8);
@@ -62,21 +60,16 @@ const subjects = LEARN_SUBJECTS.map((s) => ({ ...LEARN_SUBJECT[s], count: entrie
     font-size: var(--nt-fs-meta);
   }
 
-  .subjects li {
+  .topics li {
     display: flex;
     flex-wrap: wrap;
     gap: var(--hf-space-3);
   }
 
-  .subject {
+  .topic {
     color: var(--nt-signal-text);
   }
 
   .count {
     color: var(--nt-ink-muted);
-  }
-
-  .subjects a {
-    color: var(--nt-ink-2);
-  }
-</style>
+  }</style>

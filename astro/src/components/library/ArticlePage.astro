@@ -8,7 +8,7 @@ import { learnGroups } from '../../data/docnav';
 import FigureCanvas from '../../components/ui/FigureCanvas.tsx';
 import Mermaid from '../../components/trackers/Mermaid.astro';
 import Diagram from '../../components/learn/Diagram.astro';
-import { LEARN_COPY, LEARN_SUBJECT, readTime } from '../../data/learn';
+import { LEARN_COPY, learnTracker, readTime, topicLabel } from '../../data/learn';
 import { pieceHref } from '../../data/library';
 import '../../styles/night-prose.css';
 import '../../styles/learn-paper.css';
@@ -19,11 +19,11 @@ interface Props {
 }
 
 // A field guide: the night page's nav, header and live cover, then the text on paper, then the
-// tracker that follows the same subject week by week.
+// tracker the article names, when it names one.
 const { entry, all } = Astro.props;
 const { Content, headings } = await entry.render();
 const { data } = entry;
-const subject = LEARN_SUBJECT[data.subject];
+const tracker = data.tracker ? learnTracker(data.tracker) : null;
 const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(data.date);
 ---
 
@@ -36,7 +36,7 @@ const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', y
     <a class="back" href={LEARN_COPY.all.href}>← {LEARN_COPY.all.label}</a>
     <header class="head">
       <p class="meta">
-        <span class="cat">{subject.label}</span>
+        <span class="cat">{topicLabel(data.topic)}</span>
         <time datetime={data.date.toISOString()}>{date}</time>
         <span>{readTime(entry.body)}</span>
       </p>
@@ -53,11 +53,13 @@ const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', y
         <Content components={{ Diagram }} />
       </article>
     </div>
-    <nav class="next" aria-label="More on this subject">
-      <a href={subject.tracker.href}>
-        <span class="dir">this week in {subject.label}</span>
-        <span>{subject.tracker.name} tracker</span>
-      </a>
+    <nav class="next" aria-label="More field guides">
+      {tracker ? (
+        <a href={tracker.href}>
+          <span class="dir">this week</span>
+          <span>{tracker.name} tracker</span>
+        </a>
+      ) : null}
       <a class="all" href={LEARN_COPY.all.href}>
         <span class="dir">more guides</span>
         <span>{LEARN_COPY.all.label}</span>

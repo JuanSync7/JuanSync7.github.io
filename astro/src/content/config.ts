@@ -1,5 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 import lessonTaxonomy from '../config/lesson-taxonomy.json';
+import trackers from '../config/trackers.json';
 
 // Shared art tokens — one definition for the ArticleArt motif/background, used by
 // both `learn` (the canonical hero art) and `blog` (so a post can match its article).
@@ -35,33 +36,31 @@ const releases = defineCollection({
   }),
 });
 
-// Learn articles: long explainers, each filed under one subject. `cover` is a figure id (or a
-// template instance) drawn as the hero and on every card; `featured` puts the article on the
-// writing page's shelf, at most one per subject (checked where the shelf is built).
-export const LEARN_SUBJECTS = ['inference', 'silicon', 'agents'] as const;
+// Learn articles: long explainers, each shelved under one topic of the library's taxonomy. `cover`
+// is a figure id (or a template instance) drawn as the hero and on every card; `featured` puts the
+// article on the library page's shelf; `tracker` names the weekly tracker that follows the same
+// ground. The schema is strict: a key it does not name (the old `subject`) fails the build.
 
 const learn = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
     summary: z.string().optional(),
-    subject: z.enum(LEARN_SUBJECTS),
     cover: z.string().optional(),
     featured: z.boolean().default(false),
     /** The shelf's drawing, when it is not the cover, and two captions under it: what to look at. */
     shelfFigure: z.string().optional(),
     shelfNotes: z.tuple([z.string(), z.string()]).optional(),
     eyebrow: z.string().optional(),
-    tracker: z.enum(['inference-engines', 'frontier-models', 'inference-silicon']).optional(),
+    tracker: z.string().refine((id) => trackers.some((tracker) => tracker.id === id), 'Unknown tracker').optional(),
     art: artMotif.optional(),
     bg: artBg.optional(),
     date: z.coerce.date(),
-    /** Set only on an article written by scripts/library/sync.mjs: the library's shared shelf and tags. */
     updated: z.coerce.date().optional(),
-    topic: z.string().refine((id) => lessonTaxonomy.categories.some((category) => category.id === id), 'Unknown topic').optional(),
+    topic: z.string().refine((id) => lessonTaxonomy.categories.some((category) => category.id === id), 'Unknown topic'),
     tags: z.array(z.string().refine((id) => lessonTaxonomy.tags.some((tag) => tag.id === id), 'Unknown tag')).min(1).max(5).refine((tags) => new Set(tags).size === tags.length, 'Duplicate tags').optional(),
     related: z.array(z.string()).optional(),
-  }),
+  }).strict(),
 });
 
 // One lesson per file, named <date>-<slug>.yaml: the blog's lesson log reads them all.

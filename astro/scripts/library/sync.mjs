@@ -24,10 +24,10 @@ const BODY = '%% piece-body %%';
 const PRIVATE = '%% piece-private %%';
 /** The first frontmatter line of a file this script wrote: it replaces no file without it. */
 export const SYNCED = '# Written by scripts/library/sync.mjs from its source note: change the note, not this file.';
-const FIELDS = ['id', 'kind', 'title', 'summary', 'topic', 'tags', 'date', 'updated', 'status', 'related', 'eyebrow', 'subject', 'cover'];
-const REQUIRED = ['id', 'kind', 'title', 'summary', 'topic', 'tags', 'date', 'status', 'related', 'subject'];
+const FIELDS = ['id', 'kind', 'title', 'summary', 'topic', 'tags', 'date', 'updated', 'status', 'related', 'eyebrow', 'tracker', 'cover'];
+const REQUIRED = ['id', 'kind', 'title', 'summary', 'topic', 'tags', 'date', 'status', 'related'];
 /** What reaches the site file, in order. id is the file name, kind the collection, status the selection. */
-const EMITTED = ['title', 'summary', 'eyebrow', 'date', 'updated', 'subject', 'cover', 'topic', 'tags', 'related'];
+const EMITTED = ['title', 'summary', 'eyebrow', 'tracker', 'date', 'updated', 'cover', 'topic', 'tags', 'related'];
 /** The kind this script can place, and where: its vault folder and its site collection. */
 const ADAPTER = { kind: 'article', folder: 'Articles', collection: 'learn' };
 const ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -104,7 +104,7 @@ function parsePiece(source, id, context) {
   if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error(id + ': expected an object');
   if (Object.keys(data).some((key) => !FIELDS.includes(key))) throw new Error(id + ': unknown public field');
   for (const key of REQUIRED) if (!(key in data)) throw new Error(id + ': missing ' + key);
-  for (const key of ['id', 'kind', 'title', 'summary', 'topic', 'status', 'subject', 'eyebrow', 'cover']) {
+  for (const key of ['id', 'kind', 'title', 'summary', 'topic', 'status', 'tracker', 'eyebrow', 'cover']) {
     if (key in data && !text(data[key])) throw new Error(id + ': invalid ' + key);
   }
   if (['title', 'summary', 'eyebrow', 'cover'].some((key) => key in data && /\[\[|%%|\]\(/.test(data[key]))) throw new Error(id + ': a link or comment in the record');
@@ -113,6 +113,7 @@ function parsePiece(source, id, context) {
   if (data.kind !== ADAPTER.kind) throw new Error(id + ': this folder holds only the kind ' + ADAPTER.kind);
   if (!context.vocabulary.statuses.some((status) => status.id === data.status)) throw new Error(id + ': unknown status');
   validateClassification({ category: data.topic, tags: data.tags }, context.registry, id);
+  if ('tracker' in data && !context.trackers.has(data.tracker)) throw new Error(id + ': unknown tracker');
   if (!isDate(data.date) || ('updated' in data && (!isDate(data.updated) || data.updated < data.date))) throw new Error(id + ': invalid date or updated');
   if (!Array.isArray(data.related) || new Set(data.related).size !== data.related.length
     || data.related.some((other) => typeof other !== 'string' || !ID.test(other) || other === id)) throw new Error(id + ': invalid related');
@@ -146,6 +147,8 @@ async function siteContext(vault, site) {
     throw new Error('The site copy of the taxonomy differs from the vault: run lessons:sync first');
   }
   const vocabulary = validateVocabulary(JSON.parse(await regularText(join(vault, 'Site', 'piece-vocabulary.json'))));
+  const trackers = new Set(JSON.parse(await regularText(join(site, 'src', 'config', 'trackers.json'))).map((tracker) => tracker.id));
+  if (!trackers.size) throw new Error('The site names no tracker');
   const diagrams = new Set();
   const dir = join(site, 'src', 'data', 'diagrams');
   for (const name of (await readdir(dir)).filter((file) => file.endsWith('.ts'))) {
@@ -157,7 +160,7 @@ async function siteContext(vault, site) {
       if (/\.mdx?$/.test(name)) pieces.set(name.replace(/\.mdx?$/, ''), { kind, collection, name });
     }
   }
-  return { registry, vocabulary, diagrams, pieces };
+  return { registry, vocabulary, trackers, diagrams, pieces };
 }
 
 export async function synchronize(vault, site, write) {
@@ -201,7 +204,7 @@ async function selftest() {
   const source = join(vault, 'Site', 'Articles');
   const target = join(site, 'src', 'content', 'learn');
   const id = 'check-inputs';
-  const record = { id, kind: 'article', title: 'Check inputs', summary: 'Inputs decide the result.', topic: 'software-engineering', tags: ['testing'], date: '2026-10-19', status: 'published', related: ['older-post'], subject: 'agents' };
+  const record = { id, kind: 'article', title: 'Check inputs', summary: 'Inputs decide the result.', topic: 'software-engineering', tags: ['testing'], date: '2026-10-19', status: 'published', related: ['older-post'] };
   const body = ['Read the input first.', '', '<Diagram id="input-path" />', '', FENCE, 'import x from "y"; const a = { b: 1 };', FENCE, '', 'See [the site](/library/older-post), [a heading](#top) and [the web](https://example.org/a).', '', 'Use `{braces}` in code only.'].join('\n');
   const SECRET = 'Made from a private experiment note';
   const note = (data = record, text = body, tail = SECRET) => ['---', 'status: draft', '---', SECRET, MARKER, JSON.stringify(data), FENCE, '', BODY, text, PRIVATE, tail, ''].join('\n');
@@ -214,6 +217,7 @@ async function selftest() {
     await writeFile(join(vault, 'Site', 'lesson-taxonomy.json'), registryText);
     await writeFile(join(site, 'src', 'config', 'lesson-taxonomy.json'), registryText);
     await writeFile(join(vault, 'Site', 'piece-vocabulary.json'), JSON.stringify(vocabulary));
+    await writeFile(join(site, 'src', 'config', 'trackers.json'), JSON.stringify([{ id: 'weekly-inputs', name: 'Weekly inputs', body: 'What moved.' }]));
     await writeFile(join(site, 'src', 'data', 'diagrams', 'input.ts'), "export const DIAGRAMS = [\n  {\n    id: 'input-path',\n    nodes: [{ id: 'node-only', x: 1 }],\n  },\n];\n");
     await writeFile(join(site, 'src', 'content', 'blog', 'older-post.md'), 'older\n');
     await writeFile(join(target, 'by-hand.mdx'), 'hand\n');
@@ -227,12 +231,19 @@ async function selftest() {
     assert.equal((await synchronize(vault, site, true)).written, 1);
     const first = await out();
     assert.ok(!first.includes('Made from') && !first.includes('status') && !first.includes('piece-'));
+    assert.ok(!first.includes('subject') && !first.includes('tracker'), 'a record without a tracker writes none');
     assert.ok(first.includes('<Diagram id="input-path" />') && first.includes('topic: "software-engineering"') && first.endsWith('code only.\n'));
     assert.equal((await synchronize(vault, site, true)).written, 0);
     assert.deepEqual((await synchronize(vault, site, false)).drift, []);
     assert.equal(await readFile(join(target, 'by-hand.mdx'), 'utf8'), 'hand\n');
     await put(note(record, body, 'A different private trail'));
     assert.deepEqual((await synchronize(vault, site, false)).drift, []);
+    await put(note({ ...record, tracker: 'weekly-inputs' }));
+    assert.equal((await synchronize(vault, site, true)).written, 1);
+    assert.ok((await out()).includes('\ntracker: "weekly-inputs"\n'), 'the tracker reaches the site file');
+    await put(note());
+    assert.equal((await synchronize(vault, site, true)).written, 1);
+    assert.equal(await out(), first);
 
     await writeFile(join(target, id + '.mdx'), first.replace('Read the input', 'Edited on the site'));
     assert.deepEqual((await synchronize(vault, site, false)).drift, [id]);
@@ -253,6 +264,9 @@ async function selftest() {
 
     const refused = {
       'private field': [note({ ...record, madeFrom: 'Notes/x' }), 'unknown public field'],
+      'the old subject field': [note({ ...record, subject: 'agents' }), 'unknown public field'],
+      'tracker the site lacks': [note({ ...record, tracker: 'inference-engines' }), 'unknown tracker'],
+      'tracker that is not text': [note({ ...record, tracker: 7 }), 'invalid tracker'],
       'missing field': [note({ ...record, topic: undefined }), 'missing topic'],
       'id is not the file name': [note({ ...record, id: 'other' }), 'not the file name'],
       'unknown kind': [note({ ...record, kind: 'essay' }), 'unknown kind'],
