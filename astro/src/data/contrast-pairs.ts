@@ -27,6 +27,12 @@ export const CONTRAST: ContrastGroup[] = [
       { role: 'Headings', fg: '--pp-ink-strong', ground: '--pp-ground', need: 'text' },
       { role: 'Body text', fg: '--pp-ink', ground: '--pp-ground', need: 'text' },
       { role: 'Comments, captions', fg: '--pp-ink-muted', ground: '--pp-ground', need: 'text' },
+      { role: 'Reading: post title', fg: '--pp-read-title', ground: '--pp-ground', need: 'text' },
+      { role: 'Reading: section heading', fg: '--pp-read-h2', ground: '--pp-ground', need: 'text' },
+      { role: 'Reading: subheading', fg: '--pp-read-h3', ground: '--pp-ground', need: 'text' },
+      { role: 'Reading: minor heading', fg: '--pp-read-h4', ground: '--pp-ground', need: 'text' },
+      { role: 'Reading: body text', fg: '--pp-read-body', ground: '--pp-ground', need: 'text' },
+      { role: 'Reading: side panels', fg: '--pp-read-nav', ground: '--pp-ground', need: 'text' },
       { role: 'Orange text', fg: '--pp-signal-text', ground: '--pp-ground', need: 'text' },
       {
         role: 'Orange fills and rules',

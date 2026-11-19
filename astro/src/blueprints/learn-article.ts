@@ -1,6 +1,7 @@
 import { onPage, type Blueprint } from './types';
 
-/** An article of the library: the blog post's notepad and docs layout, with the body on a sheet of paper. */
+/** An article of the library: the blog post's notepad and docs layout, with the body on a sheet of paper. Like
+ *  the blog post, the article holds the reading measure (--pp-doc-measure) and centres in its column. */
 export const LEARN_ARTICLE: Blueprint = {
   id: 'learn-article',
   kind: 'template',
@@ -41,6 +42,6 @@ export const LEARN_ARTICLE: Blueprint = {
     { measure: 'radius', part: 10, token: '--hf-radius-2xl' },
   ],
   number: 'JS-TP-0003',
-  revision: 'B',
-  drawn: '2026-11-16',
+  revision: 'C',
+  drawn: '2026-11-18',
 };

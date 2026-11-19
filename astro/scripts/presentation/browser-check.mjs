@@ -9,6 +9,7 @@ import { chromium } from 'playwright';
 import { contract, color, composite, luminance, separation } from './check.mjs';
 import { captureCabinetPoster } from './cabinet-poster-capture.mjs';
 import { checkScrollJourney } from './scroll-check.mjs';
+import { checkReadingMeasure } from './reading-measure.mjs';
 
 if (process.env.SITES_MANAGED_LINUX_CONTAINER === '1' && !process.env.CI) {
   throw new Error('Presentation browser checks run in the existing GitHub-hosted CI browser job, not as a managed preview workaround.');
@@ -186,6 +187,8 @@ try {
   await page.locator('[data-cabinet] canvas').screenshot({ path: join(output, 'cabinet-rest.png') });
 
   await captureCabinetPoster(context, base, output);
+
+  await checkReadingMeasure(browser, base);
 
   // A scoped Astro swap must release the previous page, not leave its motion owners alive.
   await checkScrollJourney(page, output, [contract.viewports[0], contract.viewports.at(-1)]);

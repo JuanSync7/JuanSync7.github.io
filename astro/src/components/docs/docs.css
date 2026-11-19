@@ -8,8 +8,13 @@
   align-items: start;
 }
 
+/* The article holds its reading measure and centres in its track, so a wider screen puts the
+   extra width into the space either side of it rather than into longer lines. */
 .doc-main {
+  justify-self: center;
+  width: 100%;
   min-width: 0;
+  max-width: var(--pp-doc-measure);
 }
 
 .doc-pane,
@@ -130,4 +135,49 @@
   .doc-pane[data-open] {
     display: block;
   }
+}
+
+/* The reading scale (--pp-read-*): the title, each heading level and the body take one clear step
+   of contrast each, headings step down in size at one weight, and the side panels sit well below
+   the article so it reads first; the current page and section stay at heading strength. */
+.doc .doc-main h1 {
+  color: var(--pp-read-title);
+}
+
+.doc .doc-main .prose {
+  color: var(--pp-read-body);
+}
+
+.doc .doc-main .prose h2 {
+  font-size: var(--nt-fs-h3);
+  font-weight: var(--pp-w-heading);
+  color: var(--pp-read-h2);
+}
+
+.doc .doc-main .prose h3 {
+  font-size: var(--nt-fs-h4);
+  font-weight: var(--pp-w-heading);
+  color: var(--pp-read-h3);
+}
+
+.doc .doc-main .prose h4 {
+  font-size: var(--nt-fs-lead);
+  font-weight: var(--pp-w-heading);
+  color: var(--pp-read-h4);
+}
+
+.doc .doc-pane li a,
+.doc .doc-toc li a {
+  color: var(--pp-read-nav);
+}
+
+/* Group labels are h2s, so the page's heading rule out-ranks .doc-group-label; they sit between the
+   dimmed links and the current page. */
+.doc .doc-group-label {
+  color: var(--pp-ink);
+}
+
+.doc .doc-pane li a[aria-current='page'],
+.doc .doc-toc li a[aria-current='location'] {
+  color: var(--pp-read-h2);
 }

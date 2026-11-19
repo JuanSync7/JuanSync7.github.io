@@ -2,7 +2,9 @@ import { onPage, type Blueprint } from './types';
 
 /** The blog post page: the notepad (punched strip and margin line, then the page column clear of
  *  them) holding the document grid (the pane of other posts, the article, On this page), and in the
- *  article the header and the cover. Below 1180 px the contents column goes; below 900 px the pane
+ *  article the header and the cover. The article holds the reading measure (--pp-doc-measure, 70 to 81
+ *  characters a line) and centres in its column, so a wider screen widens the gaps, not the lines;
+ *  presentation:browser measures it. Below 1180 px the contents column goes; below 900 px the pane
  *  folds into a button and the notepad furniture is not drawn. */
 export const BLOG_POST: Blueprint = {
   id: 'blog-post',
@@ -37,6 +39,6 @@ export const BLOG_POST: Blueprint = {
     { measure: 'radius', part: 10, token: '--hf-radius-2xl' },
   ],
   number: 'JS-TP-0001',
-  revision: 'B',
-  drawn: '2026-11-16',
+  revision: 'C',
+  drawn: '2026-11-18',
 };

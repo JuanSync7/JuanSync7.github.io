@@ -22,6 +22,13 @@ options, not taste.
 
 ## Stated
 
+**Reading measure and breathing room** (18 Nov 2026)
+- Comparing a post with Vercel's docs in dark mode: a line of body text holds 70 to 81 characters
+  ("somewhere between 70-81 make sense for line length make that the rule"); narrowing his own window
+  felt "much more comfortable". The article keeps that measure on wide screens and the extra width
+  becomes room between it and the side panels ("the breathing room make sense"). Built as
+  `--pp-doc-measure` and `--pp-doc-gap`; `presentation:browser` measures it on rendered lines.
+
 **One signal colour, orange** (18 Nov 2026)
 - "can we remove all the teal i feel like we dont need it and it confuses the system like the
   slideicon i can see a teal again." The signal is the paper orange everywhere: the night tokens,
