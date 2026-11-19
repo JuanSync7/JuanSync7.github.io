@@ -1,12 +1,12 @@
 {
   "schema": "slide-maintenance-review/1",
   "verdict": "pass",
-  "base": "41d24892d3743e1030baf240aec48f8ef6fdeca9",
-  "candidate": "7d62e99fafdb216daa76ff3ca7ffd7d14c2a8a755bdc65fd8f754dc2291567a7",
-  "author": "root",
-  "reviewer": "independent_audit",
+  "base": "dd07a95b692a1a25e9ae4988f8fa7251d5fa26d6",
+  "candidate": "33c9ce46fb4112a746c8e3e7203d6b1c20b379580ca14f750ccd432eef1d5865",
+  "author": "claude",
+  "reviewer": "codex",
   "evidence": {
-    "path": "docs/design/slide-icons/runs/deepdive-workflow-maintenance-review.md",
-    "sha256": "41894dd3bc028f4a29b383d1e1fc1eb59db15afb80cfc13a4613a3d47f137e64"
+    "path": "docs/design/slide-icons/runs/library-pages-maintenance-review.md",
+    "sha256": "bc608b32d6a7fb7853c00c3689b5294753d95e8ba66fa3869057e062ce8007c4"
   }
 }
