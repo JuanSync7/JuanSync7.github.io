@@ -120,6 +120,15 @@ sync script that copies from the vault's `Playbooks/` does not ask the card and 
 `playbooks:copies:selftest` proves each refusal. A new sync uses `mustReveal` and `record`
 (`scripts/playbooks/copies.mjs`) or `syncPlaybook`.
 
+The skills and agents this site made for itself (`site-taste`, `tabletop-room`, `hardware-atlas`,
+`slide-icons`, `lego`, and the `deepdive-agent`, `voxel-agent` and `web-design-agent` skills with their
+`.claude/agents/<name>.md`) are copies too: `npm run skills:sync -- <vault> [--check] [name]`
+(`scripts/skills/sync.mjs`). A skill's folder in the vault is its name with underscores, an agent's own
+file is `AGENT.md` there, and a whole skill folder here is the vault's: the files copied are exactly the
+ones the published card reveals, and a file here the card does not name stops the run. Every card is read
+before anything is written. `skills:selftest` (in `npm run check`) proves each refusal. A new skill of this
+kind is filed in the vault first and added to `SKILLS` in that script.
+
 `/playbooks/` is the register: one card per agent and playbook, and a card is all the site shows of
 one (id, kind, title, description, detail). The vault owns the cards and decides which are public;
 `npm run playbooks:sync -- --vault <vault>` compares `src/data/playbooks.json` with the vault's
