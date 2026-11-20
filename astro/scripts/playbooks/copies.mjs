@@ -202,8 +202,10 @@ export function compare(root = ROOT) {
         problems.push(`${group}: an entry is not a file of this repository with its hash`);
         continue;
       }
-      if (isLink(join(root, path))) {
-        problems.push(`${group}: ${path} is a link, not the copy`);
+      try {
+        ours([path], root);
+      } catch {
+        problems.push(`${group}: ${path} is reached through a link, not the copy`);
         continue;
       }
       let have = null;
@@ -341,8 +343,16 @@ function selftest() {
     rmSync(join(root, 'skills/fitting/SKILL.md'));
     put('skills/same.md', kept);
     symlinkSync(join(root, 'skills/same.md'), join(root, 'skills/fitting/SKILL.md'));
-    assert.deepEqual(compare(root).problems, ['fitting: skills/fitting/SKILL.md is a link, not the copy']);
-    rmSync(join(root, 'skills/fitting/SKILL.md'));
+    assert.deepEqual(compare(root).problems, [
+      'fitting: skills/fitting/SKILL.md is reached through a link, not the copy',
+    ]);
+    rmSync(join(root, 'skills/fitting'), { recursive: true });
+    put('skills/twin/SKILL.md', kept);
+    symlinkSync(join(root, 'skills/twin'), join(root, 'skills/fitting'));
+    assert.deepEqual(compare(root).problems, [
+      'fitting: skills/fitting/SKILL.md is reached through a link, not the copy',
+    ]);
+    rmSync(join(root, 'skills/fitting'));
     put('skills/fitting/SKILL.md', kept);
     rmSync(outside, { recursive: true });
     assert.deepEqual(compare(root), { files: 2, groups: 2, problems: [] });
