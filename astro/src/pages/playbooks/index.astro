@@ -16,12 +16,24 @@ const lead = 'How the agents I work with do each kind of work. A card says what 
 <NightPage title="Playbooks · Juan Kok" description={lead}>
   <NightNav />
   <main>
-    <section class="nt-wrap nt-section register">
+    <section class="nt-wrap nt-section register" data-playbook-register>
       <SectionHead as="h1" label="// playbooks" title="Playbooks" lead={lead} />
       {
         groups.length ? (
+          <form class="search" data-playbook-search role="search" hidden>
+            <label>
+              Search the register
+              <input type="search" name="q" placeholder="For example, review or drawing" autocomplete="off" />
+            </label>
+            <p class="result" data-playbook-result role="status" aria-live="polite" aria-atomic="true" />
+          </form>
+        ) : null
+      }
+      <p class="none" data-playbook-empty hidden>No card has those words. Try fewer of them.</p>
+      {
+        groups.length ? (
           groups.map((group) => (
-            <section class="group" aria-label={group.label}>
+            <section class="group" data-playbook-group aria-label={group.label}>
               <header>
                 <h2>{group.label}</h2>
                 <p>{group.cards.length} listed</p>
@@ -29,7 +41,7 @@ const lead = 'How the agents I work with do each kind of work. A card says what 
               </header>
               <ul class="cards">
                 {group.cards.map((card) => (
-                  <li class="card" id={card.id}>
+                  <li class="card" id={card.id} data-playbook>
                     <p class="id">{card.id}</p>
                     <h3>{card.title}</h3>
                     <p class="what">{card.description}</p>
@@ -48,11 +60,54 @@ const lead = 'How the agents I work with do each kind of work. A card says what 
   <NightFooter />
 </NightPage>
 
+<script>
+  import { mountPlaybookSearch } from '../../components/playbooks/playbookSearch';
+  let cleanup: (() => void) | undefined;
+  const mount = () => {
+    cleanup?.();
+    const root = document.querySelector<HTMLElement>('[data-playbook-register]');
+    cleanup = root ? mountPlaybookSearch(root) : undefined;
+  };
+  document.addEventListener('astro:page-load', mount);
+  document.addEventListener('astro:before-swap', () => cleanup?.());
+</script>
+
 <style>
   .register {
     display: flex;
     flex-direction: column;
     gap: var(--hf-space-10);
+  }
+
+  .register [hidden] {
+    display: none;
+  }
+
+  .search {
+    display: grid;
+    gap: var(--hf-space-3);
+    max-width: var(--nt-measure);
+  }
+
+  .search label {
+    display: grid;
+    gap: var(--hf-space-2);
+    font-size: var(--nt-fs-small);
+  }
+
+  .search input {
+    color: var(--nt-ink);
+    background: var(--nt-ground);
+    border: 1px solid var(--nt-rule);
+    padding: var(--hf-space-3);
+    border-radius: 0;
+    font: inherit;
+  }
+
+  .result {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-ink-muted);
   }
 
   .group {
