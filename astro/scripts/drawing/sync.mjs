@@ -25,6 +25,7 @@ mustReveal(
   vault,
   'drawing',
   FILES.map(([from]) => from),
+  FILES.map(([, to]) => here(to)),
 );
 const differ = [];
 mkdirSync(here('.claude/skills/drawing'), { recursive: true });

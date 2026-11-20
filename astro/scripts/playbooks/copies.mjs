@@ -6,12 +6,15 @@
 //    CI, which never reads the vault) fails when a copy no longer matches: a copy is changed in the vault and
 //    synced again, never edited here.
 // The check also reads every scripts/<name>/sync.mjs: one that copies from the vault's Playbooks/ must ask the card
-// and record what it wrote.
+// and record what it wrote. That reading catches a sync written without the guards, not one written to get round
+// them; and the record is kept beside the copies, so a change to copies.lock.json is itself read in review. The
+// comparison with the original is each sync's --check, run with the vault at hand.
 //   npm run playbooks:copies:check      every recorded copy still holds what its sync wrote
 //   npm run playbooks:copies:selftest   prove each refusal with invented files
 import { createHash } from 'node:crypto';
 import {
   existsSync,
+  lstatSync,
   mkdirSync,
   mkdtempSync,
   readFileSync,
@@ -19,6 +22,7 @@ import {
   realpathSync,
   renameSync,
   rmSync,
+  symlinkSync,
   writeFileSync,
 } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -33,6 +37,9 @@ const HASH = /^[0-9a-f]{64}$/;
 
 const hash = (path) => createHash('sha256').update(readFileSync(path)).digest('hex');
 const isRecord = (value) => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+const NAME = /^[A-Za-z0-9_-][A-Za-z0-9._-]*$/;
+const plainName = (file) => typeof file === 'string' && file.split('/').every((part) => NAME.test(part));
+const isLink = (path) => lstatSync(path, { throwIfNoEntry: false })?.isSymbolicLink() ?? false;
 const inside = (path) => !isAbsolute(path) && normalize(path) === path && !path.split('/').includes('..');
 
 /** -> the files the published card of the vault's playbook reveals; throws when there is no such card or list. */
@@ -53,20 +60,53 @@ export function shown(vault, playbook) {
 }
 
 /** Throws unless the card of the vault's playbook reveals every one of files (paths in the playbook's folder). */
-export function revealed(vault, playbook, files) {
+export function revealed(vault, playbook, files, targets = [], root = ROOT) {
   const reveal = shown(vault, playbook);
+  const odd = files.filter((file) => !plainName(file));
+  if (odd.length)
+    throw new Error(
+      `${playbook}: ${odd.length} name(s) asked for are not a plain file name of its folder, so nothing is copied`,
+    );
   if (!files.length) throw new Error(`${playbook}: no file was asked for; a sync of nothing is not a sync`);
   const hidden = files.filter((file) => !reveal.includes(file));
   if (hidden.length)
     throw new Error(
       `${playbook}: its card does not reveal ${hidden.join(', ')}; the vault's owner adds a file to the card, a sync never does`,
     );
+  // The file copied is the vault's own: a link would hand over whatever it points at, under a revealed name.
+  const folder = join(vault, 'Playbooks', playbook);
+  for (const file of files) {
+    let real;
+    try {
+      real = realpathSync(join(folder, file));
+    } catch {
+      throw new Error(`${playbook}: the vault does not hold ${file}, so nothing is copied`);
+    }
+    if (real !== join(realpathSync(folder), file) || !lstatSync(real).isFile())
+      throw new Error(`${playbook}: ${file} is a link or not a file in the vault, so nothing is copied`);
+  }
+  ours(targets, root);
 }
 
 /** The same, for a sync script: says why and ends the run. */
-export function mustReveal(vault, playbook, files) {
+/** Throws unless each path a sync writes is a file of this repository reached through no link. */
+export function ours(paths, root = ROOT) {
+  const base = realpathSync(root);
+  for (const path of paths) {
+    const full = isAbsolute(path) ? path : join(root, path);
+    const rel = relative(root, full);
+    if (!inside(rel)) throw new Error(`${path} is not a file of this repository`);
+    let at = dirname(full);
+    while (!existsSync(at) && !isLink(at)) at = dirname(at);
+    if (isLink(full) || isLink(at) || realpathSync(at) !== join(base, relative(root, at)))
+      throw new Error(`${rel} is reached through a link; a copy is a plain file of this repository`);
+  }
+}
+
+/** Stops the run unless revealed() passes: the card reveals files, and every path to be written (targets) is ours. */
+export function mustReveal(...asked) {
   try {
-    revealed(vault, playbook, files);
+    revealed(...asked);
   } catch (error) {
     console.error(`Playbook copy refused: ${error.message}`);
     process.exit(1);
@@ -92,6 +132,11 @@ export function record(group, paths, root = ROOT) {
   if (!paths.length) throw new Error(`${group}: a sync that wrote nothing has nothing to record`);
   const lock = lockOf(root) ?? { schema: SCHEMA, copies: {} };
   const base = realpathSync(root);
+  try {
+    ours(paths, root);
+  } catch (error) {
+    throw new Error(`${group}: ${error.message}`);
+  }
   const entries = {};
   for (const path of paths) {
     const rel = relative(base, realpathSync(isAbsolute(path) ? path : join(root, path)));
@@ -116,8 +161,11 @@ function unguarded(root) {
   for (const dir of readdirSync(scripts).sort()) {
     const path = join(scripts, dir, 'sync.mjs');
     if (!existsSync(path)) continue;
-    const text = readFileSync(path, 'utf8');
-    if (!text.includes('Playbooks') || text.includes("from '../playbooks/sync.mjs'")) continue;
+    const raw = readFileSync(path, 'utf8');
+    if (!raw.includes('Playbooks')) continue;
+    // Comments are set aside first: naming a guard is not calling it.
+    const text = raw.replace(/\/\*[^]*?\*\//g, '').replace(/(^|\s)\/\/.*$/gm, '');
+    if (text.includes('syncPlaybook(')) continue; // the shared sync asks and records itself
     if (!text.includes('mustReveal('))
       problems.push(`scripts/${dir}/sync.mjs copies from the vault without asking the card (mustReveal)`);
     if (!text.includes('record(')) problems.push(`scripts/${dir}/sync.mjs does not record what it wrote (record)`);
@@ -154,6 +202,10 @@ export function compare(root = ROOT) {
         problems.push(`${group}: an entry is not a file of this repository with its hash`);
         continue;
       }
+      if (isLink(join(root, path))) {
+        problems.push(`${group}: ${path} is a link, not the copy`);
+        continue;
+      }
       let have = null;
       try {
         have = hash(join(root, path));
@@ -180,14 +232,43 @@ function selftest() {
       'vault/Playbooks/welding/card.json',
       JSON.stringify({ id: 'welding', status: 'published', reveal: ['SKILL.md', 'kernel/arc.ts'] }),
     );
+    put('vault/Playbooks/welding/SKILL.md', 'Tack first.\n');
+    put('vault/Playbooks/welding/kernel/arc.ts', 'export const arc = 1;\n');
+    put('vault/Playbooks/welding/RULES.md', 'Hidden.\n');
     revealed(vault, 'welding', ['SKILL.md', 'kernel/arc.ts']);
     revealed(vault, 'welding', ['SKILL.md']);
     assert.deepEqual(shown(vault, 'welding'), ['SKILL.md', 'kernel/arc.ts']);
     assert.throws(() => revealed(vault, 'welding', ['SKILL.md', 'RULES.md']), /does not reveal RULES\.md/);
     assert.throws(() => revealed(vault, 'welding', []), /sync of nothing/);
     assert.throws(() => revealed(vault, 'fitting', ['SKILL.md']), /no card/);
+    // What is copied is the vault's own plain file of that name: not a name that climbs out of the folder however
+    // it is spelt, not a file the vault does not hold, and not a link to a file the card keeps hidden.
+    const reveal = (...files) =>
+      put('vault/Playbooks/welding/card.json', JSON.stringify({ id: 'welding', status: 'published', reveal: files }));
+    for (const name of [
+      '%2e%2e/RULES.md',
+      'kernel%2f..%2fRULES.md',
+      '../RULES.md',
+      './SKILL.md',
+      'kernel//arc.ts',
+      'a b.md',
+      '.hidden',
+      '',
+      7,
+    ]) {
+      reveal('SKILL.md', name);
+      assert.throws(() => revealed(vault, 'welding', ['SKILL.md', name]), /not a plain file name/);
+    }
+    reveal('SKILL.md', 'gone.md', 'kernel', 'link.md', 'linked/arc.ts');
+    assert.throws(() => revealed(vault, 'welding', ['SKILL.md', 'gone.md']), /does not hold gone\.md/);
+    assert.throws(() => revealed(vault, 'welding', ['kernel']), /kernel is a link or not a file/);
+    symlinkSync('RULES.md', join(vault, 'Playbooks/welding/link.md'));
+    assert.throws(() => revealed(vault, 'welding', ['link.md']), /link\.md is a link or not a file/);
+    symlinkSync('kernel', join(vault, 'Playbooks/welding/linked'));
+    assert.throws(() => revealed(vault, 'welding', ['linked/arc.ts']), /linked\/arc\.ts is a link or not a file/);
     // A card the owner has not published copies nothing, whatever it lists: a draft's list is not yet a decision.
     for (const status of ['draft', 'withdrawn', undefined, 'Published']) {
+      put('vault/Playbooks/fitting/SKILL.md', 'Measure twice.\n');
       put('vault/Playbooks/fitting/card.json', JSON.stringify({ id: 'fitting', status, reveal: ['SKILL.md'] }));
       assert.throws(() => revealed(vault, 'fitting', ['SKILL.md']), /is not published/);
     }
@@ -227,6 +308,42 @@ function selftest() {
     const outside = mkdtempSync(join(tmpdir(), 'playbook-copies-out-'));
     writeFileSync(join(outside, 'x.md'), 'x');
     assert.throws(() => record('welding', [join(outside, 'x.md')], root), /not a file of this repository/);
+    // A copy is a plain file reached through no link: a link is not written through, not recorded, and not a copy.
+    put('skills/other.md', 'Not a copy.\n');
+    symlinkSync(join(root, 'skills/other.md'), join(root, 'skills/welding/LINK.md'));
+    symlinkSync(outside, join(root, 'skills/out'));
+    symlinkSync(join(root, 'skills/fitting'), join(root, 'skills/alias'));
+    ours(['skills/welding/SKILL.md', 'skills/welding/new/deep.md', join(root, 'skills/fitting/SKILL.md')], root);
+    assert.throws(() => ours(['skills/welding/LINK.md'], root), /reached through a link/);
+    assert.throws(() => ours(['skills/out/x.md'], root), /reached through a link/);
+    assert.throws(() => ours(['skills/alias/SKILL.md'], root), /reached through a link/);
+    put('skills/fitting/sub/x.md', 'x');
+    assert.throws(() => ours(['skills/alias/sub/x.md'], root), /reached through a link/);
+    rmSync(join(root, 'skills/fitting/sub'), { recursive: true });
+    symlinkSync(join(root, 'skills/nowhere'), join(root, 'skills/dangling'));
+    assert.throws(() => ours(['skills/dangling/x.md'], root), /reached through a link/);
+    rmSync(join(root, 'skills/dangling'));
+    put(
+      'vault/Playbooks/welding/card.json',
+      JSON.stringify({ id: 'welding', status: 'published', reveal: ['SKILL.md'] }),
+    );
+    revealed(vault, 'welding', ['SKILL.md'], ['skills/welding/SKILL.md'], root);
+    assert.throws(
+      () => revealed(vault, 'welding', ['SKILL.md'], ['skills/welding/LINK.md'], root),
+      /reached through a link/,
+    );
+    assert.throws(() => ours(['../x.md'], root), /not a file of this repository/);
+    assert.throws(() => ours([join(outside, 'x.md')], root), /not a file of this repository/);
+    assert.throws(() => record('welding', ['skills/welding/LINK.md'], root), /reached through a link/);
+    assert.throws(() => record('fitting', ['skills/alias/SKILL.md'], root), /reached through a link/);
+    assert.deepEqual(compare(root), { files: 2, groups: 2, problems: [] });
+    const kept = readFileSync(join(root, 'skills/fitting/SKILL.md'), 'utf8');
+    rmSync(join(root, 'skills/fitting/SKILL.md'));
+    put('skills/same.md', kept);
+    symlinkSync(join(root, 'skills/same.md'), join(root, 'skills/fitting/SKILL.md'));
+    assert.deepEqual(compare(root).problems, ['fitting: skills/fitting/SKILL.md is a link, not the copy']);
+    rmSync(join(root, 'skills/fitting/SKILL.md'));
+    put('skills/fitting/SKILL.md', kept);
     rmSync(outside, { recursive: true });
     assert.deepEqual(compare(root), { files: 2, groups: 2, problems: [] });
     // A record someone wrote by hand is read as strictly as one a sync wrote.
@@ -250,7 +367,7 @@ function selftest() {
     put('astro/scripts/bricks/sync.mjs', "copy(join(kit, 'bricks/src'));\n");
     put(
       'astro/scripts/brazing/sync.mjs',
-      "// from Playbooks/brazing\nimport { syncPlaybook } from '../playbooks/sync.mjs';\n",
+      "// from Playbooks/brazing\nimport { syncPlaybook } from '../playbooks/sync.mjs';\nsyncPlaybook({ name: 'brazing' });\n",
     );
     put(
       'astro/scripts/welding/sync.mjs',
@@ -268,6 +385,29 @@ function selftest() {
     assert.deepEqual(compare(root).problems, ['scripts/welding/sync.mjs does not record what it wrote (record)']);
     assert.equal(verdict(compare(root))[0], 1);
     assert.match(verdict(compare(root))[1], /1 problem\(s\)[^]*does not record/);
+    // Naming the guards is not using them: a comment does not count, and nor does an import that is never called.
+    put(
+      'astro/scripts/welding/sync.mjs',
+      "//mustReveal( and record(\n/* mustReveal(x)\n record(y) */\ncopy(join(vault, 'Playbooks/welding')); // record(\n",
+    );
+    assert.equal(compare(root).problems.length, 2);
+    put(
+      'astro/scripts/welding/sync.mjs',
+      "mustReveal(vault, 'welding', FILES);\ncopy(join(vault, 'Playbooks/welding'));\nrecord('welding', FILES);\n",
+    );
+    put(
+      'astro/scripts/brazing/sync.mjs',
+      "import { syncPlaybook } from '../playbooks/sync.mjs';\n// syncPlaybook(\ncopy(join(vault, 'Playbooks/brazing'));\n",
+    );
+    assert.deepEqual(compare(root).problems, [
+      'scripts/brazing/sync.mjs copies from the vault without asking the card (mustReveal)',
+      'scripts/brazing/sync.mjs does not record what it wrote (record)',
+    ]);
+    put(
+      'astro/scripts/welding/sync.mjs',
+      "mustReveal(vault, 'welding', FILES);\ncopy(join(vault, 'Playbooks/welding'));\n",
+    );
+    rmSync(join(root, 'astro/scripts/brazing'), { recursive: true });
     assert.deepEqual(verdict({ files: 2, groups: 1, problems: [] }), [
       0,
       'Playbook copies: 2 files of 1 playbooks hold what their sync wrote.',

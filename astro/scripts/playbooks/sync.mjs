@@ -5,9 +5,11 @@
 // Only files the playbook's card reveals are copied, and what was written is recorded (copies.mjs).
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { mustReveal, record } from './copies.mjs';
 
-const here = (p) => new URL(`../../../${p}`, import.meta.url).pathname;
+const ROOT = fileURLToPath(new URL('../../../', import.meta.url));
+const here = (p) => join(ROOT, p);
 
 /** files: [vault path in the playbook, path in the skill folder]. Every file but SKILL.md is copied as it is. */
 export function syncPlaybook({ name, playbook, skill, files }, argv = process.argv.slice(2)) {
@@ -20,6 +22,7 @@ export function syncPlaybook({ name, playbook, skill, files }, argv = process.ar
     vault,
     playbook,
     files.map(([from]) => from),
+    files.map(([, to]) => here(`${skill}/${to}`)),
   );
   const renames = files.filter(([from]) => from !== 'SKILL.md').map(([from, to]) => [`\`${from}\``, `\`${to}\``]);
   const localise = (from, text) =>

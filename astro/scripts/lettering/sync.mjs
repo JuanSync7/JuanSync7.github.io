@@ -20,6 +20,7 @@ mustReveal(
   vault,
   'lettering',
   FILES.map(([from]) => from),
+  FILES.map(([, to]) => here(to)),
 );
 const differ = [];
 for (const [from, to] of FILES) {

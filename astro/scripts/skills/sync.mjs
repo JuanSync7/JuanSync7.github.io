@@ -17,13 +17,14 @@ import {
   readdirSync,
   realpathSync,
   rmSync,
+  symlinkSync,
   writeFileSync,
 } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { dirname, isAbsolute, join, normalize } from 'node:path';
+import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
-import { shown } from '../playbooks/copies.mjs';
+import { revealed, shown } from '../playbooks/copies.mjs';
 import { syncPlaybook } from '../playbooks/sync.mjs';
 
 export const SKILLS = [
@@ -37,7 +38,8 @@ export const SKILLS = [
   { name: 'lego' },
 ];
 const AGENT = 'AGENT.md';
-const here = (p) => new URL(`../../../${p}`, import.meta.url).pathname;
+const ROOT = fileURLToPath(new URL('../../../', import.meta.url));
+const here = (p) => join(ROOT, p);
 const playbookOf = (name) => name.replaceAll('-', '_');
 
 function filesIn(dir, under = '') {
@@ -52,10 +54,14 @@ function plan(vault, { name, agent = false }) {
   const playbook = playbookOf(name);
   const reveal = shown(vault, playbook);
   if (!reveal.length) throw new Error(`${playbook}: its card reveals no file, so there is nothing to copy`);
-  const odd = reveal.filter(
-    (f) => typeof f !== 'string' || !f || isAbsolute(f) || normalize(f) !== f || f.split('/').includes('..'),
+  // Every name, every original and every place a copy goes is settled here, for all skills, before one is written.
+  const pairs = reveal.map((f) => [f, f === AGENT ? `../../agents/${name}.md` : f]);
+  revealed(
+    vault,
+    playbook,
+    reveal,
+    pairs.map(([, to]) => here(`.claude/skills/${name}/${to}`)),
   );
-  if (odd.length) throw new Error(`${playbook}: its card lists ${odd.length} path(s) that are not files of its folder`);
   if (reveal.includes(AGENT) !== agent)
     throw new Error(
       `${playbook}: ${agent ? `an agent needs ${AGENT} on its card` : `${AGENT} is on the card of a skill that is not an agent here`}`,
@@ -65,7 +71,7 @@ function plan(vault, { name, agent = false }) {
     throw new Error(
       `${name}: ${strays.join(', ')} ${strays.length > 1 ? 'are' : 'is'} here and not on the vault's card; a skill folder holds only what the vault reveals`,
     );
-  return reveal.map((f) => [f, f === AGENT ? `../../agents/${name}.md` : f]);
+  return pairs;
 }
 
 function main(argv) {
@@ -166,15 +172,43 @@ function selftest() {
     };
     refusal({ status: 'draft' }, /is not published/);
     refusal({ reveal: [] }, /reveals no file/);
-    refusal({ reveal: ['SKILL.md', '../RULES.md'] }, /not files of its folder/);
-    refusal({ reveal: ['SKILL.md', './RULES.md'] }, /not files of its folder/);
-    refusal({ reveal: ['SKILL.md', join(vault, 'x.md')] }, /not files of its folder/);
-    refusal({ reveal: ['SKILL.md', 7] }, /not files of its folder/);
+    refusal({ reveal: ['SKILL.md', '../RULES.md'] }, /not a plain file name/);
+    refusal({ reveal: ['SKILL.md', './RULES.md'] }, /not a plain file name/);
+    refusal({ reveal: ['SKILL.md', join(vault, 'x.md')] }, /not a plain file name/);
+    refusal({ reveal: ['SKILL.md', 7] }, /not a plain file name/);
+    // A name spelt to climb out of the folder once it is read as an address is refused like any other.
+    refusal(
+      { reveal: ['SKILL.md', 'kernel/INDEX.md', `%2e%2e/%2e%2e/agents/${first.name}.md`] },
+      /not a plain file name/,
+    );
+    assert.equal(get(`site/.claude/agents/${first.name}.md`), first.agent ? `The ${first.name} agent.\n` : null);
+    // A file the last card names and the vault does not hold stops the run before the first skill is written.
+    refusal({ reveal: ['SKILL.md', 'kernel/INDEX.md', 'gone.md'] }, /does not hold gone\.md/);
+    // A revealed name that is a link to a hidden file copies nothing.
+    rmSync(join(root, original(last, 'kernel/INDEX.md')));
+    symlinkSync('../RULES.md', join(root, original(last, 'kernel/INDEX.md')));
+    refusal({}, /kernel\/INDEX\.md is a link or not a file/);
+    assert.equal(get(copyOf(last, 'kernel/INDEX.md')), 'The parts.\n');
+    rmSync(join(root, original(last, 'kernel/INDEX.md')));
+    put(original(last, 'kernel/INDEX.md'), 'The parts.\n');
+    // A copy that was swapped for a link is not written through, and the file it points at is left alone.
+    put('site/notes.md', "The site's own.\n");
+    rmSync(join(root, copyOf(last)));
+    symlinkSync(join(root, 'site/notes.md'), join(root, copyOf(last)));
+    refusal({}, /reached through a link/);
+    assert.equal(run(vault, '--check', last.name).status, 1);
+    assert.equal(get('site/notes.md'), "The site's own.\n");
+    assert.equal(copies().status, 1);
+    rmSync(join(root, copyOf(last)));
+    put(copyOf(last), get(original(last)));
+    assert.equal(copies().status, 0, copies().stderr);
     refusal({ reveal: 'SKILL.md' }, /no list of files/);
     const agent = SKILLS.find((s) => s.agent);
     const plain = SKILLS.find((s) => !s.agent);
     if (agent) refusal({ reveal: ['SKILL.md', 'kernel/INDEX.md'] }, /an agent needs AGENT\.md/, agent);
+    put(original(plain, AGENT), 'Not an agent on the site.\n');
     refusal({ reveal: ['SKILL.md', 'kernel/INDEX.md', AGENT] }, /not an agent here/, plain);
+    rmSync(join(root, original(plain, AGENT)));
     // A file the card no longer names is not left behind unnoticed.
     put(copyOf(last, 'notes/old.md'), 'left over\n');
     out = run(vault);
