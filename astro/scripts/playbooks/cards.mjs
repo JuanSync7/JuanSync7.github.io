@@ -30,7 +30,17 @@ const isRecord = (value) => Boolean(value) && typeof value === 'object' && !Arra
 const sameKeys = (value, keys) => Object.keys(value).sort().join() === [...keys].sort().join();
 
 /** The vault's output as text -> the text of the site's file. Throws on anything it does not expect. */
-export function publicList(text) {
+export function publicList(given) {
+  // Bytes are read as UTF-8 or refused: a decoder that mends a broken byte, or drops a mark at the start,
+  // would put on the page a text the vault never wrote.
+  let text = given;
+  if (typeof given !== 'string') {
+    try {
+      text = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(given);
+    } catch {
+      throw new Error('the list is not UTF-8');
+    }
+  }
   let data;
   try {
     data = JSON.parse(text);
@@ -57,7 +67,7 @@ export function publicList(text) {
   });
   // JSON.parse keeps the last of two fields with one name, which would repair the list by dropping the other.
   // A valid list holds a known number of strings, so one more means a field was given twice.
-  const strings = String(text).match(/"(?:[^"\\]|\\.)*"/g).length;
+  const strings = text.match(/"(?:[^"\\]|\\.)*"/g).length;
   if (strings !== 3 + 2 * FIELDS.length * data.playbooks.length) throw new Error('the list gives a field twice');
   const playbooks = [...data.playbooks]
     .sort((a, b) => (a.id < b.id ? -1 : 1))
@@ -70,7 +80,7 @@ async function fromVault(vault) {
   const script = join(vault, '_scripts', 'playbook_cards.py');
   if (!(await lstat(script)).isFile()) throw new Error(`no playbook_cards.py in ${vault}`);
   try {
-    const { stdout } = await promisify(execFile)('python3', ['-B', script, 'public'], { maxBuffer: 1 << 24 });
+    const { stdout } = await promisify(execFile)('python3', ['-B', script, 'public'], { maxBuffer: 1 << 24, encoding: 'buffer' });
     return stdout;
   } catch (error) {
     const said = String(error.stderr ?? '').trim().split('\n').slice(-3).join(' | ');
@@ -180,6 +190,15 @@ async function selftest() {
     await refused(list({ ...card, id: 'Welding/..' }), /folder name/);
     await refused(list({ ...card, kind: 'skill' }), /unknown kind/);
     await refused(list(card, { ...agent, id: card.id }), /listed twice/);
+    // Every field of every card is read, not only the first card or its longest text.
+    for (const field of FIELDS) await refused(list({ ...card, [field]: 'a<b' }), /markup/);
+    await refused(list(card, { ...agent, detail: 'Tack <b>first</b>.' }), /card 2: detail holds markup/);
+    await refused(list(card, { ...agent, title: 'Fit\u200bter' }), /card 2: title holds/);
+    // Bytes that are not UTF-8 are refused, not mended; a byte order mark is not dropped.
+    const [before, after] = list(card).split('Tack');
+    const broken = Buffer.concat([Buffer.from(before), Buffer.from([0xed, 0xa0, 0x80]), Buffer.from(after)]);
+    await refused(broken, /not UTF-8/);
+    await refused(Buffer.concat([Buffer.from([0xef, 0xbb, 0xbf]), Buffer.from(list(card))]), /not JSON/);
     assert.equal(await readFile(target, 'utf8'), kept);
     assert.deepEqual(await readdir(dirname(target)), ['playbooks.json']);
     // A write goes to a draft beside the file first: when the draft cannot be written, the list is untouched.
@@ -197,14 +216,16 @@ async function selftest() {
     assert.equal(await readFile(target, 'utf8'), kept);
     assert.equal((await lstat(target)).isSymbolicLink(), false);
     // The vault's command: its list is taken when it ends well, and refused when it does not, whatever it printed.
-    const gate = async (exit) => {
+    const gate = async (exit, bytes = Buffer.from(list(card, agent))) => {
       const vault = join(root, 'vault' + exit);
       await mkdir(join(vault, '_scripts'), { recursive: true });
-      await writeFile(join(vault, '_scripts', 'playbook_cards.py'), 'import sys\nprint(' + JSON.stringify(list(card, agent)) + ')\nsys.exit(' + exit + ')\n');
+      const says = 'import sys\nsys.stdout.buffer.write(bytes.fromhex("' + bytes.toString('hex') + '"))\nsys.exit(' + exit + ')\n';
+      await writeFile(join(vault, '_scripts', 'playbook_cards.py'), says);
       return synchronize(() => fromVault(vault), root, true);
     };
     assert.deepEqual(await gate(0), { cards: 2, drift: false, written: false });
     await assert.rejects(gate(7), /did not give a list \(exit 7\)/);
+    await assert.rejects(gate(0, broken), /not UTF-8/);
     await assert.rejects(synchronize(() => fromVault(join(root, 'vault0', '_scripts')), root, true), { code: 'ENOENT' });
     assert.equal(await readFile(target, 'utf8'), kept);
     // Run through a link, the script still runs: a call with no vault is refused, it does not end in silence.
@@ -227,7 +248,7 @@ async function selftest() {
     await symlink(join(root, 'elsewhere.json'), target);
     await assert.rejects(synchronize(async () => list(card), root, true), /not a regular file/);
     assert.equal(await readFile(join(root, 'elsewhere.json'), 'utf8'), kept);
-    console.log('Playbook card sync selftest: compare, write once, order, the five fields, a failed write, a planted link, a vault that refuses, a run through a link, and 41 refusals passed.');
+    console.log('Playbook card sync selftest: compare, write once, order, the five fields, a failed write, a planted link, a vault that refuses, a run through a link, and 50 refusals passed.');
   } finally {
     await rm(root, { recursive: true, force: true });
   }
