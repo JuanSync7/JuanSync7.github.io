@@ -132,6 +132,10 @@ ones the published card reveals, and a file here the card does not name stops th
 before anything is written. `skills:selftest` (in `npm run check`) proves each refusal. A new skill of this
 kind is filed in the vault first and added to `SKILLS` in that script. A skill enters `copies.lock.json`
 at its first sync from a published card; until then `playbooks:copies:check` does not see an edit to it.
+`npm run skills:claimed` (in `npm run check`, no vault needed) fails for a folder in `.claude/skills` or a file
+in `.claude/agents` that is not in `SKILLS`, not recorded by another playbook's sync, and not one of `POINTERS`
+(a page the site wrote that only points at a playbook the vault lists; the with-vault sync reads that card), and
+for a name on either list with nothing here.
 
 `/playbooks/` is the register: one card per agent and playbook, and a card is all the site shows of
 one (id, kind, title, description, detail). The vault owns the cards and decides which are public;

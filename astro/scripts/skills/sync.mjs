@@ -6,6 +6,7 @@
 // as it was.
 //   npm run skills:sync -- <vault> [name]           copy
 //   npm run skills:sync -- <vault> --check [name]   fail if any copy differs from the vault
+//   npm run skills:claimed                          every skill and agent here is on a list (no vault needed)
 //   npm run skills:selftest                         prove each refusal on an invented repository
 import { spawnSync } from 'node:child_process';
 import {
@@ -25,7 +26,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
-import { revealed, shown } from '../playbooks/copies.mjs';
+import { record, recorded, revealed, shown } from '../playbooks/copies.mjs';
 import { syncPlaybook } from '../playbooks/sync.mjs';
 
 export const SKILLS = [
@@ -37,6 +38,14 @@ export const SKILLS = [
   { name: 'web-design-agent', agent: true },
   { name: 'slide-icons' },
   { name: 'lego' },
+];
+// A skill folder the site wrote itself, which only points at a playbook the vault lists; nothing is copied into it.
+export const POINTERS = [
+  {
+    name: 'blueprint',
+    playbook: 'blueprint',
+    why: 'the site keeps its own specs and index beside the copied kernel, so its page says where each part is',
+  },
 ];
 const AGENT = 'AGENT.md';
 const ROOT = fileURLToPath(new URL('../../../', import.meta.url));
@@ -75,7 +84,42 @@ function plan(vault, { name, agent = false }) {
   return pairs;
 }
 
+/** -> [problems, how many were looked at]: a skill folder or agent file here that no sync brings from the vault and
+ *  no pointer names, and a name on a list with nothing here. Reads this repository only. */
+export function unclaimed(root = ROOT) {
+  const dirs = (path) => (existsSync(join(root, path)) ? readdirSync(join(root, path), { withFileTypes: true }) : []);
+  const skills = dirs('.claude/skills')
+    .filter((e) => e.isDirectory())
+    .map((e) => e.name);
+  const agents = dirs('.claude/agents')
+    .filter((e) => e.isFile() && e.name.endsWith('.md'))
+    .map((e) => e.name.slice(0, -3));
+  if (!skills.length) return [['.claude/skills holds no skill: a check of nothing is not a pass'], 0];
+  const copied = recorded(root);
+  const listed = [...SKILLS, ...POINTERS].map((s) => s.name);
+  const problems = [];
+  for (const name of skills)
+    if (!listed.includes(name) && !copied.some((path) => path.startsWith(`.claude/skills/${name}/`)))
+      problems.push(`.claude/skills/${name}: no sync brings it from the vault; file it there and add it to SKILLS`);
+  for (const name of agents)
+    if (!SKILLS.some((s) => s.agent && s.name === name) && !copied.includes(`.claude/agents/${name}.md`))
+      problems.push(`.claude/agents/${name}.md: no sync brings it from the vault; file it there and add it to SKILLS`);
+  for (const name of listed) if (!skills.includes(name)) problems.push(`${name}: named here and not in .claude/skills`);
+  for (const { name, agent } of SKILLS)
+    if (agent && !agents.includes(name)) problems.push(`${name}: named as an agent and not in .claude/agents`);
+  return [problems, skills.length + agents.length];
+}
+
 function main(argv) {
+  if (argv.length === 1 && argv[0] === '--claimed') {
+    const [problems, count] = unclaimed();
+    if (problems.length) {
+      console.error(`Skills: ${problems.length} problem(s)\n${problems.map((p) => `  ${p}`).join('\n')}`);
+      process.exit(1);
+    }
+    console.log(`Skills: ${count} skill folders and agent files, each one the vault's register names.`);
+    return;
+  }
   const [vault, ...rest] = argv;
   const check = rest.includes('--check');
   const names = rest.filter((a) => a !== '--check');
@@ -89,6 +133,7 @@ function main(argv) {
   const chosen = SKILLS.filter((s) => !names.length || s.name === names[0]);
   let plans;
   try {
+    if (!names.length) for (const { playbook } of POINTERS) shown(vault, playbook);
     plans = chosen.map((skill) => [skill, plan(vault, skill)]);
   } catch (error) {
     console.error(`Skill copy refused: ${error.message}`);
@@ -135,6 +180,11 @@ function selftest() {
     const [first] = SKILLS;
     const last = SKILLS[SKILLS.length - 1];
     const copyOf = (skill, file = 'SKILL.md') => `site/.claude/skills/${skill.name}/${file}`;
+    const lockPath = 'site/astro/scripts/playbooks/copies.lock.json';
+    for (const { name, playbook } of POINTERS) {
+      put(`site/.claude/skills/${name}/SKILL.md`, `Read the vault's ${playbook}.\n`);
+      put(`vault/Playbooks/${playbook}/card.json`, JSON.stringify({ status: 'published', reveal: [] }));
+    }
     const original = (skill, file = 'SKILL.md') => `vault/Playbooks/${folderOf(skill)}/${file}`;
 
     // Nothing copied yet: the check says so, the sync copies what the cards reveal and nothing else, and records it.
@@ -152,6 +202,57 @@ function selftest() {
     assert.equal(copies().status, 0, copies().stderr);
     const lock = JSON.parse(get('site/astro/scripts/playbooks/copies.lock.json'));
     assert.deepEqual(Object.keys(lock.copies), SKILLS.map((s) => s.name).sort());
+
+    // Every skill folder and agent file here is one the vault's register names: brought by this sync, recorded by
+    // another playbook's sync, or a page the site wrote to point at a playbook. Anything else is a skill no list has.
+    const claimed = () => run('--claimed');
+    const fails = (pattern) => {
+      const got = claimed();
+      assert.equal(got.status, 1, got.stdout);
+      assert.match(got.stderr, pattern);
+    };
+    assert.equal(claimed().status, 0, claimed().stderr);
+    assert.match(
+      claimed().stdout,
+      new RegExp(`^Skills: ${SKILLS.length + POINTERS.length + SKILLS.filter((s) => s.agent).length} skill`),
+    );
+    put('site/.claude/skills/brazing/SKILL.md', 'No list has this.\n');
+    fails(/\.claude\/skills\/brazing: no sync brings it/);
+    const recordedBefore = get(lockPath);
+    record('brazing', ['.claude/skills/brazing/SKILL.md'], join(root, 'site'));
+    assert.equal(claimed().status, 0, claimed().stderr);
+    put(lockPath, recordedBefore);
+    rmSync(join(root, 'site/.claude/skills/brazing'), { recursive: true });
+    put('site/.claude/agents/brazing.md', 'No list has this.\n');
+    fails(/\.claude\/agents\/brazing\.md: no sync brings it/);
+    rmSync(join(root, 'site/.claude/agents/brazing.md'));
+    // A name on the list with nothing here is a claim of nothing, and so is a list with no skill under it.
+    const aside = join(root, 'aside');
+    renameSync(join(root, `site/.claude/skills/${last.name}`), aside);
+    fails(new RegExp(`${last.name}: named here and not in \\.claude/skills`));
+    renameSync(aside, join(root, `site/.claude/skills/${last.name}`));
+    const anAgent = SKILLS.find((s) => s.agent);
+    renameSync(join(root, `site/.claude/agents/${anAgent.name}.md`), aside);
+    fails(new RegExp(`${anAgent.name}: named as an agent and not in \\.claude/agents`));
+    renameSync(aside, join(root, `site/.claude/agents/${anAgent.name}.md`));
+    for (const { name } of POINTERS) {
+      renameSync(join(root, `site/.claude/skills/${name}`), aside);
+      fails(new RegExp(`${name}: named here and not in \\.claude/skills`));
+      renameSync(aside, join(root, `site/.claude/skills/${name}`));
+    }
+    renameSync(join(root, 'site/.claude/skills'), aside);
+    fails(/holds no skill/);
+    renameSync(aside, join(root, 'site/.claude/skills'));
+    assert.equal(claimed().status, 0, claimed().stderr);
+    // A page that points at a playbook the vault does not list stops a sync like any other card would.
+    for (const { playbook } of POINTERS) {
+      rmSync(join(root, `vault/Playbooks/${playbook}/card.json`));
+      out = run(vault, '--check');
+      assert.equal(out.status, 1);
+      assert.match(out.stderr, /no card/);
+      put(`vault/Playbooks/${playbook}/card.json`, JSON.stringify({ status: 'published', reveal: [] }));
+    }
+    assert.equal(run(vault, '--check').status, 0);
 
     // A copy changed here, or an original changed there, is a difference; the copies check sees the first alone.
     put(copyOf(first), 'edited here\n');
@@ -205,7 +306,6 @@ function selftest() {
     assert.equal(copies().status, 0, copies().stderr);
     // A place that holds a folder, a record reached through a link, or an original whose folder is a link: each is
     // found before the first skill is written, so no skill and no record is left half done.
-    const lockPath = 'site/astro/scripts/playbooks/copies.lock.json';
     const lockBefore = get(lockPath);
     rmSync(join(root, copyOf(last)));
     mkdirSync(join(root, copyOf(last)));

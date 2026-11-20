@@ -178,6 +178,11 @@ export function record(group, paths, root = ROOT) {
   renameSync(`${target}.tmp`, target);
 }
 
+/** -> every path a sync has recorded as its copy; none when no sync has recorded one. */
+export function recorded(root = ROOT) {
+  return Object.values(lockOf(root)?.copies ?? {}).flatMap((files) => Object.keys(files));
+}
+
 /** Sync scripts that copy from the vault's Playbooks/ without asking the card or recording what they wrote. */
 function unguarded(root) {
   const scripts = join(root, 'astro', 'scripts');
