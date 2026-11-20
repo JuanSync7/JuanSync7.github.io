@@ -8,7 +8,7 @@
 //   npm run playbooks:selftest                          prove each refusal with invented cards
 import { execFile } from 'node:child_process';
 import { realpathSync } from 'node:fs';
-import { lstat, mkdir, mkdtemp, readdir, readFile, rename, rm, symlink, writeFile } from 'node:fs/promises';
+import { lstat, mkdir, mkdtemp, open, readdir, readFile, rename, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -101,10 +101,16 @@ export async function synchronize(read, site, write) {
   const drift = actual !== expected;
   if (write && drift) {
     // Written beside the file and moved over it, so a write that fails half way leaves the old list whole.
+    // The draft is made new ('wx'): anything already standing at its name, a link included, stops the write.
     await mkdir(dirname(target), { recursive: true });
     const draft = `${target}.${process.pid}.tmp`;
+    const handle = await open(draft, 'wx');
     try {
-      await writeFile(draft, expected, 'utf8');
+      try {
+        await handle.writeFile(expected, 'utf8');
+      } finally {
+        await handle.close();
+      }
       await rename(draft, target);
     } finally {
       await rm(draft, { force: true });
@@ -182,6 +188,25 @@ async function selftest() {
     await assert.rejects(synchronize(async () => list(card), root, true));
     await rm(blocked, { recursive: true });
     assert.equal(await readFile(target, 'utf8'), kept);
+    // A link planted at the draft's name is not followed: the file it points to and the list both stay.
+    await writeFile(join(root, 'elsewhere.json'), 'not ours\n');
+    await symlink(join(root, 'elsewhere.json'), blocked);
+    await assert.rejects(synchronize(async () => list(card), root, true), { code: 'EEXIST' });
+    await rm(blocked);
+    assert.equal(await readFile(join(root, 'elsewhere.json'), 'utf8'), 'not ours\n');
+    assert.equal(await readFile(target, 'utf8'), kept);
+    assert.equal((await lstat(target)).isSymbolicLink(), false);
+    // The vault's command: its list is taken when it ends well, and refused when it does not, whatever it printed.
+    const gate = async (exit) => {
+      const vault = join(root, 'vault' + exit);
+      await mkdir(join(vault, '_scripts'), { recursive: true });
+      await writeFile(join(vault, '_scripts', 'playbook_cards.py'), 'import sys\nprint(' + JSON.stringify(list(card, agent)) + ')\nsys.exit(' + exit + ')\n');
+      return synchronize(() => fromVault(vault), root, true);
+    };
+    assert.deepEqual(await gate(0), { cards: 2, drift: false, written: false });
+    await assert.rejects(gate(7), /did not give a list \(exit 7\)/);
+    await assert.rejects(synchronize(() => fromVault(join(root, 'vault0', '_scripts')), root, true), { code: 'ENOENT' });
+    assert.equal(await readFile(target, 'utf8'), kept);
     // Run through a link, the script still runs: a call with no vault is refused, it does not end in silence.
     const link = join(root, 'cards-link.mjs');
     await symlink(fileURLToPath(import.meta.url), link);
@@ -202,7 +227,7 @@ async function selftest() {
     await symlink(join(root, 'elsewhere.json'), target);
     await assert.rejects(synchronize(async () => list(card), root, true), /not a regular file/);
     assert.equal(await readFile(join(root, 'elsewhere.json'), 'utf8'), kept);
-    console.log('Playbook card sync selftest: compare, write once, order, the five fields, a failed write, a run through a link, and 41 refusals passed.');
+    console.log('Playbook card sync selftest: compare, write once, order, the five fields, a failed write, a planted link, a vault that refuses, a run through a link, and 41 refusals passed.');
   } finally {
     await rm(root, { recursive: true, force: true });
   }
