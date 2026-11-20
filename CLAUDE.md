@@ -111,8 +111,9 @@ repository holds of one is a copy to use, brought over by that playbook's own sy
 (`figure:sync`, `design-system:sync`, `drawing:sync`, `lettering:sync`, `blueprint:sync`).
 The copy goes one way only. When using a copy shows a rule is wrong or missing, change the playbook
 in the vault and sync again; never edit a copy here and never copy one back.
-A sync copies only the files the playbook's card reveals and stops, copying nothing, when asked for
-any other (the vault's owner adds a file to a card, a sync never does). Each sync records the hash
+A sync copies only the files a published card reveals and stops, copying nothing, when the card is
+a draft or it is asked for any other file (the vault's owner publishes a card and adds a file to
+it, a sync never does). Each sync records the hash
 of what it wrote in `astro/scripts/playbooks/copies.lock.json`; `npm run playbooks:copies:check`
 (in `npm run check`, so in CI) fails when a recorded copy was changed or removed here, or when a
 sync script that copies from the vault's `Playbooks/` does not ask the card and record.

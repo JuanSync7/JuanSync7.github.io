@@ -1,7 +1,7 @@
 // The copies of vault playbooks this repository holds. The original of every playbook is in the experience
 // vault; a sync copies files here to be used, and two rules keep them copies:
-//  - a sync copies only the files the playbook's card reveals (the vault owner's list of what may be shown), and
-//    stops, copying nothing, when it is asked for any other;
+//  - a sync copies only the files a published card reveals (the vault owner's list of what may be shown), and
+//    stops, copying nothing, when the card is a draft or it is asked for any other file;
 //  - every sync records the hash of each file it wrote in copies.lock.json, and the check (in npm run check, so in
 //    CI, which never reads the vault) fails when a copy no longer matches: a copy is changed in the vault and
 //    synced again, never edited here.
@@ -45,6 +45,10 @@ export function revealed(vault, playbook, files) {
   }
   if (!isRecord(card) || !Array.isArray(card.reveal))
     throw new Error(`${playbook}: its card has no list of files to reveal, so nothing is copied`);
+  if (card.status !== 'published')
+    throw new Error(
+      `${playbook}: its card is not published, so nothing is copied; only the vault's owner publishes a card`,
+    );
   if (!files.length) throw new Error(`${playbook}: no file was asked for; a sync of nothing is not a sync`);
   const hidden = files.filter((file) => !card.reveal.includes(file));
   if (hidden.length)
@@ -166,15 +170,26 @@ function selftest() {
   try {
     // The card decides what a sync may copy.
     const vault = join(root, 'vault');
-    put('vault/Playbooks/welding/card.json', JSON.stringify({ id: 'welding', reveal: ['SKILL.md', 'kernel/arc.ts'] }));
+    put(
+      'vault/Playbooks/welding/card.json',
+      JSON.stringify({ id: 'welding', status: 'published', reveal: ['SKILL.md', 'kernel/arc.ts'] }),
+    );
     revealed(vault, 'welding', ['SKILL.md', 'kernel/arc.ts']);
     revealed(vault, 'welding', ['SKILL.md']);
     assert.throws(() => revealed(vault, 'welding', ['SKILL.md', 'RULES.md']), /does not reveal RULES\.md/);
     assert.throws(() => revealed(vault, 'welding', []), /sync of nothing/);
     assert.throws(() => revealed(vault, 'fitting', ['SKILL.md']), /no card/);
-    put('vault/Playbooks/fitting/card.json', JSON.stringify({ id: 'fitting' }));
+    // A card the owner has not published copies nothing, whatever it lists: a draft's list is not yet a decision.
+    for (const status of ['draft', 'withdrawn', undefined, 'Published']) {
+      put('vault/Playbooks/fitting/card.json', JSON.stringify({ id: 'fitting', status, reveal: ['SKILL.md'] }));
+      assert.throws(() => revealed(vault, 'fitting', ['SKILL.md']), /is not published/);
+    }
+    put('vault/Playbooks/fitting/card.json', JSON.stringify({ id: 'fitting', status: 'published' }));
     assert.throws(() => revealed(vault, 'fitting', ['SKILL.md']), /no list of files/);
-    put('vault/Playbooks/fitting/card.json', JSON.stringify({ id: 'fitting', reveal: 'SKILL.md' }));
+    put(
+      'vault/Playbooks/fitting/card.json',
+      JSON.stringify({ id: 'fitting', status: 'published', reveal: 'SKILL.md' }),
+    );
     assert.throws(() => revealed(vault, 'fitting', ['SKILL.md']), /no list of files/);
     put('vault/Playbooks/fitting/card.json', 'null');
     assert.throws(() => revealed(vault, 'fitting', ['SKILL.md']), /no list of files/);
