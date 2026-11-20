@@ -103,6 +103,22 @@ old file first. The body names a diagram by id (`<Diagram id="…" />`, no impor
 in `src/data/diagrams/`. The vault's `Notes/Protocols/Site pieces.md` owns the record;
 `library:sync:selftest` (in `npm run check`) proves each refusal. CI never reads the vault.
 
+## Playbooks and agents
+
+The original of every playbook and agent is in the experience vault (`Playbooks/<id>/`); what this
+repository holds of one is a copy to use, brought over by that playbook's own sync
+(`figure:sync`, `design-system:sync`, `drawing:sync`, `lettering:sync`, `blueprint:sync`).
+The copy goes one way only. When using a copy shows a rule is wrong or missing, change the playbook
+in the vault and sync again; never edit a copy here and never copy one back.
+
+`/playbooks/` is the register: one card per agent and playbook, and a card is all the site shows of
+one (id, kind, title, description, detail). The vault owns the cards and decides which are public;
+`npm run playbooks:sync -- --vault <vault>` compares `src/data/playbooks.json` with the vault's
+published list and `--write` writes it. The sync runs the vault's own gate, checks the list a second
+time, and refuses (never repairs) a field it does not know, markup, or an empty list. Never edit
+`playbooks.json` by hand, and never give the page a field the vault's list does not carry.
+`playbooks:selftest` (in `npm run check`) proves each refusal. CI never reads the vault.
+
 ## Writing lessons
 
 Before generating, backfilling or editing a lesson, read the experience vault's
