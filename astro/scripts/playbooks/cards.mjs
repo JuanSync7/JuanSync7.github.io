@@ -21,9 +21,10 @@ export const KINDS = ['agent', 'playbook'];
 const TARGET = ['src', 'data', 'playbooks.json'];
 const ID = /^[a-z0-9]+(?:[_-][a-z0-9]+)*$/;
 const MARKUP = /[<>&]/;
-// Characters a reader cannot see: controls, formats, line and paragraph breaks, half of a pair, and the
-// ones a browser draws as nothing (a filler, a variation selector).
-const UNSEEN = /[\p{Cc}\p{Cf}\p{Zl}\p{Zp}\p{Cs}\p{Default_Ignorable_Code_Point}]/u;
+// Characters a reader cannot see: controls, formats, half of a pair, and the
+// ones a browser draws as nothing (a filler, a variation selector, the blank braille cell). The only
+// white space a card may hold is the plain space, so no tab, line break or wide space.
+const UNSEEN = /[\p{Cc}\p{Cf}\p{Cs}\p{Default_Ignorable_Code_Point}\u2800]|(?! )\s/u;
 
 const isRecord = (value) => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 const sameKeys = (value, keys) => Object.keys(value).sort().join() === [...keys].sort().join();
@@ -54,6 +55,10 @@ export function publicList(text) {
     if (seen.has(card.id)) throw new Error(`${where}: the id is listed twice`);
     seen.add(card.id);
   });
+  // JSON.parse keeps the last of two fields with one name, which would repair the list by dropping the other.
+  // A valid list holds a known number of strings, so one more means a field was given twice.
+  const strings = String(text).match(/"(?:[^"\\]|\\.)*"/g).length;
+  if (strings !== 3 + 2 * FIELDS.length * data.playbooks.length) throw new Error('the list gives a field twice');
   const playbooks = [...data.playbooks]
     .sort((a, b) => (a.id < b.id ? -1 : 1))
     .map((card) => Object.fromEntries(FIELDS.map((field) => [field, card[field]])));
@@ -153,6 +158,7 @@ async function selftest() {
     await refused(list({ ...card, detail: 'Tack > run.' }), /markup/);
     await refused(list({ ...card, detail: 'Tack < run.' }), /markup/);
     await refused(list({ ...card, description: 'Joins two\nplates.' }), /cannot see/);
+    await refused(list({ ...card, description: 'Joins two\u0007plates.' }), /cannot see/);
     await refused(list({ ...card, description: 'Joins two\u200bplates.' }), /cannot see/);
     await refused(list({ ...card, description: 'Joins two\u2028plates.' }), /cannot see/);
     await refused(list({ ...card, description: 'Joins two\u2029plates.' }), /cannot see/);
@@ -161,11 +167,26 @@ async function selftest() {
     await refused(list({ ...card, description: 'Joins two\u3164plates.' }), /cannot see/);
     await refused(list({ ...card, description: 'Joins two\ufe0fplates.' }), /cannot see/);
     await refused(list({ ...card, description: 'Joins two\ud800plates.' }), /cannot see/);
+    await refused(list({ ...card, description: 'Joins two\u2800plates.' }), /cannot see/);
+    await refused(list({ ...card, description: 'Joins two\u00a0plates.' }), /cannot see/);
+    await refused(list(card).replace('"title":"Welding"', '"title":"Fitting","title":"Welding"'), /field twice/);
+    await refused(list(card).replace('"schema":', '"schema":"playbooks-public/0","schema":'), /field twice/);
     await refused(list({ ...card, id: 'Welding/..' }), /folder name/);
     await refused(list({ ...card, kind: 'skill' }), /unknown kind/);
     await refused(list(card, { ...agent, id: card.id }), /listed twice/);
     assert.equal(await readFile(target, 'utf8'), kept);
     assert.deepEqual(await readdir(dirname(target)), ['playbooks.json']);
+    // A write goes to a draft beside the file first: when the draft cannot be written, the list is untouched.
+    const blocked = target + '.' + process.pid + '.tmp';
+    await mkdir(blocked);
+    await assert.rejects(synchronize(async () => list(card), root, true));
+    await rm(blocked, { recursive: true });
+    assert.equal(await readFile(target, 'utf8'), kept);
+    // Run through a link, the script still runs: a call with no vault is refused, it does not end in silence.
+    const link = join(root, 'cards-link.mjs');
+    await symlink(fileURLToPath(import.meta.url), link);
+    await assert.rejects(promisify(execFile)(process.execPath, [link]), /A vault checkout is required/);
+    await rm(link);
     // A file this sync did not write is never replaced.
     await writeFile(target, 'export default [];\n');
     await assert.rejects(synchronize(good, root, true), /not a list this sync wrote/);
@@ -181,7 +202,7 @@ async function selftest() {
     await symlink(join(root, 'elsewhere.json'), target);
     await assert.rejects(synchronize(async () => list(card), root, true), /not a regular file/);
     assert.equal(await readFile(join(root, 'elsewhere.json'), 'utf8'), kept);
-    console.log('Playbook card sync selftest: compare, write once, order, the five fields, and 36 refusals passed.');
+    console.log('Playbook card sync selftest: compare, write once, order, the five fields, a failed write, a run through a link, and 41 refusals passed.');
   } finally {
     await rm(root, { recursive: true, force: true });
   }
