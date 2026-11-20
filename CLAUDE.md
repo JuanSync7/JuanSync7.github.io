@@ -127,7 +127,8 @@ The skills and agents this site made for itself (`site-taste`, `tabletop-room`, 
 file is `AGENT.md` there, and a whole skill folder here is the vault's: the files copied are exactly the
 ones the published card reveals, and a file here the card does not name stops the run. Every card is read
 before anything is written. `skills:selftest` (in `npm run check`) proves each refusal. A new skill of this
-kind is filed in the vault first and added to `SKILLS` in that script.
+kind is filed in the vault first and added to `SKILLS` in that script. A skill enters `copies.lock.json`
+at its first sync from a published card; until then `playbooks:copies:check` does not see an edit to it.
 
 `/playbooks/` is the register: one card per agent and playbook, and a card is all the site shows of
 one (id, kind, title, description, detail). The vault owns the cards and decides which are public;
