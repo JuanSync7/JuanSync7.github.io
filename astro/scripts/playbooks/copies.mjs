@@ -39,14 +39,32 @@ const hash = (path) => createHash('sha256').update(readFileSync(path)).digest('h
 const isRecord = (value) => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 const NAME = /^[A-Za-z0-9_-][A-Za-z0-9._-]*$/;
 const plainName = (file) => typeof file === 'string' && file.split('/').every((part) => NAME.test(part));
-const isLink = (path) => lstatSync(path, { throwIfNoEntry: false })?.isSymbolicLink() ?? false;
+// What is at a path, without following a link: null when nothing is, or when a part of the way there is a file.
+const at = (path) => {
+  try {
+    return lstatSync(path, { throwIfNoEntry: false }) ?? null;
+  } catch (error) {
+    if (error.code === 'ENOTDIR') return null;
+    throw error;
+  }
+};
+const isLink = (path) => at(path)?.isSymbolicLink() ?? false;
 const inside = (path) => !isAbsolute(path) && normalize(path) === path && !path.split('/').includes('..');
 
 /** -> the files the published card of the vault's playbook reveals; throws when there is no such card or list. */
 export function shown(vault, playbook) {
+  const folder = join(vault, 'Playbooks', playbook);
+  let real = null;
+  try {
+    real = realpathSync(folder);
+  } catch {
+    real = null; // no folder: no card, said below
+  }
+  if (real !== null && real !== join(realpathSync(vault), 'Playbooks', playbook))
+    throw new Error(`${playbook}: its folder in the vault is a link, so nothing is copied`);
   let card;
   try {
-    card = JSON.parse(readFileSync(join(vault, 'Playbooks', playbook, 'card.json'), 'utf8'));
+    card = JSON.parse(readFileSync(join(folder, 'card.json'), 'utf8'));
   } catch {
     throw new Error(`${playbook}: the vault holds no card that can be read for it, so nothing is copied`);
   }
@@ -85,7 +103,7 @@ export function revealed(vault, playbook, files, targets = [], root = ROOT) {
     if (real !== join(realpathSync(folder), file) || !lstatSync(real).isFile())
       throw new Error(`${playbook}: ${file} is a link or not a file in the vault, so nothing is copied`);
   }
-  ours(targets, root);
+  ours([...targets, LOCK, `${LOCK}.tmp`], root);
 }
 
 /** The same, for a sync script: says why and ends the run. */
@@ -96,10 +114,14 @@ export function ours(paths, root = ROOT) {
     const full = isAbsolute(path) ? path : join(root, path);
     const rel = relative(root, full);
     if (!inside(rel)) throw new Error(`${path} is not a file of this repository`);
-    let at = dirname(full);
-    while (!existsSync(at) && !isLink(at)) at = dirname(at);
-    if (isLink(full) || isLink(at) || realpathSync(at) !== join(base, relative(root, at)))
-      throw new Error(`${rel} is reached through a link; a copy is a plain file of this repository`);
+    let dir = dirname(full);
+    while (!existsSync(dir) && !isLink(dir)) dir = dirname(dir);
+    const linked = new Error(`${rel} is reached through a link; a copy is a plain file of this repository`);
+    const odd = new Error(`${rel} is not a plain file; a copy is a plain file of this repository`);
+    if (isLink(dir) || realpathSync(dir) !== join(base, relative(root, dir))) throw linked;
+    if (!at(dir).isDirectory()) throw odd;
+    if (isLink(full)) throw linked;
+    if (!(at(full)?.isFile() ?? true)) throw odd;
   }
 }
 
@@ -130,9 +152,11 @@ function lockOf(root) {
 /** Records what a sync just wrote: group is the playbook's name here, paths the files (absolute, or from root). */
 export function record(group, paths, root = ROOT) {
   if (!paths.length) throw new Error(`${group}: a sync that wrote nothing has nothing to record`);
-  const lock = lockOf(root) ?? { schema: SCHEMA, copies: {} };
   const base = realpathSync(root);
+  let lock;
   try {
+    ours([LOCK, `${LOCK}.tmp`], root); // before the record is read: a linked record is another place's file
+    lock = lockOf(root) ?? { schema: SCHEMA, copies: {} };
     ours(paths, root);
   } catch (error) {
     throw new Error(`${group}: ${error.message}`);
@@ -204,8 +228,9 @@ export function compare(root = ROOT) {
       }
       try {
         ours([path], root);
-      } catch {
-        problems.push(`${group}: ${path} is reached through a link, not the copy`);
+      } catch (error) {
+        const why = /not a plain file/.test(error.message) ? 'is not a plain file' : 'is reached through a link';
+        problems.push(`${group}: ${path} ${why}, not the copy`);
         continue;
       }
       let have = null;
@@ -268,6 +293,20 @@ function selftest() {
     assert.throws(() => revealed(vault, 'welding', ['link.md']), /link\.md is a link or not a file/);
     symlinkSync('kernel', join(vault, 'Playbooks/welding/linked'));
     assert.throws(() => revealed(vault, 'welding', ['linked/arc.ts']), /linked\/arc\.ts is a link or not a file/);
+    // The folder itself is the vault's own: a linked folder, or a linked Playbooks, would hand over another place's
+    // files under a playbook's name, card and all.
+    put(
+      'vault/Private/brazing/card.json',
+      JSON.stringify({ id: 'brazing', status: 'published', reveal: ['SKILL.md'] }),
+    );
+    put('vault/Private/brazing/SKILL.md', 'Kept apart.\n');
+    symlinkSync(join(vault, 'Private/brazing'), join(vault, 'Playbooks/brazing'));
+    assert.throws(() => revealed(vault, 'brazing', ['SKILL.md']), /its folder in the vault is a link/);
+    assert.throws(() => shown(vault, 'brazing'), /its folder in the vault is a link/);
+    rmSync(join(vault, 'Playbooks/brazing'));
+    mkdirSync(join(root, 'vault2'));
+    symlinkSync(join(vault, 'Playbooks'), join(root, 'vault2/Playbooks'));
+    assert.throws(() => revealed(join(root, 'vault2'), 'welding', ['SKILL.md']), /its folder in the vault is a link/);
     // A card the owner has not published copies nothing, whatever it lists: a draft's list is not yet a decision.
     for (const status of ['draft', 'withdrawn', undefined, 'Published']) {
       put('vault/Playbooks/fitting/SKILL.md', 'Measure twice.\n');
@@ -338,6 +377,38 @@ function selftest() {
     assert.throws(() => ours([join(outside, 'x.md')], root), /not a file of this repository/);
     assert.throws(() => record('welding', ['skills/welding/LINK.md'], root), /reached through a link/);
     assert.throws(() => record('fitting', ['skills/alias/SKILL.md'], root), /reached through a link/);
+    assert.deepEqual(compare(root), { files: 2, groups: 2, problems: [] });
+    // A place that holds something other than a file is refused before anything is written, not found out by the
+    // write that fails after others succeeded.
+    mkdirSync(join(root, 'skills/welding/dir.md'));
+    assert.throws(() => ours(['skills/welding/dir.md'], root), /is not a plain file/);
+    assert.throws(() => ours(['skills/welding/SKILL.md/deep.md'], root), /is not a plain file/);
+    assert.throws(
+      () => revealed(vault, 'welding', ['SKILL.md'], ['skills/welding/dir.md'], root),
+      /is not a plain file/,
+    );
+    rmSync(join(root, 'skills/welding/dir.md'), { recursive: true });
+    // The record and the file it is first written to are places a sync writes too: a link there would be written
+    // through, into whatever it points at.
+    const before = readFileSync(join(root, LOCK), 'utf8');
+    for (const place of [`${LOCK}.tmp`, LOCK]) {
+      if (place === LOCK) rmSync(join(root, LOCK));
+      symlinkSync(join(vault, 'Playbooks/welding/RULES.md'), join(root, place));
+      assert.throws(
+        () => revealed(vault, 'welding', ['SKILL.md'], ['skills/welding/SKILL.md'], root),
+        /reached through a link/,
+      );
+      assert.throws(() => record('welding', ['skills/welding/SKILL.md'], root), /reached through a link/);
+      assert.equal(readFileSync(join(vault, 'Playbooks/welding/RULES.md'), 'utf8'), 'Hidden.\n');
+      rmSync(join(root, place));
+    }
+    put(LOCK, before);
+    assert.deepEqual(compare(root), { files: 2, groups: 2, problems: [] });
+    rmSync(join(root, 'skills/fitting/SKILL.md'));
+    mkdirSync(join(root, 'skills/fitting/SKILL.md'));
+    assert.deepEqual(compare(root).problems, ['fitting: skills/fitting/SKILL.md is not a plain file, not the copy']);
+    rmSync(join(root, 'skills/fitting/SKILL.md'), { recursive: true });
+    put('skills/fitting/SKILL.md', 'Measure twice.\n');
     assert.deepEqual(compare(root), { files: 2, groups: 2, problems: [] });
     const kept = readFileSync(join(root, 'skills/fitting/SKILL.md'), 'utf8');
     rmSync(join(root, 'skills/fitting/SKILL.md'));

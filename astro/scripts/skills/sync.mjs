@@ -16,6 +16,7 @@ import {
   readFileSync,
   readdirSync,
   realpathSync,
+  renameSync,
   rmSync,
   symlinkSync,
   writeFileSync,
@@ -201,6 +202,31 @@ function selftest() {
     assert.equal(copies().status, 1);
     rmSync(join(root, copyOf(last)));
     put(copyOf(last), get(original(last)));
+    assert.equal(copies().status, 0, copies().stderr);
+    // A place that holds a folder, a record reached through a link, or an original whose folder is a link: each is
+    // found before the first skill is written, so no skill and no record is left half done.
+    const lockPath = 'site/astro/scripts/playbooks/copies.lock.json';
+    const lockBefore = get(lockPath);
+    rmSync(join(root, copyOf(last)));
+    mkdirSync(join(root, copyOf(last)));
+    refusal({}, /is not a plain file/);
+    rmSync(join(root, copyOf(last)), { recursive: true });
+    put(copyOf(last), get(original(last)));
+    symlinkSync(join(root, original(last, 'RULES.md')), join(root, `${lockPath}.tmp`));
+    refusal({}, /reached through a link/);
+    assert.equal(get(original(last, 'RULES.md')), 'Hidden rules.\n');
+    rmSync(join(root, `${lockPath}.tmp`));
+    const apart = join(root, 'vault/Apart');
+    mkdirSync(apart);
+    renameSync(join(root, 'vault/Playbooks', folderOf(last)), join(apart, folderOf(last)));
+    symlinkSync(join(apart, folderOf(last)), join(root, 'vault/Playbooks', folderOf(last)));
+    out = run(vault);
+    assert.equal(out.status, 1);
+    assert.match(out.stderr, /its folder in the vault is a link/);
+    assert.equal(get(copyOf(first)), `# ${first.name}\nRead \`kernel/INDEX.md\`.\n`);
+    rmSync(join(root, 'vault/Playbooks', folderOf(last)));
+    renameSync(join(apart, folderOf(last)), join(root, 'vault/Playbooks', folderOf(last)));
+    assert.equal(get(lockPath), lockBefore);
     assert.equal(copies().status, 0, copies().stderr);
     refusal({ reveal: 'SKILL.md' }, /no list of files/);
     const agent = SKILLS.find((s) => s.agent);
