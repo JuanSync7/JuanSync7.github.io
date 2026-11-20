@@ -62,6 +62,9 @@ export function shown(vault, playbook) {
   }
   if (real !== null && real !== join(realpathSync(vault), 'Playbooks', playbook))
     throw new Error(`${playbook}: its folder in the vault is a link, so nothing is copied`);
+  // The vault itself may be named through a link (the owner's own path to it is one); nothing inside it may be.
+  if (real !== null && at(join(folder, 'card.json')) && !at(join(folder, 'card.json')).isFile())
+    throw new Error(`${playbook}: its card in the vault is a link or not a file, so nothing is copied`);
   let card;
   try {
     card = JSON.parse(readFileSync(join(folder, 'card.json'), 'utf8'));
@@ -143,9 +146,28 @@ function lockOf(root) {
     if (error.code === 'ENOENT') return null;
     throw error;
   }
-  const lock = JSON.parse(text);
+  let lock = null;
+  try {
+    lock = JSON.parse(text);
+  } catch {
+    lock = null; // not JSON: said below
+  }
   if (!isRecord(lock) || lock.schema !== SCHEMA || !isRecord(lock.copies))
     throw new Error('copies.lock.json is not a record of copies');
+  return lock;
+}
+
+/** Throws unless a sync named group may write paths and then record them: each is a plain file of this repository,
+ *  the record can be read, and no other playbook has recorded one of them. A sync asks before it writes. */
+export function claimable(group, paths, root = ROOT) {
+  ours([LOCK, `${LOCK}.tmp`, ...paths], root); // before the record is read: a linked record is another place's file
+  const lock = lockOf(root) ?? { schema: SCHEMA, copies: {} };
+  for (const path of paths) {
+    const rel = relative(root, isAbsolute(path) ? path : join(root, path));
+    for (const [other, files] of Object.entries(lock.copies))
+      if (other !== group && isRecord(files) && rel in files)
+        throw new Error(`${rel} is already the copy ${other} wrote`);
+  }
   return lock;
 }
 
@@ -155,9 +177,7 @@ export function record(group, paths, root = ROOT) {
   const base = realpathSync(root);
   let lock;
   try {
-    ours([LOCK, `${LOCK}.tmp`], root); // before the record is read: a linked record is another place's file
-    lock = lockOf(root) ?? { schema: SCHEMA, copies: {} };
-    ours(paths, root);
+    lock = claimable(group, paths, root);
   } catch (error) {
     throw new Error(`${group}: ${error.message}`);
   }
@@ -165,9 +185,6 @@ export function record(group, paths, root = ROOT) {
   for (const path of paths) {
     const rel = relative(base, realpathSync(isAbsolute(path) ? path : join(root, path)));
     if (!inside(rel)) throw new Error(`${group}: ${path} is not a file of this repository`);
-    for (const [other, files] of Object.entries(lock.copies)) {
-      if (other !== group && rel in files) throw new Error(`${group}: ${rel} is already the copy ${other} wrote`);
-    }
     entries[rel] = hash(join(base, rel));
   }
   lock.copies[group] = Object.fromEntries(Object.entries(entries).sort(([a], [b]) => (a < b ? -1 : 1)));
@@ -178,9 +195,12 @@ export function record(group, paths, root = ROOT) {
   renameSync(`${target}.tmp`, target);
 }
 
-/** -> every path a sync has recorded as its copy; none when no sync has recorded one. */
+/** -> every path a sync has recorded as its copy, read as strictly as the check reads it; none when no sync has. */
 export function recorded(root = ROOT) {
-  return Object.values(lockOf(root)?.copies ?? {}).flatMap((files) => Object.keys(files));
+  ours([LOCK], root);
+  return Object.values(lockOf(root)?.copies ?? {}).flatMap((files) =>
+    isRecord(files) ? Object.keys(files).filter((path) => inside(path) && HASH.test(files[path])) : [],
+  );
 }
 
 /** Sync scripts that copy from the vault's Playbooks/ without asking the card or recording what they wrote. */
@@ -228,6 +248,7 @@ export function compare(root = ROOT) {
   const problems = unguarded(root);
   let files = 0;
   const groups = Object.entries(lock.copies);
+  const writer = new Map();
   if (!groups.length) problems.push('copies.lock.json records no copy; a check of nothing is not a pass');
   for (const [group, entries] of groups) {
     if (!isRecord(entries) || !Object.keys(entries).length) {
@@ -240,6 +261,11 @@ export function compare(root = ROOT) {
         problems.push(`${group}: an entry is not a file of this repository with its hash`);
         continue;
       }
+      if (writer.has(path)) {
+        problems.push(`${group}: ${path} is also recorded as the copy ${writer.get(path)} wrote`);
+        continue;
+      }
+      writer.set(path, group);
       try {
         ours([path], root);
       } catch (error) {
@@ -321,6 +347,11 @@ function selftest() {
     mkdirSync(join(root, 'vault2'));
     symlinkSync(join(vault, 'Playbooks'), join(root, 'vault2/Playbooks'));
     assert.throws(() => revealed(join(root, 'vault2'), 'welding', ['SKILL.md']), /its folder in the vault is a link/);
+    // The card is the vault's own file too: a linked card would let another place say what is shown.
+    put('vault/Private/card.json', JSON.stringify({ id: 'soldering', status: 'published', reveal: ['SKILL.md'] }));
+    put('vault/Playbooks/soldering/SKILL.md', 'Flux first.\n');
+    symlinkSync(join(vault, 'Private/card.json'), join(vault, 'Playbooks/soldering/card.json'));
+    assert.throws(() => shown(vault, 'soldering'), /its card in the vault is a link/);
     // A card the owner has not published copies nothing, whatever it lists: a draft's list is not yet a decision.
     for (const status of ['draft', 'withdrawn', undefined, 'Published']) {
       put('vault/Playbooks/fitting/SKILL.md', 'Measure twice.\n');
@@ -457,6 +488,19 @@ function selftest() {
     assert.match(compare(root).problems[0], /with its hash/);
     put(LOCK, JSON.stringify({ schema: SCHEMA, copies: null }));
     assert.throws(() => compare(root), /not a record of copies/);
+    // One copy is one playbook's: a record that gives it to two is not one a sync wrote, and a sync finds that,
+    // or a record it cannot read, before it writes.
+    const twice = { 'skills/welding/SKILL.md': hash(join(root, 'skills/welding/SKILL.md')) };
+    hand({ welding: twice, fitting: twice });
+    assert.deepEqual(compare(root).problems, [
+      'fitting: skills/welding/SKILL.md is also recorded as the copy welding wrote',
+    ]);
+    put(LOCK, '{broken');
+    assert.throws(() => compare(root), /not a record of copies/);
+    assert.throws(() => claimable('welding', ['skills/welding/SKILL.md'], root), /not a record of copies/);
+    hand({ fitting: twice });
+    assert.throws(() => claimable('welding', ['skills/welding/SKILL.md'], root), /already the copy fitting wrote/);
+    claimable('fitting', [join(root, 'skills/welding/SKILL.md')], root);
     // A sync script that copies from the vault asks the card and records; one that copies from elsewhere need not.
     hand({ welding: { 'skills/welding/SKILL.md': hash(join(root, 'skills/welding/SKILL.md')) } });
     put('astro/scripts/bricks/sync.mjs', "copy(join(kit, 'bricks/src'));\n");

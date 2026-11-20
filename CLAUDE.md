@@ -128,14 +128,16 @@ The skills and agents this site made for itself (`site-taste`, `tabletop-room`, 
 `.claude/agents/<name>.md`) are copies too: `npm run skills:sync -- <vault> [--check] [name]`
 (`scripts/skills/sync.mjs`). A skill's folder in the vault is its name with underscores, an agent's own
 file is `AGENT.md` there, and a whole skill folder here is the vault's: the files copied are exactly the
-ones the published card reveals, and a file here the card does not name stops the run. Every card is read
-before anything is written. `skills:selftest` (in `npm run check`) proves each refusal. A new skill of this
+ones the published card reveals, and a file here the card does not name stops the run. Every card and the record of copies are read
+before anything is written, so a record that cannot be read, or a place another playbook's sync already wrote,
+stops the run with every copy as it was. `skills:selftest` (in `npm run check`) proves each refusal. A new skill of this
 kind is filed in the vault first and added to `SKILLS` in that script. A skill enters `copies.lock.json`
 at its first sync from a published card; until then `playbooks:copies:check` does not see an edit to it.
 `npm run skills:claimed` (in `npm run check`, no vault needed) fails for a folder in `.claude/skills` or a file
 in `.claude/agents` that is not in `SKILLS`, not recorded by another playbook's sync, and not one of `POINTERS`
 (a page the site wrote that only points at a playbook the vault lists; the with-vault sync reads that card), and
-for a name on either list with nothing here.
+for a name on either list with nothing here, a listed folder with no `SKILL.md`, and a `.claude` folder reached
+through a link. The copy check also fails a record that gives one copy to two playbooks.
 
 `/playbooks/` is the register: one card per agent and playbook, and a card is all the site shows of
 one (id, kind, title, description, detail). The vault owns the cards and decides which are public;

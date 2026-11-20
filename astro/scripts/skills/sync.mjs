@@ -12,6 +12,7 @@ import { spawnSync } from 'node:child_process';
 import {
   cpSync,
   existsSync,
+  lstatSync,
   mkdirSync,
   mkdtempSync,
   readFileSync,
@@ -26,7 +27,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
-import { record, recorded, revealed, shown } from '../playbooks/copies.mjs';
+import { claimable, record, recorded, revealed, shown } from '../playbooks/copies.mjs';
 import { syncPlaybook } from '../playbooks/sync.mjs';
 
 export const SKILLS = [
@@ -72,6 +73,10 @@ function plan(vault, { name, agent = false }) {
     reveal,
     pairs.map(([, to]) => here(`.claude/skills/${name}/${to}`)),
   );
+  claimable(
+    name,
+    pairs.map(([, to]) => here(`.claude/skills/${name}/${to}`)),
+  );
   if (reveal.includes(AGENT) !== agent)
     throw new Error(
       `${playbook}: ${agent ? `an agent needs ${AGENT} on its card` : `${AGENT} is on the card of a skill that is not an agent here`}`,
@@ -87,6 +92,10 @@ function plan(vault, { name, agent = false }) {
 /** -> [problems, how many were looked at]: a skill folder or agent file here that no sync brings from the vault and
  *  no pointer names, and a name on a list with nothing here. Reads this repository only. */
 export function unclaimed(root = ROOT) {
+  const what = (path) => lstatSync(join(root, path), { throwIfNoEntry: false });
+  const linked = ['.claude', '.claude/skills', '.claude/agents'].filter((path) => what(path)?.isSymbolicLink());
+  if (linked.length)
+    return [linked.map((path) => `${path} is reached through a link, not a folder of this repository`), 0];
   const entries = (path) =>
     existsSync(join(root, path)) ? readdirSync(join(root, path), { withFileTypes: true }) : [];
   const [inSkills, inAgents] = [entries('.claude/skills'), entries('.claude/agents')];
@@ -101,7 +110,12 @@ export function unclaimed(root = ROOT) {
       .map((e) => `.claude/agents/${e.name}: not a plain file of this repository named <agent>.md`),
   ];
   if (!skills.length && !odd.length) return [['.claude/skills holds no skill: a check of nothing is not a pass'], 0];
-  const copied = recorded(root);
+  let copied;
+  try {
+    copied = recorded(root);
+  } catch (error) {
+    return [[error.message], 0];
+  }
   const listed = [...SKILLS, ...POINTERS].map((s) => s.name);
   const problems = [...odd];
   for (const name of skills)
@@ -110,7 +124,10 @@ export function unclaimed(root = ROOT) {
   for (const name of agents)
     if (!SKILLS.some((s) => s.agent && s.name === name) && !copied.includes(`.claude/agents/${name}.md`))
       problems.push(`.claude/agents/${name}.md: no sync brings it from the vault; file it there and add it to SKILLS`);
-  for (const name of listed) if (!skills.includes(name)) problems.push(`${name}: named here and not in .claude/skills`);
+  for (const name of listed)
+    if (!skills.includes(name)) problems.push(`${name}: named here and not in .claude/skills`);
+    else if (!what(`.claude/skills/${name}/SKILL.md`)?.isFile())
+      problems.push(`${name}: its folder holds no SKILL.md, so it is a skill in name only`);
   for (const { name, agent } of SKILLS)
     if (agent && !agents.includes(name)) problems.push(`${name}: named as an agent and not in .claude/agents`);
   return [problems, skills.length + agents.length];
@@ -261,6 +278,35 @@ function selftest() {
     fails(/holds no skill/);
     renameSync(aside, join(root, 'site/.claude/skills'));
     assert.equal(claimed().status, 0, claimed().stderr);
+    // A listed folder with no page in it is a skill in name only; a folder of skills reached through a link is
+    // another place's; and a record that is a link, or an entry that is no file with its hash, claims nothing.
+    renameSync(join(root, copyOf(last)), aside);
+    fails(/holds no SKILL\.md/);
+    renameSync(aside, join(root, copyOf(last)));
+    renameSync(join(root, 'site/.claude'), aside);
+    symlinkSync(aside, join(root, 'site/.claude'));
+    fails(/\.claude is reached through a link/);
+    rmSync(join(root, 'site/.claude'));
+    renameSync(aside, join(root, 'site/.claude'));
+    put('site/.claude/skills/brazing/SKILL.md', 'No list has this.\n');
+    const kept = get(lockPath);
+    const withBrazing = (entries) => {
+      const lock = JSON.parse(kept);
+      lock.copies.brazing = entries;
+      return JSON.stringify(lock);
+    };
+    put(lockPath, withBrazing({ '.claude/skills/brazing/../brazing/SKILL.md': 'a'.repeat(64) }));
+    fails(/brazing: no sync brings it/);
+    put(lockPath, withBrazing({ '.claude/skills/brazing/SKILL.md': 'short' }));
+    fails(/brazing: no sync brings it/);
+    put('elsewhere.json', withBrazing({ '.claude/skills/brazing/SKILL.md': 'a'.repeat(64) }));
+    rmSync(join(root, lockPath));
+    symlinkSync(join(root, 'elsewhere.json'), join(root, lockPath));
+    fails(/copies\.lock\.json is reached through a link/);
+    rmSync(join(root, lockPath));
+    put(lockPath, kept);
+    rmSync(join(root, 'site/.claude/skills/brazing'), { recursive: true });
+    assert.equal(claimed().status, 0, claimed().stderr);
     // A page that points at a playbook the vault does not list stops a sync like any other card would.
     for (const { playbook } of POINTERS) {
       rmSync(join(root, `vault/Playbooks/${playbook}/card.json`));
@@ -345,6 +391,40 @@ function selftest() {
     renameSync(join(apart, folderOf(last)), join(root, 'vault/Playbooks', folderOf(last)));
     assert.equal(get(lockPath), lockBefore);
     assert.equal(copies().status, 0, copies().stderr);
+    // A record that cannot be read, or one in which another playbook already wrote a place, is found then too.
+    put(lockPath, '{broken');
+    refusal({}, /not a record of copies/);
+    const foreign = JSON.parse(lockBefore);
+    foreign.copies.foreign = { [copyOf(last).slice('site/'.length)]: 'a'.repeat(64) };
+    put(lockPath, JSON.stringify(foreign));
+    refusal({}, /is already the copy foreign wrote/);
+    assert.equal(get(lockPath), JSON.stringify(foreign));
+    // A playbook's own sync asks the same before it writes its first file.
+    put('vault/Playbooks/brazing/card.json', JSON.stringify({ status: 'published', reveal: ['SKILL.md'] }));
+    put('vault/Playbooks/brazing/SKILL.md', 'Clean the joint.\n');
+    put(
+      'site/astro/scripts/brazing/sync.mjs',
+      "import { syncPlaybook } from '../playbooks/sync.mjs';\nsyncPlaybook({ name: 'brazing', playbook: 'brazing', skill: '.claude/skills/brazing', files: [['SKILL.md', 'SKILL.md']] });\n",
+    );
+    const brazing = () =>
+      spawnSync(process.execPath, [join(root, 'site/astro/scripts/brazing/sync.mjs'), vault], { encoding: 'utf8' });
+    foreign.copies.foreign = { '.claude/skills/brazing/SKILL.md': 'a'.repeat(64) };
+    for (const text of [JSON.stringify(foreign), '{broken']) {
+      put(lockPath, text);
+      out = brazing();
+      assert.equal(out.status, 1, out.stdout);
+      assert.match(
+        out.stderr,
+        /Playbook copy refused: brazing: .*(already the copy foreign wrote|not a record of copies)/,
+      );
+      assert.equal(get('site/.claude/skills/brazing/SKILL.md'), null);
+    }
+    put(lockPath, lockBefore);
+    assert.equal(brazing().status, 0, brazing().stderr);
+    assert.equal(get('site/.claude/skills/brazing/SKILL.md'), 'Clean the joint.\n');
+    rmSync(join(root, 'site/.claude/skills/brazing'), { recursive: true });
+    rmSync(join(root, 'site/astro/scripts/brazing'), { recursive: true });
+    put(lockPath, lockBefore);
     refusal({ reveal: 'SKILL.md' }, /no list of files/);
     const agent = SKILLS.find((s) => s.agent);
     const plain = SKILLS.find((s) => !s.agent);

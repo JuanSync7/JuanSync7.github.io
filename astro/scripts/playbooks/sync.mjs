@@ -6,7 +6,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { mustReveal, record } from './copies.mjs';
+import { claimable, mustReveal, record } from './copies.mjs';
 
 const ROOT = fileURLToPath(new URL('../../../', import.meta.url));
 const here = (p) => join(ROOT, p);
@@ -24,6 +24,17 @@ export function syncPlaybook({ name, playbook, skill, files }, argv = process.ar
     files.map(([from]) => from),
     files.map(([, to]) => here(`${skill}/${to}`)),
   );
+  if (flag !== '--check') {
+    try {
+      claimable(
+        name,
+        files.map(([, to]) => here(`${skill}/${to}`)),
+      );
+    } catch (error) {
+      console.error(`Playbook copy refused: ${name}: ${error.message}`);
+      process.exit(1);
+    }
+  }
   const renames = files.filter(([from]) => from !== 'SKILL.md').map(([from, to]) => [`\`${from}\``, `\`${to}\``]);
   const localise = (from, text) =>
     from === 'SKILL.md' ? renames.reduce((t, [a, b]) => t.split(a).join(b), text) : text;
