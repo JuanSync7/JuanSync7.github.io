@@ -35,8 +35,8 @@ const hash = (path) => createHash('sha256').update(readFileSync(path)).digest('h
 const isRecord = (value) => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 const inside = (path) => !isAbsolute(path) && normalize(path) === path && !path.split('/').includes('..');
 
-/** Throws unless the card of the vault's playbook reveals every one of files (paths in the playbook's folder). */
-export function revealed(vault, playbook, files) {
+/** -> the files the published card of the vault's playbook reveals; throws when there is no such card or list. */
+export function shown(vault, playbook) {
   let card;
   try {
     card = JSON.parse(readFileSync(join(vault, 'Playbooks', playbook, 'card.json'), 'utf8'));
@@ -49,8 +49,14 @@ export function revealed(vault, playbook, files) {
     throw new Error(
       `${playbook}: its card is not published, so nothing is copied; only the vault's owner publishes a card`,
     );
+  return card.reveal;
+}
+
+/** Throws unless the card of the vault's playbook reveals every one of files (paths in the playbook's folder). */
+export function revealed(vault, playbook, files) {
+  const reveal = shown(vault, playbook);
   if (!files.length) throw new Error(`${playbook}: no file was asked for; a sync of nothing is not a sync`);
-  const hidden = files.filter((file) => !card.reveal.includes(file));
+  const hidden = files.filter((file) => !reveal.includes(file));
   if (hidden.length)
     throw new Error(
       `${playbook}: its card does not reveal ${hidden.join(', ')}; the vault's owner adds a file to the card, a sync never does`,
@@ -176,6 +182,7 @@ function selftest() {
     );
     revealed(vault, 'welding', ['SKILL.md', 'kernel/arc.ts']);
     revealed(vault, 'welding', ['SKILL.md']);
+    assert.deepEqual(shown(vault, 'welding'), ['SKILL.md', 'kernel/arc.ts']);
     assert.throws(() => revealed(vault, 'welding', ['SKILL.md', 'RULES.md']), /does not reveal RULES\.md/);
     assert.throws(() => revealed(vault, 'welding', []), /sync of nothing/);
     assert.throws(() => revealed(vault, 'fitting', ['SKILL.md']), /no card/);
