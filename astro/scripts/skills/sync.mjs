@@ -299,6 +299,10 @@ function selftest() {
     fails(/brazing: no sync brings it/);
     put(lockPath, withBrazing({ '.claude/skills/brazing/SKILL.md': 'short' }));
     fails(/brazing: no sync brings it/);
+    for (const nothing of ['.claude/skills/brazing/gone.md', '.claude/skills/brazing/']) {
+      put(lockPath, withBrazing({ [nothing]: 'a'.repeat(64) }));
+      fails(/brazing: no sync brings it/);
+    }
     put('elsewhere.json', withBrazing({ '.claude/skills/brazing/SKILL.md': 'a'.repeat(64) }));
     rmSync(join(root, lockPath));
     symlinkSync(join(root, 'elsewhere.json'), join(root, lockPath));
@@ -413,10 +417,7 @@ function selftest() {
       put(lockPath, text);
       out = brazing();
       assert.equal(out.status, 1, out.stdout);
-      assert.match(
-        out.stderr,
-        /Playbook copy refused: brazing: .*(already the copy foreign wrote|not a record of copies)/,
-      );
+      assert.match(out.stderr, /Playbook copy refused: .*(already the copy foreign wrote|not a record of copies)/);
       assert.equal(get('site/.claude/skills/brazing/SKILL.md'), null);
     }
     put(lockPath, lockBefore);

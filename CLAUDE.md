@@ -117,7 +117,7 @@ it, a sync never does). Each sync records the hash
 of what it wrote in `astro/scripts/playbooks/copies.lock.json`; `npm run playbooks:copies:check`
 (in `npm run check`, so in CI) fails when a recorded copy was changed or removed here, or when a
 sync script that copies from the vault's `Playbooks/` does not ask the card and record.
-`playbooks:copies:selftest` proves each refusal. An original and a copy are plain files reached through no link, named in letters, digits, `.`, `_` and `-`:
+`playbooks:copies:selftest` proves each refusal. An original and a copy are plain files reached through no link (the vault itself may be named through one; nothing inside it may be), named in letters, digits, `.`, `_` and `-`:
 a sync refuses anything else before it writes. The reading of sync scripts catches a guard that was forgotten,
 not one written round; a change to `copies.lock.json` is read in review, and only a sync's `--check`, run with
 the vault, compares a copy with its original. A new sync uses `mustReveal` and `record`

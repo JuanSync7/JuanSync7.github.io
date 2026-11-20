@@ -107,6 +107,7 @@ export function revealed(vault, playbook, files, targets = [], root = ROOT) {
       throw new Error(`${playbook}: ${file} is a link or not a file in the vault, so nothing is copied`);
   }
   ours([...targets, LOCK, `${LOCK}.tmp`], root);
+  lockOf(root); // a record that cannot be read stops a sync here, before it writes
 }
 
 /** The same, for a sync script: says why and ends the run. */
@@ -199,7 +200,11 @@ export function record(group, paths, root = ROOT) {
 export function recorded(root = ROOT) {
   ours([LOCK], root);
   return Object.values(lockOf(root)?.copies ?? {}).flatMap((files) =>
-    isRecord(files) ? Object.keys(files).filter((path) => inside(path) && HASH.test(files[path])) : [],
+    isRecord(files)
+      ? Object.keys(files).filter(
+          (path) => inside(path) && HASH.test(files[path]) && (at(join(root, path))?.isFile() ?? false),
+        )
+      : [],
   );
 }
 
@@ -498,6 +503,10 @@ function selftest() {
     put(LOCK, '{broken');
     assert.throws(() => compare(root), /not a record of copies/);
     assert.throws(() => claimable('welding', ['skills/welding/SKILL.md'], root), /not a record of copies/);
+    assert.throws(
+      () => revealed(vault, 'welding', ['SKILL.md'], ['skills/welding/SKILL.md'], root),
+      /not a record of copies/,
+    );
     hand({ fitting: twice });
     assert.throws(() => claimable('welding', ['skills/welding/SKILL.md'], root), /already the copy fitting wrote/);
     claimable('fitting', [join(root, 'skills/welding/SKILL.md')], root);
