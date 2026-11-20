@@ -139,7 +139,8 @@ one (id, kind, title, description, detail). The vault owns the cards and decides
 published list and `--write` writes it. The sync runs the vault's own gate, checks the list a second
 time, and refuses (never repairs) a field it does not know, markup, or an empty list. Never edit
 `playbooks.json` by hand, and never give the page a field the vault's list does not carry.
-`playbooks:selftest` (in `npm run check`) proves each refusal. CI never reads the vault.
+`playbooks:selftest` (in `npm run check`) proves each refusal. CI never reads the vault. The page's search
+filters on the words a card shows (`src/components/playbooks/match.ts`); `playbooks:search:selftest` holds it.
 
 ## Writing lessons
 

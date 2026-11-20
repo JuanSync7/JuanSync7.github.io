@@ -37,7 +37,7 @@
     "skills:selftest": "node scripts/skills/sync.mjs --selftest",
     "playbooks:copies:selftest": "node scripts/playbooks/copies.mjs --selftest",
     "playbooks:selftest": "node scripts/playbooks/cards.mjs --selftest",
-    "playbooks:search:selftest": "node scripts/playbooks/search-selftest.mjs",
+    "playbooks:search:selftest": "npx tsx scripts/playbooks/search-selftest.mjs",
     "lessons:sync": "node scripts/lessons/sync.mjs",
     "lessons:selftest": "node scripts/lessons/sync.mjs --selftest",
     "lessons:check": "node scripts/lessons/check.mjs",
