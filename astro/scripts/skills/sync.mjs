@@ -87,17 +87,23 @@ function plan(vault, { name, agent = false }) {
 /** -> [problems, how many were looked at]: a skill folder or agent file here that no sync brings from the vault and
  *  no pointer names, and a name on a list with nothing here. Reads this repository only. */
 export function unclaimed(root = ROOT) {
-  const dirs = (path) => (existsSync(join(root, path)) ? readdirSync(join(root, path), { withFileTypes: true }) : []);
-  const skills = dirs('.claude/skills')
-    .filter((e) => e.isDirectory())
-    .map((e) => e.name);
-  const agents = dirs('.claude/agents')
-    .filter((e) => e.isFile() && e.name.endsWith('.md'))
-    .map((e) => e.name.slice(0, -3));
-  if (!skills.length) return [['.claude/skills holds no skill: a check of nothing is not a pass'], 0];
+  const entries = (path) =>
+    existsSync(join(root, path)) ? readdirSync(join(root, path), { withFileTypes: true }) : [];
+  const [inSkills, inAgents] = [entries('.claude/skills'), entries('.claude/agents')];
+  const skills = inSkills.filter((e) => e.isDirectory()).map((e) => e.name);
+  const agents = inAgents.filter((e) => e.isFile() && e.name.endsWith('.md')).map((e) => e.name.slice(0, -3));
+  const odd = [
+    ...inSkills
+      .filter((e) => !e.isDirectory())
+      .map((e) => `.claude/skills/${e.name}: not a plain folder of this repository`),
+    ...inAgents
+      .filter((e) => !(e.isFile() && e.name.endsWith('.md')))
+      .map((e) => `.claude/agents/${e.name}: not a plain file of this repository named <agent>.md`),
+  ];
+  if (!skills.length && !odd.length) return [['.claude/skills holds no skill: a check of nothing is not a pass'], 0];
   const copied = recorded(root);
   const listed = [...SKILLS, ...POINTERS].map((s) => s.name);
-  const problems = [];
+  const problems = [...odd];
   for (const name of skills)
     if (!listed.includes(name) && !copied.some((path) => path.startsWith(`.claude/skills/${name}/`)))
       problems.push(`.claude/skills/${name}: no sync brings it from the vault; file it there and add it to SKILLS`);
@@ -226,6 +232,17 @@ function selftest() {
     put('site/.claude/agents/brazing.md', 'No list has this.\n');
     fails(/\.claude\/agents\/brazing\.md: no sync brings it/);
     rmSync(join(root, 'site/.claude/agents/brazing.md'));
+    // A link is not a folder or a file of this repository: what it points at is nobody's copy.
+    put('vault/Elsewhere/SKILL.md', 'Not of this repository.\n');
+    symlinkSync(join(root, 'vault/Elsewhere'), join(root, 'site/.claude/skills/brazing'));
+    fails(/\.claude\/skills\/brazing: not a plain folder/);
+    rmSync(join(root, 'site/.claude/skills/brazing'));
+    symlinkSync(join(root, 'vault/Elsewhere/SKILL.md'), join(root, 'site/.claude/agents/brazing.md'));
+    fails(/\.claude\/agents\/brazing\.md: not a plain file/);
+    rmSync(join(root, 'site/.claude/agents/brazing.md'));
+    put('site/.claude/skills/stray.md', 'A file where a skill folder goes.\n');
+    fails(/\.claude\/skills\/stray\.md: not a plain folder/);
+    rmSync(join(root, 'site/.claude/skills/stray.md'));
     // A name on the list with nothing here is a claim of nothing, and so is a list with no skill under it.
     const aside = join(root, 'aside');
     renameSync(join(root, `site/.claude/skills/${last.name}`), aside);
