@@ -7,7 +7,8 @@
 //   npm run playbooks:sync -- --vault <vault> --write   write the list
 //   npm run playbooks:selftest                          prove each refusal with invented cards
 import { execFile } from 'node:child_process';
-import { lstat, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { realpathSync } from 'node:fs';
+import { lstat, mkdir, mkdtemp, readdir, readFile, rename, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -20,7 +21,9 @@ export const KINDS = ['agent', 'playbook'];
 const TARGET = ['src', 'data', 'playbooks.json'];
 const ID = /^[a-z0-9]+(?:[_-][a-z0-9]+)*$/;
 const MARKUP = /[<>&]/;
-const UNSEEN = /[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/u;
+// Characters a reader cannot see: controls, formats, line and paragraph breaks, half of a pair, and the
+// ones a browser draws as nothing (a filler, a variation selector).
+const UNSEEN = /[\p{Cc}\p{Cf}\p{Zl}\p{Zp}\p{Cs}\p{Default_Ignorable_Code_Point}]/u;
 
 const isRecord = (value) => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 const sameKeys = (value, keys) => Object.keys(value).sort().join() === [...keys].sort().join();
@@ -92,8 +95,15 @@ export async function synchronize(read, site, write) {
   }
   const drift = actual !== expected;
   if (write && drift) {
+    // Written beside the file and moved over it, so a write that fails half way leaves the old list whole.
     await mkdir(dirname(target), { recursive: true });
-    await writeFile(target, expected, 'utf8');
+    const draft = `${target}.${process.pid}.tmp`;
+    try {
+      await writeFile(draft, expected, 'utf8');
+      await rename(draft, target);
+    } finally {
+      await rm(draft, { force: true });
+    }
   }
   return { cards: JSON.parse(expected).playbooks.length, drift, written: write && drift };
 }
@@ -129,28 +139,49 @@ async function selftest() {
     await refused(JSON.stringify({ schema: 'playbooks-public/2', playbooks: [card] }), /is not playbooks-public/);
     await refused(JSON.stringify({ schema: SCHEMA, playbooks: {} }), /no card/);
     await refused(list(), /no card/);
+    await refused(JSON.stringify({ schema: SCHEMA, playbooks: 'welding' }), /no card/);
     await refused(list('welding'), /not a record/);
     await refused(list({ ...card, topic: 'metalwork' }), /exactly the public fields/);
     await refused(list({ ...card, reveal: [] }), /exactly the public fields/);
+    await refused(list(card).replace('"id":', '"__proto__":{"private":"x"},"id":'), /exactly the public fields/);
     await refused(list({ id: card.id, kind: card.kind, title: card.title, description: card.description }), /exactly the public fields/);
     await refused(list({ ...card, detail: ['Tack first.'] }), /plain text/);
     await refused(list({ ...card, title: '' }), /plain text/);
     await refused(list({ ...card, title: ' Welding' }), /plain text/);
     await refused(list({ ...card, detail: 'Tack <b>first</b>.' }), /markup/);
     await refused(list({ ...card, detail: 'Tack &amp; run.' }), /markup/);
+    await refused(list({ ...card, detail: 'Tack > run.' }), /markup/);
+    await refused(list({ ...card, detail: 'Tack < run.' }), /markup/);
     await refused(list({ ...card, description: 'Joins two\nplates.' }), /cannot see/);
     await refused(list({ ...card, description: 'Joins two\u200bplates.' }), /cannot see/);
+    await refused(list({ ...card, description: 'Joins two\u2028plates.' }), /cannot see/);
+    await refused(list({ ...card, description: 'Joins two\u2029plates.' }), /cannot see/);
+    await refused(list({ ...card, description: 'Joins two\u0600plates.' }), /cannot see/);
+    await refused(list({ ...card, description: 'Joins two\u034fplates.' }), /cannot see/);
+    await refused(list({ ...card, description: 'Joins two\u3164plates.' }), /cannot see/);
+    await refused(list({ ...card, description: 'Joins two\ufe0fplates.' }), /cannot see/);
+    await refused(list({ ...card, description: 'Joins two\ud800plates.' }), /cannot see/);
     await refused(list({ ...card, id: 'Welding/..' }), /folder name/);
     await refused(list({ ...card, kind: 'skill' }), /unknown kind/);
     await refused(list(card, { ...agent, id: card.id }), /listed twice/);
     assert.equal(await readFile(target, 'utf8'), kept);
+    assert.deepEqual(await readdir(dirname(target)), ['playbooks.json']);
     // A file this sync did not write is never replaced.
     await writeFile(target, 'export default [];\n');
     await assert.rejects(synchronize(good, root, true), /not a list this sync wrote/);
     await writeFile(target, JSON.stringify({ playbooks: [] }));
     await assert.rejects(synchronize(good, root, true), /not a list this sync wrote/);
     assert.equal(await readFile(target, 'utf8'), JSON.stringify({ playbooks: [] }));
-    console.log('Playbook card sync selftest: compare, write once, order, the five fields, and 23 refusals passed.');
+    // Nor is anything that only stands where the file should be: a folder, or a link to a list elsewhere.
+    await rm(target);
+    await mkdir(target);
+    await assert.rejects(synchronize(good, root, true), /not a regular file/);
+    await rm(target, { recursive: true });
+    await writeFile(join(root, 'elsewhere.json'), kept);
+    await symlink(join(root, 'elsewhere.json'), target);
+    await assert.rejects(synchronize(async () => list(card), root, true), /not a regular file/);
+    assert.equal(await readFile(join(root, 'elsewhere.json'), 'utf8'), kept);
+    console.log('Playbook card sync selftest: compare, write once, order, the five fields, and 36 refusals passed.');
   } finally {
     await rm(root, { recursive: true, force: true });
   }
@@ -173,7 +204,7 @@ async function main() {
   if (!write && result.drift) process.exitCode = 1;
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (process.argv[1] && realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url))) {
   main().catch((error) => {
     console.error(`Playbook card sync refused: ${error.message}`);
     process.exitCode = 1;

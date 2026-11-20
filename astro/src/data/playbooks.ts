@@ -18,3 +18,8 @@ export const PLAYBOOK_KINDS = [
 ] as const;
 
 export const PLAYBOOKS: readonly PlaybookCard[] = list.playbooks;
+
+// The page groups cards by kind, so a card of a kind it has no group for would vanish without a word.
+const grouped: readonly string[] = PLAYBOOK_KINDS.map((kind) => kind.id);
+const stray = PLAYBOOKS.find((card) => !grouped.includes(card.kind));
+if (stray) throw new Error(`playbooks.json: "${stray.id}" has a kind the register has no group for`);
