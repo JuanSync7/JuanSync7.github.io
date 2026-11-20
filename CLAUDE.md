@@ -56,7 +56,8 @@ A blueprint names every part of a shared component, piece of page chrome or page
 part sizes, and the one token behind each size; it is the translator between someone reading the
 drawing and the code. Use the `blueprint` skill (`.claude/skills/blueprint/SKILL.md`, a playbook of
 the web design agent); its source is the experience vault's `Playbooks/blueprint`, and the kernel
-copies in `astro/src/blueprints/` are never edited here (`npm run blueprint:sync -- <vault>`). Specs are
+copies in `astro/src/blueprints/`, with the measuring harness beside them (`harness.ts`) and its runner
+(`scripts/blueprints/run.mjs`), are never edited here (`npm run blueprint:sync -- <vault>`). Specs are
 `astro/src/blueprints/<id>.ts` (structure only: never colours, motion or content). A request is matched
 to one row of `astro/src/blueprints/INDEX.md` or the person is asked. With the dev server up:
 `npm run blueprint:check` measures every blueprint on its real page at 1280 and 390 px, including that each
