@@ -209,6 +209,15 @@ export function verdict({ files, groups, problems }) {
 
 /** -> { files, groups, problems }: every way a recorded copy no longer holds what its sync wrote. */
 export function compare(root = ROOT) {
+  try {
+    ours([LOCK], root);
+  } catch {
+    return {
+      files: 0,
+      groups: 0,
+      problems: ['copies.lock.json is reached through a link, not the record a sync wrote'],
+    };
+  }
   const lock = lockOf(root);
   if (!lock) return { files: 0, groups: 0, problems: ['copies.lock.json is missing: no sync has recorded a copy'] };
   const problems = unguarded(root);
@@ -493,6 +502,17 @@ function selftest() {
       0,
       'Playbook copies: 2 files of 1 playbooks hold what their sync wrote.',
     ]);
+    // The record itself is this repository's own file: one reached through a link is another place's, and no pass.
+    const good = JSON.stringify({
+      schema: SCHEMA,
+      copies: { welding: { 'skills/welding/SKILL.md': hash(join(root, 'skills/welding/SKILL.md')) } },
+    });
+    put('elsewhere.json', good);
+    rmSync(join(root, LOCK));
+    symlinkSync(join(root, 'elsewhere.json'), join(root, LOCK));
+    assert.match(compare(root).problems[0], /copies\.lock\.json is reached through a link/);
+    assert.equal(verdict(compare(root))[0], 1);
+    rmSync(join(root, LOCK));
     put(LOCK, JSON.stringify({ schema: 'other/1', copies: {} }));
     assert.throws(() => compare(root), /not a record of copies/);
     console.log(
