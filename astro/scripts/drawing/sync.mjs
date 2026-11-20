@@ -7,6 +7,7 @@
 //   npm run drawing:sync -- <vault> --check  fail if any copy differs from the vault
 import { copyFileSync, mkdirSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { mustReveal, record } from '../playbooks/copies.mjs';
 
 const [vault, flag] = process.argv.slice(2);
 if (!vault) {
@@ -20,6 +21,11 @@ const FILES = [
   ...['SKILL.md', 'RULES.md', 'LOOK.md', 'STANDARDS.md'].map((f) => [f, `.claude/skills/drawing/${f}`]),
   ...kernel.map((f) => [`kernel/${f}`, `${KERNEL}/${f}`]),
 ];
+mustReveal(
+  vault,
+  'drawing',
+  FILES.map(([from]) => from),
+);
 const differ = [];
 mkdirSync(here('.claude/skills/drawing'), { recursive: true });
 mkdirSync(here(KERNEL), { recursive: true });
@@ -43,4 +49,10 @@ if (flag === '--check') {
     process.exit(1);
   }
   console.log(`drawing: ${FILES.length} files match the vault`);
-} else console.log(`drawing: synced ${FILES.length} files from the vault`);
+} else {
+  record(
+    'drawing',
+    FILES.map(([, to]) => here(to)),
+  );
+  console.log(`drawing: synced ${FILES.length} files from the vault`);
+}

@@ -4,6 +4,7 @@
 //   npm run lettering:sync -- <vault> --check  fail if any copy differs from the vault
 import { copyFileSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { mustReveal, record } from '../playbooks/copies.mjs';
 
 const [vault, flag] = process.argv.slice(2);
 if (!vault) {
@@ -15,6 +16,11 @@ const FILES = [
   ...['glyphs.ts', 'metrics.ts', 'outline.ts', 'font.ts', 'index.ts', 'README.md'].map((f) => [`kernel/${f}`, `src/lib/lettering/${f}`]),
   ...['build.mjs', 'specimen.mjs'].map((f) => [`checks/${f}`, `scripts/lettering/${f}`]),
 ];
+mustReveal(
+  vault,
+  'lettering',
+  FILES.map(([from]) => from),
+);
 const differ = [];
 for (const [from, to] of FILES) {
   const src = join(vault, 'Playbooks/lettering', from);
@@ -34,4 +40,10 @@ if (flag === '--check') {
     process.exit(1);
   }
   console.log(`lettering: ${FILES.length} files match the vault`);
-} else console.log(`lettering: synced ${FILES.length} files from the vault; now run npm run lettering:build`);
+} else {
+  record(
+    'lettering',
+    FILES.map(([, to]) => here(to)),
+  );
+  console.log(`lettering: synced ${FILES.length} files from the vault; now run npm run lettering:build`);
+}

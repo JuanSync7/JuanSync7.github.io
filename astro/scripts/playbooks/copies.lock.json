@@ -1,0 +1,56 @@
+{
+  "schema": "playbook-copies/1",
+  "copies": {
+    "blueprint": {
+      "astro/scripts/blueprints/run.mjs": "21138d011fa25ff2d36c1474aacf9b733f1db903315090fe8cfafcfc71f49543",
+      "astro/src/blueprints/catalogue.ts": "78ecf2bb251adbcdfee304e232cb2c8eaff8041ede84d6c33c8699c791f20623",
+      "astro/src/blueprints/dom.ts": "116e56a6656b749602f6d08bbf11e2378ee62bf99fc1b230e8e5cdf4952f98d9",
+      "astro/src/blueprints/drawing.ts": "7241fa46a7d3ce25ea86a12bd63af2c1e5e6dd2f5bf92176ac3b5c5d2ebbef5d",
+      "astro/src/blueprints/harness.ts": "b0a82125094eabeb7a014ece306cb2b45b0269d8f11f1754924297194ccf1add",
+      "astro/src/blueprints/measure.ts": "d178ef8c9fab9a7bc66bb639011f4027bdde9b2031309042931e27c1d2277628",
+      "astro/src/blueprints/overlay.ts": "c7747422326ee3abd26b50b729db3479a3452932100fd2f61348f91921ddf5bc",
+      "astro/src/blueprints/sizing.ts": "10d1b76293d56a3d95fe14b6c24de5dad76c7ee2c6ed11af172dcb90f6f91980",
+      "astro/src/blueprints/types.ts": "894133ade0b31ba01f95b355028a55ec070d4b1bb6fa31c865ba39ae108e18b9"
+    },
+    "design-system": {
+      ".claude/skills/design-system/SKILL.md": "a82bfdcfd8f4619a3d112cddd27b20066365eba6f1414284f5ddd38e45a1a81f",
+      ".claude/skills/design-system/references/checks.md": "c65a9f81612a7312b8541fadef939d6ed32320a192ff8855a6cba1131d4b5eb2",
+      ".claude/skills/design-system/references/look.md": "0546d513f1f2304b42fe10072a1dbd2b9c2e96dc4503061127358d19cd638cb5",
+      ".claude/skills/design-system/references/rules.md": "6a7fc75d03913b3b9ab5d3bb8f3b44e69105d5511ef052d8c6a72574c9a0f1f8",
+      ".claude/skills/design-system/references/tokens.md": "b8bb00414cb3290471d067fb4d8750df5c83c04278152d501de82d991f0e0590"
+    },
+    "drawing": {
+      ".claude/skills/drawing/LOOK.md": "26fc887267cb28e8b5a345786d6efdb2c39edbffbe56ccfd24e0aaa41c483bb0",
+      ".claude/skills/drawing/RULES.md": "93f3e45b9b6db3a008a34356ea105c90a8435bc94cebc9f0dc823edd81f3d78e",
+      ".claude/skills/drawing/SKILL.md": "190bbe99dbd5b28f2a61df2bd99764f31060741339c9be015fadbb9b9ff34b9f",
+      ".claude/skills/drawing/STANDARDS.md": "25b74c699a5787761b78d2ec9c5bd77d4a9ac8a7d5017cc5c93af28328c8950b",
+      "astro/src/figures/kit/drawing/base.ts": "1fd83f8315abe0c14a54412cf16489b2f77daebafb58ae33857c375a32ba76e9",
+      "astro/src/figures/kit/drawing/edges.ts": "e9016cda907e9cbb35edb943fb1c70a28ec4f01de92e5dd9bc26238e593f2b01",
+      "astro/src/figures/kit/drawing/frame.ts": "0af9119c0579c4c1bdbb4f525d9b700ad3a8cc624c23b8e6dc107002886e41b0",
+      "astro/src/figures/kit/drawing/ga.ts": "dc82125cd68a6fe76c5712cb2bfc07585bd2125e215c68fe778035ed944edd97",
+      "astro/src/figures/kit/drawing/lines.ts": "20a8cfe2bfe3b3c3c09116f05d7bff496c3272f49cdeb3302205bd15403674f7",
+      "astro/src/figures/kit/drawing/parts.ts": "f8e58594ef4e02a0823c58ef7ad049e3cae580ca680ffc9738498210a0410d17",
+      "astro/src/figures/kit/drawing/plan.ts": "a46246455ea80dc8fe6c6de3bdb107e74af387e2db2e4c7f3b86e07714523c93",
+      "astro/src/figures/kit/drawing/scene.ts": "472fe950626a4513370d1569b02ec50df6197de7b609807cdfbe7a3fbc1c7b39",
+      "astro/src/figures/kit/drawing/sheet.ts": "c10a4ac13fa2a95eb11194d25125e10549bc15a155c9a491cd33416d7c66ed79",
+      "astro/src/figures/kit/drawing/sketch.ts": "c5f85f0e051b6b2f337513e358468701bc6527edde208be10d3ff1d11ab6a4cb"
+    },
+    "figure": {
+      ".claude/skills/figure/SKILL.md": "1e98650a561817f8915fbb9866b5d51e444aa7b967bf79e6b7b9d661536df62a",
+      ".claude/skills/figure/references/kit.md": "9672e1e693dc1ce374a305101151cd606e0f3d2bce03a35a35aacf19956d1dec",
+      ".claude/skills/figure/references/look.md": "f721379f0e8d5664ff9e58fe4b6997ba83ca4624ea92ecd6f3dd824c7904454c",
+      ".claude/skills/figure/references/rules.md": "d26e570e75fef4dd2066723b84b0a4859e694c88f85e59baa0d7b3866b1acf57",
+      ".claude/skills/figure/references/styles.md": "c76b20793c26d899ca5f64cdf7bcd9bad55af4b371786018180a09da21eaa5a6"
+    },
+    "lettering": {
+      "astro/scripts/lettering/build.mjs": "f539839e527e9572515bc9a33fabca575dd8201de4cf3561a4a9e7ee395ed556",
+      "astro/scripts/lettering/specimen.mjs": "b815804ba0d5813797defdf59166fdd46d3e74dc46f131a750a6a303530c6062",
+      "astro/src/lib/lettering/README.md": "cd44aa2005d7273320976d4d0cbba6b57fcf3f8a28848c97eac19010e324e1bc",
+      "astro/src/lib/lettering/font.ts": "e9be0228487d92a52032ec55f3a16a3b399ab14b0868fb831168cd9e938e8ade",
+      "astro/src/lib/lettering/glyphs.ts": "c1803a626b68b7b0dc7f984063429f682f6c627a38fbbfc7ef243f510a63cc1e",
+      "astro/src/lib/lettering/index.ts": "e8cbc182083452f124532ccde8fad95c7f9fbb7f299f0f526e6ed3da58f66f12",
+      "astro/src/lib/lettering/metrics.ts": "f90aa13234116acd41434177495965738cd7e295ee0afc3b852071e50f19e4a6",
+      "astro/src/lib/lettering/outline.ts": "1f3196468da08ffd110cff4206ac6aa1b523b5531ca2cd9aadf41a0f1cd71d21"
+    }
+  }
+}

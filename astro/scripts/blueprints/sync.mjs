@@ -5,6 +5,7 @@
 //   npm run blueprint:sync -- <vault> --check  fail if any copy differs from the vault
 import { copyFileSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { mustReveal, record } from '../playbooks/copies.mjs';
 
 const [vault, flag] = process.argv.slice(2);
 if (!vault) {
@@ -20,6 +21,11 @@ const FILES = [
   ['checks/harness.ts', 'src/blueprints/harness.ts'],
   ['checks/run.mjs', 'scripts/blueprints/run.mjs'],
 ];
+mustReveal(
+  vault,
+  'blueprint',
+  FILES.map(([from]) => from),
+);
 const differ = [];
 for (const [from, to] of FILES) {
   const src = join(vault, 'Playbooks/blueprint', from);
@@ -39,4 +45,10 @@ if (flag === '--check') {
     process.exit(1);
   }
   console.log(`blueprint: ${FILES.length} files match the vault`);
-} else console.log(`blueprint: synced ${FILES.length} files from the vault; now run npm run blueprint:check`);
+} else {
+  record(
+    'blueprint',
+    FILES.map(([, to]) => here(to)),
+  );
+  console.log(`blueprint: synced ${FILES.length} files from the vault; now run npm run blueprint:check`);
+}
