@@ -75,6 +75,34 @@ sources; every other file's counts only go down).
 2. **`npm run posts:check` holds the mechanical rules** for posts dated from `rulesFrom` in `scripts/posts/config.json`: a one-sentence hook as the excerpt, no table above the first heading, a real opening before it, 3 to 5 headings, no links to other posts before the ending, length and read time, ending on a paragraph. It runs inside `npm run check`; `npm run posts:selftest` proves each rule still catches a post that breaks it. Change `config.json` only with a reason in the commit message.
 3. **Done means the check passed and a fresh reader compared it.** Before merging a new post, a fresh agent reads it against the previous draft (or a plain alternative) blind, with shuffled labels, and says which reads better and why (R-POST-11).
 
+## The library
+
+Posts (`src/content/blog/`) and articles (`src/content/learn/`) are pieces of one library. Every
+piece is read at `/library/<slug>`, whatever its kind, so a slug names one piece across both
+collections; `lessons` and `articles` are reserved for the kind indexes (`/library/lessons/`,
+`/library/articles/`, the field guides by topic). Build a link with `pieceHref`
+(`src/data/library.ts`), never a literal. `src/pages/library/[slug].astro` picks `PostPage` or
+`ArticlePage` (`src/components/library/`) by kind. Only `/learn/art-gallery/`, a reference
+sheet, keeps an old address.
+
+`src/data/library-legacy.json` is frozen: the addresses the site served before the library, each
+built as a forwarding page (`redirects` in `astro.config.mjs`), and the feed id each piece had,
+so a reader's app does not show old pieces as new. A new piece adds nothing to it; an entry leaves
+only with a reason in the commit message. `npm run library:check` (slugs, the legacy map) and
+`library:selftest` are in `npm run check`; `npm run library:pages` runs after a build and in CI
+(every piece built, every old address forwards, no page links to an old address, feed ids kept).
+
+An article can be maintained in the experience vault instead of here: its note in the vault's
+`Site/Articles/` holds one public record, the body, and a private trail of what it was made from.
+`npm run library:sync -- --vault <vault>` compares, `--write` writes `src/content/learn/<id>.mdx`,
+and the first front-matter line of a written file says so: change the note, never that file. The
+sync refuses private text in the public part (a wiki link, a comment, a private heading, code the
+page would run) and never strips it, validates every note before writing one, and replaces only a
+file it wrote; moving a hand-written article into the vault is a reviewed change that removes the
+old file first. The body names a diagram by id (`<Diagram id="…" />`, no import): the drawing stays
+in `src/data/diagrams/`. The vault's `Notes/Protocols/Site pieces.md` owns the record;
+`library:sync:selftest` (in `npm run check`) proves each refusal. CI never reads the vault.
+
 ## Writing lessons
 
 Before generating, backfilling or editing a lesson, read the experience vault's

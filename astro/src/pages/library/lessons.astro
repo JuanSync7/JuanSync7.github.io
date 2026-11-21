@@ -4,6 +4,7 @@ import NightPage from '../../layouts/NightPage.astro';
 import NightNav from '../../components/layout/NightNav.astro';
 import NightFooter from '../../components/layout/NightFooter.astro';
 import taxonomy from '../../config/lesson-taxonomy.json';
+import { LIBRARY } from '../../data/library';
 import '../../components/writing/lesson-browser.css';
 
 const lessons = (await getCollection('lessons'))
@@ -21,9 +22,9 @@ const day = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', y
 ---
 
 <NightPage title="Lessons · Juan Kok" description="Browse every lesson by category, date and tags.">
-  <NightNav current="writing" />
+  <NightNav current="library" />
   <main class="nt-wrap nt-section lesson-browser" data-lesson-browser>
-    <a class="lesson-back" href="/blog/#lessons">← Writing</a>
+    <a class="lesson-back" href={LIBRARY.lessonLog}>← {LIBRARY.label}</a>
     <header class="lesson-head">
       <span class="lesson-label">// lessons</span>
       <h1>Every lesson</h1>

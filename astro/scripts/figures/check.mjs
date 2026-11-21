@@ -37,7 +37,8 @@ const FIG_DIR = join(ROOT, 'src', 'figures');
 const FIX_DIR = join(FIG_DIR, 'fixtures');
 const TPL_DIR = join(FIG_DIR, 'templates');
 const FIX_TPL_DIR = join(FIX_DIR, 'templates');
-const POSTS = join(ROOT, 'src', 'content', 'blog');
+// The library's list shows posts and articles together, so their covers are judged as one set.
+const POSTS = ['blog', 'learn'].map((kind) => join(ROOT, 'src', 'content', kind));
 const SUPPORT = new Set(['types', 'define', 'defineThree', 'defineTemplate', 'registry']);
 
 const typesSrc = readFileSync(join(FIG_DIR, 'types.ts'), 'utf8');
@@ -227,11 +228,11 @@ function frontmatter(path) {
 }
 
 function readPosts() {
-  return existsSync(POSTS)
-    ? readdirSync(POSTS)
-        .filter((f) => /\.mdx?$/.test(f))
-        .map((f) => frontmatter(join(POSTS, f)))
-    : [];
+  return POSTS.filter((dir) => existsSync(dir)).flatMap((dir) =>
+    readdirSync(dir)
+      .filter((f) => /\.mdx?$/.test(f))
+      .map((f) => frontmatter(join(dir, f))),
+  );
 }
 
 /** The post covers: every post names a cover, either

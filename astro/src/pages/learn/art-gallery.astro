@@ -2,6 +2,7 @@
 /* Preview of the article-art system (dev/reference page).
    Two separate layers: MAIN ART (the subject) and 3D BACKGROUNDS (the space). */
 import TrackerLayout from '../../layouts/TrackerLayout.astro';
+import { LIBRARY } from '../../data/library';
 import ArticleArt from '../../components/trackers/ArticleArt.astro';
 import '../../components/trackers/tracker-skin.css';
 
@@ -38,7 +39,7 @@ const spaces = [
 ---
 <TrackerLayout title="Article art · system">
   <article class="release-article" style="max-width:900px">
-    <a class="back" href="/learn"><span class="arr">←</span> back to learn</a>
+    <a class="back" href={LIBRARY.articles}><span class="arr">←</span> back to field guides</a>
     <div class="eyebrow">Template concept</div>
     <h1>Article art</h1>
     <p class="sub">Two layers, composed per article: a <b>main art</b> (the subject) and an optional <b>3D background</b> (the space). Rule: if the main art already emulates a 3D object, it gets no background. Pure ink line-work, one solid accent, seeded by slug.</p>

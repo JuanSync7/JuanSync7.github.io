@@ -11,5 +11,5 @@
   "wordsPerMinute": 200,
   "readTimeTolerance": 1,
   "endingParagraphs": 2,
-  "internalLinkPrefixes": ["/blog/", "/learn/"]
+  "internalLinkPrefixes": ["/library/", "/blog/", "/learn/"]
 }

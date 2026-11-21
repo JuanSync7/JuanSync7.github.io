@@ -7,7 +7,7 @@ export const MEASURE = { min: 70, max: 81 };
 // Widths where the three columns have room for the full measure (below them the article fills
 // what is left, and the contents column folds away under 1180 px).
 const WIDTHS = [1440, 1728, 1920];
-const PAGES = ['/blog/the-same-drawing-fifty-times/', '/learn/agents-you-can-repeat/'];
+const PAGES = ['/library/the-same-drawing-fifty-times/', '/library/agents-you-can-repeat/'];
 
 export async function checkReadingMeasure(browser, base) {
   for (const width of WIDTHS) {
