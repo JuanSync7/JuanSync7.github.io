@@ -39,6 +39,8 @@ export interface Measured {
   sizes: SizeResult[];
   sizing: { id: number; name: string; want: Sizing; got: Sizing }[];
   problems: string[];
+  /** On a broken template view (`inWindow`, window.ts), the top of each band where the page is cut. */
+  breaks?: number[];
 }
 
 /** The two boxes a gap separates: the named parts, or the part's first two shown children. */
@@ -186,14 +188,4 @@ function measureRoot(root: HTMLElement | null, spec: Blueprint, view: View, size
   });
   for (const z of sizing) if (z.want !== z.got) problems.push(`${z.name} (${z.id}) should ${z.want} but ${z.got}s`);
   return { spec, view, top: root.getBoundingClientRect().top / zoomOf(root), boxes, sizes, sizing, problems };
-}
-
-/** A template drawn one window tall from its root's top (a long page shows its first screen):
- *  boxes cut there, sizes below it dropped. */
-export function inWindow(m: Measured): Measured {
-  if (m.spec.kind === 'component') return m;
-  const h = m.view.height - Math.max(0, Math.min(m.top, m.view.height / 2));
-  const boxes: Record<number, Box> = {};
-  for (const [id, b] of Object.entries(m.boxes)) if (b.y < h) boxes[Number(id)] = { ...b, h: Math.min(b.h, h - b.y) };
-  return { ...m, boxes, sizes: m.sizes.filter((x) => x.a[1] < h) };
 }

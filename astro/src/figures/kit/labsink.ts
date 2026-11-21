@@ -1,4 +1,4 @@
-import type { Sketch, V3 } from './monoline';
+import type { Sketch, V3 } from './drawing/monoline';
 import { beaker, erlenmeyer, testTube } from './labware';
 
 /** The wash side of the lab, along the left wall (x = 0): a sink unit with a gooseneck tap, an

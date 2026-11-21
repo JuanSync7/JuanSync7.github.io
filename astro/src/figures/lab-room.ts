@@ -6,8 +6,7 @@ import { solid, type Box } from './kit/hairline';
 import { COLONIES, grow, logged, plate, RUN } from './kit/labculture';
 import { labRoom } from './kit/labroom';
 import { ROOM } from './kit/labshell';
-import { monodraw, reveal, type Drawing } from './kit/monodraw';
-import { Sketch } from './kit/monoline';
+import { monodraw, reveal, Sketch, type Drawing } from './kit/draft';
 
 /** The lab, as a monoline isometric drawing: a room cut open at the corner, with a bench of
  *  glassware and instruments on the back wall, a glass-door fridge, a sink and drying rack on the
