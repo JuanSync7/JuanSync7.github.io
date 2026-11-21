@@ -1,0 +1,73 @@
+---
+// The slide icons' card: a row of marks in ink, the accent passing from one to the next, the way
+// a deck uses one complete feature per slide.
+import SlideIcon from '../ui/SlideIcon';
+import type { SlideIconId } from '../../data/slide-icons';
+
+const ICONS: readonly SlideIconId[] = ['flask', 'microscope', 'calipers', 'processor', 'chart', 'database', 'rocket', 'idea'];
+---
+
+<div class="icon-cycle page-ink" style={`--icon-count: ${ICONS.length}`}>
+  {
+    ICONS.map((id, i) => (
+      <span class="icon-cycle-cell" style={`--icon-i: ${i}`}>
+        <SlideIcon id={id} accent={false} decorative />
+        <SlideIcon id={id} accent decorative className="icon-cycle-lit" />
+      </span>
+    ))
+  }
+</div>
+
+<style>
+  .icon-cycle {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    place-content: center;
+    gap: var(--hf-space-6) var(--hf-space-8);
+    height: 100%;
+    padding: var(--hf-space-6) var(--hf-space-10);
+  }
+
+  .icon-cycle-cell {
+    position: relative;
+    display: block;
+    aspect-ratio: 1;
+    max-height: var(--hf-space-16);
+    justify-self: center;
+    width: 100%;
+    max-width: var(--hf-space-16);
+  }
+
+  .icon-cycle-cell :global(svg) {
+    position: absolute;
+    inset: 0;
+  }
+
+  .icon-cycle-cell :global(.icon-cycle-lit) {
+    opacity: 0;
+  }
+
+  .icon-cycle-cell:first-child :global(.icon-cycle-lit) {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .icon-cycle-cell :global(.icon-cycle-lit),
+    .icon-cycle-cell:first-child :global(.icon-cycle-lit) {
+      opacity: 0;
+      animation: icon-lit calc(var(--icon-count) * var(--nt-dur-cycle-step)) linear infinite;
+      animation-delay: calc(var(--icon-i) * var(--nt-dur-cycle-step));
+    }
+  }
+
+  @keyframes icon-lit {
+    0%,
+    11% {
+      opacity: 1;
+    }
+    14%,
+    100% {
+      opacity: 0;
+    }
+  }
+</style>

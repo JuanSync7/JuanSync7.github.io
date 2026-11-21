@@ -3,7 +3,12 @@ import slideStats from '../../data/slide-stats.json';
 import NightPage from '../../layouts/NightPage.astro';
 import NightNav from '../../components/layout/NightNav.astro';
 import NightFooter from '../../components/layout/NightFooter.astro';
+import SectionHead from '../../components/ui/SectionHead.astro';
+import Monogram from '../../components/ui/Monogram.astro';
 import FigureCanvas from '../../components/ui/FigureCanvas.tsx';
+import LabCard from '../../components/lab/LabCard.astro';
+import IconCycle from '../../components/lab/IconCycle.astro';
+import { ALL } from '../../blueprints';
 import { loadTemplate, templateIds } from '../../figures/registry';
 
 // Every template, read from the registry, so a new file in src/figures/templates shows up
@@ -13,51 +18,148 @@ const templates = await Promise.all(
   templateIds().map(async (id, i) => {
     const t = await loadTemplate(id);
     const seed = 7 + i * 31;
-    return { id, title: t.title, idea: t.idea, style: t.style, instance: `${id}~${seed}`, variant: t.instance(seed).variant };
+    return { id, title: t.title, idea: t.idea, style: t.style, seed, instance: `${id}~${seed}`, variant: t.instance(seed).variant };
   }),
 );
+
+// The pieces with no seed: one fixed reference each, shown by its own drawing.
+type Art = 'monogram' | 'sheet' | 'icons' | { figure: string };
+const tools: { href: string; kind: string; title: string; blurb: string; cta: string; notes: [string, string]; art: Art }[] = [
+  {
+    href: '/design-system/',
+    kind: 'design system',
+    title: 'The design system',
+    blurb: 'The tokens, page patterns and components this site is built from, each live on the page with its code.',
+    cta: 'Open the design system',
+    notes: ['tokens · patterns · components', 'WCAG 2.2 in both themes'],
+    art: 'monogram',
+  },
+  {
+    href: '/lab/blueprints/',
+    kind: 'blueprints',
+    title: 'Blueprints',
+    blurb: 'Every component and page drawn as an engineering sheet. Each part is numbered and each size is named by the token that sets it.',
+    cta: 'Read the blueprints',
+    notes: [`${ALL.length} blueprints`, 'measured at 1280 and 390 px'],
+    art: 'sheet',
+  },
+  {
+    href: '/lab/lego/',
+    kind: 'lego',
+    title: 'Designing in LEGO',
+    blurb: "From an engineer's drawing of the real part to a plan in shapes, then bricks, each one checked before it is drawn.",
+    cta: 'See how a model is built',
+    notes: ['first-angle drawing first', 'every brick checked'],
+    art: { figure: 'lego-f1' },
+  },
+  {
+    href: '/lab/slide-icons/',
+    kind: 'slide icons',
+    title: 'Slide icons',
+    blurb: 'Flat marks for slides and web pages, in a quiet ink with one complete feature in the accent. Search them and take the SVGs.',
+    cta: 'Browse the icons',
+    notes: [`${slideStats.count} marks`, 'SVG · transparent'],
+    art: 'icons',
+  },
+  {
+    href: '/lab/icon-kit/',
+    kind: 'hardware atlas',
+    title: 'The hardware atlas',
+    blurb: 'Twelve physical assemblies drawn in one language. Switch the view, lift the layers and download every SVG.',
+    cta: 'Open the atlas',
+    notes: ['12 assemblies', '24 SVG icons'],
+    art: { figure: 'hardware-atlas~7' },
+  },
+  {
+    href: '/anatomy/chip-package/',
+    kind: 'anatomy',
+    title: 'Inside a chip package',
+    blurb: "A phone processor's package taken apart one layer at a time, then an accelerator opened up and one die cut down to its transistors.",
+    cta: 'Step inside',
+    notes: ['one layer at a time', 'lid to transistor'],
+    art: { figure: 'chip-anatomy' },
+  },
+];
 ---
 
-<NightPage title="Lab · Juan Kok" description="The figure templates behind the drawings on this site: every one draws a different picture from each seed.">
+<NightPage title="Lab · Juan Kok" description="The lab: the kits this site is built with, and the figure templates that draw a different picture from every seed.">
   <NightNav current="lab" />
-  <main class="nt-wrap nt-section">
+  <main class="nt-wrap nt-section lab-page">
     <header class="lab-head">
       <span class="lab-label">// lab</span>
-      <h1>Figure templates</h1>
+      <h1>The lab</h1>
       <p>
-        Each template is a set of rules for drawing one kind of picture. A seed picks the choices (which object, which angle, how many
-        parts), seeded noise shapes the detail, and the template's grammar keeps every combination deliberate. Open one to walk its seeds.
+        Where the drawings on this site are made and tested. Six pieces are fixed references the site is built and checked against. The rest
+        are figure templates, which draw a different picture from every seed.
       </p>
-      <p class="lab-count">{templates.length} templates · 1,000,000,000 seeds each</p>
-      <p class="lab-also"><a href="/design-system/">The design system · the tokens, page patterns and components this site is built from, with their code</a></p>
-      <p class="lab-also"><a href="/lab/blueprints/">New: blueprints · every component and page drawn, each size named by its token</a></p>
-      <p class="lab-also"><a href="/lab/lego/">Designing in LEGO · from an engineer's drawing to a checked build</a></p>
-      <p class="lab-also"><a href="/lab/slide-icons/">Slide icons · {slideStats.count} flat marks for presentations</a></p>
-      <p class="lab-also"><a href="/lab/icon-kit/">New: the hardware atlas · 12 assemblies, 24 SVG icons</a></p>
-      <p class="lab-also"><a href="/anatomy/chip-package/">Also: inside a chip package, taken apart one layer at a time</a></p>
     </header>
-    <ul class="lab-grid">
-      {
-        templates.map((t) => (
-          <li class="lab-card">
-            <a href={`/lab/${t.id}/`}>
-              <div class="lab-stage">
+    <div class="lab-hero">
+      <FigureCanvas client:visible id="lab-room" />
+    </div>
+
+    <section class="lab-section lab-tools" aria-label="Tools">
+      <SectionHead
+        label="// 01 · tools"
+        title="Kits and references."
+        accent="No seed."
+        lead="Each one is fixed. It is the reference a page, a drawing or a model is held up against."
+      />
+      <ul class="lab-list">
+        {
+          tools.map((t) => (
+            <li>
+              <LabCard href={t.href} meta={[t.kind]} title={t.title} blurb={t.blurb} cta={t.cta} notes={t.notes}>
+                {t.art === 'monogram' ? (
+                  <div class="lab-mark">
+                    <Monogram intro="always" />
+                  </div>
+                ) : t.art === 'sheet' ? (
+                  <div class="lab-sheet">
+                    <img class="page-ink" src="/blueprints/home.png" alt="" loading="lazy" decoding="async" />
+                  </div>
+                ) : t.art === 'icons' ? (
+                  <IconCycle />
+                ) : (
+                  <FigureCanvas client:visible id={t.art.figure} />
+                )}
+              </LabCard>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="lab-section lab-seeded" aria-label="Figure templates">
+      <SectionHead
+        label="// 02 · seeded"
+        title="Figure templates."
+        accent="A new picture from every seed."
+        lead="Each template is a set of rules for drawing one kind of picture. A seed picks the choices (which object, which angle, how many parts), seeded noise shapes the detail, and the template's grammar keeps every combination deliberate. Open one to walk its seeds."
+      />
+      <p class="lab-count">{templates.length} templates · 1,000,000,000 seeds each</p>
+      <ul class="lab-list">
+        {
+          templates.map((t) => (
+            <li>
+              <LabCard
+                href={`/lab/${t.id}/`}
+                meta={[t.style, t.instance]}
+                title={t.title}
+                blurb={t.idea}
+                cta="Walk its seeds"
+                notes={[t.variant, `seed ${t.seed}`]}
+              >
                 <FigureCanvas
                   client:visible
                   id={t.instance}
                   data={t.id === 'pixel-still' ? { appearance: 'colour', view: 'isometric', angle: 135 } : undefined}
                 />
-              </div>
-              <span class="lab-meta">
-                {t.style} · {t.instance} · {t.variant}
-              </span>
-              <span class="lab-title">{t.title}</span>
-              <span class="lab-idea">{t.idea}</span>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+              </LabCard>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
   </main>
   <NightFooter />
 </NightPage>
@@ -68,21 +170,15 @@ const templates = await Promise.all(
     flex-direction: column;
     gap: var(--hf-space-3);
     max-width: var(--nt-measure);
-    margin-bottom: var(--hf-space-12);
-  }
-  .lab-label,
-  .lab-also a {
-    color: var(--nt-signal-text);
-  }
-
-  .lab-count,
-  .lab-meta {
-    font-family: var(--nt-mono);
-    font-size: var(--nt-fs-meta);
-    color: var(--nt-ink-muted);
+    margin-bottom: var(--hf-space-8);
   }
   .lab-label {
     color: var(--nt-signal-text);
+  }
+  .lab-count {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-ink-muted);
   }
   .lab-head h1 {
     font-size: var(--nt-fs-h1);
@@ -92,35 +188,55 @@ const templates = await Promise.all(
   .lab-head p {
     color: var(--nt-ink-soft);
   }
-  .lab-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--nt-card-min)), 1fr));
-    gap: var(--hf-space-12) var(--hf-space-8);
+  .lab-hero {
+    aspect-ratio: 3 / 2;
+    margin-bottom: var(--hf-space-16);
+  }
+  @media (max-width: 860px) {
+    .lab-hero {
+      aspect-ratio: 4 / 3;
+    }
+  }
+  .lab-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-8);
+    margin-bottom: var(--hf-space-16);
+  }
+  .lab-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-8);
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  .lab-card a {
+  .lab-mark {
+    position: absolute;
+    inset: var(--hf-space-8);
     display: flex;
-    flex-direction: column;
-    gap: var(--hf-space-2);
-    color: inherit;
-    text-decoration: none;
+    justify-content: center;
   }
-  .lab-stage {
-    aspect-ratio: 2 / 1;
-    margin-bottom: var(--hf-space-2);
+  .lab-sheet {
+    height: 100%;
+    overflow: hidden;
   }
-  .lab-title {
-    font-family: var(--nt-display);
-    font-size: var(--nt-fs-h4);
-    color: var(--nt-ink-strong);
+  .lab-sheet img {
+    display: block;
+    width: 160%;
+    max-width: none;
   }
-  .lab-card a:hover .lab-title {
-    color: var(--nt-signal-text);
+  @media (prefers-reduced-motion: no-preference) {
+    .lab-sheet img {
+      animation: lab-sheet-pan var(--nt-dur-pan) ease-in-out infinite alternate;
+    }
   }
-  .lab-idea {
-    font-size: var(--nt-fs-small);
-    color: var(--nt-ink-soft);
+  @keyframes lab-sheet-pan {
+    from {
+      transform: translate(0, 0);
+    }
+    to {
+      transform: translate(-37.5%, -18%);
+    }
   }
 </style>
