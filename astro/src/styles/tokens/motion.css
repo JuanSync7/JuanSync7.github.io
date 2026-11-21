@@ -7,6 +7,10 @@
   --nt-dur-morph: 460ms;
   /* A row's hairline turning signal on hover. */
   --nt-dur-hover: 250ms;
+  /* One mark's turn in the accent when a row of marks takes it in sequence (the lab's slide icons). */
+  --nt-dur-cycle-step: 1.4s;
+  /* A slow drift across a large drawing shown in a small window (the lab's blueprint sheet). */
+  --nt-dur-pan: 24s;
   /* Decelerating: fast start, soft landing, no overshoot. */
   --nt-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
