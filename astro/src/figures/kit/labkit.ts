@@ -1,4 +1,4 @@
-import type { Sketch, V3 } from './monoline';
+import type { Sketch, V3 } from './drawing/monoline';
 import { TOP } from './labshell';
 import { beaker, dish, erlenmeyer, glass, roundFlask, testTube } from './labware';
 

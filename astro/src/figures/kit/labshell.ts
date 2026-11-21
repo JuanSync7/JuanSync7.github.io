@@ -1,4 +1,4 @@
-import type { Sketch } from './monoline';
+import type { Sketch } from './drawing/monoline';
 import { erlenmeyer, glass, jar } from './labware';
 
 /** The lab room's shell and its fridge (`lab-room`). Metres; y up; the back wall's face is z = 0

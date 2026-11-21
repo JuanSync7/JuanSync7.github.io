@@ -1,5 +1,5 @@
 import { Matrix4 } from 'three';
-import type { Sketch, V3 } from './monoline';
+import type { Sketch, V3 } from './drawing/monoline';
 import { jar } from './labware';
 
 /** The back wall over the bench: a shelf of reagent bottles, a painting of hills, the periodic
