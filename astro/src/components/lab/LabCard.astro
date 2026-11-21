@@ -1,0 +1,41 @@
+---
+// One lab entry as a full-width row, after the featured explainer on the writing page: what it
+// is on the left (meta, title, what it does), its live drawing on the right with two notes under
+// it. One per row, so each drawing loads as it scrolls in. The whole card is the one link, so
+// its drawing is inside it (the room and island browser checks find the card that way).
+import './lab-card.css';
+
+export interface Props {
+  href: string;
+  /** The mono line above the title; the first entry is set in the signal. */
+  meta: readonly string[];
+  title: string;
+  blurb: string;
+  cta: string;
+  notes: readonly [string, string];
+}
+
+const { href, meta, title, blurb, cta, notes } = Astro.props;
+const [kind, ...rest] = meta;
+---
+
+<a class="lab-card" href={href}>
+  <div class="lab-card-copy">
+    <p class="lab-card-meta">
+      <span class="lab-card-kind">{kind}</span>
+      {rest.map((m) => <span>{m}</span>)}
+    </p>
+    <h3>{title}</h3>
+    <p class="lab-card-blurb">{blurb}</p>
+    <span class="lab-card-cta">{cta}</span>
+  </div>
+  <div class="lab-card-art">
+    <div class="lab-card-figure">
+      <slot />
+    </div>
+    <p class="lab-card-notes">
+      <span>{notes[0]}</span>
+      <span>{notes[1]}</span>
+    </p>
+  </div>
+</a>

@@ -1,12 +1,12 @@
 {
   "schema": "slide-maintenance-review/1",
   "verdict": "pass",
-  "base": "dd07a95b692a1a25e9ae4988f8fa7251d5fa26d6",
+  "base": "ee821abfa02c7c58294db20493dc11a667d7fdba",
   "candidate": "33c9ce46fb4112a746c8e3e7203d6b1c20b379580ca14f750ccd432eef1d5865",
   "author": "claude",
   "reviewer": "codex",
   "evidence": {
-    "path": "docs/design/slide-icons/runs/library-pages-maintenance-review.md",
-    "sha256": "bc608b32d6a7fb7853c00c3689b5294753d95e8ba66fa3869057e062ce8007c4"
+    "path": "docs/design/slide-icons/runs/library-pages-maintenance-review-2.md",
+    "sha256": "54ad4599cfcfee9360edc0e722c667fb9f0f1a0cf54bccbb52035023c036961d"
   }
 }
