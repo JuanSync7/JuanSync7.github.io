@@ -1,0 +1,88 @@
+/* The featured explainer's page (writing/featured-book.css), held still: a hairline panel with the
+   words on the left and the live drawing on the right. */
+.lab-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: var(--hf-space-8);
+  padding: var(--hf-space-10);
+  border: 1px solid var(--nt-line);
+  border-radius: var(--hf-radius-2xl);
+  background: var(--nt-panel);
+}
+
+.lab-card-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--hf-space-5);
+}
+
+.lab-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hf-space-2) var(--hf-space-4);
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-caption);
+  color: var(--nt-ink-muted);
+}
+
+.lab-card-kind {
+  color: var(--nt-signal-text);
+}
+
+.lab-card h3 {
+  font-size: var(--nt-fs-h2);
+  line-height: var(--nt-lh-heading);
+  letter-spacing: var(--nt-tracking-heading);
+}
+
+.lab-card-blurb {
+  color: var(--nt-ink-soft);
+}
+
+.lab-card .lab-card-cta {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--nt-hit);
+  color: var(--nt-signal-text);
+}
+
+.lab-card-art {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hf-space-3);
+  min-width: 0;
+}
+
+.lab-card-figure {
+  position: relative;
+  display: block;
+  aspect-ratio: 2 / 1;
+  border: 1px solid var(--nt-rule);
+  border-radius: var(--hf-radius-xl);
+  background: var(--nt-ground);
+  overflow: hidden;
+  color: inherit;
+}
+
+.lab-card-notes {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--hf-space-4);
+  font-family: var(--nt-mono);
+  font-size: var(--nt-fs-caption);
+  color: var(--nt-ink-faint);
+}
+
+@media (max-width: 860px) {
+  .lab-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--hf-space-6);
+    padding: var(--hf-space-6);
+  }
+
+  .lab-card-art {
+    order: -1;
+  }
+}
