@@ -1,3 +1,4 @@
+// One source: the experience vault's Playbooks/drawing/kernel. A project's copy is synced from it, never edited.
 import {
   BufferGeometry,
   CylinderGeometry,
@@ -13,11 +14,11 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
 import { LineSegments2 } from 'three/examples/jsm/lines/LineSegments2.js';
 import { LineSegmentsGeometry } from 'three/examples/jsm/lines/LineSegmentsGeometry.js';
-import { edgeModel, viewEdges } from './drawing/edges';
-import { hexOf, rgb } from './ink';
+import { edgeModel, viewEdges } from './edges';
+import { hexOf } from './host';
 import { posOf, type Fill, type Lines, type Part, type Sketch, type Tier } from './monoline';
 
-/** Draws a `kit/monoline.ts` sketch: plates merged per fill, lines merged per brightness, each
+/** Draws a `monoline.ts` sketch: plates merged per fill, lines merged per brightness, each
  *  moving set as its own group. Lines are the drawing kernel's fat lines, one CSS pixel wide at
  *  any pixel ratio, drawn after the plates (which are pushed back a hair) so a part's own outline
  *  is never lost in its face. */
@@ -40,11 +41,14 @@ export interface Drawing {
   spots: (n: number) => InstancedMesh;
 }
 
-/** The ink at opacity `a` over the ground, as one solid colour. */
-function onGround(a: number): string {
-  const [g, i] = [rgb('ground'), rgb('ink')];
-  const c = g.map((v, k) => Math.round(v + ((i[k] ?? v) - v) * a));
-  return `#${c.map((v) => v.toString(16).padStart(2, '0')).join('')}`;
+/** The ink at opacity `a` over the ground, as one solid colour (a host may give colours as
+ *  '#rrggbb' or as numbers). */
+function onGround(a: number): number {
+  const num = (v: string | number): number => (typeof v === 'number' ? v : Number.parseInt(v.replace('#', ''), 16));
+  const rgb = (n: number): number[] => [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  const [g, i] = [rgb(num(hexOf('ground'))), rgb(num(hexOf('ink')))];
+  const [r, gr, b] = g.map((v, k) => Math.round(v + ((i[k] ?? v) - v) * a));
+  return ((r ?? 0) << 16) | ((gr ?? 0) << 8) | (b ?? 0);
 }
 
 function materials(own: Own): Mats {

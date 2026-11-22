@@ -1,4 +1,4 @@
-import type { Ink, Sketch } from './monoline';
+import type { Ink, Sketch } from './drawing/monoline';
 
 /** Glassware and small bottles for the lab room (`kit/labroom.ts`), as profiles turned about the
  *  vertical: radius then height, from the foot up and back to the axis, so each is a closed solid.

@@ -1,4 +1,4 @@
-import type { Sketch, V3 } from './monoline';
+import type { Sketch, V3 } from './drawing/monoline';
 
 /** The door end of the left wall: a lab coat on a rail of hooks, a pedal bin under it. */
 

@@ -1,3 +1,4 @@
+// One source: the experience vault's Playbooks/drawing/kernel. A project's copy is synced from it, never edited.
 import {
   Box3,
   BoxGeometry,
@@ -5,7 +6,6 @@ import {
   CatmullRomCurve3,
   CylinderGeometry,
   ExtrudeGeometry,
-  Float32BufferAttribute,
   LatheGeometry,
   Matrix4,
   Shape,
@@ -15,8 +15,11 @@ import {
   Vector2,
   Vector3,
 } from 'three';
+import type { OBB } from 'three/examples/jsm/math/OBB.js';
+import { clashesOf, oriented } from './clash';
 
-/** Monoline drawing of a whole scene, one line width throughout (drawn by `kit/monodraw.ts`).
+/** A "3D isometric hidden-line drawing, monoline" of a whole scene, one line width throughout
+ *  (drawn by `monodraw.ts`).
  *  Every solid is a plate in the ground colour and its lines are the drawing kernel's: the hard
  *  edges, plus the silhouette for the one direction the scene is seen from. So a flask is drawn
  *  by its outline and its rim, never by its facets, and the depth buffer hides whatever stands
@@ -38,6 +41,8 @@ export interface Part {
   fill: Fill;
   tier: Tier;
   obj: string;
+  /** The part's own box, turned with it: what `clashes` tests. */
+  obb: OBB;
 }
 export interface Lines {
   pts: number[];
@@ -50,10 +55,7 @@ export interface Live {
   lines: Lines[];
 }
 
-export const posOf = (g: BufferGeometry): Float32BufferAttribute => {
-  const p = g.getAttribute('position');
-  return p instanceof Float32BufferAttribute ? p : new Float32BufferAttribute(Array.from(p.array), 3);
-};
+export { posOf } from './clash';
 
 export class Sketch {
   readonly parts: Part[] = [];
@@ -103,8 +105,16 @@ export class Sketch {
   }
 
   mesh(geo: BufferGeometry, ink: Ink = {}): void {
+    geo.computeBoundingBox();
+    const obb = oriented(geo.boundingBox ?? new Box3(), this.m);
     geo.applyMatrix4(this.m);
-    const part = { geo, fill: ink.fill ?? 'ground', tier: ink.tier ?? 'edge', obj: this.obj };
+    const part = {
+      geo,
+      fill: ink.fill ?? 'ground',
+      tier: ink.tier ?? 'edge',
+      obj: this.obj,
+      obb,
+    };
     (this.live ? this.live.parts : this.parts).push(part);
   }
 
@@ -147,7 +157,11 @@ export class Sketch {
   /** A flat outline (x, y) pulled along z from z0 to z1. */
   slab(outline: [number, number][], z0: number, z1: number, ink?: Ink): void {
     const s = new Shape(outline.map(([x, y]) => new Vector2(x, y)));
-    const g = new ExtrudeGeometry(s, { depth: z1 - z0, bevelEnabled: false, curveSegments: 12 });
+    const g = new ExtrudeGeometry(s, {
+      depth: z1 - z0,
+      bevelEnabled: false,
+      curveSegments: 12,
+    });
     this.mesh(g.translate(0, 0, z0), ink);
   }
 
@@ -190,22 +204,8 @@ export class Sketch {
     this.line([p(a0, b0), p(a1, b0), p(a1, b1), p(a0, b1), p(a0, b0)], tier);
   }
 
-  /** Every pair of parts from different objects whose boxes overlap by more than `tol` on all
-   *  three axes. Touching is fine: a flask stands on the bench, it does not stand in it. */
+  /** Every pair of objects with a part standing in the other's by more than `tol` (clash.ts). */
   clashes(tol = 0.002): string[] {
-    const box = (p: Part, at: V3 = [0, 0, 0]): { obj: string; b: Box3 } => ({
-      obj: p.obj,
-      b: new Box3().setFromBufferAttribute(posOf(p.geo)).translate(new Vector3(...at)),
-    });
-    const boxes = [...this.parts.map((p) => box(p)), ...this.lives.flatMap((l) => l.parts.map((p) => box(p, l.pivot)))];
-    const out = new Set<string>();
-    for (let i = 0; i < boxes.length; i++)
-      for (let j = i + 1; j < boxes.length; j++) {
-        const [p, q] = [boxes[i], boxes[j]];
-        if (!p || !q || p.obj === q.obj) continue;
-        const s = p.b.clone().intersect(q.b).getSize(new Vector3());
-        if (s.x > tol && s.y > tol && s.z > tol) out.add(`${p.obj} × ${q.obj}`);
-      }
-    return [...out];
+    return clashesOf(this.parts, this.lives, tol);
   }
 }

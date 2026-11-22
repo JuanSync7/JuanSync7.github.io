@@ -1,5 +1,6 @@
 import { BLUEPRINTS } from './index';
-import { inWindow, measureIn, widths, type Measured } from './measure';
+import { measureIn, widths, type Measured } from './measure';
+import { inWindow } from './window';
 import { blueprintSheet } from './sheet';
 import type { Blueprint, View } from './types';
 

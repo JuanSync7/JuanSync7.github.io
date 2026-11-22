@@ -12,10 +12,16 @@ if (!vault) {
   process.exit(2);
 }
 const here = (p) => new URL(`../../${p}`, import.meta.url).pathname;
-const FILES = ['types.ts', 'dom.ts', 'measure.ts', 'sizing.ts', 'drawing.ts', 'catalogue.ts', 'overlay.ts'].map((f) => [
-  `kernel/${f}`,
-  `src/blueprints/${f}`,
-]);
+const FILES = [
+  'types.ts',
+  'dom.ts',
+  'measure.ts',
+  'sizing.ts',
+  'drawing.ts',
+  'catalogue.ts',
+  'overlay.ts',
+  'window.ts',
+].map((f) => [`kernel/${f}`, `src/blueprints/${f}`]);
 const differ = [];
 for (const [from, to] of FILES) {
   const src = join(vault, 'Playbooks/blueprint', from);
