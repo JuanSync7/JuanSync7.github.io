@@ -1,0 +1,48 @@
+{
+  "schema": "plate/1",
+  "id": "library-box",
+  "title": "Archive box",
+  "alt": "A lidded archive box with a blank label, standing on a shelf.",
+  "group": "library",
+  "style": "pen-and-wash",
+  "playbooks": ["pen-and-wash", "art-render"],
+  "kernel": "scripts/library-art",
+  "sources": {
+    "light": {
+      "1x": "/library/filler-box-light-1x.webp",
+      "2x": "/library/filler-box-light-2x.webp"
+    },
+    "dark": {
+      "1x": "/library/filler-box-dark-1x.webp",
+      "2x": "/library/filler-box-dark-2x.webp"
+    }
+  },
+  "bytes": {
+    "light-1x": 1148,
+    "light-2x": 2416,
+    "dark-1x": 2594,
+    "dark-2x": 8044
+  },
+  "tokens": [
+    "--pp-art-a",
+    "--pp-art-b",
+    "--pp-art-c",
+    "--pp-art-deep",
+    "--pp-art-flame",
+    "--pp-art-hatch",
+    "--pp-art-hatch-deep",
+    "--pp-art-ink",
+    "--pp-art-outline",
+    "--pp-art-paper",
+    "--pp-art-shade",
+    "--pp-ground",
+    "--pp-ink-muted",
+    "--pp-signal"
+  ],
+  "palette": "c1a8fe9fd29b213f7c39a3f62e85122741769c6e8ee313ff4d0d6a0efc715ed5",
+  "anchors": {
+    "size": [96, 76],
+    "foot": [0, 92],
+    "shadow": 4
+  }
+}

@@ -27,8 +27,13 @@ from kernel import render as R                                 # noqa: E402
 from kernel.tokens import palette
 
 
-def gray(path):
-    return np.asarray(Image.open(path).convert("L"), dtype=np.float32) / 255
+def gray(path, background=None):
+    """Luminance 0..1. A sprite with transparency is laid on the background first, as the print is."""
+    im = Image.open(path)
+    if background and im.mode in ("RGBA", "LA"):
+        base = Image.new("RGBA", im.size, background)
+        im = Image.alpha_composite(base, im.convert("RGBA"))
+    return np.asarray(im.convert("L"), dtype=np.float32) / 255
 
 
 def main():
@@ -67,7 +72,7 @@ def main():
     with tempfile.TemporaryDirectory() as td:
         png = os.path.join(td, "l.png")
         subprocess.run(["rsvg-convert", "-z", "2", "-b", a.background, pr, "-o", png], check=True, cwd=a.out_dir)
-        L, N = gray(png), gray(p[2])
+        L, N = gray(png), gray(p[2], a.background)
     hh, ww = min(L.shape[0], N.shape[0]), min(L.shape[1], N.shape[1])
     diff = float(np.abs(L[:hh, :ww] - N[:hh, :ww]).mean())
     rep.add("R6 print parity", diff <= B["parity_diff"], f"mean difference {diff:.3f} (<= {B['parity_diff']})")

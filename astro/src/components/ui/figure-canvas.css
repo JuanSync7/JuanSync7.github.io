@@ -24,8 +24,17 @@
 /* Colour on the paper system: a figure in the night palette is turned to ink on paper by day
    (see --pp-figure-filter). Full-colour rooms keep their colours; voxel worlds keep them in the
    lab viewer only, and as covers elsewhere they are recoloured like every other figure. The desk
-   scene is drawn in true material colours (deskTones) and keeps them. */
-.figure-canvas:not(:where([data-figure^='pixel-still'], [data-figure^='voxel-scene'], [data-figure^='voxcel-island'], [data-figure='dev-desk']))
+   scene is drawn in true material colours (deskTones) and keeps them. A flame gives light, so it
+   looks the same by day and night: the pixel flame keeps its colours on the baked plates. */
+.figure-canvas:not(
+    :where(
+      [data-figure^='pixel-still'],
+      [data-figure^='voxel-scene'],
+      [data-figure^='voxcel-island'],
+      [data-figure='dev-desk'],
+      [data-figure='pixel-flame']
+    )
+  )
   canvas {
   filter: var(--pp-figure-filter, none);
   mix-blend-mode: var(--pp-figure-blend, normal);
