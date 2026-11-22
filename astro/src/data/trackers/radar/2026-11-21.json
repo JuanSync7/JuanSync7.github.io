@@ -1,0 +1,200 @@
+{
+  "meta": {
+    "lastUpdated": "2026-11-21",
+    "cadence": "daily",
+    "summary": "trnrt serves one huge open model on one AWS Trainium2 box, and its checked equivalence claims and cost table teach more than its speed numbers.",
+    "note": "Backfilled on 2026-11-22: the run on this date could not reach the site. Picks, fit and verdicts are the run's own; stars, licence and last activity were read from GitHub on 2026-11-22."
+  },
+  "featuredRepo": "RunanywhereAI/trnrt",
+  "picks": [
+    {
+      "repo": "RunanywhereAI/trnrt",
+      "url": "https://github.com/RunanywhereAI/trnrt",
+      "what": "An open inference engine that serves one large open model on a single AWS Trainium2 machine through an OpenAI-compatible API.",
+      "language": "Python",
+      "license": "Apache-2.0",
+      "stars": 1658,
+      "lastActivity": "2026-11-21",
+      "area": "Inference engines and inference silicon",
+      "fit": 3,
+      "fitWhy": "Serving on non-GPU silicon with a stated equivalence check and real cost figures; one model and one instance type only, so reading not adopting.",
+      "verdict": "study",
+      "caution": "The serve container runs privileged with host networking. Benchmarks are the project's own, measured on an earlier build. Stars measure attention, not quality.",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "jmaczan/tiny-vllm",
+      "url": "https://github.com/jmaczan/tiny-vllm",
+      "what": "A teaching-sized LLM inference engine in C++ and CUDA that rebuilds the core ideas of vLLM.",
+      "language": "C++",
+      "license": "Apache-2.0",
+      "stars": 1207,
+      "lastActivity": "2026-11-15",
+      "area": "Inference engines and inference silicon",
+      "fit": 4,
+      "fitWhy": "Explains the mechanisms behind the serving settings I tune, in code small enough to read end to end.",
+      "verdict": "study",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "obsidianmd/pele",
+      "url": "https://github.com/obsidianmd/pele",
+      "what": "A fast renderer for Mermaid diagrams from the Obsidian team.",
+      "language": "TypeScript",
+      "license": "unconfirmed",
+      "stars": 4679,
+      "lastActivity": "2026-10-31",
+      "area": "Static-site and design tooling for an Astro site",
+      "fit": 4,
+      "fitWhy": "I draw many diagrams for my site and notes, so a faster Mermaid renderer that may run without a browser is worth a look.",
+      "verdict": "study",
+      "caution": "GitHub reports no recognised licence (NOASSERTION). Read the licence file before any use.",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "ddkbs/sketchy",
+      "url": "https://github.com/ddkbs/sketchy",
+      "what": "A layout engine for AI-drawn diagrams: the model names the boxes and links, the engine places them, in a hand-drawn style.",
+      "language": "TypeScript",
+      "license": "MIT",
+      "stars": 496,
+      "lastActivity": "2026-11-13",
+      "area": "Static-site and design tooling for an Astro site",
+      "fit": 4,
+      "fitWhy": "Splitting what to draw from where it goes matches how I keep layout rules in code rather than in prompts.",
+      "verdict": "study",
+      "caution": "Ships as an installable agent tool. Treat it as code that needs a security review before use.",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "sybil-solutions/inference-optimisation-skill",
+      "url": "https://github.com/sybil-solutions/inference-optimisation-skill",
+      "what": "An agent skill that tunes local LLM serving speed by trying one change at a time against a measured control.",
+      "language": "Python",
+      "license": "MIT",
+      "stars": 1933,
+      "lastActivity": "2026-11-16",
+      "area": "Inference engines and inference silicon",
+      "fit": 4,
+      "fitWhy": "The control, candidate, control loop is a disciplined way to tune serving, but the repo is days old.",
+      "verdict": "watch",
+      "caution": "Installable skill: read SKILL.md and its scripts before running anything. Stars measure attention, not quality.",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "lightseekorg/tokenspeed",
+      "url": "https://github.com/lightseekorg/tokenspeed",
+      "what": "An LLM inference engine built around a state-machine scheduler and a registry of kernels.",
+      "language": "Python",
+      "license": "MIT",
+      "stars": 2950,
+      "lastActivity": "2026-11-22",
+      "area": "Inference engines and inference silicon",
+      "fit": 3,
+      "fitWhy": "The scheduler design is worth reading for how typed resource ownership could look in an orchestrator.",
+      "verdict": "study",
+      "foundVia": [
+        "github search"
+      ]
+    }
+  ],
+  "catalogue": [
+    {
+      "repo": "RunanywhereAI/trnrt",
+      "url": "https://github.com/RunanywhereAI/trnrt",
+      "what": "An open inference engine that serves one large open model on a single AWS Trainium2 machine through an OpenAI-compatible API.",
+      "area": "Inference engines and inference silicon",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "jmaczan/tiny-vllm",
+      "url": "https://github.com/jmaczan/tiny-vllm",
+      "what": "A teaching-sized LLM inference engine in C++ and CUDA that rebuilds the core ideas of vLLM.",
+      "area": "Inference engines and inference silicon",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "obsidianmd/pele",
+      "url": "https://github.com/obsidianmd/pele",
+      "what": "A fast renderer for Mermaid diagrams from the Obsidian team.",
+      "area": "Static-site and design tooling for an Astro site",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "ddkbs/sketchy",
+      "url": "https://github.com/ddkbs/sketchy",
+      "what": "A layout engine for AI-drawn diagrams: the model names the boxes and links, the engine places them, in a hand-drawn style.",
+      "area": "Static-site and design tooling for an Astro site",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "lightseekorg/tokenspeed",
+      "url": "https://github.com/lightseekorg/tokenspeed",
+      "what": "An LLM inference engine built around a state-machine scheduler and a registry of kernels.",
+      "area": "Inference engines and inference silicon",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    }
+  ],
+  "featured": [
+    {
+      "repo": "RunanywhereAI/trnrt",
+      "date": "2026-11-21",
+      "slug": "2026-11-21-trnrt"
+    }
+  ],
+  "seen": [
+    {
+      "repo": "RunanywhereAI/trnrt",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "jmaczan/tiny-vllm",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "obsidianmd/pele",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "ddkbs/sketchy",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "sybil-solutions/inference-optimisation-skill",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "lightseekorg/tokenspeed",
+      "date": "2026-11-21"
+    }
+  ],
+  "sourceStats": {
+    "github search": {
+      "checked": 1,
+      "candidates": 6,
+      "picks": 6,
+      "useful": 5
+    },
+    "web search": {
+      "checked": 1,
+      "candidates": 0,
+      "picks": 0,
+      "useful": 0
+    }
+  }
+}

@@ -64,6 +64,7 @@ const WITHOUT = {
   'NightFooter.astro': 'wraps PaperFooter (paper-footer)',
   'NightPage.astro': 'wraps PaperLayout (the page templates)',
   'PaperLayout.astro': 'the page chrome; measured through every page template',
+  'PageTurn.astro': 'a fixed, empty layer the page turn paints during a swap; it has no layout to measure',
   'NightLayout.astro': 'the figure bench only (/figures), not a public page',
   'Layout.astro': 'legacy',
   'page-curl.ts': 'the page-swap motion script for PaperLayout; it lays nothing out',

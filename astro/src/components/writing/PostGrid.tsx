@@ -45,7 +45,7 @@ export default function PostGrid({ posts, labels, cta = 'Read post' }: Props) {
         {shown.map((p, i) => (
           <a key={p.slug} className="card" href={p.href} onPointerMove={spot} style={{ animationDelay: `${Math.min(i, 8) * 40}ms` }}>
             <span className="card-spot" aria-hidden="true" />
-            <div className="card-cover" style={p.cover ? { viewTransitionName: `cover-${p.slug}` } : undefined}>
+            <div className="card-cover">
               {p.cover ? <FigureCanvas id={p.cover} /> : null}
             </div>
             <div className="card-body">

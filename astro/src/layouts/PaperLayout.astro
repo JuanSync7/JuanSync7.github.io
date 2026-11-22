@@ -1,6 +1,7 @@
 ---
 import { figureMatrix, worldContrast } from '../styles/theme/figure-filters';
 import { ViewTransitions } from 'astro:transitions';
+import PageTurn from '../components/layout/PageTurn.astro';
 import '../styles/tokens/index.css';
 import '../styles/night.css';
 import '../styles/paper.css';
@@ -60,9 +61,8 @@ const nightWorld = worldContrast(1);
     <div class="pp-page">
       <slot />
     </div>
-    <div class="pp-curl" aria-hidden="true"></div>
+    <PageTurn />
     <script>
-      import '../components/layout/page-curl';
       import '../components/layout/island-unmount';
     </script>
   </body>
