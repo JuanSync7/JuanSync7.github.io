@@ -1,6 +1,4 @@
 ---
-import { ViewTransitions } from 'astro:transitions';
-import PageTurn from '../components/layout/PageTurn.astro';
 import '../styles/tokens/index.css';
 import '../styles/night.css';
 
@@ -24,10 +22,8 @@ const { title, description = 'Juan Kok: Senior Design & AI Engineer. AI platform
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
     <slot name="head" />
-    <ViewTransitions />
   </head>
   <body class="night">
     <slot />
-    <PageTurn />
   </body>
 </html>

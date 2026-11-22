@@ -1,5 +1,5 @@
-/* The page turn: every page swap on the site, whatever its layout, turns the page like a sheet
-   of a notepad. Loaded by components/layout/PageTurn.astro, which every layout renders; the
+/* The page turn: every page swap on the site turns the page like a sheet of a notepad. Loaded
+   by components/layout/PageTurn.astro, which every public page's layout renders; the
    frames come from components/layout/page-curl.ts. `npm run site:turn` holds that on the build. */
 
 /* The whole page turns as one sheet. Anything with its own view-transition-name (a post card's

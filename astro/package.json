@@ -7,6 +7,7 @@
     "dev": "astro dev",
     "prebuild": "npm run slides:export",
     "build": "astro build",
+    "postbuild": "node scripts/site/turn-check.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
