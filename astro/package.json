@@ -30,6 +30,7 @@
     "library:check": "node scripts/library/check.mjs",
     "library:pages": "node scripts/library/check.mjs --dist",
     "library-art": "bash scripts/library-art/build.sh",
+    "library-art:sync": "node scripts/library-art/sync.mjs",
     "library:selftest": "node scripts/library/check.mjs --selftest",
     "library:sync": "node scripts/library/sync.mjs",
     "library:sync:selftest": "node scripts/library/sync.mjs --selftest",
