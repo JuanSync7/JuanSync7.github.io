@@ -1,0 +1,74 @@
+---
+import { getCollection } from 'astro:content';
+import NightPage from '../../layouts/NightPage.astro';
+import NightNav from '../../components/layout/NightNav.astro';
+import NightFooter from '../../components/layout/NightFooter.astro';
+import SectionHead from '../../components/ui/SectionHead.astro';
+import WritingHero from '../../components/writing/WritingHero.astro';
+import FeaturedBook from '../../components/writing/FeaturedBook.tsx';
+import LessonLog from '../../components/writing/LessonLog.tsx';
+import PostGrid from '../../components/writing/PostGrid.tsx';
+import Trackers from '../../components/writing/Trackers.astro';
+import Follow from '../../components/writing/Follow.astro';
+import type { Lesson } from '../../components/writing/types';
+import { CATEGORY_LABEL, FEATURED, LESSONS_COPY, POSTS_COPY } from '../../data/writing';
+import { LEARN_COPY, learnEntries, learnShelf } from '../../data/learn';
+import { BLOG, LIBRARY } from '../../data/library';
+import { postCards } from '../../data/library-cards';
+
+// The blog features: the shelf of explainers, the lesson log and the posts. Everything written,
+// articles included, is listed in the library, which this page links to.
+const posts = await postCards();
+
+const featured = learnShelf(await learnEntries());
+
+const lessons: Lesson[] = (await getCollection('lessons'))
+  .map((l) => ({ iso: l.data.date.toISOString().slice(0, 10), tag: l.data.tag, title: l.data.title, why: l.data.why }))
+  .sort((a, b) => b.iso.localeCompare(a.iso));
+---
+
+<NightPage title={`${BLOG.label} · Juan Kok`} description="How AI inference works, from the transistor to the token, plus chip design and building with agents.">
+  <link rel="alternate" type="application/rss+xml" title="Juan Kok · writing" href="/rss.xml" slot="head" />
+  <NightNav current="blog" />
+  <main>
+    <WritingHero />
+
+    <section id="featured" class="nt-wrap nt-section block">
+      <SectionHead label="// featured" title={FEATURED.title} lead={FEATURED.body}>
+        <a class="all" href={LEARN_COPY.all.href}>{LEARN_COPY.all.label}</a>
+      </SectionHead>
+      <FeaturedBook client:visible pages={featured} />
+    </section>
+
+    <section id="lessons" class="nt-wrap block">
+      <SectionHead label="// lessons" title={LESSONS_COPY.title} lead={LESSONS_COPY.body} />
+      <LessonLog client:visible lessons={lessons} note={LESSONS_COPY.key} allHref={LIBRARY.lessons} />
+    </section>
+
+    <section id="posts" class="nt-wrap nt-section block">
+      <SectionHead label="// posts" title={POSTS_COPY.title} lead={POSTS_COPY.body}>
+        <a class="all" href={LIBRARY.href}>{POSTS_COPY.all}</a>
+      </SectionHead>
+      <PostGrid client:visible posts={posts} labels={CATEGORY_LABEL} cta="Read" />
+    </section>
+
+    <Trackers />
+    <Follow />
+  </main>
+  <NightFooter />
+</NightPage>
+
+<style>
+  .all {
+    align-self: flex-start;
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-signal-text);
+  }
+
+  .block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-8);
+  }
+</style>

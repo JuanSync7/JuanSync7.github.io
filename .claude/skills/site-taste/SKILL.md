@@ -1,6 +1,6 @@
 ---
 name: site-taste
-description: Use before designing or changing any page, section, component, layout or motion on juansync.dev (anything that is not a figure; figures use the figure skill). Holds Juan's frontend design taste as he stated it, the system the site already uses, what he has rejected, and the questions still open, so new work matches him instead of a generic default.
+description: Use when designing or changing any page, section, component, layout or motion on juansync.dev (anything that is not a figure; figures use the figure skill). Holds Juan's frontend design taste as he stated it, the system the site already uses, what he has rejected, and the questions still open, so new work matches him instead of a generic default.
 ---
 
 # Juan's taste, for the pages of juansync.dev

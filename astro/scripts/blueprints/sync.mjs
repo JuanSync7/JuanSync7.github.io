@@ -14,10 +14,9 @@ if (!vault) {
 }
 const here = (p) => new URL(`../../${p}`, import.meta.url).pathname;
 const FILES = [
-  ...['types.ts', 'dom.ts', 'measure.ts', 'sizing.ts', 'drawing.ts', 'catalogue.ts', 'overlay.ts'].map((f) => [
-    `kernel/${f}`,
-    `src/blueprints/${f}`,
-  ]),
+  ...['types.ts', 'dom.ts', 'measure.ts', 'sizing.ts', 'drawing.ts', 'catalogue.ts', 'overlay.ts', 'window.ts'].map(
+    (f) => [`kernel/${f}`, `src/blueprints/${f}`],
+  ),
   ['checks/harness.ts', 'src/blueprints/harness.ts'],
   ['checks/run.mjs', 'scripts/blueprints/run.mjs'],
 ];

@@ -17,7 +17,10 @@ const APP = fileURLToPath(new URL('../../', import.meta.url));
 export const KINDS = { blog: 'post', learn: 'article' };
 export const RESERVED = ['lessons', 'articles'];
 /** An old page that stays where it is: a reference sheet, not a piece of the library. */
-const STAYS = ['/learn/art-gallery/'];
+// The blog's own front page stays at /blog/ (it features pieces and links to the library); every
+// address under it is an old one.
+const BLOG = '/blog/';
+const STAYS = ['/learn/art-gallery/', BLOG];
 
 export function readPieces(app) {
   return Object.entries(KINDS).flatMap(([dir, kind]) =>
@@ -40,6 +43,7 @@ export function sourceProblems(pieces, legacy) {
   const froms = new Set();
   for (const { from, to } of legacy.forwards) {
     if (froms.has(from)) problems.push(`legacy address ${from} is listed twice`);
+    if (from === BLOG) problems.push(`legacy address ${from} is the blog page, which is built, not forwarded`);
     froms.add(from);
     if (!targets.has(to)) problems.push(`legacy address ${from} forwards to ${to}, which is not a library page`);
   }
@@ -61,8 +65,15 @@ const page = (dist, address) => join(dist, address, 'index.html');
 
 export function distProblems(dist, pieces, legacy) {
   const problems = [];
-  for (const address of ['/library/', ...RESERVED.map((r) => `/library/${r}/`), ...pieces.map((p) => `/library/${p.slug}/`)]) {
+  for (const address of [BLOG, '/library/', ...RESERVED.map((r) => `/library/${r}/`), ...pieces.map((p) => `/library/${p.slug}/`)]) {
     if (!existsSync(page(dist, address))) problems.push(`${address} was not built`);
+  }
+  // The blog is a page of its own again, so it must not have gone back to forwarding, and it must
+  // lead to the library.
+  if (existsSync(page(dist, BLOG))) {
+    const blog = readFileSync(page(dist, BLOG), 'utf8');
+    if (/<meta http-equiv="refresh"/.test(blog)) problems.push(`${BLOG} forwards instead of being the blog page`);
+    if (!/href="\/library\/"/.test(blog)) problems.push(`${BLOG} has no link to the library`);
   }
   const sitemap = existsSync(join(dist, 'sitemap-0.xml')) ? readFileSync(join(dist, 'sitemap-0.xml'), 'utf8') : null;
   if (sitemap === null) problems.push('sitemap-0.xml was not built');
@@ -111,7 +122,7 @@ function report(name, problems) {
 function selftest() {
   const pieces = [{ slug: 'one', kind: 'post' }, { slug: 'two', kind: 'article' }];
   const legacy = {
-    forwards: [{ from: '/blog/', to: '/library/' }, { from: '/blog/one/', to: '/library/one/' }, { from: '/learn/two/', to: '/library/two/' }],
+    forwards: [{ from: '/blog/lessons/', to: '/library/lessons/' }, { from: '/blog/one/', to: '/library/one/' }, { from: '/learn/two/', to: '/library/two/' }],
     feedIds: { one: 'https://example.test/blog/one/', two: 'https://example.test/learn/two/' },
   };
   assert.deepEqual(sourceProblems(pieces, legacy), []);
@@ -123,6 +134,7 @@ function selftest() {
     'dead forward': [pieces, { ...legacy, forwards: [...legacy.forwards, { from: '/blog/gone/', to: '/library/gone/' }] }],
     'forward twice': [pieces, { ...legacy, forwards: [...legacy.forwards, legacy.forwards[1]] }],
     'no forwards': [pieces, { ...legacy, forwards: [] }],
+    'the blog page forwarded': [pieces, { ...legacy, forwards: [...legacy.forwards, { from: '/blog/', to: '/library/' }] }],
     'stray feed id': [pieces, { ...legacy, feedIds: { ...legacy.feedIds, gone: 'x' } }],
   };
   for (const [name, [p, l]] of Object.entries(source)) assert.notEqual(sourceProblems(p, l).length, 0, `source rule "${name}" caught nothing`);
@@ -131,11 +143,12 @@ function selftest() {
   const item = (slug, id) => `<item><link>https://example.test/library/${slug}/</link><guid isPermaLink="true">${id}</guid></item>`;
   const good = {
     'library/index.html': '<a href="/library/one">one</a><a href="/library/articles/">guides</a><img src="/blog/pic.webp">',
-    'library/lessons/index.html': '<a href="/library/#lessons">back</a>',
+    'library/lessons/index.html': '<a href="/blog/#lessons">back</a>',
     'library/articles/index.html': '<a href="/library/two">two</a>',
     'library/one/index.html': '<a href="/library/two/">two</a>',
     'library/two/index.html': '<a href="/learn/art-gallery">art</a>',
-    'blog/index.html': forwarder('/library/'),
+    'blog/index.html': '<a href="/library/">everything</a><a href="/library/one">one</a>',
+    'blog/lessons/index.html': forwarder('/library/lessons/'),
     'blog/one/index.html': forwarder('/library/one/'),
     'learn/two/index.html': forwarder('/library/two/'),
     'sitemap-0.xml': '<loc>https://example.test/library/one/</loc>',
@@ -149,7 +162,10 @@ function selftest() {
     'forwarder with no address': { 'blog/one/index.html': '<link rel="canonical" href="https://example.test/library/one/">' },
     'forwarder in the sitemap': { 'sitemap-0.xml': '<loc>https://example.test/blog/one/</loc>' },
     'old link': { 'library/one/index.html': '<a href="/blog/one">one</a>' },
-    'old link with a hash': { 'library/lessons/index.html': '<a href="/blog/#lessons">back</a>' },
+    'old link with a hash': { 'library/lessons/index.html': '<a href="/blog/lessons/#top">back</a>' },
+    'blog page missing': { 'blog/index.html': null },
+    'blog page forwards': { 'blog/index.html': forwarder('/library/') },
+    'blog without a library link': { 'blog/index.html': '<a href="/library/one">one</a>' },
     'old articles index link': { 'library/one/index.html': '<a href="/learn/">guides</a>' },
     'kind index missing': { 'library/articles/index.html': null },
     'old article link': { 'library/one/index.html': '<a href="/learn/two/">two</a>' },

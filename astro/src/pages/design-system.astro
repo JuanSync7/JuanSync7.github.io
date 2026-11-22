@@ -69,7 +69,8 @@ const paperType = paperRaw.filter((t) => /^--pp-(fs|w|lh|tracking)-/.test(t.name
 const paperSpace = paperRaw.filter((t) => /^--pp-(radius|shadow-step|dur|measure|pad)/.test(t.name));
 const pages = [
   { name: 'Home', href: '/', path: 'pages/index.astro', kind: 'System overview', note: 'Night chrome, large display type, live city and a DOM system map.' },
-  { name: 'Library', href: '/library/', path: 'pages/library/index.astro', kind: 'Browse & discover', note: 'Featured pages, filterable post cards and the lesson log.' },
+  { name: 'Blog', href: '/blog/', path: 'pages/blog/index.astro', kind: 'Browse & discover', note: 'Featured pages, the lesson log and filterable post cards; links to the library.' },
+  { name: 'Library', href: '/library/', path: 'pages/library/index.astro', kind: 'Find anything', note: 'Every post and field guide in one filterable card grid.' },
   { name: 'Articles', href: '/library/articles/', path: 'pages/library/articles.astro', kind: 'Read & understand', note: 'Night index; article bodies follow the reader’s light or dark preference.' },
   { name: 'Trackers', href: '/trackers/', path: 'layouts/TrackerLayout.astro', kind: 'Compare releases', note: 'Shared tracker navigation, a left version rail and centered release detail.' },
   { name: 'Lab', href: '/lab/', path: 'pages/lab/index.astro', kind: 'Explore & reuse', note: 'Seeded figure templates and an exportable hardware icon kit.' },

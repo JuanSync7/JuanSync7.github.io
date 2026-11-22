@@ -122,6 +122,18 @@ Moved out of a figure when it outgrew its length budget; add to these, not to th
 - `kit/plans.ts`: `FORMS`, `layout(spec, rng)` → towers (the city-form plans).
 - `kit/flows.ts`: `SHAPES`, `GLYPHS`, `layout`, `route`, `trace` (the workflow stations and paths).
 
+## `kit/draft.ts`: the drawing kernel, for hidden-line scenes
+A figure reaches the drawing kernel (`kit/drawing/`, synced from the vault's `Playbooks/drawing`)
+through this one file. For a "3D isometric hidden-line drawing, monoline" (R-FIG-28): `Sketch` (the
+pen: `object`, `at`, `frame`, `moving`, `box`, `cyl`, `lathe`, `ball`, `torus`, `tube`, `slab`, `line`,
+`circle`, `rect`, `clashes`), `monodraw(sketch, look, onDispose)` → `{ root, moving, fit, spots }`, and
+`reveal(group, u)`. Build the scene's parts in kit files by zone (the lab: `kit/lab*.ts`, gathered by
+`labRoom(k)` in `kit/labroom.ts`), call `clashes()` and throw on any, then `monodraw`; in `update`, set
+an orthographic camera along the same look and call `fit(w, h, renderer.getPixelRatio())` on resize.
+Gotchas: line-only detail sits a hair (1 mm) proud of its face or the plate hides it; a moving set
+is drawn about its pivot, so turn it about that point only; a round part is clash-tested as its
+box, so leave a hair of air between round neighbours.
+
 ## `kit/draw.ts`: strokes and faces
 `line(ctx, a, b, style)`, `poly(ctx, pts, close)`, `dot(ctx, x, y, r, style)`,
 `strokeMesh(ctx, mesh, cam, { alpha, hot, radius?, lift? })`,

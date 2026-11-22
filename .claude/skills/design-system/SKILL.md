@@ -27,7 +27,8 @@ Work in this order. Stop where it says stop.
 
 1. **Look first.** `references/tokens.md` says which file holds which kind of token. Search it for a token that already
    does the job (`grep -rn -- '--pp-' astro/src/styles/tokens`). Reuse beats a near-copy: two tokens one shade
-   apart are a mistake waiting to be made.
+   apart are a mistake waiting to be made. A duration is a token too (R-DS-1): an animation's time, a cycle's
+   step, a slow drift.
 2. **Write the token.** Put it in its file. A colour that changes with the theme is one
    `light-dark(day, night)` value in `tokens/paper.css`; never a second value in a night block. Name it by its role
    (`--pp-ink-muted`), not its look (`--pp-grey-2`).

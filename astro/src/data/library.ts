@@ -5,10 +5,16 @@ import legacy from './library-legacy.json';
 export const LIBRARY = {
   label: 'Library',
   href: '/library/',
-  posts: '/library/#posts',
-  lessonLog: '/library/#lessons',
   lessons: '/library/lessons/',
   articles: '/library/articles/',
+} as const;
+
+/** The blog: the front page of the writing, where a few pieces are featured. Everything written is
+ *  in the library, and the blog links there. */
+export const BLOG = {
+  label: 'Blog',
+  href: '/blog/',
+  lessonLog: '/blog/#lessons',
 } as const;
 
 export function pieceHref(slug: string): string {

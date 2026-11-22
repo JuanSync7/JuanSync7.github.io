@@ -6,18 +6,39 @@
       "astro/src/blueprints/catalogue.ts": "78ecf2bb251adbcdfee304e232cb2c8eaff8041ede84d6c33c8699c791f20623",
       "astro/src/blueprints/dom.ts": "116e56a6656b749602f6d08bbf11e2378ee62bf99fc1b230e8e5cdf4952f98d9",
       "astro/src/blueprints/drawing.ts": "7241fa46a7d3ce25ea86a12bd63af2c1e5e6dd2f5bf92176ac3b5c5d2ebbef5d",
-      "astro/src/blueprints/harness.ts": "b0a82125094eabeb7a014ece306cb2b45b0269d8f11f1754924297194ccf1add",
-      "astro/src/blueprints/measure.ts": "d178ef8c9fab9a7bc66bb639011f4027bdde9b2031309042931e27c1d2277628",
+      "astro/src/blueprints/harness.ts": "1741cf69f8f51716de5d72fda4dc07eaef60effd47a07ed39ddada22575e78f5",
+      "astro/src/blueprints/measure.ts": "1c66d2fbb003efa714ffee86af639afbfba5efce2e2e32b99cc22d72c59a55e4",
       "astro/src/blueprints/overlay.ts": "c7747422326ee3abd26b50b729db3479a3452932100fd2f61348f91921ddf5bc",
       "astro/src/blueprints/sizing.ts": "10d1b76293d56a3d95fe14b6c24de5dad76c7ee2c6ed11af172dcb90f6f91980",
-      "astro/src/blueprints/types.ts": "894133ade0b31ba01f95b355028a55ec070d4b1bb6fa31c865ba39ae108e18b9"
+      "astro/src/blueprints/types.ts": "894133ade0b31ba01f95b355028a55ec070d4b1bb6fa31c865ba39ae108e18b9",
+      "astro/src/blueprints/window.ts": "b1b8e31a732e8ea845eaf63b4c586aea40b0276792fa4ca46f7f7e36f3172ab9"
+    },
+    "deepdive-agent": {
+      ".claude/agents/deepdive-agent.md": "a8c0846715249a99ed748f3e3ea181ac29ae8e81cbb00f9bbd465a09faf2d9cf",
+      ".claude/skills/deepdive-agent/LOOK.md": "de41a0d182f9b67f7a1fd6770ffe738273c8ccea95712e548447a1277fb2d409",
+      ".claude/skills/deepdive-agent/RULES.md": "736367a88b0d2f0ba479bf6bc9a1850a3f1b5cf735d11c03b19c2854d7d9e5ec",
+      ".claude/skills/deepdive-agent/SKILL.md": "0da02dbed95b54bcdc409af809890f10c6e985fc2f257418349cb3ce796db117",
+      ".claude/skills/deepdive-agent/SYSTEM.md": "c140a2cd8faff99b51c97d7627f23c73df788e33115b17f1a594742f9fb4b77f",
+      ".claude/skills/deepdive-agent/examples/README.md": "16e9f176dc7162f31d8f5f5a31cdad9c9116906cbd87e0a9fd99d5efaff3930b",
+      ".claude/skills/deepdive-agent/examples/prompt.md": "43fdf54b75319cd0fe122417014b0a5d6b94a6bb78b4a64ab280524a8803dac8",
+      ".claude/skills/deepdive-agent/kernel/INDEX.md": "d71dc1de3f9186a70c6f9545f9fc8d77bffb10aa2b3dce2678a557930e0d35e3",
+      ".claude/skills/deepdive-agent/playbooks/architecture.md": "ba008be117e758998a14b412f1f1fbf9347049800e0678a22aeece0ea57bbb4f",
+      ".claude/skills/deepdive-agent/playbooks/chips.md": "8080690b0388c7cb5aa464e393d6b75dcf7e0016398be8d2603152c0170a9680",
+      ".claude/skills/deepdive-agent/playbooks/connectivity.md": "70c958283df4d908d94159652946e39f96e4b0044e454824715c4cff6aaddf07",
+      ".claude/skills/deepdive-agent/playbooks/feedback.md": "7a5cfef1bf1572d6842943ea9dfd0224b2d6cc24a3b3dd0f0d4631308c3fadaa",
+      ".claude/skills/deepdive-agent/playbooks/layout.md": "565deb227e9f0da8cf6f2cf5e84b9f245ce9b9a5f927c4f1f9a748c31e2a830d",
+      ".claude/skills/deepdive-agent/playbooks/maps.md": "70d4441e218da44cd2fc3f3352fd494cddc04063ae5ecc1e66f088c974b32211",
+      ".claude/skills/deepdive-agent/playbooks/packaging.md": "d1d714d13bd02a8a95302c5efe4baf82bf4c07d60ff2d9414766ba2ef513be60",
+      ".claude/skills/deepdive-agent/playbooks/research.md": "d5645365afa4b1cfdb2c920184da9055a21d7e2a8a90192c27c993dcacc74b34",
+      ".claude/skills/deepdive-agent/playbooks/review.md": "252d148316c52c1bce77777d07d31f02ba95abdc68b84ea444a5a7fe1741b06c",
+      ".claude/skills/deepdive-agent/playbooks/verification.md": "35da4dad0e1cc3c6504afd43a8d35cf6cd35e04336ba76318ef93d9757cab151"
     },
     "design-system": {
-      ".claude/skills/design-system/SKILL.md": "a82bfdcfd8f4619a3d112cddd27b20066365eba6f1414284f5ddd38e45a1a81f",
+      ".claude/skills/design-system/SKILL.md": "90de15514d9130927e1a344e2bfd8e1ae5d8d175934f5d61a9573a8c869fff6f",
       ".claude/skills/design-system/references/checks.md": "c65a9f81612a7312b8541fadef939d6ed32320a192ff8855a6cba1131d4b5eb2",
       ".claude/skills/design-system/references/look.md": "0546d513f1f2304b42fe10072a1dbd2b9c2e96dc4503061127358d19cd638cb5",
-      ".claude/skills/design-system/references/rules.md": "6a7fc75d03913b3b9ab5d3bb8f3b44e69105d5511ef052d8c6a72574c9a0f1f8",
-      ".claude/skills/design-system/references/tokens.md": "b8bb00414cb3290471d067fb4d8750df5c83c04278152d501de82d991f0e0590"
+      ".claude/skills/design-system/references/rules.md": "f44d214a9dc41e57d80989de32828f85e61c5d7718b1816719cf5b20d73c368a",
+      ".claude/skills/design-system/references/tokens.md": "0212ff010b279d74a8d73ab4b99218fe635d37673c762bc921a7abd697195a28"
     },
     "drawing": {
       ".claude/skills/drawing/LOOK.md": "26fc887267cb28e8b5a345786d6efdb2c39edbffbe56ccfd24e0aaa41c483bb0",
@@ -25,10 +46,14 @@
       ".claude/skills/drawing/SKILL.md": "190bbe99dbd5b28f2a61df2bd99764f31060741339c9be015fadbb9b9ff34b9f",
       ".claude/skills/drawing/STANDARDS.md": "25b74c699a5787761b78d2ec9c5bd77d4a9ac8a7d5017cc5c93af28328c8950b",
       "astro/src/figures/kit/drawing/base.ts": "1fd83f8315abe0c14a54412cf16489b2f77daebafb58ae33857c375a32ba76e9",
+      "astro/src/figures/kit/drawing/cable.ts": "e49dcedc7ce5a414a356ef9c4dc62cd164e3d3d6321958b33f0e2d7674989378",
+      "astro/src/figures/kit/drawing/clash.ts": "0180add0a24e0608fe67cc6b2cc52f5e802546db0174e896869dea30dec0215a",
       "astro/src/figures/kit/drawing/edges.ts": "e9016cda907e9cbb35edb943fb1c70a28ec4f01de92e5dd9bc26238e593f2b01",
       "astro/src/figures/kit/drawing/frame.ts": "0af9119c0579c4c1bdbb4f525d9b700ad3a8cc624c23b8e6dc107002886e41b0",
       "astro/src/figures/kit/drawing/ga.ts": "dc82125cd68a6fe76c5712cb2bfc07585bd2125e215c68fe778035ed944edd97",
       "astro/src/figures/kit/drawing/lines.ts": "20a8cfe2bfe3b3c3c09116f05d7bff496c3272f49cdeb3302205bd15403674f7",
+      "astro/src/figures/kit/drawing/monodraw.ts": "d4aa2c33a46db5314d3fa82e9700614c6a9ddb06a5c64e57d2245988b7024d10",
+      "astro/src/figures/kit/drawing/monoline.ts": "83b301510d94328c9c40bb5383a709ee335016078e9fc714b0a9dadc22fd88b1",
       "astro/src/figures/kit/drawing/parts.ts": "f8e58594ef4e02a0823c58ef7ad049e3cae580ca680ffc9738498210a0410d17",
       "astro/src/figures/kit/drawing/plan.ts": "a46246455ea80dc8fe6c6de3bdb107e74af387e2db2e4c7f3b86e07714523c93",
       "astro/src/figures/kit/drawing/scene.ts": "472fe950626a4513370d1569b02ec50df6197de7b609807cdfbe7a3fbc1c7b39",
@@ -42,6 +67,27 @@
       ".claude/skills/figure/references/rules.md": "d26e570e75fef4dd2066723b84b0a4859e694c88f85e59baa0d7b3866b1acf57",
       ".claude/skills/figure/references/styles.md": "c76b20793c26d899ca5f64cdf7bcd9bad55af4b371786018180a09da21eaa5a6"
     },
+    "hardware-atlas": {
+      ".claude/skills/hardware-atlas/LOOK.md": "c2e543294a6b26154001458839b653a79db135baef025f416ad6404836db3879",
+      ".claude/skills/hardware-atlas/RULES.md": "67567157503d262b47832751fc623e2f0c0fd1ec2c5c641f7302521b83edbf52",
+      ".claude/skills/hardware-atlas/SKILL.md": "c515f21f883017c0545a4c57a4f10e707371506351657cf5bf69c3b8221f630a",
+      ".claude/skills/hardware-atlas/checks/README.md": "3039540c2cef73afbea9c53f8d4a71f06328bcd1131cb1a970700864bcc5816f",
+      ".claude/skills/hardware-atlas/examples/README.md": "a46f98c3a232fd47eb7cd20658eca2dc9ba4557f392d9bbc1c142429343bee5a",
+      ".claude/skills/hardware-atlas/kernel/INDEX.md": "0076cd276b1a3e6504c3e8bfc37f7edf9e250b004e2cce8d86f95dcc6484fd62"
+    },
+    "lego": {
+      ".claude/skills/lego/LOOK.md": "17cce3490b3fe9081e7ff4e5485114cf48592209308c4acf014e3a5356ce1251",
+      ".claude/skills/lego/RULES.md": "483890772aac6ae3b4545074c7328f01e381545c246aae6b54f1f600ba5a0d27",
+      ".claude/skills/lego/SKILL.md": "2e17590e471e66e20461bad4620dca4fd58f7d63f02fc0cdf226e567928afe6e",
+      ".claude/skills/lego/checks/README.md": "0ce68ab8e5dd8eeebc2f36c8f929a9cf2c24416a0cedcb4a6aea82886f710528",
+      ".claude/skills/lego/drawing/LOOK.md": "fcec92f6c6264ecba97757830f7b5dc303ceccd1648a02ff5ddb155da3d53cea",
+      ".claude/skills/lego/drawing/RULES.md": "2045592780830932fcd4832447fc47a91918767628fde2b6f91423c7657a44ec",
+      ".claude/skills/lego/drawing/SKILL.md": "9227cf27b5cb87552c94aaca1c0dacd553b025b1d8273bf3d75dadccc05f5c26",
+      ".claude/skills/lego/drawing/checks/README.md": "a2425a350c5531670014501bea9e5fd41e18a0965822477ed458d005953811f9",
+      ".claude/skills/lego/drawing/examples/README.md": "b9520420065dc4ce1b9c4d9de90fe3d0d4893962c83de4a736fdd34523c1ec97",
+      ".claude/skills/lego/drawing/kernel/INDEX.md": "bdea1203f0391d0a555c932dc53768edd19b73bc37dd1bb38f1c4bb74490440b",
+      ".claude/skills/lego/kernel/INDEX.md": "c124f92cb1e10b311d215f1b64163923ff5dda0eff14ce633d7a507fde9ba604"
+    },
     "lettering": {
       "astro/scripts/lettering/build.mjs": "f539839e527e9572515bc9a33fabca575dd8201de4cf3561a4a9e7ee395ed556",
       "astro/scripts/lettering/specimen.mjs": "b815804ba0d5813797defdf59166fdd46d3e74dc46f131a750a6a303530c6062",
@@ -51,6 +97,67 @@
       "astro/src/lib/lettering/index.ts": "e8cbc182083452f124532ccde8fad95c7f9fbb7f299f0f526e6ed3da58f66f12",
       "astro/src/lib/lettering/metrics.ts": "f90aa13234116acd41434177495965738cd7e295ee0afc3b852071e50f19e4a6",
       "astro/src/lib/lettering/outline.ts": "1f3196468da08ffd110cff4206ac6aa1b523b5531ca2cd9aadf41a0f1cd71d21"
+    },
+    "site-taste": {
+      ".claude/skills/site-taste/SKILL.md": "e19fc4b10bd90d5411ca065e2975110d532390ee6d565f80ac52374717c37a0a"
+    },
+    "slide-icons": {
+      ".claude/skills/slide-icons/EVAL.md": "c77401a67c30f3ed52f2751a082a54a69048462d574d8168f4ecaa873db5f8a1",
+      ".claude/skills/slide-icons/LOOK.md": "c7184b424c63ac8ac6a7ddbf04778608b40e9e26c64f0689b73944a5c706e0f3",
+      ".claude/skills/slide-icons/RULES.md": "2b303157478bbc7dd815ba2a41ed3038072b7fbabbe69ec2765de549a8a40cea",
+      ".claude/skills/slide-icons/SKILL.md": "8ae7289c5d10e0713dca94c9efe4f3841488c50e2f8e799b0340dbed66fed9b2",
+      ".claude/skills/slide-icons/examples/fit-decisions.md": "60ffb438fc190f9b79d3042dd73f08401087f6b09ad387fa46b8d165be4e15c2",
+      ".claude/skills/slide-icons/examples/geometry.md": "e202783d7b1a873476b3c78b342ed78b9a948ebcceceb30ec6550288e8eb0145",
+      ".claude/skills/slide-icons/stages/create.md": "db70cae9cee05a0b56d9355225a84702a660b87e78db649d0ae3edf6fed83a8d",
+      ".claude/skills/slide-icons/stages/fit.md": "230966db60a574204fc4f3e9a5549a1337ffe94bc6ccb53d1ef06571f367cfce",
+      ".claude/skills/slide-icons/stages/reuse.md": "3189dcbc8e80dffb481645878e546fb6f90a32c48a6438e2454171c0a539ff5f",
+      ".claude/skills/slide-icons/stages/review.md": "5aece9445222b59011546aa3760887c14a0b36488389157722462596dd2f1ffc",
+      ".claude/skills/slide-icons/stages/ship.md": "f44f510438e8886647db38d17c74c3dea8fcdb39e28fd6504469980cd29030f0"
+    },
+    "tabletop-room": {
+      ".claude/skills/tabletop-room/LOOK.md": "d6bebf028c6112cde5c4d88c3408d9bf715eeefe186ff81ae45e401f5677b7db",
+      ".claude/skills/tabletop-room/RULES.md": "8bc7d59a3cf4dec7f8cabccc5496af329a64f34d62d14b996131fa6c70678603",
+      ".claude/skills/tabletop-room/SKILL.md": "339650cd013099f6c6d6a54dbda3d3fa2000decb40a72479a0704eeface5e04a",
+      ".claude/skills/tabletop-room/checks/README.md": "adddca55f12e925963814bcfd2f22a880619b66549037e32ba57c3b0c9f7b07a",
+      ".claude/skills/tabletop-room/examples/README.md": "3db998ccdbe677ca1c38314cb78945ed9d2515a3d689631cb6f8fa5be107098f",
+      ".claude/skills/tabletop-room/kernel/INDEX.md": "95dd0e1eee9679683aac135735f818b2ff6b42c29193cb2cbb24db99fccd4c43",
+      ".claude/skills/tabletop-room/references/materials-and-lighting.md": "6952b0cbf76c9c72c8d6b6ec36632018c06239fc82b5a278b5cdd6d44ff786fc"
+    },
+    "voxel-agent": {
+      ".claude/agents/voxel-agent.md": "eaa1d8c82fee2201a8e134d24b3d69b8d164ca1e9561536979ad986a23788f95",
+      ".claude/skills/voxel-agent/LOOK.md": "99f689de82451c6c2d62727b5bc7476f5c08de183a419dafe5794a0fbbb1a4b1",
+      ".claude/skills/voxel-agent/RULES.md": "d464735ca6315d7f6fd53a8177a6140516203f115e4cd543bcff735a0cbdaa56",
+      ".claude/skills/voxel-agent/SKILL.md": "ac6b8d7e4dab61f2cbd3957d0bec0bd24665e10fb6fc980d8bbc4df8276001e8",
+      ".claude/skills/voxel-agent/SYSTEM.md": "84183cdffd77ab1d7df5a76e8ec903a7978895559ede8f2b04e572fdda7d6660",
+      ".claude/skills/voxel-agent/examples/README.md": "98fcc54ce8f9aace596fcf55f0d782d097d8d0dc07691edf51897b7157b01737",
+      ".claude/skills/voxel-agent/examples/prompt.md": "f421b386ac83b1ef2a37040f0552b567bb1eb461e1e9ded391ab3d0f6a2afdec",
+      ".claude/skills/voxel-agent/playbooks/ambience.md": "67bf838c011e88f1b9ab6e3444dccae85abe70371e6d75d216d059973f076644",
+      ".claude/skills/voxel-agent/playbooks/components.md": "1a91ab97bfbf8ef916a8dda09d4ea6cc5746498ab422ab0c3dd2b60057d0bb01",
+      ".claude/skills/voxel-agent/playbooks/ecology.md": "e55d5dbd9a980bcf571e510488b64ea49739e74d2d9af5f5b109be1f68cdcd1c",
+      ".claude/skills/voxel-agent/playbooks/feedback.md": "15c1ee56a282f749d7f9fa2fe89145e81365de229fc5b2a8e1d6430deaa06bb8",
+      ".claude/skills/voxel-agent/playbooks/performance.md": "254d96432a0481d23b0160cab32c41684a5679a881d9f2c8a05c81aaa4f27dd0",
+      ".claude/skills/voxel-agent/playbooks/placement.md": "668f455b4b56d49d0c2cbb0a2aefb7054bf05b73b998707c2f7e8e4a2a1731eb",
+      ".claude/skills/voxel-agent/playbooks/places.md": "63d76e0a4fae23d135af362b03a955214524acf95deeac20603204b3404a99aa",
+      ".claude/skills/voxel-agent/playbooks/research.md": "ab1672a9961d98c5bc77fe2a1e8ff443752912abfe0b705c220e24745e056109",
+      ".claude/skills/voxel-agent/playbooks/seed-plan.md": "d790f05d54d96fc195a30b8f18956e8687f9c7561da85fae7f02287802248ed8",
+      ".claude/skills/voxel-agent/playbooks/terrain.md": "fca7dbfc8d8a167b4e5d251f586ba33359181d577aa2a84664300413dda2b833",
+      ".claude/skills/voxel-agent/playbooks/verification.md": "3cb103e952f39518e1508634dfbb9a5f9c63858261e152ca2cb427b2a16f8c72"
+    },
+    "web-design-agent": {
+      ".claude/agents/web-design-agent.md": "298241e5058c2cfcc881123a6e1c503b5d25c9a1599021f050325fab365843ae",
+      ".claude/skills/web-design-agent/LOOK.md": "9bb56339e904947e5b6bfc72d90c0652529296bd71a74a019e90bf479228df79",
+      ".claude/skills/web-design-agent/RULES.md": "a7d501a5424dd03d625a13ee3a99d2f106d0b589020f357ef7507d9f3db9df29",
+      ".claude/skills/web-design-agent/SKILL.md": "820b70c333abcbaaa4598da4a70ed1e3f23d7751c04232f2f154309d373c045d",
+      ".claude/skills/web-design-agent/SYSTEM.md": "4376a5e27f6ead04627ef206af8ff9ad76848d5ec6df9978f0f9889031791224",
+      ".claude/skills/web-design-agent/checks/README.md": "1afbc90c56d128c5ef0cc4fce92f9c97df9a545287085d755fcfa2de09258fa0",
+      ".claude/skills/web-design-agent/examples/README.md": "f3525c4c0ee7aeeb0298bb7850af290e5ed4b68d44985db6c427559e3b84866b",
+      ".claude/skills/web-design-agent/examples/prompt.md": "50a3e655938947c90afb2d0ff1f8aeb2d1d49a52e2e249c9a96ca0fc9af56b0a",
+      ".claude/skills/web-design-agent/kernel/INDEX.md": "e715fda8dc9e0dff36044818a981907ffafaddd5215c01026f38c97bec848198",
+      ".claude/skills/web-design-agent/playbooks/lighting.md": "dfb3c837b988622253b92bbe9bf62091f6f361c09ea49cff8ef04a7576bfd92e",
+      ".claude/skills/web-design-agent/playbooks/seeded-room.md": "80205b39cdc9c29d664e2ca5de6e91bf8b2d86dffcf57e11bdd3e854528b3fe0",
+      ".claude/skills/web-design-agent/playbooks/voxel-atmosphere.md": "c051098f532eb33c945400d2c08fb497139ae50dc3df690f96f3be7b950304c5",
+      ".claude/skills/web-design-agent/references/lighting.md": "098bab4fcb359ebfec31157b9903533de51cb851790a40503f0552e8e0de8687",
+      ".claude/skills/web-design-agent/templates/lighting-brief.md": "e3cb161841eaaf055ed38e30f9056bb21ae0dc7e6364cee909dd2a62c6dd3320"
     }
   }
 }

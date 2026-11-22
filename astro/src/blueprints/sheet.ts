@@ -3,6 +3,7 @@ import { WEIGHT } from '../figures/kit/drawing/scene';
 import { notes, sheet, text, titleBlock } from '../figures/kit/drawing/frame';
 import { layout, sizeKey, type Drawing } from './drawing';
 import type { Box, Measured, P } from './measure';
+import { BREAK } from './window';
 
 /** A blueprint on an A3 sheet, for review and for the design system's stored copy: the view drawn
  *  from what rendered at a standard scale, parts outlined (slots dashed) and numbered, every
@@ -35,7 +36,27 @@ function draw(ctx: CanvasRenderingContext2D, d: Drawing, m: Measured, k: number,
     const b = m.boxes[p.id];
     if (b && !p.slot) rect({ x: b.x * k, y: b.y * k, w: b.w * k, h: b.h * k });
   }
+  // A broken view (R-BP-10): where the page is cut, the band is cleared and closed by two thin
+  // zigzag break lines across the root, ISO 128's interrupted view.
   ctx.lineWidth = WEIGHT.thin * mm;
+  const root = m.boxes[1];
+  for (const y of m.breaks ?? []) {
+    if (!root) break;
+    const [x0, x1, y0] = [(root.x - 8) * k, (root.x + root.w + 8) * k, y * k];
+    ctx.fillStyle = hexOf('ground');
+    ctx.fillRect(X(x0), Y(y0), (x1 - x0) * mm, BREAK * k * mm);
+    ctx.fillStyle = hexOf('ink2');
+    for (const yy of [y0 + BREAK * k * 0.3, y0 + BREAK * k * 0.7]) {
+      const n = Math.max(6, Math.round((x1 - x0) / 6));
+      ctx.beginPath();
+      for (let i = 0; i <= n; i++) {
+        const x = x0 + ((x1 - x0) * i) / n;
+        const lift = i === Math.floor(n / 2) ? -2 : i === Math.floor(n / 2) + 1 ? 2 : 0;
+        ctx[i ? 'lineTo' : 'moveTo'](X(x), Y(yy + lift));
+      }
+      ctx.stroke();
+    }
+  }
   for (const ol of d.outlines.filter((x) => x.kind !== 'part')) {
     ctx.setLineDash(ol.kind === 'slot' ? [3 * mm, 1.5 * mm] : []);
     rect(ol.box);

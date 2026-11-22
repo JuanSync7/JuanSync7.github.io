@@ -10,7 +10,7 @@ under `astro/src/`.
 | `styles/tokens/typography.css` | the self-hosted fonts, font stacks, sizes and weights | |
 | `styles/tokens/spacing.css` | the 4px spacing scale, radii and shadows | `--hf-space-*` |
 | `styles/tokens/gradients.css` | named gradients | |
-| `styles/tokens/motion.css` | page-level durations and easing (figures keep their own clock) | |
+| `styles/tokens/motion.css` | page-level durations and easing (figures keep their own clock). Every animation time a page or component sets is one of these: `site:tokens` fails a time literal (`1.4s`, `250ms`) in a component as it fails a colour | `--nt-dur-*`, `--nt-ease-*` |
 | `styles/tokens/buttons.css` | paper actions: face, ink, printed edge, step | `--pa-*` |
 | `styles/tokens/presentation.css` | reading roles and measures for guides and slides | `--pr-*` |
 | `styles/tokens/blueprint.css` | the drafting look of the component blueprints | `--bp-*` |

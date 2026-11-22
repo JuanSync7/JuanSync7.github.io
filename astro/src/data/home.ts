@@ -81,9 +81,9 @@ export const NAV = [
   { label: 'lab', href: '/lab/' },
   { label: 'anatomy', href: '/anatomy/chip-package/' },
   { label: 'vault', href: '/vault/' },
-  // A narrow screen keeps the current page, or the library when no page is selected.
+  // A narrow screen keeps the current page, or the blog when no page is selected.
   // The footer carries every destination.
-  { label: 'library', href: '/library/' },
+  { label: 'blog', href: '/blog/' },
 ] as const;
 
 export const THINKING = {
@@ -196,7 +196,7 @@ export const FOOTER = {
 export const HEADER_LINKS = [
   { label: 'About', href: '/about/' },
   { label: 'Work', href: '/#work' },
-  { label: 'Library', href: '/library/' },
+  { label: 'Blog', href: '/blog/' },
   { label: 'Lab', href: '/lab/' },
   { label: 'Vault', href: '/vault/' },
 ] as const;
@@ -206,6 +206,7 @@ export const FOOTER_GROUPS = [
     label: '// pages',
     links: [
       { label: 'About', href: '/about/' },
+      { label: 'Blog', href: '/blog/' },
       { label: 'Library', href: '/library/' },
       { label: 'Playbooks', href: '/playbooks/' },
       { label: 'Lab', href: '/lab/' },
