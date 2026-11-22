@@ -1,5 +1,6 @@
 // One source: the experience vault's Playbooks/drawing/kernel. A project's copy is synced from it, never edited.
 import {
+  BufferAttribute,
   BufferGeometry,
   CylinderGeometry,
   DoubleSide,
@@ -16,12 +17,17 @@ import { LineSegments2 } from 'three/examples/jsm/lines/LineSegments2.js';
 import { LineSegmentsGeometry } from 'three/examples/jsm/lines/LineSegmentsGeometry.js';
 import { edgeModel, viewEdges } from './edges';
 import { hexOf } from './host';
-import { posOf, type Fill, type Lines, type Part, type Sketch, type Tier } from './monoline';
+import { posOf, type Fill, type Lines, type Part, type Sketch, type Tier, type V3 } from './monoline';
 
 /** Draws a `monoline.ts` sketch: plates merged per fill, lines merged per brightness, each
  *  moving set as its own group. Lines are the drawing kernel's fat lines, one CSS pixel wide at
  *  any pixel ratio, drawn after the plates (which are pushed back a hair) so a part's own outline
- *  is never lost in its face. */
+ *  is never lost in its face.
+ *
+ *  Working out the lines (each part's edges and silhouettes seen along `look`) and merging the
+ *  plates is the cost; drawing the result is cheap. So it is split in two: `bake` turns a sketch
+ *  into plain numbers, which a project can do once at its build and ship, and `drawBaked` draws
+ *  them. `monodraw` is both, for a sketch drawn where it is made. */
 
 const TIERS: Tier[] = ['edge', 'soft', 'faint', 'hot'];
 const ALPHA: Record<Tier, number> = { edge: 0.9, soft: 0.5, faint: 0.22, hot: 1 };
@@ -71,8 +77,20 @@ function materials(own: Own): Mats {
   return mats;
 }
 
-function assemble(parts: Part[], extra: Lines[], look: Vector3, mats: Mats, own: Own): Object3D[] {
-  const out: Object3D[] = [];
+/** A drawing's geometry as plain numbers: each fill's plates as triangle positions, each tier's
+ *  lines as segment ends (x, y, z, x, y, z per segment). */
+export interface Layer {
+  fill: Partial<Record<Exclude<Fill, 'none'>, Float32Array>>;
+  line: Partial<Record<Tier, Float32Array>>;
+}
+
+/** A whole drawing baked: what stands still, and each moving set about its pivot. */
+export interface Baked {
+  root: Layer;
+  lives: { name: string; pivot: V3; layer: Layer }[];
+}
+
+function layerOf(parts: Part[], extra: Lines[], look: Vector3): Layer {
   const lines: Record<Tier, number[]> = { edge: [], soft: [], faint: [], hot: [] };
   for (const p of parts) {
     const plain = new BufferGeometry().setAttribute('position', posOf(p.geo));
@@ -81,6 +99,7 @@ function assemble(parts: Part[], extra: Lines[], look: Vector3, mats: Mats, own:
     plain.dispose();
   }
   for (const e of extra) for (const v of e.pts) lines[e.tier].push(v);
+  const out: Layer = { fill: {}, line: {} };
   for (const fill of ['ground', 'signal'] as const) {
     const geos = parts
       .filter((p) => p.fill === fill)
@@ -88,31 +107,53 @@ function assemble(parts: Part[], extra: Lines[], look: Vector3, mats: Mats, own:
     if (!geos.length) continue;
     const merged = mergeGeometries(geos);
     geos.forEach((g) => g.dispose());
-    own(() => merged.dispose());
-    out.push(new Mesh(merged, mats.fill[fill]));
+    out.fill[fill] = Float32Array.from(merged.getAttribute('position').array);
+    merged.dispose();
   }
   parts.forEach((p) => p.geo.dispose());
-  for (const t of TIERS) {
-    if (!lines[t].length) continue;
-    const g = new LineSegmentsGeometry().setPositions(lines[t]);
+  for (const t of TIERS) if (lines[t].length) out.line[t] = Float32Array.from(lines[t]);
+  return out;
+}
+
+function objectsOf(l: Layer, mats: Mats, own: Own): Object3D[] {
+  const out: Object3D[] = [];
+  for (const fill of ['ground', 'signal'] as const) {
+    const pos = l.fill[fill];
+    if (!pos) continue;
+    const g = new BufferGeometry().setAttribute('position', new BufferAttribute(pos, 3));
     own(() => g.dispose());
-    const l = new LineSegments2(g, mats.line[t]);
-    l.renderOrder = 1;
-    out.push(l);
+    out.push(new Mesh(g, mats.fill[fill]));
+  }
+  for (const t of TIERS) {
+    const pos = l.line[t];
+    if (!pos) continue;
+    const g = new LineSegmentsGeometry().setPositions(pos);
+    own(() => g.dispose());
+    const line = new LineSegments2(g, mats.line[t]);
+    line.renderOrder = 1;
+    out.push(line);
   }
   return out;
 }
 
-/** The finished drawing of `k` seen along `look`. */
-export function monodraw(k: Sketch, look: Vector3, own: Own): Drawing {
+/** `k` seen along `look`, as plain numbers: the costly half of drawing it. */
+export function bake(k: Sketch, look: Vector3): Baked {
+  return {
+    root: layerOf(k.parts, k.lines, look),
+    lives: k.lives.map((l) => ({ name: l.name, pivot: l.pivot, layer: layerOf(l.parts, l.lines, look) })),
+  };
+}
+
+/** Draws a baked drawing: the cheap half. */
+export function drawBaked(b: Baked, own: Own): Drawing {
   const mats = materials(own);
   const root = new Group();
-  root.add(...assemble(k.parts, k.lines, look, mats, own));
+  root.add(...objectsOf(b.root, mats, own));
   const moving = new Map<string, Group>();
-  for (const l of k.lives) {
+  for (const l of b.lives) {
     const g = new Group();
     g.position.set(...l.pivot);
-    g.add(...assemble(l.parts, l.lines, look, mats, own));
+    g.add(...objectsOf(l.layer, mats, own));
     root.add(g);
     moving.set(l.name, g);
   }
@@ -129,6 +170,11 @@ export function monodraw(k: Sketch, look: Vector3, own: Own): Drawing {
     return mesh;
   };
   return { root, moving, fit, spots };
+}
+
+/** The finished drawing of `k` seen along `look`. */
+export function monodraw(k: Sketch, look: Vector3, own: Own): Drawing {
+  return drawBaked(bake(k, look), own);
 }
 
 /** Shows the first `u` (0..1) of every line in a moving group: a trace being drawn. */
