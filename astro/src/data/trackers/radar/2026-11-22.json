@@ -1,0 +1,282 @@
+{
+  "meta": {
+    "lastUpdated": "2026-11-22",
+    "cadence": "daily",
+    "summary": "rust-anything lets an agent rewrite code in Rust but leaves the verdict to recorded behaviour, a gate that proves agreement and not correctness.",
+    "note": "Backfilled on 2026-11-22: the run on this date could not reach the site. Picks, fit and verdicts are the run's own; stars, licence and last activity were read from GitHub on 2026-11-22."
+  },
+  "featuredRepo": "erkamyaman/rust-anything",
+  "picks": [
+    {
+      "repo": "erkamyaman/rust-anything",
+      "url": "https://github.com/erkamyaman/rust-anything",
+      "what": "A tool that records what an app does, lets a coding agent rewrite it in Rust piece by piece, and replays the recording to prove each piece behaves the same.",
+      "language": "Rust",
+      "license": "MIT",
+      "stars": 7913,
+      "lastActivity": "2026-11-22",
+      "area": "Coding-agent ecosystem",
+      "fit": 4,
+      "fitWhy": "The agent writes the port, but deterministic record, diff and gate steps decide when it is done, which is how I want agents bounded.",
+      "verdict": "study",
+      "caution": "Created six days before this run, with most of its stars in that week. Speed and parity figures are the project's own. Its setup command writes into agent config folders in your home directory.",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "alexeyw/lot-map",
+      "url": "https://github.com/alexeyw/lot-map",
+      "what": "A live map beside Claude Code that shows tool calls, hooks, skills and subagents as they run, locally.",
+      "language": "TypeScript",
+      "license": "MIT",
+      "stars": 1126,
+      "lastActivity": "2026-11-22",
+      "area": "Coding-agent ecosystem",
+      "fit": 4,
+      "fitWhy": "Seeing which skill or hook actually fired is the visibility I want when building agents that must fire reliably.",
+      "verdict": "study",
+      "caution": "It sees every tool call, so read what it hooks into before installing.",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "janestreet/agent_skills",
+      "url": "https://github.com/janestreet/agent_skills",
+      "what": "A published set of agent skills from a large engineering firm.",
+      "language": "unconfirmed",
+      "license": "MIT",
+      "stars": 10652,
+      "lastActivity": "2026-11-17",
+      "area": "Agent skills, playbooks and their evaluation",
+      "fit": 3,
+      "fitWhy": "A real firm's skill wording is a useful comparison for how I write skill triggers.",
+      "verdict": "study",
+      "caution": "Stars measure attention, not quality.",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "Dodaios/ste80-humanizer",
+      "url": "https://github.com/Dodaios/ste80-humanizer",
+      "what": "An agent skill that rewrites text toward Simplified Technical English and strips common AI tells.",
+      "language": "Python",
+      "license": "MIT",
+      "stars": 1078,
+      "lastActivity": "2026-11-18",
+      "area": "Agent skills, playbooks and their evaluation",
+      "fit": 3,
+      "fitWhy": "Its list of tells could be compared with my own writing rules, and some may be checkable by script.",
+      "verdict": "study",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "shanselman/gputaskman",
+      "url": "https://github.com/shanselman/gputaskman",
+      "what": "A terminal task manager for GPUs that shows per-process memory and KV-cache use.",
+      "language": "Python",
+      "license": "MIT",
+      "stars": 3694,
+      "lastActivity": "2026-11-21",
+      "area": "Inference engines and inference silicon",
+      "fit": 3,
+      "fitWhy": "Useful-looking for watching inference servers, but only the top of the README was read.",
+      "verdict": "watch",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "NiazMorshed2007/reanimate",
+      "url": "https://github.com/NiazMorshed2007/reanimate",
+      "what": "A Claude Code skill that copies an animation frame by frame and claims to prove the copy moves the same.",
+      "language": "JavaScript",
+      "license": "MIT",
+      "stars": 2176,
+      "lastActivity": "2026-10-31",
+      "area": "Static-site and design tooling for an Astro site",
+      "fit": 3,
+      "fitWhy": "The proof claim is interesting for site motion work, but the proof step was not read.",
+      "verdict": "watch",
+      "caution": "Claim not verified. Installable skill: review before use.",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "BigPizzaV3/ClaudeMom",
+      "url": "https://github.com/BigPizzaV3/ClaudeMom",
+      "what": "A patch that unlocks a desktop AI app's features without an account.",
+      "language": "JavaScript",
+      "license": "AGPL-3.0",
+      "stars": 681,
+      "lastActivity": "2026-11-22",
+      "area": "outside profile",
+      "fit": 0,
+      "fitWhy": "Not recommended: it works around a platform's account rules.",
+      "verdict": "skip",
+      "caution": "Not recommended. It bypasses a platform's rules.",
+      "foundVia": [
+        "github search"
+      ]
+    }
+  ],
+  "catalogue": [
+    {
+      "repo": "RunanywhereAI/trnrt",
+      "url": "https://github.com/RunanywhereAI/trnrt",
+      "what": "An open inference engine that serves one large open model on a single AWS Trainium2 machine through an OpenAI-compatible API.",
+      "area": "Inference engines and inference silicon",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "jmaczan/tiny-vllm",
+      "url": "https://github.com/jmaczan/tiny-vllm",
+      "what": "A teaching-sized LLM inference engine in C++ and CUDA that rebuilds the core ideas of vLLM.",
+      "area": "Inference engines and inference silicon",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "obsidianmd/pele",
+      "url": "https://github.com/obsidianmd/pele",
+      "what": "A fast renderer for Mermaid diagrams from the Obsidian team.",
+      "area": "Static-site and design tooling for an Astro site",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "ddkbs/sketchy",
+      "url": "https://github.com/ddkbs/sketchy",
+      "what": "A layout engine for AI-drawn diagrams: the model names the boxes and links, the engine places them, in a hand-drawn style.",
+      "area": "Static-site and design tooling for an Astro site",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "lightseekorg/tokenspeed",
+      "url": "https://github.com/lightseekorg/tokenspeed",
+      "what": "An LLM inference engine built around a state-machine scheduler and a registry of kernels.",
+      "area": "Inference engines and inference silicon",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "erkamyaman/rust-anything",
+      "url": "https://github.com/erkamyaman/rust-anything",
+      "what": "A tool that records what an app does, lets a coding agent rewrite it in Rust piece by piece, and replays the recording to prove each piece behaves the same.",
+      "area": "Coding-agent ecosystem",
+      "verdict": "study",
+      "firstSeen": "2026-11-22"
+    },
+    {
+      "repo": "alexeyw/lot-map",
+      "url": "https://github.com/alexeyw/lot-map",
+      "what": "A live map beside Claude Code that shows tool calls, hooks, skills and subagents as they run, locally.",
+      "area": "Coding-agent ecosystem",
+      "verdict": "study",
+      "firstSeen": "2026-11-22"
+    },
+    {
+      "repo": "janestreet/agent_skills",
+      "url": "https://github.com/janestreet/agent_skills",
+      "what": "A published set of agent skills from a large engineering firm.",
+      "area": "Agent skills, playbooks and their evaluation",
+      "verdict": "study",
+      "firstSeen": "2026-11-22"
+    },
+    {
+      "repo": "Dodaios/ste80-humanizer",
+      "url": "https://github.com/Dodaios/ste80-humanizer",
+      "what": "An agent skill that rewrites text toward Simplified Technical English and strips common AI tells.",
+      "area": "Agent skills, playbooks and their evaluation",
+      "verdict": "study",
+      "firstSeen": "2026-11-22"
+    }
+  ],
+  "featured": [
+    {
+      "repo": "RunanywhereAI/trnrt",
+      "date": "2026-11-21",
+      "slug": "2026-11-21-trnrt"
+    },
+    {
+      "repo": "erkamyaman/rust-anything",
+      "date": "2026-11-22",
+      "slug": "2026-11-22-rust-anything"
+    }
+  ],
+  "seen": [
+    {
+      "repo": "RunanywhereAI/trnrt",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "jmaczan/tiny-vllm",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "obsidianmd/pele",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "ddkbs/sketchy",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "sybil-solutions/inference-optimisation-skill",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "lightseekorg/tokenspeed",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "erkamyaman/rust-anything",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "alexeyw/lot-map",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "janestreet/agent_skills",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "Dodaios/ste80-humanizer",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "shanselman/gputaskman",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "NiazMorshed2007/reanimate",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "BigPizzaV3/ClaudeMom",
+      "date": "2026-11-22"
+    }
+  ],
+  "sourceStats": {
+    "github search": {
+      "checked": 2,
+      "candidates": 13,
+      "picks": 13,
+      "useful": 9
+    },
+    "web search": {
+      "checked": 2,
+      "candidates": 0,
+      "picks": 0,
+      "useful": 0
+    }
+  }
+}
