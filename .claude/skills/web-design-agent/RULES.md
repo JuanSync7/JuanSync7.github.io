@@ -11,6 +11,23 @@ with its own check. Twice that day a file went over its budget and was split onl
 |---|---|---|---|
 | WEB-BUDGET | Before writing, read the file budgets (lint `max-lines`, with its larger three.js override). A file that would go past its budget is doing two jobs: name the second file and split by job before writing, never by packing lines. The numbers live only in the lint config, so changing one is one edit. | A split chosen after lint fails, or lines packed to fit. | `astro/eslint.config.js` and the figure check's `length` rule; `npm run lint`; `npm run budget:selftest` proves a file one line over each budget still fails |
 
+## Motion and performance
+
+Case: 22 November 2026. The page turn lagged when it landed on the home page's work section or the
+lab, because those pages build heavy figures and the turn was painted on the main thread. Juan asked
+that this be a top-level rule of this agent: anything that moves, and any figure or graphic, follows it.
+Work through [the performance playbook](playbooks/performance.md); its probes are in `checks/perf/`.
+
+| ID | Requirement / rationale | Failure case | Implementation / proof |
+|---|---|---|---|
+| WEB-PERF-1 | Animate only `transform` and `opacity`. A shape, a gradient, a shadow or a colour is painted once on its own layer, and the animation moves that layer. Then the compositor plays it on its own thread, so nothing on the main thread can stall it. | The page turn animated `clip-path` polygons and a gradient every frame: landing on home or the lab gave about 5 frames in 2.5 to 3.4 s. Rebuilt with rotated clipping layers that only move, it kept drawing through a 700 ms block of the main thread. | `checks/perf/block.mjs` (exit 1 when the screen shows fewer than 3 new pictures during the block); the site's `page-curl.ts` and `page-turn.css` are the worked example |
+| WEB-PERF-2 | Never put a blurring filter (`drop-shadow`, `blur`) on a layer that moves. Paint the shadow with the layer (`box-shadow`) and let the clip around it cut it. | A `drop-shadow` on the page turn's flap halved its frame rate and pulled it back onto the main thread: 1 picture during the block, 7 without it. | `checks/perf/block.mjs`, with the filter removed by an injected style to find it |
+| WEB-PERF-3 | Keep every task under 50 ms while the page lands or an animation plays. Hold it with budgets per page type (home, lab, post, article, tracker, vault) and per figure, set a little above what each measures today, and lower them as work gets cheaper, never raise them. | Landing on /#work ran one 1.5 s task: the six work cards built at once. | `checks/perf/lag.mjs` names the long tasks and the script behind each. The budgets and their CI check are not built yet (proposed). |
+| WEB-PERF-4 | Work whose answer never changes is done at the site's build, not in each visitor's browser, and the checks on it run there too. | The work cards worked out their hidden lines and ran their clash checks on every visit: about 0.45 s here before WebGL drew anything. Baked at the build they are 116 KB gzipped and draw the same to 0.13 % of pixels. | The drawing kernel's `bake` and `drawBaked`; the site's `pages/baked/[scene].json.ts`; a figure module's `ready`, awaited before it mounts |
+| WEB-PERF-5 | Build a page's figures one at a time, the one nearest the middle of the window first, with a painted frame between builds. | The same 1.5 s task: ten figures built in one go. Queued, it became tasks of 50 to 300 ms. | The site's `hooks/figureQueue.ts`; `checks/perf/lag.mjs` |
+| WEB-PERF-6 | A figure whose build cannot be baked or split is plotted in piece by piece as part of its look, so the reader sees it being drawn instead of an empty box, and each frame does a small share of the work. Under reduced motion the finished drawing shows at once. | The lab still has two figures that each block for about 1 s. | Not built yet: judgment per figure, checked with `lag.mjs` (each frame's share under the budget) |
+| WEB-PERF-7 | Measure the old and the new on the same machine and the same built pages, and check the picture as well as the counter. A machine without a GPU gives relative numbers only: never quote its frame rates as the site's. | A first block test counted 8 of 8 new frames for a turn whose layers had zero size: the counter passed a broken picture. | Screenshots of the turn at 25, 50 and 75 % beside the old one; `smooth.mjs` and `block.mjs` run on both builds |
+
 ## Room lighting and seeded interiors
 
 Case: 9 November 2026 request about flat lighting, monochrome depth and seeded room variety.
