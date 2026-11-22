@@ -8,7 +8,7 @@ import type { Sketch, V3 } from './drawing/monoline';
 /** The floor's side: every scene stands on the same square. */
 export const F = 2.6;
 /** Pixels per metre at the smallest width the cards are shown (a phone's card): what decides
- *  whether a cable is a line or a tube (`kit/cable.ts`). */
+ *  whether a cable is a line or a tube (`kit/drawing/cable.ts`, R-FIG-32). */
 export const PX = 80;
 /** The box every camera frames: the floor and 1.9 m of height above it. */
 export const FRAME = [0, -0.03, 0, F, 1.9, F] as const;

@@ -1,5 +1,5 @@
 import { Color, OrthographicCamera, Scene, Vector2, Vector3, WebGLRenderer } from 'three';
-import { cableIssues } from './cable';
+import { cableIssues } from './drawing/cable';
 import type { Drawing } from './drawing/monodraw';
 import { softwareGL } from './gpu';
 import { monodraw } from './drawing/monodraw';

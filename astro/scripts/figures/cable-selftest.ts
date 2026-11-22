@@ -1,7 +1,7 @@
-// Proves the cable check (`cableIssues`, kit/cable.ts, SITE.md "Wires and cables") still tells a
+// Proves the cable check (`cableIssues`, kit/drawing/cable.ts, R-FIG-32) still tells a
 // cable run properly from one left in the air, run through a solid, or floating across a gap.
 //   npm run figures:cable:selftest
-import { cable, cableIssues, FLOOR } from '../../src/figures/kit/cable';
+import { cable, cableIssues, FLOOR } from '../../src/figures/kit/drawing/cable';
 import { Sketch } from '../../src/figures/kit/drawing/monoline';
 
 /** A floor, a desk and a box on the floor: the furniture every case cables between. */

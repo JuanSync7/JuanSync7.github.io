@@ -1,5 +1,5 @@
 import type { Sketch, V3 } from './drawing/monoline';
-import { cable } from './cable';
+import { cable } from './drawing/cable';
 import { ease, floor, FRAME, legs, PX } from './expbase';
 import type { Small } from './hiddenshared';
 

@@ -1,6 +1,6 @@
 import { reveal } from './drawing/monodraw';
 import type { Sketch, V3 } from './drawing/monoline';
-import { cable } from './cable';
+import { cable } from './drawing/cable';
 import { ease, floor, FRAME, PX, shift } from './expbase';
 import type { Small } from './hiddenshared';
 

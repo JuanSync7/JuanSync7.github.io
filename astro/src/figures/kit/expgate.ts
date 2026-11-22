@@ -2,7 +2,7 @@ import type { InstancedMesh } from 'three';
 import { Matrix4, Quaternion, Vector3 } from 'three';
 import type { Drawing } from './drawing/monodraw';
 import type { Sketch, V3 } from './drawing/monoline';
-import { cable, FLOOR } from './cable';
+import { cable, FLOOR } from './drawing/cable';
 import { along, floor, FRAME, legs, PX } from './expbase';
 import { tower, TOWER_PORT } from './exptower';
 import type { Small } from './hiddenshared';
@@ -10,7 +10,7 @@ import type { Small } from './hiddenshared';
 /** One gateway (`experience-icon`, platform): three teams' laptops on a long table, one gateway
  *  appliance on its cabinet in the middle, and on the far side the models: a server rack (the
  *  cloud's) and a workstation tower (self-hosted, `kit/exptower.ts`). Every lead plugs in at both
- *  ends and runs through the gateway (`kit/cable.ts`). A request leaves
+ *  ends and runs through the gateway (`kit/drawing/cable.ts`, R-FIG-32). A request leaves
  *  one laptop, passes the gateway and reaches one model, and the answer comes back the same way. */
 
 const LAPTOPS = [0.95, 1.5, 2.05];

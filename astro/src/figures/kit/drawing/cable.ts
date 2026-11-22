@@ -1,8 +1,8 @@
 import { Matrix4, Vector3 } from 'three';
-import type { Part, Sketch, Tier, V3 } from './drawing/monoline';
+import type { Part, Sketch, Tier, V3 } from './monoline';
 
-/** Wires and cables in a hidden-line scene, drawn as a draftsman would (SITE.md, "Wires and
- *  cables"). A cable is a real run: from a plug to a plug (or a tie), lying on the surfaces it
+/** Wires and cables in a hidden-line scene, drawn as a draftsman would (the figure playbook's
+ *  R-FIG-32). A cable is a real run: from a plug to a plug (or a tie), lying on the surfaces it
  *  rests on or hanging straight down from one, bending with a radius, never through a solid. It is
  *  one line while it is thinner than `THICK_PX` at the smallest size the scene is shown, and a
  *  tube with its own silhouette from there up. `cableIssues` is the check the build runs.

@@ -32,20 +32,7 @@ build (thrown by the renderer), and a visible change between 0.8 s and 2.6 s (R-
 
 ## Wires and cables
 
-Proposed for the vault's Making figures deck; held here until it is synced as a rule.
-
-Draw a wire or cable in a hidden-line scene as a real run, with `cable()` (`kit/cable.ts`), never
-as a free `line`. Both ends land on a part: a plug body at a port, or a tie or gland where it has
-none. Between them it rests on the surfaces it would lie on (floor, desk top, shelf, a face) or
-hangs straight down from one, never crosses open air on a diagonal, never passes through a solid,
-and bends with a radius, not a kink. Leads that run together keep their own lanes and do not cross.
-It is one line while it is under 3 px across at the smallest width the scene is shown (`THICK_PX`,
-with the scene's pixels per metre), and a tube with its own silhouette from there up.
-`cableIssues()` fails the build for an end in the air, a run floating more than 6 cm, or a run
-through a solid; `npm run figures:cable:selftest` proves it. A thread that travels with a moving
-part names it in `tied`.
-
-Why: a cable is the first thing the eye follows from one object to another, and one that ends in
-the air or cuts the corner through space reads as a drawing mistake, not a connection.
-Reject when: a cable end with no part under it, a diagonal through air, a run through a solid, or
-a thick cable drawn as a single line.
+The rule is R-FIG-32 (`references/rules.md`) and the code is the drawing kernel's `cable.ts`, both
+synced from the vault. The site's side: `PX` in `kit/expbase.ts` is the cards' pixels per metre on
+a phone, `hiddenshared.ts` throws on `cableIssues()` beside `clashes()`, and
+`npm run figures:cable:selftest` (in `npm run check`) is the rule's eval.
