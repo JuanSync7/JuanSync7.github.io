@@ -29,6 +29,7 @@
     "posts:check": "node scripts/posts/check.mjs",
     "library:check": "node scripts/library/check.mjs",
     "library:pages": "node scripts/library/check.mjs --dist",
+    "library-art": "bash scripts/library-art/build.sh",
     "library:selftest": "node scripts/library/check.mjs --selftest",
     "library:sync": "node scripts/library/sync.mjs",
     "library:sync:selftest": "node scripts/library/sync.mjs --selftest",

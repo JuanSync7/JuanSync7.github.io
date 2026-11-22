@@ -194,6 +194,87 @@
   --pp-tracking-micro: 0.08em;
   --pp-foot-mark-h: 40px;
   --pp-foot-brand-w: 340px;
+
+  /* The library archive (/library/): pen-and-wash plates baked by the art playbooks, a wall of
+     binder shelves and the desk under it. The plates are drawn in design units (one unit is one
+     CSS px at full size); the archive scales the whole stage down only below --pp-lib-view-min.
+     Plates follow the theme like colours: the night blocks below swap them. */
+  --pp-lib-shelf-art: image-set(url('/library/shelf-light-1x.webp') 1x, url('/library/shelf-light-2x.webp') 2x);
+  --pp-lib-desk-art: image-set(url('/library/desk-light-1x.webp') 1x, url('/library/desk-light-2x.webp') 2x);
+  --pp-lib-binder-a: light-dark(#faf6ee, #23272e);
+  --pp-lib-binder-b: light-dark(#efe7d8, #1d2127);
+  --pp-lib-binder-c: light-dark(#e4d9c5, #191c21);
+  --pp-lib-binder-line: light-dark(#16191e, #d9d2c3);
+  --pp-lib-deep: light-dark(#d9cfbb, #121418);
+  --pp-lib-paper: light-dark(#fcfaf5, #1c2026);
+  --pp-lib-hatch: light-dark(#b9ae99, #4a515e);
+  --pp-lib-edge: light-dark(rgb(22 25 30 / 0.2), rgb(0 0 0 / 0.42));
+  --pp-lib-shadow: light-dark(rgb(22 25 30 / 0.22), rgb(0 0 0 / 0.55));
+  --pp-lib-shadow-low: light-dark(rgb(22 25 30 / 0.1), rgb(0 0 0 / 0.3));
+  /* A spine's shaded right edge: hatching over a darkening wash (the pen-and-wash rule, in CSS). */
+  --pp-lib-grad-edge:
+    repeating-linear-gradient(45deg, transparent 0 3px, var(--pp-lib-hatch) 3px 3.8px),
+    linear-gradient(90deg, transparent, var(--pp-lib-edge));
+  /* The page edges of a binder's paper block, seen from the side or from above. */
+  --pp-lib-grad-leaves: repeating-linear-gradient(90deg, var(--pp-lib-paper) 0 2px, var(--pp-outline) 2px 3px);
+  --pp-lib-grad-leaves-flat: repeating-linear-gradient(180deg, var(--pp-lib-paper) 0 2px, var(--pp-outline) 2px 3px);
+  /* The binder holes punched down the paper's left edge. */
+  --pp-lib-grad-holes: radial-gradient(circle, var(--pp-lib-deep) 0 6px, var(--pp-outline) 6px 7px, transparent 7.5px);
+  /* The wall fades into the page at the edges of the view. */
+  --pp-lib-grad-fade: linear-gradient(90deg, var(--pp-ground), transparent);
+  --pp-lib-unit: 760px;
+  --pp-lib-shelf-x: 120px;
+  --pp-lib-shelf-w: 520px;
+  --pp-lib-view-min: 560px;
+  --pp-lib-band-h: 72px;
+  --pp-lib-desk-w: 1440px;
+  --pp-lib-desk-h: 640px;
+  --pp-lib-fade-w: 150px;
+  --pp-lib-plaque-x: 305px;
+  --pp-lib-plaque-y: 34px;
+  --pp-lib-plaque-w: 150px;
+  --pp-lib-plaque-h: 20px;
+  --pp-lib-line-w: 1.25px;
+  --pp-lib-lift: 10px;
+  --pp-lib-label-x: 4px;
+  --pp-lib-label-y: 10px;
+  --pp-lib-label-h: 22px;
+  --pp-lib-title-top: 38px;
+  --pp-lib-title-bottom: 33px;
+  --pp-lib-ring: 14px;
+  --pp-lib-ring-y: 13px;
+  --pp-lib-edge-w: 12px;
+  /* A cover board and the foot of a spine. */
+  --pp-lib-board: 5px;
+  --pp-lib-cover-w: 9px;
+  --pp-lib-cover-panel: 10px;
+  --pp-lib-hoop: 22px;
+  --pp-lib-hoop-w: 3px;
+  --pp-lib-hoop-x: 16px;
+  --pp-lib-hoop-y: -17px;
+  --pp-lib-sheet-w: 760px;
+  --pp-lib-sheet-pad: 36px;
+  --pp-lib-sheet-margin: 56px;
+  --pp-lib-sheet-rule-gap: 6px;
+  --pp-lib-sheet-hole: 16px;
+  --pp-lib-sheet-hole-x: 20px;
+  --pp-lib-sheet-hole-pitch: 96px;
+  --pp-lib-sheet-shadow-y: 18px;
+  --pp-lib-sheet-shadow-blur: 40px;
+  --pp-lib-fig-w: 300px;
+  /* The motion, one source for the CSS and the archive's timeline (it reads these at run time). */
+  --pp-lib-dur-slide: 650ms;
+  --pp-lib-dur-lift: 260ms;
+  --pp-lib-dur-fly: 800ms;
+  --pp-lib-dur-plop: 320ms;
+  --pp-lib-dur-open: 700ms;
+  --pp-lib-dur-sheet: 550ms;
+  --pp-lib-ease-slide: cubic-bezier(0.65, 0, 0.35, 1);
+  --pp-lib-ease-x: cubic-bezier(0.6, 0.05, 0.3, 1);
+  --pp-lib-ease-y: cubic-bezier(0.55, 0, 0.9, 0.45);
+  --pp-lib-ease-turn: cubic-bezier(0.45, 0, 0.25, 1);
+  --pp-lib-ease-open: cubic-bezier(0.45, 0, 0.2, 1);
+  --pp-lib-ease-sheet: cubic-bezier(0.5, 0, 0.2, 1);
 }
 
 :root[data-theme='light'] {
@@ -209,6 +290,8 @@
     --pp-figure-blend: normal;
     --pp-margin-mix: 75%;
     --pp-gloss-glow: 0.6;
+    --pp-lib-shelf-art: image-set(url('/library/shelf-dark-1x.webp') 1x, url('/library/shelf-dark-2x.webp') 2x);
+    --pp-lib-desk-art: image-set(url('/library/desk-dark-1x.webp') 1x, url('/library/desk-dark-2x.webp') 2x);
   }
 }
 
@@ -219,6 +302,8 @@
   --pp-figure-blend: normal;
   --pp-margin-mix: 75%;
   --pp-gloss-glow: 0.6;
+  --pp-lib-shelf-art: image-set(url('/library/shelf-dark-1x.webp') 1x, url('/library/shelf-dark-2x.webp') 2x);
+  --pp-lib-desk-art: image-set(url('/library/desk-dark-1x.webp') 1x, url('/library/desk-dark-2x.webp') 2x);
 }
 
 /* Ragged tear edges of the hero sheet and of the strip it leaves behind. */
