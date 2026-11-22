@@ -24,12 +24,12 @@ const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', y
 ---
 
 <NightPage title={`${data.title} · Juan Kok`} description={data.excerpt}>
-  <NightNav current="library" />
+  <NightNav current="blog" />
   <div class="nt-progress" aria-hidden="true"></div>
   <main class="nt-wrap post">
     <DocLayout section={LIBRARY.label} home={{ href: LIBRARY.href, label: `← ${LIBRARY.label}` }} groups={blogGroups(all)} current={pieceHref(entry.slug)} headings={headings}>
     <div class="post-col">
-    <a class="back" href={LIBRARY.posts}>← {LIBRARY.label}</a>
+    <a class="back" href={LIBRARY.href}>← {LIBRARY.label}</a>
     <header class="head">
       <p class="meta">
         <span class="cat">{CATEGORY_LABEL[data.category] ?? data.category}</span>

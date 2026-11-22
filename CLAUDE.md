@@ -81,7 +81,9 @@ Posts (`src/content/blog/`) and articles (`src/content/learn/`) are pieces of on
 piece is read at `/library/<slug>`, whatever its kind, so a slug names one piece across both
 collections; `lessons` and `articles` are reserved for the kind indexes (`/library/lessons/`,
 `/library/articles/`, the field guides by topic). Build a link with `pieceHref`
-(`src/data/library.ts`), never a literal. `src/pages/library/[slug].astro` picks `PostPage` or
+(`src/data/library.ts`), never a literal. The blog (`/blog/`) is a page of its own: it features
+pieces (the shelf of explainers, the lesson log, the posts) and links to the library; the library
+index (`/library/`) lists every post and article. A piece is never read under `/blog/`. `src/pages/library/[slug].astro` picks `PostPage` or
 `ArticlePage` (`src/components/library/`) by kind. Only `/learn/art-gallery/`, a reference
 sheet, keeps an old address.
 

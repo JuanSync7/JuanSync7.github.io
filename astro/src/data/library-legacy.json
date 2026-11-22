@@ -34,10 +34,6 @@
       "to": "/library/how-i-draw-figures/"
     },
     {
-      "from": "/blog/",
-      "to": "/library/"
-    },
-    {
       "from": "/blog/lessons/",
       "to": "/library/lessons/"
     },
