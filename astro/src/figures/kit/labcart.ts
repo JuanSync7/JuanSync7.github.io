@@ -1,4 +1,4 @@
-import type { Sketch, V3 } from './monoline';
+import type { Sketch, V3 } from './drawing/monoline';
 
 /** The furniture on the floor: a trolley carrying the mouse enclosure (an empty glass tank with
  *  bedding, a running wheel, a hut, a wire lid and a water bottle), the lab chair at the bench and

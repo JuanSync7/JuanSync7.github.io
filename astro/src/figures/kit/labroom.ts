@@ -5,7 +5,7 @@ import { cage, cart, chair } from './labcart';
 import { coat } from './labcoat';
 import { curve } from './labculture';
 import { fridge, shell } from './labshell';
-import type { Sketch } from './monoline';
+import type { Sketch } from './drawing/monoline';
 import { wall } from './labwall';
 
 /** The whole lab room (`lab-room`), in one sketch: the room, the fridge in the corner, the wash

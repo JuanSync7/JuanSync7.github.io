@@ -83,8 +83,25 @@ would be wrong: stacked planes you can see between, a solid you can turn.
 the camera and parts from the frame. Colours from `hexOf(key)`; lines with
 `LineBasicMaterial`; faces with `MeshBasicMaterial` (no lights, no shading models).
 `fallback` draws the same picture on a 2D canvas for devices without WebGL.
-**Character:** fog to ground for depth; thin `EdgesGeometry` lines; at most one per page.
+**Character:** fog to ground for depth; thin lines (for solids with round parts, the drawing
+kernel's silhouettes, not `EdgesGeometry`: see hidden-line below); at most one per page.
 **Rejected when:** no fallback; physically based materials, lights or bloom; over 14 ms a frame.
+
+### hidden-line (a `three` scene)
+The name to ask for: **3D isometric hidden-line drawing, monoline** (R-FIG-28). A whole scene
+(a room, a bench, a machine) as an engineer's line drawing with hidden lines removed.
+**Suits:** many real objects in one picture, where shading would turn to mud and outlines read.
+**Recipe:** a `Sketch` from the drawing kernel (`monoline.ts`, reached through `kit/draft.ts`):
+`k.object(name, draw)` around each object, parts as `box`, `cyl`, `lathe`, `ball`, `torus`, `tube`,
+`slab`, details as `line`, `circle`, `rect` a hair proud of their face, moving parts in
+`k.moving(name, pivot, draw)`. Throw if `k.clashes()` lists anything. Draw it with
+`monodraw(k, look, onDispose)` and an orthographic camera along the same `look`: a true 2:1
+isometric is yaw 45°, 30° down. Call the drawing's `fit(w, h, dpr)` on every resize.
+**Character:** one line width (one CSS pixel); every solid a ground plate, glass none; four tiers:
+`edge` outlines, `soft` detail (doors, shelves, liquids), `faint` (floor joints, keys, rules) and
+`hot` the one signal. The signal is the subject's working: in the lab, the culture and its curve.
+**Rejected when:** lines from `EdgesGeometry` (round things lose their outline); a translucent
+line; two objects standing in each other; a second line width; shading or lights.
 
 ## Surfaces (not a figure style)
 Glass (a frosted `backdrop-filter` chip) is allowed only for a read-out or control that floats

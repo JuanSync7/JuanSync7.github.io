@@ -1,5 +1,5 @@
 import { Matrix4 } from 'three';
-import type { Sketch, V3 } from './monoline';
+import type { Sketch, V3 } from './drawing/monoline';
 import { TOP } from './labshell';
 
 /** The long bench on the back wall: cabinets of drawers and doors either side of a knee space, an

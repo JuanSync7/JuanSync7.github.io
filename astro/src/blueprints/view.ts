@@ -1,6 +1,7 @@
 import { BLUEPRINTS } from './index';
 import { layout, sizeKey, type Drawing } from './drawing';
-import { inWindow, measureEl, zoomOf, type Measured } from './measure';
+import { measureEl, zoomOf, type Measured } from './measure';
+import { inWindow } from './window';
 import { lettering, render } from './overlay';
 import type { Blueprint, View } from './types';
 
@@ -81,7 +82,8 @@ function template(fig: HTMLElement, spec: Blueprint, view: View): () => void {
     // A root further down the page (the footer) is scrolled to the top of the frame.
     const below = root.getBoundingClientRect().top;
     if (below > view.height / 2) doc.defaultView?.scrollBy(0, below);
-    const m = inWindow(measureEl(root, spec, view));
+    // The live frame is one window tall, so the overlay draws one window (the stored sheet draws more).
+    const m = inWindow(measureEl(root, spec, view), false);
     const r = root.getBoundingClientRect();
     place(fig, m, k, () => {
       const [f, s] = [frame.getBoundingClientRect(), sheet.getBoundingClientRect()];

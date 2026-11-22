@@ -1,5 +1,5 @@
 import { Matrix4, Quaternion, Vector3, type InstancedMesh } from 'three';
-import type { Sketch, V3 } from './monoline';
+import type { Sketch, V3 } from './drawing/monoline';
 import { SCREEN } from './labbench';
 import { DISH } from './labkit';
 import { mulberry32 } from './rng';
