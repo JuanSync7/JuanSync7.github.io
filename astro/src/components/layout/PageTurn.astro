@@ -1,0 +1,11 @@
+---
+/** The page turn: the folded flap and the script that turns it. Every layout renders this in
+ *  <body> and Astro's <ViewTransitions /> in <head>, so every page swap on the site turns the
+ *  page, whichever layout either page uses. `npm run site:turn` checks the build for both. */
+import '../../styles/page-turn.css';
+---
+
+<div class="pp-curl" aria-hidden="true"></div>
+<script>
+  import './page-curl';
+</script>

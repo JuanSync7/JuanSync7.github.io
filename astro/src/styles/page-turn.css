@@ -1,0 +1,59 @@
+/* The page turn: every page swap on the site, whatever its layout, turns the page like a sheet
+   of a notepad. Loaded by components/layout/PageTurn.astro, which every layout renders; the
+   frames come from components/layout/page-curl.ts. `npm run site:turn` holds that on the build. */
+
+/* The whole page turns as one sheet. Anything with its own view-transition-name (a post card's
+   cover, the nav) would be lifted out of the root snapshot and slide or cross-fade on top while
+   the page under it folds away, so during a page swap only the flap keeps a name. */
+html[data-astro-transition] *:not(.pp-curl) {
+  view-transition-name: none !important;
+}
+
+/* Page swaps: the page you leave curls away from its bottom-right corner and the next page
+   shows through behind the fold (going back, the earlier page lays itself back down). The
+   frames come from components/layout/page-curl.ts; this sets the stacking and the paper back of
+   the folded flap, and holds the start of the turn until the first frame lands. Only on Astro's
+   page swaps (data-astro-transition), never on a theme change. */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-astro-transition]::view-transition-old(root),
+  html[data-astro-transition]::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  html[data-astro-transition='forward']::view-transition-old(root),
+  html[data-astro-transition='back']::view-transition-new(root) {
+    z-index: 2;
+  }
+
+  html[data-astro-transition='back']::view-transition-new(root) {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  html[data-astro-transition] .pp-curl {
+    view-transition-name: pp-curl;
+  }
+}
+
+.pp-curl {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+::view-transition-group(pp-curl) {
+  z-index: 3;
+  animation: none;
+  filter: drop-shadow(0 0 var(--pp-curl-blur) color-mix(in srgb, var(--pp-ink-shadow) 38%, transparent));
+}
+
+::view-transition-old(pp-curl),
+::view-transition-new(pp-curl) {
+  animation: none;
+}
+
+::view-transition-image-pair(pp-curl) {
+  transform-origin: 0 0;
+  clip-path: inset(0 0 100% 0);
+  background-color: var(--pp-ground);
+}
