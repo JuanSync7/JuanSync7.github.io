@@ -1,5 +1,5 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 import NightPage from '../../layouts/NightPage.astro';
 import NightNav from '../../components/layout/NightNav.astro';
 import NightFooter from '../../components/layout/NightFooter.astro';
@@ -7,17 +7,8 @@ import DocLayout from '../../components/docs/DocLayout.astro';
 import { blogGroups } from '../../data/docnav';
 import FigureCanvas from '../../components/ui/FigureCanvas.tsx';
 import { CATEGORY_LABEL } from '../../data/writing';
+import { LIBRARY, pieceHref } from '../../data/library';
 import '../../styles/night-prose.css';
-
-export async function getStaticPaths() {
-  const entries = (await getCollection('blog'))
-    .filter((e) => !e.data.externalUrl)
-    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-  return entries.map((entry, i) => ({
-    params: { slug: entry.slug },
-    props: { entry, newer: entries[i - 1] ?? null, older: entries[i + 1] ?? null, all: entries },
-  }));
-}
 
 interface Props {
   entry: CollectionEntry<'blog'>;
@@ -33,12 +24,12 @@ const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', y
 ---
 
 <NightPage title={`${data.title} · Juan Kok`} description={data.excerpt}>
-  <NightNav current="writing" />
+  <NightNav current="library" />
   <div class="nt-progress" aria-hidden="true"></div>
   <main class="nt-wrap post">
-    <DocLayout section="Writing" home={{ href: '/blog/', label: '← All writing' }} groups={blogGroups(all)} current={`/blog/${entry.slug}`} headings={headings}>
+    <DocLayout section={LIBRARY.label} home={{ href: LIBRARY.href, label: `← ${LIBRARY.label}` }} groups={blogGroups(all)} current={pieceHref(entry.slug)} headings={headings}>
     <div class="post-col">
-    <a class="back" href="/blog/#posts">← All writing</a>
+    <a class="back" href={LIBRARY.posts}>← {LIBRARY.label}</a>
     <header class="head">
       <p class="meta">
         <span class="cat">{CATEGORY_LABEL[data.category] ?? data.category}</span>
@@ -58,13 +49,13 @@ const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', y
     </article>
     <nav class="pager" aria-label="More posts">
       {newer ? (
-        <a class="newer" href={`/blog/${newer.slug}`}>
+        <a class="newer" href={pieceHref(newer.slug)}>
           <span class="dir">← newer</span>
           <span>{newer.data.title}</span>
         </a>
       ) : <span />}
       {older ? (
-        <a class="older" href={`/blog/${older.slug}`}>
+        <a class="older" href={pieceHref(older.slug)}>
           <span class="dir">older →</span>
           <span>{older.data.title}</span>
         </a>

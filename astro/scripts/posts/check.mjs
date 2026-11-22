@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 /**
  * The blog post shape check: `node scripts/posts/check.mjs [file ...] [--selftest]`.
- * It reads every post in config.postsDir dated on or after config.rulesFrom (posts with an
- * externalUrl point at an article elsewhere and are skipped), parses its body as Markdown, and
+ * It reads every post in config.postsDir dated on or after config.rulesFrom, parses its body as Markdown, and
  * prints one line per problem. The rules are R-POST-* in the experience vault deck "Writing
  * posts and articles"; this check holds the ones a structure can decide. The rest (the arc, a
  * climax that happened, headings as story beats) are for the writer and a blind reviewer.
@@ -135,7 +134,6 @@ export function checkPost(data, tree, cfg) {
 }
 
 function inScope(data, cfg) {
-  if (data.externalUrl) return false;
   const date = data.date instanceof Date ? data.date.toISOString().slice(0, 10) : String(data.date ?? '');
   return date >= cfg.rulesFrom;
 }
@@ -178,7 +176,7 @@ const BREAKS = {
   form: (p) => ({ ...p, body: `| | |\n|---|---|\n| What | x |\n\n${p.body}` }),
   open: (p) => ({ ...p, body: p.body.replace(filler(25), 'Too short to open.') }),
   heads: (p) => ({ ...p, body: p.body.replace('## The turn', 'The turn, no longer a heading.') }),
-  links: (p) => ({ ...p, body: p.body.replace('## A beat', 'See [another post](/blog/other).\n\n## A beat') }),
+  links: (p) => ({ ...p, body: p.body.replace('## A beat', 'See [another post](/library/other).\n\n## A beat') }),
   length: (p) => ({ ...p, data: { ...p.data, readTime: '9 min' }, body: `${p.body}\n\n${filler(80)}\n\nThe end.` }),
   read: (p) => ({ ...p, data: { ...p.data, readTime: '12 min' } }),
   ending: (p) => ({ ...p, body: `${p.body}\n\n- a closing list` }),

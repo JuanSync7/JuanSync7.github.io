@@ -5,7 +5,7 @@
 //    (about 30) and signal (at most 10), in both themes;
 //  - text contrast: every visible text element against the ground it sits on (WCAG ratio;
 //    4.5 for body text, 3 for large text).
-// Usage: node scripts/site/page-check.mjs --url=http://127.0.0.1:4410 [--routes=/,/blog/] [--json=out.json]
+// Usage: node scripts/site/page-check.mjs --url=http://127.0.0.1:4410 [--routes=/,/library/] [--json=out.json]
 // Needs a built site being served (npx astro build, then any static server on dist/).
 import { chromium } from 'playwright';
 import { readdirSync, statSync, writeFileSync } from 'node:fs';

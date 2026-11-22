@@ -3,7 +3,8 @@ title: "Agents across a company"
 summary: "When a hundred people share agents, what multiplies should be cheap and short-lived, and what holds quality should stay single."
 eyebrow: "Agents"
 date: 2026-11-17
-subject: agents
+topic: ai-and-agents
+tracker: "frontier-models"
 cover: "workflow~7"
 ---
 
@@ -11,7 +12,7 @@ import Diagram from '../../components/learn/Diagram.astro';
 
 An AI agent is a model that carries out a task by running programs and editing files, a bit like a junior colleague who works very fast. In one experimental run I had four of them working at once, each on one narrow task, with a fifth agent splitting up the work and checking it. They were sorting incoming notes and rule changes into one of my projects, and they finished in 215 seconds with no two of them touching the same file, though the fifth still had 30 requests to sort out by hand afterwards. It worked because there was one person in the loop, and that person was me. I owned the agents, I owned the rules they followed, and I was the one who said the result was good.
 
-A company doesn't have one of me. It has many people, each with their own projects, and soon each with their own agents. [Agents you can repeat](/learn/agents-you-can-repeat/) builds the parts for one person. A **check** is code that judges an agent's work and gives the same verdict every time, a **playbook** is one packaged procedure with its own checks, and anything with a fixed answer belongs in a script, a small program that does the same thing every time. This article asks what changes when a hundred people share those parts, and it follows one agent the whole way through to answer it.
+A company doesn't have one of me. It has many people, each with their own projects, and soon each with their own agents. [Agents you can repeat](/library/agents-you-can-repeat/) builds the parts for one person. A **check** is code that judges an agent's work and gives the same verdict every time, a **playbook** is one packaged procedure with its own checks, and anything with a fixed answer belongs in a script, a small program that does the same thing every time. This article asks what changes when a hundred people share those parts, and it follows one agent the whole way through to answer it.
 
 Say an engineer at my company builds an agent that draws figures for project pages, diagrams of how a chip boots, charts of test results, that kind of thing. It's good, and other teams want it. Three questions arrive at once. What is it allowed to do? When should anyone trust it with real work? And when it does that work, where is the proof?
 
@@ -116,4 +117,4 @@ I take that seriously, and it's why most of this is still design. But the parts 
 
 Chip design settled this long ago. A designer never edits the rules a chip must pass, and their judgment is kept for the architecture. Shared agents need the same bargain. Everyone builds against the same checks, and nobody's agent gets to grade its own work.
 
-To read next, [Agents you can repeat](/learn/agents-you-can-repeat/) builds the parts this article assembles, one rule and one check at a time.
+To read next, [Agents you can repeat](/library/agents-you-can-repeat/) builds the parts this article assembles, one rule and one check at a time.

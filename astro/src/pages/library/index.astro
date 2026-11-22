@@ -10,24 +10,13 @@ import LessonLog from '../../components/writing/LessonLog.tsx';
 import PostGrid from '../../components/writing/PostGrid.tsx';
 import Trackers from '../../components/writing/Trackers.astro';
 import Follow from '../../components/writing/Follow.astro';
-import type { Lesson, PostSummary } from '../../components/writing/types';
+import type { Lesson } from '../../components/writing/types';
 import { CATEGORY_LABEL, FEATURED, LESSONS_COPY, POSTS_COPY } from '../../data/writing';
 import { LEARN_COPY, learnEntries, learnShelf } from '../../data/learn';
+import { LIBRARY } from '../../data/library';
+import { libraryCards } from '../../data/library-cards';
 
-const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
-const show = (d: Date): string => fmt.format(d);
-
-const entries = (await getCollection('blog')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-const posts: PostSummary[] = entries.map((e) => ({
-  slug: e.slug,
-  title: e.data.title,
-  excerpt: e.data.excerpt,
-  category: e.data.category,
-  date: show(e.data.date),
-  read: e.data.readTime,
-  cover: e.data.cover ?? null,
-  href: e.data.externalUrl ?? `/blog/${e.slug}`,
-}));
+const posts = await libraryCards();
 
 const featured = learnShelf(await learnEntries());
 
@@ -36,9 +25,9 @@ const lessons: Lesson[] = (await getCollection('lessons'))
   .sort((a, b) => b.iso.localeCompare(a.iso));
 ---
 
-<NightPage title="Writing · Juan Kok" description="How AI inference works, from the transistor to the token, plus chip design and building with agents.">
+<NightPage title={`${LIBRARY.label} · Juan Kok`} description="How AI inference works, from the transistor to the token, plus chip design and building with agents.">
   <link rel="alternate" type="application/rss+xml" title="Juan Kok · writing" href="/rss.xml" slot="head" />
-  <NightNav current="writing" />
+  <NightNav current="library" />
   <main>
     <WritingHero />
 
@@ -51,12 +40,12 @@ const lessons: Lesson[] = (await getCollection('lessons'))
 
     <section id="lessons" class="nt-wrap block">
       <SectionHead label="// lessons" title={LESSONS_COPY.title} lead={LESSONS_COPY.body} />
-      <LessonLog client:visible lessons={lessons} note={LESSONS_COPY.key} allHref="/blog/lessons/" />
+      <LessonLog client:visible lessons={lessons} note={LESSONS_COPY.key} allHref={LIBRARY.lessons} />
     </section>
 
     <section id="posts" class="nt-wrap nt-section block">
-      <SectionHead label="// posts" title={POSTS_COPY.title} lead={POSTS_COPY.body} />
-      <PostGrid client:visible posts={posts} labels={CATEGORY_LABEL} />
+      <SectionHead label="// writing" title={POSTS_COPY.title} lead={POSTS_COPY.body} />
+      <PostGrid client:visible posts={posts} labels={CATEGORY_LABEL} cta="Read" />
     </section>
 
     <Trackers />

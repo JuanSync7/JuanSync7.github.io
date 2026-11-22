@@ -2,6 +2,7 @@
 import NightPage from './NightPage.astro';
 import NightNav from '../components/layout/NightNav.astro';
 import NightFooter from '../components/layout/NightFooter.astro';
+import { LIBRARY } from '../data/library';
 import '../components/trackers/_chrome.css';
 import '../components/trackers/tracker-night.css';
 
@@ -23,14 +24,14 @@ const links = [
 ---
 
 <NightPage title={title}>
-  <NightNav current="writing" />
+  <NightNav current="library" />
   <main class="wrap">
     <nav class="tnav" aria-label="Trackers">
       <a class="tnav-home" href="/trackers/">// trackers</a>
       {links.map((l) => (
         <a href={l.href} aria-current={active === l.id ? 'page' : undefined}>{l.label}</a>
       ))}
-      <a class="tnav-learn" href="/learn/">field guides</a>
+      <a class="tnav-learn" href={LIBRARY.articles}>field guides</a>
     </nav>
     <slot />
   </main>

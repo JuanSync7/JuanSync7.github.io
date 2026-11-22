@@ -11,8 +11,8 @@ export const BLOG_POST: Blueprint = {
   kind: 'template',
   title: 'Blog post page',
   summary: 'A post in the docs layout: other posts on the left, the article, its contents on the right.',
-  source: ['src/pages/blog/[...slug].astro', 'src/components/docs/DocLayout.astro', 'src/components/docs/docs.css', 'src/styles/paper.css', 'src/styles/tokens/paper.css', 'src/layouts/PaperLayout.astro'], // prettier-ignore
-  views: onPage('/blog/timing-closure/', '.pp-page'),
+  source: ['src/components/library/PostPage.astro', 'src/components/docs/DocLayout.astro', 'src/components/docs/docs.css', 'src/styles/paper.css', 'src/styles/tokens/paper.css', 'src/layouts/PaperLayout.astro'], // prettier-ignore
+  views: onPage('/library/timing-closure/', '.pp-page'),
   parts: [
     { id: 1, name: 'Page', selector: '', sizing: 'fill', aliases: ['notepad', 'sheet', 'window'] },
     { id: 2, name: 'Margin line', selector: '', pseudo: '::before', sizing: 'fixed', views: ['desktop'], aliases: ['orange line', 'red line', 'punch hole line'] }, // prettier-ignore
