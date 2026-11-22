@@ -55,6 +55,7 @@ const text = lines.join('\n');
 // or is named here with the reason it has none.
 const WITHOUT = {
   'FigureCanvas.tsx': "its size is its host's; what it shows is a figure, drawn by the figure skill",
+  'FigurePlate.tsx': "its size is its host's; what it shows is a baked figure, whose size and anchors are its manifest's",
   'HardwareIcon.tsx': 'a static icon; its geometry is in figures/kit/hardware and the icon playbook',
   'SlideIcon.tsx': 'a static icon; its geometry is in figures/kit/slides and the slide-icons playbook',
   'Monogram.astro': 'an SVG mark: its geometry is the drawing',

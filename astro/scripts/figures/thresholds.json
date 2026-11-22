@@ -25,5 +25,6 @@
   "width": 640,
   "phoneWidth": 358,
   "templateSeeds": [7, 42, 2026],
-  "seedMin": 0.05
+  "seedMin": 0.05,
+  "plateBudgetKb": { "1x": 120, "2x": 400 }
 }

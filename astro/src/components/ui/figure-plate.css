@@ -1,0 +1,19 @@
+/* A baked figure fills its host and follows the page's theme the way a colour token does: the
+   light plate by default, the dark one when the visitor or the toggle chooses night. */
+
+.figure-plate {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: var(--plate-light) center / 100% 100% no-repeat;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme='light']) .figure-plate {
+    background-image: var(--plate-dark);
+  }
+}
+
+html[data-theme='dark'] .figure-plate {
+  background-image: var(--plate-dark);
+}
