@@ -1,59 +1,139 @@
 /* The page turn: every page swap on the site turns the page like a sheet of a notepad. Loaded
-   by components/layout/PageTurn.astro, which every public page's layout renders; the
-   frames come from components/layout/page-curl.ts. `npm run site:turn` holds that on the build. */
+   by components/layout/PageTurn.astro, which every public page's layout renders; the frames
+   come from components/layout/page-curl.ts, and move only transform and opacity, so the turn
+   runs on the compositor. This sets the layers it moves. `npm run site:turn` holds the build. */
 
 /* The whole page turns as one sheet. Anything with its own view-transition-name (a post card's
-   cover, the nav) would be lifted out of the root snapshot and slide or cross-fade on top while
-   the page under it folds away, so during a page swap only the flap keeps a name. */
-html[data-astro-transition] *:not(.pp-curl) {
+   cover, the nav) would be lifted out of the page and slide or cross-fade on top while the page
+   under it folds away, so during a page swap only the turn's own layers keep a name. */
+html[data-astro-transition] *:not(.pp-curl, .pp-shade, .pp-under) {
   view-transition-name: none !important;
 }
 
-/* Page swaps: the page you leave curls away from its bottom-right corner and the next page
-   shows through behind the fold (going back, the earlier page lays itself back down). The
-   frames come from components/layout/page-curl.ts; this sets the stacking and the paper back of
-   the folded flap, and holds the start of the turn until the first frame lands. Only on Astro's
-   page swaps (data-astro-transition), never on a theme change. */
-@media (prefers-reduced-motion: no-preference) {
-  html[data-astro-transition]::view-transition-old(root),
-  html[data-astro-transition]::view-transition-new(root) {
-    animation: none;
-    mix-blend-mode: normal;
-  }
-
-  html[data-astro-transition='forward']::view-transition-old(root),
-  html[data-astro-transition='back']::view-transition-new(root) {
-    z-index: 2;
-  }
-
-  html[data-astro-transition='back']::view-transition-new(root) {
-    clip-path: inset(0 100% 0 0);
-  }
-
-  html[data-astro-transition] .pp-curl {
-    view-transition-name: pp-curl;
-  }
+/* The page underneath is captured on its own, and a backdrop blur inside it cannot see what it
+   blurs, so the nav's scrim would let the text scrolled under it show through. For that page,
+   during the turn, the bar is solid paper: what the blur showed, near enough. */
+html[data-astro-transition] .pp-under .pp-nav {
+  background: var(--pp-ground);
+  backdrop-filter: none;
 }
 
-.pp-curl {
+.pp-curl,
+.pp-shade {
   position: fixed;
   inset: 0;
   pointer-events: none;
 }
 
-::view-transition-group(pp-curl) {
-  z-index: 3;
-  animation: none;
-  filter: drop-shadow(0 0 var(--pp-curl-blur) color-mix(in srgb, var(--pp-ink-shadow) 38%, transparent));
+/* Only on Astro's page swaps (data-astro-transition), never on a theme change. Under reduced
+   motion nothing is named and the page swaps without a turn. */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-astro-transition] .pp-curl {
+    view-transition-name: pp-curl;
+  }
+
+  html[data-astro-transition] .pp-shade {
+    view-transition-name: pp-shade;
+  }
+
+  html[data-astro-transition] .pp-under {
+    view-transition-name: pp-under;
+  }
 }
 
-::view-transition-old(pp-curl),
-::view-transition-new(pp-curl) {
+/* data-pp-turn is set by page-curl.ts when it plays a turn: 'forward' or 'back'. Every layer
+   then moves by its frames alone, and starts where its first frame puts it. */
+html[data-pp-turn]::view-transition-group(*),
+html[data-pp-turn]::view-transition-image-pair(*),
+html[data-pp-turn]::view-transition-old(*),
+html[data-pp-turn]::view-transition-new(*) {
   animation: none;
+  mix-blend-mode: normal;
 }
 
-::view-transition-image-pair(pp-curl) {
-  transform-origin: 0 0;
-  clip-path: inset(0 0 100% 0);
+/* Behind everything, the paper: a page shorter than the window still lies on the pad. */
+html[data-pp-turn]::view-transition {
   background-color: var(--pp-ground);
+}
+
+/* Bottom to top: the page underneath, its shade, the turning page, the paper back. */
+html[data-pp-turn]::view-transition-group(pp-under) {
+  z-index: 1;
+}
+
+html[data-pp-turn]::view-transition-group(pp-shade) {
+  z-index: 2;
+}
+
+html[data-pp-turn]::view-transition-group(root) {
+  z-index: 3;
+}
+
+html[data-pp-turn]::view-transition-group(pp-curl) {
+  z-index: 4;
+}
+
+/* The cuts. Each is a square of side --pp-turn-reach turned to the fold, clipping what it
+   holds; inside it the page is turned back by as much, so it stays where it was. */
+html[data-pp-turn]::view-transition-group(root),
+html[data-pp-turn]::view-transition-group(pp-curl) {
+  width: var(--pp-turn-reach);
+  height: var(--pp-turn-reach);
+  overflow: clip;
+  transform-origin: 0 0;
+}
+
+html[data-pp-turn]::view-transition-image-pair(root),
+html[data-pp-turn]::view-transition-image-pair(pp-curl) {
+  inset: auto;
+  left: 0;
+  top: 0;
+  width: var(--pp-turn-w);
+  height: var(--pp-turn-h);
+  transform-origin: 0 0;
+}
+
+/* Of the two root snapshots, only the turning page shows: the one leaving going forward, the
+   one laying itself down going back. The other page is pp-under. */
+html[data-pp-turn='forward']::view-transition-new(root),
+html[data-pp-turn='back']::view-transition-old(root) {
+  opacity: 0;
+}
+
+/* Hidden until the first frame: going back the page starts off the pad, and the paper back
+   would cover the page if it showed unmoved. The frames set opacity 1. */
+html[data-pp-turn='back']::view-transition-group(root),
+html[data-pp-turn]::view-transition-group(pp-curl),
+html[data-pp-turn]::view-transition-image-pair(pp-shade) {
+  opacity: 0;
+}
+
+/* The paper back: the page's own colour, cut to the page's shape (the pair's clip) mirrored
+   over the fold; then a crease shadow tight against the fold and a soft sheen where the paper
+   turns towards the light, painted once on a layer that the frames keep square to the fold. */
+html[data-pp-turn]::view-transition-image-pair(pp-curl) {
+  overflow: clip;
+  background-color: var(--pp-ground);
+  /* Its shadow on the page beneath. A box-shadow, painted once with the layer, not a filter:
+     a filter on a moving layer is redrawn every frame and pulls the turn back onto the main
+     thread. The cut around it clips the shadow at the fold, as it clips the flap. */
+  box-shadow: 0 0 var(--pp-curl-blur) color-mix(in srgb, var(--pp-ink-shadow) 38%, transparent);
+}
+
+html[data-pp-turn]::view-transition-old(pp-curl) {
+  opacity: 0;
+}
+
+html[data-pp-turn]::view-transition-new(pp-curl) {
+  inset: auto;
+  left: 0;
+  top: 0;
+  width: calc(2 * var(--pp-turn-diag));
+  height: var(--pp-turn-diag);
+  transform-origin: 0 0;
+  background-image: var(--pp-curl-sheen), var(--pp-curl-crease);
+}
+
+html[data-pp-turn]::view-transition-image-pair(pp-shade) {
+  background-color: var(--pp-ink-shadow);
 }
