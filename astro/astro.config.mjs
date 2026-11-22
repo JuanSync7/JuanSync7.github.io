@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
@@ -5,9 +6,14 @@ import sitemap from '@astrojs/sitemap';
 import rehypeCodeHang from './src/plugins/rehype-code-hang.mjs';
 import rehypeTableLabels from './src/plugins/rehype-table-labels.mjs';
 
+// Addresses the site served before the library keep answering: each becomes a page that forwards
+// to the piece's library address. The list is frozen data, so a new piece never gets an old address.
+const legacy = JSON.parse(readFileSync(new URL('./src/data/library-legacy.json', import.meta.url), 'utf8'));
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://juansync7.github.io',
+  redirects: Object.fromEntries(legacy.forwards.map(({ from, to }) => [from, to])),
   // The sitemap lets search engines find every page, the design system and the lab's included;
   // the figure bench and the blueprint check page are tools, not pages to list.
   integrations: [

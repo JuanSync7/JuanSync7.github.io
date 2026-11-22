@@ -1,0 +1,159 @@
+{
+  "_about": "Addresses the site served before the library. Frozen: a piece published after the move never gets an entry. `forwards` become forwarding pages (astro.config.mjs); `feedIds` keep each old feed item's id so readers do not see it as new. Checked by scripts/library/check.mjs.",
+  "forwards": [
+    {
+      "from": "/blog/aion-chip/",
+      "to": "/library/aion-chip/"
+    },
+    {
+      "from": "/blog/build-the-bump-not-the-sign/",
+      "to": "/library/build-the-bump-not-the-sign/"
+    },
+    {
+      "from": "/blog/chip-habits-in-software/",
+      "to": "/library/chip-habits-in-software/"
+    },
+    {
+      "from": "/blog/coffee-ranking/",
+      "to": "/library/coffee-ranking/"
+    },
+    {
+      "from": "/blog/cyberpunk-web/",
+      "to": "/library/cyberpunk-web/"
+    },
+    {
+      "from": "/blog/decide-slowly-move-fast/",
+      "to": "/library/decide-slowly-move-fast/"
+    },
+    {
+      "from": "/blog/fpga-neural/",
+      "to": "/library/fpga-neural/"
+    },
+    {
+      "from": "/blog/how-i-draw-figures/",
+      "to": "/library/how-i-draw-figures/"
+    },
+    {
+      "from": "/blog/",
+      "to": "/library/"
+    },
+    {
+      "from": "/blog/lessons/",
+      "to": "/library/lessons/"
+    },
+    {
+      "from": "/blog/python-eda/",
+      "to": "/library/python-eda/"
+    },
+    {
+      "from": "/blog/react-terminal/",
+      "to": "/library/react-terminal/"
+    },
+    {
+      "from": "/blog/risc-v-core/",
+      "to": "/library/risc-v-core/"
+    },
+    {
+      "from": "/blog/rtl-to-gds/",
+      "to": "/library/rtl-to-gds/"
+    },
+    {
+      "from": "/blog/second-brain-from-my-chats/",
+      "to": "/library/second-brain-from-my-chats/"
+    },
+    {
+      "from": "/blog/silicon-vs-software/",
+      "to": "/library/silicon-vs-software/"
+    },
+    {
+      "from": "/blog/starfield-canvas/",
+      "to": "/library/starfield-canvas/"
+    },
+    {
+      "from": "/blog/teaching-an-ai-my-voice/",
+      "to": "/library/teaching-an-ai-my-voice/"
+    },
+    {
+      "from": "/blog/the-same-drawing-fifty-times/",
+      "to": "/library/the-same-drawing-fifty-times/"
+    },
+    {
+      "from": "/blog/the-software-stays/",
+      "to": "/library/the-software-stays/"
+    },
+    {
+      "from": "/blog/timing-closure/",
+      "to": "/library/timing-closure/"
+    },
+    {
+      "from": "/blog/unknown-is-not-zero/",
+      "to": "/library/unknown-is-not-zero/"
+    },
+    {
+      "from": "/blog/vim-asic/",
+      "to": "/library/vim-asic/"
+    },
+    {
+      "from": "/blog/what-a-hash-proves/",
+      "to": "/library/what-a-hash-proves/"
+    },
+    {
+      "from": "/learn/a-clock-target-is-a-budget/",
+      "to": "/library/a-clock-target-is-a-budget/"
+    },
+    {
+      "from": "/learn/agents-across-a-company/",
+      "to": "/library/agents-across-a-company/"
+    },
+    {
+      "from": "/learn/agents-you-can-repeat/",
+      "to": "/library/agents-you-can-repeat/"
+    },
+    {
+      "from": "/learn/how-inference-chips-are-built/",
+      "to": "/library/how-inference-chips-are-built/"
+    },
+    {
+      "from": "/learn/inference-end-to-end/",
+      "to": "/library/inference-end-to-end/"
+    },
+    {
+      "from": "/learn/where-the-gpu-memory-goes/",
+      "to": "/library/where-the-gpu-memory-goes/"
+    },
+    {
+      "from": "/learn/",
+      "to": "/library/articles/"
+    }
+  ],
+  "feedIds": {
+    "the-same-drawing-fifty-times": "https://juansync7.github.io/blog/the-same-drawing-fifty-times/",
+    "agents-across-a-company": "https://juansync7.github.io/learn/agents-across-a-company/",
+    "the-software-stays": "https://juansync7.github.io/blog/the-software-stays/",
+    "agents-you-can-repeat": "https://juansync7.github.io/learn/agents-you-can-repeat/",
+    "a-clock-target-is-a-budget": "https://juansync7.github.io/learn/a-clock-target-is-a-budget/",
+    "build-the-bump-not-the-sign": "https://juansync7.github.io/blog/build-the-bump-not-the-sign/",
+    "chip-habits-in-software": "https://juansync7.github.io/blog/chip-habits-in-software/",
+    "decide-slowly-move-fast": "https://juansync7.github.io/blog/decide-slowly-move-fast/",
+    "second-brain-from-my-chats": "https://juansync7.github.io/blog/second-brain-from-my-chats/",
+    "teaching-an-ai-my-voice": "https://juansync7.github.io/blog/teaching-an-ai-my-voice/",
+    "unknown-is-not-zero": "https://juansync7.github.io/blog/unknown-is-not-zero/",
+    "what-a-hash-proves": "https://juansync7.github.io/blog/what-a-hash-proves/",
+    "where-the-gpu-memory-goes": "https://juansync7.github.io/learn/where-the-gpu-memory-goes/",
+    "how-i-draw-figures": "https://juansync7.github.io/blog/how-i-draw-figures/",
+    "inference-end-to-end": "https://juansync7.github.io/learn/inference-end-to-end/",
+    "how-inference-chips-are-built": "https://juansync7.github.io/learn/how-inference-chips-are-built/",
+    "rtl-to-gds": "https://juansync7.github.io/blog/rtl-to-gds/",
+    "cyberpunk-web": "https://juansync7.github.io/blog/cyberpunk-web/",
+    "fpga-neural": "https://juansync7.github.io/blog/fpga-neural/",
+    "vim-asic": "https://juansync7.github.io/blog/vim-asic/",
+    "timing-closure": "https://juansync7.github.io/blog/timing-closure/",
+    "react-terminal": "https://juansync7.github.io/blog/react-terminal/",
+    "silicon-vs-software": "https://juansync7.github.io/blog/silicon-vs-software/",
+    "starfield-canvas": "https://juansync7.github.io/blog/starfield-canvas/",
+    "aion-chip": "https://juansync7.github.io/blog/aion-chip/",
+    "risc-v-core": "https://juansync7.github.io/blog/risc-v-core/",
+    "python-eda": "https://juansync7.github.io/blog/python-eda/",
+    "coffee-ranking": "https://juansync7.github.io/blog/coffee-ranking/"
+  }
+}

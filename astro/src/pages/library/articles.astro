@@ -1,0 +1,42 @@
+---
+import NightPage from '../../layouts/NightPage.astro';
+import NightNav from '../../components/layout/NightNav.astro';
+import NightFooter from '../../components/layout/NightFooter.astro';
+import SectionHead from '../../components/ui/SectionHead.astro';
+import PostGrid from '../../components/writing/PostGrid.tsx';
+import Trackers from '../../components/writing/Trackers.astro';
+import { LEARN_COPY, TOPIC_LABEL, learnCard, learnEntries } from '../../data/learn';
+import { LIBRARY } from '../../data/library';
+
+// Every field guide, newest first, in the same card grid as the library page, filtered by
+// topic. The trackers that follow the same ground week by week are at the foot.
+const entries = await learnEntries();
+const cards = entries.map(learnCard);
+---
+
+<NightPage title={`${LEARN_COPY.title} · Juan Kok`} description={LEARN_COPY.body}>
+  <NightNav current="library" />
+  <main>
+    <section class="nt-wrap nt-section block">
+      <a class="back" href={LIBRARY.href}>← {LIBRARY.label}</a>
+      <SectionHead as="h1" label="// articles" title={LEARN_COPY.title} lead={LEARN_COPY.body} />
+      <PostGrid client:visible posts={cards} labels={TOPIC_LABEL} cta="Read the guide" />
+    </section>
+    <Trackers />
+  </main>
+  <NightFooter />
+</NightPage>
+
+<style>
+  .block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-8);
+  }
+
+  .back {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-ink-muted);
+  }
+</style>

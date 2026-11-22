@@ -1,0 +1,17 @@
+[
+  {
+    "id": "inference-engines",
+    "name": "Inference engines",
+    "body": "vLLM, SGLang, TensorRT-LLM, LMDeploy, llama.cpp and the rest."
+  },
+  {
+    "id": "frontier-models",
+    "name": "Frontier models",
+    "body": "Closed and open frontier models, small on-device models and agent frameworks."
+  },
+  {
+    "id": "inference-silicon",
+    "name": "Inference silicon",
+    "body": "GPUs, wafer-scale chips, dataflow LPUs, inference ASICs and RISC-V."
+  }
+]

@@ -124,6 +124,9 @@ article pages keep a paper-and-ink reading column inside the night page's nav, h
 cover ("paper body, night chrome"); the /learn index and the three trackers move to the night
 system; "Featured explainers" is one learn article per subject, flagged in its own frontmatter,
 and a newer one takes the slot only if it covers the same ground better.
+(19 Nov 2026) An article is shelved by `topic`, the library's shared list, and `subject` is gone. The
+shelf keeps all three featured guides ("keep all 3"): `featured` is a plain flag with no limit per
+topic. The tracker link under a guide comes from the article's own `tracker` field; none, no link.
 
 **Reading on a phone** (25 Oct 2026): on a phone in dark mode the paper read as white, tables were
 "hard to read" with so little room per column, and the terminal window was "a slider bar to read".
