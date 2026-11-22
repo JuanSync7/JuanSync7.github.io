@@ -1,6 +1,6 @@
 """Checks for the graphite pencil playbook.
 
-python3 checks/check_graphite.py DRAWING.svg [--background "#F3ECDF"]
+python3 checks/check_graphite.py DRAWING.svg [--background HEX, default: the light ground token]
 
 G1 no vector-crisp marks: every stroke inside a picture sits under a graphite filter.
 G2 no hard lines: at 3x zoom, very sharp luminance steps cover under 1.2% of the picture.
@@ -18,6 +18,7 @@ import numpy as np
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from checks.common import Report, read, render, luminance, picture_rects   # noqa: E402
+from kernel.tokens import palette
 
 
 def picture_block(svg, pid):
@@ -48,7 +49,7 @@ def unfiltered_strokes(block):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("svg")
-    ap.add_argument("--background", default="#F3ECDF")
+    ap.add_argument("--background", default=palette("light")["ground"])
     a = ap.parse_args()
     svg = read(a.svg)
     pics = picture_rects(svg)

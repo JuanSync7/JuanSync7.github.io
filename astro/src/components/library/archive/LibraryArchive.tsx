@@ -4,7 +4,8 @@ import BinderFlight from './BinderFlight';
 import DeskBinder from './DeskBinder';
 import ShelfBar from './ShelfBar';
 import ShelfTrack from './ShelfTrack';
-import { PLATE, readMetrics, shelve, type Metrics } from './geometry';
+import FigurePlate from '../../ui/FigurePlate';
+import { DESK, PLATE, WALL, readMetrics, shelve, type Metrics } from './geometry';
 import { IN_AIR, ON_DESK, SHEET_OUT, type ArchivePiece, type ArchiveShelf } from './types';
 import { useArchive } from './useArchive';
 import { useStageFit } from './useStageFit';
@@ -17,6 +18,13 @@ interface Props {
   shelves: ArchiveShelf[];
 }
 
+/** The stage is laid out in the plates' own units, so their sizes come from their manifests. */
+const sizes = {
+  ['--lib-unit' as string]: `${WALL.size[0]}px`,
+  ['--lib-wall-h' as string]: `${WALL.size[1]}px`,
+  ['--lib-desk-w' as string]: `${DESK.size[0]}px`,
+  ['--lib-desk-h' as string]: `${DESK.size[1]}px`,
+} as CSSProperties;
 const spot: CSSProperties = {
   left: PLATE.deskSpot - PLATE.depth / 2,
   top: PLATE.deskTop - PLATE.spotH,
@@ -83,7 +91,7 @@ export default function LibraryArchive({ shelves }: Props) {
   } as CSSProperties;
 
   return (
-    <div className="lib-archive">
+    <div className="lib-archive" style={sizes}>
       <ShelfBar shelves={shelves} current={a.shelf} busy={a.phase !== 'idle'} onGo={a.goTo} onMove={a.move} />
       <p className="lib-sr" aria-live="polite">
         {`${shelf.label} shelf, ${shelf.pieces.length} pieces`}
@@ -106,12 +114,21 @@ export default function LibraryArchive({ shelves }: Props) {
           </div>
           <div ref={desk} className="lib-desk">
             <div className="lib-desk-art">
+              <FigurePlate id="library-desk" decorative />
               {a.phase === 'idle' ? <span className="lib-spot" style={spot} aria-hidden="true" /> : null}
               {sel && ON_DESK.includes(a.phase) ? <DeskBinder box={sel.box} phase={a.phase} /> : null}
             </div>
           </div>
           {sel && m && IN_AIR.includes(a.phase) ? (
-            <BinderFlight piece={sel.piece} box={sel.box} phase={a.phase} view={view} unit={m.unit} band={m.band} />
+            <BinderFlight
+              piece={sel.piece}
+              box={sel.box}
+              phase={a.phase}
+              view={view}
+              unit={m.unit}
+              wallH={m.wallH}
+              band={m.band}
+            />
           ) : null}
         </div>
         <p className="lib-band">{caption}</p>
@@ -122,7 +139,7 @@ export default function LibraryArchive({ shelves }: Props) {
             phase={a.phase}
             width={fit.width}
             k={fit.k}
-            unit={m.unit}
+            wallH={m.wallH}
             band={m.band}
             sheetW={m.sheetW}
             thick={sel.box.w}

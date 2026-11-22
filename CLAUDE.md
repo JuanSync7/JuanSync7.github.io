@@ -48,7 +48,18 @@ The design-system page contains the live component specimens and starting recipe
 4. **Done means the audit passed and someone looked.** `npm run figures:audit` exits 0 and the figure's sheet in `astro/figures-out/<id>.png` was read. The tight loop for one figure is `npm run figure -- <id>`.
 5. **Never loosen the audit to pass.** `scripts/figures/thresholds.json` changes only with a reason in the commit message, and after any change to the audit `npm run figures:selftest` must pass (each fixture in `src/figures/fixtures/` must still be caught).
 6. **Templates are figures drawn from a seed.** A template in `astro/src/figures/templates/` (`defineTemplate`) turns a seed into choices with its grammar; an instance `<template>~<seed>` works anywhere a figure id does, including `cover:`. Every template appears at `/lab/` automatically. A template is done when its seed sheet (`npm run figure:seeds -- <id> 12 --url=<dev server>`; it needs a running dev server) was read and the look passes for its three audit seeds.
-7. **Paper and night systems.** Every public page (home, writing, learn, trackers, vault, anatomy, lab indexes, design system) uses `PaperLayout.astro` (through `NightPage`, `NightNav`, `NightFooter`, which keep their night-era names): cream notepad by day, gunmetal notepad by night (same paper tear, punched strip and orange margin line), `--pp-*` tokens remapped onto the `--nt-*` ones on `<html class="paper">`. The figure bench (`/figures`) keeps `NightLayout.astro`, `styles/night.css` and the `--nt-*` tokens. Figures take colour only through `figures/kit/ink.ts`, which reads the `night` mirror in `palette.ts`.
+7. **A figure is drawn live or baked; both are one system** (Juan, 22 November 2026). A baked figure is a
+   drawing made ahead of time by a playbook's kernel, for a look too heavy to draw live (the library's
+   pen-and-wash wall and desk). It is held to what a live figure is: its kernel takes every colour from the
+   tokens (the `--pp-art-*` palette and the paper tokens, read from `tokens/paper.css`, no colour literal in
+   the kernel); it is registered by the manifest the kernel writes, `src/figures/plates/<id>.json` (sources
+   per theme and scale, the tokens and their digest, and its anchors: where things stand on it, from the
+   constants it is drawn with); a page shows it only with `<FigurePlate id="…" />`, never by an image path;
+   and `npm run figures:audit` checks it (`scripts/figures/plates.mjs`: sources, sizes, budgets in
+   `thresholds.json`, a stale palette, kernel colours, anchors, the registry) and writes its sheet to
+   `astro/figures-out/<id>.png`, which is read. Live parts laid on a baked figure (DOM, or a live figure such
+   as a flame) are placed by its anchors. Re-bake with the kernel's command when a token it names changes.
+8. **Paper and night systems.** Every public page (home, writing, learn, trackers, vault, anatomy, lab indexes, design system) uses `PaperLayout.astro` (through `NightPage`, `NightNav`, `NightFooter`, which keep their night-era names): cream notepad by day, gunmetal notepad by night (same paper tear, punched strip and orange margin line), `--pp-*` tokens remapped onto the `--nt-*` ones on `<html class="paper">`. The figure bench (`/figures`) keeps `NightLayout.astro`, `styles/night.css` and the `--nt-*` tokens. Figures take colour only through `figures/kit/ink.ts`, which reads the `night` mirror in `palette.ts`.
 
 ## Component blueprints
 

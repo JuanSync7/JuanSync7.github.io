@@ -195,19 +195,33 @@
   --pp-foot-mark-h: 40px;
   --pp-foot-brand-w: 340px;
 
-  /* The library archive (/library/): pen-and-wash plates baked by the art playbooks, a wall of
-     binder shelves and the desk under it. The plates are drawn in design units (one unit is one
-     CSS px at full size); the archive scales the whole stage down only below --pp-lib-view-min.
-     Plates follow the theme like colours: the night blocks below swap them. */
-  --pp-lib-shelf-art: image-set(url('/library/shelf-light-1x.webp') 1x, url('/library/shelf-light-2x.webp') 2x);
-  --pp-lib-desk-art: image-set(url('/library/desk-light-1x.webp') 1x, url('/library/desk-light-2x.webp') 2x);
-  --pp-lib-binder-a: light-dark(#faf6ee, #23272e);
-  --pp-lib-binder-b: light-dark(#efe7d8, #1d2127);
-  --pp-lib-binder-c: light-dark(#e4d9c5, #191c21);
-  --pp-lib-binder-line: light-dark(#16191e, #d9d2c3);
-  --pp-lib-deep: light-dark(#d9cfbb, #121418);
+  /* Baked art: the palette every baked figure (a plate drawn ahead of time by a playbook's kernel,
+     src/figures/plates/) is drawn in. The kernels read these declarations from this file and
+     nowhere else, and the plate audit fails a plate baked with values that have since changed. */
+  --pp-art-a: light-dark(#faf6ee, #23272e);
+  --pp-art-b: light-dark(#efe7d8, #1d2127);
+  --pp-art-c: light-dark(#e4d9c5, #191c21);
+  --pp-art-deep: light-dark(#d9cfbb, #121418);
+  --pp-art-ink: light-dark(#16191e, #d9d2c3);
+  --pp-art-paper: light-dark(#fcfaf5, #2a2e35);
+  --pp-art-shade: light-dark(#16191e, #000000);
+  --pp-art-hatch: light-dark(#b9ae99, #4a515e);
+  --pp-art-hatch-deep: light-dark(#9c917c, #5a6270);
+  --pp-art-outline: light-dark(#b9ae99, #3e4551);
+  --pp-art-flame: light-dark(#ffe3b3, #ffe3b3);
+
+  /* The library archive (/library/): a wall of binder shelves and the desk under it, two baked
+     figures (library-wall, library-desk) laid out in their own units (one unit is one CSS px at
+     full size). Their sizes and anchors come from their manifests, not from here; the archive
+     scales the whole stage down only below --pp-lib-view-min. The DOM binders take the plates'
+     own palette, so a spine and its shelf are one drawing. */
+  --pp-lib-binder-a: var(--pp-art-a);
+  --pp-lib-binder-b: var(--pp-art-b);
+  --pp-lib-binder-c: var(--pp-art-c);
+  --pp-lib-binder-line: var(--pp-art-ink);
+  --pp-lib-deep: var(--pp-art-deep);
   --pp-lib-paper: light-dark(#fcfaf5, #1c2026);
-  --pp-lib-hatch: light-dark(#b9ae99, #4a515e);
+  --pp-lib-hatch: var(--pp-art-hatch);
   --pp-lib-edge: light-dark(rgb(22 25 30 / 0.2), rgb(0 0 0 / 0.42));
   --pp-lib-shadow: light-dark(rgb(22 25 30 / 0.22), rgb(0 0 0 / 0.55));
   --pp-lib-shadow-low: light-dark(rgb(22 25 30 / 0.1), rgb(0 0 0 / 0.3));
@@ -222,18 +236,9 @@
   --pp-lib-grad-holes: radial-gradient(circle, var(--pp-lib-deep) 0 6px, var(--pp-outline) 6px 7px, transparent 7.5px);
   /* The wall fades into the page at the edges of the view. */
   --pp-lib-grad-fade: linear-gradient(90deg, var(--pp-ground), transparent);
-  --pp-lib-unit: 760px;
-  --pp-lib-shelf-x: 120px;
-  --pp-lib-shelf-w: 520px;
   --pp-lib-view-min: 560px;
   --pp-lib-band-h: 72px;
-  --pp-lib-desk-w: 1440px;
-  --pp-lib-desk-h: 640px;
   --pp-lib-fade-w: 150px;
-  --pp-lib-plaque-x: 305px;
-  --pp-lib-plaque-y: 34px;
-  --pp-lib-plaque-w: 150px;
-  --pp-lib-plaque-h: 20px;
   --pp-lib-line-w: 1.25px;
   --pp-lib-lift: 10px;
   --pp-lib-label-x: 4px;
@@ -290,8 +295,6 @@
     --pp-figure-blend: normal;
     --pp-margin-mix: 75%;
     --pp-gloss-glow: 0.6;
-    --pp-lib-shelf-art: image-set(url('/library/shelf-dark-1x.webp') 1x, url('/library/shelf-dark-2x.webp') 2x);
-    --pp-lib-desk-art: image-set(url('/library/desk-dark-1x.webp') 1x, url('/library/desk-dark-2x.webp') 2x);
   }
 }
 
@@ -302,8 +305,6 @@
   --pp-figure-blend: normal;
   --pp-margin-mix: 75%;
   --pp-gloss-glow: 0.6;
-  --pp-lib-shelf-art: image-set(url('/library/shelf-dark-1x.webp') 1x, url('/library/shelf-dark-2x.webp') 2x);
-  --pp-lib-desk-art: image-set(url('/library/desk-dark-1x.webp') 1x, url('/library/desk-dark-2x.webp') 2x);
 }
 
 /* Ragged tear edges of the hero sheet and of the strip it leaves behind. */

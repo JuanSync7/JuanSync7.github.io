@@ -10,6 +10,7 @@ const files = import.meta.glob<string>(
     '/src/components/writing/post-grid.css',
     '/src/components/writing/PostGrid.tsx',
     '/src/components/library/archive/*.{ts,tsx,css}',
+    '/src/figures/plates/registry.ts',
     '/src/styles/night*.css',
     '/src/styles/learn-paper.css',
     '/src/components/trackers/{_chrome,tracker-night}.css',

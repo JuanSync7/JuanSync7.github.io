@@ -1,22 +1,31 @@
+import { anchor, anchors, plate } from '../../../figures/plates/registry';
 import type { BinderBox } from './types';
 
-/** Where things are on the two plates, in design units. These are facts about the drawings
- *  (public/library/, made by the art playbooks' scenes kernel): change them only with the art. */
+/** The two baked figures the archive stands on. Where things are on them (the shelf boards, a
+ *  shelf's standing room, the plaque, the desk top and the spot a binder lands on) comes from
+ *  their manifests, written by the kernel from the constants it draws with. */
+export const WALL = plate('library-wall');
+export const DESK = plate('library-desk');
+const [runFrom, runTo] = anchors(WALL, 'run');
+const [plaqueX, plaqueY, plaqueW, plaqueH] = anchors(WALL, 'plaque');
+
 export const PLATE = {
-  /** The bottom edge of each of the four shelves, from the wall unit's top. */
-  rows: [214, 372, 530, 688],
+  /** The bottom edge of each shelf, from the wall unit's top. */
+  rows: anchors(WALL, 'rows'),
   /** The run of a shelf a binder may stand on, from the wall unit's left. */
-  runFrom: 152,
-  runTo: 608,
-  /** The top of the desk, from the desk plate's top, and the free spot on it. */
-  deskTop: 456,
-  deskSpot: 720,
-  /** The outline on the desk that waits for a binder: about one binder thick. */
-  spotH: 36,
+  runFrom,
+  runTo,
+  plaque: { left: plaqueX, top: plaqueY, width: plaqueW, height: plaqueH },
+  /** Where a thing on the desk rests, and the free spot on it, from the desk plate's top-left. */
+  deskTop: anchor(DESK, 'rest'),
+  deskSpot: anchor(DESK, 'spot'),
+  // The rest is the binder's own size and the paper's path, not facts about the drawings.
   /** How deep a binder is, front to back: what you see when it lies flat. */
   depth: 96,
   /** A cover board's thickness: the paper block starts this far inside the binder. */
   board: 5,
+  /** The outline on the desk that waits for a binder: about one binder thick. */
+  spotH: 36,
   /** The opened paper's top edge, from the desk plate's top. */
   sheetTop: 10,
   /** How far above the binder the paper hangs while it turns to face you. */
@@ -49,10 +58,12 @@ export function shelve(count: number): BinderBox[] {
   return out;
 }
 
-/** The sizes and times the stylesheet owns, read once the archive is on the page, so the
- *  timeline and the CSS never disagree. */
+/** The sizes and times the archive moves by: the plates' sizes from their manifests, the rest
+ *  read from the stylesheet once the archive is on the page, so the timeline and the CSS agree. */
 export interface Metrics {
+  /** A wall unit's width (the carousel's step) and the wall's height. */
   unit: number;
+  wallH: number;
   band: number;
   deskW: number;
   viewMin: number;
@@ -71,9 +82,10 @@ export function readMetrics(el: Element): Metrics {
   const st = getComputedStyle(el);
   const d = (k: string): number => num(st, `--pp-lib-dur-${k}`);
   return {
-    unit: num(st, '--pp-lib-unit'),
+    unit: WALL.size[0],
+    wallH: WALL.size[1],
     band: num(st, '--pp-lib-band-h'),
-    deskW: num(st, '--pp-lib-desk-w'),
+    deskW: DESK.size[0],
     viewMin: num(st, '--pp-lib-view-min'),
     sheetW: num(st, '--pp-lib-sheet-w'),
     dur: { slide: d('slide'), lift: d('lift'), fly: d('fly'), plop: d('plop'), open: d('open'), sheet: d('sheet') },

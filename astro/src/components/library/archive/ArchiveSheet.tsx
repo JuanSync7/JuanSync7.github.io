@@ -11,7 +11,7 @@ interface Props {
   /** The archive's width in CSS px, the stage scale, and the design sizes it is placed by. */
   width: number;
   k: number;
-  unit: number;
+  wallH: number;
   band: number;
   sheetW: number;
   /** The picked binder's thickness: where its paper block starts. */
@@ -31,10 +31,10 @@ export default function ArchiveSheet(p: Props) {
   const stacked = w < p.sheetW;
   const sw = Math.min(p.sheetW, w);
   const left = (w - sw) / 2;
-  const deskTop = (p.unit + p.band) * k;
+  const deskTop = (p.wallH + p.band) * k;
   const top = stacked ? deskTop : deskTop + PLATE.sheetTop * k;
   const px = w / 2 - (left + sw / 2);
-  const py = (p.unit + p.band + PLATE.deskTop - p.thick + PLATE.board) * k - top;
+  const py = (p.wallH + p.band + PLATE.deskTop - p.thick + PLATE.board) * k - top;
   const s = (PLATE.sheetInBinder * k) / sw;
   const at: Partial<Record<Phase, string>> = {
     pull: `translate(${px}px, ${py}px) scale(${s}) rotateX(90deg)`,

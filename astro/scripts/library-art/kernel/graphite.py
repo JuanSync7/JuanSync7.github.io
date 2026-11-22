@@ -32,7 +32,7 @@ def pencil_picture(d, px0, py0, pw, ph, seed=3):
     p = f"pp{_CLIP[0]}"
     px1, py1 = px0 + pw, py0 + ph
     hz = py0 + ph * 0.52
-    dark = d.P.get("ground") == "#16191E"
+    dark = d.P.get("theme") == "dark"
     HL, HLop = (INK, 0.55) if dark else ("paper", 1)
 
     def lg(gid, x1, y1, x2, y2, stops, col=None):

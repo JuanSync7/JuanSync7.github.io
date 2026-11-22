@@ -21,6 +21,7 @@ import numpy as np
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from checks.common import Report, read, render, luminance          # noqa: E402
 from kernel.penwash import LIGHT, DARK                             # noqa: E402
+from kernel.tokens import palette
 
 PICTURE_IDS = re.compile(r'id="pp\d+')
 
@@ -59,7 +60,7 @@ def main():
     rep.add("P1 monoline weights", not bad, f"{len(widths)} strokes, out of tier: {bad or 'none'}")
 
     allowed = {v.upper() for P in (LIGHT, DARK) for v in P.values() if isinstance(v, str) and v.startswith("#")}
-    allowed |= {"#FFF", "#FFFFFF", "#000000", "#FFE3B3"}
+    allowed |= {"#FFF", "#FFFFFF"}  # a mask stencil's white, not a colour
     used = {c.upper() for c in re.findall(r'(?:fill|stroke|stop-color)="(#[0-9A-Fa-f]{3,6})"', strip_pictures(L) + strip_pictures(Dk))}
     stray = sorted(used - allowed)
     rep.add("P2 palette", not stray, f"{len(used)} colours used, off-palette: {stray or 'none'}")
@@ -90,7 +91,7 @@ def main():
     rep.add("P5 shadows behind", not late, f"{len(late)} drop shadows without a later casting shape" if late else "all drop shadows precede their shape")
 
     if a.tile_width:
-        img = luminance(render(a.light, 1.0, background="#F3ECDF"))
+        img = luminance(render(a.light, 1.0, background=palette("light")["ground"]))
         edge = np.abs(img[:, -1] - img[:, 0]).mean()
         inner = np.mean([np.abs(img[:, x + 1] - img[:, x]).mean() for x in range(40, img.shape[1] - 41, 37)])
         rep.add("P6 seamless tile", edge <= 3 * inner + 0.01, f"edge step {edge:.4f} vs interior {inner:.4f}")

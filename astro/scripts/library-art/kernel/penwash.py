@@ -9,8 +9,8 @@ import math
 import random
 from .primitives import D, SW, BASE_LIGHT, BASE_DARK
 
-LIGHT = dict(BASE_LIGHT, shade="#16191E", shadeK="1", led="0", halo="0", hatch="#B9AE99", hatch2="#9C917C", outline="#B9AE99")
-DARK = dict(BASE_DARK, shade="#000000", shadeK="1.9", led="0", halo="0", hatch="#4A515E", hatch2="#5A6270", outline="#3E4551")
+LIGHT = dict(BASE_LIGHT, shadeK="1", led="0", halo="0")
+DARK = dict(BASE_DARK, shadeK="1.9", led="0", halo="0")
 _CLIP = [0]
 
 
@@ -54,8 +54,8 @@ def defs(P, extra=""):
             f'<feDisplacementMap in="SourceGraphic" in2="n" scale="0.9" xChannelSelector="R" yChannelSelector="G"/></filter>'
             f'<radialGradient id="halo"><stop offset="0" stop-color="{P["signal"]}" stop-opacity="0.85"/>'
             f'<stop offset="1" stop-color="{P["signal"]}" stop-opacity="0"/></radialGradient>'
-            f'<linearGradient id="led" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE3B3" stop-opacity="0.38"/>'
-            f'<stop offset="1" stop-color="#FFE3B3" stop-opacity="0"/></linearGradient>{extra}</defs>')
+            f'<linearGradient id="led" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{P["flame"]}" stop-opacity="0.38"/>'
+            f'<stop offset="1" stop-color="{P["flame"]}" stop-opacity="0"/></linearGradient>{extra}</defs>')
 
 
 def chalk_filter():
@@ -120,7 +120,21 @@ def raised_panel(d, x, y, w, h, t=5):
     d.path(f"M{ix0 + (ix1 - ix0) * 0.62:.1f},{(iy0 + iy1) / 2:.1f} a4,7 0 1 0 6,0 a4,7 0 1 0 -6,0", "none", "deep", 0.6)
 
 
-def candle(d, x, base_y, h=30):
+CANDLE_H = 30          # a candle's height above its cup
+CUP_H = 9              # how far the cup lifts the candle above the sconce arm
+ARM = 20               # a sconce's arms reach this far either side of its centre
+FLAME_MID = 10.5       # the flame's centre above the candle top; FLAME_H is its height
+FLAME_H = 15
+
+
+def flame(cx, cy, k, sgn):
+    """Where the flame of one sconce candle sits on the plate, and how big it is: the sconce at
+    (cx, cy) drawn at scale k, arm sgn (-1 left, +1 right). The site lays live flames here."""
+    px, py = cx + sgn * ARM, cy - CUP_H - CANDLE_H - FLAME_MID
+    return {"x": round(cx + k * (px - cx), 2), "y": round(cy + k * (py - cy), 2), "h": round(k * FLAME_H, 2)}
+
+
+def candle(d, x, base_y, h=CANDLE_H):
     """Candle standing on a cup at base_y, with wax drips, wick and a two-tone flame."""
     w = 8
     top = base_y - h
@@ -147,14 +161,14 @@ def sconce(d, c, y, P):
     d.path(f"M{c},{y + 18} q3,4 0,9 q-3,-5 0,-9Z", "b", "ink", 0.9)
     # scrolled arms
     for sgn in (-1, 1):
-        ax = c + sgn * 20
+        ax = c + sgn * ARM
         d.path(f"M{c + sgn * 6},{y + 2} C{c + sgn * 14},{y + 10} {ax - sgn * 2},{y + 8} {ax},{y - 2}", "none", "ink", 1.6)
         d.path(f"M{c + sgn * 8},{y + 6} q{sgn * -4},6 {sgn * 2},8", "none", "ink", 1)   # curl
         # bobeche (drip pan) and cup
         d.path(f"M{ax - 9},{y - 4} h18 q-3,4 -9,4 q-6,0 -9,-4Z", "b", "ink", 1)
         d.path(f"M{ax - 6},{y - 1.5} h12 q-2,2.2 -6,2.2 q-4,0 -6,-2.2Z", "url(#hatch2)", None)
         d.rect(ax - 5, y - 9, 10, 5, "a", "ink", 1)
-        candle(d, ax, y - 9)
+        candle(d, ax, y - CUP_H)
 
 
 def laurel(d, c, base_y, tip_y, sgn):

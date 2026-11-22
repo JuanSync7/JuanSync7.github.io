@@ -1,6 +1,7 @@
 /* The library archive: the shelf names, the wall of shelves on its track, the caption band and
-   the desk. The stage is laid out in design units (the plates' own pixels) and scaled as one by
-   --k, which the archive sets only when the page is narrower than --pp-lib-view-min. */
+   the desk. The stage is laid out in the baked figures' own units (--lib-unit, --lib-desk-w and
+   --lib-desk-h come from their manifests) and scaled as one by --k, which the archive sets only
+   when the page is narrower than --pp-lib-view-min. */
 
 .lib-archive {
   display: flex;
@@ -54,7 +55,7 @@
 
 .lib-box {
   position: relative;
-  height: calc((var(--pp-lib-unit) + var(--pp-lib-band-h) + var(--pp-lib-desk-h)) * var(--k, 1));
+  height: calc((var(--lib-wall-h) + var(--pp-lib-band-h) + var(--lib-desk-h)) * var(--k, 1));
   overflow: hidden;
 }
 
@@ -70,7 +71,7 @@
 
 .lib-wall {
   position: relative;
-  height: var(--pp-lib-unit);
+  height: var(--lib-wall-h);
   overflow: hidden;
 }
 
@@ -79,7 +80,7 @@
 .lib-track {
   position: absolute;
   inset: 0 auto 0 0;
-  transform: translateX(calc(50cqw - var(--pp-lib-unit) / 2 - var(--pos) * var(--pp-lib-unit)));
+  transform: translateX(calc(50cqw - var(--lib-unit) / 2 - var(--pos) * var(--lib-unit)));
   transition: transform var(--pp-lib-dur-slide) var(--pp-lib-ease-slide);
 }
 
@@ -90,25 +91,21 @@
 .lib-unit {
   position: absolute;
   top: 0;
-  left: calc(var(--j) * var(--pp-lib-unit));
-  width: var(--pp-lib-unit);
-  height: var(--pp-lib-unit);
-  background: var(--pp-lib-shelf-art) center / 100% 100% no-repeat;
+  left: calc(var(--j) * var(--lib-unit));
+  width: var(--lib-unit);
+  height: var(--lib-wall-h);
 }
 
 .lib-unit:not([data-active]) {
   cursor: pointer;
 }
 
+/* Placed by the wall plate's plaque anchor. */
 .lib-plaque {
   position: absolute;
-  top: var(--pp-lib-plaque-y);
-  left: var(--pp-lib-plaque-x);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--pp-lib-plaque-w);
-  height: var(--pp-lib-plaque-h);
   margin: 0;
   font-family: var(--pp-mono);
   font-size: var(--pp-fs-caption);
@@ -138,7 +135,7 @@
    stays readable when the stage is scaled down on a phone. */
 .lib-band {
   position: absolute;
-  top: calc(var(--pp-lib-unit) * var(--k, 1));
+  top: calc(var(--lib-wall-h) * var(--k, 1));
   right: 0;
   left: 0;
   display: flex;
@@ -158,7 +155,7 @@
 
 .lib-desk {
   position: relative;
-  height: var(--pp-lib-desk-h);
+  height: var(--lib-desk-h);
   margin-top: var(--pp-lib-band-h);
   overflow: hidden;
 }
@@ -166,10 +163,9 @@
 .lib-desk-art {
   position: absolute;
   top: 0;
-  left: calc(50cqw - var(--pp-lib-desk-w) / 2);
-  width: var(--pp-lib-desk-w);
-  height: var(--pp-lib-desk-h);
-  background: var(--pp-lib-desk-art) center / 100% 100% no-repeat;
+  left: calc(50cqw - var(--lib-desk-w) / 2);
+  width: var(--lib-desk-w);
+  height: var(--lib-desk-h);
 }
 
 .lib-spot {

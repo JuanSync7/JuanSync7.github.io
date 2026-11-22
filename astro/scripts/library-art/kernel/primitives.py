@@ -4,13 +4,13 @@ Line weights (monoline tiers): hairline 0.5-0.8, line 0.9-1.3, accent 1.6-2.0.
 Palette keys used by every call: a, b, c (three surface tones), deep, paper, ink, muted, signal.
 """
 import math
+from .tokens import palette
 
 SW = 1.25
 
-BASE_LIGHT = dict(halo="0", ground="#F3ECDF", a="#FAF6EE", b="#EFE7D8", c="#E4D9C5", deep="#D9CFBB", ink="#16191E",
-             muted="#555A62", signal="#F04A0E", paper="#FCFAF5")
-BASE_DARK = dict(halo="0.3", ground="#16191E", a="#23272E", b="#1D2127", c="#191C21", deep="#121418", ink="#D9D2C3",
-            muted="#A8ADB5", signal="#FF5A1F", paper="#2A2E35")
+# Every colour comes from the site's tokens (kernel/tokens.py); only non-colour knobs live here.
+BASE_LIGHT = dict(palette("light"), theme="light", halo="0")
+BASE_DARK = dict(palette("dark"), theme="dark", halo="0.3")
 
 
 class D:

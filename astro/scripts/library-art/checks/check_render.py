@@ -1,6 +1,6 @@
 """Checks for the render and level-of-detail playbook.
 
-python3 checks/check_render.py SRC.svg OUT_DIR NAME --tile-width 760 [--background "#F3ECDF"] [--export]
+python3 checks/check_render.py SRC.svg OUT_DIR NAME --tile-width 760 [--background HEX, default: the light ground token] [--export]
 
 R1 pyramid budgets: @1x, @2x, @4x WebP sizes within BUDGET.
 R2 pyramid tiling: each level is exactly tile_width x scale wide, so tiles meet without a seam.
@@ -24,6 +24,7 @@ from PIL import Image
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from checks.common import Report, read                         # noqa: E402
 from kernel import render as R                                 # noqa: E402
+from kernel.tokens import palette
 
 
 def gray(path):
@@ -36,7 +37,7 @@ def main():
     ap.add_argument("out_dir")
     ap.add_argument("name")
     ap.add_argument("--tile-width", type=float, required=True)
-    ap.add_argument("--background", default="#F3ECDF")
+    ap.add_argument("--background", default=palette("light")["ground"])
     ap.add_argument("--export", action="store_true")
     a = ap.parse_args()
     if a.export:

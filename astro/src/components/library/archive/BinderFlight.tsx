@@ -7,9 +7,10 @@ interface Props {
   piece: ArchivePiece;
   box: BinderBox;
   phase: Phase;
-  /** The stage's view width and the wall unit and band heights, in design units. */
+  /** The stage's view width, a wall unit's width, and the wall and band heights, in plate units. */
   view: number;
   unit: number;
+  wallH: number;
   band: number;
 }
 
@@ -20,13 +21,13 @@ const LIFT = 16;
  *  shelf to the desk. Across and down are separate moves with their own easing, so the path
  *  arcs; one turn of 120 degrees about (1, -1, -1) lays it down like a book, spine on the left
  *  and the front cover up, so nothing turns again when it lands. Only transforms animate. */
-export default function BinderFlight({ piece, box, phase, view, unit, band }: Props) {
+export default function BinderFlight({ piece, box, phase, view, unit, wallH, band }: Props) {
   const t = box.w;
   const h = box.h;
   const d = PLATE.depth;
   const standing = phase === 'lift' || phase === 'back';
   const x = standing ? view / 2 - unit / 2 + box.x + t / 2 : view / 2;
-  const y = standing ? box.y + h / 2 - (phase === 'lift' ? LIFT : 0) : unit + band + PLATE.deskTop - t / 2;
+  const y = standing ? box.y + h / 2 - (phase === 'lift' ? LIFT : 0) : wallH + band + PLATE.deskTop - t / 2;
   const vars = {
     ['--fx' as string]: `${x}px`,
     ['--fy' as string]: `${y}px`,

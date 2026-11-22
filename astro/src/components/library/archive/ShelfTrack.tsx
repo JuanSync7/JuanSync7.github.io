@@ -1,5 +1,7 @@
 import type { MouseEvent } from 'react';
+import FigurePlate from '../../ui/FigurePlate';
 import BinderSpine from './BinderSpine';
+import { PLATE } from './geometry';
 import type { ArchivePiece, ArchiveShelf, BinderBox, Picked } from './types';
 
 interface Props {
@@ -42,7 +44,10 @@ export default function ShelfTrack({ shelves, boxes, pos, still, away, onPick, o
             style={{ ['--j' as string]: j }}
             onClick={active ? undefined : (e) => plain(e) && (e.preventDefault(), onMove(j - pos))}
           >
-            <p className="lib-plaque">{shelf.label}</p>
+            <FigurePlate id="library-wall" decorative />
+            <p className="lib-plaque" style={PLATE.plaque}>
+              {shelf.label}
+            </p>
             {shelf.pieces.map((p, i) => {
               const b = boxes[s][i];
               if (!b) return null;

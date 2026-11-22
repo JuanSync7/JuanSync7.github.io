@@ -4,13 +4,18 @@ python3 -m kernel.scenes OUT_DIR  -> shelf-unit-{light,dark}.svg, table-{light,d
 """
 import sys
 from .primitives import D, SW
-from .penwash import LIGHT, DARK, wrap, scaled, raised_panel, sconce, crest
+from .penwash import LIGHT, DARK, wrap, scaled, raised_panel, sconce, crest, flame
 from .graphite import pencil_picture
 
 ROWS_TOP = [58, 228, 386, 544]
 BOARDS = [214, 372, 530, 688]
 UW, SX, SWID = 760, 120, 520          # unit width, shelf left, shelf width
 HALF = 120
+RUN_INSET = 32                        # a shelf's standing room starts this far in from its sides
+PLAQUE = (SX + SWID // 2 - 75, 34, 150, 20)
+WALL_SCONCE = (150, 1.35)             # the bay sconces: height and scale
+DESK_W, DESK_H, DESK_TOP, DESK_SPOT = 1440, 640, 458, 720
+DESK_SCONCES = ((440, 1000), 190, 1.25)
 
 
 def etching2(d, c, top, w, h, seed=3):
@@ -50,7 +55,8 @@ def divider(d, c, P):
     d.rect(L + 6, 84, R - L - 12, 4, "url(#hatch2)", None)
     d.rect(L, 676, R - L, 12, "b", "ink", 1)
     d.rect(L + 6, 672, R - L - 12, 4, "url(#hatch2)", None)
-    scaled(d, c, 150, 1.35, lambda: sconce(d, c, 150, P))
+    sy, sk = WALL_SCONCE
+    scaled(d, c, sy, sk, lambda: sconce(d, c, sy, P))
     scaled(d, c, 290, 1.4, lambda: crest(d, c, 290, P))
     # moulded band with small dentils
     d.line([(L + 6, 372), (R - 6, 372)], "ink", 1)
@@ -133,11 +139,11 @@ def unit(P):
         d.circle(c, 44, 3.5, "c", "ink", 0.8)
         for k in (-1, 1):
             d.path(f"M{c + k * 14},44 q{k * 10},-8 {k * 22},0 q{k * 10},8 {k * 22},0", "none", "muted", 0.8)
-    pl = x0 + SWID / 2 - 75
+    pl = PLAQUE[0]
     for (la, lb) in ((x0 + 24, pl - 12), (pl + 162, xr - 24)):
         d.line([(la, 38), (lb, 38)], "muted", 0.8)
         d.line([(la, 50), (lb, 50)], "muted", 0.8)
-    d.rect(pl, 34, 150, 20, "paper", "ink", 1)
+    d.rect(pl, PLAQUE[1], PLAQUE[2], PLAQUE[3], "paper", "ink", 1)
     d.rect(pl + 3, 37, 144, 14, "none", "muted", 0.7)
     # ---- continuous plinth
     band(702, 50, "b")
@@ -173,8 +179,9 @@ def table(P):
     d.o.append('<g transform="translate(2420 0) scale(-1 1)">')
     etching2(d, 1210, 40, 150, 200, seed=5)
     d.o.append('</g>')
-    for wx in (440, 1000):
-        scaled(d, wx, 190, 1.25, lambda wx=wx: sconce(d, wx, 190, P))
+    xs, sy, sk = DESK_SCONCES
+    for wx in xs:
+        scaled(d, wx, sy, sk, lambda wx=wx: sconce(d, wx, sy, P))
     # wainscot on the wall behind
     d.rect(60, 286, 1320, 10, "b", "ink", 1)
     for x in range(64, 1376, 8):
@@ -229,14 +236,14 @@ def table(P):
         d.line([(720 + 2.5 * math.cos(a), 493 + 2.5 * math.sin(a)), (720 + 6 * math.cos(a), 493 + 6 * math.sin(a))], "ink", 0.7)
     for (ax, sg) in ((354, 1), (1086, -1)):                             # scroll brackets
         d.path(f"M{ax},510 q{sg * 22},0 {sg * 22},14 q0,-6 {-sg * 8},-6 q{-sg * 6},0 {-sg * 6},4", "a", "ink", 1)
-    d.rect(290, 458, 860, 18, "a")                 # top
+    d.rect(290, DESK_TOP, 860, 18, "a")            # top
     d.line([(290, 464), (1150, 464)], "ink", 0.8)
     d.rect(300, 477, 840, 4, "url(#hatch2)", None)
     for gx, gl in ((320, 60), (600, 80), (900, 50), (1060, 70)):
         d.path(f"M{gx},{471} q{gl / 2},-2 {gl},0", "none", "muted", 0.7)
     # ---- on the table: binder stack, pen, mug (left)
     for i, (dx, w) in enumerate(((0, 120), (6, 110), (-4, 116))):
-        y = 458 - (i + 1) * 16
+        y = DESK_TOP - (i + 1) * 16
         d.rect(318 + dx, y, w, 16, ["a", "b", "a"][i], rx=2)
         d.rect(318 + dx + 14, y + 4, 34, 8, "paper", "ink", 0.8)
         d.rect(318 + dx + w - 8, y + 2, 4, 12, "deep", None)
@@ -254,8 +261,8 @@ def table(P):
         d.line([(842 + k * 7, 430 - k * 10), (848 + k * 7, 424 - k * 10)], "muted", 0.6)
     d.rect(900, 446, 64, 12, "b", "ink", 1)
     for k, h in enumerate((30, 24, 34)):
-        d.rect(906 + k * 18, 458 - 12 - h, 14, h, "paper", "ink", 0.8)
-        d.line([(909 + k * 18, 458 - 12 - h + 6), (916 + k * 18, 458 - 12 - h + 6)], "muted", 0.6)
+        d.rect(906 + k * 18, DESK_TOP - 12 - h, 14, h, "paper", "ink", 0.8)
+        d.line([(909 + k * 18, DESK_TOP - 12 - h + 6), (916 + k * 18, DESK_TOP - 12 - h + 6)], "muted", 0.6)
     d.rect(900, 438, 64, 8, "a", "ink", 1)
     # ---- banker's lamp (right)
     d.rect(1048, 448, 64, 10, "a", rx=3)
@@ -268,10 +275,33 @@ def table(P):
     return d.o
 
 
+def anchors():
+    """Where things stand on each plate, in the plate's own units, from the constants it is drawn
+    with: the site lays its live parts (binders, the paper, live flames) out by these."""
+    sy, sk = WALL_SCONCE
+    xs, dy, dk = DESK_SCONCES
+    wall_flames = [f for c in (0, UW) for g in (-1, 1) for f in [flame(c, sy, sk, g)] if 0 <= f["x"] <= UW]
+    return {
+        "library-wall": {
+            "size": [UW, 760],
+            "rows": BOARDS,
+            "run": [SX + RUN_INSET, SX + SWID - RUN_INSET],
+            "plaque": list(PLAQUE),
+            "flames": wall_flames,
+        },
+        "library-desk": {
+            "size": [DESK_W, DESK_H],
+            "rest": DESK_TOP - 2,
+            "spot": DESK_SPOT,
+            "flames": [flame(wx, dy, dk, g) for wx in xs for g in (-1, 1)],
+        },
+    }
+
+
 def build(out):
     for name, P, ch in (("light", LIGHT, False), ("dark", DARK, True)):
         open(f"{out}/shelf-unit-{name}.svg", "w").write(wrap(P, "\n".join(unit(P)), UW, 760, ch))
-        open(f"{out}/table-{name}.svg", "w").write(wrap(P, "\n".join(table(P)), 1440, 640, ch))
+        open(f"{out}/table-{name}.svg", "w").write(wrap(P, "\n".join(table(P)), DESK_W, DESK_H, ch))
     open(f"{out}/glow-dark.svg", "w").write(wrap(DARK, "\n".join(glow()), UW, 760, False))
 
 
