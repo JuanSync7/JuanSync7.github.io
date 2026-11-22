@@ -1,7 +1,7 @@
 import trackers from '../config/trackers.json';
 
 /**
- * The words on the library page (/library). Post titles, dates and read times come from the
+ * The words on the blog page (/blog) and the library page (/library). Post titles, dates and read times come from the
  * blog collection; this file holds what the page says around them.
  */
 
@@ -9,7 +9,7 @@ export const WRITING_HERO = {
   title: 'Where silicon meets syntax.',
   body: 'Explainers on how AI inference really works, from the transistor to the token. Plus chip design, tooling, and the lessons I pick up building with agents.',
   primary: { label: 'Start with inference', href: '/library/inference-end-to-end' },
-  secondary: { label: 'Browse all writing', href: '#posts' },
+  secondary: { label: 'Browse the library', href: '/library/' },
   hint: 'Move across the lattice. Click to send a pulse.',
 } as const;
 
@@ -26,8 +26,16 @@ export const LESSONS_COPY = {
 } as const;
 
 export const POSTS_COPY = {
-  title: 'All writing',
+  title: 'Posts',
   body: 'Newest first. Every cover is a live drawing: point at it and it answers.',
+  all: 'Everything is in the library',
+} as const;
+
+export const LIBRARY_COPY = {
+  title: 'The library',
+  body: 'Everything written here, in one place: posts and field guides, newest first.',
+  articles: 'Field guides by topic',
+  lessons: 'Every lesson',
 } as const;
 
 export const TRACKERS = {

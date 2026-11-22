@@ -86,13 +86,13 @@ try {
   await page.locator('[data-lesson-controls]').waitFor({ state: 'visible' });
   await assertItems(page, category.id, pair.tags.slice(0, 2));
   await page.locator('.lesson-back').click();
-  await page.waitForURL('**/library/#lessons');
+  await page.waitForURL('**/blog/#lessons');
   await page.goBack();
   await page.locator('[data-lesson-controls]').waitFor({ state: 'visible' });
   await assertItems(page, category.id, pair.tags.slice(0, 2));
   // A jump to a distinct earlier visit must remain a router navigation, even at the same path.
   await page.locator('.lesson-back').click();
-  await page.waitForURL('**/library/#lessons');
+  await page.waitForURL('**/blog/#lessons');
   await page.locator('a[href="/library/lessons/"]').click();
   await page.locator('[data-lesson-controls]').waitFor({ state: 'visible' });
   await page.selectOption('[name="category"]', category.id);

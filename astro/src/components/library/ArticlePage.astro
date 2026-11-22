@@ -28,7 +28,7 @@ const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', y
 ---
 
 <NightPage title={`${data.title} · Juan Kok`} description={data.summary}>
-  <NightNav current="library" />
+  <NightNav current="blog" />
   <div class="nt-progress" aria-hidden="true"></div>
   <main class="nt-wrap guide">
     <DocLayout section="Field guides" home={{ href: LEARN_COPY.all.href, label: `← ${LEARN_COPY.all.label}` }} groups={learnGroups(all)} current={pieceHref(entry.slug)} headings={headings}>
