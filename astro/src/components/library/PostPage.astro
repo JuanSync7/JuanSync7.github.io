@@ -40,7 +40,7 @@ const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', y
       <p class="excerpt">{data.excerpt}</p>
     </header>
     {data.cover ? (
-      <div class="cover" style={`view-transition-name: cover-${entry.slug}`}>
+      <div class="cover">
         <FigureCanvas client:load id={data.cover} />
       </div>
     ) : null}

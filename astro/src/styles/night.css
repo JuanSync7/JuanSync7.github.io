@@ -95,19 +95,6 @@ body.night {
   white-space: nowrap;
 }
 
-/* Page swaps (Astro's router, from NightLayout): the page crossfades, the nav holds still,
-   and anything named on both pages travels to its new place: a post card's cover becomes
-   the post's cover. The browser animates only what changed, so this is continuity, not an
-   effect; under reduced motion Astro swaps without animating. */
-::view-transition-group(*) {
-  animation-duration: var(--nt-dur-morph);
-  animation-timing-function: var(--nt-ease-out);
-}
-
-.night .nav {
-  view-transition-name: site-nav;
-}
-
 /* Reading progress: a teal hairline along the top edge, as long as the share of the page
    already read. Driven by the scroll position in CSS alone, where the browser can; where
    it cannot, or under reduced motion, there is no line rather than a stuck one. */
