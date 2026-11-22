@@ -60,7 +60,8 @@ Work in this order. Stop where it says stop.
    shape: `defineCanvasFigure({ id, title, alt, idea, style, motion, answers, group, seed,
    aspect, setup, draw })` (or `defineThreeFigure` with a `fallback`). Read
    `references/rules.md` first: the rules are not advice. `references/kit.md` lists every kit
-   call. A scene names every object and calls `clashes()` at build (R-FIG-31).
+   call. A scene names every object and calls `clashes()` at build (R-FIG-31), and routes
+   every wire with `cable()` and calls `cableIssues()` (R-FIG-32).
 7. **Loop.** Keep a dev server running (`npm run dev`) and run
    `npm run figure -- <id> --url=http://127.0.0.1:4321`. It runs the source check, then the
    look, and writes `figures-out/<id>.png`. **Read the sheet** (Read tool, every time) and
@@ -120,6 +121,7 @@ passed" without reading the sheet is not done. Never describe a figure you did n
 | setting a line's `opacity` to make it fainter | a tier mixed onto the ground as one solid colour (R-FIG-29) |
 | adding a spinning part because `motion` failed | move the meaningful change between the 0.8 s and 2.6 s frames (R-FIG-30) |
 | checking by eye that furniture doesn't overlap | name the objects and let `clashes()` fail the build (R-FIG-31) |
+| drawing a wire as a `line` between two objects | route it with `cable()`, plug to plug over what it rests on (R-FIG-32) |
 | lighting several things in the signal | one place is bright; everything else is a grey |
 | filling the frame edge to edge with ink | leave ground: coverage over 40% warns, over 50% fails |
 | tuning a threshold in `thresholds.json` to pass | the figure is wrong; change the figure |
@@ -127,7 +129,7 @@ passed" without reading the sheet is not done. Never describe a figure you did n
 
 ## Files
 
-- `references/rules.md`: the rules, generated from the vault's Making figures deck (R-FIG-14 to 26 are the audit's thirteen, R-FIG-1 to 13 the rules for real things, seeds and judging, R-FIG-27 to 31 the brief and hidden-line scenes). Never edit it.
+- `references/rules.md`: the rules, generated from the vault's Making figures deck (R-FIG-14 to 26 are the audit's thirteen, R-FIG-1 to 13 the rules for real things, seeds and judging, R-FIG-27 to 32 the brief and hidden-line scenes). Never edit it.
 - `references/styles.md`: the nine styles, when each suits a subject, and the recipe in kit calls.
 - `references/look.md`: what the sheet shows and the questions only eyes can answer.
 - `references/kit.md`: every kit call, the frame you are given, and the clock's guarantees.
