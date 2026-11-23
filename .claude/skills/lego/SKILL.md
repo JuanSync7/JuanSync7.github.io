@@ -1,6 +1,8 @@
 ---
 name: lego
 description: Use when anything on juansync.dev is to be built in LEGO (a car, a building, a city, any object), or when a LEGO model, its pieces, its build animation or its checks are changed.
+# Reached through web-design-agent > Figures and drawings, not listed on its own.
+disable-model-invocation: true
 ---
 
 # Build anything in LEGO

@@ -1,6 +1,8 @@
 ---
 name: pen_and_wash
 description: Use when a baked figure for juansync.dev is drawn or changed in pen and wash (a room, furniture, shelves, wall bays, a desk, panels, a crest), or when its outlines, wash or hatching are wrong.
+# Reached through web-design-agent > Figures and drawings, not listed on its own.
+disable-model-invocation: true
 ---
 
 # Pen-and-wash elevation
