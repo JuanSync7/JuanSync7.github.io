@@ -1,0 +1,40 @@
+{
+  "schema": "plate/1",
+  "id": "good",
+  "title": "Fixture good",
+  "alt": "A fixture plate.",
+  "group": "fixtures",
+  "style": "pen-and-wash",
+  "playbooks": [
+    "art-render"
+  ],
+  "kernel": "scripts/figures/fixtures/plates/kernel-clean",
+  "sources": {
+    "light": {
+      "1x": "/fx/good-light-1x.webp",
+      "2x": "/fx/good-light-2x.webp"
+    },
+    "dark": {
+      "1x": "/fx/good-dark-1x.webp",
+      "2x": "/fx/good-dark-2x.webp"
+    }
+  },
+  "bytes": {
+    "light-1x": 50,
+    "light-2x": 50,
+    "dark-1x": 50,
+    "dark-2x": 50
+  },
+  "tokens": [
+    "--fx-ground",
+    "--fx-ink"
+  ],
+  "palette": "30ebe5aedf0b57e0a9a0ee62f5176c067c8fe9db55c3e03c465bc4a9eec34a29",
+  "anchors": {
+    "size": [
+      4,
+      4
+    ],
+    "rest": 1
+  }
+}

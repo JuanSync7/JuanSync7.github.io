@@ -3,18 +3,19 @@ import NightPage from '../../layouts/NightPage.astro';
 import NightNav from '../../components/layout/NightNav.astro';
 import NightFooter from '../../components/layout/NightFooter.astro';
 import SectionHead from '../../components/ui/SectionHead.astro';
-import PostGrid from '../../components/writing/PostGrid.tsx';
-import { CATEGORY_LABEL, LIBRARY_COPY } from '../../data/writing';
+import LibraryArchive from '../../components/library/archive/LibraryArchive.tsx';
+import { LIBRARY_COPY } from '../../data/writing';
 import { BLOG, LIBRARY } from '../../data/library';
-import { libraryCards } from '../../data/library-cards';
+import { libraryShelves } from '../../data/library-shelves';
 
-// Everything written, whatever its kind, in the same card grid as the blog. The blog features a
-// few pieces; this page is the whole shelf.
-const cards = await libraryCards();
+// Everything written, whatever its kind, as an archive: one shelf of binders per kind, turned
+// like a carousel, and a desk where a picked binder opens. The blog features a few pieces; this
+// page is the whole archive. Every binder is a link, so the page works without script too.
+const shelves = await libraryShelves();
 ---
 
 <NightPage title={`${LIBRARY.label} · Juan Kok`} description={LIBRARY_COPY.body}>
-  <NightNav current="blog" />
+  <NightNav current="library" />
   <main>
     <section id="pieces" class="nt-wrap nt-section block">
       <a class="back" href={BLOG.href}>← {BLOG.label}</a>
@@ -23,7 +24,15 @@ const cards = await libraryCards();
         <a href={LIBRARY.articles}>{LIBRARY_COPY.articles}</a>
         <a href={LIBRARY.lessons}>{LIBRARY_COPY.lessons}</a>
       </nav>
-      <PostGrid client:visible posts={cards} labels={CATEGORY_LABEL} cta="Read" />
+      <LibraryArchive client:load shelves={shelves} />
+      <noscript>
+        {shelves.map((s) => (
+          <section class="plain">
+            <h2>{s.label}</h2>
+            <ul>{s.pieces.map((p) => <li><a href={p.href}>{p.title}</a> <span>{p.date}</span></li>)}</ul>
+          </section>
+        ))}
+      </noscript>
     </section>
   </main>
   <NightFooter />
@@ -52,5 +61,17 @@ const cards = await libraryCards();
 
   .kinds a {
     color: var(--nt-signal-text);
+  }
+
+  .plain h2 {
+    font-family: var(--pp-mono);
+    font-size: var(--pp-fs-label);
+    color: var(--pp-ink-muted);
+  }
+
+  .plain span {
+    font-family: var(--pp-mono);
+    font-size: var(--pp-fs-caption);
+    color: var(--pp-ink-muted);
   }
 </style>

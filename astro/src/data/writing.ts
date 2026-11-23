@@ -33,7 +33,7 @@ export const POSTS_COPY = {
 
 export const LIBRARY_COPY = {
   title: 'The library',
-  body: 'Everything written here, in one place: posts and field guides, newest first.',
+  body: 'Everything written here, in one place: a shelf for each kind, newest first. Pick a binder to open it on the desk.',
   articles: 'Field guides by topic',
   lessons: 'Every lesson',
 } as const;
