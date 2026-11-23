@@ -17,7 +17,9 @@ under `astro/src/`.
 | `styles/tokens/index.css` | the entry point; the import order matters | |
 | `styles/tokens/palette.ts` | the colour values JavaScript needs, and the `night` mirror figures draw with | |
 | `data/contrast-pairs.ts` | every colour pair that must be read, with its need (`text`, `large`, `decorative`) | |
-| `lib/design-tokens.ts` | publishes the tokens at `/tokens/` (W3C Design Tokens), read from the CSS | |
+| `lib/site-tokens.ts` | publishes the tokens at `/tokens/` (W3C Design Tokens), read from the CSS | |
+| `data/token-export.ts` | the names the export carries: its files, the resolver's name, the `$extensions` key | |
+| `lib/tokens/` | the code that reads, exports and measures tokens: a synced copy of `@juansync7/design-tokens`, never edited here | |
 | `styles/theme/figure-filters.ts` | fits the matrix that recolours night figures to the paper page, at build | |
 | `pages/design-system.astro` | the ledger: every token and shared component, shown live | |
 
