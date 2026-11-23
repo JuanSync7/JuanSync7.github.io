@@ -121,9 +121,9 @@ function isFlame(v: unknown): v is { x: number; y: number; h: number } {
 }
 
 /** How big a live flame's square box is against the drawn flame's height, and where its wick
- *  row sits in the box (the pixel flame's base row, 17 of 18 rows down). */
-const FLAME_BOX = 2.4;
-const FLAME_WICK = 17 / 18;
+ *  stands in the box (candle-flame's wick point, 24 of its 30 units down). */
+const FLAME_BOX = 2.0;
+const FLAME_WICK = 24 / 30;
 
 /** Where the candle flames stand on a plate, as the square boxes live flames are drawn in: the
  *  box's wick row on the drawn flame's base, and big enough that the live flame covers it. */

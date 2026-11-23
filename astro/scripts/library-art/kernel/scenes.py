@@ -56,7 +56,7 @@ def divider(d, c, P):
     d.rect(L, 676, R - L, 12, "b", "ink", 1)
     d.rect(L + 6, 672, R - L - 12, 4, "url(#hatch2)", None)
     sy, sk = WALL_SCONCE
-    scaled(d, c, sy, sk, lambda: sconce(d, c, sy, P))
+    scaled(d, c, sy, sk, lambda: sconce(d, c, sy, P, lit=False))
     scaled(d, c, 290, 1.4, lambda: crest(d, c, 290, P))
     # moulded band with small dentils
     d.line([(L + 6, 372), (R - 6, 372)], "ink", 1)
@@ -181,7 +181,7 @@ def table(P):
     d.o.append('</g>')
     xs, sy, sk = DESK_SCONCES
     for wx in xs:
-        scaled(d, wx, sy, sk, lambda wx=wx: sconce(d, wx, sy, P))
+        scaled(d, wx, sy, sk, lambda wx=wx: sconce(d, wx, sy, P, lit=False))
     # wainscot on the wall behind
     d.rect(60, 286, 1320, 10, "b", "ink", 1)
     for x in range(64, 1376, 8):

@@ -134,8 +134,10 @@ def flame(cx, cy, k, sgn):
     return {"x": round(cx + k * (px - cx), 2), "y": round(cy + k * (py - cy), 2), "h": round(k * FLAME_H, 2)}
 
 
-def candle(d, x, base_y, h=CANDLE_H):
-    """Candle standing on a cup at base_y, with wax drips, wick and a two-tone flame."""
+def candle(d, x, base_y, h=CANDLE_H, lit=True):
+    """Candle standing on a cup at base_y, with wax drips, wick and, when lit, a two-tone flame.
+    Bake it unlit (lit=False) when the page lays a live flame on it by the flame() anchor, so the
+    drawing never shows a second flame under the live one."""
     w = 8
     top = base_y - h
     d.rect(x - w / 2, top, w, h, "paper", "ink", 1)
@@ -143,6 +145,8 @@ def candle(d, x, base_y, h=CANDLE_H):
     d.path(f"M{x - w / 2},{top + 1} q2,5 3,1 q1,7 3,2 q1,3 2,-3", "none", "muted", 0.8)   # drips
     d.path(f"M{x - w / 2 + 1},{top + 2} v{h - 6}", "none", "muted", 0.6, op=0.6)
     d.line([(x, top), (x, top - 4)], "ink", 1)                                          # wick
+    if not lit:
+        return
     d.path(f"M{x},{top - 18} C{x + 6},{top - 10} {x + 5},{top - 4} {x},{top - 3} C{x - 5},{top - 4} {x - 6},{top - 10} {x},{top - 18}Z",
            "signal", None)
     d.path(f"M{x},{top - 11} C{x + 2.5},{top - 7} {x + 2},{top - 4.5} {x},{top - 4} C{x - 2},{top - 4.5} {x - 2.5},{top - 7} {x},{top - 11}Z",
@@ -151,8 +155,8 @@ def candle(d, x, base_y, h=CANDLE_H):
            "none", "ink", 0.6)
 
 
-def sconce(d, c, y, P):
-    """Twin-arm brass candle sconce mounted on the stile, candles at c-20 and c+20."""
+def sconce(d, c, y, P, lit=True):
+    """Twin-arm brass candle sconce mounted on the stile, candles at c-20 and c+20 (see candle for lit)."""
     d.path(f"M{c - 5},{y - 26} q9,-12 18,0 v34 q0,10 -9,14 q-9,-4 -9,-14Z", "url(#hatch2)", None)
     # backplate: shaped oval with scalloped crest and a drop finial
     d.path(f"M{c - 9},{y - 30} q9,-12 18,0 v34 q0,10 -9,14 q-9,-4 -9,-14Z", "b", "ink", 1.1)
@@ -168,7 +172,7 @@ def sconce(d, c, y, P):
         d.path(f"M{ax - 9},{y - 4} h18 q-3,4 -9,4 q-6,0 -9,-4Z", "b", "ink", 1)
         d.path(f"M{ax - 6},{y - 1.5} h12 q-2,2.2 -6,2.2 q-4,0 -6,-2.2Z", "url(#hatch2)", None)
         d.rect(ax - 5, y - 9, 10, 5, "a", "ink", 1)
-        candle(d, ax, y - CUP_H)
+        candle(d, ax, y - CUP_H, lit=lit)
 
 
 def laurel(d, c, base_y, tip_y, sgn):
