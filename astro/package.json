@@ -111,6 +111,7 @@
     "site:turn": "node scripts/site/turn-check.mjs",
     "site:turn:selftest": "node scripts/site/turn-check.mjs --selftest",
     "standards:check": "node scripts/site/standards-check.mjs",
+    "tokens:sync": "node scripts/tokens/sync.mjs",
     "standards:selftest": "node scripts/site/standards-check.mjs --selftest",
     "site:pages": "node scripts/site/page-check.mjs",
     "site:read": "node scripts/site/read-check.mjs",

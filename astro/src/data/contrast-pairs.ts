@@ -1,24 +1,9 @@
 /** The colour pairs the site relies on to be read, each with what WCAG 2.2 (ISO/IEC 40500:2025)
- *  asks of it. `text` is body-size text (1.4.3: 4.5:1 AA, 1.4.6: 7:1 AAA). `large` is large text or
- *  a graphic or control boundary someone needs to see (1.4.3 large text and 1.4.11: 3:1).
- *  `decorative` carries no requirement: the ratio is shown, nothing depends on it.
- *  `npm run standards:check` fails when a pair drops below its requirement in either theme. */
+ *  asks of it: `text`, `large` or `decorative`, with the thresholds in `NEED` (src/lib/tokens, synced
+ *  from frontend-kit's design-tokens). `npm run standards:check` fails when a pair drops below its
+ *  requirement in either theme. */
 
-export type Need = 'text' | 'large' | 'decorative';
-
-export interface ContrastPair {
-  role: string;
-  fg: string;
-  ground: string;
-  need: Need;
-  /** Why a decorative pair needs nothing, or where a large-only colour is allowed. */
-  note?: string;
-}
-
-export interface ContrastGroup {
-  title: string;
-  pairs: ContrastPair[];
-}
+import type { ContrastGroup } from '../lib/tokens';
 
 export const CONTRAST: ContrastGroup[] = [
   {
@@ -95,10 +80,3 @@ export const CONTRAST: ContrastGroup[] = [
     ],
   },
 ];
-
-/** WCAG 2.2 thresholds: [AA, AAA]; null where the criterion has no AAA level. */
-export const NEED: Record<Need, [number, number | null] | null> = {
-  text: [4.5, 7],
-  large: [3, 4.5],
-  decorative: null,
-};
