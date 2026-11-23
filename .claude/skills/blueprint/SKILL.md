@@ -1,6 +1,8 @@
 ---
 name: blueprint
 description: Use when a shared component or page template on juansync.dev gets, changes or is read through its blueprint, or when someone asks for a design change in the drawing's words ("part 3's gap, smaller").
+# Reached through web-design-agent > Page design, not listed on its own.
+disable-model-invocation: true
 ---
 
 # Blueprints on juansync.dev

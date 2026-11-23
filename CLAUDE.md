@@ -193,6 +193,7 @@ not a free-text category in one file. `npm run lessons:check` checks the whole c
 
 ## Doing the work
 
+- **Skills are reached through the web design agent.** `.claude/skills/web-design-agent/SKILL.md` lists three umbrellas (page design, figures and drawings, motion and performance), and the skills under them (`site-taste`, `design-system`, `blueprint`, `figure`, `drawing`, `lego`, the rooms, voxel, deepdive and baked-art skills) carry `disable-model-invocation: true`, so they are not in the skill list and are opened through an umbrella or by the paths named in these rules. `slide-icons` stays listed: slides use it too. The rule is R-AGT-70 and 71 in the experience vault's `Notes/Decks/Creating agents and playbooks.md`.
 - **Design pages to Juan's taste.** Before designing or changing a page, section, component or page motion, read the `site-taste` skill (`.claude/skills/site-taste/SKILL.md`): what he has said, what is built, what he rejected, and what is still open. Drawings use the `figure` skill.
 - Don't introduce abstractions for hypothetical futures. Three repetitions is the bar for extraction.
 - Don't write comments that restate the code. Comments are for *why*, not *what*.
