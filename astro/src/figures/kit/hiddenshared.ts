@@ -2,14 +2,20 @@ import { Color, OrthographicCamera, Scene, Vector2, Vector3, WebGLRenderer } fro
 import { cableIssues } from './drawing/cable';
 import type { Drawing } from './drawing/monodraw';
 import { softwareGL } from './gpu';
-import { monodraw } from './drawing/monodraw';
+import { drawBaked, monodraw, type Baked } from './drawing/monodraw';
 import { Sketch } from './drawing/monoline';
+import { isPackedBaked, unpackBaked } from './bakedio';
 
 /** Small hidden-line scenes (R-FIG-28) for figures that appear several times on one page, such as
  *  the home page's six experience cards. A page may hold one WebGL scene; six cards each with
  *  their own context would hold six more. So every small scene here is drawn by one shared,
  *  hidden renderer with the drawing kernel's pen (`monodraw`), and the picture is copied onto the
- *  figure's own 2D canvas. Scenes are built once per page and kept: each card shows its own. */
+ *  figure's own 2D canvas. Scenes are built once per page and kept: each card shows its own.
+ *
+ *  Building a scene (its edges and silhouettes, its merged plates) is the costly part, and its
+ *  answer never changes, so the site works it out at its build (`pages/baked/[scene].json.ts`)
+ *  and a figure loads the numbers first (`preloadSmall`); drawing them is cheap. A scene with no
+ *  baked numbers (a fetch that failed) is still built here, as before. */
 
 /** A 2:1 isometric: from the front right, 30° above the floor (as the lab room). */
 export const DIR = new Vector3(
@@ -37,6 +43,26 @@ let gl: WebGLRenderer | null | undefined;
 let slow = false;
 const cam = new OrthographicCamera(-1, 1, 1, -1, 0.1, 80);
 const built = new Map<Small, Built>();
+const baked = new Map<Small, Baked>();
+
+/** Fetches the baked numbers of each scene in `scenes` (by the name its file goes by). Never
+ *  rejects: a scene that fails to load is built in the browser instead. */
+export async function preloadSmall(scenes: Record<string, Small>): Promise<void> {
+  if (typeof window === 'undefined') return;
+  const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+  await Promise.all(
+    Object.entries(scenes).map(async ([id, s]) => {
+      if (baked.has(s)) return;
+      try {
+        const res = await fetch(`${base}baked/${id}.json`);
+        const json: unknown = res.ok ? await res.json() : null;
+        if (isPackedBaked(json)) baked.set(s, unpackBaked(json));
+      } catch {
+        // Built in the browser instead.
+      }
+    }),
+  );
+}
 const corner = new Vector3();
 
 function renderer(): WebGLRenderer | null {
@@ -53,18 +79,24 @@ function renderer(): WebGLRenderer | null {
   return gl;
 }
 
-function build(s: Small): Built {
-  const hit = built.get(s);
-  if (hit) return hit;
+/** The fallback: the scene built in the browser, with the checks the site's build runs. */
+function buildHere(s: Small): Drawing {
   const k = new Sketch();
   s.build(k);
   const clashes = k.clashes();
   if (clashes.length) throw new Error(`hidden-line scene: parts stand inside each other: ${clashes.join(', ')}`);
   const loose = cableIssues(k);
   if (loose.length) throw new Error(`hidden-line scene: cables break the cabling rule: ${loose.join('; ')}`);
+  return monodraw(k, DIR.clone().negate(), () => undefined);
+}
+
+function build(s: Small): Built {
+  const hit = built.get(s);
+  if (hit) return hit;
   const scene = new Scene();
   // Kept for the page's life: the scenes are small and each is shown on every visit.
-  const draw = monodraw(k, DIR.clone().negate(), () => undefined);
+  const ready = baked.get(s);
+  const draw = ready ? drawBaked(ready, () => undefined) : buildHere(s);
   scene.add(draw.root);
   const [x0, y0, z0, x1, y1, z1] = s.frame;
   const corners: Vector3[] = [];

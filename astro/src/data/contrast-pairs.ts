@@ -64,6 +64,26 @@ export const CONTRAST: ContrastGroup[] = [
     ],
   },
   {
+    title: 'Library archive · /library/',
+    pairs: [
+      { role: 'Spine title, first fill', fg: '--pp-ink-strong', ground: '--pp-lib-binder-a', need: 'text' },
+      { role: 'Spine title, second fill', fg: '--pp-ink-strong', ground: '--pp-lib-binder-b', need: 'text' },
+      { role: 'Spine title, third fill', fg: '--pp-ink-strong', ground: '--pp-lib-binder-c', need: 'text' },
+      { role: 'Binder number', fg: '--pp-ink-strong', ground: '--pp-lib-paper', need: 'text' },
+      { role: 'Paper: title', fg: '--pp-ink-strong', ground: '--pp-lib-paper', need: 'text' },
+      { role: 'Paper: summary', fg: '--pp-ink', ground: '--pp-lib-paper', need: 'text' },
+      { role: 'Paper: shelf, date and read time', fg: '--pp-ink-muted', ground: '--pp-lib-paper', need: 'text' },
+      { role: 'Binder outline', fg: '--pp-lib-binder-line', ground: '--pp-ground', need: 'large' },
+      {
+        role: 'Spine hatching',
+        fg: '--pp-lib-hatch',
+        ground: '--pp-lib-binder-a',
+        need: 'decorative',
+        note: 'shades the spine edge; the outline carries the shape',
+      },
+    ],
+  },
+  {
     title: 'Night system · the figure bench',
     pairs: [
       { role: 'Headings', fg: '--nt-ink-strong', ground: '--nt-ground', need: 'text' },

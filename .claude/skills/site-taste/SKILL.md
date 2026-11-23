@@ -1,6 +1,8 @@
 ---
 name: site-taste
 description: Use when designing or changing any page, section, component, layout or motion on juansync.dev (anything that is not a figure; figures use the figure skill). Holds Juan's frontend design taste as he stated it, the system the site already uses, what he has rejected, and the questions still open, so new work matches him instead of a generic default.
+# Reached through web-design-agent > Page design, not listed on its own.
+disable-model-invocation: true
 ---
 
 # Juan's taste, for the pages of juansync.dev

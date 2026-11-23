@@ -1,0 +1,43 @@
+{
+  "schema": "plate/1",
+  "id": "stale",
+  "title": "Fixture stale",
+  "alt": "A fixture plate.",
+  "group": "fixtures",
+  "style": "pen-and-wash",
+  "playbooks": [
+    "art-render"
+  ],
+  "kernel": "scripts/figures/fixtures/plates/kernel-clean",
+  "sources": {
+    "light": {
+      "1x": "/fx/stale-light-1x.webp",
+      "2x": "/fx/stale-light-2x.webp"
+    },
+    "dark": {
+      "1x": "/fx/stale-dark-1x.webp",
+      "2x": "/fx/stale-dark-2x.webp"
+    }
+  },
+  "bytes": {
+    "light-1x": 50,
+    "light-2x": 50,
+    "dark-1x": 50,
+    "dark-2x": 50
+  },
+  "tokens": [
+    "--fx-ground",
+    "--fx-ink"
+  ],
+  "palette": "0000000000000000000000000000000000000000000000000000000000000000",
+  "anchors": {
+    "size": [
+      4,
+      4
+    ],
+    "rest": 1
+  },
+  "expect": [
+    "palette"
+  ]
+}

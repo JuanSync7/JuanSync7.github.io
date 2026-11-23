@@ -1,0 +1,132 @@
+/* The paper out of the binder: binder paper (punched holes, the orange double margin), the
+   piece's cover on the left and its words on the right; one column when the page is narrower
+   than the sheet. It moves only by transform, from edge on in the binder to open. */
+
+.lib-sheet {
+  position: absolute;
+  scroll-margin: calc(var(--pp-nav-h) + var(--hf-space-4)) 0 var(--hf-space-6);
+  z-index: calc(var(--hf-z-content) + 2);
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: var(--pp-lib-fig-w) minmax(0, 1fr);
+  gap: var(--hf-space-8);
+  padding: var(--pp-lib-sheet-pad) var(--pp-lib-sheet-pad) var(--pp-lib-sheet-pad)
+    calc(var(--pp-lib-sheet-margin) + var(--hf-space-6));
+  border: var(--pp-lib-line-w) solid var(--pp-lib-binder-line);
+  background: var(--pp-lib-paper);
+  box-shadow: 0 1px 1px var(--pp-lib-shadow-low);
+  transform-origin: 50% 0;
+  transition:
+    transform var(--pp-lib-dur-sheet) var(--pp-lib-ease-sheet),
+    box-shadow var(--pp-lib-dur-sheet) var(--pp-lib-ease-sheet);
+}
+
+.lib-sheet[data-open] {
+  box-shadow: 0 var(--pp-lib-sheet-shadow-y) var(--pp-lib-sheet-shadow-blur) var(--pp-lib-shadow);
+}
+
+.lib-sheet[data-still] {
+  transition: none;
+}
+
+.lib-sheet[data-stacked] {
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--hf-space-6);
+}
+
+.ls-holes,
+.ls-margin {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.ls-holes {
+  left: var(--pp-lib-sheet-hole-x);
+  width: var(--pp-lib-sheet-hole);
+  background: var(--pp-lib-grad-holes) 0 var(--pp-lib-sheet-pad) / var(--pp-lib-sheet-hole)
+    var(--pp-lib-sheet-hole-pitch) repeat-y;
+}
+
+.ls-margin {
+  left: var(--pp-lib-sheet-margin);
+  width: var(--pp-lib-sheet-rule-gap);
+  border-right: 1px solid var(--pp-signal);
+  border-left: 1px solid var(--pp-signal);
+}
+
+.ls-figure {
+  aspect-ratio: 1;
+  border: 1px solid var(--pp-rule);
+  background: var(--pp-ground);
+}
+
+.lib-sheet[data-stacked] .ls-figure {
+  aspect-ratio: 2;
+}
+
+.ls-copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hf-space-4);
+  min-width: 0;
+}
+
+.ls-meta,
+.ls-when {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hf-space-4);
+  margin: 0;
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-caption);
+  color: var(--pp-ink-muted);
+}
+
+.ls-when {
+  margin-top: auto;
+}
+
+.ls-copy h2 {
+  margin: 0;
+  font-family: var(--pp-sans);
+  font-size: var(--pp-fs-h2);
+  font-weight: var(--pp-w-heading);
+  line-height: var(--pp-lh-h2);
+  color: var(--pp-ink-strong);
+}
+
+.ls-copy h2:focus {
+  outline: none;
+}
+
+.ls-excerpt {
+  margin: 0;
+  font-size: var(--pp-fs-body);
+  font-weight: var(--pp-w-body);
+  line-height: var(--pp-lh-body);
+  color: var(--pp-ink);
+}
+
+.ls-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--hf-space-4);
+}
+
+.ls-back {
+  min-height: var(--nt-hit);
+  padding: 0 var(--hf-space-4);
+  border: 1px solid var(--pp-outline);
+  border-radius: var(--pp-radius-md);
+  background: transparent;
+  color: var(--pp-ink-strong);
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-label);
+  cursor: pointer;
+}
+
+.ls-back:hover {
+  border-color: var(--pp-signal);
+}

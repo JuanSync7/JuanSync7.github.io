@@ -1,0 +1,312 @@
+/* A binder: its spine on the shelf, the whole box in the air, and its side view on the desk.
+   Line, wash and hatching follow the pen-and-wash playbook: a monoline outline, the shaded right
+   edge as hatching over a wash, never a hard drop shadow. */
+
+[data-fill='a'] {
+  --fill: var(--pp-lib-binder-a);
+}
+
+[data-fill='b'] {
+  --fill: var(--pp-lib-binder-b);
+}
+
+[data-fill='c'] {
+  --fill: var(--pp-lib-binder-c);
+}
+
+.lib-spine {
+  position: absolute;
+  box-sizing: border-box;
+  display: block;
+  padding: 0;
+  border: var(--pp-lib-line-w) solid var(--pp-lib-binder-line);
+  border-radius: var(--hf-radius-xs);
+  background: var(--fill);
+  color: var(--pp-ink-strong);
+  text-decoration: none;
+}
+
+.lib-binder {
+  transition: transform var(--pp-dur-step) steps(2, end);
+}
+
+.lib-binder:hover,
+.lib-binder:focus-visible {
+  transform: translateY(calc(var(--pp-lib-lift) * -1));
+}
+
+.lib-binder:focus-visible {
+  outline: var(--hf-focus-w) solid var(--pp-signal);
+  outline-offset: var(--hf-focus-w);
+}
+
+.lib-binder[data-gone] {
+  visibility: hidden;
+}
+
+.bs-rule,
+.bs-label,
+.bs-title,
+.bs-hole,
+.bs-edge,
+.bs-foot {
+  position: absolute;
+  box-sizing: border-box;
+}
+
+.bs-rule {
+  top: var(--pp-lib-board);
+  right: var(--pp-lib-label-x);
+  left: var(--pp-lib-label-x);
+  height: 1px;
+  background: var(--pp-ink-muted);
+  opacity: 0.6;
+}
+
+.bs-label {
+  top: var(--pp-lib-label-y);
+  right: var(--pp-lib-label-x);
+  left: var(--pp-lib-label-x);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--pp-lib-label-h);
+  border: 1px solid var(--pp-lib-binder-line);
+  background: var(--pp-lib-paper);
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-micro);
+  font-weight: var(--pp-w-label);
+}
+
+.bs-label[data-latest] {
+  background: var(--pp-signal);
+  color: var(--pp-on-signal);
+}
+
+.bs-title {
+  top: var(--pp-lib-title-top);
+  right: 0;
+  bottom: var(--pp-lib-title-bottom);
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.bs-title span {
+  max-height: 100%;
+  overflow: hidden;
+  writing-mode: vertical-rl;
+  font-family: var(--pp-sans);
+  font-size: var(--pp-fs-micro);
+  font-weight: var(--pp-w-statement);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.bs-hole {
+  bottom: var(--pp-lib-ring-y);
+  left: 50%;
+  width: var(--pp-lib-ring);
+  height: var(--pp-lib-ring);
+  margin-left: calc(var(--pp-lib-ring) / -2);
+  border: 1px solid var(--pp-lib-binder-line);
+  border-radius: 50%;
+  background: var(--pp-lib-deep);
+}
+
+.bs-edge {
+  top: 0;
+  right: 0;
+  bottom: var(--pp-lib-board);
+  width: var(--pp-lib-edge-w);
+  background: var(--pp-lib-grad-edge);
+}
+
+.bs-foot {
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: var(--pp-lib-board);
+  border-top: 1px solid var(--pp-lib-binder-line);
+  background: var(--pp-lib-deep);
+}
+
+/* In the air: across, down and the turn are three nested transforms with their own easing. */
+.lib-flight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: calc(var(--hf-z-content) + 1);
+  transform: translateX(var(--fx));
+  transition: transform var(--pp-lib-dur-fly) var(--pp-lib-ease-x);
+}
+
+.lf-down {
+  transform: translateY(var(--fy));
+  transition: transform var(--pp-lib-dur-fly) var(--pp-lib-ease-y);
+}
+
+.lf-turn {
+  transform: rotate3d(1, -1, -1, var(--turn));
+  transform-style: preserve-3d;
+  transition: transform var(--pp-lib-dur-fly) var(--pp-lib-ease-turn);
+}
+
+.lf-face {
+  position: absolute;
+  box-sizing: border-box;
+  border: var(--pp-lib-line-w) solid var(--pp-lib-binder-line);
+  background: var(--fill);
+  backface-visibility: hidden;
+}
+
+.lf-spine,
+.lf-fore {
+  top: calc(var(--bh) / -2);
+  left: calc(var(--bt) / -2);
+  width: var(--bt);
+  height: var(--bh);
+}
+
+.lf-spine {
+  transform: translateZ(calc(var(--bd) / 2));
+}
+
+.lf-fore,
+.lf-end {
+  border-right: var(--pp-lib-board) solid var(--fill);
+  border-left: var(--pp-lib-board) solid var(--fill);
+  background: var(--pp-lib-grad-leaves);
+}
+
+.lf-fore {
+  transform: rotateY(180deg) translateZ(calc(var(--bd) / 2));
+}
+
+.lf-cover {
+  top: calc(var(--bh) / -2);
+  left: calc(var(--bd) / -2);
+  width: var(--bd);
+  height: var(--bh);
+}
+
+.lf-front {
+  transform: rotateY(90deg) translateZ(calc(var(--bt) / 2));
+}
+
+.lf-back {
+  transform: rotateY(-90deg) translateZ(calc(var(--bt) / 2));
+}
+
+.lf-panel {
+  position: absolute;
+  inset: var(--pp-lib-cover-panel);
+  border: 1px solid var(--pp-ink-muted);
+  opacity: 0.6;
+}
+
+.lf-end {
+  top: calc(var(--bd) / -2);
+  left: calc(var(--bt) / -2);
+  width: var(--bt);
+  height: var(--bd);
+}
+
+.lf-top {
+  transform: rotateX(90deg) translateZ(calc(var(--bh) / 2));
+}
+
+.lf-bottom {
+  transform: rotateX(-90deg) translateZ(calc(var(--bh) / 2));
+}
+
+/* On the desk, side on: spine left, the paper block between the boards. */
+.lib-desk-binder {
+  position: absolute;
+  top: var(--by);
+  left: var(--bx);
+  z-index: var(--hf-z-content);
+  width: var(--bd);
+  height: var(--bt);
+  transform-origin: 50% 100%;
+}
+
+.lib-desk-binder[data-plop] {
+  animation: lib-plop var(--pp-lib-dur-plop) ease-out;
+}
+
+@keyframes lib-plop {
+  35% {
+    transform: scale(1.05, 0.88);
+  }
+
+  65% {
+    transform: scale(0.98, 1.04);
+  }
+}
+
+.lib-desk-binder > span {
+  position: absolute;
+  box-sizing: border-box;
+}
+
+.db-block {
+  top: var(--pp-lib-board);
+  right: 0;
+  bottom: var(--pp-lib-board);
+  left: var(--pp-lib-cover-w);
+  border-right: 1px solid var(--pp-lib-binder-line);
+  background: var(--pp-lib-grad-leaves-flat);
+}
+
+.db-back,
+.db-board {
+  left: var(--pp-lib-label-x);
+  width: calc(var(--bd) - var(--pp-lib-label-x));
+  height: var(--pp-lib-board);
+  border: var(--pp-lib-line-w) solid var(--pp-lib-binder-line);
+  background: var(--fill);
+}
+
+.db-back {
+  bottom: 0;
+}
+
+.db-spine {
+  top: 0;
+  left: 0;
+  width: var(--pp-lib-cover-w);
+  height: 100%;
+  border: var(--pp-lib-line-w) solid var(--pp-lib-binder-line);
+  border-radius: var(--pp-radius-md) 0 0 var(--pp-radius-md);
+  background: var(--fill);
+}
+
+.db-ring {
+  top: var(--pp-lib-hoop-y);
+  left: var(--pp-lib-hoop-x);
+  width: var(--pp-lib-hoop);
+  height: var(--pp-lib-hoop);
+  border: var(--pp-lib-hoop-w) solid var(--pp-signal);
+  border-bottom-color: transparent;
+  border-radius: calc(var(--pp-lib-hoop) / 2) calc(var(--pp-lib-hoop) / 2) 0 0;
+  opacity: 0;
+  transition: opacity var(--pp-lib-dur-lift);
+}
+
+.lib-desk-binder[data-rings] .db-ring {
+  opacity: 1;
+}
+
+/* The front board swings over the spine to the left and comes to rest on the desk. */
+.db-board {
+  top: 0;
+  transform-origin: 0 0;
+  transition: transform var(--pp-lib-dur-open) var(--pp-lib-ease-open);
+}
+
+.lib-desk-binder[data-open] .db-board {
+  transform: translateY(calc(var(--bt) - var(--pp-lib-board))) rotate(-180deg);
+}

@@ -9,6 +9,13 @@
       "detail": "What to read before starting, how to stay inside the task while working, and what a hand-over must say so the next reader can check it."
     },
     {
+      "id": "art_render",
+      "kind": "playbook",
+      "title": "Rendering baked art",
+      "description": "Turns a heavy drawing into images that stay sharp up close and fast from far away.",
+      "detail": "Bakes each drawing once into a set of resolutions within size budgets, registers it with the site like any figure, and keeps everything that moves or reads as text live on the page above it."
+    },
+    {
       "id": "autonomous_mode",
       "kind": "playbook",
       "title": "Autonomous mode",
@@ -107,6 +114,13 @@
       "detail": "One stroke family, one signal colour, and motion only where the motion means something. A figure is done when its audit passes and someone has looked at its sheet."
     },
     {
+      "id": "graphite_pencil",
+      "kind": "playbook",
+      "title": "Graphite pencil",
+      "description": "Draws framed pictures as blended pencil studies with depth made by value.",
+      "detail": "No hard lines: edges come from darker tone the way a real pencil works, and the distance sits closer to the paper colour in both light and dark."
+    },
+    {
       "id": "hardware_atlas",
       "kind": "playbook",
       "title": "Hardware atlas",
@@ -161,6 +175,13 @@
       "title": "Mutation tests",
       "description": "Plants faults in changed code to see whether its tests notice.",
       "detail": "Each planted fault is reported as killed, surviving or equivalent. The run happens where a fault cannot reach anything real, and no fault stays in the tree."
+    },
+    {
+      "id": "pen_and_wash",
+      "kind": "playbook",
+      "title": "Pen and wash",
+      "description": "Draws rooms and furniture as a front-on ink elevation with soft wash and clean hatching.",
+      "detail": "Even ink outlines, one light from the upper left, and every shadow a wash with hatching that stays inside it and behind the object. Drawn as code, in the site palette, and checked before it is baked."
     },
     {
       "id": "playbook_filing",

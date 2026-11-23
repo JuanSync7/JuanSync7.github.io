@@ -197,6 +197,7 @@ export const HEADER_LINKS = [
   { label: 'About', href: '/about/' },
   { label: 'Work', href: '/#work' },
   { label: 'Blog', href: '/blog/' },
+  { label: 'Library', href: '/library/' },
   { label: 'Lab', href: '/lab/' },
   { label: 'Vault', href: '/vault/' },
 ] as const;

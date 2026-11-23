@@ -146,6 +146,11 @@
   --pp-ease-brush: cubic-bezier(0.6, 0, 0.3, 1);
   --pp-dur-flip: 1100ms;
   --pp-curl-blur: 14px;
+  /* The page turn's paper back, measured down from the fold on a layer the turn keeps square to
+     it: a crease shadow tight against the fold, and a soft sheen where the paper turns to the
+     light. Lengths scale with the window's diagonal, which the turn sets as --pp-turn-diag. */
+  --pp-curl-crease: linear-gradient(to bottom, color-mix(in srgb, var(--pp-ink-shadow) 26%, transparent) 0, color-mix(in srgb, var(--pp-ink-shadow) 0%, transparent) calc(var(--pp-turn-diag, 100vmax) * 0.024));
+  --pp-curl-sheen: linear-gradient(to bottom, color-mix(in srgb, var(--pp-curl-gleam) 0%, transparent) calc(var(--pp-turn-diag, 100vmax) * 0.012), color-mix(in srgb, var(--pp-curl-gleam) 30%, transparent) calc(var(--pp-turn-diag, 100vmax) * 0.036), color-mix(in srgb, var(--pp-curl-gleam) 0%, transparent) calc(var(--pp-turn-diag, 100vmax) * 0.132));
   --pp-doc-nav-w: 220px;
   --pp-doc-toc-w: 180px;
   /* The least room between the article and the panels beside it; wider screens give more. */
@@ -194,6 +199,92 @@
   --pp-tracking-micro: 0.08em;
   --pp-foot-mark-h: 40px;
   --pp-foot-brand-w: 340px;
+
+  /* Baked art: the palette every baked figure (a plate drawn ahead of time by a playbook's kernel,
+     src/figures/plates/) is drawn in. The kernels read these declarations from this file and
+     nowhere else, and the plate audit fails a plate baked with values that have since changed. */
+  --pp-art-a: light-dark(#faf6ee, #23272e);
+  --pp-art-b: light-dark(#efe7d8, #1d2127);
+  --pp-art-c: light-dark(#e4d9c5, #191c21);
+  --pp-art-deep: light-dark(#d9cfbb, #121418);
+  --pp-art-ink: light-dark(#16191e, #d9d2c3);
+  --pp-art-paper: light-dark(#fcfaf5, #2a2e35);
+  --pp-art-shade: light-dark(#16191e, #000000);
+  --pp-art-hatch: light-dark(#b9ae99, #4a515e);
+  --pp-art-hatch-deep: light-dark(#9c917c, #5a6270);
+  --pp-art-outline: light-dark(#b9ae99, #3e4551);
+  --pp-art-flame: light-dark(#ffe3b3, #ffe3b3);
+
+  /* The library archive (/library/): a wall of binder shelves and the desk under it, two baked
+     figures (library-wall, library-desk) laid out in their own units (one unit is one CSS px at
+     full size). Their sizes and anchors come from their manifests, not from here; the archive
+     scales the whole stage down only below --pp-lib-view-min. The DOM binders take the plates'
+     own palette, so a spine and its shelf are one drawing. */
+  --pp-lib-binder-a: var(--pp-art-a);
+  --pp-lib-binder-b: var(--pp-art-b);
+  --pp-lib-binder-c: var(--pp-art-c);
+  --pp-lib-binder-line: var(--pp-art-ink);
+  --pp-lib-deep: var(--pp-art-deep);
+  --pp-lib-paper: light-dark(#fcfaf5, #1c2026);
+  --pp-lib-hatch: var(--pp-art-hatch);
+  --pp-lib-edge: light-dark(rgb(22 25 30 / 0.2), rgb(0 0 0 / 0.42));
+  --pp-lib-shadow: light-dark(rgb(22 25 30 / 0.22), rgb(0 0 0 / 0.55));
+  --pp-lib-shadow-low: light-dark(rgb(22 25 30 / 0.1), rgb(0 0 0 / 0.3));
+  /* A spine's shaded right edge: hatching over a darkening wash (the pen-and-wash rule, in CSS). */
+  --pp-lib-grad-edge:
+    repeating-linear-gradient(45deg, transparent 0 3px, var(--pp-lib-hatch) 3px 3.8px),
+    linear-gradient(90deg, transparent, var(--pp-lib-edge));
+  /* The page edges of a binder's paper block, seen from the side or from above. */
+  --pp-lib-grad-leaves: repeating-linear-gradient(90deg, var(--pp-lib-paper) 0 2px, var(--pp-outline) 2px 3px);
+  --pp-lib-grad-leaves-flat: repeating-linear-gradient(180deg, var(--pp-lib-paper) 0 2px, var(--pp-outline) 2px 3px);
+  /* The binder holes punched down the paper's left edge. */
+  --pp-lib-grad-holes: radial-gradient(circle, var(--pp-lib-deep) 0 6px, var(--pp-outline) 6px 7px, transparent 7.5px);
+  /* The wall fades into the page at the edges of the view. */
+  --pp-lib-grad-fade: linear-gradient(90deg, var(--pp-ground), transparent);
+  --pp-lib-view-min: 560px;
+  --pp-lib-band-h: 72px;
+  --pp-lib-fade-w: 150px;
+  --pp-lib-line-w: 1.25px;
+  --pp-lib-lift: 10px;
+  --pp-lib-label-x: 4px;
+  --pp-lib-label-y: 10px;
+  --pp-lib-label-h: 22px;
+  --pp-lib-title-top: 38px;
+  --pp-lib-title-bottom: 33px;
+  --pp-lib-ring: 14px;
+  --pp-lib-ring-y: 13px;
+  --pp-lib-edge-w: 12px;
+  /* A cover board and the foot of a spine. */
+  --pp-lib-board: 5px;
+  --pp-lib-cover-w: 9px;
+  --pp-lib-cover-panel: 10px;
+  --pp-lib-hoop: 22px;
+  --pp-lib-hoop-w: 3px;
+  --pp-lib-hoop-x: 16px;
+  --pp-lib-hoop-y: -17px;
+  --pp-lib-sheet-w: 760px;
+  --pp-lib-sheet-pad: 36px;
+  --pp-lib-sheet-margin: 56px;
+  --pp-lib-sheet-rule-gap: 6px;
+  --pp-lib-sheet-hole: 16px;
+  --pp-lib-sheet-hole-x: 20px;
+  --pp-lib-sheet-hole-pitch: 96px;
+  --pp-lib-sheet-shadow-y: 18px;
+  --pp-lib-sheet-shadow-blur: 40px;
+  --pp-lib-fig-w: 300px;
+  /* The motion, one source for the CSS and the archive's timeline (it reads these at run time). */
+  --pp-lib-dur-slide: 650ms;
+  --pp-lib-dur-lift: 260ms;
+  --pp-lib-dur-fly: 800ms;
+  --pp-lib-dur-plop: 320ms;
+  --pp-lib-dur-open: 700ms;
+  --pp-lib-dur-sheet: 550ms;
+  --pp-lib-ease-slide: cubic-bezier(0.65, 0, 0.35, 1);
+  --pp-lib-ease-x: cubic-bezier(0.6, 0.05, 0.3, 1);
+  --pp-lib-ease-y: cubic-bezier(0.55, 0, 0.9, 0.45);
+  --pp-lib-ease-turn: cubic-bezier(0.45, 0, 0.25, 1);
+  --pp-lib-ease-open: cubic-bezier(0.45, 0, 0.2, 1);
+  --pp-lib-ease-sheet: cubic-bezier(0.5, 0, 0.2, 1);
 }
 
 :root[data-theme='light'] {

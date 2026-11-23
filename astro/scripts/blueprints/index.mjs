@@ -55,6 +55,7 @@ const text = lines.join('\n');
 // or is named here with the reason it has none.
 const WITHOUT = {
   'FigureCanvas.tsx': "its size is its host's; what it shows is a figure, drawn by the figure skill",
+  'FigurePlate.tsx': "its size is its host's; what it shows is a baked figure, whose size and anchors are its manifest's",
   'HardwareIcon.tsx': 'a static icon; its geometry is in figures/kit/hardware and the icon playbook',
   'SlideIcon.tsx': 'a static icon; its geometry is in figures/kit/slides and the slide-icons playbook',
   'Monogram.astro': 'an SVG mark: its geometry is the drawing',
@@ -63,9 +64,10 @@ const WITHOUT = {
   'NightFooter.astro': 'wraps PaperFooter (paper-footer)',
   'NightPage.astro': 'wraps PaperLayout (the page templates)',
   'PaperLayout.astro': 'the page chrome; measured through every page template',
+  'PageTurn.astro': 'two fixed, empty layers the page turn moves during a swap; they have no layout to measure',
   'NightLayout.astro': 'the figure bench only (/figures), not a public page',
   'Layout.astro': 'legacy',
-  'page-curl.ts': 'the page-swap motion script for PaperLayout; it lays nothing out',
+  'page-curl.ts': 'the page-swap motion script for every public page; it lays nothing out',
   'island-unmount.ts': 'holds a React island\'s unmount until it has hydrated, for PaperLayout; it lays nothing out',
 };
 const LEGACY = [

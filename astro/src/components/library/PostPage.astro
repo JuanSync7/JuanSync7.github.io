@@ -24,7 +24,7 @@ const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', y
 ---
 
 <NightPage title={`${data.title} · Juan Kok`} description={data.excerpt}>
-  <NightNav current="blog" />
+  <NightNav current="library" />
   <div class="nt-progress" aria-hidden="true"></div>
   <main class="nt-wrap post">
     <DocLayout section={LIBRARY.label} home={{ href: LIBRARY.href, label: `← ${LIBRARY.label}` }} groups={blogGroups(all)} current={pieceHref(entry.slug)} headings={headings}>
@@ -40,7 +40,7 @@ const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', y
       <p class="excerpt">{data.excerpt}</p>
     </header>
     {data.cover ? (
-      <div class="cover" style={`view-transition-name: cover-${entry.slug}`}>
+      <div class="cover">
         <FigureCanvas client:load id={data.cover} />
       </div>
     ) : null}

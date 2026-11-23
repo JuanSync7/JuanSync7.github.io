@@ -1,0 +1,5 @@
+/* The selftest's token file: the plate audit reads this instead of tokens/paper.css. */
+:root {
+  --fx-ground: light-dark(#f3ecdf, #16191e);
+  --fx-ink: light-dark(#16191e, #d9d2c3);
+}

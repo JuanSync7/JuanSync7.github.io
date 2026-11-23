@@ -1,0 +1,61 @@
+{
+  "schema": "plate/1",
+  "id": "library-wall",
+  "title": "Library wall unit",
+  "alt": "One bay of a built-in library wall: a shelf with four levels between two panelled wall bays, each with a candle sconce and a crest.",
+  "group": "library",
+  "style": "pen-and-wash",
+  "playbooks": ["pen-and-wash", "graphite-pencil", "art-render"],
+  "kernel": "scripts/library-art",
+  "sources": {
+    "light": {
+      "1x": "/library/shelf-light-1x.webp",
+      "2x": "/library/shelf-light-2x.webp"
+    },
+    "dark": {
+      "1x": "/library/shelf-dark-1x.webp",
+      "2x": "/library/shelf-dark-2x.webp"
+    }
+  },
+  "bytes": {
+    "light-1x": 21332,
+    "light-2x": 68902,
+    "dark-1x": 65856,
+    "dark-2x": 244364
+  },
+  "tokens": [
+    "--pp-art-a",
+    "--pp-art-b",
+    "--pp-art-c",
+    "--pp-art-deep",
+    "--pp-art-flame",
+    "--pp-art-hatch",
+    "--pp-art-hatch-deep",
+    "--pp-art-ink",
+    "--pp-art-outline",
+    "--pp-art-paper",
+    "--pp-art-shade",
+    "--pp-ground",
+    "--pp-ink-muted",
+    "--pp-signal"
+  ],
+  "palette": "c1a8fe9fd29b213f7c39a3f62e85122741769c6e8ee313ff4d0d6a0efc715ed5",
+  "anchors": {
+    "size": [760, 760],
+    "rows": [214, 372, 530, 688],
+    "run": [152, 608],
+    "plaque": [305, 34, 150, 20],
+    "flames": [
+      {
+        "x": 27.0,
+        "y": 83.17,
+        "h": 20.25
+      },
+      {
+        "x": 733.0,
+        "y": 83.17,
+        "h": 20.25
+      }
+    ]
+  }
+}
