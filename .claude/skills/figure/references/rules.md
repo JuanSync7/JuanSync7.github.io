@@ -61,3 +61,7 @@ rule, change its deck row.
 ## Reworking
 
 - **R-FIG-13** (eval: deck case only (no eval yet)) When reworking, keep what was judged good and change only what was judged weak. *Why:* A rework that drops the liked parts costs another round. Reject when: a part judged good was changed
+
+## Live or baked
+
+- **R-FIG-33** (eval: deck case only (no eval yet)) A figure is drawn live or baked, and both are one system. A baked figure is drawn ahead of time by a playbook's kernel for a look too heavy to draw live; its kernel takes every colour from the site's tokens and holds no colour literal, it is registered by the manifest the kernel writes (sources per theme and scale, the tokens and their digest, and its anchors from the constants it is drawn with), a page shows it only by id (`<FigurePlate>`), and the same audit checks it and fails it as stale when a token it names has changed. Live parts laid on it, DOM or a live figure, are placed by its anchors. *Why:* A second art system drifts: its own palette, its own checks and image paths in pages. Made beforehand is not the problem; following other rules is. Reject when: a baked image a page loads by path, a kernel with a colour of its own, or a plate whose manifest the kernel did not write

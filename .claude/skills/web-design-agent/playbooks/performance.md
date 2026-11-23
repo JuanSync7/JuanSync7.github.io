@@ -34,10 +34,10 @@ a figure or a heavy graphic to a page. The rules are WEB-PERF-1 to 7 in `../RULE
 
 | Thinking | Do instead |
 |---|---|
-| "I'll make the figures wait until the animation ends" | move the animation to the compositor; then both can run (WEB-PERF-1) |
+| "I'll make the figures wait until the animation ends" | move the animation to the compositor, then both can run (WEB-PERF-1) |
 | "a drop-shadow on the moving layer is just one line" | paint a `box-shadow` with the layer (WEB-PERF-2) |
 | "the counter says it passed" | look at the picture at the same moment (WEB-PERF-7) |
-| "60 fps on this headless box, so it is smooth" | compare old and new on the same box; quote no absolute rate (WEB-PERF-7) |
+| "60 fps on this headless box, so it is smooth" | compare old and new on the same box and quote no absolute rate (WEB-PERF-7) |
 | "it is fast on my laptop" | run `lag.mjs` and read the long tasks (WEB-PERF-3) |
 | "the browser can work it out each visit" | if the answer never changes, bake it at the build (WEB-PERF-4) |
 

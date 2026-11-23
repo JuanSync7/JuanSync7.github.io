@@ -1,6 +1,8 @@
 ---
 name: graphite_pencil
 description: Use when a framed picture inside a baked figure for juansync.dev is drawn or changed in graphite pencil (a landscape, an etching on a wall), or when its lines read hard or its depth reads flat.
+# Reached through web-design-agent > Figures and drawings, not listed on its own.
+disable-model-invocation: true
 ---
 
 # Graphite pencil picture

@@ -1,6 +1,8 @@
 ---
 name: deepdive-agent
 description: Use when changing zoom-dive chip, region, city or room generators, their nested camera or layout verification workflow.
+# Reached through web-design-agent > Figures and drawings, not listed on its own.
+disable-model-invocation: true
 ---
 
 # Deep-dive agent

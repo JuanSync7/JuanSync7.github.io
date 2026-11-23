@@ -134,8 +134,10 @@ def flame(cx, cy, k, sgn):
     return {"x": round(cx + k * (px - cx), 2), "y": round(cy + k * (py - cy), 2), "h": round(k * FLAME_H, 2)}
 
 
-def candle(d, x, base_y, h=CANDLE_H):
-    """Candle standing on a cup at base_y, with wax drips, wick and a two-tone flame."""
+def candle(d, x, base_y, h=CANDLE_H, lit=True):
+    """Candle standing on a cup at base_y, with wax drips, wick and, when lit, a two-tone flame.
+    Bake it unlit (lit=False) when the page lays a live flame on it by the flame() anchor, so the
+    drawing never shows a second flame under the live one."""
     w = 8
     top = base_y - h
     d.rect(x - w / 2, top, w, h, "paper", "ink", 1)
@@ -143,6 +145,8 @@ def candle(d, x, base_y, h=CANDLE_H):
     d.path(f"M{x - w / 2},{top + 1} q2,5 3,1 q1,7 3,2 q1,3 2,-3", "none", "muted", 0.8)   # drips
     d.path(f"M{x - w / 2 + 1},{top + 2} v{h - 6}", "none", "muted", 0.6, op=0.6)
     d.line([(x, top), (x, top - 4)], "ink", 1)                                          # wick
+    if not lit:
+        return
     d.path(f"M{x},{top - 18} C{x + 6},{top - 10} {x + 5},{top - 4} {x},{top - 3} C{x - 5},{top - 4} {x - 6},{top - 10} {x},{top - 18}Z",
            "signal", None)
     d.path(f"M{x},{top - 11} C{x + 2.5},{top - 7} {x + 2},{top - 4.5} {x},{top - 4} C{x - 2},{top - 4.5} {x - 2.5},{top - 7} {x},{top - 11}Z",
@@ -151,8 +155,8 @@ def candle(d, x, base_y, h=CANDLE_H):
            "none", "ink", 0.6)
 
 
-def sconce(d, c, y, P):
-    """Twin-arm brass candle sconce mounted on the stile, candles at c-20 and c+20."""
+def sconce(d, c, y, P, lit=True):
+    """Twin-arm brass candle sconce mounted on the stile, candles at c-20 and c+20 (see candle for lit)."""
     d.path(f"M{c - 5},{y - 26} q9,-12 18,0 v34 q0,10 -9,14 q-9,-4 -9,-14Z", "url(#hatch2)", None)
     # backplate: shaped oval with scalloped crest and a drop finial
     d.path(f"M{c - 9},{y - 30} q9,-12 18,0 v34 q0,10 -9,14 q-9,-4 -9,-14Z", "b", "ink", 1.1)
@@ -168,7 +172,7 @@ def sconce(d, c, y, P):
         d.path(f"M{ax - 9},{y - 4} h18 q-3,4 -9,4 q-6,0 -9,-4Z", "b", "ink", 1)
         d.path(f"M{ax - 6},{y - 1.5} h12 q-2,2.2 -6,2.2 q-4,0 -6,-2.2Z", "url(#hatch2)", None)
         d.rect(ax - 5, y - 9, 10, 5, "a", "ink", 1)
-        candle(d, ax, y - CUP_H)
+        candle(d, ax, y - CUP_H, lit=lit)
 
 
 def laurel(d, c, base_y, tip_y, sgn):
@@ -258,3 +262,49 @@ def crest(d, c, cy, P):
     d.path(f"M{c - 22},{ry + 8} h-3 v4 h3Z", "url(#hatch2)", None)
     d.path(f"M{c + 22},{ry + 8} h3 v4 h-3Z", "url(#hatch2)", None)
     d.line([(c - 18, ry + 4), (c + 18, ry + 4)], "muted", 0.6)
+
+
+# ---- shelf fillers: things that stand on a shelf between binders and are plainly not binders.
+# Each draws with its foot on the line y = base and its left edge at x; its cast shadow falls right.
+SHADOW = 4             # how far a filler's shadow falls to the right of it
+
+
+def archive_box(d, x, base, w=88, h=76):
+    """A lidded archive box standing on a shelf: lid band, blank label holder, finger hole."""
+    top = base - h
+    d.rect(x + SHADOW, top + SHADOW, w, h - SHADOW, "url(#hatch2)", None)                   # cast shadow
+    d.rect(x, top + 10, w, h - 10, "b", "ink", 1.1)                                         # body
+    d.rect(x + w - 9, top + 12, 7, h - 14, "url(#hatch)", None)                             # shaded right
+    d.rect(x - 2, top, w + 4, 12, "a", "ink", 1.1)                                          # lid
+    d.rect(x + w - 6, top + 2, 6, 8, "url(#hatch)", None)
+    d.line([(x - 2, top + 9), (x + w + 2, top + 9)], "muted", 0.7)
+    lw, lh = w * 0.5, 18
+    d.rect(x + (w - lw) / 2, top + 22, lw, lh, "paper", "ink", 0.9)                          # label holder
+    d.rect(x + (w - lw) / 2 + 3, top + 25, lw - 6, lh - 6, "none", "muted", 0.6)
+    d.path(f"M{x + w / 2 - 9},{top + h - 18} h18 a5,5 0 0 1 0,10 h-18 a5,5 0 0 1 0,-10Z", "deep", "ink", 0.9)  # finger hole
+    d.line([(x + 4, base - 3), (x + w - 4, base - 3)], "muted", 0.6)
+
+
+def bookend(d, x, base, h=66):
+    """An iron bookend: an upright plate on a foot, with a scroll at its top."""
+    d.rect(x + 6 + SHADOW, base - h + SHADOW, 3, h - SHADOW, "url(#hatch2)", None)
+    d.rect(x, base - 4, 24, 4, "b", "ink", 1)                                                # foot
+    d.rect(x + 2, base - h, 7, h - 4, "b", "ink", 1.1)                                       # upright
+    d.rect(x + 6, base - h + 2, 3, h - 8, "url(#hatch)", None)
+    d.path(f"M{x + 5.5},{base - h} c-6,-2 -7,-10 0,-11 c6,0 6,7 1,7", "none", "ink", 1.1)    # scroll
+    d.circle(x + 5.5, base - h - 6, 1.4, "deep", "ink", 0.7)
+
+
+def book_stack(d, x, base, widths=(96, 88, 92), heights=(14, 11, 15)):
+    """Books lying flat in a stack, spines to the front: bands on each spine, page edges at the right."""
+    y = base
+    for i, (w, h) in enumerate(zip(widths, heights)):
+        off = (4, 0, 7)[i % 3]
+        bx, top = x + off, y - h
+        d.rect(bx + SHADOW, top + 2, w, h - 2, "url(#hatch2)", None)
+        d.rect(bx, top, w, h, ("a", "c", "b")[i % 3], "ink", 1.0)
+        for k in (8, w - 14):                                                                # spine bands
+            d.line([(bx + k, top + 1), (bx + k, y - 1)], "muted", 0.7)
+        d.rect(bx + w - 6, top + 2, 4, h - 4, "url(#hlines)", None)                          # page edges
+        d.rect(bx + 18, top + h / 2 - 2, w * 0.3, 4, "none", "muted", 0.6)                   # title panel, blank
+        y = top

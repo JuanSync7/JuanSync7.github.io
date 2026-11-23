@@ -3,6 +3,8 @@ name: design-system
 description: Use when a design token on juansync.dev is added, changed or removed (a colour, gradient, spacing step, font stack, radius, shadow or type size), or when a page or component needs a value the tokens do not have yet.
 argument-hint: "[the token or value to add or change]"
 status: "[adopted] the steps and R-DS-1 to 5 are the site's project rules, carried into the vault on 2026-11-18. R-COL-2 to 5 and R-COL-9 come from the Colour and contrast deck, some of them trials."
+# Reached through web-design-agent > Page design, not listed on its own.
+disable-model-invocation: true
 ---
 
 

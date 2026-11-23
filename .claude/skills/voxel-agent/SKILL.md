@@ -1,6 +1,8 @@
 ---
 name: voxel-agent
 description: Use when changing or evaluating procedural voxel worlds, biome content, placement, camera behaviour or voxel feedback.
+# Reached through web-design-agent > Figures and drawings, not listed on its own.
+disable-model-invocation: true
 ---
 
 # Voxel agent

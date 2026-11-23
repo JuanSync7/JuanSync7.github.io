@@ -1,6 +1,8 @@
 ---
 name: art_render
 description: Use when a baked figure for juansync.dev is rendered for the page (its pyramid, budgets and level of detail near and far), registered by its manifest, or when parts move over it on the page.
+# Reached through web-design-agent > Figures and drawings, not listed on its own.
+disable-model-invocation: true
 ---
 
 # Rendering baked art, near and far
