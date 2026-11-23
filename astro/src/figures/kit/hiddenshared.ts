@@ -4,7 +4,8 @@ import type { Drawing } from './drawing/monodraw';
 import { softwareGL } from './gpu';
 import { drawBaked, monodraw, type Baked } from './drawing/monodraw';
 import { Sketch } from './drawing/monoline';
-import { isPackedBaked, unpackBaked } from './bakedio';
+import { loadBaked } from './bakedio';
+import { drawIn } from './drawin';
 
 /** Small hidden-line scenes (R-FIG-28) for figures that appear several times on one page, such as
  *  the home page's six experience cards. A page may hold one WebGL scene; six cards each with
@@ -48,18 +49,12 @@ const baked = new Map<Small, Baked>();
 /** Fetches the baked numbers of each scene in `scenes` (by the name its file goes by). Never
  *  rejects: a scene that fails to load is built in the browser instead. */
 export async function preloadSmall(scenes: Record<string, Small>): Promise<void> {
-  if (typeof window === 'undefined') return;
-  const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
   await Promise.all(
     Object.entries(scenes).map(async ([id, s]) => {
       if (baked.has(s)) return;
-      try {
-        const res = await fetch(`${base}baked/${id}.json`);
-        const json: unknown = res.ok ? await res.json() : null;
-        if (isPackedBaked(json)) baked.set(s, unpackBaked(json));
-      } catch {
-        // Built in the browser instead.
-      }
+      const b = await loadBaked(id);
+      // Missing or unreadable: built in the browser instead.
+      if (b) baked.set(s, b);
     }),
   );
 }
@@ -133,7 +128,8 @@ export interface Paper {
 export const paper = (): Paper => ({ key: '', copy: null });
 
 /** Draws scene `s` at time `t` into `ctx` (w × h CSS pixels, its transform already scaled by the
- *  pixel ratio). Returns false when there is no WebGL, so the figure draws its fallback. */
+ *  pixel ratio), with the first `pen` (0 to 1) of its lines drawn (kit/drawin.ts). Returns false
+ *  when there is no WebGL, so the figure draws its fallback. */
 export function paintSmall(
   ctx: CanvasRenderingContext2D,
   p: Paper,
@@ -141,6 +137,7 @@ export function paintSmall(
   w: number,
   h: number,
   t: number,
+  pen = 1,
 ): boolean {
   const r = renderer();
   // Say which renderer ran, as a three.js figure does, so the audit can tell a scene from its fallback.
@@ -149,10 +146,13 @@ export function paintSmall(
   const dpr = ctx.canvas.width / w;
   const [W, H] = [Math.round(w * dpr), Math.round(h * dpr)];
   // 24 frames a second reads as smooth at this size; without a GPU, 4.
-  const key = `${W}x${H}:${Math.floor(t * (slow ? 4 : 24))}`;
+  const key = `${W}x${H}:${Math.floor(t * (slow ? 4 : 24))}:${Math.round(pen * 60)}`;
   if (key !== p.key || !p.copy) {
     p.key = key;
     const b = build(s);
+    // The pen first, then the scene's own motion, which may trace lines of its own (a plotted
+    // chart): it has the last word on those.
+    drawIn(b.draw.root, pen);
     s.move(b.draw, t);
     const size = r.getSize(new Vector2());
     if (size.x !== W || size.y !== H) r.setSize(W, H, false);

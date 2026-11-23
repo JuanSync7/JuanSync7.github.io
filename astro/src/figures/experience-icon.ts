@@ -6,6 +6,7 @@ import { agents, platform, visibility } from './kit/expflows';
 import type { Pen } from './kit/hairline';
 import { paintSmall, paper, preloadSmall, type Paper, type Small } from './kit/hiddenshared';
 import { SMALL } from './kit/hiddenscenes';
+import { DRAW_IN, drawnAt } from './kit/drawin';
 
 /** The six experience cards, each a 3D isometric hidden-line drawing, monoline (R-FIG-28): the
  *  thing its card is about, drawn by the drawing kernel's pen, with one motion that says what the
@@ -48,7 +49,9 @@ export default defineCanvasFigure<Paper>({
     clear(ctx, w, h);
     const kind = kindOf(data);
     const scene = SCENE[kind];
-    if (paintSmall(ctx, state, scene, w, h, t)) return;
+    // Cards sit three to a row: each draws in a beat after the one to its left.
+    const pen = drawnAt(t, DRAW_IN.card, (KINDS.indexOf(kind) % 3) * DRAW_IN.stagger);
+    if (paintSmall(ctx, state, scene, w, h, t, pen)) return;
     const cam = isometric(w * 0.5, h * 0.66, Math.min(w * 0.8, h * 1.1) * 0.108);
     FLAT[kind]({ ctx, cam, t });
   },
