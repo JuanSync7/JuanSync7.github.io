@@ -2,10 +2,14 @@
 // .claude/skills/<name> folder where the site's agents read it. SKILL.md names its files by their vault paths, so
 // the copy here names them by their paths in this folder: that rename is the only change made on the way in.
 // Anything else in the skill folder (such as SITE.md, the site's own exceptions) is the site's and never synced.
+// Only files the playbook's card reveals are copied, and what was written is recorded (copies.mjs).
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { claimable, mustReveal, record } from './copies.mjs';
 
-const here = (p) => new URL(`../../../${p}`, import.meta.url).pathname;
+const ROOT = fileURLToPath(new URL('../../../', import.meta.url));
+const here = (p) => join(ROOT, p);
 
 /** files: [vault path in the playbook, path in the skill folder]. Every file but SKILL.md is copied as it is. */
 export function syncPlaybook({ name, playbook, skill, files }, argv = process.argv.slice(2)) {
@@ -13,6 +17,23 @@ export function syncPlaybook({ name, playbook, skill, files }, argv = process.ar
   if (!vault) {
     console.error(`usage: npm run ${name}:sync -- <path to experience-vault> [--check]`);
     process.exit(2);
+  }
+  mustReveal(
+    vault,
+    playbook,
+    files.map(([from]) => from),
+    files.map(([, to]) => here(`${skill}/${to}`)),
+  );
+  if (flag !== '--check') {
+    try {
+      claimable(
+        name,
+        files.map(([, to]) => here(`${skill}/${to}`)),
+      );
+    } catch (error) {
+      console.error(`Playbook copy refused: ${name}: ${error.message}`);
+      process.exit(1);
+    }
   }
   const renames = files.filter(([from]) => from !== 'SKILL.md').map(([from, to]) => [`\`${from}\``, `\`${to}\``]);
   const localise = (from, text) =>
@@ -40,5 +61,11 @@ export function syncPlaybook({ name, playbook, skill, files }, argv = process.ar
       process.exit(1);
     }
     console.log(`${name}: ${files.length} files match the vault`);
-  } else console.log(`${name}: synced ${files.length} files from the vault`);
+  } else {
+    record(
+      name,
+      files.map(([, to]) => here(`${skill}/${to}`)),
+    );
+    console.log(`${name}: synced ${files.length} files from the vault`);
+  }
 }

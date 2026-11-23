@@ -155,6 +155,7 @@
 
 .lib-desk {
   position: relative;
+  scroll-margin-top: calc(var(--pp-nav-h) + var(--hf-space-4));
   height: var(--lib-desk-h);
   margin-top: var(--pp-lib-band-h);
   overflow: hidden;
@@ -173,4 +174,15 @@
   box-sizing: border-box;
   border: 1px dashed var(--pp-outline);
   border-radius: var(--pp-radius-md) 0 0 var(--pp-radius-md);
+}
+
+/* Fillers and live flames stand on the plates by their anchors; neither takes the pointer. */
+.lib-prop,
+.lib-flame {
+  position: absolute;
+  pointer-events: none;
+}
+
+.lib-flame {
+  z-index: 1;
 }

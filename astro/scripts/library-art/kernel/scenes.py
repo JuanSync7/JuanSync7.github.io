@@ -4,7 +4,7 @@ python3 -m kernel.scenes OUT_DIR  -> shelf-unit-{light,dark}.svg, table-{light,d
 """
 import sys
 from .primitives import D, SW
-from .penwash import LIGHT, DARK, wrap, scaled, raised_panel, sconce, crest, flame
+from .penwash import LIGHT, DARK, wrap, scaled, raised_panel, sconce, crest, flame, archive_box, bookend, book_stack, SHADOW
 from .graphite import pencil_picture
 
 ROWS_TOP = [58, 228, 386, 544]
@@ -56,7 +56,7 @@ def divider(d, c, P):
     d.rect(L, 676, R - L, 12, "b", "ink", 1)
     d.rect(L + 6, 672, R - L - 12, 4, "url(#hatch2)", None)
     sy, sk = WALL_SCONCE
-    scaled(d, c, sy, sk, lambda: sconce(d, c, sy, P))
+    scaled(d, c, sy, sk, lambda: sconce(d, c, sy, P, lit=False))
     scaled(d, c, 290, 1.4, lambda: crest(d, c, 290, P))
     # moulded band with small dentils
     d.line([(L + 6, 372), (R - 6, 372)], "ink", 1)
@@ -181,7 +181,7 @@ def table(P):
     d.o.append('</g>')
     xs, sy, sk = DESK_SCONCES
     for wx in xs:
-        scaled(d, wx, sy, sk, lambda wx=wx: sconce(d, wx, sy, P))
+        scaled(d, wx, sy, sk, lambda wx=wx: sconce(d, wx, sy, P, lit=False))
     # wainscot on the wall behind
     d.rect(60, 286, 1320, 10, "b", "ink", 1)
     for x in range(64, 1376, 8):
@@ -275,6 +275,21 @@ def table(P):
     return d.o
 
 
+# Shelf fillers, each its own small plate drawn with no background: (draw, width, height, left
+# inset, foot width). The foot is the part that stands on the board; the rest is lid, scroll or shadow.
+FILLERS = {
+    "library-box": (lambda d: archive_box(d, 2, 76), 96, 76, 0, 92),
+    "library-bookend": (lambda d: bookend(d, 3, 78), 31, 78, 3, 24),
+    "library-books": (lambda d: book_stack(d, 0, 40), 108, 40, 0, 103),
+}
+
+
+def filler(name, P):
+    d = D(P)
+    FILLERS[name][0](d)
+    return d.o
+
+
 def anchors():
     """Where things stand on each plate, in the plate's own units, from the constants it is drawn
     with: the site lays its live parts (binders, the paper, live flames) out by these."""
@@ -295,6 +310,10 @@ def anchors():
             "spot": DESK_SPOT,
             "flames": [flame(wx, dy, dk, g) for wx in xs for g in (-1, 1)],
         },
+        **{
+            name: {"size": [w, h], "foot": [x0, x0 + fw], "shadow": SHADOW}
+            for name, (_, w, h, x0, fw) in FILLERS.items()
+        },
     }
 
 
@@ -302,6 +321,9 @@ def build(out):
     for name, P, ch in (("light", LIGHT, False), ("dark", DARK, True)):
         open(f"{out}/shelf-unit-{name}.svg", "w").write(wrap(P, "\n".join(unit(P)), UW, 760, ch))
         open(f"{out}/table-{name}.svg", "w").write(wrap(P, "\n".join(table(P)), DESK_W, DESK_H, ch))
+    for name, (_, w, h, _x0, _fw) in FILLERS.items():
+        for theme, P, ch in (("light", LIGHT, False), ("dark", DARK, True)):
+            open(f"{out}/{name}-{theme}.svg", "w").write(wrap(P, "\n".join(filler(name, P)), w, h, ch))
     open(f"{out}/glow-dark.svg", "w").write(wrap(DARK, "\n".join(glow()), UW, 760, False))
 
 

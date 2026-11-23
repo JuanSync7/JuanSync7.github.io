@@ -4,6 +4,7 @@
 
 .lib-sheet {
   position: absolute;
+  scroll-margin: calc(var(--pp-nav-h) + var(--hf-space-4)) 0 var(--hf-space-6);
   z-index: calc(var(--hf-z-content) + 2);
   box-sizing: border-box;
   display: grid;

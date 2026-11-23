@@ -12,11 +12,6 @@ The checks are the project's, because they read its CSS, its pages and its build
 | `npm run figures:check` | the figure audit's palette rule: a figure takes colour only from the night palette | R-DS-4 |
 | `npm run blueprint:index:check` | every shared component is named on the design-system page | half of R-DS-3 |
 | `npm run design-system:sync -- <vault> --check` | the site's copy of this playbook matches the vault | the playbook itself |
-| `npm run tokens:sync -- <frontend-kit> --check` | the site's copy of the token code matches `@juansync7/design-tokens` | the kernel's code |
-
-`standards:check` runs the package's own checks (`checkTokens`) with the site's pairs and export names. The
-package's selftest (`npm run check` in `frontend-kit/design-tokens`) proves each check still catches a
-breakage, on fixtures of its own.
 
 The agent may not edit them. `tokens-baseline.json` changes only downwards, with the reason in the commit message.
 

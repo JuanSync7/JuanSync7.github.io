@@ -16,3 +16,4 @@ package with `graphite_pencil/kernel` and `art_render/kernel`.
 | `penwash.sconce(d, c, y, P)`, `candle(d, x, base_y)` | a twin-arm candle sconce, a candle | flames are the signal |
 | `penwash.flame(cx, cy, k, sgn)` | where a sconce candle's flame sits on the plate | for the manifest's anchors |
 | `penwash.crest(d, c, cy, P)`, `monogram(...)`, `laurel(...)` | the shield with the SJ mark and laurel | the logo keeps its own scaled weights |
+| `penwash.archive_box(d, x, base)`, `bookend(d, x, base)`, `book_stack(d, x, base)` | shelf fillers, foot on `base`, shadow falling right by `SHADOW` | drawn as their own sprite plates, rendered with no background so they keep their transparency |

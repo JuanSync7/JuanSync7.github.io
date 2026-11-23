@@ -1,10 +1,11 @@
 // Bring the blueprint kernel in from its one source, the experience vault's playbook
-// Playbooks/blueprint (R-BP-9): its kernel into src/blueprints (the project keeps its specs, sheet,
-// views, harness and index data beside it).
+// Playbooks/blueprint (R-BP-9): its kernel and harness into src/blueprints and its runner into
+// scripts/blueprints (the project keeps its specs, sheet, views and index data beside them).
 //   npm run blueprint:sync -- <vault>          copy, then run blueprint:check
 //   npm run blueprint:sync -- <vault> --check  fail if any copy differs from the vault
 import { copyFileSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { mustReveal, record } from '../playbooks/copies.mjs';
 
 const [vault, flag] = process.argv.slice(2);
 if (!vault) {
@@ -13,15 +14,18 @@ if (!vault) {
 }
 const here = (p) => new URL(`../../${p}`, import.meta.url).pathname;
 const FILES = [
-  'types.ts',
-  'dom.ts',
-  'measure.ts',
-  'sizing.ts',
-  'drawing.ts',
-  'catalogue.ts',
-  'overlay.ts',
-  'window.ts',
-].map((f) => [`kernel/${f}`, `src/blueprints/${f}`]);
+  ...['types.ts', 'dom.ts', 'measure.ts', 'sizing.ts', 'drawing.ts', 'catalogue.ts', 'overlay.ts', 'window.ts'].map(
+    (f) => [`kernel/${f}`, `src/blueprints/${f}`],
+  ),
+  ['checks/harness.ts', 'src/blueprints/harness.ts'],
+  ['checks/run.mjs', 'scripts/blueprints/run.mjs'],
+];
+mustReveal(
+  vault,
+  'blueprint',
+  FILES.map(([from]) => from),
+  FILES.map(([, to]) => here(to)),
+);
 const differ = [];
 for (const [from, to] of FILES) {
   const src = join(vault, 'Playbooks/blueprint', from);
@@ -41,4 +45,10 @@ if (flag === '--check') {
     process.exit(1);
   }
   console.log(`blueprint: ${FILES.length} files match the vault`);
-} else console.log(`blueprint: synced ${FILES.length} files from the vault; now run npm run blueprint:check`);
+} else {
+  record(
+    'blueprint',
+    FILES.map(([, to]) => here(to)),
+  );
+  console.log(`blueprint: synced ${FILES.length} files from the vault; now run npm run blueprint:check`);
+}
