@@ -1,16 +1,11 @@
 import { defineCanvasFigure } from './define';
 import { isometric } from './kit/camera';
 import { clear } from './kit/draw';
-import { adoptionScene } from './kit/expdesk';
-import { knowledgeScene } from './kit/expfiles';
-import { platformScene } from './kit/expgate';
-import { agentsScene } from './kit/expline';
-import { measurementScene } from './kit/expmeter';
-import { visibilityScene } from './kit/exprack';
 import { adoption, knowledge, measurement } from './kit/expicons';
 import { agents, platform, visibility } from './kit/expflows';
 import type { Pen } from './kit/hairline';
-import { paintSmall, paper, type Paper, type Small } from './kit/hiddenshared';
+import { paintSmall, paper, preloadSmall, type Paper, type Small } from './kit/hiddenshared';
+import { SMALL } from './kit/hiddenscenes';
 
 /** The six experience cards, each a 3D isometric hidden-line drawing, monoline (R-FIG-28): the
  *  thing its card is about, drawn by the drawing kernel's pen, with one motion that says what the
@@ -25,14 +20,10 @@ import { paintSmall, paper, type Paper, type Small } from './kit/hiddenshared';
 
 export const KINDS = ['adoption', 'knowledge', 'measurement', 'agents', 'platform', 'visibility'] as const;
 type Kind = (typeof KINDS)[number];
-const SCENE: Record<Kind, Small> = {
-  adoption: adoptionScene,
-  knowledge: knowledgeScene,
-  measurement: measurementScene,
-  agents: agentsScene,
-  platform: platformScene,
-  visibility: visibilityScene,
-};
+const SCENE: Record<Kind, Small> = SMALL;
+/** The six scenes' baked numbers, loaded before the figure mounts (see `ready` in registry.ts),
+ *  so the first frame draws them instead of building the scenes on the page. */
+export const ready = preloadSmall(SMALL);
 /** Without WebGL: the earlier hairline objects. */
 const FLAT: Record<Kind, (p: Pen) => void> = { adoption, knowledge, measurement, agents, platform, visibility };
 

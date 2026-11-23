@@ -8,9 +8,12 @@ import type { Figure } from './types';
 
 const SUPPORT = new Set(['types', 'define', 'defineThree', 'defineTemplate', 'registry']);
 
-type Loader<T> = () => Promise<{ default: T }>;
+/** A figure module may also export `ready`, a promise it needs settled before it mounts (data
+ *  worked out at the site's build and fetched, say), so its first frame is already the finished
+ *  picture. */
+type Loader<T> = () => Promise<{ default: T; ready?: Promise<unknown> }>;
 
-const modules = import.meta.glob<{ default: Figure }>('./*.ts');
+const modules = import.meta.glob<{ default: Figure; ready?: Promise<unknown> }>('./*.ts');
 const fixtureModules = import.meta.glob<{ default: Figure }>('./fixtures/*.ts');
 const templateModules = import.meta.glob<{ default: Template }>('./templates/*.ts');
 const fixtureTemplateModules = import.meta.glob<{ default: Template }>('./fixtures/templates/*.ts');
@@ -55,5 +58,7 @@ export async function loadFigure(id: string, withFixtures = false): Promise<Figu
   if (inst) return (await loadTemplate(inst.template, withFixtures)).instance(inst.seed);
   const load = FIGURES.get(id) ?? (withFixtures ? FIXTURES.get(id) : undefined);
   if (!load) throw new Error(`no figure called "${id}"`);
-  return (await load()).default;
+  const mod = await load();
+  await mod.ready;
+  return mod.default;
 }
