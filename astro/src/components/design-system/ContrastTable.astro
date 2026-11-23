@@ -1,6 +1,6 @@
 ---
-import { CONTRAST, NEED, type Need } from '../../data/contrast-pairs';
-import { colourOf, contrast, hexOf, type Theme } from '../../lib/design-tokens';
+import { CONTRAST } from '../../data/contrast-pairs';
+import { NEED, colourOf, hexOf, ratioOf, type Need } from '../../lib/tokens';
 import { SITE_TOKENS } from '../../lib/site-tokens';
 import './standards.css';
 
@@ -11,11 +11,6 @@ const grade = (r: number, need: Need): string => {
   if (!n) return 'decorative';
   if (n[1] !== null && r >= n[1]) return 'AAA';
   return r >= n[0] ? 'AA' : 'below AA';
-};
-const ratio = (fg: string, ground: string, theme: Theme) => {
-  const f = colourOf(fg, theme, map);
-  const g = colourOf(ground, theme, map);
-  return f && g ? contrast(f, g) : NaN;
 };
 /** The night system is remapped onto the paper tokens on this page, so its samples show the
  *  night values themselves rather than the variables. */
@@ -65,7 +60,7 @@ const NEEDS: Record<Need, string> = {
                 <code>{p.ground}</code>
               </td>
               {(['light', 'dark'] as const).map((theme) => {
-                const r = ratio(p.fg, p.ground, theme);
+                const r = ratioOf(p, theme, map);
                 return (
                   <td class="std-ratio" data-grade={grade(r, p.need)} data-label={theme === 'light' ? 'Light page' : 'Dark page'}>
                     <strong>{r.toFixed(2)}:1</strong>
