@@ -1,0 +1,42 @@
+---
+// One vault page type: the frontmatter a page of that kind carries, its skeleton first.
+import type { PageType } from '../../data/formats';
+import FormatRecord from './FormatRecord.astro';
+
+export interface Props {
+  type: PageType;
+}
+
+const { type } = Astro.props;
+---
+
+<li class="card" id={`page-${type.id}`} data-format>
+  <p class="id">{type.version}{type.home ? ` · lives in ${type.home}` : ''}</p>
+  <h3>{type.id}</h3>
+  <p class="what">{type.what}</p>
+  <FormatRecord record={type} label={type.version} />
+</li>
+
+<style>
+  .card {
+    display: grid;
+    gap: var(--hf-space-3);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .id {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-ink-muted);
+  }
+
+  .card h3 {
+    font-size: var(--nt-fs-intro);
+  }
+
+  .what {
+    max-width: var(--nt-measure);
+    color: var(--nt-ink);
+  }
+</style>
