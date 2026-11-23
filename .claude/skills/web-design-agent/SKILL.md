@@ -16,6 +16,12 @@ three.js figures) and the figure check's `length` rule. Read them before writing
 would go past its budget is doing two jobs: name the second file and plan the split by job before
 writing, never by packing lines after lint fails.
 
+**Motion runs on the compositor, and figures never hold the page** (rules WEB-PERF-1 to 7 in
+`RULES.md`). Anything that moves animates only `transform` and `opacity`; work whose answer never
+changes is done at the build; a page's figures build one at a time. Measure before and after with
+the probes in `checks/perf/`, and follow [the performance playbook](playbooks/performance.md)
+whenever a change adds motion, a figure or a heavy graphic, or something lags.
+
 1. Record the user's correction, affected scenes, acceptance cases and current source.
 2. Reproduce the old result. Load references and extract the visual/physical constraints.
 3. Implement through the owning kernel and template. Keep mechanical limits in policy;
@@ -33,6 +39,7 @@ Choose the relevant playbook:
 - [Room lighting](playbooks/lighting.md): source, exposure, fill, shadows, colour, glow and atmosphere.
 - [Seeded rooms](playbooks/seeded-room.md): coordinated palettes, furniture design and functional placement.
 - [Voxel atmosphere](playbooks/voxel-atmosphere.md): lighting, weather, practical emission and GPU evidence.
+- [Motion and performance](playbooks/performance.md): an animation that stutters, a page or figure that freezes as it loads, or new motion or a heavy figure.
 - [Blueprints](../blueprint/SKILL.md): a component's or page's parts, sizing and tokens, and design changes asked for by name.
 
 For rooms, start from `templates/lighting-brief.md`; use `kernel/INDEX.md` and

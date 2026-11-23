@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type RefObject } from 'react';
 import { loadFigure } from '../figures/registry';
 import { whenIdle, whenNear } from './figureAhead';
+import { whenQueued } from './figureQueue';
 import { follow } from '../figures/kit/motion';
 import type { Figure, FigureInstance, FrameInput } from '../figures/types';
 
@@ -157,9 +158,14 @@ export function useFigureLoop(ref: RefObject<HTMLCanvasElement>, o: LoopOptions)
 
     // Ahead mode: the code loads now; the build waits until the canvas is near the view and
     // the page is idle, so a heavy scene never blocks a scroll that is still far from it.
+    // Then it waits its turn behind the page's other figures, so they build one at a time.
     let warmed = false;
     Promise.all([loadFigure(id, fixtures), whenNear(canvas, ahead, cleanups)])
-      .then(([fig]) => whenIdle(ahead, cleanups).then(() => fig))
+      .then(([fig]) =>
+        whenIdle(ahead, cleanups)
+          .then(() => whenQueued(canvas, cleanups))
+          .then(() => fig),
+      )
       .then((fig) => {
         if (disposed) return;
         inst = fig.mount(canvas);

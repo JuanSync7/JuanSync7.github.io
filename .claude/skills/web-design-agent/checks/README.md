@@ -26,3 +26,9 @@ texture, tonal and PCSS hooks and reversible tonal uniforms without global shade
 A proper eye interior can fill its frame; its scoped occupancy guard differs from
 the overview's global 50% coverage ceiling. Contrast, palette and highlight checks
 still apply. Never change global thresholds to make a room pass.
+
+## Performance
+
+`perf/` holds the motion and performance probes (WEB-PERF-1 to 7): `block.mjs` fails a page turn
+that stops drawing while the main thread is busy; `lag.mjs` names the long tasks as a page lands and
+the script behind each; `smooth.mjs` counts the pictures a real turn shows. See `perf/README.md`.
