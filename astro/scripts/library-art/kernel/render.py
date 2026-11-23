@@ -110,7 +110,8 @@ def rasters(src_svg, out_base, background=None):
     with tempfile.TemporaryDirectory() as td:
         png = os.path.join(td, "r.png")
         rsvg(src_svg, max(RASTER_SCALES), png, background)
-        big = Image.open(png).convert("RGB")
+        # With no background the drawing keeps its transparency: a sprite laid on another plate.
+        big = Image.open(png).convert("RGB" if background else "RGBA")
         paths = {}
         for s in RASTER_SCALES:
             img = big if s == max(RASTER_SCALES) else big.resize((big.width * s // max(RASTER_SCALES), big.height * s // max(RASTER_SCALES)), Image.LANCZOS)

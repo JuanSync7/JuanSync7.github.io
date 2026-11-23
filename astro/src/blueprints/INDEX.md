@@ -60,7 +60,7 @@ The top bar of every page: who, where and tools; a menu button on a phone.
 | Part | Also called | Size | Token | Defined at | Resolves to | Also changes |
 |---|---|---|---|---|---|---|
 | 2 Row | inner row, three zones | padding across | `--pp-pad` | src/styles/tokens/paper.css:114 | var(--hf-space-6) → 24px | paper-footer, blog-post, learn-article, writing-index, learn-index, lab, read in 4 files |
-| 2 Row | inner row, three zones | least height | `--pp-nav-h` | src/styles/tokens/paper.css:192 | 72px | - |
+| 2 Row | inner row, three zones | least height | `--pp-nav-h` | src/styles/tokens/paper.css:192 | 72px | read in 3 files |
 | 3 Brand | who, name, home link | gap | `--hf-space-3` | src/styles/tokens/spacing.css:10 | 12px | paper-footer, home, lab, read in 46 files |
 | 4 Monogram | logo, SJ | height | `--pp-nav-mark-h` | src/styles/tokens/paper.css:193 | 34px | - |
 | 5 Pages | where, menu, nav links | gap | `--hf-space-1` | src/styles/tokens/spacing.css:8 | 4px | read in 35 files |

@@ -21,6 +21,13 @@ for theme in light dark; do
   python3 -m kernel.render "$work/src/table-$theme.svg" "$work/out" "desk-$theme" --tile-width 1440 --background "$bg"
   python3 checks/check_render.py "$work/src/shelf-unit-$theme.svg" "$work/out" "shelf-$theme" --tile-width 760 --background "$bg"
   python3 checks/check_render.py "$work/src/table-$theme.svg" "$work/out" "desk-$theme" --tile-width 1440 --background "$bg"
+  for f in box bookend books; do
+    w="$(python3 -c "from kernel.scenes import FILLERS; print(FILLERS['library-$f'][1])")"
+    python3 checks/check_penwash.py "$work/src/library-$f-light.svg" "$work/src/library-$f-dark.svg"
+    python3 -m kernel.render "$work/src/library-$f-$theme.svg" "$work/out" "filler-$f-$theme" --tile-width "$w"
+    python3 checks/check_render.py "$work/src/library-$f-$theme.svg" "$work/out" "filler-$f-$theme" --tile-width "$w" --background "$bg"
+    for k in 1 2; do cp "$work/out/filler-$f-$theme@${k}x.webp" "$pub/filler-$f-$theme-${k}x.webp"; done
+  done
   for plate in shelf desk; do
     for k in 1 2; do cp "$work/out/$plate-$theme@${k}x.webp" "$pub/$plate-$theme-${k}x.webp"; done
   done

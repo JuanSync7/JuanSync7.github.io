@@ -27,6 +27,21 @@ PLATES = {
         "alt": "A reading desk below damask wallpaper with three framed pencil landscapes and two candle sconces.",
         "stem": "desk",
     },
+    "library-box": {
+        "title": "Archive box",
+        "alt": "A lidded archive box with a blank label, standing on a shelf.",
+        "stem": "filler-box",
+    },
+    "library-bookend": {
+        "title": "Bookend",
+        "alt": "An iron bookend with a scrolled top.",
+        "stem": "filler-bookend",
+    },
+    "library-books": {
+        "title": "Stack of books",
+        "alt": "Three books lying flat in a stack, spines to the front.",
+        "stem": "filler-books",
+    },
 }
 SCALES = (1, 2)
 WEB_PATH = "/library"
@@ -48,7 +63,7 @@ def manifest(pid, public_dir):
         "alt": meta["alt"],
         "group": "library",
         "style": "pen-and-wash",
-        "playbooks": ["pen-and-wash", "graphite-pencil", "art-render"],
+        "playbooks": ["pen-and-wash", "graphite-pencil", "art-render"] if pid in ("library-wall", "library-desk") else ["pen-and-wash", "art-render"],
         "kernel": "scripts/library-art",
         "sources": sources,
         "bytes": sizes,
