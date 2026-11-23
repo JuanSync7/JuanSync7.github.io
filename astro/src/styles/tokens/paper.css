@@ -146,6 +146,11 @@
   --pp-ease-brush: cubic-bezier(0.6, 0, 0.3, 1);
   --pp-dur-flip: 1100ms;
   --pp-curl-blur: 14px;
+  /* The page turn's paper back, measured down from the fold on a layer the turn keeps square to
+     it: a crease shadow tight against the fold, and a soft sheen where the paper turns to the
+     light. Lengths scale with the window's diagonal, which the turn sets as --pp-turn-diag. */
+  --pp-curl-crease: linear-gradient(to bottom, color-mix(in srgb, var(--pp-ink-shadow) 26%, transparent) 0, color-mix(in srgb, var(--pp-ink-shadow) 0%, transparent) calc(var(--pp-turn-diag, 100vmax) * 0.024));
+  --pp-curl-sheen: linear-gradient(to bottom, color-mix(in srgb, var(--pp-curl-gleam) 0%, transparent) calc(var(--pp-turn-diag, 100vmax) * 0.012), color-mix(in srgb, var(--pp-curl-gleam) 30%, transparent) calc(var(--pp-turn-diag, 100vmax) * 0.036), color-mix(in srgb, var(--pp-curl-gleam) 0%, transparent) calc(var(--pp-turn-diag, 100vmax) * 0.132));
   --pp-doc-nav-w: 220px;
   --pp-doc-toc-w: 180px;
   /* The least room between the article and the panels beside it; wider screens give more. */
