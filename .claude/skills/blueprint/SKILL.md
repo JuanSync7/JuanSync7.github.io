@@ -8,7 +8,8 @@ description: Use when a shared component or page template on juansync.dev gets, 
 The blueprint system is a playbook of the web design agent, not an agent of its own. Its one
 source is the experience vault's `Playbooks/blueprint` (SKILL.md, RULES.md, LOOK.md, kernel/INDEX.md):
 read that SKILL.md first and follow it. The kernel copies here are
-`astro/src/blueprints/{types,dom,measure,sizing,drawing,catalogue,overlay}.ts`; never edit them here
+`astro/src/blueprints/{types,dom,measure,sizing,drawing,catalogue,overlay}.ts`, with the playbook's checks
+`astro/src/blueprints/harness.ts` and `astro/scripts/blueprints/run.mjs`; never edit them here
 (`npm run blueprint:sync -- <vault> [--check]`). If the vault isn't reachable, say so and work
 from `astro/src/blueprints/README.md`.
 

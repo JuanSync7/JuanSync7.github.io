@@ -2,6 +2,8 @@
 name: drawing
 description: Use when a real object, an assembly or a part is to be drawn as an engineering drawing (first-angle views, dimensions, an A3 sheet, a general arrangement with its parts list), or when a drawing, its sheet or its layout is changed, in any project and for any 3D model.
 status: "[adopted] the deck Engineering drawing is a draft; R-DRW-4, 5, 7, 9, 12 and 15 quote the owner, the rest he adopted on 2026-11-17."
+# Reached through web-design-agent > Figures and drawings, not listed on its own.
+disable-model-invocation: true
 ---
 
 # Drawing playbook

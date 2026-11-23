@@ -3,6 +3,8 @@ name: figure
 description: Use when a drawing is needed or changed on juansync.dev, such as a post cover, a hero, a slide's figure, an illustration in a post, an animated canvas or 3D piece, or a seeded template for /lab.
 argument-hint: "[what the figure is for]"
 status: "[adopted] the steps and R-FIG-14 to 26 are the site's figure skill as enforced by its audit, carried into the vault on 2026-11-18. R-FIG-1 to 13 are the deck's trial rules."
+# Reached through web-design-agent > Figures and drawings, not listed on its own.
+disable-model-invocation: true
 ---
 
 

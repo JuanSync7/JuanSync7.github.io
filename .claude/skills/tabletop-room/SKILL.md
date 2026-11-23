@@ -1,6 +1,8 @@
 ---
 name: tabletop-room
 description: Use when creating or refining the seeded themed rooms in pixel-still, including room proportions, functional layouts, furniture, architectural finishes, lighting, materials, camera controls or verification.
+# Reached through web-design-agent > Figures and drawings, not listed on its own.
+disable-model-invocation: true
 ---
 
 # Complete themed rooms

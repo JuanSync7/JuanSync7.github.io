@@ -69,7 +69,8 @@ A blueprint names every part of a shared component, piece of page chrome or page
 part sizes, and the one token behind each size; it is the translator between someone reading the
 drawing and the code. Use the `blueprint` skill (`.claude/skills/blueprint/SKILL.md`, a playbook of
 the web design agent); its source is the experience vault's `Playbooks/blueprint`, and the kernel
-copies in `astro/src/blueprints/` are never edited here (`npm run blueprint:sync -- <vault>`). Specs are
+copies in `astro/src/blueprints/`, with the measuring harness beside them (`harness.ts`) and its runner
+(`scripts/blueprints/run.mjs`), are never edited here (`npm run blueprint:sync -- <vault>`). Specs are
 `astro/src/blueprints/<id>.ts` (structure only: never colours, motion or content). A request is matched
 to one row of `astro/src/blueprints/INDEX.md` or the person is asked. With the dev server up:
 `npm run blueprint:check` measures every blueprint on its real page at 1280 and 390 px, including that each
@@ -117,6 +118,50 @@ file it wrote; moving a hand-written article into the vault is a reviewed change
 old file first. The body names a diagram by id (`<Diagram id="…" />`, no import): the drawing stays
 in `src/data/diagrams/`. The vault's `Notes/Protocols/Site pieces.md` owns the record;
 `library:sync:selftest` (in `npm run check`) proves each refusal. CI never reads the vault.
+
+## Playbooks and agents
+
+The original of every playbook and agent is in the experience vault (`Playbooks/<id>/`); what this
+repository holds of one is a copy to use, brought over by that playbook's own sync
+(`figure:sync`, `design-system:sync`, `drawing:sync`, `lettering:sync`, `blueprint:sync`).
+The copy goes one way only. When using a copy shows a rule is wrong or missing, change the playbook
+in the vault and sync again; never edit a copy here and never copy one back.
+A sync copies only the files a published card reveals and stops, copying nothing, when the card is
+a draft or it is asked for any other file (the vault's owner publishes a card and adds a file to
+it, a sync never does). Each sync records the hash
+of what it wrote in `astro/scripts/playbooks/copies.lock.json`; `npm run playbooks:copies:check`
+(in `npm run check`, so in CI) fails when a recorded copy was changed or removed here, or when a
+sync script that copies from the vault's `Playbooks/` does not ask the card and record.
+`playbooks:copies:selftest` proves each refusal. An original and a copy are plain files reached through no link (the vault itself may be named through one; nothing inside it may be), named in letters, digits, `.`, `_` and `-`:
+a sync refuses anything else before it writes. The reading of sync scripts catches a guard that was forgotten,
+not one written round; a change to `copies.lock.json` is read in review, and only a sync's `--check`, run with
+the vault, compares a copy with its original. A new sync uses `mustReveal` and `record`
+(`scripts/playbooks/copies.mjs`) or `syncPlaybook`.
+
+The skills and agents this site made for itself (`site-taste`, `tabletop-room`, `hardware-atlas`,
+`slide-icons`, `lego`, and the `deepdive-agent`, `voxel-agent` and `web-design-agent` skills with their
+`.claude/agents/<name>.md`) are copies too: `npm run skills:sync -- <vault> [--check] [name]`
+(`scripts/skills/sync.mjs`). A skill's folder in the vault is its name with underscores, an agent's own
+file is `AGENT.md` there, and a whole skill folder here is the vault's: the files copied are exactly the
+ones the published card reveals, and a file here the card does not name stops the run. Every card and the record of copies are read
+before anything is written, so a record that cannot be read, or a place another playbook's sync already wrote,
+stops the run with every copy as it was. `skills:selftest` (in `npm run check`) proves each refusal. A new skill of this
+kind is filed in the vault first and added to `SKILLS` in that script. A skill enters `copies.lock.json`
+at its first sync from a published card; until then `playbooks:copies:check` does not see an edit to it.
+`npm run skills:claimed` (in `npm run check`, no vault needed) fails for a folder in `.claude/skills` or a file
+in `.claude/agents` that is not in `SKILLS`, not recorded by another playbook's sync, and not one of `POINTERS`
+(a page the site wrote that only points at a playbook the vault lists; the with-vault sync reads that card), and
+for a name on either list with nothing here, a listed folder with no `SKILL.md`, and a `.claude` folder reached
+through a link. The copy check also fails a record that gives one copy to two playbooks.
+
+`/playbooks/` is the register: one card per agent and playbook, and a card is all the site shows of
+one (id, kind, title, description, detail). The vault owns the cards and decides which are public;
+`npm run playbooks:sync -- --vault <vault>` compares `src/data/playbooks.json` with the vault's
+published list and `--write` writes it. The sync runs the vault's own gate, checks the list a second
+time, and refuses (never repairs) a field it does not know, markup, or an empty list. Never edit
+`playbooks.json` by hand, and never give the page a field the vault's list does not carry.
+`playbooks:selftest` (in `npm run check`) proves each refusal. CI never reads the vault. The page's search
+filters on the words a card shows (`src/components/playbooks/match.ts`); `playbooks:search:selftest` holds it.
 
 ## Writing lessons
 

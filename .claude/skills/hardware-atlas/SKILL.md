@@ -1,6 +1,8 @@
 ---
 name: hardware-atlas
 description: Use when creating or repairing hardware atlas models, wiring, repeated-part inspection, solid or wireframe rendering, SVG exports, camera framing or seeded gallery performance.
+# Reached through web-design-agent > Figures and drawings, not listed on its own.
+disable-model-invocation: true
 ---
 
 # Hardware atlas

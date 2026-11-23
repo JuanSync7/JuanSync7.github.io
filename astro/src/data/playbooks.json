@@ -1,0 +1,376 @@
+{
+  "schema": "playbooks-public/1",
+  "playbooks": [
+    {
+      "id": "agent",
+      "kind": "playbook",
+      "title": "Rules every agent shares",
+      "description": "The short list of rules every agent follows, whatever its work.",
+      "detail": "What to read before starting, how to stay inside the task while working, and what a hand-over must say so the next reader can check it."
+    },
+    {
+      "id": "art_render",
+      "kind": "playbook",
+      "title": "Rendering baked art",
+      "description": "Turns a heavy drawing into images that stay sharp up close and fast from far away.",
+      "detail": "Bakes each drawing once into a set of resolutions within size budgets, registers it with the site like any figure, and keeps everything that moves or reads as text live on the page above it."
+    },
+    {
+      "id": "autonomous_mode",
+      "kind": "playbook",
+      "title": "Autonomous mode",
+      "description": "How a session keeps working for hours while its owner is away.",
+      "detail": "It works through a queue under a stated limit of time, passes and spend, records each decision it made alone, and pushes only where the owner has already allowed it."
+    },
+    {
+      "id": "blog_post",
+      "kind": "playbook",
+      "title": "Blog post",
+      "description": "Shapes one story from the record into a post with an arc.",
+      "detail": "It adds a post’s shape to the writer’s steps: the arc is planned on a card before any prose, and a check judges that card."
+    },
+    {
+      "id": "blueprint",
+      "kind": "playbook",
+      "title": "Blueprint",
+      "description": "Draws a component or page as an engineering sheet that names every part and the token behind each size.",
+      "detail": "The sheet is drawn from the thing as it renders, so someone reading the drawing and someone reading the code talk about the same part. A measuring check confirms each named token really drives its size."
+    },
+    {
+      "id": "brain_interview",
+      "kind": "playbook",
+      "title": "Knowledge interview",
+      "description": "An interview that collects what the owner knows and no written record holds.",
+      "detail": "It can fill a gap on one subject, walk through a system, question a past decision, or turn repeated corrections into rules."
+    },
+    {
+      "id": "brain_pii",
+      "kind": "playbook",
+      "title": "Confidential names",
+      "description": "How a confidential name is added to the list that keeps it out of everything published.",
+      "detail": "Each name is replaced by a stable label, and the detector is tuned with invented examples, never real ones."
+    },
+    {
+      "id": "capture",
+      "kind": "playbook",
+      "title": "Capture",
+      "description": "How a decision or a lesson from a working session becomes a confirmed note.",
+      "detail": "The session proposes the note in one line and writes it only when the owner agrees."
+    },
+    {
+      "id": "clean_landed",
+      "kind": "playbook",
+      "title": "Clean up landed work",
+      "description": "How branches and working copies are removed once their change has landed.",
+      "detail": "It removes only what it can prove has landed and leaves everything else in place."
+    },
+    {
+      "id": "code_doc",
+      "kind": "playbook",
+      "title": "Code documentation",
+      "description": "Brings a repository’s documents back in line with the code as it is now.",
+      "detail": "It changes only the documents the task declared and never the code, tests or config. Checks compare what the documents claim with what the code does."
+    },
+    {
+      "id": "coding",
+      "kind": "playbook",
+      "title": "Coding",
+      "description": "Writes the code for one slice of work.",
+      "detail": "Rules for values, errors, tests and the hand-over that apply while the code is being written, on top of the software agent’s always-on rules."
+    },
+    {
+      "id": "deepdive_agent",
+      "kind": "agent",
+      "title": "Deep-dive agent",
+      "description": "Builds and repairs the seeded zoom scenes that dive from a chip to a region, a city and a room.",
+      "detail": "It generates the physical structure first, such as terminals and nets, streets and parcels, rooms and circulation, and draws only afterwards. A generated sheet is evidence to review, never an automatic pass."
+    },
+    {
+      "id": "design",
+      "kind": "playbook",
+      "title": "Module design",
+      "description": "Turns the spec of one module into interface contracts and a task list.",
+      "detail": "The contracts are written as stubs and the task list covers every requirement. It stops before implementation and designs nothing the spec does not ask for."
+    },
+    {
+      "id": "design_system",
+      "kind": "playbook",
+      "title": "Design system",
+      "description": "Adds, changes or removes a design token so that one change reaches every page.",
+      "detail": "It covers where a value is written, the places that must name it, and the checks for contrast and for stray literal values."
+    },
+    {
+      "id": "drawing",
+      "kind": "playbook",
+      "title": "Engineering drawing",
+      "description": "Draws a real object or assembly as a first-angle engineering drawing on a sheet.",
+      "detail": "Projection, line types, scales, dimensions and the general arrangement with its parts list, following the ISO drawing standards. The drawing is the yardstick a model is measured against."
+    },
+    {
+      "id": "figure",
+      "kind": "playbook",
+      "title": "Figure",
+      "description": "Makes one small drawing that shows its subject as a thing.",
+      "detail": "One stroke family, one signal colour, and motion only where the motion means something. A figure is done when its audit passes and someone has looked at its sheet."
+    },
+    {
+      "id": "graphite_pencil",
+      "kind": "playbook",
+      "title": "Graphite pencil",
+      "description": "Draws framed pictures as blended pencil studies with depth made by value.",
+      "detail": "No hard lines: edges come from darker tone the way a real pencil works, and the distance sits closer to the paper colour in both light and dark."
+    },
+    {
+      "id": "hardware_atlas",
+      "kind": "playbook",
+      "title": "Hardware atlas",
+      "description": "Models a piece of hardware and its wiring so it can be turned, inspected and exported as a drawing.",
+      "detail": "One geometry feeds the solid view, the wireframe view and the exported icons, so they cannot drift apart. Repeated parts are inspected one by one, and the camera frames the whole object."
+    },
+    {
+      "id": "impl_doc",
+      "kind": "playbook",
+      "title": "Implementation document",
+      "description": "Writes one task section a coder can build from without the design open.",
+      "detail": "The coder receives that section and nothing else, so everything the task needs is written into it."
+    },
+    {
+      "id": "integration_test",
+      "kind": "playbook",
+      "title": "Integration tests",
+      "description": "Writes the tests that run one slice’s interfaces together.",
+      "detail": "Each interface gets its happy path and its error path, on made-up data in a copy and never on a live store."
+    },
+    {
+      "id": "learn_article",
+      "kind": "playbook",
+      "title": "Learning article",
+      "description": "Teaches one subject in the order you would build the thing itself.",
+      "detail": "Every section has a figure or a worked example doing the explaining. It adds the article’s shape to the writer’s steps."
+    },
+    {
+      "id": "lego",
+      "kind": "playbook",
+      "title": "LEGO models",
+      "description": "Builds any object in LEGO: planned as shapes, swapped into real catalogue pieces, checked, then drawn brick by brick.",
+      "detail": "Nothing clips, nothing floats, and every piece sits on the grid and is a real part. A part whose shape matters is first sketched as the real thing and drawn as an engineering drawing."
+    },
+    {
+      "id": "lettering",
+      "kind": "playbook",
+      "title": "Lettering",
+      "description": "Sets the words on an engineering drawing in ISO 3098 lettering.",
+      "detail": "The letters are drawn as our own pen strokes and built into a font, so a sheet reads the same on a page, a slide or a print."
+    },
+    {
+      "id": "merge",
+      "kind": "playbook",
+      "title": "Merge",
+      "description": "Lands submitted work as one merged commit and leaves nothing behind.",
+      "detail": "From the submitted pieces of work to one commit on the target branch, then the clean-up of every branch and folder the merge made."
+    },
+    {
+      "id": "mutation_test",
+      "kind": "playbook",
+      "title": "Mutation tests",
+      "description": "Plants faults in changed code to see whether its tests notice.",
+      "detail": "Each planted fault is reported as killed, surviving or equivalent. The run happens where a fault cannot reach anything real, and no fault stays in the tree."
+    },
+    {
+      "id": "pen_and_wash",
+      "kind": "playbook",
+      "title": "Pen and wash",
+      "description": "Draws rooms and furniture as a front-on ink elevation with soft wash and clean hatching.",
+      "detail": "Even ink outlines, one light from the upper left, and every shadow a wash with hatching that stays inside it and behind the object. Drawn as code, in the site palette, and checked before it is baked."
+    },
+    {
+      "id": "playbook_filing",
+      "kind": "playbook",
+      "title": "Adding a playbook or an agent to the register",
+      "description": "How a new playbook or agent is added so that it is on the register from its first day.",
+      "detail": "It walks from choosing whether a playbook is needed at all, through its folder, entry page, rules and card, to the two checks that must pass before it is handed over as a draft."
+    },
+    {
+      "id": "recall",
+      "kind": "playbook",
+      "title": "Recall",
+      "description": "How a session looks up past work, decisions and lessons before it starts a task.",
+      "detail": "It searches the notes for similar work and brings back what was decided and why, with the note it came from."
+    },
+    {
+      "id": "review",
+      "kind": "playbook",
+      "title": "Review",
+      "description": "Reviews a change someone else wrote and hands back ranked findings with a verdict.",
+      "detail": "The reviewer never edits the change and is never the same model family as its author. Each finding carries its evidence."
+    },
+    {
+      "id": "rtl_lint",
+      "kind": "playbook",
+      "title": "RTL lint",
+      "description": "Shows that a design’s RTL is lint clean, as a verdict that can be trusted.",
+      "detail": "The agent produces the evidence and a script judges it. Waivers are recorded, and a pass that is only argued for is not a pass."
+    },
+    {
+      "id": "rules_creating_agents",
+      "kind": "playbook",
+      "title": "Rules for creating agents and playbooks",
+      "description": "The rules a session follows when it makes or changes an agent, a skill or a playbook.",
+      "detail": "A rule is written only after the task was seen to fail without it. Each rule keeps the test case that created it, and is retired when that case passes without the rule."
+    },
+    {
+      "id": "rules_doing_assigned_work",
+      "kind": "playbook",
+      "title": "Rules for doing assigned work",
+      "description": "The rules a session follows when it carries out a task given by a brief or by another agent.",
+      "detail": "Covers staying inside the brief, proving the result with evidence, and saying plainly what was not checked."
+    },
+    {
+      "id": "rules_reviewing_code",
+      "kind": "playbook",
+      "title": "Rules for reviewing code",
+      "description": "The rules a session follows when it reviews a change that another session wrote.",
+      "detail": "The reviewer did not write the change. It answers each rule's reject test with yes or no, gives the file and line for every yes, and lists the rules it could not answer."
+    },
+    {
+      "id": "rules_reviewing_posts",
+      "kind": "playbook",
+      "title": "Rules for reviewing posts",
+      "description": "The rules a session follows when it reads a draft post or article as a reviewer.",
+      "detail": "The reviewer compares drafts without knowing which is newer, and says which reads better and why."
+    },
+    {
+      "id": "rules_running_agents",
+      "kind": "playbook",
+      "title": "Rules for running agents",
+      "description": "The rules a session follows when it hands work to other agents and rules on what they return.",
+      "detail": "Covers who owns which files, keeping the reviewer independent of the worker, ranking findings by what happens next, and a limit on fix rounds."
+    },
+    {
+      "id": "rules_writing_code",
+      "kind": "playbook",
+      "title": "Rules for writing code",
+      "description": "The rules a session follows whenever it writes or changes code, tests, scripts or config.",
+      "detail": "Loaded section by section, so a session reads only the part its step needs. A hand-over lists which rules were applied and how each was checked."
+    },
+    {
+      "id": "rules_writing_documents",
+      "kind": "playbook",
+      "title": "Rules for writing documents",
+      "description": "The rules a session follows when it writes a guide, a runbook, a specification or a reference.",
+      "detail": "A document describes what exists now, so a newcomer can use the thing from the document alone, and every claim in it is checked against the code."
+    },
+    {
+      "id": "rules_writing_posts",
+      "kind": "playbook",
+      "title": "Rules for writing posts",
+      "description": "The rules a session follows when it writes a blog post or a learning article.",
+      "detail": "Covers the hook, the opening, the headings, the length and the ending, and keeps every event in the story tied to a record."
+    },
+    {
+      "id": "run_env",
+      "kind": "playbook",
+      "title": "Run environment",
+      "description": "How a test or build run gets its own place, name and size on a machine other people share.",
+      "detail": "Each run is isolated and recorded with its owner, and what a dead run left behind is listed before it is removed."
+    },
+    {
+      "id": "security",
+      "kind": "playbook",
+      "title": "Security review",
+      "description": "Reviews one committed slice for secrets, credentials, hosts and trust boundaries.",
+      "detail": "It reads the commit and never changes it, and hands back a findings report."
+    },
+    {
+      "id": "send_feedback",
+      "kind": "playbook",
+      "title": "Send feedback",
+      "description": "How what a session saw while following a playbook gets back to where the playbook is kept.",
+      "detail": "The session writes a report when its work ends or pauses, and a command checks the report before it is taken in."
+    },
+    {
+      "id": "site_taste",
+      "kind": "playbook",
+      "title": "Site taste",
+      "description": "Holds the owner’s taste for the pages of his site: what he said, what is built, what he rejected and what is still open.",
+      "detail": "It is read before a page, a section, a component or a motion is designed. What he said binds, the built system is followed, and an open question is asked, never decided for him."
+    },
+    {
+      "id": "slide_icons",
+      "kind": "playbook",
+      "title": "Slide icons",
+      "description": "Makes or revises a static icon for a slide or a page, in stages: fit, reuse or create, review, ship.",
+      "detail": "An existing icon is reused before a new one is drawn. The subject is open, while the theme, the physical constraints declared for the object and a review bound to evidence hold the quality."
+    },
+    {
+      "id": "spec",
+      "kind": "playbook",
+      "title": "Spec",
+      "description": "Writes the requirements of one section of a spec from the approved requirements.",
+      "detail": "It changes that section and nothing outside it. Each requirement is a block with an id that later work can point to."
+    },
+    {
+      "id": "tabletop_room",
+      "kind": "playbook",
+      "title": "Tabletop room",
+      "description": "Builds a complete themed room from a seed: its proportions, layout, furniture, finishes, light and materials.",
+      "detail": "The room is planned as a place someone could use before anything is drawn. Colour and light have their own checks, and a room is done when those pass and someone has looked at it."
+    },
+    {
+      "id": "test_coverage",
+      "kind": "playbook",
+      "title": "Test coverage register",
+      "description": "Maps each acceptance criterion to the tests that cover it.",
+      "detail": "The register also states plainly what is not covered, so a gap is written down instead of assumed away."
+    },
+    {
+      "id": "test_plan",
+      "kind": "playbook",
+      "title": "Test plan",
+      "description": "Says which tests will prove each requirement, before any test or code exists.",
+      "detail": "The plan is a document only. The tests are written later from it, and never by whoever writes the code they judge."
+    },
+    {
+      "id": "top_software",
+      "kind": "agent",
+      "title": "Software agent",
+      "description": "Writes, tests, reviews and lands code.",
+      "detail": "Its always-on rules cover values, errors, tests, data and environments, planted faults, idempotency and where a script may run. Its playbooks add the rules of each kind of work."
+    },
+    {
+      "id": "ui",
+      "kind": "playbook",
+      "title": "User interface",
+      "description": "Builds or changes pages, components, styles and frontend tests for one slice.",
+      "detail": "A design, a text or a breakpoint missing from the inputs is asked for, not guessed."
+    },
+    {
+      "id": "unit_test",
+      "kind": "playbook",
+      "title": "Unit tests",
+      "description": "Writes the unit tests for one slice from its test plan, before the code exists.",
+      "detail": "Each test is shown to fail when a fault is planted, and its expected value comes from the plan, not from what the code does today."
+    },
+    {
+      "id": "voxel_agent",
+      "kind": "agent",
+      "title": "Voxel agent",
+      "description": "Builds, reviews and improves the seeded generator of voxel worlds and its feedback loop.",
+      "detail": "One agent works through the stages itself, from terrain and places to placement, ambience and performance. Repeated generation and checks are scripts, and feedback on a world is kept with the seed that showed it."
+    },
+    {
+      "id": "web_design_agent",
+      "kind": "agent",
+      "title": "Web design agent",
+      "description": "Changes the site’s visual design: pages, interactive figures, lighting, weather and the visual evidence that goes with them.",
+      "detail": "It works as one agent and calls the design playbook for the stage in hand. Implementation, deterministic checks and visual judgment are kept apart."
+    },
+    {
+      "id": "writer",
+      "kind": "agent",
+      "title": "Writer",
+      "description": "Writes in the owner’s name: posts, articles, lessons, documents and letters.",
+      "detail": "It never publishes. Every first-person line traces to the owner’s own record, and where the record is silent it asks instead of filling the gap."
+    }
+  ]
+}
