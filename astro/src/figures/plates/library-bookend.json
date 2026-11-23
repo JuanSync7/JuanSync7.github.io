@@ -1,0 +1,48 @@
+{
+  "schema": "plate/1",
+  "id": "library-bookend",
+  "title": "Bookend",
+  "alt": "An iron bookend with a scrolled top.",
+  "group": "library",
+  "style": "pen-and-wash",
+  "playbooks": ["pen-and-wash", "art-render"],
+  "kernel": "scripts/library-art",
+  "sources": {
+    "light": {
+      "1x": "/library/filler-bookend-light-1x.webp",
+      "2x": "/library/filler-bookend-light-2x.webp"
+    },
+    "dark": {
+      "1x": "/library/filler-bookend-dark-1x.webp",
+      "2x": "/library/filler-bookend-dark-2x.webp"
+    }
+  },
+  "bytes": {
+    "light-1x": 974,
+    "light-2x": 1748,
+    "dark-1x": 1682,
+    "dark-2x": 4594
+  },
+  "tokens": [
+    "--pp-art-a",
+    "--pp-art-b",
+    "--pp-art-c",
+    "--pp-art-deep",
+    "--pp-art-flame",
+    "--pp-art-hatch",
+    "--pp-art-hatch-deep",
+    "--pp-art-ink",
+    "--pp-art-outline",
+    "--pp-art-paper",
+    "--pp-art-shade",
+    "--pp-ground",
+    "--pp-ink-muted",
+    "--pp-signal"
+  ],
+  "palette": "c1a8fe9fd29b213f7c39a3f62e85122741769c6e8ee313ff4d0d6a0efc715ed5",
+  "anchors": {
+    "size": [31, 78],
+    "foot": [3, 27],
+    "shadow": 4
+  }
+}

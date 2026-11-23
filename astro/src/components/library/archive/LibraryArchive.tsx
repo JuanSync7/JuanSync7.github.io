@@ -5,7 +5,8 @@ import DeskBinder from './DeskBinder';
 import ShelfBar from './ShelfBar';
 import ShelfTrack from './ShelfTrack';
 import FigurePlate from '../../ui/FigurePlate';
-import { DESK, PLATE, WALL, readMetrics, shelve, type Metrics } from './geometry';
+import PlateFlames from './PlateFlames';
+import { DESK, PLATE, WALL, furnish, readMetrics, shelve, type Metrics } from './geometry';
 import { IN_AIR, ON_DESK, SHEET_OUT, type ArchivePiece, type ArchiveShelf } from './types';
 import { useArchive } from './useArchive';
 import { useStageFit } from './useStageFit';
@@ -48,6 +49,7 @@ export default function LibraryArchive({ shelves }: Props) {
   const fit = useStageFit(box);
   const a = useArchive(shelves.length, box);
   const boxes = shelves.map((s) => shelve(s.pieces.length));
+  const props = boxes.map((b, i) => furnish(b, i));
   const shelf = shelves[a.shelf];
   const sel = a.picked
     ? { piece: shelves[a.picked.shelf].pieces[a.picked.index], box: boxes[a.picked.shelf][a.picked.index] }
@@ -57,13 +59,19 @@ export default function LibraryArchive({ shelves }: Props) {
     if (box.current) setM(readMetrics(box.current));
   }, []);
 
-  // Keep the eye and the keyboard with the binder: the desk comes into view as it flies, the
-  // paper's title takes focus once it is open, and focus goes back to the binder on its shelf.
+  // Keep the eye and the keyboard with the binder: as it flies, the desk's top comes up under the
+  // nav, where the paper will open (its scroll margin is the nav's height); once open, the whole
+  // paper is brought into view if it still runs past the screen, and its title takes focus.
+  // Focus goes back to the binder on its shelf.
   useEffect(() => {
     const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const behavior = smooth ? 'smooth' : 'auto';
     if (a.phase === 'fly' || (a.phase === 'show' && !smooth))
-      desk.current?.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'center' });
-    if (a.phase === 'show') heading.current?.focus({ preventScroll: true });
+      desk.current?.scrollIntoView({ behavior, block: 'start' });
+    if (a.phase === 'show') {
+      box.current?.querySelector('.lib-sheet')?.scrollIntoView({ behavior, block: 'nearest' });
+      heading.current?.focus({ preventScroll: true });
+    }
     if (a.phase === 'return') box.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     if (a.picked) last.current = `${a.picked.shelf}-${a.picked.index}`;
     if (a.phase === 'idle' && last.current) {
@@ -102,6 +110,7 @@ export default function LibraryArchive({ shelves }: Props) {
             <ShelfTrack
               shelves={shelves}
               boxes={boxes}
+              props={props}
               pos={a.pos}
               still={a.still}
               away={a.phase === 'idle' ? null : a.picked}
@@ -115,6 +124,7 @@ export default function LibraryArchive({ shelves }: Props) {
           <div ref={desk} className="lib-desk">
             <div className="lib-desk-art">
               <FigurePlate id="library-desk" decorative />
+              <PlateFlames plate={DESK} salt={101} />
               {a.phase === 'idle' ? <span className="lib-spot" style={spot} aria-hidden="true" /> : null}
               {sel && ON_DESK.includes(a.phase) ? <DeskBinder box={sel.box} phase={a.phase} /> : null}
             </div>

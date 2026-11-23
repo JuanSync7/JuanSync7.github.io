@@ -1,0 +1,178 @@
+---
+import NightPage from '../../layouts/NightPage.astro';
+import NightNav from '../../components/layout/NightNav.astro';
+import NightFooter from '../../components/layout/NightFooter.astro';
+import SectionHead from '../../components/ui/SectionHead.astro';
+import { PLAYBOOKS, PLAYBOOK_KINDS } from '../../data/playbooks';
+
+// The register of agents and playbooks. A card is all the site shows of one: the playbook itself stays in
+// the vault. Every value is set as text.
+const groups = PLAYBOOK_KINDS.map((kind) => ({ ...kind, cards: PLAYBOOKS.filter((card) => card.kind === kind.id) })).filter(
+  (group) => group.cards.length,
+);
+const lead = 'How the agents I work with do each kind of work. A card says what one is for; the playbook itself stays in my vault.';
+---
+
+<NightPage title="Playbooks · Juan Kok" description={lead}>
+  <NightNav />
+  <main>
+    <section class="nt-wrap nt-section register" data-playbook-register>
+      <SectionHead as="h1" label="// playbooks" title="Playbooks" lead={lead} />
+      {
+        groups.length ? (
+          <form class="search" data-playbook-search role="search" hidden>
+            <label>
+              Search the register
+              <input type="search" name="q" placeholder="For example, review or drawing" autocomplete="off" />
+            </label>
+            <p class="result" data-playbook-result role="status" aria-live="polite" aria-atomic="true" />
+          </form>
+        ) : null
+      }
+      <p class="none" data-playbook-empty hidden>No card has those words. Try fewer of them.</p>
+      {
+        groups.length ? (
+          groups.map((group) => (
+            <section class="group" data-playbook-group aria-label={group.label}>
+              <header>
+                <h2>{group.label}</h2>
+                <p>{group.cards.length} listed</p>
+                <p>{group.note}</p>
+              </header>
+              <ul class="cards">
+                {group.cards.map((card) => (
+                  <li class="card" id={card.id} data-playbook>
+                    <p class="id">{card.id}</p>
+                    <h3>{card.title}</h3>
+                    <p class="what">{card.description}</p>
+                    <p class="how">{card.detail}</p>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))
+        ) : (
+          <p class="none">No playbooks are listed yet.</p>
+        )
+      }
+    </section>
+  </main>
+  <NightFooter />
+</NightPage>
+
+<script>
+  import { mountPlaybookSearch } from '../../components/playbooks/playbookSearch';
+  let cleanup: (() => void) | undefined;
+  const mount = () => {
+    cleanup?.();
+    const root = document.querySelector<HTMLElement>('[data-playbook-register]');
+    cleanup = root ? mountPlaybookSearch(root) : undefined;
+  };
+  document.addEventListener('astro:page-load', mount);
+  document.addEventListener('astro:before-swap', () => cleanup?.());
+</script>
+
+<style>
+  .register {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-10);
+  }
+
+  .register [hidden] {
+    display: none;
+  }
+
+  .search {
+    display: grid;
+    gap: var(--hf-space-3);
+    max-width: var(--nt-measure);
+  }
+
+  .search label {
+    display: grid;
+    gap: var(--hf-space-2);
+    font-size: var(--nt-fs-small);
+  }
+
+  .search input {
+    color: var(--nt-ink);
+    background: var(--nt-ground);
+    border: 1px solid var(--nt-rule);
+    padding: var(--hf-space-3);
+    border-radius: 0;
+    font: inherit;
+  }
+
+  .result {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-ink-muted);
+  }
+
+  .group {
+    display: grid;
+    grid-template-columns: minmax(0, var(--nt-thumb-min)) minmax(0, 1fr);
+    gap: var(--hf-space-6);
+    padding-top: var(--hf-space-8);
+    border-top: 1px solid var(--nt-rule);
+  }
+
+  .group > header h2 {
+    font-size: var(--nt-fs-h4);
+  }
+
+  .group > header p {
+    margin-top: var(--hf-space-2);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-ink-muted);
+  }
+
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hf-space-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    max-width: var(--nt-measure);
+    min-width: 0;
+  }
+
+  .card {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .id {
+    margin-bottom: var(--hf-space-2);
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-ink-muted);
+  }
+
+  .card h3 {
+    margin-bottom: var(--hf-space-2);
+    font-size: var(--nt-fs-intro);
+  }
+
+  .what {
+    color: var(--nt-ink);
+  }
+
+  .how {
+    margin-top: var(--hf-space-2);
+    font-size: var(--nt-fs-small);
+    color: var(--nt-ink-2);
+  }
+
+  .none {
+    color: var(--nt-ink-muted);
+  }
+
+  @media (max-width: 720px) {
+    .group {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

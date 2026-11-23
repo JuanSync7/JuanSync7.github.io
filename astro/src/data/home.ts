@@ -209,6 +209,7 @@ export const FOOTER_GROUPS = [
       { label: 'About', href: '/about/' },
       { label: 'Blog', href: '/blog/' },
       { label: 'Library', href: '/library/' },
+      { label: 'Playbooks', href: '/playbooks/' },
       { label: 'Lab', href: '/lab/' },
       { label: 'Vault', href: '/vault/' },
       { label: 'Anatomy', href: '/anatomy/chip-package/' },

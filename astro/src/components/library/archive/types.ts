@@ -58,3 +58,21 @@ export interface Picked {
   shelf: number;
   index: number;
 }
+
+/** A filler standing on a shelf: a baked figure's id and its box, in the wall unit's units. */
+export interface Prop {
+  id: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+/** The box a live candle flame is drawn in, on a plate, in its units. */
+export interface Flame {
+  key: number;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}

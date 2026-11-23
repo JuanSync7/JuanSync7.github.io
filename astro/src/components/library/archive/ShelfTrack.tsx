@@ -1,12 +1,14 @@
 import type { MouseEvent } from 'react';
 import FigurePlate from '../../ui/FigurePlate';
 import BinderSpine from './BinderSpine';
-import { PLATE } from './geometry';
-import type { ArchivePiece, ArchiveShelf, BinderBox, Picked } from './types';
+import PlateFlames from './PlateFlames';
+import { PLATE, WALL } from './geometry';
+import type { ArchivePiece, ArchiveShelf, BinderBox, Picked, Prop } from './types';
 
 interface Props {
   shelves: readonly ArchiveShelf[];
   boxes: readonly (readonly BinderBox[])[];
+  props: readonly (readonly Prop[])[];
   pos: number;
   still: boolean;
   /** The binder that is off its shelf, if any. */
@@ -25,7 +27,7 @@ function plain(e: MouseEvent): boolean {
 /** The wall: three copies of the shelves in a row on one track, so the carousel can keep
  *  turning. Only the shelf facing you takes focus and speaks to a screen reader; a side shelf
  *  is a target that brings itself to the centre. */
-export default function ShelfTrack({ shelves, boxes, pos, still, away, onPick, onMove, onHover }: Props) {
+export default function ShelfTrack({ shelves, boxes, props, pos, still, away, onPick, onMove, onHover }: Props) {
   const n = shelves.length;
   const units = Array.from({ length: n * 3 }, (_, j) => j);
   return (
@@ -45,6 +47,17 @@ export default function ShelfTrack({ shelves, boxes, pos, still, away, onPick, o
             onClick={active ? undefined : (e) => plain(e) && (e.preventDefault(), onMove(j - pos))}
           >
             <FigurePlate id="library-wall" decorative />
+            {Math.abs(j - pos) <= 1 ? <PlateFlames plate={WALL} salt={j} /> : null}
+            {props[s].map((f, k) => (
+              <span
+                key={k}
+                className="lib-prop"
+                style={{ left: f.x, top: f.y, width: f.w, height: f.h }}
+                aria-hidden="true"
+              >
+                <FigurePlate id={f.id} decorative />
+              </span>
+            ))}
             <p className="lib-plaque" style={PLATE.plaque}>
               {shelf.label}
             </p>

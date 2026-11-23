@@ -16,6 +16,11 @@ rule, change its deck row.
 ## Colour
 
 - **R-BAKE-12** (eval: deck case only (no eval yet)) Spend the signal colour only on what glows or marks: a flame, the J of the logo, a lamp's rim, the newest label. Everything else is ink and wash. *Why:* One saturated mark per area keeps the 60/30/10 split and keeps the eye where it is meant to go. Reject when: the signal on a surface, a frame or a shadow
+- **R-BAKE-13** (eval: deck case only (no eval yet)) In the dark theme draw the same pen-and-wash drawing as chalk on a dark board: the light ink lines roughened by the `chalk` filter (`wrap(..., chalk=True)`), the wash kept soft under them, no glow. The light theme stays clean ink on cream. *Why:* The chalk texture is what makes the dark theme its own drawing rather than an inverted copy of the light one. Reject when: a dark drawing with smooth vector lines, or chalk lines with a glow
+
+## Live parts on a plate
+
+- **R-BAKE-14** (home: art_render; here: its kernel bakes the part unlit for the live layer) A live part laid on a plate is drawn in the plate's own hand: the shapes, line weight and palette the kernel uses for that part, taking the page's colours like every figure. Bake the plate without the part (a candle unlit, `candle(..., lit=False)`), so the drawing never shows it twice. *Why:* A live part in another hand reads as pasted on; a drawn part left under the live one reads as two of it. Reject when: a live part in a style the plate does not use, or a baked copy left under it
 
 ## The view
 

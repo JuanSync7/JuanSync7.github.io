@@ -1,0 +1,48 @@
+{
+  "schema": "plate/1",
+  "id": "library-books",
+  "title": "Stack of books",
+  "alt": "Three books lying flat in a stack, spines to the front.",
+  "group": "library",
+  "style": "pen-and-wash",
+  "playbooks": ["pen-and-wash", "art-render"],
+  "kernel": "scripts/library-art",
+  "sources": {
+    "light": {
+      "1x": "/library/filler-books-light-1x.webp",
+      "2x": "/library/filler-books-light-2x.webp"
+    },
+    "dark": {
+      "1x": "/library/filler-books-dark-1x.webp",
+      "2x": "/library/filler-books-dark-2x.webp"
+    }
+  },
+  "bytes": {
+    "light-1x": 1340,
+    "light-2x": 2472,
+    "dark-1x": 2354,
+    "dark-2x": 6198
+  },
+  "tokens": [
+    "--pp-art-a",
+    "--pp-art-b",
+    "--pp-art-c",
+    "--pp-art-deep",
+    "--pp-art-flame",
+    "--pp-art-hatch",
+    "--pp-art-hatch-deep",
+    "--pp-art-ink",
+    "--pp-art-outline",
+    "--pp-art-paper",
+    "--pp-art-shade",
+    "--pp-ground",
+    "--pp-ink-muted",
+    "--pp-signal"
+  ],
+  "palette": "c1a8fe9fd29b213f7c39a3f62e85122741769c6e8ee313ff4d0d6a0efc715ed5",
+  "anchors": {
+    "size": [108, 40],
+    "foot": [0, 103],
+    "shadow": 4
+  }
+}

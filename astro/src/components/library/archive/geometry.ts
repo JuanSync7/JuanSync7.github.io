@@ -1,5 +1,5 @@
 import { anchor, anchors, plate } from '../../../figures/plates/registry';
-import type { BinderBox } from './types';
+import type { BinderBox, Flame, Prop } from './types';
 
 /** The two baked figures the archive stands on. Where things are on them (the shelf boards, a
  *  shelf's standing room, the plaque, the desk top and the spot a binder lands on) comes from
@@ -56,6 +56,84 @@ export function shelve(count: number): BinderBox[] {
     x += w + GAP;
   }
   return out;
+}
+
+/** The shelf fillers: baked figures that are plainly not binders. Each stands with its foot on a
+ *  board; `foot` is the part that takes shelf room, from the plate's left. */
+const FILLERS = { box: plate('library-box'), bookend: plate('library-bookend'), books: plate('library-books') };
+const ROOM = 12;
+
+function prop(kind: keyof typeof FILLERS, footX: number, row: number): Prop {
+  const p = FILLERS[kind];
+  const [f0] = anchors(p, 'foot');
+  return { id: p.id, x: footX - f0, y: PLATE.rows[row] - p.size[1], w: p.size[0], h: p.size[1] };
+}
+
+function footW(kind: keyof typeof FILLERS): number {
+  const [a, b] = anchors(FILLERS[kind], 'foot');
+  return b - a;
+}
+
+type Kind = keyof typeof FILLERS;
+
+/** What stands on a level's free run, by pattern: at its left end and at its right end. A level
+ *  with binders keeps its left for them, so only its right is furnished. */
+const EMPTY: readonly [Kind | null, Kind | null][] = [
+  ['books', 'box'],
+  [null, 'box'],
+  [null, 'books'],
+  [null, null],
+];
+const AFTER: readonly (Kind | null)[] = ['box', 'books', null, 'box'];
+
+/** Furnishes a shelf around its binders: a bookend after the last binder of a level, and on the
+ *  free run a box or a stack of books, chosen by the level and the shelf so neighbouring shelves
+ *  differ; some runs stay empty, room for the next piece. Nothing ever stands where a binder is. */
+export function furnish(binders: readonly BinderBox[], shelf: number): Prop[] {
+  const out: Prop[] = [];
+  PLATE.rows.forEach((bottom, row) => {
+    const mine = binders.filter((b) => b.y + b.h === bottom);
+    const pattern = (row + shelf) % EMPTY.length;
+    let from = PLATE.runFrom;
+    let [left, right]: [Kind | null, Kind | null] = [...EMPTY[pattern]];
+    if (mine.length) {
+      from = Math.max(...mine.map((b) => b.x + b.w)) + 2;
+      if (from + footW('bookend') <= PLATE.runTo) {
+        out.push(prop('bookend', from, row));
+        from += footW('bookend');
+      }
+      [left, right] = [null, AFTER[pattern]];
+    }
+    if (left && from + footW(left) <= PLATE.runTo) {
+      out.push(prop(left, from, row));
+      from += footW(left) + ROOM;
+    }
+    if (right && PLATE.runTo - footW(right) >= from + ROOM) out.push(prop(right, PLATE.runTo - footW(right), row));
+  });
+  return out;
+}
+
+function isFlame(v: unknown): v is { x: number; y: number; h: number } {
+  if (typeof v !== 'object' || v === null) return false;
+  return (
+    'x' in v && 'y' in v && 'h' in v && typeof v.x === 'number' && typeof v.y === 'number' && typeof v.h === 'number'
+  );
+}
+
+/** How big a live flame's square box is against the drawn flame's height, and where its wick
+ *  stands in the box (candle-flame's wick point, 24 of its 30 units down). */
+const FLAME_BOX = 2.0;
+const FLAME_WICK = 24 / 30;
+
+/** Where the candle flames stand on a plate, as the square boxes live flames are drawn in: the
+ *  box's wick row on the drawn flame's base, and big enough that the live flame covers it. */
+export function flames(p: typeof WALL): Flame[] {
+  const raw = p.anchors.flames;
+  if (!Array.isArray(raw)) return [];
+  return raw.filter(isFlame).map((f, key) => {
+    const size = f.h * FLAME_BOX;
+    return { key, x: f.x - size / 2, y: f.y + f.h / 2 - size * FLAME_WICK, w: size, h: size };
+  });
 }
 
 /** The sizes and times the archive moves by: the plates' sizes from their manifests, the rest
