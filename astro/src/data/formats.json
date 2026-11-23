@@ -6097,7 +6097,7 @@
    "version": "schema_version 1, schema names the file",
    "issuer": "keel",
    "status": "outside",
-   "defined_in": "_scripts/schemas/keel/gate-record.schema.json",
+   "defined_in": "_scripts/schemas/keel-gate-record.schema.json",
    "copied_from": "JuanSync7/project-keel at fa126439c",
    "records": [
     {
@@ -6194,7 +6194,7 @@
    "version": "schema_version 1",
    "issuer": "keel",
    "status": "outside",
-   "defined_in": "_scripts/schemas/keel/eval-case.schema.json",
+   "defined_in": "_scripts/schemas/keel-eval-case.schema.json",
    "copied_from": "JuanSync7/project-keel at fa126439c",
    "records": [
     {
@@ -6256,7 +6256,7 @@
    "version": "schema_version 1, schema names the file",
    "issuer": "keel",
    "status": "outside",
-   "defined_in": "_scripts/schemas/keel/eval-report.schema.json",
+   "defined_in": "_scripts/schemas/keel-eval-report.schema.json",
    "copied_from": "JuanSync7/project-keel at fa126439c",
    "records": [
     {
@@ -6367,7 +6367,7 @@
    "version": "schema_version 1, schema names the file",
    "issuer": "keel",
    "status": "outside",
-   "defined_in": "_scripts/schemas/keel/matrix.schema.json",
+   "defined_in": "_scripts/schemas/keel-matrix.schema.json",
    "copied_from": "JuanSync7/project-keel at fa126439c",
    "records": [
     {
@@ -6455,7 +6455,7 @@
    "version": "aad_version 1.0, in the file name",
    "issuer": "keel",
    "status": "outside",
-   "defined_in": "_scripts/schemas/keel/aad-v1.0.schema.json",
+   "defined_in": "_scripts/schemas/keel-aad-v1.0.schema.json",
    "copied_from": "JuanSync7/project-keel at fa126439c",
    "records": [
     {
