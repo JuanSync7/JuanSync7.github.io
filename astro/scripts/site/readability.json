@@ -1,0 +1,12 @@
+{
+  "$why": "Limits for scripts/site/read-check.mjs. Change one only with a reason in the commit message.",
+  "minPx": 16,
+  "$minPx": "Body text at least 16 CSS px: the common baseline for screen reading, and the size below which phones zoom a focused field.",
+  "minLeading": 1.4,
+  "$minLeading": "Line height at least 1.4 times the text size, so the eye finds the next line; long-form guidance runs 1.4 to 1.6.",
+  "measure": {
+    "desktop": [45, 75],
+    "phoneMin": 30
+  },
+  "$measure": "45 to 75 characters per line at desktop (Bringhurst's span for running text; about 66 reads best). A phone column is narrower by nature, so only a floor of 30."
+}

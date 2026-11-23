@@ -113,6 +113,8 @@
     "standards:check": "node scripts/site/standards-check.mjs",
     "standards:selftest": "node scripts/site/standards-check.mjs --selftest",
     "site:pages": "node scripts/site/page-check.mjs",
+    "site:read": "node scripts/site/read-check.mjs",
+    "site:read:selftest": "node scripts/site/read-check.mjs --selftest",
     "site:design-export": "node scripts/site/design-system-export.mjs",
     "lego:check": "node scripts/lego/check.mjs",
     "lettering:build": "npx tsx scripts/lettering/build.mjs",
