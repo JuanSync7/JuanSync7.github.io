@@ -61,11 +61,11 @@
       "astro/src/figures/kit/drawing/sketch.ts": "c5f85f0e051b6b2f337513e358468701bc6527edde208be10d3ff1d11ab6a4cb"
     },
     "figure": {
-      ".claude/skills/figure/SKILL.md": "1e98650a561817f8915fbb9866b5d51e444aa7b967bf79e6b7b9d661536df62a",
-      ".claude/skills/figure/references/kit.md": "9672e1e693dc1ce374a305101151cd606e0f3d2bce03a35a35aacf19956d1dec",
+      ".claude/skills/figure/SKILL.md": "b4dffdb3f9c0155f95967660589fb6bcb6103eddafe63298d4ed17b4d984dd71",
+      ".claude/skills/figure/references/kit.md": "ccc99d6bf181d7000c4e77f48d7d22da0f75b67822ff665169700053753f5319",
       ".claude/skills/figure/references/look.md": "f721379f0e8d5664ff9e58fe4b6997ba83ca4624ea92ecd6f3dd824c7904454c",
-      ".claude/skills/figure/references/rules.md": "d26e570e75fef4dd2066723b84b0a4859e694c88f85e59baa0d7b3866b1acf57",
-      ".claude/skills/figure/references/styles.md": "c76b20793c26d899ca5f64cdf7bcd9bad55af4b371786018180a09da21eaa5a6"
+      ".claude/skills/figure/references/rules.md": "7c6ee795e925b4e4aec6cb408c603f3d0b4d981d3924bfc7c2dbff4920edfca4",
+      ".claude/skills/figure/references/styles.md": "71ce33ce7af7df3453a1575861800cead59b706fc014a584287ddfcbea629419"
     },
     "hardware-atlas": {
       ".claude/skills/hardware-atlas/LOOK.md": "c2e543294a6b26154001458839b653a79db135baef025f416ad6404836db3879",
