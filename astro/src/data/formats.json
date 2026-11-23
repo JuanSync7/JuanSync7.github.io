@@ -1,6 +1,6 @@
 {
  "schema": "formats-public/1",
- "summary": "49 families: 40 built, 2 planned, 7 outside. 37 vault page types.",
+ "summary": "54 families: 40 built, 2 planned, 12 outside. 37 vault page types.",
  "areas": [
   {
    "id": "pages",
@@ -6085,6 +6085,416 @@
        "required": "yes",
        "values": [],
        "notes": "format id -> its records"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "keel-gate-record",
+   "area": "runs",
+   "what": "What one run of a Keel gate (make verify) writes: which gate ran, on which commit and tree, each goal's result, the test counts and every check.",
+   "version": "schema_version 1, schema names the file",
+   "issuer": "keel",
+   "status": "outside",
+   "defined_in": "_scripts/schemas/keel/gate-record.schema.json",
+   "copied_from": "JuanSync7/project-keel at fa126439c",
+   "records": [
+    {
+     "name": "",
+     "skeleton": [
+      "# keel-gate-record (schema_version 1, schema names the file)",
+      "schema:         text",
+      "schema_version: 1",
+      "gate:           text",
+      "result:         pass | fail",
+      "reasons:        [reason]",
+      "source:         {…}",
+      "targets:        [target]",
+      "tests:          any",
+      "checks:         any"
+     ],
+     "fields": [
+      {
+       "name": "schema",
+       "type": "text",
+       "required": "yes",
+       "values": [],
+       "notes": ""
+      },
+      {
+       "name": "schema_version",
+       "type": "closed",
+       "required": "yes",
+       "values": [
+        "1"
+       ],
+       "notes": ""
+      },
+      {
+       "name": "gate",
+       "type": "text",
+       "required": "yes",
+       "values": [],
+       "notes": ""
+      },
+      {
+       "name": "result",
+       "type": "closed",
+       "required": "yes",
+       "values": [
+        "pass",
+        "fail"
+       ],
+       "notes": ""
+      },
+      {
+       "name": "reasons",
+       "type": "list",
+       "required": "yes",
+       "values": [],
+       "notes": "of reason"
+      },
+      {
+       "name": "source",
+       "type": "object",
+       "required": "yes",
+       "values": [],
+       "notes": ""
+      },
+      {
+       "name": "targets",
+       "type": "list",
+       "required": "yes",
+       "values": [],
+       "notes": "of target"
+      },
+      {
+       "name": "tests",
+       "type": "any",
+       "required": "yes",
+       "values": [],
+       "notes": ""
+      },
+      {
+       "name": "checks",
+       "type": "any",
+       "required": "yes",
+       "values": [],
+       "notes": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "keel-eval-case",
+   "area": "runs",
+   "what": "One line of a Keel project's eval suite: what to run, how to judge the answer, and the answer recorded for replay.",
+   "version": "schema_version 1",
+   "issuer": "keel",
+   "status": "outside",
+   "defined_in": "_scripts/schemas/keel/eval-case.schema.json",
+   "copied_from": "JuanSync7/project-keel at fa126439c",
+   "records": [
+    {
+     "name": "",
+     "skeleton": [
+      "# keel-eval-case (schema_version 1)",
+      "schema_version: 1",
+      "id:             text",
+      "input:          {…}",
+      "scorer:         any",
+      "recorded:       {…}"
+     ],
+     "fields": [
+      {
+       "name": "schema_version",
+       "type": "closed",
+       "required": "yes",
+       "values": [
+        "1"
+       ],
+       "notes": ""
+      },
+      {
+       "name": "id",
+       "type": "text",
+       "required": "yes",
+       "values": [],
+       "notes": ""
+      },
+      {
+       "name": "input",
+       "type": "object",
+       "required": "yes",
+       "values": [],
+       "notes": ""
+      },
+      {
+       "name": "scorer",
+       "type": "any",
+       "required": "yes",
+       "values": [],
+       "notes": ""
+      },
+      {
+       "name": "recorded",
+       "type": "object",
+       "required": "yes",
+       "values": [],
+       "notes": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "keel-eval-report",
+   "area": "runs",
+   "what": "What one run of a Keel project's evals writes: the mode, the model, the threshold, each suite's result and why.",
+   "version": "schema_version 1, schema names the file",
+   "issuer": "keel",
+   "status": "outside",
+   "defined_in": "_scripts/schemas/keel/eval-report.schema.json",
+   "copied_from": "JuanSync7/project-keel at fa126439c",
+   "records": [
+    {
+     "name": "",
+     "skeleton": [
+      "# keel-eval-report (schema_version 1, schema names the file)",
+      "schema:         text",
+      "schema_version: 1",
+      "mode:           replay | live",
+      "model:          text",
+      "threshold:      number",
+      "calls:          number",
+      "result:         pass | fail | absent | refused | incomplete",
+      "reasons:        […]",
+      "detail:         text",
+      "suites:         [object]"
+     ],
+     "fields": [
+      {
+       "name": "schema",
+       "type": "text",
+       "required": "yes",
+       "values": [],
+       "notes": ""
+      },
+      {
+       "name": "schema_version",
+       "type": "closed",
+       "required": "yes",
+       "values": [
+        "1"
+       ],
+       "notes": ""
+      },
+      {
+       "name": "mode",
+       "type": "closed",
+       "required": "yes",
+       "values": [
+        "replay",
+        "live"
+       ],
+       "notes": ""
+      },
+      {
+       "name": "model",
+       "type": "text",
+       "required": "yes",
+       "values": [],
+       "notes": "may be null"
+      },
+      {
+       "name": "threshold",
+       "type": "number",
+       "required": "yes",
+       "values": [],
+       "notes": ""
+      },
+      {
+       "name": "calls",
+       "type": "number",
+       "required": "yes",
+       "values": [],
+       "notes": ""
+      },
+      {
+       "name": "result",
+       "type": "closed",
+       "required": "yes",
+       "values": [
+        "pass",
+        "fail",
+        "absent",
+        "refused",
+        "incomplete"
+       ],
+       "notes": ""
+      },
+      {
+       "name": "reasons",
+       "type": "list",
+       "required": "yes",
+       "values": [],
+       "notes": ""
+      },
+      {
+       "name": "detail",
+       "type": "text",
+       "required": "yes",
+       "values": [],
+       "notes": "may be null"
+      },
+      {
+       "name": "suites",
+       "type": "list",
+       "required": "yes",
+       "values": [],
+       "notes": "of object"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "keel-traceability-matrix",
+   "area": "projects",
+   "what": "Keel's requirement traceability matrix: each requirement a spec defines, the test units that must name it, and what is missing.",
+   "version": "schema_version 1, schema names the file",
+   "issuer": "keel",
+   "status": "outside",
+   "defined_in": "_scripts/schemas/keel/matrix.schema.json",
+   "copied_from": "JuanSync7/project-keel at fa126439c",
+   "records": [
+    {
+     "name": "",
+     "skeleton": [
+      "# keel-traceability-matrix (schema_version 1, schema names the file)",
+      "schema:         text",
+      "schema_version: 1",
+      "state:          traced | no-requirements | incomplete | refused",
+      "result:         pass | fail | incomplete | refused",
+      "counts:         {…}",
+      "requirements:   [object]",
+      "findings:       [object]"
+     ],
+     "fields": [
+      {
+       "name": "schema",
+       "type": "text",
+       "required": "yes",
+       "values": [],
+       "notes": ""
+      },
+      {
+       "name": "schema_version",
+       "type": "closed",
+       "required": "yes",
+       "values": [
+        "1"
+       ],
+       "notes": ""
+      },
+      {
+       "name": "state",
+       "type": "closed",
+       "required": "yes",
+       "values": [
+        "traced",
+        "no-requirements",
+        "incomplete",
+        "refused"
+       ],
+       "notes": ""
+      },
+      {
+       "name": "result",
+       "type": "closed",
+       "required": "yes",
+       "values": [
+        "pass",
+        "fail",
+        "incomplete",
+        "refused"
+       ],
+       "notes": ""
+      },
+      {
+       "name": "counts",
+       "type": "object",
+       "required": "yes",
+       "values": [],
+       "notes": ""
+      },
+      {
+       "name": "requirements",
+       "type": "list",
+       "required": "yes",
+       "values": [],
+       "notes": "of object"
+      },
+      {
+       "name": "findings",
+       "type": "list",
+       "required": "yes",
+       "values": [],
+       "notes": "of object"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "keel-agent-surface",
+   "area": "projects",
+   "what": "The document an agent serves at /.well-known/aion-agent.json: its name, capabilities, transport and health. Jarvis carries the same file.",
+   "version": "aad_version 1.0, in the file name",
+   "issuer": "keel",
+   "status": "outside",
+   "defined_in": "_scripts/schemas/keel/aad-v1.0.schema.json",
+   "copied_from": "JuanSync7/project-keel at fa126439c",
+   "records": [
+    {
+     "name": "",
+     "skeleton": [
+      "# keel-agent-surface (aad_version 1.0, in the file name)",
+      "aad_version: text",
+      "agent:       {…}",
+      "health?:     {…}",
+      "transport:   {…}"
+     ],
+     "fields": [
+      {
+       "name": "aad_version",
+       "type": "text",
+       "required": "yes",
+       "values": [],
+       "notes": "a Aad Version"
+      },
+      {
+       "name": "agent",
+       "type": "object",
+       "required": "yes",
+       "values": [],
+       "notes": "a AadAgent"
+      },
+      {
+       "name": "health",
+       "type": "object",
+       "required": "no",
+       "values": [],
+       "notes": "a AadHealth, may be null"
+      },
+      {
+       "name": "transport",
+       "type": "object",
+       "required": "yes",
+       "values": [],
+       "notes": "a AadTransport"
       }
      ]
     }
