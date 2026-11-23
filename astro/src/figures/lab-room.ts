@@ -6,7 +6,10 @@ import { solid, type Box } from './kit/hairline';
 import { COLONIES, grow, logged, plate, RUN } from './kit/labculture';
 import { labRoom } from './kit/labroom';
 import { ROOM } from './kit/labshell';
-import { monodraw, reveal, Sketch, type Drawing } from './kit/draft';
+import { drawBaked, monodraw, reveal, Sketch, type Baked, type Drawing } from './kit/draft';
+import { loadBaked } from './kit/bakedio';
+import { withPlates } from './kit/bakedplates';
+import { DRAW_IN, drawIn, drawnAt } from './kit/drawin';
 
 /** The lab, as a monoline isometric drawing: a room cut open at the corner, with a bench of
  *  glassware and instruments on the back wall, a glass-door fridge, a sink and drying rack on the
@@ -17,6 +20,13 @@ import { monodraw, reveal, Sketch, type Drawing } from './kit/draft';
 
 /** The figure's seed (below): run n grows the plate seeded SEED + n. */
 const SEED = 2611;
+
+/** The room's lines, worked out at the site's build (pages/baked/[scene].json.ts) and fetched before
+ *  the figure mounts, so the page only draws them: 360 ms of work kept out of the reader's browser. */
+let baked: Baked | null = null;
+export const ready = loadBaked('lab-room').then((b) => {
+  baked = b;
+});
 /** Seconds into a run that the page opens on: a grown plate and its finished curve, which clear a
  *  moment later for the next seed. */
 const OPEN = 9.6;
@@ -34,6 +44,8 @@ interface State {
   flame: Group | undefined;
   plot: Group | undefined;
   spots: InstancedMesh;
+  /** How much of the room the pen has drawn; 1 once it is whole, and the draw-in stops. */
+  drawn: number;
   run: number;
   plate: ReturnType<typeof plate>;
   corners: Vector3[];
@@ -59,7 +71,7 @@ export default defineThreeFigure<State>({
     labRoom(k);
     const clashes = k.clashes();
     if (clashes.length) throw new Error(`lab-room: parts stand inside each other: ${clashes.join(', ')}`);
-    const draw = monodraw(k, LOOK, onDispose);
+    const draw = baked ? drawBaked(withPlates(baked, k), onDispose) : monodraw(k, LOOK, onDispose);
     scene.add(draw.root);
     const { w, d, h, t } = ROOM;
     const corners: Vector3[] = [];
@@ -70,6 +82,7 @@ export default defineThreeFigure<State>({
       flame: draw.moving.get('flame'),
       plot: draw.moving.get('plot'),
       spots: draw.spots(COLONIES),
+      drawn: 0,
       run: -1,
       plate: [],
       corners,
@@ -121,7 +134,14 @@ export default defineThreeFigure<State>({
       s.plate = plate(SEED, run);
     }
     const up = grow(s.spots, s.plate, u);
-    if (s.plot) reveal(s.plot, logged(u));
+    // The room draws itself in when it is first seen, then the experiment runs as before.
+    const pen = drawnAt(f.t, DRAW_IN.hero);
+    if (s.plot) reveal(s.plot, Math.min(pen, logged(u)));
+    if (s.drawn < 1) {
+      s.drawn = pen;
+      drawIn(s.draw.root, pen, [s.plot]);
+      s.spots.visible = pen >= 1;
+    }
     if (s.rotor) s.rotor.rotation.z = -f.t * 2.4;
     if (s.flame) {
       const flick = 1 + 0.1 * Math.sin(f.t * 13) + 0.05 * Math.sin(f.t * 31.7);

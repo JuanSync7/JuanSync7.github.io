@@ -23,7 +23,7 @@ const parts = [
     <div class="grid">
       {EXPERIENCE_TILES.map((t) => (
         <article class="tile">
-          <div class="icon"><FigureCanvas id="experience-icon" data={{ kind: t.kind }} label={t.title} client:visible /></div>
+          <div class="icon"><FigureCanvas id="experience-icon" data={{ kind: t.kind }} label={t.title} ahead="150% 0px" client:idle /></div>
           <p class="pp-label tag">{t.tag}</p>
           <h3 class="pp-title">{t.title}</h3>
           <p class="pp-small cap">{t.caption}</p>

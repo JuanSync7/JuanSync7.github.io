@@ -62,3 +62,21 @@ export function isPackedBaked(v: unknown): v is PackedBaked {
   const { root, lives } = v;
   return typeof root === 'object' && root !== null && 'fill' in root && 'line' in root && Array.isArray(lives);
 }
+
+const loads = new Map<string, Promise<Baked | null>>();
+
+/** Fetches the drawing the site's build baked for `id` (`pages/baked/[scene].json.ts`), once per
+ *  page. Null on the server, or when it is missing or unreadable: the figure then works its lines
+ *  out in the browser as before. */
+export function loadBaked(id: string): Promise<Baked | null> {
+  if (typeof window === 'undefined') return Promise.resolve(null);
+  const hit = loads.get(id);
+  if (hit) return hit;
+  const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+  const load = fetch(`${base}baked/${id}.json`)
+    .then((res) => (res.ok ? res.json() : null))
+    .then((json: unknown) => (isPackedBaked(json) ? unpackBaked(json) : null))
+    .catch(() => null);
+  loads.set(id, load);
+  return load;
+}
