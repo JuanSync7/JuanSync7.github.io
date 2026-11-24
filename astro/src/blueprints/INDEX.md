@@ -38,7 +38,7 @@ The opening of a section: a mono label, a two-tone heading and a lead, kept to t
 
 | Part | Also called | Size | Token | Defined at | Resolves to | Also changes |
 |---|---|---|---|---|---|---|
-| 1 Head | section heading, section head | widest width | `--nt-measure` | src/styles/tokens/spacing.css:28 | 640px | presentation, lab, read in 24 files |
+| 1 Head | section heading, section head | widest width | `--nt-measure` | src/styles/tokens/spacing.css:28 | 640px | presentation, lab, read in 26 files |
 | 1 Head | section heading, section head | gap | `--hf-space-4` | src/styles/tokens/spacing.css:11 | 16px | paper-footer, presentation, read in 42 files |
 | 2 Label | eyebrow, kicker, comment | type size | `--nt-fs-meta` | src/styles/tokens/typography.css:43 | 13px | read in 32 files |
 | 3 Title | heading, headline | type size | `--nt-fs-h2` | src/styles/tokens/typography.css:52 | clamp(30px, 3.6vw, 44px) | read in 6 files |
@@ -164,7 +164,7 @@ A landing page that pitches, then leads to guides: hero copy beside a drawing, t
 | 2 Hero | opening, landing | padding down | `--nt-section-y-tight` | src/styles/tokens/spacing.css:26 | clamp(48px, 6vw, 72px) | vault-guide, read in 9 files |
 | 2 Hero | opening, landing | gap | `--hf-space-16` | src/styles/tokens/spacing.css:19 | 64px | read in 8 files |
 | 2 Hero | opening, landing | gap | `--hf-space-12` | src/styles/tokens/spacing.css:16 | 48px | paper-footer, writing-index, learn-index, read in 14 files |
-| 5 Lead | intro, body | widest width | `--nt-measure` | src/styles/tokens/spacing.css:28 | 640px | section-head, lab, read in 24 files |
+| 5 Lead | intro, body | widest width | `--nt-measure` | src/styles/tokens/spacing.css:28 | 640px | section-head, lab, read in 26 files |
 | 6 Actions | buttons | gap | `--hf-space-5` | src/styles/tokens/spacing.css:12 | 20px | vault-guide, read in 37 files |
 | 6 Actions | buttons | gap | `--hf-space-4` | src/styles/tokens/spacing.css:11 | 16px | section-head, paper-footer, read in 42 files |
 
@@ -197,7 +197,7 @@ The lab: a short head, the lab room drawing, then tools and templates as one car
 | Part | Also called | Size | Token | Defined at | Resolves to | Also changes |
 |---|---|---|---|---|---|---|
 | 1 Page column | page, main | padding across | `--pp-pad` | src/styles/tokens/paper.css:114 | var(--hf-space-6) → 24px | paper-nav, paper-footer, blog-post, learn-article, writing-index, learn-index, read in 4 files |
-| 2 Head | heading, intro | widest width | `--nt-measure` | src/styles/tokens/spacing.css:28 | 640px | section-head, presentation, read in 24 files |
+| 2 Head | heading, intro | widest width | `--nt-measure` | src/styles/tokens/spacing.css:28 | 640px | section-head, presentation, read in 26 files |
 | 2 Head | heading, intro | gap | `--hf-space-3` | src/styles/tokens/spacing.css:10 | 12px | paper-nav, paper-footer, home, read in 51 files |
 | 4 Tools section | tools, kits, references | gap | `--hf-space-8` | src/styles/tokens/spacing.css:14 | 32px | home, writing-index, learn-index, read in 36 files |
 | 5 Card list | list, cards, rows | gap | `--hf-space-8` | src/styles/tokens/spacing.css:14 | 32px | home, writing-index, learn-index, read in 36 files |
