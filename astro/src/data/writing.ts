@@ -1,4 +1,5 @@
 import trackers from '../config/trackers.json';
+import { PLAYBOOKS_HREF } from './playbooks';
 
 /**
  * The words on the blog page (/blog) and the library page (/library). Post titles, dates and read times come from the
@@ -10,6 +11,7 @@ export const WRITING_HERO = {
   body: 'Explainers on how AI inference really works, from the transistor to the token. Plus chip design, tooling, and the lessons I pick up building with agents.',
   primary: { label: 'Start with inference', href: '/library/inference-end-to-end' },
   secondary: { label: 'Browse the library', href: '/library/' },
+  playbooks: { label: 'See the playbooks', href: PLAYBOOKS_HREF },
   hint: 'Move across the lattice. Click to send a pulse.',
 } as const;
 
@@ -36,6 +38,7 @@ export const LIBRARY_COPY = {
   body: 'Everything written here, in one place: a shelf for each kind, newest first. Pick a binder to open it on the desk.',
   articles: 'Field guides by topic',
   lessons: 'Every lesson',
+  playbooks: { label: 'Playbooks and agents', href: PLAYBOOKS_HREF },
 } as const;
 
 export const TRACKERS = {
