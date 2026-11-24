@@ -1,0 +1,56 @@
+---
+// One format family: its name and version, what it is, who issues it and where it is defined, then each of
+// its records. A family whose types are vault pages points at that list instead.
+import type { FormatFamily } from '../../data/formats';
+import { FORMAT_STATUS } from '../../data/formats';
+import FormatRecord from './FormatRecord.astro';
+
+export interface Props {
+  family: FormatFamily;
+}
+
+const { family } = Astro.props;
+const meta = [family.version, `issued by ${family.issuer}`, FORMAT_STATUS[family.status] ?? family.status];
+const from = family.copied_from ? `copied from ${family.copied_from}` : `defined in ${family.defined_in}`;
+---
+
+<li class="card" id={family.id} data-format>
+  <p class="id">{meta.join(' · ')}</p>
+  <h3>{family.id}</h3>
+  <p class="what">{family.what}</p>
+  <p class="from">{from}</p>
+  {
+    family.records.length ? (
+      family.records.map((record) => (
+        <FormatRecord record={record} label={family.version} heading={family.records.length > 1 || record.name ? record.name : undefined} />
+      ))
+    ) : (
+      <p class="from">Each kind of page follows, with the frontmatter it carries. A page names its kind and version in its schema field.</p>
+    )
+  }
+</li>
+
+<style>
+  .card {
+    display: grid;
+    gap: var(--hf-space-3);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .id,
+  .from {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-ink-muted);
+  }
+
+  .card h3 {
+    font-size: var(--nt-fs-intro);
+  }
+
+  .what {
+    max-width: var(--nt-measure);
+    color: var(--nt-ink);
+  }
+</style>

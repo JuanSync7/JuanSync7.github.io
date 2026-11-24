@@ -1,0 +1,85 @@
+---
+// One record of a format: its skeleton in a terminal window, then its fields and values in a table that
+// becomes cards on a phone (night-prose.css). The skeleton is the vault's, set as text.
+import type { FormatRecord as RecordData } from '../../data/formats';
+
+export interface Props {
+  record: RecordData;
+  /** What the window is called for a screen reader, such as `run-record/1`. */
+  label: string;
+  /** Shown above the window when a format has more than one record. */
+  heading?: string;
+}
+
+const { record, label, heading } = Astro.props;
+const columns = ['Field', 'Type', 'Required', 'Values', 'Notes'];
+---
+
+<div class="record prose">
+  {heading ? <h4>{heading}</h4> : null}
+  <pre aria-label={`Skeleton of ${label}`}><code>{record.skeleton.join('\n')}</code></pre>
+  <details>
+    <summary>Fields and values ({record.fields.length})</summary>
+    <table>
+      <thead>
+        <tr>{columns.map((column) => <th scope="col">{column}</th>)}</tr>
+      </thead>
+      <tbody>
+        {
+          record.fields.map((field) => (
+            <tr>
+              <td data-label={columns[0]}>
+                <code>{field.name}</code>
+              </td>
+              <td data-label={columns[1]}>{field.type}</td>
+              <td data-label={columns[2]}>{field.required}</td>
+              <td data-label={columns[3]}>{field.values.join(' · ')}</td>
+              <td data-label={columns[4]}>{field.notes}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </details>
+</div>
+
+<style>
+  .record {
+    display: grid;
+    gap: var(--hf-space-3);
+    min-width: 0;
+  }
+
+  .record h4 {
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    font-weight: 400;
+    color: var(--nt-ink-muted);
+  }
+
+  .record pre {
+    margin: 0;
+    white-space: pre;
+  }
+
+  summary {
+    cursor: pointer;
+    font-family: var(--nt-mono);
+    font-size: var(--nt-fs-meta);
+    color: var(--nt-ink-2);
+  }
+
+  details[open] summary {
+    margin-bottom: var(--hf-space-3);
+  }
+
+  td {
+    overflow-wrap: anywhere;
+  }
+
+  @media (max-width: 720px) {
+    .record pre {
+      white-space: pre-wrap;
+    }
+  }
+</style>
