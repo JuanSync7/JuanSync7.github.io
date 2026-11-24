@@ -16,6 +16,13 @@
       "detail": "Bakes each drawing once into a set of resolutions within size budgets, registers it with the site like any figure, and keeps everything that moves or reads as text live on the page above it."
     },
     {
+      "id": "auto_research",
+      "kind": "playbook",
+      "title": "Measured improvement loop",
+      "description": "Improves a target by trying one change at a time against a fixed score, keeping only what scores better. It is not web or literature research.",
+      "detail": "First a program file is agreed with the person: the measure, a scorer proven on the starting state, which files may change, the directions to try and a spend cap. Then each round a fresh worker makes one change, the score decides, and every round is logged."
+    },
+    {
       "id": "autonomous_mode",
       "kind": "playbook",
       "title": "Autonomous mode",
@@ -49,6 +56,13 @@
       "title": "Confidential names",
       "description": "How a confidential name is added to the list that keeps it out of everything published.",
       "detail": "Each name is replaced by a stable label, and the detector is tuned with invented examples, never real ones."
+    },
+    {
+      "id": "brainstorm",
+      "kind": "playbook",
+      "title": "Thinking a question through before building",
+      "description": "A coaching routine for an open question: the agent challenges, lists every concern at once and never just agrees.",
+      "detail": "Each concern becomes a tracked thread that is tested from several sides before it is settled, and the session ends in a short decision memo, or in an honest not worth doing or not yet."
     },
     {
       "id": "capture",
@@ -324,11 +338,25 @@
       "detail": "The register also states plainly what is not covered, so a gap is written down instead of assumed away."
     },
     {
+      "id": "test_generate",
+      "kind": "playbook",
+      "title": "Closing test coverage gaps",
+      "description": "Writes the smallest new tests that close the gaps a coverage register lists, in code that already exists.",
+      "detail": "Gaps are taken in priority order up to a limit. Each test reaches the code through its public surface, takes its expected value from the documentation and never from what the code prints, and is shown to fail when a fault is planted. A person approves a plain-words list of the tests before anything is committed."
+    },
+    {
       "id": "test_plan",
       "kind": "playbook",
       "title": "Test plan",
       "description": "Says which tests will prove each requirement, before any test or code exists.",
       "detail": "The plan is a document only. The tests are written later from it, and never by whoever writes the code they judge."
+    },
+    {
+      "id": "test_runner",
+      "kind": "playbook",
+      "title": "Running a test suite safely",
+      "description": "How an existing test suite is run on a shared machine and reported with an honest result.",
+      "detail": "The run goes where its size allows, risky tests are held back instead of run, and the report counts skipped and unknown tests apart. An optional repair loop is capped at three rounds and may never weaken a test."
     },
     {
       "id": "top_software",
