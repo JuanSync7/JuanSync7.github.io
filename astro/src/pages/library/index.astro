@@ -23,6 +23,7 @@ const shelves = await libraryShelves();
       <nav class="kinds" aria-label="Kinds of writing">
         <a href={LIBRARY.articles}>{LIBRARY_COPY.articles}</a>
         <a href={LIBRARY.lessons}>{LIBRARY_COPY.lessons}</a>
+        <a href={LIBRARY_COPY.playbooks.href}>{LIBRARY_COPY.playbooks.label}</a>
       </nav>
       <LibraryArchive client:load shelves={shelves} />
       <noscript>
