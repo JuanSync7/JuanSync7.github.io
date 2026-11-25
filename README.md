@@ -1,54 +1,42 @@
 # JuanSync7.github.io
 
-Personal portfolio site for **Kok Shew Juan** — ASIC / EDA / AI engineer. Live at <https://juansync7.github.io>.
+The source of **Juan Kok's** personal site, live at <https://juansync.dev>. Juan is a senior design and AI engineer: an ASIC designer who now builds the AI platform, agents and governance for a chip-design company.
 
-The site is an Astro + React + TypeScript single-page experience styled around a hardware/EDA aesthetic: a CRT terminal, an animated FSM of a daily routine, a multi-page "cockpit" instrument panel, a project shelf, and a lo-fi pixel-art room. The repo also carries a small Python tool that renders a print-ready CV from a structured YAML.
+The site is a static Astro + React + TypeScript build styled as a chip datasheet on paper: a cream notepad by day and a gunmetal one by night, with page-turn transitions between pages. GitHub Pages serves it, with `juansync.dev` as the custom domain.
 
 ## Repo layout
 
 ```
 .
-├── astro/                       # The actual site (Astro 4 + React 18 + TS, static output)
-│   ├── astro.config.mjs
+├── astro/                       # The site (Astro + React + TS, static output)
+│   ├── astro.config.mjs         # `site` is https://juansync.dev: sitemap, RSS and canonical links use it
 │   ├── src/
-│   │   ├── pages/               # index.astro, design-system.astro
-│   │   ├── layouts/Layout.astro
-│   │   ├── components/
-│   │   │   ├── hero/            # Hero, PacmanText, RoutineSequencer
-│   │   │   ├── terminal/        # CRT terminal with auto-typing
-│   │   │   ├── fsm/             # Finite-state-machine routine diagram
-│   │   │   ├── cockpit/         # Multi-page instrument panel (Overview/ASIC/EDA/AI/Scripting)
-│   │   │   ├── projects/        # Project cards + modal
-│   │   │   ├── lofi/            # Pixel-art room/city scene
-│   │   │   ├── effects/         # GlobalStarfield
-│   │   │   ├── layout/          # Nav, Footer
-│   │   │   └── ui/              # Shared primitives (NeonText, NotGateDivider, transitions, …)
-│   │   ├── styles/
-│   │   │   └── tokens/          # CSS variable source-of-truth (colors, gradients, spacing, typography)
-│   │   ├── data/site.ts
-│   │   └── hooks/
+│   │   ├── pages/               # Every route (see below)
+│   │   ├── layouts/             # PaperLayout (every public page), NightPage, PresentationLayout, TrackerLayout, NightLayout (figure bench)
+│   │   ├── components/          # One folder per section (home, about, library, vault, trackers, lab, …); shared primitives in ui/, chrome in layout/
+│   │   ├── figures/             # Every drawing, cover and animated scene, plus its kit
+│   │   ├── blueprints/          # Component and page blueprints
+│   │   ├── content/             # Blog posts, learn articles, lessons, releases
+│   │   ├── data/                # Site data (home.ts, profile.json, playbooks.json, trackers, …)
+│   │   └── styles/              # Global CSS and design tokens (styles/tokens/)
+│   ├── scripts/                 # The checks, syncs and exporters behind `npm run …`
 │   └── public/
-├── .github/workflows/astro.yml  # GitHub Pages deploy on push to main
+├── .github/workflows/           # astro.yml deploys to Pages; checks.yml and the others run the browser and figure checks
+├── docs/                        # Design and internals notes
 ├── CLAUDE.md                    # Project rules enforced on contributions
 └── README.md
 ```
 
-The repo previously hosted a "zero-build" `index.html` + browser-Babel prototype and a stray Next.js scaffold under `src/`. Both are gone or being deleted; **`astro/` is the only stack to touch**.
+`astro/` is the only stack. The earlier browser-Babel prototype and the Next.js scaffold have been removed.
 
-## Sections on the page
+## Pages
 
-Rendered in order from `astro/src/pages/index.astro`:
-
-1. **Nav** — sticky top navigation.
-2. **Hero** — name, tagline, animated routine sequencer, Pac-Man text effect.
-3. **Terminal** — CRT-styled terminal that auto-types an introduction.
-4. **FSM** — animated finite-state-machine visualizing the daily engineering loop.
-5. **Cockpit** — instrument-panel UI with sub-pages for Overview, ASIC, EDA, AI, and Scripting; includes scope canvas, knobs, meters, heatmap, and syslog ticker.
-6. **Projects** — cards backed by `projects-data.ts`, expandable modal.
-7. **PurpleSkyTransition** → **LofiRoom** → **LofiFooterFade** — transition into a pixel-art lo-fi scene.
-8. **Footer**.
-
-A separate `/design-system` page renders every shared `ui/` primitive and every design token as a live ledger.
+- **Home** (`/`): hero, the system map (0x00), the vault (0x01), the work tiles (0x02), how I think (0x03), hobbies and contact. The tiles and copy are in `astro/src/data/home.ts`.
+- **About** (`/about/`), **Blog** (`/blog/`) and **Library** (`/library/`, every post and article at `/library/<slug>`), with an RSS feed at `/rss.xml`.
+- **Playbooks** (`/playbooks/`) and **Formats** (`/formats/`): registers synced from the experience vault.
+- **Lab** (`/lab/`): figure templates, blueprints and other experiments.
+- **Vault** (`/vault/`): a public explanation of the private experience vault (see below).
+- **Trackers** (`/trackers/`), **Anatomy** (`/anatomy/chip-package/`), **Design system** (`/design-system/`) and **Tokens** (`/tokens/`).
 
 ## Local development
 
@@ -99,7 +87,7 @@ See `CLAUDE.md` for the enforced rules. The headlines:
 - **Components:** one per file, ≤200 lines, co-located by section under `src/components/<section>/`. Shared primitives go in `ui/` and **must** be added to `design-system.astro`.
 - **Styles:** plain CSS + design tokens only — no Tailwind, no hardcoded hex/rgb/gradient/spacing literals. New tokens go in `astro/src/styles/tokens/` first, then get referenced via `var(--…)`.
 - **React:** no globals, every effect cleans up its listeners/intervals/tweens, memoize only with a measured reason.
-- **Branching:** feature work off `develop`, merge to `main` only when shippable; conventional-commit prefixes.
+- **Branching:** feature branches off `main`, merged through a pull request when shippable; conventional-commit prefixes.
 
 ## Lesson log
 

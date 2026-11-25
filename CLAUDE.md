@@ -4,9 +4,7 @@ These rules apply to all code in this repo. They are enforced where possible by 
 
 ## Architecture
 
-- **Active stack:** Astro + React + TypeScript, in `astro/`. Static output, deployed to GitHub Pages at https://juansync7.github.io.
-- **Legacy stack:** Root-level `index.html` + `*.jsx` files using browser-side babel-standalone. Kept temporarily during migration. Do **not** add new features to the legacy files. Port to the Astro app instead.
-- **Conflicting Next.js app** in `src/`: deprecated. Do not touch except to delete once the Astro port is complete.
+- **The only stack:** Astro + React + TypeScript, in `astro/`. Static output, deployed to GitHub Pages and served at https://juansync.dev (the custom domain; `site` in `astro.config.mjs`). The earlier browser-Babel prototype and the Next.js scaffold have been removed; do not bring either back.
 
 ## TypeScript rules
 
@@ -188,7 +186,7 @@ not a free-text category in one file. `npm run lessons:check` checks the whole c
 
 ## Commits
 
-- Branch off `develop` for migration work; merge to `main` only when a milestone is shippable.
+- Branch off `main` and merge back through a pull request when the work is shippable.
 - Conventional-commit-ish prefixes (`feat:`, `fix:`, `refactor:`, `chore:`, `docs:`) keep history scannable.
 
 ## Doing the work
@@ -197,7 +195,6 @@ not a free-text category in one file. `npm run lessons:check` checks the whole c
 - **Design pages to Juan's taste.** Before designing or changing a page, section, component or page motion, read the `site-taste` skill (`.claude/skills/site-taste/SKILL.md`): what he has said, what is built, what he rejected, and what is still open. Drawings use the `figure` skill.
 - Don't introduce abstractions for hypothetical futures. Three repetitions is the bar for extraction.
 - Don't write comments that restate the code. Comments are for *why*, not *what*.
-- Don't add backwards-compat shims to legacy `*.jsx` files — they're being replaced wholesale.
 
 
 ## Seeded tabletop-room work

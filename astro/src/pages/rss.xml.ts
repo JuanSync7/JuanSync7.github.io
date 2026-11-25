@@ -13,7 +13,7 @@ export async function GET(context: APIContext): Promise<Response> {
   return rss({
     title: 'Juan Kok · writing',
     description: 'How AI inference works, from the transistor to the token, plus chip design and building with agents.',
-    site: context.site ?? 'https://juansync7.github.io',
+    site: context.site ?? 'https://juansync.dev',
     items: pieces.map(({ slug, ...item }) => {
       const kept = feedId(slug);
       return { ...item, link: `${pieceHref(slug)}/`, ...(kept ? { customData: `<guid isPermaLink="true">${kept}</guid>` } : {}) };

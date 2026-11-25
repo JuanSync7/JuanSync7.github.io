@@ -12,11 +12,10 @@ interface Props {
   current?: string;
 }
 const { title, description, kind, current = 'vault' } = Astro.props;
-const canonical = new URL(Astro.url.pathname, 'https://juansync.dev').href;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://juansync.dev').href;
 ---
 
 <NightPage title={title} description={description}>
-  <link slot="head" rel="canonical" href={canonical} />
   <meta slot="head" property="og:title" content={title} />
   <meta slot="head" property="og:description" content={description} />
   <meta slot="head" property="og:type" content="website" />

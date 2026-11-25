@@ -12,7 +12,7 @@ const legacy = JSON.parse(readFileSync(new URL('./src/data/library-legacy.json',
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://juansync7.github.io',
+  site: 'https://juansync.dev',
   // Astro's router prefetches every link already (hover, or touch on a phone). Said here so it is
   // a choice: the next page is usually fetched before the click, so the page turn starts at once.
   prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
