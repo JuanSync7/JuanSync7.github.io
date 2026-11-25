@@ -3,6 +3,7 @@ import type { APIContext } from 'astro';
 import { learnEntries } from '../data/learn';
 import { feedId, pieceHref } from '../data/library';
 import { libraryPosts } from '../data/library-cards';
+import { CONTACT } from '../data/site';
 
 /** The library's feed: every post and article, newest first. A piece that was in the feed before
  *  the library keeps the id it had there, so a reader's app does not show it as new. */
@@ -14,6 +15,7 @@ export async function GET(context: APIContext): Promise<Response> {
     title: 'Juan Kok · writing',
     description: 'How AI inference works, from the transistor to the token, plus chip design and building with agents.',
     site: context.site ?? 'https://juansync.dev',
+    customData: `<managingEditor>${CONTACT.email} (Juan Kok)</managingEditor><webMaster>${CONTACT.email} (Juan Kok)</webMaster>`,
     items: pieces.map(({ slug, ...item }) => {
       const kept = feedId(slug);
       return { ...item, link: `${pieceHref(slug)}/`, ...(kept ? { customData: `<guid isPermaLink="true">${kept}</guid>` } : {}) };
