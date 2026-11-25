@@ -17,7 +17,7 @@ export const IDENTITY = {
 } as const;
 
 export const CONTACT = {
-  email: 'kokshewjuan_job@outlook.com',
+  email: 'juansync7@gmail.com',
   github: 'JuanSync7',
   linkedin: 'shewjuankok',
   linkedinUrl: 'https://www.linkedin.com/in/shewjuankok/',

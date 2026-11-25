@@ -44,3 +44,5 @@ next-env.d.ts
 # firebase
 firebase-debug.log
 firestore-debug.log
+# a failed presentation browser check leaves its screenshot here
+astro/presentation-out/failure.png

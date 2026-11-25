@@ -16,6 +16,7 @@ interface Props {
 }
 
 const { title, description = 'Juan Kok: Senior Design & AI Engineer. AI platform, agents and governance.', noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://juansync.dev').href;
 
 const THEME = `try{var t=localStorage.getItem('pp-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}`;
 const dayMatrix = figureMatrix(0);
@@ -33,6 +34,7 @@ const nightWorld = worldContrast(1);
     {noindex ? <meta name="robots" content="noindex" /> : null}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
+    {noindex ? null : <link rel="canonical" href={canonical} />}
     <slot name="head" />
     <script is:inline set:html={THEME} />
     <ViewTransitions />
