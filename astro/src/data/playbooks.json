@@ -9,6 +9,13 @@
       "detail": "What to read before starting, how to stay inside the task while working, and what a hand-over must say so the next reader can check it."
     },
     {
+      "id": "architecture",
+      "kind": "playbook",
+      "title": "Architecture",
+      "description": "Records the big technical decisions of a system: its parts, its technology and how data moves.",
+      "detail": "Every decision is kept with the options that were turned down and why. Parts, decisions and flows get fixed names that later documents can point to."
+    },
+    {
       "id": "art_render",
       "kind": "playbook",
       "title": "Rendering baked art",
@@ -205,6 +212,13 @@
       "detail": "It walks from choosing whether a playbook is needed at all, through its folder, entry page, rules and card, to the two checks that must pass before it is handed over as a draft."
     },
     {
+      "id": "postmortem",
+      "kind": "playbook",
+      "title": "Postmortem",
+      "description": "Writes a blameless review of an incident after it is over, from the evidence.",
+      "detail": "A timeline entry with no record behind it is marked as remembered, never stated as fact. Each action answers one cause and names who owns it and how anyone can check it was done."
+    },
+    {
       "id": "recall",
       "kind": "playbook",
       "title": "Recall",
@@ -287,6 +301,13 @@
       "title": "Run environment",
       "description": "How a test or build run gets its own place, name and size on a machine other people share.",
       "detail": "Each run is isolated and recorded with its owner, and what a dead run left behind is listed before it is removed."
+    },
+    {
+      "id": "scope",
+      "kind": "playbook",
+      "title": "Scope",
+      "description": "Settles what a system will build, what waits and what stays out, before anything is designed.",
+      "detail": "Everything hangs under one stated goal. Each thing put off or left out keeps its reason and what would bring it back, and delivery is laid out so the first phase is useful alone."
     },
     {
       "id": "security",
