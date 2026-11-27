@@ -70,8 +70,8 @@ function sprite(a: Assembly, cam: Camera, dpr: number, lit: string): Sprite {
 export default defineCanvasFigure<State>({
   id: 'die-section',
   title: 'Die cross-section',
-  alt: 'An isometric line drawing of a block cut out of a logic chip and lifted apart layer by layer: silicon with its wells and isolation trenches; gate-all-around transistors, three silicon sheets passing through every gate between faceted source and drain crystals; tungsten contacts; four levels of fine copper, three wider, two thick, each turned a right angle to the one below and joined to it by vias; a three-plate capacitor; an aluminium pad; and the nitride and polyimide that seal it, opened over the pad. One layer at a time is outlined in teal.',
-  idea: 'A block of a die that opens: its layers lift apart on staggered springs so both cut faces show, and the teal climbs from the transistors to the pad the way a wafer is built, naming each layer; pointer height picks a layer, a click closes it back up.',
+  alt: 'An isometric line drawing of a block cut out of a logic chip and lifted apart layer by layer: silicon with its wells and isolation trenches; gate-all-around transistors, three silicon sheets passing through every gate between faceted source and drain crystals; tungsten contacts; four levels of fine copper, three wider, two thick, each turned a right angle to the one below and joined to it by vias; a three-plate capacitor; an aluminium pad; and the nitride and polyimide that seal it, opened over the pad. One layer at a time is outlined in orange.',
+  idea: 'A block of a die that opens: its layers lift apart on staggered springs so both cut faces show, and the orange climbs from the transistors to the pad the way a wafer is built, naming each layer; pointer height picks a layer, a click closes it back up.',
   style: 'hairline',
   motion: 'ambient',
   answers: true,

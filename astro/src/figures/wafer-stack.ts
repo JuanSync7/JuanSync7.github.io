@@ -44,7 +44,7 @@ function disk(ctx: CanvasRenderingContext2D, cam: Camera, y: number): void {
 export default defineCanvasFigure<State>({
   id: 'wafer-stack',
   title: 'Wafer stack',
-  alt: 'An isometric line drawing of a round wafer ruled into a grid of square dies, with one die lifted above it on a thin vertical line and outlined in teal.',
+  alt: 'An isometric line drawing of a round wafer ruled into a grid of square dies, with one die lifted above it on a thin vertical line and outlined in orange.',
   idea: 'From wafer to die: the round wafer is ruled into dies, and any one of them can be lifted out to become the chip the rest of the post is about.',
   style: 'hairline',
   motion: 'ambient',

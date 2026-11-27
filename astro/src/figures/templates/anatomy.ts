@@ -63,7 +63,7 @@ export default defineTemplate<P, S>({
   }),
   name: (p) => ({ rocket: 'rocket', keySwitch: 'key switch', lens: 'camera lens', chip: 'chip package' })[p.kind],
   alt: (p) =>
-    `A ${{ rocket: 'rocket', keySwitch: 'keyboard switch', lens: 'camera lens', chip: 'chip package' }[p.kind]} drawn in thin grey lines, taken apart along its axis with its parts spaced out, one part and its leader line in teal.`,
+    `A ${{ rocket: 'rocket', keySwitch: 'keyboard switch', lens: 'camera lens', chip: 'chip package' }[p.kind]} drawn in thin grey lines, taken apart along its axis with its parts spaced out, one part and its leader line in orange.`,
   setup: ({ rng, params }) => {
     const lying = LYING.includes(params.kind);
     // Long machines are turned onto their side so the explosion runs across the wide frame.

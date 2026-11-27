@@ -22,7 +22,7 @@ const PAUSE = 8;
 export default defineCanvasFigure<State>({
   id: 'crt-terminal',
   title: 'CRT terminal',
-  alt: 'A pixel-art terminal screen in a rounded frame, filled with rows of grey block runs like text without letters, a new row typing out behind a teal block cursor.',
+  alt: 'A pixel-art terminal screen in a rounded frame, filled with rows of grey block runs like text without letters, a new row typing out behind an orange block cursor.',
   idea: 'A terminal made of blocks: you read a shell by the shape of its lines, the prompt, the output, the cursor waiting at the end.',
   style: 'pixel',
   motion: 'ambient',

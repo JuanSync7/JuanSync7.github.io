@@ -22,7 +22,7 @@ const SLEW = 0.04;
 export default defineCanvasFigure<State>({
   id: 'logic-analyzer',
   title: 'Logic analyzer',
-  alt: 'A timing diagram: a square clock wave above four digital lines and a bus drawn as crossing pairs, scrolling left, with one capture edge marked and one data edge in teal.',
+  alt: 'A timing diagram: a square clock wave above four digital lines and a bus drawn as crossing pairs, scrolling left, with one capture edge marked and one data edge in orange.',
   idea: 'Timing closure as a capture: the clock edge, the setup window before it, and the one data edge that arrives closest — the path the tools are fighting for.',
   style: 'trace',
   motion: 'ambient',

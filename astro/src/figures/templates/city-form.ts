@@ -41,7 +41,7 @@ function face(ctx: CanvasRenderingContext2D, cam: Camera, pts: [number, number, 
 export default defineTemplate<P, S>({
   id: 'city-form',
   title: 'City form',
-  idea: 'A night city laid out by one rule (a grid, a ring, a river, a hill, a spiral, a coast), its towers flat-shaded, some of its windows lit and a few going on and off, one window teal, the camera drifting round it.',
+  idea: 'A night city laid out by one rule (a grid, a ring, a river, a hill, a spiral, a coast), its towers flat-shaded, some of its windows lit and a few going on and off, one window orange, the camera drifting round it.',
   style: 'lowpoly',
   motion: 'ambient',
   answers: true,
@@ -55,7 +55,7 @@ export default defineTemplate<P, S>({
   }),
   name: (p) => `${p.form} city`,
   alt: (p) =>
-    `A low-poly city of flat-shaded grey towers arranged as a ${p.form}, seen from above at an angle, with lit windows and one teal window.`,
+    `A low-poly city of flat-shaded grey towers arranged as a ${p.form}, seen from above at an angle, with lit windows and one orange window.`,
   setup: ({ rng, params }) => {
     const towers = layout(params, rng);
     const lit = towers.reduce((best, tw, i) => (tw.h > (towers[best]?.h ?? 0) ? i : best), 0);

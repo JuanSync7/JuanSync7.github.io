@@ -22,7 +22,7 @@ const LAYERS = [
 export default defineCanvasFigure<State>({
   id: 'ink-mountains',
   title: 'Ink mountains',
-  alt: 'An ink-brush landscape of three mountain ranges, pale far away and darker near, with short brush marks under each ridge and a small teal moon outline in the sky.',
+  alt: 'An ink-brush landscape of three mountain ranges, pale far away and darker near, with short brush marks under each ridge and a small orange moon outline in the sky.',
   idea: 'A chip as a landscape scroll: ranges drawn with a tapered brush in the shan-shui manner, endless, each layer at its own pace.',
   style: 'ink',
   motion: 'ambient',

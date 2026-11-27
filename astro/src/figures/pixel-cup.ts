@@ -41,7 +41,7 @@ function cup(ctx: CanvasRenderingContext2D, g: PixelGrid, cx: number, base: numb
 export default defineCanvasFigure<State>({
   id: 'pixel-cup',
   title: 'Pixel cup',
-  alt: 'Pixel art of three small coffee cups on a three-step podium, the tallest step in the middle, grey steam wisps rising from each; the middle cup’s coffee is teal.',
+  alt: 'Pixel art of three small coffee cups on a three-step podium, the tallest step in the middle, grey steam wisps rising from each; the middle cup’s coffee is orange.',
   idea: 'Ranking coffee as a podium in pixels: three cups, the winner in the middle, steam rising off each like a score you can watch.',
   style: 'pixel',
   motion: 'ambient',

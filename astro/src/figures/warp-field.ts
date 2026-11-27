@@ -25,7 +25,7 @@ const SPEED = 1.1;
 export default defineCanvasFigure<State>({
   id: 'warp-field',
   title: 'Warp field',
-  alt: 'Grey points and short streaks rushing outward from a point near the centre of a dark frame, longer and brighter near the edges, one of them teal.',
+  alt: 'Grey points and short streaks rushing outward from a point near the centre of a dark frame, longer and brighter near the edges, one of them orange.',
   idea: 'The starfield every canvas tutorial starts with, done as perspective should be: depth is speed, and nearness is brightness and length.',
   style: 'perspective',
   motion: 'ambient',

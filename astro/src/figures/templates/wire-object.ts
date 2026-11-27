@@ -41,7 +41,7 @@ export default defineTemplate<P, S>({
   }),
   name: (p) => p.kind,
   alt: (p) =>
-    `A grey wireframe ${p.kind} turning slowly in perspective, nearer edges brighter, with its moving part drawn in teal.`,
+    `A grey wireframe ${p.kind} turning slowly in perspective, nearer edges brighter, with its moving part drawn in orange.`,
   setup: ({ params }) => ({ yaw: params.yaw0 }),
   draw: ({ ctx, w, h, t, dt, pointer, hover, still, params, state }) => {
     const target = params.yaw0 + t * params.turn + (pointer.active ? (pointer.x - 0.5) * 2.4 * hover : 0);

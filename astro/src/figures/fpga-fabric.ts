@@ -17,7 +17,7 @@ const ROWS = 6;
 export default defineCanvasFigure<State>({
   id: 'fpga-fabric',
   title: 'FPGA fabric',
-  alt: 'A pixel grid of square logic blocks separated by thin channels; a wave of brighter dithered blocks sweeps left to right, and one block is teal.',
+  alt: 'A pixel grid of square logic blocks separated by thin channels; a wave of brighter dithered blocks sweeps left to right, and one block is orange.',
   idea: 'A neural net placed on FPGA fabric: each column of logic blocks is a layer, and activations sweep across the fabric one layer per clock.',
   style: 'pixel',
   motion: 'ambient',

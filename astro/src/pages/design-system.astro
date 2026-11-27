@@ -103,13 +103,13 @@ const postRecipe = `---\nimport PostGrid from '../components/writing/PostGrid';\
       <div class="ds-hero-copy">
         <span class="nt-label">// design_system · living reference</span>
         <h1>The parts.<br /><span>The whole system.</span></h1>
-        <p>The visual language of juansync.dev, from a single teal signal to the pages built around it. Explore the patterns, try the components, take the code.</p>
+        <p>The visual language of juansync.dev, from a single orange signal to the pages built around it. Explore the patterns, try the components, take the code.</p>
         <div class="ds-actions"><PixelButton href="#components">Explore components</PixelButton><a class="ds-text-link" href="#patterns">Build a page</a></div>
       </div>
       <div class="ds-specimen" aria-label="Site identity specimen">
         <div class="ds-specimen-top"><span>juan_kok</span><span>night / 2026</span></div>
         <div class="ds-mark"><Monogram intro="none" /></div>
-        <div class="ds-specimen-bottom"><span>Near-black. Cool ink.<br />One teal signal.</span><span class="ds-signal-mark" aria-hidden="true">↗</span></div>
+        <div class="ds-specimen-bottom"><span>Near-black. Cool ink.<br />One orange signal.</span><span class="ds-signal-mark" aria-hidden="true">↗</span></div>
       </div>
     </header>
 
@@ -123,7 +123,7 @@ const postRecipe = `---\nimport PostGrid from '../components/writing/PostGrid';\
         </section>
 
         <section id="foundations" data-ds-section class="ds-section">
-          <SectionHead label="// 02 · foundations" title="Colour has a job." lead="Grounds recede, ink stays readable, teal marks an action or a point of attention. Hairlines separate content without turning every section into a filled card." />
+          <SectionHead label="// 02 · foundations" title="Colour has a job." lead="Grounds recede, ink stays readable, orange marks an action or a point of attention. Hairlines separate content without turning every section into a filled card." />
           <p class="ds-note">Each swatch copies its CSS variable. Values and token lists come directly from the production token files at build time.</p>
           {paletteGroups.map((group) => <div class="ds-token-group"><h3>{group.title}</h3><div class="ds-swatches">{colors.filter((t) => group.test(t.name)).map((t) => <button type="button" class="ds-swatch" data-copy-token={`var(${t.name})`} aria-label={`Copy var(${t.name})`}><span class="ds-chip" style={`background: var(${t.name})`} aria-hidden="true"></span><span class="ds-token-name">{t.name}</span><span class="ds-token-value">{t.value}</span><span class="ds-copy-hint">Copy variable</span></button>)}</div></div>)}
           <CodeExample title="colors.css · all definitions" code={source('styles/tokens/colors.css')} />

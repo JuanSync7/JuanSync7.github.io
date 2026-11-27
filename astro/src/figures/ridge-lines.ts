@@ -15,7 +15,7 @@ const RIDGES = 15;
 export default defineCanvasFigure<State>({
   id: 'ridge-lines',
   title: 'Ridge lines',
-  alt: 'Fifteen stacked ridge lines in perspective, like a range of hills; one line at a time lights up in teal, front to back.',
+  alt: 'Fifteen stacked ridge lines in perspective, like a range of hills; one line at a time lights up in orange, front to back.',
   idea: 'A ridgeline plot of attention: each ridge is one decoding step, and the lit ridge walks forward like the next token.',
   style: 'field',
   motion: 'ambient',

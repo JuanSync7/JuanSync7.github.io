@@ -26,7 +26,7 @@ const CELL = 78;
 export default defineCanvasFigure<State>({
   id: 'lattice-field',
   title: 'Lattice field',
-  alt: 'A dark triangle mesh fills the frame; the triangles near the pointer bend away from it and light up teal, and a click sends a teal ring outward.',
+  alt: 'A dark triangle mesh fills the frame; the triangles near the pointer bend away from it and light up orange, and a click sends an orange ring outward.',
   idea: 'A die seen through glass: the mesh is the silicon, the pointer is a probe, and the light around it is where the probe is reading.',
   style: 'lowpoly',
   motion: 'ambient',
