@@ -92,7 +92,15 @@ def _stroke(x0, y0, x1, y1, hand, rg, curve=0.0):
     return [(sx, sy), (mx, my), (ex, ey)]
 
 
-def _set(poly, sp, ang, hand, rg, grade, feather=None, curve=0.0, clean=False):
+def tile_safe(sp, tile, ang=45):
+    """The spacing nearest sp whose lines at ang meet themselves across a tile of this width, so a
+    ruled set anchored to the plate (not the shape) runs on unbroken into the next tile."""
+    k = abs(math.sin(math.radians(ang))) or 1.0
+    n = max(1, round(tile * k / sp))
+    return tile * k / n
+
+
+def _set(poly, sp, ang, hand, rg, grade, feather=None, curve=0.0, clean=False, anchored=False):
     """One set of parallel lines at angle ang (degrees) across the polygon."""
     th = math.radians(ang)
     dx, dy = math.cos(th), math.sin(th)
@@ -111,7 +119,8 @@ def _set(poly, sp, ang, hand, rg, grade, feather=None, curve=0.0, clean=False):
     cx, cy = sum(p[0] for p in poly) / len(poly), sum(p[1] for p in poly) / len(poly)
     c0 = cx * nx + cy * ny
     lines = []
-    for s in _offsets(lo, hi, sp, grade):
+    offs = [k * sp for k in range(math.ceil(lo / sp), math.floor(hi / sp) + 1)] if anchored else _offsets(lo, hi, sp, grade)
+    for s in offs:
         jit = rg.uniform(-0.08, 0.08) * sp if hand == "free" and not clean else 0.0
         drift = math.radians(rg.uniform(-0.8, 0.8)) if hand == "free" and not clean else 0.0
         ddx, ddy = math.cos(th + drift), math.sin(th + drift)
@@ -149,7 +158,7 @@ def _dashes(line, rg, dash):
 
 
 def hatch(d, shape, tone, ang=45, hand="ruled", seed=0, grade=None, colour="hatch", wash=True, dash=None, scale=1.0,
-          feather=None, curve=0.0, clean=False):
+          feather=None, curve=0.0, clean=False, tile=0):
     """Shade a polygon with explicit hatching over a soft wash.
 
     tone  1 (light, far apart) to 5 (deepest, close and crossed): TONES
@@ -168,10 +177,14 @@ def hatch(d, shape, tone, ang=45, hand="ruled", seed=0, grade=None, colour="hatc
     curve every line bends by this fraction of its length, the same way, to follow a rounded
           surface (a bowl, a rolled edge, a curling sheet); 0 lies flat
     clean no jitter: even spacing and smooth gradients, the hand only in the bend of the line
+    tile  a ruled set on a tiled plate: the spacing snaps to tile_safe and the lines sit on the plate's
+          own grid, so a shadow that crosses the tile edge continues in the next tile
     """
     assert hand in HANDS and tone in TONES
     sp, w, crossed = TONES[tone]
     sp *= scale
+    if tile:
+        sp = tile_safe(sp, tile, ang)
     rg = random.Random(seed * 7919 + tone)
     _N[0] += 1
     pts = " ".join(f"{x:.1f},{y:.1f}" for x, y in shape)
@@ -181,14 +194,15 @@ def hatch(d, shape, tone, ang=45, hand="ruled", seed=0, grade=None, colour="hatc
         k = float(d.P.get("shadeK", "1")) * (1.0 if wash is True else float(wash))
         d.o.append(f'<polygon points="{pts}" fill="{d.c("shade")}" fill-opacity="{min(1, WASH[tone] * k):.2f}" '
                    f'filter="url(#washIn)" data-wash="h{_N[0]}"/>')
-    sets = [(ang, sp)] + ([(ang - CROSS, sp * 1.25)] if crossed else [])
+    sets = [(ang, sp)] + ([(ang - CROSS, tile_safe(sp * 1.25, tile, ang - CROSS) if tile else sp * 1.25)] if crossed else [])
     for a, s in sets:
-        lines = _set(shape, s, a, hand, rg, grade, feather, curve, clean)
+        lines = _set(shape, s, a, hand, rg, grade, feather, curve, clean, anchored=bool(tile))
         if dash and hand == "free":
             lines = [seg for ln in lines for seg in _dashes(ln, rg, dash)]
-        for line in lines:
-            p = " ".join(f"{x:.1f},{y:.1f}" for x, y in line)
-            d.o.append(f'<polyline points="{p}" fill="none" stroke="{col}" stroke-width="{w}" stroke-linecap="round"/>')
+        # One path per set, a subpath per line: the same lines, a fraction of the markup.
+        if lines:
+            path = "".join("M" + "L".join(f"{x:.1f} {y:.1f}" for x, y in line) for line in lines)
+            d.o.append(f'<path d="{path}" fill="none" stroke="{col}" stroke-width="{w}" stroke-linecap="round"/>')
     d.o.append('</g>')
 
 

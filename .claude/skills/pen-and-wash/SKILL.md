@@ -27,10 +27,11 @@ green: a kernel change is its own reviewed change, made here and synced to the s
 4. **Draw back to front** with `D(P)`: wall, recess, cast shadows, then the shapes that cast them, then their
    details (R-BAKE-2). Reuse the components (`raised_panel`, `sconce`, `candle`, `crest`, `scaled`); a part used
    twice becomes a kernel function in a separate change.
-5. **Shade with hatching only, in tiers** (R-BAKE-16): the tile-safe pattern fills (`url(#hatch0)` light,
-   `url(#hatch)`, `url(#hatch2)` deep) for long runs, which `wrap()` washes and masks (R-BAKE-1, R-BAKE-2), or
-   `hatching.hatch(d, shape, tone, hand="ruled")` for a graded shadow on a front face, which lays its own wash.
-   Lighter is fewer lines farther apart, darker closer and finer; only tone 5 crosses. A shadow is a gradient
+5. **Shade with hatching only, in tiers** (R-BAKE-16): the pattern fills (`url(#hatch)`, `url(#hatch2)` deep,
+   `url(#xhatch)` deepest), which `wrap()` turns into clean ruled hatching on the plate's grid, or
+   `hatching.hatch(d, shape, tone, hand="ruled", wash=False, clean=True, tile=W)` for a shadow you shape
+   yourself. A shade is hatched or washed, never both (R-BAKE-1).
+   Lighter is fewer lines, never far apart; darker is closer and finer; only tone 5 crosses. A shadow is a gradient
    (`grade`, `feather`), and lines on a round surface bend (`curve`). No words in the drawing (R-BAKE-8).
 5b. **A picture** is `penpicture.pen_picture(d, x, y, w, h, scene, seed)`: a few real objects with their parts,
    three-quarter, each shaped then shaded at the one picture angle, free hand, no wash (R-BAKE-15 to 17). A new

@@ -121,17 +121,17 @@
       "astro/src/lib/lettering/outline.ts": "1f3196468da08ffd110cff4206ac6aa1b523b5531ca2cd9aadf41a0f1cd71d21"
     },
     "pen-and-wash": {
-      ".claude/skills/pen-and-wash/SKILL.md": "dd2467bcbda66b661ab8b31ff0d64940998b56dbb6db7215ab0dd2a67bb5531f",
-      ".claude/skills/pen-and-wash/references/kernel.md": "cc1507eabf559cd998869a08bea73d8269e238e46d909d6058425a13fe6f73b4",
+      ".claude/skills/pen-and-wash/SKILL.md": "0fb03a568c2bed8f514d58a29457fab9b4dee591df1b31db89798845f22ee883",
+      ".claude/skills/pen-and-wash/references/kernel.md": "34f5baead0d79de19a34c5cf73f3e0cc8603b5fa8e26cba0bf91a46f861b97a2",
       ".claude/skills/pen-and-wash/references/look.md": "f918df2d3967fbede20e3d97f2976bf49168ab21307a606367a4a0c6025895f8",
-      ".claude/skills/pen-and-wash/references/rules.md": "e7867a8d83819286d05d76ba28ddebf4d495cd313d131df098882961e26816b2"
+      ".claude/skills/pen-and-wash/references/rules.md": "4a7c7913d679758b76bc98488cb7e900419cddcb52439a25e47c40cddc650bc9"
     },
     "pen-and-wash code": {
-      "astro/scripts/library-art/checks/check_penwash.py": "f0682d33e4a620bb8919dae4d0dc3b1cb9f175ced4485088311dd29f50b84ab4",
+      "astro/scripts/library-art/checks/check_penwash.py": "052db97f982ac9c022e87bca4c544b0d1ad2e10ced031995f6188bcff1aed1b1",
       "astro/scripts/library-art/kernel/__init__.py": "341c7c22edd957866450716062fc10412b3ac1d15d43c61d94a9ea4487bf93a8",
-      "astro/scripts/library-art/kernel/hatching.py": "dd76d6be077ad16254ec603f24b286fe2a67bf8ca08dc75c360e5232d5574f1e",
-      "astro/scripts/library-art/kernel/penpicture.py": "9a106573f85685bb0d0315c276cbe4ef4afc1a2029b5606034479f73e2ba385a",
-      "astro/scripts/library-art/kernel/penwash.py": "d4f3311aa17cc8f097c6d82b30aee57d463516cf3671d874d5dadb348fc72a16",
+      "astro/scripts/library-art/kernel/hatching.py": "c3859e429df41ea9a339ffa821768664af24a93f3d95900e2773bbb6dddd823a",
+      "astro/scripts/library-art/kernel/penpicture.py": "d9e1ade21b1993b96e413152262c970a12a237cd43446a498b53873bc52969bc",
+      "astro/scripts/library-art/kernel/penwash.py": "06045554b5b21bb9cf071c4e91ae7e1a700370518d63b4888d87f99aba42b6be",
       "astro/scripts/library-art/kernel/primitives.py": "5f7d1b96775b693f38b824d8c4dc74b77e4a15b508ede449d4c424f36906b17a",
       "astro/scripts/library-art/kernel/tokens.py": "835959193b899a26544ac94a8f953220c6615e1f34ff8d3c2f94acc4b7a73418"
     },

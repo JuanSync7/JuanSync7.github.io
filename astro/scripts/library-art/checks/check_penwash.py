@@ -11,8 +11,8 @@ P6 seamless tile: rendered right edge continues into the left edge like any inte
 P7 theme parity: light and dark exports have the same structure.
 P8 tone tiers: every explicit hatch group draws at its tier's line width, and the tiers run
    from light to deep as closer and never thicker lines (hatching kernel TONES).
-P9 wash by medium: an explicit hatch group in the room has a soft wash under it (pen and wash);
-   one inside a picture has none (pen and ink).
+P9 hatch or wash: no hatch group lies over a wash; a shadow is hatched or washed, never both
+   (R-BAKE-16). The room's washes are the soft forms with no hatching on them.
 P10 hand by scene: groups and outlines inside a picture are free hand (bowed lines); groups in
    the room are ruled (straight two-point lines).
 P11 picture depth: in each pen picture the far band sits closer to the paper than the near band.
@@ -62,8 +62,9 @@ def hatch_groups(svg):
         inner = svg[m.end():end]
         out.append({
             "id": m.group(3), "tier": m.group(1), "hand": m.group(2),
-            "widths": sorted({float(w) for w in re.findall(r'<polyline[^>]*stroke-width="([\d.]+)"', inner)}),
-            "points": [len(p.split()) for p in re.findall(r'<polyline points="([^"]+)"', inner)],
+            "widths": sorted({float(w) for w in re.findall(r'<(?:polyline|path)[^>]*stroke-width="([\d.]+)"', inner)}),
+            "points": [len(p.split()) for p in re.findall(r'<polyline points="([^"]+)"', inner)]
+                      + [len(sub.split("L")) for dd in re.findall(r'<path d="([^"]+)"', inner) for sub in dd.split("M") if sub],
             "wash": f'data-wash="{m.group(3)}"' in inner,
             "picture": any(a <= m.start() < b for a, b in pics),
         })
@@ -169,10 +170,8 @@ def main():
     rep.add("P8 tone tiers", not wrong and order,
             f"{len(groups)} hatch groups, off-tier widths: {wrong[:3] or 'none'}; tiers closer and finer as they deepen: {order}")
 
-    no_wash = [g["id"] for g in groups if not g["picture"] and g["tier"] != "scumble" and not g["wash"]]
-    washed = [g["id"] for g in groups if g["picture"] and g["wash"]]
-    rep.add("P9 wash by medium", not no_wash and not washed,
-            f"room groups without a wash: {no_wash[:3] or 'none'}; picture groups with one: {washed[:3] or 'none'}")
+    washed = [g["id"] for g in groups if g["wash"]]
+    rep.add("P9 hatch or wash", not washed, f"{len(groups)} hatch groups, any over a wash: {washed[:3] or 'none'}")
 
     bad_hand = [g["id"] for g in groups if g["hand"] != ("free" if g["picture"] else "ruled")]
     bent_rules = [g["id"] for g in groups if g["hand"] == "ruled" and max(g["points"], default=2) > 2]
@@ -201,8 +200,8 @@ def selftest(light):
                                      if x["id"] == pic["id"] for w in x["widths"] if abs(w - TONES[int(x["tier"])][1]) > 1e-6],
     }
     if room:
-        cases["P9 room hatch without its wash"] = [x for x in hatch_groups(svg.replace(f'data-wash="{room["id"]}"', 'data-wash="gone"', 1))
-                                                    if not x["picture"] and x["tier"] != "scumble" and not x["wash"]]
+        laid = svg.replace(f'data-group="{room["id"]}">', f'data-group="{room["id"]}"><polygon points="0,0 1,0 1,1" data-wash="{room["id"]}"/>', 1)
+        cases["P9 a hatch laid over a wash"] = [x for x in hatch_groups(laid) if x["wash"]]
     ok = True
     for name, caught in cases.items():
         print(f"  [{'PASS' if caught else 'FAIL'}] selftest {name}: {'caught' if caught else 'NOT caught'}")

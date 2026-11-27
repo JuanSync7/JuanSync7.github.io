@@ -65,14 +65,49 @@ def chalk_filter():
             '<feDisplacementMap in="SourceGraphic" in2="n" scale="1.4" xChannelSelector="R" yChannelSelector="G"/></filter>')
 
 
-def washify(P, body):
-    """Shadow + hatching: each hatched shape gets a soft blurred tone beneath its crisp lines."""
+ROOM_TONE = {"hatch": 3, "hatch2": 4, "xhatch": 5}   # the pattern fills a drawing names, as tone tiers
+ROOM_INK = "hatch2"                                    # the room recedes behind its pictures: its hatching in the deep hatch tone
+TILE = 760                                             # the wall unit's width: ruled sets run on across it
+LIGHT_TOWARDS = (-0.7, -0.7)
+
+
+def _pts(tag):
+    """A rect's or a polygon's corners from its SVG tag, or None for any other shape."""
     import re
+    if tag.startswith("<rect"):
+        g = {k: float(v) for k, v in re.findall(r'(?<![\w-])(x|y|width|height)="([-\d.]+)"', tag)}
+        if len(g) < 4:
+            return None
+        x, y, w, h = g["x"], g["y"], g["width"], g["height"]
+        return [(x, y), (x + w, y), (x + w, y + h), (x, y + h)]
+    if tag.startswith("<polygon"):
+        m = re.search(r'points="([^"]+)"', tag)
+        return [tuple(map(float, q.split(","))) for q in m.group(1).split()] if m else None
+    return None
+
+
+def washify(P, body, tile=TILE):
+    """Shade every hatched shape, R-BAKE-1 and 16: a rect or polygon becomes ruled hatching in its
+    tone tier, clean, on the plate's own grid (so it runs on across tile edges), feathered towards
+    the light when it is a small form, with no wash under it (a shadow is hatched or washed, never
+    both). A curved path keeps the soft tone and masked pattern, the old way, since its outline is
+    not a polygon."""
+    import re
+    from .hatching import hatch
     ink, k = P["shade"], float(P["shadeK"])
     tone = {"hatch": 0.08, "hatch2": 0.14, "xhatch": 0.2}
     n = [0]
+
     def dup(m):
         tag, pid = m.group(0), m.group(1)
+        pts = _pts(tag)
+        if pts:
+            xs = [p[0] for p in pts]
+            inside = not tile or (min(xs) >= 0 and max(xs) <= tile)          # a shape that crosses a tile edge stays even
+            d = D(P)
+            hatch(d, pts, ROOM_TONE[pid], ang=45, hand="ruled", colour=ROOM_INK, wash=False, clean=True, tile=tile or TILE,
+                  feather=(0.7, *LIGHT_TOWARDS) if inside else None)
+            return "".join(d.o)
         n[0] += 1
         mid = f"hm{n[0]}"
         soft = tag.replace(f'fill="url(#{pid})"', f'fill="{ink}" fill-opacity="{min(1, tone[pid] * k):.2f}" filter="url(#wash)"')
@@ -84,7 +119,7 @@ def washify(P, body):
 
 
 def wrap(P, body, w, h, chalk):
-    body = washify(P, body)
+    body = washify(P, body, tile=TILE if w == TILE else 0)
     g = '<g filter="url(#chalk)">' if chalk else "<g>"
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}">'
             f'{defs(P, chalk_filter() if chalk else "")}{g}\n{body}\n</g></svg>')

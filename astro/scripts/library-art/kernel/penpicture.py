@@ -16,9 +16,10 @@ import random
 from functools import partial
 from .hatching import hatch as _hatch, scumble as _scumble, free_line, ellipse, crescent
 
-# A picture is a smaller drawing than the room, so its tiers run closer together (PICTURE_SCALE of
-# the room's spacing), keeping their order and widths.
-PICTURE_SCALE = 0.55
+# A picture's tiers run a little closer than the room's (PICTURE_SCALE of its spacing), keeping their
+# order and widths. Judged at the size the page shows them (1x and 2x), not at a zoomed sheet: closer
+# than this and a small picture's shadows fill in solid on the page.
+PICTURE_SCALE = 0.85
 # One light, one hand: every shadow in a picture is hatched at this angle (lines rising to the
 # right, the stroke a right hand makes), and the deep tiers cross it square. Only level things
 # (water) are drawn level.
