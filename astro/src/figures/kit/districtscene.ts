@@ -8,6 +8,7 @@ import { reachOf } from './districtsolids';
 import { districtSketch, type Plan } from './districtsketch';
 import { wireOf, type Wire } from './districtwire';
 import { hubLevel } from './hub';
+import type { Part, PartKind } from './city';
 import { DAM_BOARD, hydro } from './hydro';
 import { island, size, type Island } from './islands';
 import { library } from './library';
@@ -44,6 +45,9 @@ export interface P {
   pitch: number;
 }
 
+/** Slender things that are never a district's landmark, however tall. */
+const SLENDER: readonly PartKind[] = ['pylon', 'turbine', 'stack', 'ventstack', 'flare', 'crane', 'lamp'];
+
 /** Half the width kept clear along a road and along a street, as the home page's stack keeps them. */
 const [ROAD, LANE] = [0.035, 0.065];
 /** How many flow marks run along each pipe, and how many vehicles each road carries. */
@@ -72,10 +76,11 @@ export function districtOf(board: Board, salt: number): Plan {
   const roads = waysOf(city.roads ?? [], [], ROAD, 0);
   const terrain = terrainOf(stones, w, d, roads);
   const apart = separate(city.parts, w, d, city.landmark, ways, 1, reachOf).filter((p) => !STONE.includes(p.kind));
-  const top = Math.max(...apart.map((p) => (p.y ?? 0) + p.h));
-  const mark = city.landmark
-    ? apart.find((p) => p.x === city.landmark?.x && p.kind === city.landmark?.kind)
-    : apart.find((p) => (p.y ?? 0) + p.h === top);
+  // The landmark is the generator's, or else the district's biggest building: by its mass, not
+  // its height, so a mast, a chimney or a wind turbine is never what the signal picks out.
+  const mass = (p: Part): number => (SLENDER.includes(p.kind) ? 0 : p.w * p.d * p.h);
+  const biggest = apart.reduce<Part | undefined>((a, p) => (!a || mass(p) > mass(a) ? p : a), undefined);
+  const mark = city.landmark ? apart.find((p) => p.x === city.landmark?.x && p.kind === city.landmark?.kind) : biggest;
   const model = kind === 'mine' ? 'hauler' : 'car';
   const loops = (city.roads ?? []).flatMap((loop) =>
     Array.from({ length: PER_ROAD }, (_, n) => ({ loop, phase: n / PER_ROAD, model }) as const),

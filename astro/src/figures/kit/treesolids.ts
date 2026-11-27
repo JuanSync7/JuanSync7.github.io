@@ -16,7 +16,7 @@ const TAU = Math.PI * 2;
 
 /** A solid of revolution through profile points [radius, height], bottom to top, stretched to
  *  rx × rz, with its axis leaning by (lx, lz) per unit of height. Ends at radius 0 close it. */
-function lathe(o: Tris, profile: [number, number][], rx: number, rz: number, lx = 0, lz = 0): void {
+export function lathe(o: Tris, profile: [number, number][], rx: number, rz: number, lx = 0, lz = 0): void {
   const at = (r: number, y: number, a: number): [number, number, number] => [
     Math.cos(a) * r * rx + lx * y,
     y,
@@ -140,17 +140,16 @@ export const TREE_SOLIDS: Record<string, Shape> = {
       w / 2,
       d / 2,
     ),
-  // A bush: a low dome on the ground.
+  // A bush: a low dome on the ground, its profile fine enough that no ring of it creases.
   bush: (o, w, d, h) =>
     lathe(
       o,
       [
         [0, 0],
-        [0.85, 0],
-        [1, h * 0.35],
-        [0.8, h * 0.75],
-        [0.4, h * 0.97],
-        [0, h],
+        ...Array.from({ length: 9 }, (_, i): [number, number] => {
+          const t = (i / 8) * (Math.PI / 2);
+          return [Math.cos(t) ** 0.6, h * Math.sin(t)];
+        }),
       ],
       w / 2,
       d / 2,

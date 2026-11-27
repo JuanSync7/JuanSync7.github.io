@@ -40,8 +40,26 @@ export function movers(k: Sketch, { city }: Plan): void {
         ...turbines.filter((q) => q !== p).map((q) => Math.hypot(...hubOf(q).map((v, n) => v - (hubOf(p)[n] ?? 0)))),
       );
       const tip = Math.min(p.h * BLADE, near * 0.45);
+      // Three blades, each broad at its root and tapering to its tip, on a rounded hub.
       for (let b = 0; b < 3; b++)
-        k.at([0, 0, 0], 0, () => k.box(-0.003, 0, -0.002, 0.003, tip, 0.002), 0, (b * Math.PI * 2) / 3);
+        k.at(
+          [0, 0, 0],
+          0,
+          () =>
+            k.slab(
+              [
+                [-0.0035, 0.004],
+                [0.0045, 0.004],
+                [0.0012, tip],
+                [-0.0012, tip],
+              ],
+              -0.001,
+              0.001,
+            ),
+          0,
+          (b * Math.PI * 2) / 3,
+        );
+      k.ball(0, 0, 0.002, 0.0055);
     }),
   );
   for (const [at, nose] of city.apron ?? []) k.object('apron', () => k.at(v3(at), -nose, () => plane(k)));

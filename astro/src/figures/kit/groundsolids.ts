@@ -1,6 +1,7 @@
 import type { Vec3 } from './camera';
 import { beam, cuboid, diamond, frustum, loft, ring, type Tris } from './bodies';
 import { bow } from './grounds';
+import { lathe } from './treesolids';
 
 /** Solids for the civic grounds and the hydro plant, the kinds `kit/grounds.ts` drew as wire only:
  *  a library's portico, the park's benches, lamps, people, flower beds and fountain, and the dam's
@@ -49,6 +50,33 @@ export const GROUND_SOLIDS: Record<string, Shape> = {
     cuboid(o, -w / 2, h * 0.72, -d / 2, w / 2, h * 0.82, d / 2);
     pediment(o, w, d, h * 0.82, h * 0.18);
   },
+  // A clock tower: its shaft, a wider clock stage, the belfry on four corner piers, a cornice
+  // and a pyramid roof to a finial (its clock faces and openings are line detail on it).
+  clocktower: (o, w, d, h) => {
+    cuboid(o, -w / 2, 0, -d / 2, w / 2, h * 0.55, d / 2);
+    const s = 1.08;
+    cuboid(o, (-w / 2) * s, h * 0.55, (-d / 2) * s, (w / 2) * s, h * 0.7, (d / 2) * s);
+    const [pw, pd] = [w * 0.16, d * 0.16];
+    for (const [x, z] of [
+      [-1, -1],
+      [1, -1],
+      [1, 1],
+      [-1, 1],
+    ] as const)
+      cuboid(
+        o,
+        (x * w) / 2 - (x > 0 ? pw : 0),
+        h * 0.7,
+        (z * d) / 2 - (z > 0 ? pd : 0),
+        (x * w) / 2 + (x < 0 ? pw : 0),
+        h * 0.84,
+        (z * d) / 2 + (z < 0 ? pd : 0),
+      );
+    cuboid(o, -w * 0.4, h * 0.7, -d * 0.4, w * 0.4, h * 0.72, d * 0.4);
+    cuboid(o, (-w / 2) * s, h * 0.84, (-d / 2) * s, (w / 2) * s, h * 0.87, (d / 2) * s);
+    frustum(o, 4, (w / 2) * s, (d / 2) * s, h * 0.87, 0.0005, 0.0005, h * 0.97);
+    frustum(o, 6, w * 0.03, d * 0.03, h * 0.96, w * 0.01, d * 0.01, h);
+  },
   // Seat, back and two end frames.
   bench: (o, w, d, h) => {
     cuboid(o, -w / 2, h * 0.42, -d / 2, w / 2, h * 0.5, d / 2);
@@ -65,15 +93,23 @@ export const GROUND_SOLIDS: Record<string, Shape> = {
     frustum(o, 6, w * 0.22, d * 0.18, 0, w * 0.3, d * 0.22, h * 0.76);
     diamond(o, 6, w * 0.16, d * 0.16, h * 0.76, h * 0.88, h);
   },
-  // A low kerb round a bed, and blooms standing above it.
-  flowers: (o, w, d, h) => {
-    loft(o, [ring(10, w / 2, d / 2, 0), ring(10, w / 2, d / 2, h * 0.3)]);
-    for (let i = 0; i < 5; i++) {
-      const [a, r] = [i * 2.4, 0.3 * Math.sqrt((i + 0.5) / 5)];
-      const [x, z] = [Math.cos(a) * r * w, Math.sin(a) * r * d];
-      frustum(o, 5, w * 0.08, d * 0.08, h * 0.3, w * 0.1, d * 0.1, h * (0.7 + 0.1 * (i % 3)), x, z);
-    }
-  },
+  // A kerbed bed, its planting mounded inside the kerb.
+  flowers: (o, w, d, h) =>
+    lathe(
+      o,
+      [
+        [0, 0],
+        [1, 0],
+        [1, h * 0.25],
+        [0.9, h * 0.3],
+        ...Array.from({ length: 6 }, (_, i): [number, number] => {
+          const t = ((i + 1) / 6) * (Math.PI / 2);
+          return [0.9 * Math.cos(t) ** 0.7, h * (0.3 + 0.5 * Math.sin(t))];
+        }),
+      ],
+      w / 2,
+      d / 2,
+    ),
   // A round basin, a column in the middle and the bowl it spills from.
   fountain: (o, w, d, h) => {
     loft(o, [ring(24, w / 2, d / 2, 0), ring(24, w / 2, d / 2, h * 0.25)]);

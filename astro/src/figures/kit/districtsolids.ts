@@ -1,6 +1,7 @@
 import { BufferGeometry, CylinderGeometry, Matrix4 } from 'three';
 import { solids } from './boards';
 import type { Tris } from './bodies';
+import { drafted } from './drafting';
 import type { Part } from './city';
 import { GROUND_SOLIDS } from './groundsolids';
 import { local } from './hardsurface';
@@ -32,13 +33,14 @@ export function reachOf(p: Part): [number, number] {
 
 /** A part's solid as triangles in its own frame: the hard-surface boards' solid, or for the kinds
  *  those boards drew as wire only, the one in `kit/groundsolids.ts`. */
-export const solidOf = (p: Part): Tris => {
-  const own = TREE_SOLIDS[p.kind] ?? GROUND_SOLIDS[p.kind];
-  if (!own) return local(p, units());
-  const o: Tris = [];
-  own(o, p.w, p.d, p.h);
-  return o;
-};
+export const solidOf = (p: Part): Tris =>
+  drafted(() => {
+    const own = TREE_SOLIDS[p.kind] ?? GROUND_SOLIDS[p.kind];
+    if (!own) return local(p, units());
+    const o: Tris = [];
+    own(o, p.w, p.d, p.h);
+    return o;
+  });
 
 /** The frame a part is drawn in: stood at its place, turned by its rot. */
 export const frameOf = (p: Part): Matrix4 =>
