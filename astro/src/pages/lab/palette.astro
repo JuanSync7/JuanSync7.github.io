@@ -1,0 +1,35 @@
+---
+import NightPage from '../../layouts/NightPage.astro';
+import NightNav from '../../components/layout/NightNav.astro';
+import NightFooter from '../../components/layout/NightFooter.astro';
+import PaletteStudio from '../../components/palette/PaletteStudio';
+---
+<NightPage title="Palette studio · Lab · Juan Kok" description="Pick a ground, an ink and an accent, spend them 60/30/10, and watch a sample site and three drawings take them. Every text checked against WCAG 2.2, then taken away as a prompt or as code.">
+  <NightNav current="lab" />
+  <main class="nt-wrap nt-section">
+    <header class="pal-head">
+      <a href="/lab/">← the lab</a>
+      <span>// palette_studio · trial</span>
+      <h1>Sixty, thirty, ten.</h1>
+      <p>
+        Most of a page is ground, the words and lines are ink, and one accent marks what matters. Start from any of the
+        three: pick it on a wheel, paste a hex code from a site you like, or type its 8-bit values. The other colours
+        suggest themselves, and you can lock what you want to keep.
+      </p>
+      <p>
+        It starts from this site's own palette: cream and gunmetal, ink, and the signal orange, with a blue a little
+        towards violet as its second accent.
+      </p>
+    </header>
+    <PaletteStudio client:only="react" />
+  </main>
+  <NightFooter />
+</NightPage>
+<style>
+  .pal-head { display: grid; gap: var(--hf-space-4); max-width: var(--nt-measure); margin-bottom: var(--hf-space-10); }
+  .pal-head > a:first-child, .pal-head > span { font: var(--nt-fs-meta)/var(--nt-lh-body) var(--nt-mono); }
+  .pal-head > a:first-child { color: var(--nt-ink-muted); }
+  .pal-head > span { color: var(--nt-signal-text); }
+  .pal-head h1 { margin: 0; font: var(--nt-fs-h1)/var(--nt-lh-heading) var(--nt-display); letter-spacing: var(--nt-tracking-display); }
+  .pal-head p { margin: 0; color: var(--nt-ink-soft); }
+</style>

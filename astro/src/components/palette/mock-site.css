@@ -1,0 +1,289 @@
+/* The sample site. Every colour is a --mk-* property the studio sets from the reader's palette;
+   sizes come from the site's spacing and type tokens. */
+
+.mk {
+  display: grid;
+  gap: var(--hf-space-8);
+  padding: var(--hf-space-6);
+  border: 1px solid var(--mk-line);
+  border-radius: var(--pp-radius-lg);
+  background: var(--mk-ground);
+  color: var(--mk-ink);
+  font-family: var(--mk-body);
+  font-size: var(--pp-fs-body);
+  line-height: 1.6;
+}
+
+.mk h1,
+.mk h2 {
+  margin: 0;
+  color: var(--mk-ink-strong);
+  font-family: var(--mk-heading);
+  font-weight: var(--pp-w-title);
+  line-height: 1.15;
+}
+
+.mk h1 {
+  font-size: clamp(var(--pp-fs-mark), 3.4vw, var(--pp-fs-h2));
+}
+
+.mk h2 {
+  font-size: var(--pp-fs-title);
+}
+
+.mk p {
+  margin: 0;
+}
+
+.mk a {
+  color: var(--mk-accent-text);
+  text-decoration: underline;
+  text-underline-offset: var(--hf-space-1);
+}
+
+.mk mark {
+  padding: 0 var(--hf-space-1);
+  background: var(--mk-accent-soft);
+  color: var(--mk-ink);
+}
+
+.mk :focus-visible {
+  outline: var(--hf-focus-w) solid var(--mk-accent);
+  outline-offset: var(--hf-focus-offset);
+}
+
+.mk-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--hf-space-3) var(--hf-space-6);
+  padding-bottom: var(--hf-space-4);
+  border-bottom: 1px solid var(--mk-line);
+}
+
+.mk-logo {
+  margin-right: auto;
+  color: var(--mk-ink-strong);
+  font-family: var(--mk-heading);
+  font-weight: var(--pp-w-title);
+}
+
+.mk-links {
+  display: flex;
+  gap: var(--hf-space-4);
+  font-size: var(--pp-fs-small);
+}
+
+.mk .mk-links a {
+  color: var(--mk-ink);
+  text-decoration: none;
+}
+
+.mk-hero {
+  display: grid;
+  gap: var(--hf-space-4);
+  max-width: var(--nt-measure);
+}
+
+.mk-kicker,
+.mk-muted,
+.mk-figure figcaption {
+  color: var(--mk-ink-muted);
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-caption);
+}
+
+.mk-lead {
+  font-size: var(--pp-fs-lead);
+}
+
+.mk-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hf-space-3);
+}
+
+.mk-btn {
+  min-height: var(--nt-hit);
+  padding: 0 var(--hf-space-5);
+  border: 1px solid var(--mk-ink);
+  border-radius: var(--pp-radius-md);
+  background: transparent;
+  color: var(--mk-ink-strong);
+  font-family: var(--mk-body);
+  font-size: var(--pp-fs-small);
+  font-weight: var(--pp-w-heading);
+  cursor: pointer;
+}
+
+.mk-btn-primary {
+  border-color: var(--mk-accent);
+  background: var(--mk-accent);
+  color: var(--mk-on-accent);
+}
+
+.mk-btn-primary:hover {
+  border-color: var(--mk-accent-strong);
+  background: var(--mk-accent-strong);
+}
+
+.mk-btn-small {
+  min-height: var(--hf-space-10);
+  padding: 0 var(--hf-space-3);
+}
+
+/* The drawing: keylines round the stage, numbered notes beside it. */
+.mk-figure {
+  display: grid;
+  gap: var(--hf-space-3);
+  margin: 0;
+}
+
+.mk-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hf-space-2);
+}
+
+.mk-tabs button {
+  min-height: var(--hf-space-10);
+  padding: 0 var(--hf-space-3);
+  border: 1px solid var(--mk-line);
+  border-radius: var(--hf-radius-pill);
+  background: transparent;
+  color: var(--mk-ink);
+  font-size: var(--pp-fs-caption);
+  cursor: pointer;
+}
+
+.mk-tabs button[aria-selected='true'] {
+  border-color: var(--mk-ink-strong);
+  color: var(--mk-ink-strong);
+}
+
+.mk-frame {
+  display: grid;
+  gap: var(--hf-space-4);
+  padding: var(--hf-space-3);
+  border: 1px solid var(--mk-line);
+  border-radius: var(--pp-radius-md);
+}
+
+.mk-stage {
+  width: 100%;
+  aspect-ratio: 1.25;
+}
+
+.mk-stage-swatch-keyboard {
+  aspect-ratio: 1.6;
+}
+
+/* The drawings take the reader's colours as they are: no page recolouring. */
+.mk-stage .figure-canvas canvas {
+  filter: none;
+  mix-blend-mode: normal;
+}
+
+.mk-notes {
+  display: grid;
+  gap: var(--hf-space-2);
+  margin: 0;
+  padding: var(--hf-space-3) 0 0;
+  border-top: 1px dashed var(--mk-line);
+  list-style: none;
+  font-size: var(--pp-fs-small);
+}
+
+.mk-notes li {
+  display: grid;
+  grid-template-columns: var(--hf-space-26) 1fr;
+  gap: var(--hf-space-3);
+  align-items: baseline;
+}
+
+.mk-note-mark {
+  padding-left: var(--hf-space-2);
+  border-left: var(--hf-space-1) solid var(--mk-ground-sunk);
+  color: var(--mk-ink-strong);
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-caption);
+}
+
+.mk-note-mark[data-share='1'] {
+  border-left-color: var(--mk-ink);
+}
+
+.mk-note-mark[data-share='2'] {
+  border-left-color: var(--mk-accent);
+}
+
+.mk-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--hf-space-26) * 2), 1fr));
+  gap: var(--hf-space-4);
+}
+
+.mk-card {
+  display: grid;
+  gap: var(--hf-space-2);
+  align-content: start;
+  padding: var(--hf-space-4);
+  border: 1px solid var(--mk-line);
+  border-radius: var(--pp-radius-md);
+  background: var(--mk-ground-raised);
+  font-size: var(--pp-fs-small);
+}
+
+.mk-card-dot {
+  width: var(--hf-space-3);
+  height: var(--hf-space-3);
+  border-radius: 50%;
+  border: 1px solid var(--mk-ink);
+  background: var(--mk-ground);
+}
+
+.mk-card-dot[data-share='1'] {
+  background: var(--mk-ink);
+}
+
+.mk-card-dot[data-share='2'] {
+  border-color: var(--mk-accent);
+  background: var(--mk-accent);
+}
+
+.mk-prose {
+  display: grid;
+  gap: var(--hf-space-3);
+  max-width: var(--nt-measure);
+}
+
+.mk-code {
+  margin: 0;
+  padding: var(--hf-space-4);
+  overflow-x: auto;
+  border: 1px solid var(--mk-line);
+  border-radius: var(--pp-radius-md);
+  background: var(--mk-ground-sunk);
+  color: var(--mk-ink-strong);
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-caption);
+}
+
+.mk-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--hf-space-4);
+  border-top: 1px solid var(--mk-line);
+  color: var(--mk-ink-muted);
+  font-size: var(--pp-fs-caption);
+}
+
+.mk-badge {
+  padding: 0 var(--hf-space-2);
+  border: 1px solid var(--mk-accent2);
+  border-radius: var(--hf-radius-pill);
+  background: var(--mk-accent2-soft);
+  /* The tint is the accent's; the word stays ink, as text in the highlighter does. */
+  color: var(--mk-ink-strong);
+}
