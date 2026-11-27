@@ -149,6 +149,11 @@ body.paper {
   padding: 0 var(--pp-pad);
 }
 
+/* A room page (PaperLayout room) keeps the paper's colours but drops the notepad furniture. */
+.pp-page[data-room] {
+  --pp-notepad-display: var(--pp-room-notepad-display);
+}
+
 /* Notepad furniture: orange double margin line and a punched strip, in both themes. */
 .pp-page::before,
 .pp-page::after {

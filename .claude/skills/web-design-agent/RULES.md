@@ -28,6 +28,8 @@ Work through [the performance playbook](playbooks/performance.md). Its probes ar
 | WEB-PERF-6 | A figure whose build cannot be baked or split is plotted in piece by piece as part of its look, so the reader sees it being drawn instead of an empty box, and each frame does a small share of the work. Under reduced motion the finished drawing shows at once. | The lab still has two figures that each block for about 1 s. | Not built yet: judgment per figure, checked with `lag.mjs` (each frame's share under the budget) |
 | WEB-PERF-7 | Measure the old and the new on the same machine and the same built pages, and check the picture as well as the counter. A machine without a GPU gives relative numbers only: never quote its frame rates as the site's. | A first block test counted 8 of 8 new frames for a turn whose layers had zero size: the counter passed a broken picture. | Screenshots of the turn at 25, 50 and 75 % beside the old one, with `smooth.mjs` and `block.mjs` run on both builds |
 
+| WEB-MOTION-1 | A thing that travels farther than the screen (a binder from its shelf to the desk and back) takes the page with it: the page follows over the move's own duration and ease, driven frame by frame, so the thing never leaves the screen. A way back retraces the way there with each ease mirrored. | 27 November 2026: the binder's return scrolled the page smoothly away while the binder rose on the outbound ease; it left the screen and popped back onto its shelf. | The site's `useFollowScroll` (library archive), the `--pp-lib-ease-*-back` tokens, a frame capture of the return (binder on screen in every frame) |
+
 ## Room lighting and seeded interiors
 
 Case: 9 November 2026 request about flat lighting, monochrome depth and seeded room variety.

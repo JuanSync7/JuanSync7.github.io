@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import { useLayoutEffect, useRef, type CSSProperties } from 'react';
 import BinderSpine from './BinderSpine';
 import { PLATE } from './geometry';
 import type { ArchivePiece, BinderBox, Phase } from './types';
@@ -20,8 +20,15 @@ const LIFT = 16;
 /** The binder in the air: a real box (spine, back, covers, top and bottom) that travels from its
  *  shelf to the desk. Across and down are separate moves with their own easing, so the path
  *  arcs; one turn of 120 degrees about (1, -1, -1) lays it down like a book, spine on the left
- *  and the front cover up, so nothing turns again when it lands. Only transforms animate. */
+ *  and the front cover up, so nothing turns again when it lands. On the way back each move takes
+ *  its mirrored ease, so the binder retraces the same arc. Only transforms animate. */
 export default function BinderFlight({ piece, box, phase, view, unit, wallH, band }: Props) {
+  const self = useRef<HTMLDivElement>(null);
+  // Read the box once it is in the page, so the browser settles the pose it was put in before the
+  // next step changes it: the next pose then transitions from this one instead of jumping to it.
+  useLayoutEffect(() => {
+    self.current?.getBoundingClientRect();
+  }, []);
   const t = box.w;
   const h = box.h;
   const d = PLATE.depth;
@@ -37,7 +44,14 @@ export default function BinderFlight({ piece, box, phase, view, unit, wallH, ban
     ['--bd' as string]: `${d}px`,
   } as CSSProperties;
   return (
-    <div className="lib-flight" style={vars} data-fill={box.fill} aria-hidden="true">
+    <div
+      ref={self}
+      className="lib-flight"
+      style={vars}
+      data-fill={box.fill}
+      data-back={phase === 'return' || phase === 'back' || undefined}
+      aria-hidden="true"
+    >
       <div className="lf-down">
         <div className="lf-turn">
           <div className="lf-face lf-spine lib-spine">

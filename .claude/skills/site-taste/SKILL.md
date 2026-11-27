@@ -214,3 +214,22 @@ Leave these visible, don't settle them yourself:
 - Motion that carries meaning, off under reduced motion; no scroll hijacking.
 - Code in a terminal window.
 - You looked at it, at desktop and phone width, before calling it done.
+
+**The library room, 27 November 2026**
+- "we dont need the page background for this specific page because it is a library": `/library/` is a room
+  page (`PaperLayout room`): the same paper colours, no punched strip or margin line. The archive uses the
+  room's width ("make use more of the width"), keeping the fade at the sides, up to `--pp-lib-view-max`
+  (under two wall units, so a side shelf still shows less than half of itself).
+- "i can't tell what the binder topics is or what is in the shelf": a directory board nailed in the wall
+  bay right of the shelf facing you (the kind at its head, every binder listed, scrollable), so the wall
+  is no longer symmetric; on a phone it sits under the stage. Hovering a binder, or its row, shows its
+  title on a paper tag above it.
+- Binders thicker and a little longer so the spine holds most of a title: about nine a level, room for
+  the twenty a kind will reach.
+- The binder's way back "does not fly correct and suddenly disappear and re-appear": the page now follows
+  it and the way back mirrors the way down (WEB-MOTION-1).
+- Art: the wall's pictures are pen and ink by a free hand, the room stays ruled pen and wash, dark is
+  chalk ("the wobble make sense because it is a painting, but for the library it doesnt"). Hatching to the
+  microlearn field-note standard: close, fine, a gradient, bent over round forms, real object shapes
+  ("the paper clip does not look like a proper paperclip"). Rejected: the first landscape ("missing the
+  details and the shape of the objects").

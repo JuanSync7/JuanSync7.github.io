@@ -17,6 +17,8 @@ const code = {
     'kernel/__init__.py',
     'kernel/primitives.py',
     'kernel/penwash.py',
+    'kernel/hatching.py',
+    'kernel/penpicture.py',
     'kernel/tokens.py',
     'checks/check_penwash.py',
   ],

@@ -13,9 +13,11 @@ interface Props {
   description?: string;
   /** Keep the page out of search results. */
   noindex?: boolean;
+  /** A room, not a notepad page (the library): the same paper colours, no punched strip or margin line. */
+  room?: boolean;
 }
 
-const { title, description = 'Juan Kok: Senior Design & AI Engineer. AI platform, agents and governance.', noindex = false } = Astro.props;
+const { title, description = 'Juan Kok: Senior Design & AI Engineer. AI platform, agents and governance.', noindex = false, room = false } = Astro.props;
 
 const THEME = `try{var t=localStorage.getItem('pp-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}`;
 const dayMatrix = figureMatrix(0);
@@ -58,7 +60,7 @@ const nightWorld = worldContrast(1);
         <feComponentTransfer><feFuncR type="linear" slope={dayWorld.slope} intercept={dayWorld.intercepts[0]} /><feFuncG type="linear" slope={dayWorld.slope} intercept={dayWorld.intercepts[1]} /><feFuncB type="linear" slope={dayWorld.slope} intercept={dayWorld.intercepts[2]} /></feComponentTransfer>
       </filter>
     </svg>
-    <div class="pp-page">
+    <div class="pp-page" data-room={room || undefined}>
       <slot />
     </div>
     <PageTurn />

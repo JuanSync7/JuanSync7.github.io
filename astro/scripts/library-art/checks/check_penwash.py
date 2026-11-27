@@ -9,6 +9,13 @@ P4 tile-safe hatching: hatch spacing makes lines meet exactly at the tile edges.
 P5 shadows behind: every offset drop shadow is drawn before the shape that casts it.
 P6 seamless tile: rendered right edge continues into the left edge like any interior column.
 P7 theme parity: light and dark exports have the same structure.
+P8 tone tiers: every explicit hatch group draws at its tier's line width, and the tiers run
+   from light to deep as closer and never thicker lines (hatching kernel TONES).
+P9 hatch or wash: no hatch group lies over a wash; a shadow is hatched or washed, never both
+   (R-BAKE-16). The room's washes are the soft forms with no hatching on them.
+P10 hand by scene: groups and outlines inside a picture are free hand (bowed lines); groups in
+   the room are ruled (straight two-point lines).
+P11 picture depth: in each pen picture the far band sits closer to the paper than the near band.
 """
 import argparse
 import math
@@ -22,6 +29,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from checks.common import Report, read, render, luminance          # noqa: E402
 from kernel.penwash import LIGHT, DARK                             # noqa: E402
 from kernel.tokens import palette
+from kernel.hatching import TONES
 
 PICTURE_IDS = re.compile(r'id="pp\d+')
 
@@ -42,6 +50,59 @@ def strip_pictures(svg):
         i = j
     out.append(svg[i:])
     return "".join(out)
+
+
+def hatch_groups(svg):
+    """Every explicit hatch group the hatching kernel wrote, with its tier, hand, line widths,
+    points per line, whether a wash lies under it and whether it sits inside a picture."""
+    pics = [(m.start(), _close(svg, m.start())) for m in re.finditer(r'<g [^>]*data-picture="pn\d+"', svg)]
+    out = []
+    for m in re.finditer(r'<g data-hatch="([^"]+)" data-hand="([^"]+)" data-group="(h\d+)">', svg):
+        end = svg.index("</g>", m.end())
+        inner = svg[m.end():end]
+        out.append({
+            "id": m.group(3), "tier": m.group(1), "hand": m.group(2),
+            "widths": sorted({float(w) for w in re.findall(r'<(?:polyline|path)[^>]*stroke-width="([\d.]+)"', inner)}),
+            "points": [len(p.split()) for p in re.findall(r'<polyline points="([^"]+)"', inner)]
+                      + [len(sub.split("L")) for dd in re.findall(r'<path d="([^"]+)"', inner) for sub in dd.split("M") if sub],
+            "wash": f'data-wash="{m.group(3)}"' in inner,
+            "picture": any(a <= m.start() < b for a, b in pics),
+        })
+    return out
+
+
+def _close(svg, start):
+    depth = 0
+    for t in re.finditer(r"<g\b[^>]*>|</g>", svg[start:]):
+        depth += -1 if t.group(0) == "</g>" else 1
+        if depth == 0:
+            return start + t.end()
+    return len(svg)
+
+
+def picture_depth(path, svg, theme):
+    """For each pen picture: mean distance from the paper colour of its far band and of its near
+    band, rendered at 2x. A picture names them as boxes (data-far, data-near: x0,y0,x1,y1 in
+    fractions of the picture); one that names none is read across its width at 35 to 48 % down
+    and in its last 12 %."""
+    rects = [(m.group(1), *map(float, m.groups()[1:])) for m in re.finditer(
+        r'<clipPath id="(pn\d+)c"><rect x="([\d.\-]+)" y="([\d.\-]+)" width="([\d.]+)" height="([\d.]+)"/>', svg)]
+    if not rects:
+        return []
+    pal = palette(theme)
+    img = luminance(render(path, 2.0, background=pal["ground"]))
+    paper = luminance(np.array([[int(pal["paper"][i:i + 2], 16) / 255 for i in (1, 3, 5)]], dtype=np.float32))[0]
+    out = []
+    for pid, x, y, w, h in rects:
+        m = re.search(rf'data-picture="{pid}"[^>]*data-far="([\d.,]+)" data-near="([\d.,]+)"', svg)
+        far, near = ((tuple(map(float, m.group(1).split(","))), tuple(map(float, m.group(2).split(","))))
+                     if m else ((0, 0.35, 1, 0.48), (0, 0.88, 1, 1.0)))
+
+        def band(x0, y0, x1, y1):
+            r = img[int(2 * (y + h * y0)):int(2 * (y + h * y1)), int(2 * (x + w * x0)):int(2 * (x + w * x1))]
+            return float(np.abs(r - paper).mean())
+        out.append((pid, theme, band(*far), band(*near)))
+    return out
 
 
 def main():
@@ -100,8 +161,55 @@ def main():
 
     cl, cd = len(re.findall(r"<[a-zA-Z]", L)), len(re.findall(r"<[a-zA-Z]", Dk))
     rep.add("P7 theme parity", abs(cl - cd) <= max(3, 0.01 * cl), f"light {cl} elements, dark {cd}")
+
+    groups = hatch_groups(L)
+    wrong = [f"{g['id']}: tier {g['tier']} at {w}" for g in groups if g["tier"] != "scumble"
+             for w in g["widths"] if abs(w - TONES[int(g["tier"])][1]) > 1e-6]
+    order = all(TONES[k][0] > TONES[k + 1][0] and TONES[k][1] >= TONES[k + 1][1] for k in range(1, max(TONES)))
+    order = order and TONES[1][0] <= 2 * TONES[max(TONES)][0] + 1   # the lightest never far apart
+    rep.add("P8 tone tiers", not wrong and order,
+            f"{len(groups)} hatch groups, off-tier widths: {wrong[:3] or 'none'}; tiers closer and finer as they deepen: {order}")
+
+    washed = [g["id"] for g in groups if g["wash"]]
+    rep.add("P9 hatch or wash", not washed, f"{len(groups)} hatch groups, any over a wash: {washed[:3] or 'none'}")
+
+    bad_hand = [g["id"] for g in groups if g["hand"] != ("free" if g["picture"] else "ruled")]
+    bent_rules = [g["id"] for g in groups if g["hand"] == "ruled" and max(g["points"], default=2) > 2]
+    free = [n for g in groups if g["hand"] == "free" and g["tier"] != "scumble" for n in g["points"]]
+    bowed = sum(1 for n in free if n >= 3) / max(1, len(free))
+    rep.add("P10 hand by scene", not bad_hand and not bent_rules and (not free or bowed >= 0.9),
+            f"in the wrong hand: {bad_hand[:3] or 'none'}; bent ruled lines: {bent_rules[:3] or 'none'}; free lines bowed {bowed:.0%}")
+
+    depth = picture_depth(a.light, L, "light") + picture_depth(a.dark, Dk, "dark")
+    flat = [f"{pid} ({th}): far {f:.3f} near {n:.3f}" for pid, th, f, n in depth if f >= n]
+    rep.add("P11 picture depth", not flat, f"{len(depth)} pictures, far not closer to the paper: {flat or 'none'}")
     sys.exit(1 if rep.print() else 0)
 
 
+def selftest(light):
+    """Each new rule still catches the drawing it exists to stop: a picture redrawn ruled, a tier
+    drawn at another width, a room hatch with its wash taken away."""
+    svg = read(light)
+    g = hatch_groups(svg)
+    pic = next(x for x in g if x["picture"] and x["tier"] != "scumble")
+    room = next((x for x in g if not x["picture"] and x["tier"] != "scumble"), None)
+    cases = {
+        "P10 picture drawn ruled": [x for x in hatch_groups(svg.replace(f'data-hand="free" data-group="{pic["id"]}"', f'data-hand="ruled" data-group="{pic["id"]}"', 1))
+                                    if x["hand"] != ("free" if x["picture"] else "ruled")],
+        "P8 tier at another width": [w for x in hatch_groups(re.sub(r'(data-group="%s">.*?stroke-width=")[\d.]+' % pic["id"], r"\g<1>0.9", svg, count=1, flags=re.S))
+                                     if x["id"] == pic["id"] for w in x["widths"] if abs(w - TONES[int(x["tier"])][1]) > 1e-6],
+    }
+    if room:
+        laid = svg.replace(f'data-group="{room["id"]}">', f'data-group="{room["id"]}"><polygon points="0,0 1,0 1,1" data-wash="{room["id"]}"/>', 1)
+        cases["P9 a hatch laid over a wash"] = [x for x in hatch_groups(laid) if x["wash"]]
+    ok = True
+    for name, caught in cases.items():
+        print(f"  [{'PASS' if caught else 'FAIL'}] selftest {name}: {'caught' if caught else 'NOT caught'}")
+        ok &= bool(caught)
+    sys.exit(0 if ok else 1)
+
+
 if __name__ == "__main__":
+    if "--selftest" in sys.argv:
+        selftest(sys.argv[sys.argv.index("--selftest") + 1])
     main()

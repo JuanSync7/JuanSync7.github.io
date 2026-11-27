@@ -1,0 +1,115 @@
+/* The shelf's directory board: card stock nailed to the wall bay, its kind at the head, its
+   binders listed down it. A monoline outline and a flat cast shadow falling down and right
+   (R-BAKE-11); it carries words, so no hatching on or beside it. */
+
+.lib-dir {
+  position: absolute;
+  z-index: 1;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: var(--pp-lib-dir-pad);
+  border: var(--pp-lib-line-w) solid var(--pp-lib-binder-line);
+  border-radius: var(--hf-radius-xs);
+  background: var(--pp-lib-paper);
+  animation: lib-dir-in var(--pp-lib-dur-slide) var(--pp-lib-ease-sheet) both;
+}
+
+/* Its cast shadow on the wall: a flat tone, behind it, down and right. No hatching next to words. */
+.ld-cast {
+  position: absolute;
+  background: var(--pp-lib-shadow-low);
+  transform: translate(var(--pp-lib-dir-shadow), var(--pp-lib-dir-shadow));
+  pointer-events: none;
+  animation: lib-dir-in var(--pp-lib-dur-slide) var(--pp-lib-ease-sheet) both;
+}
+
+@keyframes lib-dir-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.ld-nail {
+  position: absolute;
+  top: calc(var(--pp-lib-dir-nail) / 2);
+  left: calc(var(--pp-lib-dir-nail) / 2);
+  width: var(--pp-lib-dir-nail);
+  height: var(--pp-lib-dir-nail);
+  border: 1px solid var(--pp-lib-binder-line);
+  border-radius: 50%;
+  background: var(--pp-lib-deep);
+}
+
+.ld-nail-r {
+  right: calc(var(--pp-lib-dir-nail) / 2);
+  left: auto;
+}
+
+.ld-head {
+  padding-bottom: var(--hf-space-2);
+  border-bottom: var(--pp-lib-dir-rule) double var(--pp-lib-binder-line);
+  text-align: center;
+}
+
+.ld-kind {
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-label);
+  font-weight: var(--pp-w-label);
+  letter-spacing: var(--pp-tracking-micro);
+  text-transform: uppercase;
+  color: var(--pp-ink-strong);
+}
+
+.ld-count {
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-micro);
+  color: var(--pp-ink-muted);
+}
+
+.ld-list {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+  scrollbar-width: thin;
+}
+
+.ld-row {
+  display: flex;
+  gap: var(--hf-space-2);
+  align-items: center;
+  min-height: var(--pp-lib-dir-row);
+  border-bottom: 1px solid var(--pp-rule);
+}
+
+.ld-row:hover,
+.ld-row:focus-visible {
+  color: var(--pp-signal-text);
+}
+
+.ld-num {
+  flex: none;
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-micro);
+  color: var(--pp-ink-muted);
+}
+
+.ld-row[data-latest] .ld-num {
+  color: var(--pp-signal-text);
+}
+
+.ld-title {
+  overflow: hidden;
+  font-size: var(--pp-fs-caption);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Off the wall, under the stage, where the wall bay is out of view. */
+.lib-dir[data-inline] {
+  position: relative;
+  max-height: var(--pp-lib-dir-inline-h);
+}
