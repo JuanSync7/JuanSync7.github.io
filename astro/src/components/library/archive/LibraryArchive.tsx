@@ -3,12 +3,14 @@ import ArchiveSheet from './ArchiveSheet';
 import BinderFlight from './BinderFlight';
 import DeskBinder from './DeskBinder';
 import ShelfBar from './ShelfBar';
+import ShelfDirectory from './ShelfDirectory';
 import ShelfTrack from './ShelfTrack';
 import FigurePlate from '../../ui/FigurePlate';
 import PlateFlames from './PlateFlames';
 import { DESK, PLATE, WALL, furnish, readMetrics, shelve, type Metrics } from './geometry';
 import { IN_AIR, ON_DESK, SHEET_OUT, type ArchivePiece, type ArchiveShelf } from './types';
 import { useArchive } from './useArchive';
+import { useFollowScroll } from './useFollowScroll';
 import { useStageFit } from './useStageFit';
 import '../../writing/post-grid.css';
 import './archive.css';
@@ -59,20 +61,18 @@ export default function LibraryArchive({ shelves }: Props) {
     if (box.current) setM(readMetrics(box.current));
   }, []);
 
-  // Keep the eye and the keyboard with the binder: as it flies, the desk's top comes up under the
-  // nav, where the paper will open (its scroll margin is the nav's height); once open, the whole
-  // paper is brought into view if it still runs past the screen, and its title takes focus.
-  // Focus goes back to the binder on its shelf.
+  // Keep the eye and the keyboard with the binder: the page follows it down to the desk and back
+  // up to its shelf (useFollowScroll); once open, the whole paper is brought into view if it still
+  // runs past the screen, and its title takes focus. Focus goes back to the binder on its shelf.
+  useFollowScroll(a.phase, box, desk);
   useEffect(() => {
     const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const behavior = smooth ? 'smooth' : 'auto';
-    if (a.phase === 'fly' || (a.phase === 'show' && !smooth))
-      desk.current?.scrollIntoView({ behavior, block: 'start' });
+    if (a.phase === 'show' && !smooth) desk.current?.scrollIntoView({ behavior, block: 'start' });
     if (a.phase === 'show') {
       box.current?.querySelector('.lib-sheet')?.scrollIntoView({ behavior, block: 'nearest' });
       heading.current?.focus({ preventScroll: true });
     }
-    if (a.phase === 'return') box.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     if (a.picked) last.current = `${a.picked.shelf}-${a.picked.index}`;
     if (a.phase === 'idle' && last.current) {
       box.current?.querySelector<HTMLElement>(`[data-binder="${last.current}"]`)?.focus({ preventScroll: !smooth });
@@ -90,6 +90,8 @@ export default function LibraryArchive({ shelves }: Props) {
   }, [a]);
 
   const view = fit.width / fit.k;
+  // The directory hangs on the wall when its bay is in clear view, else it sits under the stage.
+  const onWall = m !== null && view / 2 - m.unit / 2 + PLATE.directory.left + PLATE.directory.width <= view - m.fade;
   const caption = hover
     ? `// ${hover.num} · ${hover.title}`
     : `// ${shelf.label} · ${shelf.pieces.length} binders · pick one`;
@@ -114,6 +116,9 @@ export default function LibraryArchive({ shelves }: Props) {
               pos={a.pos}
               still={a.still}
               away={a.phase === 'idle' ? null : a.picked}
+              hot={hover}
+              board={onWall}
+              busy={a.phase !== 'idle'}
               onPick={a.pick}
               onMove={a.move}
               onHover={setHover}
@@ -159,6 +164,16 @@ export default function LibraryArchive({ shelves }: Props) {
           />
         ) : null}
       </div>
+      {m && !onWall ? (
+        <ShelfDirectory
+          shelf={shelf}
+          index={a.shelf}
+          inline
+          busy={a.phase !== 'idle'}
+          onPick={a.pick}
+          onHover={setHover}
+        />
+      ) : null}
     </div>
   );
 }

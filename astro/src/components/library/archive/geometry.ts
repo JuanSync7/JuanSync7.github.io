@@ -8,6 +8,7 @@ export const WALL = plate('library-wall');
 export const DESK = plate('library-desk');
 const [runFrom, runTo] = anchors(WALL, 'run');
 const [plaqueX, plaqueY, plaqueW, plaqueH] = anchors(WALL, 'plaque');
+const [boardX, boardY, boardW, boardH] = anchors(WALL, 'board');
 
 export const PLATE = {
   /** The bottom edge of each shelf, from the wall unit's top. */
@@ -16,6 +17,8 @@ export const PLATE = {
   runFrom,
   runTo,
   plaque: { left: plaqueX, top: plaqueY, width: plaqueW, height: plaqueH },
+  /** The directory board in the wall bay right of the shelf, from the wall unit's top-left. */
+  directory: { left: boardX, top: boardY, width: boardW, height: boardH },
   /** Where a thing on the desk rests, and the free spot on it, from the desk plate's top-left. */
   deskTop: anchor(DESK, 'rest'),
   deskSpot: anchor(DESK, 'spot'),
@@ -34,7 +37,10 @@ export const PLATE = {
   sheetInBinder: 86,
 } as const;
 
-const WIDTHS = [34, 38, 36, 40];
+/** Spines are thick enough for two lines of title and tall enough to fill a shelf: about nine
+ *  stand on a level, so a shelf holds about thirty-six, room for the twenty a kind will reach. A
+ *  binder's height plus its hover lift stays inside the lowest shelf's clear height (144). */
+const WIDTHS = [46, 50, 48, 52];
 const FILLS = ['a', 'b', 'a', 'c'] as const;
 const GAP = 2;
 
@@ -46,7 +52,7 @@ export function shelve(count: number): BinderBox[] {
   let x = PLATE.runFrom;
   for (let i = 0; i < count; i++) {
     const w = WIDTHS[(i * 3) % WIDTHS.length];
-    const h = 132 - ((i * 5) % 3) * 6;
+    const h = 134 - ((i * 5) % 3) * 3;
     if (x + w > PLATE.runTo) {
       row += 1;
       x = PLATE.runFrom;
@@ -145,6 +151,8 @@ export interface Metrics {
   band: number;
   deskW: number;
   viewMin: number;
+  /** How wide the fade into the page is at each side of the view. */
+  fade: number;
   sheetW: number;
   dur: { slide: number; lift: number; fly: number; plop: number; open: number; sheet: number };
 }
@@ -165,6 +173,7 @@ export function readMetrics(el: Element): Metrics {
     band: num(st, '--pp-lib-band-h'),
     deskW: DESK.size[0],
     viewMin: num(st, '--pp-lib-view-min'),
+    fade: num(st, '--pp-lib-fade-w'),
     sheetW: num(st, '--pp-lib-sheet-w'),
     dur: { slide: d('slide'), lift: d('lift'), fly: d('fly'), plop: d('plop'), open: d('open'), sheet: d('sheet') },
   };

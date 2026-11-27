@@ -5,7 +5,8 @@ python3 -m kernel.scenes OUT_DIR  -> shelf-unit-{light,dark}.svg, table-{light,d
 import sys
 from .primitives import D, SW
 from .penwash import LIGHT, DARK, wrap, scaled, raised_panel, sconce, crest, flame, archive_box, bookend, book_stack, SHADOW
-from .graphite import pencil_picture
+from .penpicture import pen_picture
+from .hatching import hatch
 
 ROWS_TOP = [58, 228, 386, 544]
 BOARDS = [214, 372, 530, 688]
@@ -13,14 +14,17 @@ UW, SX, SWID = 760, 120, 520          # unit width, shelf left, shelf width
 HALF = 120
 RUN_INSET = 32                        # a shelf's standing room starts this far in from its sides
 PLAQUE = (SX + SWID // 2 - 75, 34, 150, 20)
+# Where the shelf's directory board is nailed: the wall bay right of the shelf, under its sconce,
+# over the crest and the panel (a board nailed to a wall covers what is behind it).
+BOARD = (UW - HALF + 12, 204, 2 * HALF - 24, 460)
 WALL_SCONCE = (150, 1.35)             # the bay sconces: height and scale
 DESK_W, DESK_H, DESK_TOP, DESK_SPOT = 1440, 640, 458, 720
 DESK_SCONCES = ((440, 1000), 190, 1.25)
 
 
-def etching2(d, c, top, w, h, seed=3):
-    """A detailed pen-and-ink landscape in an ornate frame: graded sky, clouds, layered
-    mountains with snow, a pine treeline mirrored in a lake, a cabin, a shaded oak and grass."""
+def etching2(d, c, top, w, h, scene, seed=3):
+    """A framed pen-and-ink picture in an ornate frame, drawn free hand (R-BAKE-15): scene is
+    one of penpicture.SCENES (a lighthouse, a harbour town, a windmill)."""
     import math, random
     rg = random.Random(seed)
     x0, x1, y0, y1 = c - w / 2, c + w / 2, top, top + h
@@ -39,8 +43,8 @@ def etching2(d, c, top, w, h, seed=3):
         d.line([(c, y0 - 2), (c + k * 6, y0 - 12 + abs(k) * 2)], "muted", 0.6)
     d.rect(c - 24, y1 + 8, 48, 10, "b", "ink", 0.9)
     d.line([(c - 16, y1 + 13), (c + 16, y1 + 13)], "muted", 0.6)
-    # ---- the picture: a graphite drawing
-    pencil_picture(d, x0 + 14, y0 + 14, w - 28, h - 28, seed)
+    # ---- the picture, in pen and ink by a free hand
+    pen_picture(d, x0 + 14, y0 + 14, w - 28, h - 28, scene, seed)
 
 
 def divider(d, c, P):
@@ -87,13 +91,13 @@ def unit(P):
             d.path(f"M{gx},62 c3,60 -3,120 0,180 c3,60 -3,120 0,180 c2,60 -2,140 0,200", "none", "deep", 0.6)
     for rt in ROWS_TOP:
         rh = 156 if rt != 544 else 144
-        d.rect(x0 + 28, rt, iw, 48, "url(#aoTop)", None)
-        d.rect(x0 + 28, rt, 30, rh, "url(#aoLeft)", None)
+        # Each shelf's shadow is hatching alone, no wash under it (R-BAKE-16): one deep set under the
+        # board above, fading down by line length, and one down the left side, fading right.
+        hatch(d, [(x0 + 28, rt), (xr - 28, rt), (xr - 28, rt + 22), (x0 + 28, rt + 22)], 4, ang=45, colour="hatch2",
+              wash=False, clean=True, tile=UW, feather=(0.85, 0, 1))
+        hatch(d, [(x0 + 28, rt + 22), (x0 + 44, rt + 22), (x0 + 44, rt + rh), (x0 + 28, rt + rh)], 4, ang=45, colour="hatch2",
+              wash=False, clean=True, tile=UW, feather=(0.8, 1, 0))
         d.rect(xr - 52, rt, 24, rh, "url(#cylR)", None, op=0.6)
-        d.rect(x0 + 28, rt, iw, 12 if rt == 58 else 14, "url(#hatch)", None)
-        d.rect(x0 + 28, rt, iw, 5, "url(#hatch2)", None)
-        d.rect(x0 + 28, rt, 8, rh, "url(#hatch)", None)
-        d.rect(x0 + 28, rt, 8, 30, "url(#hatch2)", None)
     for bt in BOARDS:
         d.rect(x0 + 24, bt, iw + 8, 14, "a")
         d.line([(x0 + 24, bt + 4), (xr - 24, bt + 4)], "ink", 0.8)
@@ -112,7 +116,6 @@ def unit(P):
         for fx in (7, 14, 21):
             x = px + fx
             d.path(f"M{x - 1.5},88 v574 a1.5,1.5 0 0 0 3,0 v-574 a1.5,1.5 0 0 0 -3,0Z", "c", "ink", 0.8)
-        d.rect(px, 72, 28, 604, "url(#cylR)", None)
         for fx in (7, 14, 21):
             d.line([(px + fx + 1, 90), (px + fx + 1, 660)], "hatch2", 0.7)
         d.rect(px + 22, 72, 6, 604, "url(#hatch)", None)
@@ -173,12 +176,10 @@ def glow():
 def table(P):
     d = D(P)
     # damask wallpaper with three detailed etchings above the desk
-    d.rect(60, 0, 1320, 286, "url(#damask)", None, op=0.9)
-    etching2(d, 230, 40, 150, 200, seed=7)
-    etching2(d, 720, 30, 250, 210, seed=11)
-    d.o.append('<g transform="translate(2420 0) scale(-1 1)">')
-    etching2(d, 1210, 40, 150, 200, seed=5)
-    d.o.append('</g>')
+    d.rect(60, 0, 1320, 286, "url(#damask)", None, op=0.5)          # quieter, so the pictures on it lead
+    etching2(d, 230, 40, 150, 200, "lighthouse", seed=7)
+    etching2(d, 720, 30, 250, 210, "harbour", seed=11)
+    etching2(d, 1210, 40, 150, 200, "windmill", seed=5)
     xs, sy, sk = DESK_SCONCES
     for wx in xs:
         scaled(d, wx, sy, sk, lambda wx=wx: sconce(d, wx, sy, P, lit=False))
@@ -302,6 +303,7 @@ def anchors():
             "rows": BOARDS,
             "run": [SX + RUN_INSET, SX + SWID - RUN_INSET],
             "plaque": list(PLAQUE),
+            "board": list(BOARD),
             "flames": wall_flames,
         },
         "library-desk": {
