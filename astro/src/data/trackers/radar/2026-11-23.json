@@ -1,0 +1,346 @@
+{
+  "meta": {
+    "lastUpdated": "2026-11-23",
+    "cadence": "daily",
+    "summary": "NVIDIA's SkillEvaluator asks three separate questions about an agent skill, and the first one needs no model at all.",
+    "note": "Backfilled on 2026-11-27: the run on this date could not reach the site. Picks, fit and verdicts are the run's own; stars, licence and last activity were read from GitHub on 2026-11-27."
+  },
+  "featuredRepo": "NVIDIA/SkillEvaluator",
+  "picks": [
+    {
+      "repo": "NVIDIA/SkillEvaluator",
+      "url": "https://github.com/NVIDIA/SkillEvaluator",
+      "what": "A command-line tool and CI template that checks agent skills in three tiers: static checks with no model key, overlap detection, and live agent runs with and without the skill.",
+      "language": "Python",
+      "license": "Apache-2.0",
+      "stars": 4607,
+      "lastActivity": "2026-11-26",
+      "area": "Agent skills, playbooks and their evaluation",
+      "fit": 5,
+      "fitWhy": "Its first tier is deterministic and keyless, which is how I want skill checks to work, and it targets the exact thing I build: skills that must load and fire.",
+      "verdict": "use",
+      "caution": "Its own docs call it experimental with no support guarantee. The live tier sends work to a hosted model provider and can cost money.",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "NVIDIA/SkillSpector",
+      "url": "https://github.com/NVIDIA/SkillSpector",
+      "what": "A security scanner for agent skills that looks for malicious patterns, prompt injection, data exfiltration and supply-chain risks before you install them.",
+      "language": "Python",
+      "license": "Apache-2.0",
+      "stars": 27907,
+      "lastActivity": "2026-11-25",
+      "area": "Agent skills, playbooks and their evaluation",
+      "fit": 4,
+      "fitWhy": "I treat every installable skill as code to review, and this automates the first pass of that review.",
+      "verdict": "use",
+      "caution": "Check what its dependency checks send to outside services before running it on private skills. Stars measure attention, not quality.",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "therandomsecurityguy/signet",
+      "url": "https://github.com/therandomsecurityguy/signet",
+      "what": "A registry for agents and skills with lifecycle states and signed, logged publication.",
+      "language": "TypeScript",
+      "license": "BSD-3-Clause",
+      "stars": 228,
+      "lastActivity": "2026-11-27",
+      "area": "Agent skills, playbooks and their evaluation",
+      "fit": 3,
+      "fitWhy": "Lifecycle states for skills are worth reading, though a server-based registry is more than a solo setup needs.",
+      "verdict": "study",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "benchflow-ai/skillsbench",
+      "url": "https://github.com/benchflow-ai/skillsbench",
+      "what": "A benchmark of tasks that measures whether skills actually help agents.",
+      "language": "PDDL",
+      "license": "Apache-2.0",
+      "stars": 1939,
+      "lastActivity": "2026-11-24",
+      "area": "Agent skills, playbooks and their evaluation",
+      "fit": 3,
+      "fitWhy": "Its task folders show what a checkable outcome for a skill can look like.",
+      "verdict": "study",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "EL4CTEO/fast-anything",
+      "url": "https://github.com/EL4CTEO/fast-anything",
+      "what": "A tool that profiles an app and ports only its hot functions to Rust, checked against recorded calls.",
+      "language": "Rust",
+      "license": "MIT",
+      "stars": 4417,
+      "lastActivity": "2026-11-27",
+      "area": "Coding-agent ecosystem",
+      "fit": 3,
+      "fitWhy": "The same shape as rust-anything, a few days younger.",
+      "verdict": "watch",
+      "caution": "Very young, with fast star growth. Stars measure attention, not quality.",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "diego3g/craft",
+      "url": "https://github.com/diego3g/craft",
+      "what": "Design skills that write a design brief and review screens against a design system.",
+      "language": "JavaScript",
+      "license": "unconfirmed",
+      "stars": 520,
+      "lastActivity": "2026-11-23",
+      "area": "Static-site and design tooling for an Astro site",
+      "fit": 3,
+      "fitWhy": "Design review against a system is close to my site work, but the review is prompt-driven.",
+      "verdict": "watch",
+      "caution": "GitHub reports no recognised licence (NOASSERTION). Installable skill: review before use.",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "pierridotite/mobile-agent-testers",
+      "url": "https://github.com/pierridotite/mobile-agent-testers",
+      "what": "Claude Code agents that test apps on phone simulators in CI.",
+      "language": "Python",
+      "license": "MIT",
+      "stars": 2587,
+      "lastActivity": "2026-11-26",
+      "area": "outside profile",
+      "fit": 2,
+      "fitWhy": "Interesting, but I do not build mobile apps.",
+      "verdict": "watch",
+      "foundVia": [
+        "github search"
+      ]
+    }
+  ],
+  "catalogue": [
+    {
+      "repo": "RunanywhereAI/trnrt",
+      "url": "https://github.com/RunanywhereAI/trnrt",
+      "what": "An open inference engine that serves one large open model on a single AWS Trainium2 machine through an OpenAI-compatible API.",
+      "area": "Inference engines and inference silicon",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "jmaczan/tiny-vllm",
+      "url": "https://github.com/jmaczan/tiny-vllm",
+      "what": "A teaching-sized LLM inference engine in C++ and CUDA that rebuilds the core ideas of vLLM.",
+      "area": "Inference engines and inference silicon",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "obsidianmd/pele",
+      "url": "https://github.com/obsidianmd/pele",
+      "what": "A fast renderer for Mermaid diagrams from the Obsidian team.",
+      "area": "Static-site and design tooling for an Astro site",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "ddkbs/sketchy",
+      "url": "https://github.com/ddkbs/sketchy",
+      "what": "A layout engine for AI-drawn diagrams: the model names the boxes and links, the engine places them, in a hand-drawn style.",
+      "area": "Static-site and design tooling for an Astro site",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "lightseekorg/tokenspeed",
+      "url": "https://github.com/lightseekorg/tokenspeed",
+      "what": "An LLM inference engine built around a state-machine scheduler and a registry of kernels.",
+      "area": "Inference engines and inference silicon",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "erkamyaman/rust-anything",
+      "url": "https://github.com/erkamyaman/rust-anything",
+      "what": "A tool that records what an app does, lets a coding agent rewrite it in Rust piece by piece, and replays the recording to prove each piece behaves the same.",
+      "area": "Coding-agent ecosystem",
+      "verdict": "study",
+      "firstSeen": "2026-11-22"
+    },
+    {
+      "repo": "alexeyw/lot-map",
+      "url": "https://github.com/alexeyw/lot-map",
+      "what": "A live map beside Claude Code that shows tool calls, hooks, skills and subagents as they run, locally.",
+      "area": "Coding-agent ecosystem",
+      "verdict": "study",
+      "firstSeen": "2026-11-22"
+    },
+    {
+      "repo": "janestreet/agent_skills",
+      "url": "https://github.com/janestreet/agent_skills",
+      "what": "A published set of agent skills from a large engineering firm.",
+      "area": "Agent skills, playbooks and their evaluation",
+      "verdict": "study",
+      "firstSeen": "2026-11-22"
+    },
+    {
+      "repo": "Dodaios/ste80-humanizer",
+      "url": "https://github.com/Dodaios/ste80-humanizer",
+      "what": "An agent skill that rewrites text toward Simplified Technical English and strips common AI tells.",
+      "area": "Agent skills, playbooks and their evaluation",
+      "verdict": "study",
+      "firstSeen": "2026-11-22"
+    },
+    {
+      "repo": "NVIDIA/SkillEvaluator",
+      "url": "https://github.com/NVIDIA/SkillEvaluator",
+      "what": "A command-line tool and CI template that checks agent skills in three tiers: static checks with no model key, overlap detection, and live agent runs with and without the skill.",
+      "area": "Agent skills, playbooks and their evaluation",
+      "verdict": "use",
+      "firstSeen": "2026-11-23"
+    },
+    {
+      "repo": "NVIDIA/SkillSpector",
+      "url": "https://github.com/NVIDIA/SkillSpector",
+      "what": "A security scanner for agent skills that looks for malicious patterns, prompt injection, data exfiltration and supply-chain risks before you install them.",
+      "area": "Agent skills, playbooks and their evaluation",
+      "verdict": "use",
+      "firstSeen": "2026-11-23"
+    },
+    {
+      "repo": "therandomsecurityguy/signet",
+      "url": "https://github.com/therandomsecurityguy/signet",
+      "what": "A registry for agents and skills with lifecycle states and signed, logged publication.",
+      "area": "Agent skills, playbooks and their evaluation",
+      "verdict": "study",
+      "firstSeen": "2026-11-23"
+    },
+    {
+      "repo": "benchflow-ai/skillsbench",
+      "url": "https://github.com/benchflow-ai/skillsbench",
+      "what": "A benchmark of tasks that measures whether skills actually help agents.",
+      "area": "Agent skills, playbooks and their evaluation",
+      "verdict": "study",
+      "firstSeen": "2026-11-23"
+    }
+  ],
+  "featured": [
+    {
+      "repo": "RunanywhereAI/trnrt",
+      "date": "2026-11-21",
+      "slug": "2026-11-21-trnrt"
+    },
+    {
+      "repo": "erkamyaman/rust-anything",
+      "date": "2026-11-22",
+      "slug": "2026-11-22-rust-anything"
+    },
+    {
+      "repo": "NVIDIA/SkillEvaluator",
+      "date": "2026-11-23",
+      "slug": "2026-11-23-skillevaluator"
+    }
+  ],
+  "seen": [
+    {
+      "repo": "RunanywhereAI/trnrt",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "jmaczan/tiny-vllm",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "obsidianmd/pele",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "ddkbs/sketchy",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "sybil-solutions/inference-optimisation-skill",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "lightseekorg/tokenspeed",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "erkamyaman/rust-anything",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "alexeyw/lot-map",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "janestreet/agent_skills",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "Dodaios/ste80-humanizer",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "shanselman/gputaskman",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "NiazMorshed2007/reanimate",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "BigPizzaV3/ClaudeMom",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "NVIDIA/SkillEvaluator",
+      "date": "2026-11-23"
+    },
+    {
+      "repo": "NVIDIA/SkillSpector",
+      "date": "2026-11-23"
+    },
+    {
+      "repo": "therandomsecurityguy/signet",
+      "date": "2026-11-23"
+    },
+    {
+      "repo": "benchflow-ai/skillsbench",
+      "date": "2026-11-23"
+    },
+    {
+      "repo": "EL4CTEO/fast-anything",
+      "date": "2026-11-23"
+    },
+    {
+      "repo": "diego3g/craft",
+      "date": "2026-11-23"
+    },
+    {
+      "repo": "pierridotite/mobile-agent-testers",
+      "date": "2026-11-23"
+    }
+  ],
+  "sourceStats": {
+    "github search": {
+      "checked": 3,
+      "candidates": 20,
+      "picks": 20,
+      "useful": 13
+    },
+    "web search": {
+      "checked": 3,
+      "candidates": 0,
+      "picks": 0,
+      "useful": 0
+    }
+  }
+}
