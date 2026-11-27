@@ -1,0 +1,305 @@
+/* The site search: a field in the bar's tools, and a notepad sheet that opens under the bar. The sheet is
+   the page's own paper with a hairline edge and the pixel button's hard step shadow; the chosen result
+   carries the nav's orange tab. Colours and sizes are tokens only. */
+
+/* The wrapper only holds the field and its sheet together; the field is the bar's own tool. */
+.ss {
+  display: contents;
+}
+
+.ss-open {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hf-space-2);
+  width: var(--pp-search-field-w);
+  height: var(--pp-nav-icon);
+  padding: 0 var(--hf-space-2) 0 var(--hf-space-3);
+  font-family: var(--pp-sans);
+  font-size: var(--pp-fs-caption);
+  color: var(--pp-ink-muted);
+  background: transparent;
+  border: 1px solid var(--pp-outline);
+  border-radius: var(--pp-radius-md);
+  cursor: pointer;
+  transition:
+    color var(--pa-motion-duration) ease,
+    border-color var(--pa-motion-duration) ease;
+}
+
+.ss-open:hover {
+  color: var(--pp-ink-strong);
+  border-color: var(--pp-ink-muted);
+}
+
+.ss-open:focus-visible,
+.ss-close:focus-visible,
+.ss-index:focus-visible {
+  outline: var(--pp-nav-tab) solid var(--pp-signal);
+  outline-offset: var(--pp-nav-tab);
+}
+
+.ss-glass {
+  flex: none;
+  width: var(--hf-space-4);
+  height: var(--hf-space-4);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.ss-word {
+  flex: 1;
+  text-align: left;
+}
+
+.ss kbd {
+  padding: 0 var(--hf-space-1);
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-micro);
+  color: var(--pp-ink-muted);
+  border: 1px solid var(--pp-rule);
+  border-radius: var(--pp-radius-sm);
+}
+
+/* The sheet. Native <dialog>, so it sits in the top layer, traps focus and closes on Esc. */
+.ss-sheet {
+  width: min(var(--pp-search-w), calc(100vw - 2 * var(--pp-pad)));
+  max-width: none;
+  margin: var(--pp-search-top) auto auto;
+  padding: 0;
+  color: var(--pp-ink);
+  background: var(--pp-ground);
+  border: 1px solid var(--pp-outline);
+  border-radius: var(--pp-radius-md);
+  box-shadow: var(--pp-shadow-step) var(--pp-shadow-step) 0 var(--pp-outline);
+}
+
+.ss-sheet::backdrop {
+  background: var(--nt-scrim);
+}
+
+.ss-sheet[open] {
+  animation: ss-rise var(--pa-motion-duration) var(--pp-ease-rise);
+}
+
+@keyframes ss-rise {
+  from {
+    opacity: 0;
+    transform: translateY(calc(-1 * var(--hf-space-2)));
+  }
+}
+
+.ss-form {
+  display: flex;
+  align-items: center;
+  gap: var(--hf-space-3);
+  padding: var(--hf-space-3) var(--hf-space-4);
+  border-bottom: 1px solid var(--pp-rule);
+}
+
+.ss-field {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--hf-space-3);
+  color: var(--pp-ink-muted);
+}
+
+.ss-field input {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--nt-hit);
+  padding: 0;
+  font-family: var(--pp-sans);
+  font-size: var(--pp-fs-lead);
+  color: var(--pp-ink-strong);
+  background: transparent;
+  border: 0;
+  outline: none;
+}
+
+.ss-field input:focus-visible {
+  outline: none;
+}
+
+/* The field's focus is the sheet's own top rule turning orange, not a ring inside the sheet. */
+.ss-form:focus-within {
+  border-bottom-color: var(--pp-signal);
+}
+
+.ss-field input::placeholder {
+  color: var(--pp-ink-muted);
+}
+
+.ss-field input::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+.ss-close {
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.ss-status {
+  margin: 0;
+  padding: var(--hf-space-3) var(--hf-space-4) var(--hf-space-1);
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-micro);
+  letter-spacing: var(--pp-tracking-micro);
+  text-transform: uppercase;
+  color: var(--pp-ink-muted);
+}
+
+.ss-results {
+  max-height: var(--pp-search-list-h);
+  margin: 0;
+  padding: 0 0 var(--hf-space-2);
+  overflow-y: auto;
+  list-style: none;
+}
+
+.ss-results:empty {
+  display: none;
+}
+
+.ss-link {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--hf-space-4);
+  padding: var(--hf-space-2) var(--hf-space-4);
+  color: var(--pp-ink);
+  text-decoration: none;
+}
+
+.ss-link::before {
+  content: '';
+  position: absolute;
+  top: var(--hf-space-2);
+  bottom: var(--hf-space-2);
+  left: 0;
+  width: var(--pp-nav-tab);
+  background: var(--pp-signal);
+  transform: scaleY(0);
+  transition: transform var(--pa-motion-duration) var(--pp-ease-rise);
+}
+
+.ss-option[aria-selected='true'] .ss-link {
+  background: var(--pp-face);
+}
+
+.ss-option[aria-selected='true'] .ss-link::before {
+  transform: scaleY(1);
+}
+
+.ss-name {
+  font-size: var(--pp-fs-body);
+  font-weight: var(--pp-w-label);
+  color: var(--pp-ink-strong);
+}
+
+.ss-name mark {
+  color: inherit;
+  background: transparent;
+  text-decoration: underline var(--pp-nav-tab) var(--pp-signal);
+  text-underline-offset: var(--hf-space-1);
+}
+
+.ss-path {
+  grid-column: 1;
+  overflow: hidden;
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-micro);
+  color: var(--pp-ink-muted);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ss-section {
+  grid-row: 1 / span 2;
+  grid-column: 2;
+  align-self: center;
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-micro);
+  letter-spacing: var(--pp-tracking-micro);
+  text-transform: uppercase;
+  color: var(--pp-ink-muted);
+}
+
+.ss-note {
+  grid-column: 1 / -1;
+  display: -webkit-box;
+  overflow: hidden;
+  margin-top: var(--hf-space-1);
+  font-size: var(--pp-fs-caption);
+  color: var(--pp-ink);
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* Browsing (nothing typed): every row is its own part of the site, so the part is not repeated. */
+.ss-results[data-browse] .ss-section {
+  display: none;
+}
+
+.ss-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--hf-space-4);
+  padding: var(--hf-space-3) var(--hf-space-4);
+  font-size: var(--pp-fs-caption);
+  color: var(--pp-ink-muted);
+  border-top: 1px solid var(--pp-rule);
+}
+
+.ss-keys kbd + kbd {
+  margin-left: var(--hf-space-1);
+}
+
+.ss-keys kbd:nth-of-type(3) {
+  margin-left: var(--hf-space-3);
+}
+
+.ss-index {
+  color: var(--pp-signal-text);
+  font-weight: var(--pp-w-label);
+}
+
+/* Under 1280 px the bar has no room for the field beside the theme and CV (at 1280 the tools zone is
+   284 px, the field and its neighbours 273 px), so the field folds to its glass. */
+@media (max-width: 1279px) {
+  .ss-open {
+    justify-content: center;
+    width: var(--pp-nav-icon);
+    padding: 0;
+  }
+
+  .ss-word,
+  .ss-open .ss-key {
+    display: none;
+  }
+}
+
+@media (max-width: 799px) {
+  .ss-keys {
+    display: none;
+  }
+
+  .ss-sheet {
+    margin-top: var(--hf-space-4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ss-sheet[open] {
+    animation: none;
+  }
+
+  .ss-link::before {
+    transition: none;
+  }
+}

@@ -3,6 +3,7 @@ import { HEADER_LINKS } from '../../data/home';
 import { IDENTITY } from '../../data/site';
 import Monogram from '../ui/Monogram.astro';
 import PixelButton from '../ui/PixelButton.astro';
+import SiteSearch from './SiteSearch.astro';
 
 interface Props {
   /** The page this is, by its lower-case nav label ('library', 'lab', ...). */
@@ -34,6 +35,7 @@ const { current } = Astro.props;
     </nav>
 
     <div class="tools">
+      <SiteSearch />
       <button class="icon theme" type="button" data-theme-toggle aria-label="Switch between light and dark theme">
         <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" /><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8" /></svg><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" /></svg>
       </button>
@@ -236,7 +238,7 @@ const { current } = Astro.props;
     display: none;
   }
 
-  /* Tools: theme and CV, one height. */
+  /* Tools: search, theme and CV, one height. */
   .tools {
     display: flex;
     align-items: center;
