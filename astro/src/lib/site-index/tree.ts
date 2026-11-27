@@ -56,6 +56,12 @@ export function buildTree(entries: readonly IndexEntry[]): TreeNode {
   return root;
 }
 
+/** The tree a reader browses: pages only. The files the site's code serves (the feed, token and figure data)
+ *  stay in the index, where the build checks that every route made something, but not in the tree. */
+export function pageTree(entries: readonly IndexEntry[]): TreeNode {
+  return buildTree(entries.filter((e) => e.kind === 'page'));
+}
+
 /** Every node, depth first, with its depth (the root is 0). */
 export function walk(node: TreeNode, depth = 0): { node: TreeNode; depth: number }[] {
   return [{ node, depth }, ...node.children.flatMap((child) => walk(child, depth + 1))];

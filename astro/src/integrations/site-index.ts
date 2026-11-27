@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import type { AstroIntegration } from 'astro';
 import { collect, type BuiltFile, type RouteInfo } from '../lib/site-index/collect';
 import { treeText } from '../lib/site-index/text';
-import { buildTree } from '../lib/site-index/tree';
+import { pageTree } from '../lib/site-index/tree';
 
 /** Where the index is served; the search and the /site-index/ page read it from here. */
 export const INDEX_JSON = 'site-index.json';
@@ -59,7 +59,7 @@ export default function siteIndex(): AstroIntegration {
           throw new Error(`site index: ${problems.length} problem(s), listed above`);
         }
         writeFileSync(join(root, INDEX_JSON), JSON.stringify(index));
-        writeFileSync(join(root, INDEX_TEXT), treeText(buildTree(index.entries)));
+        writeFileSync(join(root, INDEX_TEXT), treeText(pageTree(index.entries)));
         const pages = index.entries.filter((e) => e.kind === 'page').length;
         logger.info(`${INDEX_JSON}: ${pages} pages, ${index.entries.length - pages} files, from ${index.routes.length} route files`);
       },
