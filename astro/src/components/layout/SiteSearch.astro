@@ -1,0 +1,62 @@
+---
+import './site-search.css';
+
+/* The search in the bar. The field opens a sheet over the page; the results are read from the site
+   index the build writes (/site-index.json), so a new page is searchable the build it appears. */
+---
+
+<div class="ss" data-site-search>
+  <button
+    class="ss-open"
+    type="button"
+    data-search-open
+    aria-haspopup="dialog"
+    aria-expanded="false"
+    aria-controls="site-search"
+    aria-keyshortcuts="/ Control+K Meta+K"
+    aria-label="Search the site"
+  >
+    <svg class="ss-glass" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" /><path d="M15 15l5.5 5.5" /></svg>
+    <span class="ss-word" aria-hidden="true">Search</span>
+    <kbd class="ss-key" aria-hidden="true">/</kbd>
+  </button>
+
+  <dialog id="site-search" class="ss-sheet" aria-label="Search the site">
+    <form class="ss-form" method="dialog" role="search">
+      <label class="ss-field">
+        <svg class="ss-glass" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" /><path d="M15 15l5.5 5.5" /></svg>
+        <input
+          type="search"
+          name="q"
+          placeholder="Search pages, pieces and the lab"
+          autocomplete="off"
+          spellcheck="false"
+          role="combobox"
+          aria-label="Search the site"
+          aria-expanded="true"
+          aria-controls="ss-results"
+          aria-autocomplete="list"
+        />
+      </label>
+      <button class="ss-close" type="submit" value="close" aria-label="Close the search"><kbd>esc</kbd></button>
+    </form>
+    <p class="ss-status" data-search-status role="status" aria-live="polite"></p>
+    <ul id="ss-results" class="ss-results" role="listbox" aria-label="Pages"></ul>
+    <footer class="ss-foot">
+      <span class="ss-keys" aria-hidden="true"><kbd>↑</kbd><kbd>↓</kbd> move <kbd>enter</kbd> open</span>
+      <a class="ss-index" href="/site-index/">Browse the site index</a>
+    </footer>
+  </dialog>
+</div>
+
+<script>
+  import { mountSiteSearch } from './site-search';
+  let cleanup: (() => void) | undefined;
+  const mount = () => {
+    cleanup?.();
+    const root = document.querySelector<HTMLElement>('[data-site-search]');
+    cleanup = root ? mountSiteSearch(root) : undefined;
+  };
+  document.addEventListener('astro:page-load', mount);
+  document.addEventListener('astro:before-swap', () => cleanup?.());
+</script>

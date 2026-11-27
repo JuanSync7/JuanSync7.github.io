@@ -5,6 +5,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import rehypeCodeHang from './src/plugins/rehype-code-hang.mjs';
 import rehypeTableLabels from './src/plugins/rehype-table-labels.mjs';
+import siteIndex from './src/integrations/site-index.ts';
 
 // Addresses the site served before the library keep answering: each becomes a page that forwards
 // to the piece's library address. The list is frozen data, so a new piece never gets an old address.
@@ -23,6 +24,9 @@ export default defineConfig({
     react(),
     mdx(),
     sitemap({ filter: (page) => !page.includes('/figures/') && !page.includes('/lab/blueprints/check/') }),
+    // The site index (/site-index.json and the tree at /site-index/) is read from what the build made,
+    // so a new page or folder of pages is in it, and in the search, without being listed anywhere.
+    siteIndex(),
   ],
   output: 'static',
   // Code carries both Shiki themes as CSS variables, so the terminal window follows the page's

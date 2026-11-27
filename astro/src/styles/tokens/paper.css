@@ -199,6 +199,15 @@
   --pp-tracking-micro: 0.08em;
   --pp-foot-mark-h: 40px;
   --pp-foot-brand-w: 340px;
+  /* The site search: the field in the bar, and the sheet it opens under the bar. */
+  --pp-search-field-w: 148px;
+  --pp-search-w: 640px;
+  --pp-search-top: calc(var(--pp-nav-h) + var(--hf-space-4));
+  --pp-search-list-h: min(56vh, 480px);
+  /* The site index: how far each level of the tree steps in, and how wide the tree runs, so a page's
+     route file stays in reach of its name. */
+  --pp-index-indent: var(--hf-space-6);
+  --pp-index-w: 960px;
 
   /* Baked art: the palette every baked figure (a plate drawn ahead of time by a playbook's kernel,
      src/figures/plates/) is drawn in. The kernels read these declarations from this file and
