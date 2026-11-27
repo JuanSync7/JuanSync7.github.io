@@ -1,11 +1,11 @@
 import { ridge, type Pt } from './brush';
-import { hall, pagoda } from './inkbuild';
-import { pine } from './inkflora';
+import { pine, sapling } from './inkflora';
 import { chunkRng, type InkWorld } from './inkland';
 import { Ink, sample, swell, type Mark } from './inkpath';
+import { mountainTemple } from './inkshrine';
 import { stream } from './inkwater';
 import type { Noise2 } from './noise';
-import { between } from './rng';
+import { between, type Rng } from './rng';
 
 /** The mountain strips of an ink landscape: pale far ranges, and nearer ranges that carry
  *  temples, pagodas, ridge pines and streams. */
@@ -82,8 +82,38 @@ export function farChunk(w: InkWorld, noise: Noise2): (i: number) => Mark[] {
   };
 }
 
-/** Near ranges: a mountain with, by chance, a stream down a flank, a temple or pagoda on
- *  the ridge, and pines along it. */
+/** Forest on a mountain: a few pines on the ridge, then groves of saplings laid along the
+ *  contours (the ridge's own shape, lowered down the face) with foliage dots among them,
+ *  sparser and smaller toward the foot. Returns the forest's middle, for the pointer. */
+function forest(g: Ink, rng: Rng, top: readonly Pt[], base: number, u: number): Pt {
+  let [sx, sy, n] = [0, 0, 0];
+  for (let j = 1 + Math.floor(rng() * 4); j > 0; j--) {
+    const p = top[Math.floor(between(rng, 0.1, 0.9) * top.length)];
+    if (p) pine(g, rng, p[0], p[1] + 0.004 * u, between(rng, 0.015, 0.035) * u);
+  }
+  for (let grove = 3 + Math.floor(rng() * 4); grove > 0; grove--) {
+    const j0 = Math.floor(rng() * top.length * 0.85);
+    const reach = between(rng, 0.04, 0.6);
+    const thick = between(rng, 0.01, 0.035) * u;
+    for (let k = 0; k < 5 + rng() * 10; k++) {
+      const q = top[j0 + Math.floor(k * 0.7)];
+      if (!q) break;
+      // Two or three trees per step, stacked down the slope, so a grove is a clump, not a row.
+      for (let r = Math.floor(between(rng, 1, 3.5)); r > 0; r--) {
+        const y = q[1] + reach * (base - q[1]) + between(rng, -0.4, 1) * thick;
+        if (rng() < 0.15 || y > base - 0.012 * u) continue;
+        const x = q[0] + between(rng, -0.012, 0.012) * u;
+        sapling(g, rng, x, y, between(rng, 0.016, 0.036) * u * (1 - reach * 0.35));
+        if (rng() < 0.4) g.dab(x + between(rng, -0.02, 0.02) * u, y + 0.005 * u, 0.007 * u, 0.004 * u, rng());
+        [sx, sy, n] = [sx + x, sy + y, n + 1];
+      }
+    }
+  }
+  return n ? [sx / n, sy / n] : (top[Math.floor(top.length / 2)] ?? [0, 0]);
+}
+
+/** Near ranges: a mountain with, by chance, a stream down a flank, forest on its ridge and
+ *  faces, and a temple or pagoda set into the face or standing at its foot. */
 export function midChunk(w: InkWorld, noise: Noise2, base: number): (i: number) => Mark[] {
   const L = {
     span: 0.6 * w.u,
@@ -105,31 +135,12 @@ export function midChunk(w: InkWorld, noise: Noise2, base: number): (i: number) 
       stream(s, rng, p[0], p[1] + 0.03 * w.u, L.base + 0.004 * w.u, w.u);
       out.push(s.done('stream', 0.5, p[0], (p[1] + L.base) / 2, (L.base - p[1]) / 2));
     }
-    let temple = Infinity;
-    if (rng() < w.odds.temple) {
-      const p = at(0.3, 0.7);
-      const tower = rng() < w.odds.pagoda;
-      const s = (tower ? between(rng, 0.06, 0.08) : between(rng, 0.12, 0.16)) * w.u;
-      const foot = top.filter((q) => Math.abs(q[0] - p[0]) < s * 0.45).reduce((m, q) => Math.min(m, q[1]), p[1]);
-      const b = new Ink(noise);
-      const tall = tower
-        ? pagoda(b, p[0], foot, s, 5 + Math.floor(rng() * 3))
-        : hall(b, p[0], foot, s, rng() < 0.5 ? 1 : 2);
-      out.push(b.done(tower ? 'pagoda' : 'temple', 0.65, p[0], foot - tall / 2, Math.max(s, tall) * 0.6));
-      temple = p[0];
-    }
     const g = new Ink(noise);
-    const xs: number[] = [];
-    let ys = 0;
-    for (let n = 2 + Math.floor(rng() * 4); n > 0; n--) {
-      const p = at(0.15, 0.85);
-      if (Math.abs(p[0] - temple) < 0.1 * w.u) continue;
-      pine(g, rng, p[0], p[1] + 0.004 * w.u, between(rng, 0.035, 0.06) * w.u);
-      xs.push(p[0]);
-      ys += p[1];
-    }
-    const mx = xs.reduce((a, b) => a + b, 0) / Math.max(1, xs.length);
-    if (xs.length) out.push(g.done('pines', 0.5, mx, ys / Math.max(1, xs.length), 0.06 * w.u));
+    const c = forest(g, rng, top, L.base, w.u);
+    out.push(g.done('forest', 0.6, c[0], c[1], 0.08 * w.u));
+    // The temple comes after the forest, so it hides the trees behind it and stands in a grove.
+    const shrine = rng() < w.odds.temple ? mountainTemple(noise, rng, w, top, L.base) : null;
+    if (shrine) out.push(shrine);
     return out;
   };
 }

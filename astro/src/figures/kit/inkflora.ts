@@ -100,3 +100,37 @@ export function reeds(k: Ink, rng: Rng, x: number, y: number, s: number): void {
     );
   }
 }
+
+/** A tree too small for branches, for forests on a far slope: a short trunk under a cone of
+ *  three tiers (a conifer) or a few dabs of leaf (a broadleaf). Cheap, so a slope can hold dozens. */
+export function sapling(k: Ink, rng: Rng, x: number, y: number, s: number): void {
+  const lean = between(rng, -0.12, 0.12) * s;
+  k.stroke(
+    [
+      [x, y],
+      [x + lean, y - s],
+    ],
+    0.1 * s,
+    root,
+    0.2,
+  );
+  if (rng() < 0.55) {
+    for (let t = 0; t < 3; t++) {
+      const ty = y - s * (0.35 + t * 0.22);
+      const tw = s * (0.32 - t * 0.08);
+      k.stroke(
+        [
+          [x + lean * 0.5 - tw, ty + 0.06 * s],
+          [x + lean * 0.6, ty - 0.08 * s],
+          [x + lean * 0.5 + tw, ty + 0.06 * s],
+        ],
+        0.09 * s,
+        undefined,
+        0.3,
+      );
+    }
+  } else {
+    for (let d = 0; d < 7; d++)
+      k.dab(x + lean + between(rng, -0.28, 0.28) * s, y - s * between(rng, 0.6, 1.05), 0.12 * s, 0.07 * s, rng() * 3);
+  }
+}

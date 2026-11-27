@@ -9,11 +9,12 @@ import { noise2, type Noise2 } from '../kit/noise';
 import { between, pick } from '../kit/rng';
 
 /** An ink landscape after LingDong-'s shan-shui-inf, unrolling like a hand scroll without end:
- *  pale far ranges; nearer ranges with temples and pagodas on their ridges, pines along
- *  them and streams down their flanks; a lake, river or gorge with sampans, fishermen and
- *  boatmen; a near bank of pines, willows, rocks, bonsai and ponds. Each strip scrolls at its
- *  own depth. The moon or the setting sun is the signal. The pointer slows the scroll, as a
- *  hand holds a scroll to look, and the thing under it takes the signal. */
+ *  pale far ranges; nearer ranges wooded with groves, streams down their flanks, and temples
+ *  and pagodas on terraces cut into their faces, at their feet or on the near bank; a lake,
+ *  river or gorge with sampans, fishermen and boatmen; a near bank of pines, willows, rocks,
+ *  bonsai and ponds. Each strip scrolls at its own depth. The moon or the setting sun is the
+ *  signal. The pointer slows the scroll, as a hand holds a scroll to look, and the thing
+ *  under it takes the signal. */
 
 const SCENES = ['lake', 'river', 'gorge'] as const;
 type Scene = (typeof SCENES)[number];
@@ -66,7 +67,7 @@ const GROVE_WORDS: Record<TreeKind, string> = { pine: 'pines', leafy: 'broadleaf
 export default defineTemplate<P, S>({
   id: 'ink-mountain',
   title: 'Ink mountain',
-  idea: 'An endless ink landscape unrolling like a hand scroll, each strip at its own depth: temples on the ridges, boats on the water, trees and ponds on the near bank; the pointer holds the scroll and lights the thing under it.',
+  idea: 'An endless ink landscape unrolling like a hand scroll, each strip at its own depth: wooded mountains with temples set into them, boats on the water, trees and ponds on the near bank; the pointer holds the scroll and lights the thing under it.',
   style: 'ink',
   motion: 'ambient',
   answers: true,
@@ -91,7 +92,7 @@ export default defineTemplate<P, S>({
   },
   name: (p) => (p.light === 'moon' ? `moonlit ${p.scene}` : `${p.scene} at sunset`),
   alt: (p) =>
-    `An ink-brush landscape scrolling without end: pale far ranges, nearer ranges with temples and pagodas on their ridges, pines along them and streams winding down to a ${p.scene}, sampans with ${p.boats.includes('fisherman') ? 'fishermen' : 'boatmen'} on the water, and a near bank of ${[...new Set(p.trees)].map((t) => GROVE_WORDS[t]).join(' and ')}, rocks, bonsai and ponds with reeds. ${p.light === 'moon' ? 'A small orange moon outline hangs in the sky' : 'An orange setting sun sinks behind the far ranges'}.`,
+    `An ink-brush landscape scrolling without end: pale far ranges, nearer ranges wooded with groves of small trees and pines, temples and pagodas on terraces cut into their faces or standing at their feet, and streams winding down to a ${p.scene}, sampans with ${p.boats.includes('fisherman') ? 'fishermen' : 'boatmen'} on the water, and a near bank of ${[...new Set(p.trees)].map((t) => GROVE_WORDS[t]).join(' and ')}, rocks, bonsai and ponds with reeds. ${p.light === 'moon' ? 'A small orange moon outline hangs in the sky' : 'An orange setting sun sinks behind the far ranges'}.`,
   setup: ({ h, rng, params }) => {
     const noise = noise2(rng);
     const base = Math.floor(rng() * 0x7fffffff);
