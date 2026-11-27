@@ -17,3 +17,9 @@ package with `graphite_pencil/kernel` and `art_render/kernel`.
 | `penwash.flame(cx, cy, k, sgn)` | where a sconce candle's flame sits on the plate | for the manifest's anchors |
 | `penwash.crest(d, c, cy, P)`, `monogram(...)`, `laurel(...)` | the shield with the SJ mark and laurel | the logo keeps its own scaled weights |
 | `penwash.archive_box(d, x, base)`, `bookend(d, x, base)`, `book_stack(d, x, base)` | shelf fillers, foot on `base`, shadow falling right by `SHADOW` | drawn as their own sprite plates, rendered with no background so they keep their transparency |
+| `hatching.TONES` | the five tone tiers: (spacing, width, crossed), lighter is farther apart, darker closer and finer, only 5 crosses | the room's patterns (`hatch0`, `hatch`, `hatch2`) are tiers 1, 2 and 4 at tile-safe spacings |
+| `hatching.hatch(d, shape, tone, ang, hand, grade, feather, curve, clean, scale, dash, wash)` | explicit hatch lines clipped to a polygon by geometry, over a wash unless `wash=False` | `hand="ruled"` for built things, `"free"` for pictures; `grade` and `feather` make the gradient; `curve` bends lines over a round form |
+| `hatching.scumble(d, shape, n, hand)` | small groups of short marks turned their own ways, for a lit face that has depth but no shadow direction | ruled scumble only turns to the hatch angles |
+| `hatching.free_line`, `ellipse`, `crescent` | a breathing outline; polygons for round forms and the shadow side of one | |
+| `penpicture.pen_picture(d, x, y, w, h, scene, seed)` | a framed pen-and-ink scene: `lighthouse`, `harbour`, `windmill` | each scene names its far and near boxes in `BANDS` for P11 |
+| `penpicture.Pic` | a scene's surface: grid units in, plate units out; `shape`, `shade` (one angle, clean, feathered), `line`, `arc` | parts: `house`, `window`, `door`, `tree`, `rock`, `cloud`, `birds`, `water` |

@@ -1,7 +1,8 @@
 # Library art
 
 The library archive's two baked figures, `library-wall` and `library-desk`: the wall of binder
-shelves and the desk, in both themes, drawn as a pen-and-wash elevation with graphite pictures.
+shelves and the desk, in both themes, drawn as a pen-and-wash elevation (ruled) with pen-and-ink
+pictures (free hand) in its frames; the dark theme is the same drawing in chalk.
 They are figures like the live ones (CLAUDE.md, Figures rule 7): every colour comes from the
 `--pp-art-*` and paper tokens (`kernel/tokens.py` reads `src/styles/tokens/paper.css`), each is
 registered by the manifest `kernel/plate.py` writes into `src/figures/plates/`, pages show them
@@ -12,8 +13,8 @@ whose one source is the experience vault (`Playbooks/pen_and_wash`, `graphite_pe
 
 | Playbook | Covers | Check |
 |---|---|---|
-| `.claude/skills/pen-and-wash/` | the room: shelves, wall bays, desk, panels, crest | `checks/check_penwash.py` |
-| `.claude/skills/graphite-pencil/` | the framed pictures on the desk wall | `checks/check_graphite.py` |
+| `.claude/skills/pen-and-wash/` | the room (pen and wash, ruled) and the framed pictures on the desk wall (pen and ink, free hand) | `checks/check_penwash.py` (and `--selftest`) |
+| `.claude/skills/graphite-pencil/` | a graphite drawing, framed or a whole plate; none in the library now | `checks/check_graphite.py` |
 | `.claude/skills/art-render/` | what the page loads, level of detail, budgets | `checks/check_render.py` |
 
 `npm run library-art` draws both plates, runs every check, writes the 1x and 2x WebP into

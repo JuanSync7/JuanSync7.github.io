@@ -100,6 +100,12 @@
   cursor: pointer;
 }
 
+/* The shelf facing you stands over its neighbours, so its directory board, nailed in the bay it
+   shares with the next shelf, is not covered by that shelf's drawing. */
+.lib-unit[data-active] {
+  z-index: 1;
+}
+
 /* Placed by the wall plate's plaque anchor. */
 .lib-plaque {
   position: absolute;

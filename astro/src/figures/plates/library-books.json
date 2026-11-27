@@ -18,10 +18,10 @@
     }
   },
   "bytes": {
-    "light-1x": 1340,
-    "light-2x": 2472,
-    "dark-1x": 2354,
-    "dark-2x": 6198
+    "light-1x": 1310,
+    "light-2x": 2434,
+    "dark-1x": 2346,
+    "dark-2x": 6246
   },
   "tokens": [
     "--pp-art-a",

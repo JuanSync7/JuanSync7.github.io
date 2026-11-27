@@ -14,7 +14,7 @@ import { libraryShelves } from '../../data/library-shelves';
 const shelves = await libraryShelves();
 ---
 
-<NightPage title={`${LIBRARY.label} · Juan Kok`} description={LIBRARY_COPY.body}>
+<NightPage title={`${LIBRARY.label} · Juan Kok`} description={LIBRARY_COPY.body} room>
   <NightNav current="library" />
   <main>
     <section id="pieces" class="nt-wrap nt-section block">
@@ -25,6 +25,8 @@ const shelves = await libraryShelves();
         <a href={LIBRARY.lessons}>{LIBRARY_COPY.lessons}</a>
         <a href={LIBRARY_COPY.playbooks.href}>{LIBRARY_COPY.playbooks.label}</a>
       </nav>
+    </section>
+    <section class="room" aria-label="The archive">
       <LibraryArchive client:load shelves={shelves} />
       <noscript>
         {shelves.map((s) => (
@@ -40,6 +42,13 @@ const shelves = await libraryShelves();
 </NightPage>
 
 <style>
+  /* The archive takes the room's width, not the notepad's column, up to --pp-lib-view-max. */
+  .room {
+    max-width: var(--pp-lib-view-max);
+    margin: 0 auto;
+    padding: 0 var(--pp-lib-room-pad) var(--hf-space-16);
+  }
+
   .block {
     display: flex;
     flex-direction: column;

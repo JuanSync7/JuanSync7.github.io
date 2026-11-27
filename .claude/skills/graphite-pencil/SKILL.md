@@ -1,14 +1,16 @@
 ---
 name: graphite_pencil
-description: Use when a framed picture inside a baked figure for juansync.dev is drawn or changed in graphite pencil (a landscape, an etching on a wall), or when its lines read hard or its depth reads flat.
+description: Use when a drawing for juansync.dev is drawn or changed in graphite pencil, a framed picture or a whole baked plate, or when its lines read hard or its depth reads flat.
 # Reached through web-design-agent > Figures and drawings, not listed on its own.
 disable-model-invocation: true
 ---
 
 # Graphite pencil picture
 
-You draw a picture as graphite: depth from value, blended, with no hard line (R-BAKE-5). It sits inside a
-pen-and-wash plate (`pen_and_wash`) and is baked with it (`art_render`). The rules are in `references/rules.md` (generated
+You draw a picture as graphite: depth from value, blended, with no hard line (R-BAKE-5). It may be a framed
+picture inside a plate or a whole plate of its own; either way it is baked by `art_render`. Graphite is one medium
+of the one art system: same tokens, same light (upper left), same plate rules. The library's framed pictures
+are pen and ink now (R-BAKE-15); graphite is for a drawing asked for in pencil. The rules are in `references/rules.md` (generated
 from [[Notes/Decks/Baked art]]), the questions in `references/look.md`, the API in `references/kernel.md`. You change neither
 `kernel/` nor `checks/` to pass.
 

@@ -21,9 +21,10 @@ def defs(P, extra=""):
     def lines(pid, sp, col, w, ang):
         return (f'<pattern id="{pid}" width="{sp:.4f}" height="{sp:.4f}" patternUnits="userSpaceOnUse" patternTransform="rotate({ang})">'
                 f'<line x1="0" y1="-1" x2="0" y2="{sp + 1:.4f}" stroke="{col}" stroke-width="{w}" stroke-linecap="butt"/></pattern>')
+    # Two tiers at tile-safe spacings (hatching kernel TONES 2 and 4), the deeper closer and finer.
     return (f'<defs>'
-            + lines("hatch", s1, h, 0.75, 45)
-            + lines("hatch2", s2, h2, 0.7, 45)
+            + lines("hatch", s1, h, 0.7, 45)
+            + lines("hatch2", s2, h2, 0.55, 45)
             + f'<pattern id="xhatch" width="{s2:.4f}" height="{s2:.4f}" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">'
               f'<line x1="0" y1="-1" x2="0" y2="{s2 + 1:.4f}" stroke="{h2}" stroke-width="0.7"/>'
               f'<line x1="-1" y1="0" x2="{s2 + 1:.4f}" y2="0" stroke="{h}" stroke-width="0.6"/></pattern>'
