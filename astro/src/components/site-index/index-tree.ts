@@ -1,5 +1,5 @@
 import { loadIndex } from '../../lib/site-index/load';
-import { buildTree } from '../../lib/site-index/tree';
+import { pageTree } from '../../lib/site-index/tree';
 import type { SiteIndex, TreeNode } from '../../lib/site-index/types';
 
 /** A folder starts open near the top, and closed when it holds a long run of pieces from one route. */
@@ -56,9 +56,9 @@ function branch(node: TreeNode, depth: number, parent?: TreeNode): HTMLLIElement
 /** Counts for the line above the tree. */
 export function tally(index: SiteIndex): string {
   const pages = index.entries.filter((e) => e.kind === 'page').length;
-  const files = index.entries.length - pages;
-  const dynamic = index.routes.filter((r) => r.dynamic).length;
-  return `${pages} pages and ${files} files, from ${index.routes.length} route files (${dynamic} of them make a page per piece)`;
+  const routes = index.routes.filter((r) => r.kind === 'page');
+  const dynamic = routes.filter((r) => r.dynamic).length;
+  return `${pages} pages from ${routes.length} page files in src/pages (${dynamic} of them make a page per piece)`;
 }
 
 /** Draws the index into the page's tree host and wires its open-all and close-all buttons. */
@@ -72,7 +72,7 @@ export function mountIndexTree(root: HTMLElement): () => void {
   loadIndex().then(
     (index) => {
       if (controller.signal.aborted) return;
-      const tree = buildTree(index.entries);
+      const tree = pageTree(index.entries);
       // The site itself is the root folder, always open, so the top level hangs off it like any other.
       const top = el('ul', 'si-list si-root');
       const head = el('li', 'si-item');

@@ -5,7 +5,7 @@ import { collect, type BuiltFile, type RouteInfo } from '../../src/lib/site-inde
 import { labelOf } from '../../src/lib/site-index/read';
 import { marks, search } from '../../src/lib/site-index/search';
 import { treeText } from '../../src/lib/site-index/text';
-import { buildTree, walk } from '../../src/lib/site-index/tree';
+import { buildTree, pageTree, walk } from '../../src/lib/site-index/tree';
 
 const page = (title: string, extra = '') => `<html><head><title>${title}</title>${extra}</head><body></body></html>`;
 const route = (file: string, source: string, kind: RouteInfo['kind'] = 'page'): RouteInfo => ({
@@ -63,6 +63,10 @@ expect('a shared route is named on its folder', workshop?.sharedRoute === room.f
 const library = walk(tree).find(({ node }) => node.path === '/library/')?.node;
 expect('a folder of mixed routes names none under two', library?.sharedRoute === undefined);
 expect('a level is in name order', tree.children.map((c) => c.name).join() === 'library,rss.xml,workshop');
+const pages = pageTree(grown.index.entries);
+expect('the reader\'s tree holds pages only', pages.children.map((c) => c.name).join() === 'library,workshop');
+expect('a file stays in the index', grown.index.entries.some((e) => e.path === '/rss.xml'));
+expect('the text tree holds no file', !treeText(pages).includes('rss.xml'));
 expect('the new page is searchable', search(grown.index.entries, 'lathe')[0]?.entry.path === '/workshop/lathe/');
 expect('the text tree draws it', treeText(tree).includes('└── workshop/  [2 from src/pages/workshop/[tool].astro]'), treeText(tree));
 
