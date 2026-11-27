@@ -21,7 +21,7 @@ interface RangeSpec {
 }
 
 /** One mountain: hides what is behind it, a brushed ridge, its shading (kit/inkshade.ts), and
- *  inner folds that repeat the ridge lower down. Returns the ridge. */
+ *  nearer spurs standing in front of it. Returns the ridge. */
 function range(k: Ink, noise: Noise2, i: number, L: RangeSpec, w: InkWorld, folds: number): Pt[] {
   const lift = 0.5 + 0.5 * noise(i * 0.71, L.salt);
   const broad = 0.5 + 0.5 * noise(i * 0.53 + 4.2, L.salt * 0.5);
@@ -35,17 +35,24 @@ function range(k: Ink, noise: Noise2, i: number, L: RangeSpec, w: InkWorld, fold
   k.cover([[head[0], w.bottom], ...top, [tail[0], w.bottom]]);
   k.stroke(top, L.width, swell, 0.5, i + L.salt);
   hatch(k, noise, top, L.base, i + L.salt, w.u, folds > 0);
+  // Nearer ridges: spurs standing in front of the peak. Each takes a stretch of the ridge's own
+  // shape, lowered down the face, with both ends run down to the foot, so it is a hill of its
+  // own: it hides the face behind it, has its own brushed outline, and is shaded like the peak.
   for (let f = 1; f <= folds; f++) {
-    const a = Math.floor(top.length * (0.12 + 0.2 * f));
-    const part = top.slice(a, a + Math.floor(top.length * 0.35));
-    const drop = (L.base - (part[0]?.[1] ?? L.base)) * 0.3 * f;
-    k.stroke(
-      part.map((p): Pt => [p[0] + 0.01 * w.u * f, p[1] + drop]),
-      L.width * 0.6,
-      swell,
-      0.5,
-      i + f,
-    );
+    const a = Math.floor(top.length * (0.1 + 0.3 * (f - 1) + 0.05 * (1 + noise(i + f, 5.5))));
+    const part = top.slice(a, a + Math.floor(top.length * (0.3 + 0.075 * (1 + noise(i * 3 + f, 6.6)))));
+    const first = part[0];
+    if (part.length < 6 || !first) continue;
+    const drop = (L.base - first[1]) * (0.25 + 0.15 * f);
+    const spur = part.map((p, j): Pt => {
+      const v = j / (part.length - 1);
+      const y = p[1] + drop + 0.01 * w.u * f;
+      return [p[0] + 0.012 * w.u * f, y + (L.base - y) * Math.pow(Math.abs(2 * v - 1), 3)];
+    });
+    if (spur.some((p) => p[1] > L.base)) continue;
+    k.cover([...spur, ...[...spur].reverse().map((p): Pt => [p[0], L.base + 0.02 * w.u])]);
+    k.stroke(spur, L.width * 0.8, swell, 0.5, i + f);
+    hatch(k, noise, spur, L.base, i * 7 + f, w.u, true);
   }
   return top;
 }

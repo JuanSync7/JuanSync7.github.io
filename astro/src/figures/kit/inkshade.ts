@@ -4,14 +4,27 @@ import type { Noise2 } from './noise';
 import { between, type Rng } from './rng';
 
 /** Shading and atmosphere for ink mountains. The light comes from the upper left, so a face
- *  that falls away to the right is in shade: there the hemp-fibre strokes come in bundles of
- *  two or three, long and close, while a lit face gets a single short stroke now and then.
- *  A saddle in the ridge is a gully, a concave the light cannot reach, drawn as a crease of
- *  lines that gather as they go down. Far ranges get the same at half the length, plus the
- *  minute marks of distant trees along their ridges, and fog that cuts across them. */
+ *  that falls away to the right is in shade. Shade is built the way a brush builds it: many
+ *  short, broken strokes laid along the fall line of the slope, close together just under the
+ *  ridge and thinning out row by row toward the foot, so the face reads rough and dark rather
+ *  than striped. A lit face gets a few strokes just under its ridge. A saddle in the ridge is a
+ *  gully, a concave the light cannot reach, and gets the same short strokes packed into a
+ *  narrowing V. Far ranges get it all at half strength, plus the minute marks of distant trees
+ *  along their ridges, and fog that cuts across them. */
 
-/** Hatching for one mountain whose ridge is `top` and foot is `base`. `near` is the nearer
- *  range, with its full strokes and moss dots. */
+/** One short stroke from (x, y) down a fall line leaning `lean`, `len` long, bowed a little. */
+function dash(k: Ink, x: number, y: number, lean: number, len: number, bow: number): void {
+  const l = Math.hypot(lean, 1);
+  const [dx, dy] = [(lean / l) * len, len / l];
+  k.line([
+    [x, y],
+    [x + dx * 0.5 - dy * bow, y + dy * 0.5 + dx * bow],
+    [x + dx, y + dy],
+  ]);
+}
+
+/** Shading for one mountain whose ridge is `top` and foot is `base`. `near` is a nearer range,
+ *  with its full rows of strokes and moss dots. */
 export function hatch(
   k: Ink,
   noise: Noise2,
@@ -21,28 +34,26 @@ export function hatch(
   u: number,
   near: boolean,
 ): void {
-  const scale = near ? 1 : 0.5;
-  for (let j = 1; j < top.length - 1; j += near ? 2 : 3) {
-    const a = top[j - 1];
-    const b = top[j + 1];
-    const p = top[j];
+  const scale = near ? 1 : 0.55;
+  for (let j = 1; j < top.length - 1; j++) {
+    const [a, b, p] = [top[j - 1], top[j + 1], top[j]];
     if (!a || !b || !p) continue;
+    const depth = base - p[1];
+    if (depth < 0.03 * u) continue;
     const fall = (b[1] - a[1]) / Math.max(1e-6, b[0] - a[0]);
     const shade = fall > 0.05;
-    const n = noise(j * 0.9 + seed, 3.3);
-    if (shade ? n < -0.45 : j % (near ? 6 : 9) || n < 0) continue;
-    const depth = base - p[1];
-    const rough = Math.abs(noise(p[0] * 0.05, 7.7));
-    const len = depth * (shade ? 0.25 + 0.4 * rough : 0.08 + 0.12 * rough) * scale;
-    const lean = shade ? Math.min(fall, 2) * 0.22 : -0.15;
-    const sway = noise(p[0] * 0.03, 2.2) * 0.2;
-    const strokes = shade ? (near ? 3 : 2) : 1;
-    for (let s = 0; s < strokes; s++) {
-      const [ox, oy] = [s * 0.004 * u, s * 0.004 * u * Math.min(fall, 2)];
-      const l = len * (1 - s * 0.25);
-      k.line(sample(4, (v): Pt => [p[0] + ox + (lean + sway * v) * l * v, p[1] + 2 + oy + l * v]));
+    if (!shade && j % 3) continue;
+    const lean = shade ? Math.min(fall, 2) * 0.6 : -0.3;
+    const rows = shade ? (near ? 9 : 5) : near ? 2 : 1;
+    for (let r = 0; r < rows; r++) {
+      const n = noise(j * 0.7 + r * 3.1, seed);
+      // Each row down the face keeps fewer strokes, so the shade fades toward the foot.
+      if (n < -0.55 + r * (shade ? 0.1 : 0.3)) continue;
+      const reach = ((r + 0.2 + 0.5 * Math.abs(noise(j * 1.3, seed + r))) / rows) * (shade ? 0.6 : 0.15);
+      const len = (0.01 + 0.018 * Math.abs(n)) * u * scale * (1 - r * 0.06);
+      dash(k, p[0] + lean * reach * depth, p[1] + 2 + reach * depth, lean, len, n * 0.15);
     }
-    if (near && j % 10 === 1 && n > 0.1) k.dab(p[0], p[1] + 0.006 * u, 0.0045 * u, 0.0028 * u, n);
+    if (near && j % 10 === 1 && noise(j, seed + 9) > 0.1) k.dab(p[0], p[1] + 0.006 * u, 0.0045 * u, 0.0028 * u, j);
   }
   for (let j = 4; j < top.length - 4; j++) {
     const [p, l4, r4, l1, r1] = [top[j], top[j - 4], top[j + 4], top[j - 1], top[j + 1]];
@@ -50,16 +61,15 @@ export function hatch(
     const saddle = p[1] > l4[1] + 0.01 * u && p[1] > r4[1] + 0.01 * u && p[1] >= l1[1] && p[1] >= r1[1];
     if (!saddle) continue;
     const depth = (base - p[1]) * (0.35 + 0.3 * Math.abs(noise(j, seed + 1))) * scale;
-    for (let c = -2; c <= 2; c++)
-      k.line(
-        sample(
-          6,
-          (v): Pt => [
-            p[0] + c * 0.008 * u * (1 - v * 0.7) + Math.sin(v * 3 + c) * 0.004 * u,
-            p[1] + 2 + depth * v * (1 - Math.abs(c) * 0.12),
-          ],
-        ),
-      );
+    for (let r = 0; r < 10; r++) {
+      const v = r / 10;
+      const width = 0.03 * u * (1 - v * 0.8);
+      for (let c = 0; c < 4; c++) {
+        const n = noise(r * 1.7 + c * 4.3, seed + 2);
+        if (n < -0.2 + v * 0.5) continue;
+        dash(k, p[0] + n * width, p[1] + 2 + depth * v, n * 0.3, (0.01 + 0.01 * Math.abs(n)) * u * scale, n * 0.2);
+      }
+    }
   }
 }
 
