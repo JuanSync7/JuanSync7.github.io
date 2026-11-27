@@ -43,7 +43,8 @@ const PROPS: readonly PartKind[] = [
 const STONE: readonly PartKind[] = ['rock', 'mesa'];
 /** The masses one building is made of (a library's storeys, portico and clock tower). */
 const MASSES: readonly PartKind[] = ['storey', 'portico', 'clocktower'];
-/** Footprints are taken a little inside their outline, so parts may touch. */
+/** Footprints are taken a little inside their outline, so parts may touch. A solid drawing
+ *  (`kit/districtlayout.ts`) asks for 1: there a part poking into its neighbour is seen. */
 const SHRINK = 0.86;
 
 interface Box {
@@ -54,9 +55,13 @@ interface Box {
   c: number;
   s: number;
 }
-const boxOf = (p: Part): Box => {
+/** How far a part reaches either way across its width and its depth: its footprint by default. */
+export type Reach = (p: Part) => [number, number];
+const footprint: Reach = (p) => [p.w / 2, p.d / 2];
+const boxOf = (p: Part, shrink = SHRINK, reach: Reach = footprint): Box => {
   const r = p.rot ?? 0;
-  return { x: p.x, z: p.z, hw: (p.w / 2) * SHRINK, hd: (p.d / 2) * SHRINK, c: Math.cos(r), s: Math.sin(r) };
+  const [hw, hd] = reach(p);
+  return { x: p.x, z: p.z, hw: hw * shrink, hd: hd * shrink, c: Math.cos(r), s: Math.sin(r) };
 };
 /** The four corners of a footprint. */
 const corners = (b: Box): [number, number][] =>
@@ -138,6 +143,8 @@ export function separate(
   d: number,
   landmark?: Part,
   ways: readonly Way[] = [],
+  shrink = SHRINK,
+  reach: Reach = footprint,
 ): Part[] {
   const free = parts.filter((p) => (p.y ?? 0) > 0 || FLAT.includes(p.kind));
   const rank = (p: Part): number =>
@@ -150,14 +157,14 @@ export function separate(
     for (let k = 0; k < 6 && !ok; k++) {
       ok = true;
       for (const way of ways) {
-        const m = push(wayBox(way), boxOf(p));
+        const m = push(wayBox(way), boxOf(p, shrink, reach));
         if (!m) continue;
         [p.x, p.z, ok] = [p.x + m[0], p.z + m[1], false];
         break;
       }
       if (!ok) continue;
       for (const q of placed) {
-        const [bq, bp] = [boxOf(q), boxOf(p)];
+        const [bq, bp] = [boxOf(q, shrink, reach), boxOf(p, shrink, reach)];
         if (meant(q, p, bq, bp)) continue;
         const m = push(bq, bp);
         if (!m) continue;

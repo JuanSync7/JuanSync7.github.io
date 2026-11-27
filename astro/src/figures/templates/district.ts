@@ -1,87 +1,55 @@
+import { OrthographicCamera, type InstancedMesh } from 'three';
+import { defineThreeFigure } from '../defineThree';
 import { defineTemplate } from '../defineTemplate';
-import { project, type Camera, type ScreenPoint, type Vec3 } from '../kit/camera';
-import { bodyOf, type District } from '../kit/city';
-import { rotors, turning } from '../kit/citylife';
-import { hubLevel } from '../kit/hub';
-import { DAM_BOARD, hydro } from '../kit/hydro';
-import { ink } from '../kit/ink';
-import { island, size, type Island } from '../kit/islands';
-import { library } from '../kit/library';
-import { follow } from '../kit/motion';
-import { outlines } from '../kit/outlines';
-import { separate } from '../kit/separate';
-import { between, mulberry32, pick } from '../kit/rng';
-import { along } from '../kit/shapes';
-import { MODELS, onLoop } from '../kit/traffic';
+import { clear } from '../kit/draw';
+import { DRAW_IN, drawIn, drawnAt } from '../kit/drawin';
+import type { Drawing } from '../kit/draft';
+import {
+  aimDistrict,
+  BOARDS,
+  districtOf,
+  drawDistrict,
+  moveDistrict,
+  pulsesOf,
+  wireFor,
+  type P,
+} from '../kit/districtscene';
+import { lookFrom, type Plan } from '../kit/districtsketch';
+import { drawWire } from '../kit/districtwire';
+import { between, pick } from '../kit/rng';
 
-/** One board of the home page's archipelago, drawn on its own as a wireframe district in
- *  parallel projection: a housing street, a datacentre, the library by its lake, an open-pit
- *  mine, a smelting line, the car line, a press shop, the power station, the geothermal
- *  field, the dam, the exchange or the airport. Solids hide what stands behind them; teal
- *  flows along the pipes and power lines; vehicles drive the roads. The pointer turns the
- *  board. */
+/** One board of the home page's archipelago, drawn on its own as a "3D isometric hidden-line
+ *  drawing, monoline" (R-FIG-28): a housing street, a datacentre, the library by its lake, an
+ *  open-pit mine, a smelting line, the car line, a press shop, the power station, the geothermal
+ *  field, the dam, the exchange or the airport. Every building is a solid with its windows and
+ *  doors on its faces (`kit/districtsketch.ts`), rock and hills are one terrain surface
+ *  (`kit/terrain.ts`), trees are turned from their profiles (`kit/treesolids.ts`), and the layout
+ *  keeps every solid out of every other (`kit/districtlayout.ts`). The camera is the seed's, and
+ *  the lines are worked out for it once, so it sees only what faces it. Flow runs along the
+ *  pipes and lines in the signal and vehicles drive the roads. Without WebGL it falls back to the
+ *  earlier wireframe. */
 
-const BOARDS = [
-  ['hub', 5, 'housing'],
-  ['hub', 1, 'datacentre'],
-  ['hub', 3, 'library'],
-  ['mine', 2, 'open pit'],
-  ['mine', 1, 'smelting line'],
-  ['foundry', 1, 'car line'],
-  ['foundry', 0, 'press shop'],
-  ['energy', 2, 'power station'],
-  ['energy', 1, 'geothermal field'],
-  ['energy', 0, 'dam'],
-  ['exchange', 1, 'exchange'],
-  ['airport', 0, 'airport'],
-] as const;
-type Board = (typeof BOARDS)[number];
+/** The boards whose generator lays rock and hills (`kit/mining.ts`, `kit/hydro.ts`). */
+const ROCKY: readonly string[] = ['open pit', 'smelting line', 'dam'];
 
-interface P {
-  board: Board;
-  salt: number;
-  yaw: number;
-  pitch: number;
-}
-interface Piece {
-  segs: number[];
-  /** Footprint centre, for back-to-front order; and whether it is a solid that hides. */
-  at: Vec3;
-  solid: boolean;
-  /** The district's landmark, its tallest part: the one outlined in the signal. */
-  mark: boolean;
-}
 interface S {
-  city: District;
-  pieces: Piece[];
-  w: number;
-  d: number;
-  yaw: number;
-}
-
-/** The convex hull of projected points (monotone chain), to fill a solid's silhouette. */
-function hull(pts: ScreenPoint[]): ScreenPoint[] {
-  const s = [...pts].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
-  const cross = (o: ScreenPoint, a: ScreenPoint, b: ScreenPoint): number =>
-    (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
-  const half = (list: ScreenPoint[]): ScreenPoint[] => {
-    const out: ScreenPoint[] = [];
-    for (const p of list) {
-      while (out.length >= 2 && cross(out[out.length - 2] ?? p, out[out.length - 1] ?? p, p) <= 0) out.pop();
-      out.push(p);
-    }
-    return out.slice(0, -1);
-  };
-  return [...half(s), ...half([...s].reverse())];
+  plan: Plan;
+  draw: Drawing;
+  spots: InstancedMesh | undefined;
+  drawn: number;
+  fit: string;
+  frame: number;
+  dpr: () => number;
 }
 
 export default defineTemplate<P, S>({
   id: 'district',
   title: 'District',
-  idea: 'One working district of the archipelago on its own board, drawn in wireframe: housing, a datacentre, a mine, a smelting line, a car line, a power station, geothermal wells, a dam, an exchange or an airport, with its pipes and roads alive.',
-  style: 'wireframe',
+  idea: 'One working district of the archipelago on its own board, drawn as a hidden-line isometric of solid buildings, terrain and trees: housing, a datacentre, a mine, a smelting line, a car line, a power station, geothermal wells, a dam, an exchange or an airport, with its pipes and roads alive.',
+  style: 'three',
+  renderer: defineThreeFigure,
   motion: 'ambient',
-  answers: true,
+  answers: false,
   aspect: 2,
   grammar: (rng) => ({
     board: pick(rng, BOARDS),
@@ -91,111 +59,46 @@ export default defineTemplate<P, S>({
   }),
   name: (p) => p.board[2],
   alt: (p) =>
-    `A wireframe ${p.board[2]} on a thin board, seen from above at an angle, its buildings outlined in grey with teal flowing along its pipes and lines, and small vehicles moving on its roads.`,
-  setup: ({ params }) => {
-    const [kind, k] = params.board;
-    const rng = mulberry32(params.salt);
-    // The library and the dam have boards of their own, richer than their levels in the stack.
-    const name = params.board[2];
-    const city =
-      name === 'library'
-        ? library(rng)
-        : name === 'dam'
-          ? hydro(rng)
-          : kind === 'hub'
-            ? hubLevel(k, rng)
-            : island(kind as Island, k, rng);
-    const [w, d] = name === 'dam' ? DAM_BOARD : kind === 'hub' ? [2.5, 1.5] : size(kind as Island, k);
-    // Nothing stands in anything else unless it is meant to.
-    const parts = separate(city.parts, w, d, city.landmark);
-    const mark = city.landmark
-      ? parts.find((p) => p.x === city.landmark?.x && p.kind === city.landmark?.kind)
-      : undefined;
-    const top = Math.max(...parts.map((p) => (p.y ?? 0) + p.h));
-    const pieces = parts.map((p) => ({
-      mark: mark ? p === mark : (p.y ?? 0) + p.h === top,
-      segs: outlines([p]),
-      at: [p.x, p.y ?? 0, p.z] as Vec3,
-      solid: bodyOf(p.kind) !== null,
-    }));
-    return { city: { ...city, parts }, pieces, w, d, yaw: params.yaw };
-  },
-  draw: ({ ctx, w, h, t, dt, pointer, hover, still, params, state }) => {
-    const target = params.yaw + (pointer.active ? (pointer.x - 0.5) * 1.2 * hover : Math.sin(t * 0.15) * 0.12);
-    state.yaw = still ? target : follow(state.yaw, target, dt, 3);
-    const scale = Math.min(w / (state.w * 1.02), h / (state.d * 1.25));
-    const cam: Camera = { yaw: state.yaw, pitch: params.pitch, dist: Infinity, scale, cx: w / 2, cy: h * 0.55 };
-    const P = (x: number, y: number, z: number): ScreenPoint => project(cam, x, y, z);
-    const stroke = (segs: readonly number[], style: string): void => {
-      ctx.strokeStyle = style;
-      ctx.beginPath();
-      for (let i = 0; i < segs.length; i += 6) {
-        const a = P(segs[i] ?? 0, segs[i + 1] ?? 0, segs[i + 2] ?? 0);
-        const b = P(segs[i + 3] ?? 0, segs[i + 4] ?? 0, segs[i + 5] ?? 0);
-        ctx.moveTo(a[0], a[1]);
-        ctx.lineTo(b[0], b[1]);
-      }
-      ctx.stroke();
+    `An isometric line drawing of a ${p.board[2]} on a thin board, seen from above at an angle: solid buildings with their windows and doors${ROCKY.includes(p.board[2]) ? ', rock and hills as one contoured ground' : ''}, rounded trees, each hiding what stands behind it, flow running along its pipes and lines, and small vehicles driving its roads.`,
+  build: ({ scene, renderer, onDispose, params }) => {
+    const plan = districtOf(params.board, params.salt);
+    const draw = drawDistrict(plan, lookFrom(params.yaw, params.pitch), onDispose);
+    scene.add(draw.root);
+    const n = pulsesOf(plan);
+    return {
+      plan,
+      draw,
+      spots: n ? draw.spots(n) : undefined,
+      drawn: 0,
+      fit: '',
+      frame: -1,
+      dpr: () => renderer.getPixelRatio(),
     };
-    // The board: a plate, its traces painted on it.
-    const [hw, hd] = [state.w / 2, state.d / 2];
-    const corners = [P(-hw, 0, -hd), P(hw, 0, -hd), P(hw, 0, hd), P(-hw, 0, hd)];
-    ctx.fillStyle = ink.panel(0.6);
-    ctx.beginPath();
-    corners.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
-    ctx.closePath();
-    ctx.fill();
-    ctx.strokeStyle = ink.line(0.35);
-    ctx.stroke();
-    stroke(
-      state.city.traces.flatMap(([a, b, c, d]) => [a, 0, b, c, 0, d]),
-      ink.line(0.14),
-    );
-    // Parts back to front; a solid's silhouette is filled first, so it hides what is behind.
-    const order = state.pieces
-      .map((p) => ({ p, depth: P(p.at[0], p.at[1], p.at[2])[2] }))
-      .sort((a, b) => a.depth - b.depth);
-    for (const { p } of order) {
-      if (p.solid) {
-        const pts: ScreenPoint[] = [];
-        for (let i = 0; i < p.segs.length; i += 3) pts.push(P(p.segs[i] ?? 0, p.segs[i + 1] ?? 0, p.segs[i + 2] ?? 0));
-        ctx.fillStyle = ink.ground();
-        ctx.beginPath();
-        hull(pts).forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
-        ctx.closePath();
-        ctx.fill();
-      }
-      stroke(p.segs, p.mark ? ink.signal(0.9) : ink.line(0.7));
+  },
+  update: (f) => {
+    const cam = f.selectCamera('orthographic');
+    if (!(cam instanceof OrthographicCamera)) return;
+    const s = f.state;
+    const size = `${f.w}x${f.h}x${s.dpr()}`;
+    if (size !== s.fit) {
+      s.fit = size;
+      aimDistrict(cam, s.plan, lookFrom(f.params.yaw, f.params.pitch), f.w, f.h);
+      s.draw.fit(f.w, f.h, s.dpr());
     }
-    stroke(rotors(state.city.parts, t), ink.line(0.55));
-    stroke(turning(state.city.parts, t, state.yaw), ink.line(0.7));
-    // Teal flow: the pipes and lines, a pulse running along each.
-    const pipes = state.city.pipes ?? [];
-    stroke(
-      pipes.flatMap((q) => q.slice(1).flatMap((b, i) => [...(q[i] ?? b), ...b])),
-      ink.signal(0.55),
-    );
-    ctx.fillStyle = ink.signal(0.95);
-    pipes.forEach((q, i) => {
-      const [x, y] = P(...along(q, (t * 0.3 + i * 0.37) % 1));
-      ctx.fillRect(Math.round(x) - 1.5, Math.round(y) - 1.5, 3, 3);
-    });
-    // Vehicles on the roads, in the same wire as the buildings.
-    for (const loop of state.city.roads ?? [])
-      for (let n = 0; n < 2; n++) {
-        const [at, heading] = onLoop(loop, (t * 0.05 + n / 2) % 1);
-        const m = MODELS[params.board[0] === 'mine' ? 'hauler' : 'car'];
-        const [c, s] = [Math.cos(heading), Math.sin(heading)];
-        const k = 0.07;
-        const segs = m.map((v, i) =>
-          i % 3 === 0
-            ? at[0] + (v * c - (m[i + 2] ?? 0) * s) * k
-            : i % 3 === 1
-              ? at[1] + v * k
-              : at[2] + ((m[i - 2] ?? 0) * s + v * c) * k,
-        );
-        stroke(segs, ink.soft(0.85));
-      }
-    return pointer.active ? params.board[2] : 'rest';
+    // The board draws itself in when first seen; then the traffic and the flow run.
+    if (s.drawn < 1) {
+      s.drawn = drawnAt(f.t, DRAW_IN.hero);
+      drawIn(s.draw.root, s.drawn);
+      if (s.spots) s.spots.visible = s.drawn >= 1;
+    }
+    moveDistrict(s.draw, s.plan, s.spots, f.t);
+    // Redrawn at 30 frames a second, which the eye reads as smooth at this size.
+    const frame = Math.floor(f.t * 30);
+    f.renderWhen(f.still || frame !== s.frame);
+    s.frame = frame;
+  },
+  fallback: ({ ctx, w, h, t, params }) => {
+    clear(ctx, w, h);
+    drawWire(ctx, wireFor(params), w, h, t, params.yaw, params.pitch);
   },
 });
