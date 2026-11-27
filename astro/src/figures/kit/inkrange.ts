@@ -1,9 +1,10 @@
 import { ridge, type Pt } from './brush';
 import { pine, sapling } from './inkflora';
 import { chunkRng, type InkWorld } from './inkland';
-import { Ink, sample, swell, type Mark } from './inkpath';
+import { Ink, swell, type Mark } from './inkpath';
 import { mountainTemple } from './inkshrine';
-import { stream } from './inkwater';
+import { river } from './inkriver';
+import { distant, fog, hatch } from './inkshade';
 import type { Noise2 } from './noise';
 import { between, type Rng } from './rng';
 
@@ -19,8 +20,8 @@ interface RangeSpec {
   salt: number;
 }
 
-/** One mountain: hides what is behind it, a brushed ridge, dry strokes under it, and inner
- *  folds that repeat the ridge lower down. Returns the ridge. */
+/** One mountain: hides what is behind it, a brushed ridge, its shading (kit/inkshade.ts), and
+ *  inner folds that repeat the ridge lower down. Returns the ridge. */
 function range(k: Ink, noise: Noise2, i: number, L: RangeSpec, w: InkWorld, folds: number): Pt[] {
   const lift = 0.5 + 0.5 * noise(i * 0.71, L.salt);
   const broad = 0.5 + 0.5 * noise(i * 0.53 + 4.2, L.salt * 0.5);
@@ -33,23 +34,7 @@ function range(k: Ink, noise: Noise2, i: number, L: RangeSpec, w: InkWorld, fold
   if (!head || !tail) return top;
   k.cover([[head[0], w.bottom], ...top, [tail[0], w.bottom]]);
   k.stroke(top, L.width, swell, 0.5, i + L.salt);
-  // Hemp-fibre cun strokes run down each face, between the ridge's normal and straight down,
-  // with gaps where the noise leaves mist; moss dots sit along the nearer ridges.
-  const every = folds ? 2 : 4;
-  top.forEach((p, j) => {
-    const n = noise(j * 0.9 + i, L.salt + 0.5);
-    if (j % every || n < -0.25) return;
-    const a = top[j - 1] ?? p;
-    const b = top[j + 1] ?? p;
-    const tl = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
-    const nx = (-(b[1] - a[1]) / tl) * (b[0] > a[0] ? -1 : 1);
-    const len = (L.base - p[1]) * (0.12 + 0.4 * Math.abs(noise(p[0] * 0.05, 7.7)));
-    const dx = nx * 0.45;
-    const sway = noise(p[0] * 0.03, 2.2) * 0.25;
-    k.line(sample(4, (u): Pt => [p[0] + (dx + sway * u) * len * u, p[1] + 2 + len * u * (0.9 - 0.2 * Math.abs(dx))]));
-    if (folds && j % 5 === 0 && n > 0)
-      k.dab(p[0] + nx * 0.004 * w.u, p[1] + 0.006 * w.u, 0.0045 * w.u, 0.0028 * w.u, n);
-  });
+  hatch(k, noise, top, L.base, i + L.salt, w.u, folds > 0);
   for (let f = 1; f <= folds; f++) {
     const a = Math.floor(top.length * (0.12 + 0.2 * f));
     const part = top.slice(a, a + Math.floor(top.length * 0.35));
@@ -65,7 +50,7 @@ function range(k: Ink, noise: Noise2, i: number, L: RangeSpec, w: InkWorld, fold
   return top;
 }
 
-/** Far ranges: pale, few strokes, nothing on them. */
+/** Far ranges: pale, half-length shading, and the minute marks of distant trees. */
 export function farChunk(w: InkWorld, noise: Noise2): (i: number) => Mark[] {
   const L = {
     span: 0.75 * w.u,
@@ -77,7 +62,7 @@ export function farChunk(w: InkWorld, noise: Noise2): (i: number) => Mark[] {
   };
   return (i) => {
     const k = new Ink(noise);
-    range(k, noise, i, L, w, 0);
+    distant(k, noise, range(k, noise, i, L, w, 0), i, w.u);
     return [k.done(null, 0.24, 0, 0, 0)];
   };
 }
@@ -130,10 +115,13 @@ export function midChunk(w: InkWorld, noise: Noise2, base: number): (i: number) 
     const out = [k.done(null, 0.45, 0, 0, 0)];
     const at = (lo: number, hi: number): Pt => top[Math.floor(between(rng, lo, hi) * top.length)] ?? [0, 0];
     if (rng() < w.odds.stream) {
-      const p = rng() < 0.5 ? at(0.12, 0.28) : at(0.72, 0.88);
-      const s = new Ink(noise);
-      stream(s, rng, p[0], p[1] + 0.03 * w.u, L.base + 0.004 * w.u, w.u);
-      out.push(s.done('stream', 0.5, p[0], (p[1] + L.base) / 2, (L.base - p[1]) / 2));
+      // A river rises in the lowest saddle of the middle of the ridge, or failing one, on a flank.
+      const mid = top.slice(Math.floor(top.length * 0.25), Math.floor(top.length * 0.75));
+      const sad = mid.filter(
+        (q, j) => j > 2 && j < mid.length - 3 && q[1] >= (mid[j - 3]?.[1] ?? 0) && q[1] >= (mid[j + 3]?.[1] ?? 0),
+      );
+      const p = sad.reduce<Pt | null>((m, q) => (!m || q[1] > m[1] ? q : m), null) ?? at(0.15, 0.3);
+      out.push(river(new Ink(noise), rng, p[0], p[1] + 0.02 * w.u, L.base + 0.004 * w.u, w.u));
     }
     const g = new Ink(noise);
     const c = forest(g, rng, top, L.base, w.u);
@@ -142,5 +130,15 @@ export function midChunk(w: InkWorld, noise: Noise2, base: number): (i: number) 
     const shrine = rng() < w.odds.temple ? mountainTemple(noise, rng, w, top, L.base) : null;
     if (shrine) out.push(shrine);
     return out;
+  };
+}
+
+/** Fog across the far ranges, a strip of its own between them and the near ranges. */
+export function fogChunk(w: InkWorld, noise: Noise2, base: number): (i: number) => Mark[] {
+  const span = 0.9 * w.u;
+  return (i) => {
+    const k = new Ink(noise);
+    fog(k, chunkRng(base, 5, i), i * span, span, w.water - 0.42 * w.u, w.water - 0.1 * w.u, w.u);
+    return [k.done(null, 0.14, 0, 0, 0)];
   };
 }

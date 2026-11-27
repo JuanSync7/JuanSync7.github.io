@@ -3,7 +3,7 @@ import { root, sample, type Ink } from './inkpath';
 import { between, type Rng } from './rng';
 
 /** Water in ink: mostly bare paper, said with a few ripple lines that lengthen as they come
- *  near; a sampan with its crew; a stream winding down a valley to the river. */
+ *  near; a sampan with its crew; a fish under the surface. */
 
 export type BoatKind = 'fisherman' | 'boatman' | 'sampan';
 
@@ -91,25 +91,21 @@ export function boat(k: Ink, kind: BoatKind, x: number, y: number, s: number): v
   ]);
 }
 
-/** A stream winding from (x0, y0) high in a valley down to the river at y1, widening as it
- *  comes down. Its banks are hairlines; the paper between them is water. */
-export function stream(k: Ink, rng: Rng, x0: number, y0: number, y1: number, u: number): void {
-  const drift = between(rng, -0.12, 0.12) * u;
-  const swing = between(rng, 0.015, 0.035) * u;
-  const phase = between(rng, 0, 6);
-  const mid = sample(24, (v) => [x0 + drift * v + Math.sin(v * 7 + phase) * swing * v, y0 + (y1 - y0) * v]);
-  const half = (v: number): number => (0.002 + 0.02 * v * v) * u;
-  const left = mid.map((p, i): Pt => [p[0] - half(i / 24), p[1]]);
-  const right = mid.map((p, i): Pt => [p[0] + half(i / 24), p[1]]);
-  k.cover([...left, ...[...right].reverse()]);
-  k.stroke(left, 0.006 * u, root, 0.3);
-  k.stroke(right, 0.006 * u, root, 0.3);
-  for (let j = 14; j < 24; j += 3) {
-    const p = mid[j];
-    if (p)
-      k.line([
-        [p[0] - half(j / 24) * 0.5, p[1]],
-        [p[0] + half(j / 24) * 0.4, p[1]],
-      ]);
-  }
+/** A fish just under the surface, `s` long, heading `dir` (1 right, -1 left): a body that
+ *  swells behind the head, a forked tail and two small fins. */
+export function fish(k: Ink, x: number, y: number, s: number, dir: number, bend: number): void {
+  const body = sample(8, (v): Pt => [x + dir * (v - 0.5) * s, y + Math.sin(v * Math.PI) * bend * s]);
+  k.stroke(body, 0.26 * s, (t) => Math.pow(Math.sin(Math.pow(t, 0.75) * Math.PI), 0.8), 0.1);
+  const tail = body[0] ?? [x, y];
+  for (const sd of [-1, 1])
+    k.stroke(
+      [
+        [tail[0], tail[1]],
+        [tail[0] - dir * 0.2 * s, tail[1] + sd * 0.13 * s],
+      ],
+      0.07 * s,
+      root,
+      0.1,
+    );
+  for (const sd of [-1, 1]) k.dab(x + dir * 0.12 * s, y + sd * 0.12 * s, 0.07 * s, 0.025 * s, sd * dir * 0.6);
 }

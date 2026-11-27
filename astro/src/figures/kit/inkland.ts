@@ -3,7 +3,8 @@ import { leafy, pine, reeds, willow } from './inkflora';
 import { bonsai, pond, rock } from './inkgarden';
 import { Ink, swell, type Mark } from './inkpath';
 import { bankTemple } from './inkshrine';
-import { boat, ripples, type BoatKind } from './inkwater';
+import { bankEdge, grass, lilies } from './inkbank';
+import { boat, fish, ripples, type BoatKind } from './inkwater';
 import type { Noise2 } from './noise';
 import { between, mulberry32, pick, type Rng } from './rng';
 
@@ -87,6 +88,22 @@ export function waterChunk(w: InkWorld, noise: Noise2, base: number): (i: number
       boat(b, kind, x, y, s);
       out.push(b.done(kind, 0.7, x, y - 0.1 * s, s * 0.7, rng() * 6));
     }
+    // Fish under the surface, each with its shadow on the bed a little below and behind it;
+    // both hover side to side together (the marks' `swim`, sharing one phase).
+    for (let n = rng() < 0.6 ? 1 + Math.floor(rng() * 2) : 0; n > 0; n--) {
+      const y = w.water + (w.shore - w.water) * between(rng, 0.4, 0.95);
+      const x = x0 + between(rng, 0.1, 0.9) * span;
+      const s = between(rng, 0.045, 0.07) * w.u;
+      const [dir, phase, swim] = [rng() < 0.5 ? -1 : 1, rng() * 6, between(rng, 0.015, 0.04) * w.u];
+      const f = new Ink(noise);
+      f.dab(x + 0.25 * s, y + 0.35 * s, 0.45 * s, 0.09 * s);
+      const shadow = f.done(null, 0.2, x, y, 0, phase);
+      const b = new Ink(noise);
+      fish(b, x, y, s, dir, between(rng, -0.08, 0.08));
+      const body = b.done('fish', 0.62, x, y, 0.04 * w.u, phase);
+      [shadow.swim, body.swim] = [swim, swim];
+      out.push(shadow, body);
+    }
     return out;
   };
 }
@@ -103,7 +120,23 @@ export function shoreChunk(w: InkWorld, noise: Noise2, base: number): (i: number
     k.cover([...edge, [x0 + span + 2, w.bottom], [x0 - 2, w.bottom]]);
     k.stroke(edge.slice(0, 8), 0.012 * w.u, swell, 0.5, i);
     k.stroke(edge.slice(9), 0.008 * w.u, swell, 0.5, i + 3);
+    bankEdge(k, noise, rng, edge, w.u);
+    grass(k, rng, x0, x0 + span, w.shore + 0.03 * w.u, w.bottom - 0.01 * w.u, w.u);
     const out = [k.done(null, 0.6, 0, 0, 0)];
+    if (rng() < 0.55) {
+      const lx = x0 + between(rng, 0.1, 0.9) * span;
+      const l = new Ink(noise);
+      lilies(l, rng, lx, bank(lx) - 0.004 * w.u, w.u);
+      out.push(l.done('lilies', 0.6, lx, bank(lx) - 0.02 * w.u, 0.05 * w.u));
+    }
+    if (rng() < 0.3) {
+      // A boat moored by the bank, its fisherman casting out over the water.
+      const bx = x0 + between(rng, 0.15, 0.7) * span;
+      const s = between(rng, 0.11, 0.14) * w.u;
+      const b = new Ink(noise);
+      boat(b, 'fisherman', bx, bank(bx) - 0.028 * w.u, s);
+      out.push(b.done('fisherman', 0.7, bx, bank(bx) - 0.05 * w.u, s * 0.7, rng() * 6));
+    }
     // Things land where they land: a random count at random places, not one per slot.
     const xs = Array.from({ length: Math.floor(rng() * 4) }, () => x0 + between(rng, 0.04, 0.96) * span).sort(
       (a, b) => a - b,

@@ -23,6 +23,10 @@ export interface Mark {
   a: number;
   /** Phase of a gentle bob on the water, or null for things on land. */
   bob: number | null;
+  /** How far, in pixels, a swimming thing wanders side to side; null for things that stay. */
+  swim: number | null;
+  /** True when its hairlines are moving water, drawn as dashes running downstream. */
+  flow: boolean;
 }
 
 /** Swells in the middle, tapers at both ends: the default brush. */
@@ -109,19 +113,46 @@ export class Ink {
   }
 
   done(kind: string | null, a: number, cx: number, cy: number, r: number, bob: number | null = null): Mark {
-    return { kind, x0: this.lo, x1: this.hi, cx, cy, r, hide: this.hide, body: this.body, hair: this.hair, a, bob };
+    return {
+      kind,
+      x0: this.lo,
+      x1: this.hi,
+      cx,
+      cy,
+      r,
+      hide: this.hide,
+      body: this.body,
+      hair: this.hair,
+      a,
+      bob,
+      swim: null,
+      flow: false,
+    };
   }
 }
 
-/** Draws a mark shifted by (dx, dy): ground under it, then its brush and its hairlines. */
-export function drawMark(ctx: CanvasRenderingContext2D, m: Mark, dx: number, dy: number, lit: boolean): void {
+/** Draws a mark shifted by (dx, dy): ground under it, then its brush and its hairlines.
+ *  `fade` weakens the ink (a reflection); `t` runs a flowing mark's current. */
+export function drawMark(
+  ctx: CanvasRenderingContext2D,
+  m: Mark,
+  dx: number,
+  dy: number,
+  lit: boolean,
+  fade = 1,
+  t = 0,
+): void {
   ctx.save();
   ctx.translate(dx, dy);
   ctx.fillStyle = ink.ground();
   ctx.fill(m.hide);
-  ctx.fillStyle = lit ? ink.signal(0.9) : ink.line(m.a);
+  ctx.fillStyle = lit ? ink.signal(0.9) : ink.line(m.a * fade);
   ctx.fill(m.body);
-  ctx.strokeStyle = lit ? ink.signal(0.8) : ink.line(m.a * 0.7);
+  ctx.strokeStyle = lit ? ink.signal(0.8) : ink.line(m.a * 0.7 * fade);
+  if (m.flow) {
+    ctx.setLineDash([7, 9]);
+    ctx.lineDashOffset = -t * 14;
+  }
   ctx.stroke(m.hair);
   ctx.restore();
 }
