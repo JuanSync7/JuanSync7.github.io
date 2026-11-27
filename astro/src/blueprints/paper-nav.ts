@@ -1,14 +1,20 @@
 import { onPage, type Blueprint } from './types';
 
 /** The paper navigation bar at the top of every public page, in three zones: who (monogram, name
- *  and role), where (the pages, the current one tabbed) and tools (theme and CV). On a phone the
+ *  and role), where (the pages, the current one tabbed) and tools (search, theme and CV). On a phone the
  *  pages fold behind a menu button into a list under the bar. */
 export const PAPER_NAV: Blueprint = {
   id: 'paper-nav',
   kind: 'template',
   title: 'PaperNav',
   summary: 'The top bar of every page: who, where and tools; a menu button on a phone.',
-  source: ['src/components/layout/PaperNav.astro', 'src/styles/paper.css', 'src/styles/tokens/paper.css'],
+  source: [
+    'src/components/layout/PaperNav.astro',
+    'src/components/layout/SiteSearch.astro',
+    'src/components/layout/site-search.css',
+    'src/styles/paper.css',
+    'src/styles/tokens/paper.css',
+  ],
   views: onPage('/', '.pp-nav'),
   parts: [
     { id: 1, name: 'Nav bar', selector: '', sizing: 'fill', aliases: ['header', 'top bar', 'navigation'] },
@@ -34,6 +40,13 @@ export const PAPER_NAV: Blueprint = {
     },
     { id: 9, name: 'CV button', selector: '.cv-bar', sizing: 'hug', views: ['desktop'], aliases: ['download CV'] },
     { id: 10, name: 'Menu button', selector: '.menu', sizing: 'fixed', views: ['phone'], aliases: ['hamburger'] },
+    {
+      id: 11,
+      name: 'Search',
+      selector: '.ss-open',
+      sizing: 'fixed',
+      aliases: ['search bar', 'search field', 'find', 'magnifier'],
+    },
   ],
   sizes: [
     { measure: 'padding-x', part: 2, token: '--pp-pad' },
@@ -47,8 +60,11 @@ export const PAPER_NAV: Blueprint = {
     { measure: 'height', part: 8, token: '--pp-nav-icon' },
     { measure: 'min-height', part: 9, token: '--pp-nav-icon', views: ['desktop'] },
     { measure: 'height', part: 10, token: '--pp-nav-icon', views: ['phone'] },
+    { measure: 'width', part: 11, token: '--pp-search-field-w', views: ['desktop'] },
+    { measure: 'width', part: 11, token: '--pp-nav-icon', views: ['phone'] },
+    { measure: 'height', part: 11, token: '--pp-nav-icon' },
   ],
   number: 'JS-LY-0001',
-  revision: 'B',
-  drawn: '2026-11-17',
+  revision: 'C',
+  drawn: '2026-11-27',
 };

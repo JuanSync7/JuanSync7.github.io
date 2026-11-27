@@ -1,0 +1,51 @@
+---
+import NightPage from '../../layouts/NightPage.astro';
+import NightNav from '../../components/layout/NightNav.astro';
+import NightFooter from '../../components/layout/NightFooter.astro';
+import SectionHead from '../../components/ui/SectionHead.astro';
+import PaperAction from '../../components/ui/PaperAction.astro';
+import '../../components/site-index/site-index.css';
+
+// The whole site as a tree of addresses, read from /site-index.json. Each build writes that file from the
+// pages the build made (src/integrations/site-index.ts), so this page lists nothing by hand.
+const lead =
+  'Every page on this site, nested by its address the way a repository nests by folder. Each build writes it from the pages that build made, so a new page or section shows up here, and in the search, without anyone listing it.';
+---
+
+<NightPage title="Site index · Juan Kok" description={lead}>
+  <NightNav />
+  <main>
+    <section class="nt-wrap nt-section si" data-site-index>
+      <SectionHead as="h1" label="// site index" title="Site index" lead={lead} />
+      <div class="si-bar">
+        <p class="si-count" data-index-count role="status">Reading the index</p>
+        <div class="si-actions" data-index-actions hidden>
+          <PaperAction id="si-open-all" type="button" variant="outline">Open all</PaperAction>
+          <PaperAction id="si-close-all" type="button" variant="outline">Close all</PaperAction>
+        </div>
+      </div>
+      <nav class="si-tree" aria-label="Every page" data-index-tree>
+        <noscript>
+          <p>The tree is drawn from <a href="/site-index.txt">the plain-text index</a>, which reads without JavaScript.</p>
+        </noscript>
+      </nav>
+      <p class="si-files">
+        The same index is also a file, as <a href="/site-index.txt">plain text</a> drawn the way <code>tree</code> draws
+        a repository, and as the <a href="/site-index.json">JSON</a> the search reads.
+      </p>
+    </section>
+  </main>
+  <NightFooter />
+</NightPage>
+
+<script>
+  import { mountIndexTree } from '../../components/site-index/index-tree';
+  let cleanup: (() => void) | undefined;
+  const mount = () => {
+    cleanup?.();
+    const root = document.querySelector<HTMLElement>('[data-site-index]');
+    cleanup = root ? mountIndexTree(root) : undefined;
+  };
+  document.addEventListener('astro:page-load', mount);
+  document.addEventListener('astro:before-swap', () => cleanup?.());
+</script>
