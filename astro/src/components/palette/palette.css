@@ -117,7 +117,7 @@
 
 @media (min-width: 1100px) {
   .pal-main {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr);
     align-items: start;
   }
   .pal-preview {
@@ -535,22 +535,16 @@
   position: fixed;
   inset: 0;
   z-index: var(--hf-z-overlay);
-  overflow: auto;
   background: var(--pp-ground);
 }
 
+/* Bottom right, clear of the sample site's nav. */
 .pal-full-close {
   position: fixed;
-  top: var(--hf-space-4);
   right: var(--hf-space-4);
+  bottom: var(--hf-space-4);
   z-index: 1;
   background: var(--pp-ground);
-}
-
-.pal-full .mk {
-  min-height: 100%;
-  border: 0;
-  border-radius: 0;
 }
 
 /* On narrow screens the preview leads, so every pick shows its result straight away. */
@@ -560,18 +554,3 @@
   }
 }
 
-.pal-full .mk {
-  padding-top: var(--hf-space-20);
-}
-
-@media (min-width: 900px) {
-  .pal-full .mk-frame {
-    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-    align-items: center;
-  }
-  .pal-full .mk-notes {
-    padding: 0 0 0 var(--hf-space-4);
-    border-top: 0;
-    border-left: 1px dashed var(--mk-line);
-  }
-}

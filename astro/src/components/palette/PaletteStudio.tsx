@@ -59,7 +59,9 @@ export default function PaletteStudio() {
     };
   }, [full]);
 
-  const mock = <MockSite tokens={tokens} body={body} heading={heading} scene={scene} onScene={setScene} />;
+  const mock = (
+    <MockSite tokens={tokens} body={body} heading={heading} scene={scene} onScene={setScene} full={full} />
+  );
 
   return (
     <div className="pal">
