@@ -1,0 +1,414 @@
+{
+  "meta": {
+    "lastUpdated": "2026-11-27",
+    "cadence": "daily",
+    "summary": "SiliconForge lets a model propose RTL and lets formal proof, equivalence checking and layout decide, and it publishes its null results."
+  },
+  "featuredRepo": "PundarikakshNTripathi/silicon-forge",
+  "picks": [
+    {
+      "repo": "PundarikakshNTripathi/silicon-forge",
+      "url": "https://github.com/PundarikakshNTripathi/silicon-forge",
+      "what": "An open RTL toolkit where a language model may propose a design but formal proof, equivalence checking and layout on open-source EDA decide whether it is accepted.",
+      "language": "Python",
+      "license": "AGPL-3.0",
+      "stars": 5,
+      "lastActivity": "2026-11-27",
+      "area": "AI for chip design (RTL, verification, lint, EDA flow automation, RISC-V)",
+      "fit": 5,
+      "fitWhy": "Chip design is my home ground, and every gate in its pipeline is a tool verdict rather than a model's opinion.",
+      "verdict": "study",
+      "caution": "A one-person project a week old with five stars. AGPL, with a separate commercial licence offered. Its own results are small samples and it says so.",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "xyjoey/Veri-Sure",
+      "url": "https://github.com/xyjoey/Veri-Sure",
+      "what": "A research multi-agent system that generates RTL and checks it with simulation, temporal tracing and formal verification.",
+      "language": "SystemVerilog",
+      "license": "unconfirmed",
+      "stars": 32,
+      "lastActivity": "2026-10-26",
+      "area": "AI for chip design (RTL, verification, lint, EDA flow automation, RISC-V)",
+      "fit": 4,
+      "fitWhy": "Combines simulation and formal checks around generated RTL, close to how I would want an agent bounded in hardware work.",
+      "verdict": "study",
+      "caution": "Research code from a paper. GitHub reports no recognised licence (NOASSERTION).",
+      "foundVia": [
+        "github search",
+        "web search"
+      ]
+    },
+    {
+      "repo": "stable-lab/Pro-V",
+      "url": "https://github.com/stable-lab/Pro-V",
+      "what": "A research multi-agent system that writes Python-based testbenches to verify RTL automatically.",
+      "language": "Python",
+      "license": "none",
+      "stars": 38,
+      "lastActivity": "2025-12-11",
+      "area": "AI for chip design (RTL, verification, lint, EDA flow automation, RISC-V)",
+      "fit": 3,
+      "fitWhy": "Agent-written testbenches are worth reading for how they judge their own checks.",
+      "verdict": "study",
+      "caution": "No licence file, so reuse is not permitted by default. Last pushed in December 2025.",
+      "foundVia": [
+        "web search"
+      ]
+    },
+    {
+      "repo": "DebarghaG/formalkit",
+      "url": "https://github.com/DebarghaG/formalkit",
+      "what": "One interface for language models to call formal tools such as SMT and SAT solvers, model checkers and provers, each in its own container.",
+      "language": "Python",
+      "license": "MIT",
+      "stars": 2,
+      "lastActivity": "2026-10-31",
+      "area": "outside profile",
+      "fit": 3,
+      "fitWhy": "A uniform, containerised way to hand formal tools to an agent fits my preference for deterministic checks.",
+      "verdict": "study",
+      "caution": "Very young, two stars.",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "jemkox/agent-riscv",
+      "url": "https://github.com/jemkox/agent-riscv",
+      "what": "A RISC-V CPU that its author says was designed and verified by a local AI agent, with the prompt and progress log published.",
+      "language": "C",
+      "license": "unconfirmed",
+      "stars": 2,
+      "lastActivity": "2026-11-11",
+      "area": "AI for chip design (RTL, verification, lint, EDA flow automation, RISC-V)",
+      "fit": 3,
+      "fitWhy": "The published prompt and progress log could show how far an agent gets on real RTL, but the claims are the author's.",
+      "verdict": "watch",
+      "caution": "Claims not verified. GitHub reports no recognised licence.",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "SiliCAD/DV_MCP",
+      "url": "https://github.com/SiliCAD/DV_MCP",
+      "what": "An MCP server that connects AI agents to remote Linux EDA clusters for design and verification.",
+      "language": "Python",
+      "license": "MIT",
+      "stars": 1,
+      "lastActivity": "2026-10-05",
+      "area": "AI for chip design (RTL, verification, lint, EDA flow automation, RISC-V)",
+      "fit": 3,
+      "fitWhy": "Agent access to EDA tools is a real need, but this gives an agent a path into compute clusters.",
+      "verdict": "watch",
+      "caution": "It sits between an agent and remote machines. Review exactly what it can run before connecting it to anything real.",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "Promise-HIT/digital-ic-design-verification-skills",
+      "url": "https://github.com/Promise-HIT/digital-ic-design-verification-skills",
+      "what": "Agent skills for RTL design, SystemVerilog and UVM verification, written Chinese-first.",
+      "language": "Python",
+      "license": "MIT",
+      "stars": 3,
+      "lastActivity": "2026-11-25",
+      "area": "AI for chip design (RTL, verification, lint, EDA flow automation, RISC-V)",
+      "fit": 3,
+      "fitWhy": "Skills for my own domain are worth comparing with how I would write them.",
+      "verdict": "watch",
+      "caution": "Installable skills: review before use.",
+      "foundVia": [
+        "github search"
+      ]
+    }
+  ],
+  "catalogue": [
+    {
+      "repo": "RunanywhereAI/trnrt",
+      "url": "https://github.com/RunanywhereAI/trnrt",
+      "what": "An open inference engine that serves one large open model on a single AWS Trainium2 machine through an OpenAI-compatible API.",
+      "area": "Inference engines and inference silicon",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "jmaczan/tiny-vllm",
+      "url": "https://github.com/jmaczan/tiny-vllm",
+      "what": "A teaching-sized LLM inference engine in C++ and CUDA that rebuilds the core ideas of vLLM.",
+      "area": "Inference engines and inference silicon",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "obsidianmd/pele",
+      "url": "https://github.com/obsidianmd/pele",
+      "what": "A fast renderer for Mermaid diagrams from the Obsidian team.",
+      "area": "Static-site and design tooling for an Astro site",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "ddkbs/sketchy",
+      "url": "https://github.com/ddkbs/sketchy",
+      "what": "A layout engine for AI-drawn diagrams: the model names the boxes and links, the engine places them, in a hand-drawn style.",
+      "area": "Static-site and design tooling for an Astro site",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "lightseekorg/tokenspeed",
+      "url": "https://github.com/lightseekorg/tokenspeed",
+      "what": "An LLM inference engine built around a state-machine scheduler and a registry of kernels.",
+      "area": "Inference engines and inference silicon",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "erkamyaman/rust-anything",
+      "url": "https://github.com/erkamyaman/rust-anything",
+      "what": "A tool that records what an app does, lets a coding agent rewrite it in Rust piece by piece, and replays the recording to prove each piece behaves the same.",
+      "area": "Coding-agent ecosystem",
+      "verdict": "study",
+      "firstSeen": "2026-11-22"
+    },
+    {
+      "repo": "alexeyw/lot-map",
+      "url": "https://github.com/alexeyw/lot-map",
+      "what": "A live map beside Claude Code that shows tool calls, hooks, skills and subagents as they run, locally.",
+      "area": "Coding-agent ecosystem",
+      "verdict": "study",
+      "firstSeen": "2026-11-22"
+    },
+    {
+      "repo": "janestreet/agent_skills",
+      "url": "https://github.com/janestreet/agent_skills",
+      "what": "A published set of agent skills from a large engineering firm.",
+      "area": "Agent skills, playbooks and their evaluation",
+      "verdict": "study",
+      "firstSeen": "2026-11-22"
+    },
+    {
+      "repo": "Dodaios/ste80-humanizer",
+      "url": "https://github.com/Dodaios/ste80-humanizer",
+      "what": "An agent skill that rewrites text toward Simplified Technical English and strips common AI tells.",
+      "area": "Agent skills, playbooks and their evaluation",
+      "verdict": "study",
+      "firstSeen": "2026-11-22"
+    },
+    {
+      "repo": "NVIDIA/SkillEvaluator",
+      "url": "https://github.com/NVIDIA/SkillEvaluator",
+      "what": "A command-line tool and CI template that checks agent skills in three tiers: static checks with no model key, overlap detection, and live agent runs with and without the skill.",
+      "area": "Agent skills, playbooks and their evaluation",
+      "verdict": "use",
+      "firstSeen": "2026-11-23"
+    },
+    {
+      "repo": "NVIDIA/SkillSpector",
+      "url": "https://github.com/NVIDIA/SkillSpector",
+      "what": "A security scanner for agent skills that looks for malicious patterns, prompt injection, data exfiltration and supply-chain risks before you install them.",
+      "area": "Agent skills, playbooks and their evaluation",
+      "verdict": "use",
+      "firstSeen": "2026-11-23"
+    },
+    {
+      "repo": "therandomsecurityguy/signet",
+      "url": "https://github.com/therandomsecurityguy/signet",
+      "what": "A registry for agents and skills with lifecycle states and signed, logged publication.",
+      "area": "Agent skills, playbooks and their evaluation",
+      "verdict": "study",
+      "firstSeen": "2026-11-23"
+    },
+    {
+      "repo": "benchflow-ai/skillsbench",
+      "url": "https://github.com/benchflow-ai/skillsbench",
+      "what": "A benchmark of tasks that measures whether skills actually help agents.",
+      "area": "Agent skills, playbooks and their evaluation",
+      "verdict": "study",
+      "firstSeen": "2026-11-23"
+    },
+    {
+      "repo": "PundarikakshNTripathi/silicon-forge",
+      "url": "https://github.com/PundarikakshNTripathi/silicon-forge",
+      "what": "An open RTL toolkit where a language model may propose a design but formal proof, equivalence checking and layout on open-source EDA decide whether it is accepted.",
+      "area": "AI for chip design (RTL, verification, lint, EDA flow automation, RISC-V)",
+      "verdict": "study",
+      "firstSeen": "2026-11-27"
+    },
+    {
+      "repo": "xyjoey/Veri-Sure",
+      "url": "https://github.com/xyjoey/Veri-Sure",
+      "what": "A research multi-agent system that generates RTL and checks it with simulation, temporal tracing and formal verification.",
+      "area": "AI for chip design (RTL, verification, lint, EDA flow automation, RISC-V)",
+      "verdict": "study",
+      "firstSeen": "2026-11-27"
+    },
+    {
+      "repo": "stable-lab/Pro-V",
+      "url": "https://github.com/stable-lab/Pro-V",
+      "what": "A research multi-agent system that writes Python-based testbenches to verify RTL automatically.",
+      "area": "AI for chip design (RTL, verification, lint, EDA flow automation, RISC-V)",
+      "verdict": "study",
+      "firstSeen": "2026-11-27"
+    },
+    {
+      "repo": "DebarghaG/formalkit",
+      "url": "https://github.com/DebarghaG/formalkit",
+      "what": "One interface for language models to call formal tools such as SMT and SAT solvers, model checkers and provers, each in its own container.",
+      "area": "outside profile",
+      "verdict": "study",
+      "firstSeen": "2026-11-27"
+    }
+  ],
+  "featured": [
+    {
+      "repo": "RunanywhereAI/trnrt",
+      "date": "2026-11-21",
+      "slug": "2026-11-21-trnrt"
+    },
+    {
+      "repo": "erkamyaman/rust-anything",
+      "date": "2026-11-22",
+      "slug": "2026-11-22-rust-anything"
+    },
+    {
+      "repo": "NVIDIA/SkillEvaluator",
+      "date": "2026-11-23",
+      "slug": "2026-11-23-skillevaluator"
+    },
+    {
+      "repo": "PundarikakshNTripathi/silicon-forge",
+      "date": "2026-11-27",
+      "slug": "2026-11-27-silicon-forge"
+    }
+  ],
+  "seen": [
+    {
+      "repo": "RunanywhereAI/trnrt",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "jmaczan/tiny-vllm",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "obsidianmd/pele",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "ddkbs/sketchy",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "sybil-solutions/inference-optimisation-skill",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "lightseekorg/tokenspeed",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "erkamyaman/rust-anything",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "alexeyw/lot-map",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "janestreet/agent_skills",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "Dodaios/ste80-humanizer",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "shanselman/gputaskman",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "NiazMorshed2007/reanimate",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "BigPizzaV3/ClaudeMom",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "NVIDIA/SkillEvaluator",
+      "date": "2026-11-23"
+    },
+    {
+      "repo": "NVIDIA/SkillSpector",
+      "date": "2026-11-23"
+    },
+    {
+      "repo": "therandomsecurityguy/signet",
+      "date": "2026-11-23"
+    },
+    {
+      "repo": "benchflow-ai/skillsbench",
+      "date": "2026-11-23"
+    },
+    {
+      "repo": "EL4CTEO/fast-anything",
+      "date": "2026-11-23"
+    },
+    {
+      "repo": "diego3g/craft",
+      "date": "2026-11-23"
+    },
+    {
+      "repo": "pierridotite/mobile-agent-testers",
+      "date": "2026-11-23"
+    },
+    {
+      "repo": "PundarikakshNTripathi/silicon-forge",
+      "date": "2026-11-27"
+    },
+    {
+      "repo": "xyjoey/Veri-Sure",
+      "date": "2026-11-27"
+    },
+    {
+      "repo": "stable-lab/Pro-V",
+      "date": "2026-11-27"
+    },
+    {
+      "repo": "DebarghaG/formalkit",
+      "date": "2026-11-27"
+    },
+    {
+      "repo": "jemkox/agent-riscv",
+      "date": "2026-11-27"
+    },
+    {
+      "repo": "SiliCAD/DV_MCP",
+      "date": "2026-11-27"
+    },
+    {
+      "repo": "Promise-HIT/digital-ic-design-verification-skills",
+      "date": "2026-11-27"
+    }
+  ],
+  "sourceStats": {
+    "github search": {
+      "checked": 4,
+      "candidates": 26,
+      "picks": 26,
+      "useful": 16
+    },
+    "web search": {
+      "checked": 4,
+      "candidates": 2,
+      "picks": 2,
+      "useful": 2
+    }
+  }
+}
