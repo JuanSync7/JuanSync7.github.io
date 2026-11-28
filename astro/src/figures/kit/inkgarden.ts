@@ -1,4 +1,5 @@
 import type { Pt } from './brush';
+import { lilies, tuft } from './inkbank';
 import { reeds } from './inkflora';
 import { root, sample, type Ink } from './inkpath';
 import type { Noise2 } from './noise';
@@ -80,26 +81,30 @@ export function bonsai(k: Ink, rng: Rng, x: number, y: number, s: number): void 
   }
 }
 
-/** A pond `s` across, its middle at (x, y): a bank broken in two strokes, ripples, lily
- *  pads and reeds at one end. */
-export function pond(k: Ink, rng: Rng, x: number, y: number, s: number): void {
+/** A pond `s` across, its middle at (x, y): a bank broken in two strokes, ripples, lily pads
+ *  floating on it, water grass on its far rim and reeds at one end. */
+export function pond(k: Ink, rng: Rng, x: number, y: number, s: number, u: number): void {
   const rx = s / 2;
   const ry = s * 0.12;
   k.coverOval(x, y, rx, ry);
   const arc = (a0: number, a1: number): Pt[] =>
-    sample(14, (u) => [x + Math.cos(a0 + (a1 - a0) * u) * rx, y + Math.sin(a0 + (a1 - a0) * u) * ry]);
+    sample(14, (v) => [x + Math.cos(a0 + (a1 - a0) * v) * rx, y + Math.sin(a0 + (a1 - a0) * v) * ry]);
   k.stroke(arc(0.15, Math.PI - 0.1), 0.03 * s, undefined, 0.3);
   k.stroke(arc(Math.PI + 0.25, Math.PI * 2 - 0.3), 0.016 * s, undefined, 0.3);
-  for (let j = 0; j < 4; j++) {
-    const py = y + between(rng, -0.5, 0.5) * ry;
-    const px = x + between(rng, -0.45, 0.25) * rx;
+  for (let j = 0; j < 3; j++) {
+    const py = y + between(rng, -0.4, 0.4) * ry;
+    const px = x + between(rng, -0.4, 0.2) * rx;
     k.line([
       [px, py],
-      [px + between(rng, 0.12, 0.3) * s, py],
+      [px + between(rng, 0.1, 0.25) * s, py],
     ]);
   }
-  for (let j = 0; j < 3; j++)
-    k.dab(x + between(rng, -0.4, 0.3) * rx, y + between(rng, -0.3, 0.4) * ry, 0.04 * s, 0.012 * s);
+  lilies(k, rng, x - rx * 0.1, y + ry * 0.15, u, rx * 0.5, -ry * 0.35, ry * 0.35);
+  // Water grass on the far rim, reeds at one end: the pond's edge, not its water.
+  for (let j = 0; j < 3; j++) {
+    const a = Math.PI + between(rng, 0.35, Math.PI - 0.35);
+    tuft(k, rng, x + Math.cos(a) * rx, y + Math.sin(a) * ry, u);
+  }
   const end = rng() < 0.5 ? -1 : 1;
   reeds(k, rng, x + end * rx * 0.85, y + ry * 0.2, s * 0.35);
 }

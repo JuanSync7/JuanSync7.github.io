@@ -3,7 +3,8 @@ import { leafy, pine, reeds, willow } from './inkflora';
 import { bonsai, pond, rock } from './inkgarden';
 import { Ink, swell, type Mark } from './inkpath';
 import { bankTemple } from './inkshrine';
-import { bankEdge, grass, lilies } from './inkbank';
+import { bankEdge, lilies } from './inkbank';
+import { flyingCrane, smallBird, standingCrane } from './inkbird';
 import { boat, fish, ripples, type BoatKind } from './inkwater';
 import type { Noise2 } from './noise';
 import { between, mulberry32, pick, type Rng } from './rng';
@@ -121,7 +122,6 @@ export function shoreChunk(w: InkWorld, noise: Noise2, base: number): (i: number
     k.stroke(edge.slice(0, 8), 0.012 * w.u, swell, 0.5, i);
     k.stroke(edge.slice(9), 0.008 * w.u, swell, 0.5, i + 3);
     bankEdge(k, noise, rng, edge, w.u);
-    grass(k, rng, x0, x0 + span, w.shore + 0.03 * w.u, w.bottom - 0.01 * w.u, w.u);
     const out = [k.done(null, 0.6, 0, 0, 0)];
     if (rng() < 0.55) {
       const lx = x0 + between(rng, 0.1, 0.9) * span;
@@ -151,9 +151,16 @@ export function shoreChunk(w: InkWorld, noise: Noise2, base: number): (i: number
       if (roll < w.odds.temple * 0.06) {
         out.push(bankTemple(noise, rng, w, x, y));
         continue;
+      } else if (roll > 0.92) {
+        // A crane standing in the shallows just out from the bank.
+        const s = between(rng, 0.08, 0.11) * w.u;
+        const cy = bank(x) - 0.008 * w.u;
+        standingCrane(t, rng, x, cy, s, rng() < 0.5 ? -1 : 1);
+        out.push(t.done('crane', 0.75, x, cy - s * 0.6, s * 0.5));
+        continue;
       } else if (roll < w.odds.pond) {
         const py = between(rng, y + 0.06 * w.u, w.bottom - 0.035 * w.u);
-        pond(t, rng, x, py, between(rng, 0.16, 0.28) * w.u);
+        pond(t, rng, x, py, between(rng, 0.16, 0.28) * w.u, w.u);
         [kind, cy] = ['pond', py];
       } else if (roll < w.odds.pond + w.odds.bonsai) {
         const lift = rock(t, noise, rng, x, y, 0.11 * w.u);
@@ -181,5 +188,29 @@ export function shoreChunk(w: InkWorld, noise: Noise2, base: number): (i: number
       out.push(t.done(kind, 0.75, x, cy, r));
     }
     return out;
+  };
+}
+
+/** The sky: now and then a skein of cranes gliding in a loose V, or small birds far off. They
+ *  face left, the way the scroll carries them, and rise and fall a little (the marks' `bob`). */
+export function skyChunk(w: InkWorld, noise: Noise2, base: number): (i: number) => Mark[] {
+  const span = 1.2 * w.u;
+  return (i) => {
+    const rng = chunkRng(base, 6, i);
+    const roll = rng();
+    if (roll > 0.55) return [];
+    const k = new Ink(noise);
+    const [x, y] = [i * span + between(rng, 0.2, 0.8) * span, between(rng, 0.07, 0.3) * w.u];
+    const cranes = roll < 0.3;
+    const n = cranes ? 3 + Math.floor(rng() * 5) : 4 + Math.floor(rng() * 6);
+    for (let b = 0; b < n; b++) {
+      const side = b % 2 ? 1 : -1;
+      const rank = Math.ceil(b / 2);
+      const bx = x + rank * (cranes ? 0.07 : 0.035) * w.u + between(rng, -0.01, 0.01) * w.u;
+      const by = y + side * rank * (cranes ? 0.025 : 0.015) * w.u + between(rng, -0.008, 0.008) * w.u;
+      if (cranes) flyingCrane(k, bx, by, between(rng, 0.045, 0.065) * w.u, -1, rng() < 0.5);
+      else smallBird(k, bx, by, between(rng, 0.01, 0.018) * w.u, rng() < 0.5);
+    }
+    return [k.done(cranes ? 'cranes' : 'birds', cranes ? 0.7 : 0.5, x, y, 0.08 * w.u, rng() * 6)];
   };
 }

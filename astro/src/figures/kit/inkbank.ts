@@ -3,8 +3,21 @@ import { sample, swell, type Ink } from './inkpath';
 import type { Noise2 } from './noise';
 import { between, type Rng } from './rng';
 
-/** The near riverbank in ink: stones set along the water's edge with grass between them, and
- *  lily pads, now and then with a lotus, floating on the water in front. */
+/** The near riverbank in ink: stones set along the water's edge with tufts of water grass
+ *  between them, and lily pads, now and then with a lotus, floating on the water. Grass grows
+ *  only at a water's edge, never out on open ground or in the water. */
+
+/** A tuft of water grass at (x, y): a few blades fanning up from one root. */
+export function tuft(k: Ink, rng: Rng, x: number, y: number, u: number): void {
+  for (let b = 0; b < 5; b++) {
+    const lean = between(rng, -0.6, 0.6);
+    const len = between(rng, 0.008, 0.02) * u;
+    k.line([
+      [x + b * 0.002 * u, y],
+      [x + b * 0.002 * u + lean * len * 0.5, y - len],
+    ]);
+  }
+}
 
 /** The bank's height at x, read off its edge. */
 function heightAt(edge: readonly Pt[], x: number): number {
@@ -44,27 +57,27 @@ export function bankEdge(k: Ink, noise: Noise2, rng: Rng, edge: readonly Pt[], u
     k.cover([...rim, [x + w / 2, y + 0.006 * u], [x - w / 2, y + 0.006 * u]]);
     k.stroke(rim, (big ? 0.008 : 0.005) * u, swell, 0.4, seed);
     k.line(rim.slice(3, 7).map((p): Pt => [p[0] + 0.15 * w, p[1] + tall * 0.45]));
-    if (rng() < 0.55) {
-      const gx = x + w * between(rng, 0.55, 0.9);
-      for (let b = 0; b < 5; b++) {
-        const lean = between(rng, -0.6, 0.6);
-        const len = between(rng, 0.008, 0.02) * u;
-        k.line([
-          [gx + b * 0.002 * u, y],
-          [gx + b * 0.002 * u + lean * len * 0.5, y - len],
-        ]);
-      }
-    }
+    if (rng() < 0.55) tuft(k, rng, x + w * between(rng, 0.55, 0.9), y, u);
     x += rng() < 0.25 ? w * between(rng, 0.4, 0.7) : w * between(rng, 1, 3.5) + between(rng, 0, 0.06) * u;
   }
 }
 
-/** A cluster of lily pads on the water around (x, y), each an oval with its notch cut, and
- *  sometimes a lotus bud on its stem. */
-export function lilies(k: Ink, rng: Rng, x: number, y: number, u: number): void {
+/** A cluster of lily pads on the water, each an oval with its notch cut, and sometimes a lotus
+ *  bud on its stem. They float within `wide` either side of x and between y + y0 and y + y1
+ *  (by default a strip just out from a bank at y). */
+export function lilies(
+  k: Ink,
+  rng: Rng,
+  x: number,
+  y: number,
+  u: number,
+  wide = 0.06 * u,
+  y0 = -0.03 * u,
+  y1 = -0.004 * u,
+): void {
   for (let n = 3 + Math.floor(rng() * 5); n > 0; n--) {
-    const px = x + between(rng, -0.06, 0.06) * u;
-    const py = y - between(rng, 0.004, 0.03) * u;
+    const px = x + between(rng, -1, 1) * wide;
+    const py = y + between(rng, y0, y1);
     const rx = between(rng, 0.01, 0.02) * u;
     const notch = rng() * Math.PI * 2;
     const pad = sample(14, (v): Pt => {
@@ -89,22 +102,6 @@ export function lilies(k: Ink, rng: Rng, x: number, y: number, u: number): void 
           ],
           0.004 * u,
         );
-    }
-  }
-}
-
-/** Grass on open ground between the bank and the bottom of the frame: small tufts, scattered. */
-export function grass(k: Ink, rng: Rng, x0: number, x1: number, y0: number, y1: number, u: number): void {
-  for (let n = 4 + Math.floor(rng() * 8); n > 0; n--) {
-    const x = between(rng, x0, x1);
-    const y = between(rng, y0, y1);
-    for (let b = 0; b < 3 + Math.floor(rng() * 3); b++) {
-      const len = between(rng, 0.006, 0.014) * u;
-      const lean = between(rng, -0.5, 0.5);
-      k.line([
-        [x + b * 0.0025 * u, y],
-        [x + b * 0.0025 * u + lean * len, y - len],
-      ]);
     }
   }
 }

@@ -1,6 +1,6 @@
 import { defineTemplate } from '../defineTemplate';
 import { ink } from '../kit/ink';
-import { shoreChunk, Strip, waterChunk, type InkWorld, type TreeKind } from '../kit/inkland';
+import { shoreChunk, skyChunk, Strip, waterChunk, type InkWorld, type TreeKind } from '../kit/inkland';
 import { farChunk, fogChunk, midChunk } from '../kit/inkrange';
 import { drawMark, type Mark } from '../kit/inkpath';
 import type { BoatKind } from '../kit/inkwater';
@@ -39,7 +39,7 @@ const CREWS: readonly (readonly BoatKind[])[] = [
 ];
 
 /** Share of the scroll each strip moves, far to near. */
-const DEPTHS = [0.012, 0.018, 0.028, 0.045, 0.075] as const;
+const DEPTHS = [0.012, 0.018, 0.028, 0.045, 0.075, 0.06] as const;
 
 interface P {
   scene: Scene;
@@ -124,7 +124,7 @@ export default defineTemplate<P, S>({
   },
   name: (p) => (p.light === 'moon' ? `moonlit ${p.scene}` : `${p.scene} at sunset`),
   alt: (p) =>
-    `An ink-brush landscape scrolling without end: pale far ranges dotted with distant trees and crossed by fog; nearer ranges with a darker double edge on the sides away from the light, wooded with groves of small trees and pines, with temples and pagodas on terraces cut into their faces or standing at their feet, and a river falling from a saddle and winding down into a ${p.scene}. The water mirrors the mountains and temples in broken, shimmering pieces, with fish hovering under it and sampans with ${p.boats.includes('fisherman') ? 'fishermen' : 'boatmen'} on it. The near bank is set with stones, grass, lily pads and lotus, a moored fishing boat, ${[...new Set(p.trees)].map((t) => GROVE_WORDS[t]).join(' and ')}, rocks, bonsai and ponds. ${p.light === 'moon' ? 'A small orange moon outline hangs in the sky' : 'An orange setting sun sinks behind the far ranges'}.`,
+    `An ink-brush landscape scrolling without end: pale far ranges dotted with distant trees and crossed by fog; nearer ranges with a darker double edge on the sides away from the light, wooded with groves of small trees and pines, with temples and pagodas on terraces cut into their faces or standing at their feet, and a river falling from a saddle and winding down into a ${p.scene}. The water mirrors the mountains and temples in broken, shimmering pieces, with fish hovering under it and sampans with ${p.boats.includes('fisherman') ? 'fishermen' : 'boatmen'} on it. The near bank is set with stones and water grass, lily pads and lotus, now and then a crane standing in the shallows, a moored fishing boat, ${[...new Set(p.trees)].map((t) => GROVE_WORDS[t]).join(' and ')}, rocks, bonsai and ponds with lily pads. ${p.light === 'moon' ? 'A small orange moon outline hangs in the sky' : 'An orange setting sun sinks behind the far ranges'}, and now and then cranes glide across in a loose V or small birds pass far off.`,
   setup: ({ h, rng, params }) => {
     const noise = noise2(rng);
     const base = Math.floor(rng() * 0x7fffffff);
@@ -146,6 +146,7 @@ export default defineTemplate<P, S>({
       new Strip(0.6 * h, DEPTHS[2], midChunk(world, noise, base)),
       new Strip(h, DEPTHS[3], waterChunk(world, noise, base)),
       new Strip(0.9 * h, DEPTHS[4], shoreChunk(world, noise, base)),
+      new Strip(1.2 * h, DEPTHS[5], skyChunk(world, noise, base)),
     ];
     // Start a little way into the scroll so the seed, not chunk 0, decides the first view.
     return {
@@ -185,10 +186,10 @@ export default defineTemplate<P, S>({
     ctx.arc(params.sky * w, h * (sun ? 0.42 : 0.17), h * (sun ? 0.08 : 0.045), 0, Math.PI * 2);
     ctx.stroke();
     const at = (v: View, m: Mark, fade = 1): void => drawMark(ctx, m, -v.off + sway(m), bob(m), m === lit, fade, t);
-    const [far, fog, near, water, bank] = views;
+    const [far, fog, near, water, bank, sky] = views;
     for (const v of [far, fog, near]) if (v) for (const m of v.marks) at(v, m);
     if (near) reflect(ctx, state, w, h, t, () => near.marks.forEach((m) => at(near, m, 0.3)));
-    for (const v of [water, bank]) if (v) for (const m of v.marks) at(v, m);
+    for (const v of [sky, water, bank]) if (v) for (const m of v.marks) at(v, m);
     return lit?.kind ?? 'rest';
   },
 });
