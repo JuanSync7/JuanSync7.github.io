@@ -1,0 +1,556 @@
+/* The palette studio's own chrome, on the paper tokens. The reader's colours appear only in
+   swatches, wheels and the preview, set from data in the components. */
+
+.pal {
+  display: grid;
+  gap: var(--hf-space-10);
+  font-family: var(--pp-sans);
+  color: var(--pp-ink);
+}
+
+.pal-panel > h2 {
+  margin: 0;
+  font-size: var(--pp-fs-mark);
+  font-weight: var(--pp-w-heading);
+  color: var(--pp-ink-strong);
+}
+
+.pal-panel > h2 span,
+.pal-preview-label,
+.pal-share,
+.pal-field > span,
+.pal-slider > span {
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-caption);
+  font-weight: var(--pp-w-label);
+  color: var(--pp-ink-muted);
+}
+
+.pal-panel > h2 span {
+  margin-left: var(--hf-space-2);
+  color: var(--pp-signal-text);
+}
+
+.pal-note {
+  margin: 0;
+  font-size: var(--pp-fs-small);
+  color: var(--pp-ink-muted);
+}
+
+/* Settings: a wrapped row of fields above everything. */
+.pal-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: var(--hf-space-4) var(--hf-space-6);
+  padding-block: var(--hf-space-4);
+  border-block: 1px solid var(--pp-rule);
+}
+
+.pal-field {
+  display: grid;
+  gap: var(--hf-space-1);
+}
+
+.pal-field input:not([type='range']),
+.pal-field select {
+  min-height: var(--nt-hit);
+  padding: 0 var(--hf-space-2);
+  border: 1px solid var(--pp-outline);
+  border-radius: var(--pp-radius-sm);
+  background: var(--pp-ground);
+  color: var(--pp-ink-strong);
+  font: inherit;
+  font-size: var(--pp-fs-small);
+}
+
+.pal-switches,
+.pal-seg,
+.pal-locks,
+.pal-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hf-space-2);
+}
+
+.pal-toggle,
+.pal-seg button,
+.pal-tabs button,
+.pal-copy,
+.pal-full-close {
+  min-height: var(--nt-hit);
+  padding: 0 var(--hf-space-3);
+  border: 1px solid var(--pp-outline);
+  border-radius: var(--pp-radius-sm);
+  background: transparent;
+  color: var(--pp-ink);
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-caption);
+  cursor: pointer;
+}
+
+.pal-toggle[aria-pressed='true'],
+.pal-seg button[aria-checked='true'],
+.pal-tabs button[aria-selected='true'] {
+  border-color: var(--pp-signal);
+  color: var(--pp-signal-text);
+}
+
+.pal-copy {
+  justify-self: start;
+  border-color: var(--pp-signal);
+  background: var(--pp-signal);
+  color: var(--pp-on-signal);
+}
+
+.pal :not(.mk, .mk *):focus-visible {
+  outline: var(--hf-focus-w) solid var(--pp-signal);
+  outline-offset: var(--hf-focus-offset);
+}
+
+/* Picks on the left, the preview on the right (stacked on narrow screens). */
+.pal-main,
+.pal-lower {
+  display: grid;
+  gap: var(--hf-space-8);
+}
+
+@media (min-width: 1100px) {
+  .pal-main {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr);
+    align-items: start;
+  }
+  .pal-preview {
+    position: sticky;
+    top: var(--hf-space-20);
+  }
+  .pal-lower {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    align-items: start;
+  }
+}
+
+.pal-picks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--nt-thumb-min)), 1fr));
+  gap: var(--hf-space-4);
+}
+
+.pal-role {
+  display: grid;
+  gap: var(--hf-space-3);
+  align-content: start;
+  padding: var(--hf-space-4);
+  border: 1px solid var(--pp-rule);
+  border-radius: var(--pp-radius-md);
+}
+
+.pal-role[data-active] {
+  border-color: var(--pp-signal);
+}
+
+.pal-role header {
+  display: flex;
+  align-items: center;
+  gap: var(--hf-space-2);
+}
+
+.pal-role h3 {
+  flex: 1;
+  margin: 0;
+  font-size: var(--pp-fs-title);
+  color: var(--pp-ink-strong);
+}
+
+.pal-chip {
+  display: inline-block;
+  flex: none;
+  width: var(--hf-space-6);
+  height: var(--hf-space-6);
+  border: 1px solid var(--pp-outline);
+  border-radius: var(--pp-radius-sm);
+}
+
+.pal-wheel {
+  position: relative;
+  width: 100%;
+  max-width: var(--nt-thumb-min);
+  aspect-ratio: 1;
+  justify-self: center;
+  border-radius: 50%;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.pal-wheel-spot {
+  position: absolute;
+  width: var(--hf-space-4);
+  height: var(--hf-space-4);
+  border: var(--hf-focus-w) solid var(--pp-ground);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--pp-ink-strong);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.pal-inputs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--hf-space-1);
+}
+
+.pal-hex {
+  grid-column: 1 / -1;
+}
+
+.pal-inputs input {
+  width: 100%;
+  min-width: 0;
+  font-family: var(--pp-mono);
+}
+
+.pal-locks {
+  display: grid;
+  grid-template-columns: 1.6fr repeat(3, 1fr);
+}
+
+.pal-locks .pal-toggle {
+  padding: 0;
+}
+
+/* Preview column. */
+.pal-preview {
+  display: grid;
+  gap: var(--hf-space-2);
+}
+
+/* Panels below: hairline-topped sections, never filled slabs. */
+.pal-panel {
+  display: grid;
+  gap: var(--hf-space-4);
+  align-content: start;
+  padding-top: var(--hf-space-4);
+  border-top: 1px solid var(--pp-rule);
+}
+
+.pal-slider {
+  display: grid;
+  gap: var(--hf-space-1);
+}
+
+.pal-slider output {
+  color: var(--pp-ink-strong);
+}
+
+.pal-slider input[type='range'],
+.pal-target input[type='range'] {
+  appearance: none;
+  width: 100%;
+  height: var(--hf-space-4);
+  margin: 0;
+  border: 1px solid var(--pp-outline);
+  border-radius: var(--hf-radius-pill);
+  cursor: pointer;
+}
+
+.pal-target input[type='range'] {
+  background: var(--pp-rule);
+}
+
+.pal input[type='range']::-webkit-slider-thumb {
+  appearance: none;
+  width: var(--hf-space-5);
+  height: var(--hf-space-5);
+  border: var(--hf-focus-w) solid var(--pp-ink-strong);
+  border-radius: 50%;
+  background: var(--pp-ground);
+}
+
+.pal input[type='range']::-moz-range-thumb {
+  width: var(--hf-space-4);
+  height: var(--hf-space-4);
+  border: var(--hf-focus-w) solid var(--pp-ink-strong);
+  border-radius: 50%;
+  background: var(--pp-ground);
+}
+
+.pal-steps {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  gap: var(--hf-space-1);
+}
+
+.pal-steps button {
+  min-height: var(--nt-hit);
+  border: 1px solid var(--pp-outline);
+  border-radius: var(--pp-radius-sm);
+  cursor: pointer;
+}
+
+/* Contrast pairs. */
+.pal-pairs {
+  display: grid;
+  gap: var(--hf-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pal-pairs li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: var(--hf-space-1) var(--hf-space-3);
+  align-items: center;
+}
+
+.pal-sample {
+  display: grid;
+  place-items: center;
+  width: var(--nt-hit);
+  height: var(--nt-hit);
+  border: 1px solid var(--pp-rule);
+  border-radius: var(--pp-radius-sm);
+  font-size: var(--pp-fs-title);
+  font-weight: var(--pp-w-heading);
+}
+
+.pal-pair-name,
+.pal-ratio {
+  display: grid;
+}
+
+.pal-pair-name strong {
+  font-size: var(--pp-fs-small);
+  color: var(--pp-ink-strong);
+}
+
+.pal-pair-name small,
+.pal-ratio small {
+  font-size: var(--pp-fs-caption);
+  color: var(--pp-ink-muted);
+}
+
+.pal-ratio {
+  justify-items: end;
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-small);
+  color: var(--pp-ink-strong);
+}
+
+.pal-pairs li[data-verdict='fail'] .pal-ratio small {
+  color: var(--pp-signal-text);
+  font-weight: var(--pp-w-heading);
+}
+
+.pal-bar {
+  position: relative;
+  grid-column: 2 / -1;
+  height: var(--hf-space-2);
+  border-bottom: 1px solid var(--pp-outline);
+}
+
+.pal-band {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: var(--pp-rule);
+}
+
+.pal-floor,
+.pal-mark {
+  position: absolute;
+  top: calc(-1 * var(--hf-space-1));
+  bottom: calc(-1 * var(--hf-space-1));
+  border-left: 1px dashed var(--pp-ink-muted);
+}
+
+.pal-mark {
+  width: var(--hf-space-1);
+  border-left: 0;
+  border-radius: var(--hf-radius-pill);
+  background: var(--pp-ink-strong);
+  transform: translateX(-50%);
+}
+
+.pal-pairs li[data-verdict='fail'] .pal-mark {
+  background: var(--pp-signal);
+}
+
+.pal-sizes {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--pp-fs-small);
+}
+
+.pal-sizes caption {
+  padding-bottom: var(--hf-space-2);
+  text-align: left;
+  color: var(--pp-ink-muted);
+}
+
+.pal-sizes th,
+.pal-sizes td {
+  padding: var(--hf-space-2);
+  border-bottom: 1px solid var(--pp-rule);
+  text-align: left;
+}
+
+/* Shades. */
+.pal-shades h3,
+.pal-token-group h3 {
+  margin: 0;
+  font-size: var(--pp-fs-title);
+  color: var(--pp-ink-strong);
+}
+
+.pal-token-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--nt-col)), 1fr));
+  gap: var(--hf-space-6);
+}
+
+.pal-token-group ul,
+.pal-gradients {
+  display: grid;
+  gap: var(--hf-space-2);
+  margin: var(--hf-space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pal-token-group li,
+.pal-gradients li {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  gap: 0 var(--hf-space-2);
+  align-items: center;
+}
+
+.pal-token-group li small,
+.pal-gradients li small {
+  grid-column: 2 / -1;
+  font-size: var(--pp-fs-caption);
+  color: var(--pp-ink-muted);
+}
+
+.pal-shades code,
+.pal-hexv {
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-caption);
+  color: var(--pp-ink-strong);
+}
+
+.pal-hexv {
+  color: var(--pp-ink-muted);
+}
+
+.pal-ramps {
+  display: grid;
+  gap: var(--hf-space-2);
+}
+
+.pal-ramp {
+  display: grid;
+  grid-template-columns: var(--hf-space-20) 1fr;
+  align-items: center;
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-caption);
+}
+
+.pal-ramp ol {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--pp-rule);
+}
+
+.pal-ramp li {
+  height: var(--nt-hit);
+}
+
+.pal-gradient {
+  width: var(--hf-space-26);
+  height: var(--hf-space-6);
+  border: 1px solid var(--pp-rule);
+  border-radius: var(--pp-radius-sm);
+}
+
+/* Export: the code goes in the palette's terminal window. */
+.pal-term {
+  overflow: hidden;
+  border: 1px solid var(--pp-term-line);
+  border-radius: var(--pp-radius-md);
+  background: var(--pp-term-ground);
+}
+
+.pal-term-bar {
+  display: flex;
+  gap: var(--hf-space-2);
+  padding: var(--hf-space-3);
+  border-bottom: 1px solid var(--pp-term-line);
+}
+
+.pal-term-bar span {
+  width: var(--hf-space-3);
+  height: var(--hf-space-3);
+  border-radius: 50%;
+  background: var(--pp-term-dot-1);
+}
+
+.pal-term-bar span:nth-child(2) {
+  background: var(--pp-term-dot-2);
+}
+
+.pal-term-bar span:nth-child(3) {
+  background: var(--pp-term-dot-3);
+}
+
+.pal-term textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--hf-space-4);
+  border: 0;
+  resize: vertical;
+  background: transparent;
+  color: var(--pp-term-ink);
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-caption);
+  line-height: 1.55;
+}
+
+.pal-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Full screen: the preview alone, over everything. */
+.pal-full {
+  position: fixed;
+  inset: 0;
+  z-index: var(--hf-z-overlay);
+  background: var(--pp-ground);
+}
+
+/* Bottom right, clear of the sample site's nav. */
+.pal-full-close {
+  position: fixed;
+  right: var(--hf-space-4);
+  bottom: var(--hf-space-4);
+  z-index: 1;
+  background: var(--pp-ground);
+}
+
+/* On narrow screens the preview leads, so every pick shows its result straight away. */
+@media (max-width: 1099px) {
+  .pal-preview {
+    order: -1;
+  }
+}
+

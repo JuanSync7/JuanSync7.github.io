@@ -8,6 +8,7 @@ animation) and for anything that lags or freezes. The rules are WEB-PERF-1 to 7 
 | The work | Open |
 |---|---|
 | A page transition: the page turn, or a new one (a tear, a slide) | [page transitions](page-transitions/SKILL.md) |
+| Something that flies across the page (a binder to the desk and back): the page follows it, the way back mirrors the way there | WEB-MOTION-1 in `../RULES.md`, then R-BAKE-18 in [art-render](../../art-render/SKILL.md) when it moves over a plate |
 | An animation that stutters, a page or figure that freezes while it loads, or new motion or a heavy figure | [performance](performance.md) |
 
 Both measure with the probes in `../checks/perf/` before and after a change.

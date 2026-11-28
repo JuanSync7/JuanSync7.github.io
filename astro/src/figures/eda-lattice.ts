@@ -23,7 +23,7 @@ const idOf = (a: number, b: number, c: number): number => (a * N + b) * N + c;
 export default defineCanvasFigure<State>({
   id: 'eda-lattice',
   title: 'EDA lattice',
-  alt: 'A cube of evenly spaced grey wireframe nodes and edges seen in perspective and slowly turning, with one teal path stepping along its edges from one corner to the opposite corner.',
+  alt: 'A cube of evenly spaced grey wireframe nodes and edges seen in perspective and slowly turning, with one orange path stepping along its edges from one corner to the opposite corner.',
   idea: 'EDA scripting as graph walking: the design is a lattice of nodes, and the script traces one net through it, one hop at a time.',
   style: 'wireframe',
   motion: 'ambient',

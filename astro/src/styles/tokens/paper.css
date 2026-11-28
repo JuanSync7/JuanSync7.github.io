@@ -59,6 +59,11 @@
   --pp-signal-shadow: #a8340c;
   --pp-signal-text: light-dark(#a8340c, #ff5a1f);
   --pp-on-signal: #1a0800;
+  /* The second accent (27 November 2026): the signal's opposite on the OKLCH wheel, turned a
+     little towards violet (hue about 267), a blue with a touch of purple. A sliver of the 10%,
+     never a rival to the orange. Worked out by the palette studio (src/lib/palette, `second`). */
+  --pp-signal-2: light-dark(#5980ec, #7498ff);
+  --pp-signal-2-text: light-dark(#3f62cc, #7498ff);
   --pp-strip: light-dark(#ece2cd, #272c34);
   --pp-hole-edge: light-dark(#46341e, #07080b);
   --pp-ink-shadow: light-dark(#281e12, #000000);
@@ -70,6 +75,8 @@
 
   /* Both themes are a notepad: the punched strip, margin line and tearing hero sheet. */
   --pp-notepad-display: block;
+  /* A room page (the library) is a place, not a page of the notepad: no punched strip or margin. */
+  --pp-room-notepad-display: none;
   --pp-chalk-display: none;
   --pp-anim-rip: pp-rip;
   --pp-anim-lift: none;
@@ -199,6 +206,15 @@
   --pp-tracking-micro: 0.08em;
   --pp-foot-mark-h: 40px;
   --pp-foot-brand-w: 340px;
+  /* The site search: the field in the bar, and the sheet it opens under the bar. */
+  --pp-search-field-w: 148px;
+  --pp-search-w: 640px;
+  --pp-search-top: calc(var(--pp-nav-h) + var(--hf-space-4));
+  --pp-search-list-h: min(56vh, 480px);
+  /* The site index: how far each level of the tree steps in, and how wide the tree runs, so a page's
+     route file stays in reach of its name. */
+  --pp-index-indent: var(--hf-space-6);
+  --pp-index-w: 960px;
 
   /* Baked art: the palette every baked figure (a plate drawn ahead of time by a playbook's kernel,
      src/figures/plates/) is drawn in. The kernels read these declarations from this file and
@@ -230,10 +246,8 @@
   --pp-lib-edge: light-dark(rgb(22 25 30 / 0.2), rgb(0 0 0 / 0.42));
   --pp-lib-shadow: light-dark(rgb(22 25 30 / 0.22), rgb(0 0 0 / 0.55));
   --pp-lib-shadow-low: light-dark(rgb(22 25 30 / 0.1), rgb(0 0 0 / 0.3));
-  /* A spine's shaded right edge: hatching over a darkening wash (the pen-and-wash rule, in CSS). */
-  --pp-lib-grad-edge:
-    repeating-linear-gradient(45deg, transparent 0 3px, var(--pp-lib-hatch) 3px 3.8px),
-    linear-gradient(90deg, transparent, var(--pp-lib-edge));
+  /* A spine's shaded right edge: a darkening wash alone, since the spine carries its title. */
+  --pp-lib-grad-edge: linear-gradient(90deg, transparent, var(--pp-lib-edge));
   /* The page edges of a binder's paper block, seen from the side or from above. */
   --pp-lib-grad-leaves: repeating-linear-gradient(90deg, var(--pp-lib-paper) 0 2px, var(--pp-outline) 2px 3px);
   --pp-lib-grad-leaves-flat: repeating-linear-gradient(180deg, var(--pp-lib-paper) 0 2px, var(--pp-outline) 2px 3px);
@@ -242,17 +256,36 @@
   /* The wall fades into the page at the edges of the view. */
   --pp-lib-grad-fade: linear-gradient(90deg, var(--pp-ground), transparent);
   --pp-lib-view-min: 560px;
+  /* The widest the archive grows: under two wall units, so a side shelf always shows less than
+     half of itself (R-BAKE-3), and the page's own column no longer limits it. */
+  --pp-lib-view-max: 1480px;
+  --pp-lib-room-pad: var(--hf-space-4);
   --pp-lib-band-h: 72px;
   --pp-lib-fade-w: 150px;
   --pp-lib-line-w: 1.25px;
   --pp-lib-lift: 10px;
   --pp-lib-label-x: 4px;
-  --pp-lib-label-y: 10px;
-  --pp-lib-label-h: 22px;
-  --pp-lib-title-top: 38px;
-  --pp-lib-title-bottom: 33px;
-  --pp-lib-ring: 14px;
-  --pp-lib-ring-y: 13px;
+  --pp-lib-label-y: 8px;
+  --pp-lib-label-h: 18px;
+  --pp-lib-title-top: 30px;
+  --pp-lib-title-bottom: 26px;
+  --pp-lib-title-pad: 3px;
+  --pp-lib-title-lh: 1.15;
+  --pp-lib-ring: 12px;
+  --pp-lib-ring-y: 10px;
+  /* The tag that names a binder above it on hover or focus. */
+  --pp-lib-tip-w: 220px;
+  --pp-lib-tip-gap: 8px;
+  --pp-lib-tip-pad: 6px 10px;
+  --pp-lib-tip-point: 6px;
+  --pp-lib-tip-lh: 1.35;
+  /* The shelf's directory: a board nailed to the wall bay right of the shelf facing you. */
+  --pp-lib-dir-pad: 14px;
+  --pp-lib-dir-nail: 7px;
+  --pp-lib-dir-row: 30px;
+  --pp-lib-dir-shadow: 5px;
+  --pp-lib-dir-inline-h: 320px;
+  --pp-lib-dir-rule: 3px;
   --pp-lib-edge-w: 12px;
   /* A cover board and the foot of a spine. */
   --pp-lib-board: 5px;
@@ -282,6 +315,10 @@
   --pp-lib-ease-slide: cubic-bezier(0.65, 0, 0.35, 1);
   --pp-lib-ease-x: cubic-bezier(0.6, 0.05, 0.3, 1);
   --pp-lib-ease-y: cubic-bezier(0.55, 0, 0.9, 0.45);
+  /* The way back retraces the way down: each ease mirrored (x1, y1, x2, y2 -> 1-x2, 1-y2, 1-x1,
+     1-y1), so the binder rises fast off the desk and settles slowly into its slot. */
+  --pp-lib-ease-x-back: cubic-bezier(0.7, 0, 0.4, 0.95);
+  --pp-lib-ease-y-back: cubic-bezier(0.1, 0.55, 0.45, 1);
   --pp-lib-ease-turn: cubic-bezier(0.45, 0, 0.25, 1);
   --pp-lib-ease-open: cubic-bezier(0.45, 0, 0.2, 1);
   --pp-lib-ease-sheet: cubic-bezier(0.5, 0, 0.2, 1);

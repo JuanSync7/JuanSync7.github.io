@@ -1,8 +1,9 @@
-import type { MouseEvent } from 'react';
 import FigurePlate from '../../ui/FigurePlate';
 import BinderSpine from './BinderSpine';
 import PlateFlames from './PlateFlames';
+import ShelfDirectory from './ShelfDirectory';
 import { PLATE, WALL } from './geometry';
+import { plain } from './plain';
 import type { ArchivePiece, ArchiveShelf, BinderBox, Picked, Prop } from './types';
 
 interface Props {
@@ -13,21 +14,33 @@ interface Props {
   still: boolean;
   /** The binder that is off its shelf, if any. */
   away: Picked | null;
+  /** The piece pointed at, on its spine or its directory row: its binder lifts and shows its tag. */
+  hot: ArchivePiece | null;
+  /** Whether the shelf facing you carries its directory on the wall (off when the bay is out of view). */
+  board: boolean;
+  busy: boolean;
   onPick: (p: Picked) => void;
   onMove: (d: number) => void;
   onHover: (piece: ArchivePiece | null) => void;
 }
 
-/** A plain click on a binder opens it here; a click with a modifier (new tab, new window) is
- *  left to the browser, and so is every click before the island wakes up. */
-function plain(e: MouseEvent): boolean {
-  return !e.defaultPrevented && e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey;
-}
-
 /** The wall: three copies of the shelves in a row on one track, so the carousel can keep
  *  turning. Only the shelf facing you takes focus and speaks to a screen reader; a side shelf
  *  is a target that brings itself to the centre. */
-export default function ShelfTrack({ shelves, boxes, props, pos, still, away, onPick, onMove, onHover }: Props) {
+export default function ShelfTrack({
+  shelves,
+  boxes,
+  props,
+  pos,
+  still,
+  away,
+  hot,
+  board,
+  busy,
+  onPick,
+  onMove,
+  onHover,
+}: Props) {
   const n = shelves.length;
   const units = Array.from({ length: n * 3 }, (_, j) => j);
   return (
@@ -61,6 +74,9 @@ export default function ShelfTrack({ shelves, boxes, props, pos, still, away, on
             <p className="lib-plaque" style={PLATE.plaque}>
               {shelf.label}
             </p>
+            {active && board ? (
+              <ShelfDirectory shelf={shelf} index={s} busy={busy} onPick={onPick} onHover={onHover} />
+            ) : null}
             {shelf.pieces.map((p, i) => {
               const b = boxes[s][i];
               if (!b) return null;
@@ -72,6 +88,7 @@ export default function ShelfTrack({ shelves, boxes, props, pos, still, away, on
                   href={p.href}
                   data-fill={b.fill}
                   data-gone={gone || undefined}
+                  data-hot={(active && hot?.slug === p.slug) || undefined}
                   data-binder={active ? `${s}-${i}` : undefined}
                   tabIndex={active ? undefined : -1}
                   aria-label={`${p.num}. ${p.title}. ${p.date}, ${p.read}`}
@@ -87,6 +104,11 @@ export default function ShelfTrack({ shelves, boxes, props, pos, still, away, on
                   onBlur={() => onHover(null)}
                 >
                   <BinderSpine piece={p} />
+                  {active ? (
+                    <span className="bs-tip" aria-hidden="true">
+                      {p.title}
+                    </span>
+                  ) : null}
                 </a>
               );
             })}

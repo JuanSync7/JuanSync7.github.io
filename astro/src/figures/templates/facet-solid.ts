@@ -66,8 +66,8 @@ export default defineTemplate<P, S>({
       : `${p.axes[0] > 1.5 ? 'oblong' : Math.abs(p.axes[0] - p.axes[1]) > 0.35 ? 'oval' : 'round'} stone`,
   alt: (p) =>
     p.kind === 'crystal'
-      ? `A flat-shaded grey ${p.sides}-sided crystal with ${p.table > 0 ? 'a flat table' : 'a point'} on top, turning slowly, one facet teal.`
-      : `A flat-shaded grey rough stone with ${(p.rings + 1) * p.segs} facets${p.cuts ? ' and flat fractured faces' : ''}, turning slowly, one facet teal.`,
+      ? `A flat-shaded grey ${p.sides}-sided crystal with ${p.table > 0 ? 'a flat table' : 'a point'} on top, turning slowly, one facet orange.`
+      : `A flat-shaded grey rough stone with ${(p.rings + 1) * p.segs} facets${p.cuts ? ' and flat fractured faces' : ''}, turning slowly, one facet orange.`,
   setup: ({ rng, params }) => {
     const mesh = settle(params.kind === 'crystal' ? crystal(params, rng) : stone(params, rng), params.tilt);
     return { mesh, yaw: 0.5 };

@@ -64,7 +64,7 @@ export default defineTemplate<P, S>({
   }),
   name: (p) => (p.chain === 'silicon' ? `${p.era} silicon dive` : 'city dive'),
   alt: (p) =>
-    `An endless zoom through nested line drawings${p.chain === 'silicon' ? ` of ${ERA_ALT[p.era]}` : ''}, ${CHAINS[p.chain].map((k) => k[0]).join(', ')}, each with one part outlined in teal that opens into the next level. The smallest view finishes its own physical detail, then dissolves into a fresh journey.`,
+    `An endless zoom through nested line drawings${p.chain === 'silicon' ? ` of ${ERA_ALT[p.era]}` : ''}, ${CHAINS[p.chain].map((k) => k[0]).join(', ')}, each with one part outlined in orange that opens into the next level. The smallest view finishes its own physical detail, then dissolves into a fresh journey.`,
   setup: ({ params }) => ({ u: params.start + 0.35, cache: new Map(), links: new Map() }),
   draw: ({ ctx, w, h, dt, hover, pointer, params, state, unseen }) => {
     state.u += dt * params.speed * (1 - 0.85 * hover);

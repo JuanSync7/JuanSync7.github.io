@@ -75,7 +75,7 @@ export default defineTemplate<P, S>({
       descent: 'gradient descent',
     })[p.scene],
   alt: (p) =>
-    `A 3D diagram on grey axes showing ${{ embed: 'clusters of embedding points with a teal query vector', field: 'a field of small grey arrows with one teal', cross: 'two grey vectors and their teal cross product', project: 'a vector and its teal projection onto a plane', descent: 'a wireframe surface with a teal path stepping downhill' }[p.scene]}.`,
+    `A 3D diagram on grey axes showing ${{ embed: 'clusters of embedding points with an orange query vector', field: 'a field of small grey arrows with one orange', cross: 'two grey vectors and their orange cross product', project: 'a vector and its orange projection onto a plane', descent: 'a wireframe surface with an orange path stepping downhill' }[p.scene]}.`,
   setup: ({ rng, params }) => {
     const points: Vec3[] = [];
     if (params.scene === 'embed') {

@@ -31,8 +31,54 @@
 }
 
 .lib-binder:hover,
-.lib-binder:focus-visible {
+.lib-binder:focus-visible,
+.lib-binder[data-hot] {
+  z-index: 2;
   transform: translateY(calc(var(--pp-lib-lift) * -1));
+}
+
+/* The binder's name on a paper tag above it, on hover, focus, or its directory row pointed at.
+   It fades and rises (transform and opacity only); words stay page text (R-BAKE-8). */
+.bs-tip {
+  position: absolute;
+  bottom: calc(100% + var(--pp-lib-tip-gap));
+  left: 50%;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: var(--pp-lib-tip-w);
+  padding: var(--pp-lib-tip-pad);
+  border: 1px solid var(--pp-lib-binder-line);
+  border-radius: var(--hf-radius-xs);
+  background: var(--pp-lib-paper);
+  color: var(--pp-ink-strong);
+  font-family: var(--pp-sans);
+  font-size: var(--pp-fs-caption);
+  line-height: var(--pp-lib-tip-lh);
+  text-align: center;
+  white-space: normal;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, var(--pp-lib-tip-gap));
+  transition:
+    opacity var(--pp-dur-step),
+    transform var(--pp-dur-step);
+}
+
+.bs-tip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  border: var(--pp-lib-tip-point) solid transparent;
+  border-top-color: var(--pp-lib-binder-line);
+  transform: translateX(-50%);
+}
+
+.lib-binder:hover .bs-tip,
+.lib-binder:focus-visible .bs-tip,
+.lib-binder[data-hot] .bs-tip {
+  opacity: 1;
+  transform: translate(-50%, 0);
 }
 
 .lib-binder:focus-visible {
@@ -94,15 +140,19 @@
   overflow: hidden;
 }
 
+/* Two lines of title down the spine: a thick binder holds most of a title, the tag the rest. */
 .bs-title span {
+  box-sizing: border-box;
+  max-width: 100%;
   max-height: 100%;
+  padding: 0 var(--pp-lib-title-pad);
   overflow: hidden;
   writing-mode: vertical-rl;
   font-family: var(--pp-sans);
   font-size: var(--pp-fs-micro);
   font-weight: var(--pp-w-statement);
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  line-height: var(--pp-lib-title-lh);
+  overflow-wrap: anywhere;
 }
 
 .bs-hole {
@@ -146,6 +196,15 @@
 .lf-down {
   transform: translateY(var(--fy));
   transition: transform var(--pp-lib-dur-fly) var(--pp-lib-ease-y);
+}
+
+/* The way back retraces the arc: across and down take their mirrored eases. */
+.lib-flight[data-back] {
+  transition-timing-function: var(--pp-lib-ease-x-back);
+}
+
+.lib-flight[data-back] .lf-down {
+  transition-timing-function: var(--pp-lib-ease-y-back);
 }
 
 .lf-turn {

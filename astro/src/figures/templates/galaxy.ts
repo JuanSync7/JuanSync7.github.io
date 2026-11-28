@@ -19,13 +19,13 @@ const ALT: Record<Form, string> = {
   universe:
     "A deep field of {n} galaxies of every size and tilt in grey points on the dark, slowly turning, one galaxy's core teal.",
   nebula:
-    'A grey nebula of folded gas and dark dust lanes with stars over and inside it, one young star teal with its spikes.',
+    'A grey nebula of folded gas and dark dust lanes with stars over and inside it, one young star orange with its spikes.',
   blackhole:
-    'A black hole in a field of stars: a grey accretion disc crossing in front of the dark shadow, its far side arching over the top, with a teal hot spot orbiting.',
+    'A black hole in a field of stars: a grey accretion disc crossing in front of the dark shadow, its far side arching over the top, with an orange hot spot orbiting.',
   supernova:
-    'A supernova remnant: a clumpy grey shell expanding and thinning, ejecta streaming out past it as particles and soft rays of light pulsing outward, a teal pulsar glowing at the centre.',
+    'A supernova remnant: a clumpy grey shell expanding and thinning, ejecta streaming out past it as particles and soft rays of light pulsing outward, an orange pulsar glowing at the centre.',
   spiral:
-    'A great spiral galaxy in grey points, its arms, knots and dust lanes slowly turning, smaller galaxies behind it, its core teal.',
+    'A great spiral galaxy in grey points, its arms, knots and dust lanes slowly turning, smaller galaxies behind it, its core orange.',
 };
 
 interface P {

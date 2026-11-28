@@ -23,7 +23,7 @@ const TONE = [0.06, 0.1, 0.18, 0.1, 0.06] as const;
 export default defineCanvasFigure<State>({
   id: 'pipeline-steps',
   title: 'Pipeline steps',
-  alt: 'A staircase of small outlined boxes, five per row, each row one cycle to the right of the last; one row has a dashed empty box, and a teal hook joins it to the row above.',
+  alt: 'A staircase of small outlined boxes, five per row, each row one cycle to the right of the last; one row has a dashed empty box, and an orange hook joins it to the row above.',
   idea: 'A RISC-V pipeline as its textbook chart, moving: instructions step through five stages, a dependent one stalls, and forwarding hands it the value.',
   style: 'trace',
   motion: 'ambient',

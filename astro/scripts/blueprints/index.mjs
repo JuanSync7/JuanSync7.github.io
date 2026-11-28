@@ -69,6 +69,8 @@ const WITHOUT = {
   'Layout.astro': 'legacy',
   'page-curl.ts': 'the page-swap motion script for every public page; it lays nothing out',
   'island-unmount.ts': 'holds a React island\'s unmount until it has hydrated, for PaperLayout; it lays nothing out',
+  'site-search.ts': 'the search\'s keys and loading; it lays nothing out (the field is part 11 of paper-nav)',
+  'search-results.ts': 'builds the search\'s result rows inside the sheet, which opens only on demand; it lays nothing out',
 };
 const LEGACY = [
   'CubeSwapDemo',

@@ -25,7 +25,7 @@ function toCrystal(v: Vec3): Vec3 {
 export default defineCanvasFigure<State>({
   id: 'facet-morph',
   title: 'Facet morph',
-  alt: 'A flat-shaded grey low-poly solid slowly turning and changing between a faceted diamond-shaped crystal and a rounded sphere, with one facet in teal.',
+  alt: 'A flat-shaded grey low-poly solid slowly turning and changing between a faceted diamond-shaped crystal and a rounded sphere, with one facet in orange.',
   idea: 'Silicon against software as one solid: a cut crystal that relaxes into a sphere and back, the same facets either way.',
   style: 'lowpoly',
   motion: 'ambient',

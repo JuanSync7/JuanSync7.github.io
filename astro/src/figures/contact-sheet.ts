@@ -93,7 +93,7 @@ function frame(ctx: CanvasRenderingContext2D, cam: Camera, a: number, k: number,
 export default defineCanvasFigure<State>({
   id: 'contact-sheet',
   title: 'Contact sheet',
-  alt: 'Five thin-outlined rectangular frames standing in a ring and slowly turning, each holding a small line drawing: waves, a dot grid, a zigzag, peaks, a staircase; the front frame is outlined in teal.',
+  alt: 'Five thin-outlined rectangular frames standing in a ring and slowly turning, each holding a small line drawing: waves, a dot grid, a zigzag, peaks, a staircase; the front frame is outlined in orange.',
   idea: 'How a figure is checked: every drawing is captured as a set of stills and read like a contact sheet, one frame at a time.',
   style: 'hairline',
   motion: 'ambient',

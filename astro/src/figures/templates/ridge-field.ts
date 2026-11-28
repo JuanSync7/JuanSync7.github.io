@@ -83,7 +83,7 @@ export default defineTemplate<P, S>({
   },
   name: (p) => `${p.view} ridges`,
   alt: (p) =>
-    `Grey lines displaced by a rolling noise field, seen ${p.view === 'polar' ? 'as rings round a centre' : p.view === 'cylinder' ? 'wrapped round a turning cylinder' : p.view === 'above' ? 'from above' : `from the ${p.view}`}, one line teal.`,
+    `Grey lines displaced by a rolling noise field, seen ${p.view === 'polar' ? 'as rings round a centre' : p.view === 'cylinder' ? 'wrapped round a turning cylinder' : p.view === 'above' ? 'from above' : `from the ${p.view}`}, one line orange.`,
   setup: ({ rng }) => ({ noise: noise2(rng), lift: 0 }),
   draw: ({ ctx, w, h, t, dt, pointer, hover, still, params, state }) => {
     const target = pointer.active ? hover : 0;

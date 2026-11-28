@@ -36,7 +36,7 @@ function face(ctx: CanvasRenderingContext2D, cam: Camera, pts: [number, number, 
 export default defineCanvasFigure<State>({
   id: 'skyline',
   title: 'Skyline',
-  alt: 'A low-poly city of flat-shaded grey towers seen at an angle against the dark, with a single lit window in teal.',
+  alt: 'A low-poly city of flat-shaded grey towers seen at an angle against the dark, with a single lit window in orange.',
   idea: 'A night city in flat facets: towers of terminals and schematics, one window lit where the portfolio is being built, the camera drifting round it.',
   style: 'lowpoly',
   motion: 'ambient',

@@ -86,7 +86,7 @@ function arm(p: P, rng: Rng): number[] {
 export default defineTemplate<P, S>({
   id: 'snowflake',
   title: 'Snowflake',
-  idea: 'A snowflake grown from a seed: six identical arms at sixty degrees, branches leaving them at sixty degrees, the habit (dendrite, fern, sectored plate, stellar plate, star) chosen by the grammar; a teal front runs out from the centre as the crystal grew, and the pointer holds it at its distance.',
+  idea: 'A snowflake grown from a seed: six identical arms at sixty degrees, branches leaving them at sixty degrees, the habit (dendrite, fern, sectored plate, stellar plate, star) chosen by the grammar; an orange front runs out from the centre as the crystal grew, and the pointer holds it at its distance.',
   style: 'trace',
   motion: 'ambient',
   answers: true,
@@ -113,7 +113,7 @@ export default defineTemplate<P, S>({
   },
   name: (p) => p.habit,
   alt: (p) =>
-    `A line drawing of a six-armed snowflake, a ${p.habit}, every arm alike, with a teal front running out from its centre to its tips.`,
+    `A line drawing of a six-armed snowflake, a ${p.habit}, every arm alike, with an orange front running out from its centre to its tips.`,
   setup: ({ rng, params }) => {
     const one = arm(params, rng);
     const segs: number[] = [];

@@ -23,7 +23,7 @@ const ROWS = 40;
 export default defineCanvasFigure<State>({
   id: 'editor-plane',
   title: 'Editor plane',
-  alt: 'Horizontal grey bars of code laid on a floor that recedes to a vanishing point, scrolling slowly toward the viewer; one bar is teal.',
+  alt: 'Horizontal grey bars of code laid on a floor that recedes to a vanishing point, scrolling slowly toward the viewer; one bar is orange.',
   idea: 'A vim buffer seen as a floor: code scrolls up out of the distance and the cursor line stays lit, the way you read a file you know by its shape.',
   style: 'perspective',
   motion: 'ambient',

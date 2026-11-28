@@ -1,0 +1,323 @@
+/* The sample landing page, first screen. Every colour is a --mk-* property the studio sets from
+   the reader's palette; sizes come from the site's spacing and type tokens. */
+
+/* A browser window on the studio: chrome on top, the page scrolling inside. */
+.mk-window {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 78vh;
+  min-height: var(--nt-card-min);
+  overflow: hidden;
+  border: 1px solid var(--pp-outline);
+  border-radius: var(--pp-radius-lg);
+  background: var(--mk-ground);
+}
+
+.mk-window[data-full] {
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+}
+
+.mk-chrome {
+  display: flex;
+  align-items: center;
+  gap: var(--hf-space-2);
+  padding: var(--hf-space-2) var(--hf-space-3);
+  border-bottom: 1px solid var(--mk-line);
+  background: var(--mk-ground-sunk);
+}
+
+.mk-chrome > span:not(.mk-address) {
+  width: var(--hf-space-3);
+  height: var(--hf-space-3);
+  border-radius: 50%;
+  background: var(--mk-ink-faint);
+}
+
+.mk-address {
+  flex: 1;
+  margin-left: var(--hf-space-3);
+  padding: var(--hf-space-1) var(--hf-space-3);
+  border: 1px solid var(--mk-line);
+  border-radius: var(--hf-radius-pill);
+  background: var(--mk-ground);
+  color: var(--mk-ink-muted);
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-caption);
+}
+
+.mk-scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mk-scroll {
+    scroll-behavior: auto;
+  }
+}
+
+.mk {
+  container-type: inline-size;
+  display: grid;
+  gap: var(--hf-space-16);
+  padding: 0 var(--hf-space-6) var(--hf-space-10);
+  color: var(--mk-ink);
+  font-family: var(--mk-body);
+  font-size: var(--pp-fs-body);
+  line-height: 1.6;
+}
+
+.mk h1,
+.mk h2,
+.mk h3 {
+  margin: 0;
+  color: var(--mk-ink-strong);
+  font-family: var(--mk-heading);
+  font-weight: var(--pp-w-title);
+  line-height: 1.15;
+}
+
+.mk h1 {
+  font-size: clamp(var(--pp-fs-mark), 6cqi, var(--hf-space-12));
+}
+
+.mk h2 {
+  font-size: clamp(var(--pp-fs-mark), 4cqi, var(--pp-fs-h2));
+}
+
+.mk h3 {
+  font-size: var(--pp-fs-title);
+}
+
+.mk p {
+  margin: 0;
+}
+
+.mk a {
+  color: var(--mk-accent-text);
+  text-decoration: underline;
+  text-underline-offset: var(--hf-space-1);
+}
+
+.mk mark {
+  padding: 0 var(--hf-space-1);
+  background: var(--mk-accent-soft);
+  color: var(--mk-ink);
+}
+
+.mk :focus-visible,
+.mk-scroll:focus-visible {
+  outline: var(--hf-focus-w) solid var(--mk-accent);
+  outline-offset: var(--hf-focus-offset);
+}
+
+/* The nav stays at the top of the window as the page scrolls under it. */
+.mk-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--hf-space-3) var(--hf-space-6);
+  margin-inline: calc(-1 * var(--hf-space-6));
+  padding: var(--hf-space-4) var(--hf-space-6);
+  border-bottom: 1px solid var(--mk-line);
+  background: var(--mk-ground);
+}
+
+.mk-logo {
+  margin-right: auto;
+  color: var(--mk-ink-strong);
+  font-family: var(--mk-heading);
+  font-weight: var(--pp-w-title);
+}
+
+.mk-links {
+  display: flex;
+  gap: var(--hf-space-4);
+  font-size: var(--pp-fs-small);
+}
+
+.mk .mk-links a,
+.mk .mk-footer nav a {
+  color: var(--mk-ink);
+  text-decoration: none;
+}
+
+/* Hero: the words on the left, the drawing beside them; stacked when the window is narrow. */
+.mk-hero {
+  display: grid;
+  gap: var(--hf-space-8);
+  align-items: center;
+  margin-top: calc(-1 * var(--hf-space-8));
+}
+
+@container (min-width: 560px) {
+  .mk-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  }
+}
+
+.mk-hero-copy {
+  display: grid;
+  gap: var(--hf-space-4);
+}
+
+.mk-kicker,
+.mk-muted {
+  color: var(--mk-ink-muted);
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-caption);
+}
+
+.mk-lead {
+  font-size: var(--pp-fs-lead);
+}
+
+.mk-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hf-space-3);
+}
+
+.mk-btn {
+  min-height: var(--nt-hit);
+  padding: 0 var(--hf-space-5);
+  border: 1px solid var(--mk-ink);
+  border-radius: var(--pp-radius-md);
+  background: transparent;
+  color: var(--mk-ink-strong);
+  font-family: var(--mk-body);
+  font-size: var(--pp-fs-small);
+  font-weight: var(--pp-w-heading);
+  cursor: pointer;
+}
+
+.mk-btn-primary {
+  border-color: var(--mk-accent);
+  background: var(--mk-accent);
+  color: var(--mk-on-accent);
+}
+
+.mk-btn-primary:hover {
+  border-color: var(--mk-accent-strong);
+  background: var(--mk-accent-strong);
+}
+
+.mk-btn-small {
+  min-height: var(--hf-space-10);
+  padding: 0 var(--hf-space-3);
+}
+
+.mk-stats {
+  display: flex;
+  gap: var(--hf-space-8);
+  margin: var(--hf-space-2) 0 0;
+  padding-top: var(--hf-space-4);
+  border-top: 1px solid var(--mk-line);
+}
+
+.mk-stats dt {
+  color: var(--mk-ink-muted);
+  font-size: var(--pp-fs-caption);
+}
+
+.mk-stats dd {
+  margin: 0;
+  color: var(--mk-ink-strong);
+  font-family: var(--mk-heading);
+  font-size: var(--pp-fs-mark);
+  font-weight: var(--pp-w-title);
+}
+
+/* The drawing: keylines round the stage, the scene tabs and numbered notes under it. */
+.mk-figure {
+  display: grid;
+  gap: var(--hf-space-3);
+  margin: 0;
+}
+
+.mk-frame {
+  padding: var(--hf-space-2);
+  border: 1px solid var(--mk-line);
+  border-radius: var(--pp-radius-md);
+}
+
+.mk-stage {
+  width: 100%;
+  aspect-ratio: 1.25;
+}
+
+.mk-stage-swatch-keyboard {
+  aspect-ratio: 1.6;
+}
+
+/* The drawings take the reader's colours as they are: no page recolouring. */
+.mk-stage .figure-canvas canvas {
+  filter: none;
+  mix-blend-mode: normal;
+}
+
+.mk-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hf-space-2);
+}
+
+.mk-tabs button {
+  min-height: var(--hf-space-10);
+  padding: 0 var(--hf-space-3);
+  border: 1px solid var(--mk-line);
+  border-radius: var(--hf-radius-pill);
+  background: transparent;
+  color: var(--mk-ink);
+  font-size: var(--pp-fs-caption);
+  cursor: pointer;
+}
+
+.mk-tabs button[aria-selected='true'] {
+  border-color: var(--mk-ink-strong);
+  color: var(--mk-ink-strong);
+}
+
+.mk-notes {
+  display: grid;
+  gap: var(--hf-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--pp-fs-caption);
+}
+
+.mk-notes li {
+  display: grid;
+  grid-template-columns: var(--hf-space-26) 1fr;
+  gap: var(--hf-space-3);
+  align-items: baseline;
+}
+
+.mk-note-mark {
+  padding-left: var(--hf-space-2);
+  border-left: var(--hf-space-1) solid var(--mk-ground-sunk);
+  color: var(--mk-ink-strong);
+  font-family: var(--pp-mono);
+}
+
+.mk-note-mark[data-share='1'] {
+  border-left-color: var(--mk-ink);
+}
+
+.mk-note-mark[data-share='2'] {
+  border-left-color: var(--mk-accent);
+}
+
+/* A narrow window keeps the logo and the one action; the links would wrap under them. */
+@container (max-width: 420px) {
+  .mk-links {
+    display: none;
+  }
+}

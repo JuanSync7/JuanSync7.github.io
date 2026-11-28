@@ -97,7 +97,7 @@ export default defineTemplate<P, S>({
   },
   name: (p) => `${p.stations.length} stations, ${p.edges.length} joins`,
   alt: (p) =>
-    `${p.stations.length} grey isometric stations of different shapes and heights, joined by ${p.edges.length} thin floor traces with faint work moving along them, and one teal job travelling from station to station.`,
+    `${p.stations.length} grey isometric stations of different shapes and heights, joined by ${p.edges.length} thin floor traces with faint work moving along them, and one orange job travelling from station to station.`,
   setup: () => ({}),
   draw: ({ ctx, w, h, t, pointer, hover, params }) => {
     const cam = camera({

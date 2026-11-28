@@ -5,7 +5,7 @@
       ".claude/skills/art-render/SKILL.md": "13bf8e9f6b4c77d46022b202fd1b09c866dac5804bbd687e3777e951de694cd5",
       ".claude/skills/art-render/references/kernel.md": "e15f2c1ce8a7c2f3139afcb52e950e100fb7410fcc072099561cd7bfb446fb93",
       ".claude/skills/art-render/references/look.md": "d48aee4bd5af74de9b16258fe554af42457c43dc67ba8775fd94f3131da8b8b4",
-      ".claude/skills/art-render/references/rules.md": "07453531cf27f12c0e219315ebf328c873e776e8b7ba7fea5bca6ada5eb1f947"
+      ".claude/skills/art-render/references/rules.md": "973a5f4eb5ac2f462fb5f3cd3fa2952598375d637147536037e67e92deff6452"
     },
     "art-render code": {
       "astro/scripts/library-art/checks/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -80,7 +80,7 @@
       ".claude/skills/figure/references/styles.md": "71ce33ce7af7df3453a1575861800cead59b706fc014a584287ddfcbea629419"
     },
     "graphite-pencil": {
-      ".claude/skills/graphite-pencil/SKILL.md": "9bc9a6c187bf26b9d54e004640beac402efc91e231fabe70c52bb6d824727ac9",
+      ".claude/skills/graphite-pencil/SKILL.md": "ab6c4659e85087d882b338a26ed0b317d6dff8ac6bc75697587e37a2232e033d",
       ".claude/skills/graphite-pencil/references/kernel.md": "aa8a8ad872581a001c121f7bb4a0147982d91084ef1485d0c7e72e72bb3960df",
       ".claude/skills/graphite-pencil/references/look.md": "1e23a94a6a70d1ebca819c3d31b409e182deb483d36835c91efbf95418cd4ba6",
       ".claude/skills/graphite-pencil/references/rules.md": "da5b84f1c6aba1cfc9b7a8b1836f0353e6520f21c0161116923f3fb75251cdd0"
@@ -121,20 +121,22 @@
       "astro/src/lib/lettering/outline.ts": "1f3196468da08ffd110cff4206ac6aa1b523b5531ca2cd9aadf41a0f1cd71d21"
     },
     "pen-and-wash": {
-      ".claude/skills/pen-and-wash/SKILL.md": "56d2a542afb7043ecaab4262b6798595c6bb603aaed7abe6bab4459944e62f28",
-      ".claude/skills/pen-and-wash/references/kernel.md": "c85d5230011f5add3bc53f6af7c1ba08fe9a0438ad87288f1766b7b7aff67c1b",
-      ".claude/skills/pen-and-wash/references/look.md": "a3b775366f847ff6ed84dc2fa4e22f851715365aa7eb58120639c53a42feddb8",
-      ".claude/skills/pen-and-wash/references/rules.md": "2a071e2bf0b8ea576c89680684c867c7034346a04ac8f3d6ad8c6a1db76cae9b"
+      ".claude/skills/pen-and-wash/SKILL.md": "0fb03a568c2bed8f514d58a29457fab9b4dee591df1b31db89798845f22ee883",
+      ".claude/skills/pen-and-wash/references/kernel.md": "34f5baead0d79de19a34c5cf73f3e0cc8603b5fa8e26cba0bf91a46f861b97a2",
+      ".claude/skills/pen-and-wash/references/look.md": "f918df2d3967fbede20e3d97f2976bf49168ab21307a606367a4a0c6025895f8",
+      ".claude/skills/pen-and-wash/references/rules.md": "4a7c7913d679758b76bc98488cb7e900419cddcb52439a25e47c40cddc650bc9"
     },
     "pen-and-wash code": {
-      "astro/scripts/library-art/checks/check_penwash.py": "7d96fd3fc9b90f4b65142ee1dd3d06e8fa654fe86433d01867c32ee76787e475",
+      "astro/scripts/library-art/checks/check_penwash.py": "052db97f982ac9c022e87bca4c544b0d1ad2e10ced031995f6188bcff1aed1b1",
       "astro/scripts/library-art/kernel/__init__.py": "341c7c22edd957866450716062fc10412b3ac1d15d43c61d94a9ea4487bf93a8",
-      "astro/scripts/library-art/kernel/penwash.py": "f4c87092a76064e51a0491cea432e6a5fda2647261aa12afc448b626d62601f3",
+      "astro/scripts/library-art/kernel/hatching.py": "c3859e429df41ea9a339ffa821768664af24a93f3d95900e2773bbb6dddd823a",
+      "astro/scripts/library-art/kernel/penpicture.py": "d9e1ade21b1993b96e413152262c970a12a237cd43446a498b53873bc52969bc",
+      "astro/scripts/library-art/kernel/penwash.py": "06045554b5b21bb9cf071c4e91ae7e1a700370518d63b4888d87f99aba42b6be",
       "astro/scripts/library-art/kernel/primitives.py": "5f7d1b96775b693f38b824d8c4dc74b77e4a15b508ede449d4c424f36906b17a",
       "astro/scripts/library-art/kernel/tokens.py": "835959193b899a26544ac94a8f953220c6615e1f34ff8d3c2f94acc4b7a73418"
     },
     "site-taste": {
-      ".claude/skills/site-taste/SKILL.md": "4c061adcb969ff2db56f01dc23acde87eb33b551b35f20785e53131f8f135f34"
+      ".claude/skills/site-taste/SKILL.md": "f9d2372211ff8554dc6b4d2f474f3f6aa109d41c2f84d0af04cdd336db7cbe46"
     },
     "slide-icons": {
       ".claude/skills/slide-icons/EVAL.md": "c77401a67c30f3ed52f2751a082a54a69048462d574d8168f4ecaa873db5f8a1",
@@ -181,7 +183,7 @@
     "web-design-agent": {
       ".claude/agents/web-design-agent.md": "b1db609d3b490f99d73bf793e6030c6b5a77568984da06de7ac629a2fc5cd101",
       ".claude/skills/web-design-agent/LOOK.md": "9bb56339e904947e5b6bfc72d90c0652529296bd71a74a019e90bf479228df79",
-      ".claude/skills/web-design-agent/RULES.md": "af8324e534a1dacc68d88d65acb65c89148845d9401e6a57808278f490defba6",
+      ".claude/skills/web-design-agent/RULES.md": "3c7643bf129fbb9871e6f799f1006107cabc61ee0d3ababbb0085484e73c7d74",
       ".claude/skills/web-design-agent/SKILL.md": "2dff9823f64f54f73a26ff76343a422a9986064a1549dd8e4729c918f10fd199",
       ".claude/skills/web-design-agent/SYSTEM.md": "4376a5e27f6ead04627ef206af8ff9ad76848d5ec6df9978f0f9889031791224",
       ".claude/skills/web-design-agent/checks/README.md": "a93647fa7cebc4140b01bfc6487d18297296c099a2332f762ec700e62c8485d4",
@@ -195,7 +197,7 @@
       ".claude/skills/web-design-agent/kernel/INDEX.md": "e715fda8dc9e0dff36044818a981907ffafaddd5215c01026f38c97bec848198",
       ".claude/skills/web-design-agent/playbooks/figures.md": "c7f9ededbee7839daf644842d380d0e07ace684eed5ee68f0fc3259cf137c050",
       ".claude/skills/web-design-agent/playbooks/lighting.md": "dfb3c837b988622253b92bbe9bf62091f6f361c09ea49cff8ef04a7576bfd92e",
-      ".claude/skills/web-design-agent/playbooks/motion.md": "3390e919801cca595ecac3473caebb9e1b9119c8ac6b4152c0092770b45c6914",
+      ".claude/skills/web-design-agent/playbooks/motion.md": "9dd386cb6651747a3443a4dca4e848bdac88f6c6ca668a9ad5312d94ed92f09e",
       ".claude/skills/web-design-agent/playbooks/page-design.md": "36f9e5cd24a09eaa36c3331c81bd67b9b17fffb8845b71b88466442f2919a83e",
       ".claude/skills/web-design-agent/playbooks/page-transitions/RULES.md": "8947d6bba476677ea74c3369be193ab81e7664f61360e231df791d7f567443eb",
       ".claude/skills/web-design-agent/playbooks/page-transitions/SKILL.md": "44db54173dcde03e3561fa4b15a62befec48c5bfbf2247635b91df0ea74f8232",

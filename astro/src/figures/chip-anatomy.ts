@@ -69,7 +69,7 @@ interface State {
 export default defineThreeFigure<State>({
   id: 'chip-anatomy',
   title: 'Chip package anatomy',
-  alt: 'A phone processor package drawn in thin lines, taken apart layer by layer: the marked epoxy cap of the memory, eight DRAM dies stacked in four stepped layers with gold wires looped from their edges down to a thin substrate, a ring of solder balls, a mould with a ring of copper posts through it round the processor die and its floorplan of CPU, GPU and neural engine cores and cache, fan-out wiring with traces running from the die to the posts, four small capacitors underneath, and a grid of solder balls. Every part carries a small ring with a thin line out to its label; one part at a time is outlined in teal.',
+  alt: 'A phone processor package drawn in thin lines, taken apart layer by layer: the marked epoxy cap of the memory, eight DRAM dies stacked in four stepped layers with gold wires looped from their edges down to a thin substrate, a ring of solder balls, a mould with a ring of copper posts through it round the processor die and its floorplan of CPU, GPU and neural engine cores and cache, fan-out wiring with traces running from the die to the posts, four small capacitors underneath, and a grid of solder balls. Every part carries a small ring with a thin line out to its label; one part at a time is outlined in orange.',
   idea: 'Take the package of a phone processor apart one layer at a time, top to bottom, and light each part as it is named: the memory stacked on top, the processor beneath.',
   motion: 'ambient',
   answers: true,

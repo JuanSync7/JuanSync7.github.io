@@ -107,8 +107,8 @@ function sprite(id: AssemblyId, cam: Camera, dpr: number, lit: boolean): Sprite 
 export default defineCanvasFigure<State>({
   id: 'accelerator-package',
   title: 'Accelerator package',
-  alt: 'An isometric line drawing of an AI accelerator package opened layer by layer: a copper lid with its mark plate and data matrix, an indium thermal sheet, two compute dies with their cores, cache and PHY lanes between eight stacked memory chips, underfill over carpets of microbumps, a silicon interposer with its wiring and via field, C4 bumps, a layered substrate ringed with capacitors, and a ball grid below. One part at a time is outlined in teal.',
-  idea: 'A 2.5D package that opens: its assemblies lift apart on staggered springs, outside first, and the teal walks down through them naming each part; pointer height picks a part, a click closes it back up.',
+  alt: 'An isometric line drawing of an AI accelerator package opened layer by layer: a copper lid with its mark plate and data matrix, an indium thermal sheet, two compute dies with their cores, cache and PHY lanes between eight stacked memory chips, underfill over carpets of microbumps, a silicon interposer with its wiring and via field, C4 bumps, a layered substrate ringed with capacitors, and a ball grid below. One part at a time is outlined in orange.',
+  idea: 'A 2.5D package that opens: its assemblies lift apart on staggered springs, outside first, and the orange walks down through them naming each part; pointer height picks a part, a click closes it back up.',
   style: 'hairline',
   motion: 'ambient',
   answers: true,

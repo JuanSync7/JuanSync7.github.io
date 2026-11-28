@@ -13,8 +13,8 @@ mkdir -p "$work/src" "$work/out"
 python3 -m kernel.scenes "$work/src"
 python3 checks/check_penwash.py "$work/src/shelf-unit-light.svg" "$work/src/shelf-unit-dark.svg" --tile-width 760
 python3 checks/check_penwash.py "$work/src/table-light.svg" "$work/src/table-dark.svg"
-python3 checks/check_graphite.py "$work/src/table-light.svg"
-python3 checks/check_graphite.py "$work/src/table-dark.svg" --background "$(python3 -c "from kernel.tokens import palette; print(palette('dark')['ground'])")"
+python3 checks/check_penwash.py --selftest "$work/src/table-light.svg"
+# The framed pictures are pen and ink now (R-BAKE-15); the graphite playbook draws no part of these plates.
 for theme in light dark; do
   bg="$(python3 -c "from kernel.tokens import palette; print(palette('$theme')['ground'])")"
   python3 -m kernel.render "$work/src/shelf-unit-$theme.svg" "$work/out" "shelf-$theme" --tile-width 760 --background "$bg"

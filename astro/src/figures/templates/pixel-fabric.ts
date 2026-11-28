@@ -121,7 +121,7 @@ export default defineTemplate<P, S>({
   },
   name: (p) => `${p.cols} × ${p.rows}, ${p.sweeps.join(' + ')}`,
   alt: (p) =>
-    `A pixel grid of ${p.cols} by ${p.rows} grey logic blocks separated by thin channels; brighter dithered activity passes over them in a ${p.sweeps.join(' and ')} pattern, and part of the fabric is teal.`,
+    `A pixel grid of ${p.cols} by ${p.rows} grey logic blocks separated by thin channels; brighter dithered activity passes over them in a ${p.sweeps.join(' and ')} pattern, and part of the fabric is orange.`,
   setup: ({ params: p }) => {
     let s = p.salt;
     const rng = (): number => (s = (s * 1664525 + 1013904223) >>> 0) / 4294967296;

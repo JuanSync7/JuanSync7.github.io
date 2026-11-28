@@ -100,7 +100,7 @@ export default defineTemplate<P, S>({
   },
   name: (p) => `${p.layout} of ${p.motifs.length}`,
   alt: (p) =>
-    `Thin-outlined cards arranged as a ${p.layout}, each holding a small line pattern (${p.motifs.join(', ')}), the front card outlined in teal.`,
+    `Thin-outlined cards arranged as a ${p.layout}, each holding a small line pattern (${p.motifs.join(', ')}), the front card outlined in orange.`,
   setup: ({ rng }) => ({ noise: noise2(rng), turn: 0 }),
   draw: ({ ctx, w, h, t, dt, pointer, hover, still, params, state }) => {
     const n = params.motifs.length;

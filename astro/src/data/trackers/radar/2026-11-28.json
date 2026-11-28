@@ -1,0 +1,447 @@
+{
+  "meta": {
+    "lastUpdated": "2026-11-28",
+    "cadence": "daily",
+    "summary": "open-diagram treats a diagram like code that must pass its checks, and names each layout problem instead of leaving it for a reviewer to spot."
+  },
+  "featuredRepo": "lukendeasy/open-diagram",
+  "picks": [
+    {
+      "repo": "lukendeasy/open-diagram",
+      "url": "https://github.com/lukendeasy/open-diagram",
+      "what": "A Python library that lays out architecture diagrams from a short script, measures every label from the font and fails the build with a named list of layout problems.",
+      "language": "Python",
+      "license": "MIT",
+      "stars": 430,
+      "lastActivity": "2026-11-25",
+      "area": "Static-site and design tooling for an Astro site",
+      "fit": 4,
+      "fitWhy": "I already hold my diagrams to written layout rules, and this turns a similar set into checks that fail the build.",
+      "verdict": "study",
+      "caution": "Ten days old. Its comparison with other tools is its own. Installable MCP server and skill: review before use.",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "alesha-pro/inference-optimization-playbook",
+      "url": "https://github.com/alesha-pro/inference-optimization-playbook",
+      "what": "A public ledger of tested hypotheses for running large mixture-of-experts models fast on consumer GPUs, each with its verdict and measurements.",
+      "language": "Python",
+      "license": "MIT",
+      "stars": 118,
+      "lastActivity": "2026-11-26",
+      "area": "Inference engines and inference silicon",
+      "fit": 3,
+      "fitWhy": "A ledger of hypotheses with verdicts and conditions is the kind of evidence trail I like, even though the hardware is not mine.",
+      "verdict": "study",
+      "caution": "All measurements are the author's own, on one rig.",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "dangxingyu/megakernel-zoo",
+      "url": "https://github.com/dangxingyu/megakernel-zoo",
+      "what": "Model-specific fused GPU kernels for LLM decoding, written by coding agents, behind an OpenAI-compatible server.",
+      "language": "Cuda",
+      "license": "Apache-2.0",
+      "stars": 66,
+      "lastActivity": "2026-11-23",
+      "area": "Inference engines and inference silicon",
+      "fit": 3,
+      "fitWhy": "Shows how far coding agents get on low-level GPU work, with benchmarks to check against.",
+      "verdict": "study",
+      "caution": "Needs H100 or B200 class GPUs. Benchmarks are the project's own.",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "thu-nics/uni3sim",
+      "url": "https://github.com/thu-nics/uni3sim",
+      "what": "An open simulator for LLM serving at scale.",
+      "language": "Python",
+      "license": "Apache-2.0",
+      "stars": 147,
+      "lastActivity": "2026-11-24",
+      "area": "Inference engines and inference silicon",
+      "fit": 3,
+      "fitWhy": "Simulating a serving setup before buying hardware could be useful, but I have not seen how close it gets to real runs.",
+      "verdict": "watch",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "enwove/flyx",
+      "url": "https://github.com/enwove/flyx",
+      "what": "A local LLM inference engine shipped as one roughly 50 MB binary with no dependencies.",
+      "language": "C++",
+      "license": "Apache-2.0",
+      "stars": 118,
+      "lastActivity": "2026-11-28",
+      "area": "Inference engines and inference silicon",
+      "fit": 3,
+      "fitWhy": "A single binary is low upkeep, but it is days old.",
+      "verdict": "watch",
+      "caution": "Very young. Claims not verified.",
+      "foundVia": [
+        "github search"
+      ]
+    },
+    {
+      "repo": "jakubkrehel/outtrue",
+      "url": "https://github.com/jakubkrehel/outtrue",
+      "what": "Oxlint rules that keep React code on a design system, with each error naming its fix.",
+      "language": "TypeScript",
+      "license": "MIT",
+      "stars": 97,
+      "lastActivity": "2026-11-27",
+      "area": "Static-site and design tooling for an Astro site",
+      "fit": 2,
+      "fitWhy": "The idea matches my token rules, but it reads Tailwind class names and my site uses plain CSS variables.",
+      "verdict": "skip",
+      "foundVia": [
+        "github search"
+      ]
+    }
+  ],
+  "catalogue": [
+    {
+      "repo": "RunanywhereAI/trnrt",
+      "url": "https://github.com/RunanywhereAI/trnrt",
+      "what": "An open inference engine that serves one large open model on a single AWS Trainium2 machine through an OpenAI-compatible API.",
+      "area": "Inference engines and inference silicon",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "jmaczan/tiny-vllm",
+      "url": "https://github.com/jmaczan/tiny-vllm",
+      "what": "A teaching-sized LLM inference engine in C++ and CUDA that rebuilds the core ideas of vLLM.",
+      "area": "Inference engines and inference silicon",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "obsidianmd/pele",
+      "url": "https://github.com/obsidianmd/pele",
+      "what": "A fast renderer for Mermaid diagrams from the Obsidian team.",
+      "area": "Static-site and design tooling for an Astro site",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "ddkbs/sketchy",
+      "url": "https://github.com/ddkbs/sketchy",
+      "what": "A layout engine for AI-drawn diagrams: the model names the boxes and links, the engine places them, in a hand-drawn style.",
+      "area": "Static-site and design tooling for an Astro site",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "lightseekorg/tokenspeed",
+      "url": "https://github.com/lightseekorg/tokenspeed",
+      "what": "An LLM inference engine built around a state-machine scheduler and a registry of kernels.",
+      "area": "Inference engines and inference silicon",
+      "verdict": "study",
+      "firstSeen": "2026-11-21"
+    },
+    {
+      "repo": "erkamyaman/rust-anything",
+      "url": "https://github.com/erkamyaman/rust-anything",
+      "what": "A tool that records what an app does, lets a coding agent rewrite it in Rust piece by piece, and replays the recording to prove each piece behaves the same.",
+      "area": "Coding-agent ecosystem",
+      "verdict": "study",
+      "firstSeen": "2026-11-22"
+    },
+    {
+      "repo": "alexeyw/lot-map",
+      "url": "https://github.com/alexeyw/lot-map",
+      "what": "A live map beside Claude Code that shows tool calls, hooks, skills and subagents as they run, locally.",
+      "area": "Coding-agent ecosystem",
+      "verdict": "study",
+      "firstSeen": "2026-11-22"
+    },
+    {
+      "repo": "janestreet/agent_skills",
+      "url": "https://github.com/janestreet/agent_skills",
+      "what": "A published set of agent skills from a large engineering firm.",
+      "area": "Agent skills, playbooks and their evaluation",
+      "verdict": "study",
+      "firstSeen": "2026-11-22"
+    },
+    {
+      "repo": "Dodaios/ste80-humanizer",
+      "url": "https://github.com/Dodaios/ste80-humanizer",
+      "what": "An agent skill that rewrites text toward Simplified Technical English and strips common AI tells.",
+      "area": "Agent skills, playbooks and their evaluation",
+      "verdict": "study",
+      "firstSeen": "2026-11-22"
+    },
+    {
+      "repo": "NVIDIA/SkillEvaluator",
+      "url": "https://github.com/NVIDIA/SkillEvaluator",
+      "what": "A command-line tool and CI template that checks agent skills in three tiers: static checks with no model key, overlap detection, and live agent runs with and without the skill.",
+      "area": "Agent skills, playbooks and their evaluation",
+      "verdict": "use",
+      "firstSeen": "2026-11-23"
+    },
+    {
+      "repo": "NVIDIA/SkillSpector",
+      "url": "https://github.com/NVIDIA/SkillSpector",
+      "what": "A security scanner for agent skills that looks for malicious patterns, prompt injection, data exfiltration and supply-chain risks before you install them.",
+      "area": "Agent skills, playbooks and their evaluation",
+      "verdict": "use",
+      "firstSeen": "2026-11-23"
+    },
+    {
+      "repo": "therandomsecurityguy/signet",
+      "url": "https://github.com/therandomsecurityguy/signet",
+      "what": "A registry for agents and skills with lifecycle states and signed, logged publication.",
+      "area": "Agent skills, playbooks and their evaluation",
+      "verdict": "study",
+      "firstSeen": "2026-11-23"
+    },
+    {
+      "repo": "benchflow-ai/skillsbench",
+      "url": "https://github.com/benchflow-ai/skillsbench",
+      "what": "A benchmark of tasks that measures whether skills actually help agents.",
+      "area": "Agent skills, playbooks and their evaluation",
+      "verdict": "study",
+      "firstSeen": "2026-11-23"
+    },
+    {
+      "repo": "PundarikakshNTripathi/silicon-forge",
+      "url": "https://github.com/PundarikakshNTripathi/silicon-forge",
+      "what": "An open RTL toolkit where a language model may propose a design but formal proof, equivalence checking and layout on open-source EDA decide whether it is accepted.",
+      "area": "AI for chip design (RTL, verification, lint, EDA flow automation, RISC-V)",
+      "verdict": "study",
+      "firstSeen": "2026-11-27"
+    },
+    {
+      "repo": "xyjoey/Veri-Sure",
+      "url": "https://github.com/xyjoey/Veri-Sure",
+      "what": "A research multi-agent system that generates RTL and checks it with simulation, temporal tracing and formal verification.",
+      "area": "AI for chip design (RTL, verification, lint, EDA flow automation, RISC-V)",
+      "verdict": "study",
+      "firstSeen": "2026-11-27"
+    },
+    {
+      "repo": "stable-lab/Pro-V",
+      "url": "https://github.com/stable-lab/Pro-V",
+      "what": "A research multi-agent system that writes Python-based testbenches to verify RTL automatically.",
+      "area": "AI for chip design (RTL, verification, lint, EDA flow automation, RISC-V)",
+      "verdict": "study",
+      "firstSeen": "2026-11-27"
+    },
+    {
+      "repo": "DebarghaG/formalkit",
+      "url": "https://github.com/DebarghaG/formalkit",
+      "what": "One interface for language models to call formal tools such as SMT and SAT solvers, model checkers and provers, each in its own container.",
+      "area": "outside profile",
+      "verdict": "study",
+      "firstSeen": "2026-11-27"
+    },
+    {
+      "repo": "lukendeasy/open-diagram",
+      "url": "https://github.com/lukendeasy/open-diagram",
+      "what": "A Python library that lays out architecture diagrams from a short script, measures every label from the font and fails the build with a named list of layout problems.",
+      "area": "Static-site and design tooling for an Astro site",
+      "verdict": "study",
+      "firstSeen": "2026-11-28"
+    },
+    {
+      "repo": "alesha-pro/inference-optimization-playbook",
+      "url": "https://github.com/alesha-pro/inference-optimization-playbook",
+      "what": "A public ledger of tested hypotheses for running large mixture-of-experts models fast on consumer GPUs, each with its verdict and measurements.",
+      "area": "Inference engines and inference silicon",
+      "verdict": "study",
+      "firstSeen": "2026-11-28"
+    },
+    {
+      "repo": "dangxingyu/megakernel-zoo",
+      "url": "https://github.com/dangxingyu/megakernel-zoo",
+      "what": "Model-specific fused GPU kernels for LLM decoding, written by coding agents, behind an OpenAI-compatible server.",
+      "area": "Inference engines and inference silicon",
+      "verdict": "study",
+      "firstSeen": "2026-11-28"
+    }
+  ],
+  "featured": [
+    {
+      "repo": "RunanywhereAI/trnrt",
+      "date": "2026-11-21",
+      "slug": "2026-11-21-trnrt"
+    },
+    {
+      "repo": "erkamyaman/rust-anything",
+      "date": "2026-11-22",
+      "slug": "2026-11-22-rust-anything"
+    },
+    {
+      "repo": "NVIDIA/SkillEvaluator",
+      "date": "2026-11-23",
+      "slug": "2026-11-23-skillevaluator"
+    },
+    {
+      "repo": "PundarikakshNTripathi/silicon-forge",
+      "date": "2026-11-27",
+      "slug": "2026-11-27-silicon-forge"
+    },
+    {
+      "repo": "lukendeasy/open-diagram",
+      "date": "2026-11-28",
+      "slug": "2026-11-28-open-diagram"
+    }
+  ],
+  "seen": [
+    {
+      "repo": "RunanywhereAI/trnrt",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "jmaczan/tiny-vllm",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "obsidianmd/pele",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "ddkbs/sketchy",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "sybil-solutions/inference-optimisation-skill",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "lightseekorg/tokenspeed",
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "erkamyaman/rust-anything",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "alexeyw/lot-map",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "janestreet/agent_skills",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "Dodaios/ste80-humanizer",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "shanselman/gputaskman",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "NiazMorshed2007/reanimate",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "BigPizzaV3/ClaudeMom",
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "NVIDIA/SkillEvaluator",
+      "date": "2026-11-23"
+    },
+    {
+      "repo": "NVIDIA/SkillSpector",
+      "date": "2026-11-23"
+    },
+    {
+      "repo": "therandomsecurityguy/signet",
+      "date": "2026-11-23"
+    },
+    {
+      "repo": "benchflow-ai/skillsbench",
+      "date": "2026-11-23"
+    },
+    {
+      "repo": "EL4CTEO/fast-anything",
+      "date": "2026-11-23"
+    },
+    {
+      "repo": "diego3g/craft",
+      "date": "2026-11-23"
+    },
+    {
+      "repo": "pierridotite/mobile-agent-testers",
+      "date": "2026-11-23"
+    },
+    {
+      "repo": "PundarikakshNTripathi/silicon-forge",
+      "date": "2026-11-27"
+    },
+    {
+      "repo": "xyjoey/Veri-Sure",
+      "date": "2026-11-27"
+    },
+    {
+      "repo": "stable-lab/Pro-V",
+      "date": "2026-11-27"
+    },
+    {
+      "repo": "DebarghaG/formalkit",
+      "date": "2026-11-27"
+    },
+    {
+      "repo": "jemkox/agent-riscv",
+      "date": "2026-11-27"
+    },
+    {
+      "repo": "SiliCAD/DV_MCP",
+      "date": "2026-11-27"
+    },
+    {
+      "repo": "Promise-HIT/digital-ic-design-verification-skills",
+      "date": "2026-11-27"
+    },
+    {
+      "repo": "lukendeasy/open-diagram",
+      "date": "2026-11-28"
+    },
+    {
+      "repo": "alesha-pro/inference-optimization-playbook",
+      "date": "2026-11-28"
+    },
+    {
+      "repo": "dangxingyu/megakernel-zoo",
+      "date": "2026-11-28"
+    },
+    {
+      "repo": "thu-nics/uni3sim",
+      "date": "2026-11-28"
+    },
+    {
+      "repo": "enwove/flyx",
+      "date": "2026-11-28"
+    },
+    {
+      "repo": "jakubkrehel/outtrue",
+      "date": "2026-11-28"
+    }
+  ],
+  "sourceStats": {
+    "github search": {
+      "checked": 5,
+      "candidates": 32,
+      "picks": 32,
+      "useful": 19
+    },
+    "web search": {
+      "checked": 5,
+      "candidates": 2,
+      "picks": 2,
+      "useful": 2
+    }
+  }
+}
