@@ -1,0 +1,171 @@
+/* The sample landing page below the fold: features, posts, an article, a sign-up, a footer. */
+
+.mk-section {
+  display: grid;
+  gap: var(--hf-space-4);
+  align-content: start;
+}
+
+.mk-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--nt-thumb-min)), 1fr));
+  gap: var(--hf-space-4);
+}
+
+.mk-card {
+  display: grid;
+  gap: var(--hf-space-2);
+  align-content: start;
+  padding: var(--hf-space-5);
+  border: 1px solid var(--mk-line);
+  border-radius: var(--pp-radius-md);
+  font-size: var(--pp-fs-small);
+}
+
+.mk-card-dot {
+  width: var(--hf-space-3);
+  height: var(--hf-space-3);
+  border: 1px solid var(--mk-ink);
+  border-radius: 50%;
+  background: var(--mk-ground);
+}
+
+.mk-card-dot[data-share='1'] {
+  background: var(--mk-ink);
+}
+
+.mk-card-dot[data-share='2'] {
+  border-color: var(--mk-accent);
+  background: var(--mk-accent);
+}
+
+/* Posts: a list of rows split by hairlines, date and tag before the title. */
+.mk-posts {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--mk-line);
+}
+
+.mk-posts li {
+  display: grid;
+  grid-template-columns: var(--hf-space-16) auto minmax(0, 1fr) auto;
+  gap: var(--hf-space-4);
+  align-items: baseline;
+  padding-block: var(--hf-space-4);
+  border-bottom: 1px solid var(--mk-line);
+}
+
+.mk-posts time {
+  color: var(--mk-ink-muted);
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-caption);
+}
+
+.mk .mk-posts a {
+  color: var(--mk-ink-strong);
+  font-family: var(--mk-heading);
+  font-weight: var(--pp-w-heading);
+  text-decoration: none;
+}
+
+.mk .mk-posts a:hover {
+  color: var(--mk-accent-text);
+}
+
+@container (max-width: 520px) {
+  .mk-posts li {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .mk-posts li > a {
+    grid-column: 1 / -1;
+  }
+}
+
+.mk-badge {
+  justify-self: start;
+  padding: 0 var(--hf-space-2);
+  border: 1px solid var(--mk-accent2);
+  border-radius: var(--hf-radius-pill);
+  background: var(--mk-accent2-soft);
+  /* The tint is the second accent's; the word stays ink, as text in the highlighter does. */
+  color: var(--mk-ink-strong);
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-caption);
+}
+
+/* The article, read at a comfortable measure. */
+.mk-prose {
+  max-width: var(--nt-measure);
+}
+
+.mk-prose h3 {
+  margin-top: var(--hf-space-2);
+}
+
+.mk-prose blockquote {
+  margin: 0;
+  padding: var(--hf-space-1) 0 var(--hf-space-1) var(--hf-space-4);
+  border-left: var(--hf-space-1) solid var(--mk-accent);
+  color: var(--mk-ink-strong);
+  font-family: var(--mk-heading);
+  font-size: var(--pp-fs-lead);
+}
+
+.mk-code {
+  margin: 0;
+  padding: var(--hf-space-4);
+  overflow-x: auto;
+  border: 1px solid var(--mk-line);
+  border-radius: var(--pp-radius-md);
+  background: var(--mk-ground-sunk);
+  color: var(--mk-ink-strong);
+  font-family: var(--pp-mono);
+  font-size: var(--pp-fs-caption);
+}
+
+/* Sign-up: a hairline box, the one filled button. */
+.mk-signup {
+  padding: var(--hf-space-8);
+  border: 1px solid var(--mk-line);
+  border-radius: var(--pp-radius-lg);
+  background: var(--mk-ground-raised);
+}
+
+.mk-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hf-space-2);
+}
+
+.mk-form input {
+  flex: 1 1 var(--nt-thumb-min);
+  min-height: var(--nt-hit);
+  padding: 0 var(--hf-space-3);
+  border: 1px solid var(--mk-ink-faint);
+  border-radius: var(--pp-radius-md);
+  background: var(--mk-ground);
+  color: var(--mk-ink-strong);
+  font: inherit;
+}
+
+.mk-form input::placeholder {
+  color: var(--mk-ink-muted);
+}
+
+.mk-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: start;
+  gap: var(--hf-space-6);
+  padding-top: var(--hf-space-6);
+  border-top: 1px solid var(--mk-line);
+  font-size: var(--pp-fs-small);
+}
+
+.mk-footer nav {
+  display: flex;
+  gap: var(--hf-space-4);
+}
