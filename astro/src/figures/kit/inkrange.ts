@@ -4,7 +4,7 @@ import { chunkRng, type InkWorld } from './inkland';
 import { Ink, swell, type Mark } from './inkpath';
 import { mountainTemple } from './inkshrine';
 import { river } from './inkriver';
-import { distant, fog, hatch } from './inkshade';
+import { distant, fog, hug } from './inkshade';
 import type { Noise2 } from './noise';
 import { between, type Rng } from './rng';
 
@@ -34,7 +34,7 @@ function range(k: Ink, noise: Noise2, i: number, L: RangeSpec, w: InkWorld, fold
   if (!head || !tail) return top;
   k.cover([[head[0], w.bottom], ...top, [tail[0], w.bottom]]);
   k.stroke(top, L.width, swell, 0.5, i + L.salt);
-  hatch(k, noise, top, L.base, i + L.salt, w.u, folds > 0);
+  hug(k, noise, top, i + L.salt, w.u, folds > 0);
   // Nearer ridges: spurs standing in front of the peak. Each takes a stretch of the ridge's own
   // shape, lowered down the face, with both ends run down to the foot, so it is a hill of its
   // own: it hides the face behind it, has its own brushed outline, and is shaded like the peak.
@@ -52,7 +52,7 @@ function range(k: Ink, noise: Noise2, i: number, L: RangeSpec, w: InkWorld, fold
     if (spur.some((p) => p[1] > L.base)) continue;
     k.cover([...spur, ...[...spur].reverse().map((p): Pt => [p[0], L.base + 0.02 * w.u])]);
     k.stroke(spur, L.width * 0.8, swell, 0.5, i + f);
-    hatch(k, noise, spur, L.base, i * 7 + f, w.u, true);
+    hug(k, noise, spur, i * 7 + f, w.u, true);
   }
   return top;
 }

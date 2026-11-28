@@ -9,7 +9,7 @@ import { noise2, type Noise2 } from '../kit/noise';
 import { between, pick } from '../kit/rng';
 
 /** An ink landscape after LingDong-'s shan-shui-inf, unrolling like a hand scroll without end:
- *  pale far ranges with distant trees and fog; nearer ranges hatched in shade, wooded with
+ *  pale far ranges with distant trees and fog; nearer ranges edged with shade, wooded with
  *  groves, a river falling from a saddle, and temples and pagodas on terraces cut into their
  *  faces, at their feet or on the near bank; a lake, river or gorge that mirrors them, with
  *  fish, sampans, fishermen and boatmen; a near bank of stones, lilies, pines, willows, rocks,
@@ -124,7 +124,7 @@ export default defineTemplate<P, S>({
   },
   name: (p) => (p.light === 'moon' ? `moonlit ${p.scene}` : `${p.scene} at sunset`),
   alt: (p) =>
-    `An ink-brush landscape scrolling without end: pale far ranges dotted with distant trees and crossed by fog; nearer ranges hatched on their shaded faces and in their gullies, wooded with groves of small trees and pines, with temples and pagodas on terraces cut into their faces or standing at their feet, and a river falling from a saddle and winding down into a ${p.scene}. The water mirrors the mountains and temples in broken, shimmering pieces, with fish hovering under it and sampans with ${p.boats.includes('fisherman') ? 'fishermen' : 'boatmen'} on it. The near bank is set with stones, grass, lily pads and lotus, a moored fishing boat, ${[...new Set(p.trees)].map((t) => GROVE_WORDS[t]).join(' and ')}, rocks, bonsai and ponds. ${p.light === 'moon' ? 'A small orange moon outline hangs in the sky' : 'An orange setting sun sinks behind the far ranges'}.`,
+    `An ink-brush landscape scrolling without end: pale far ranges dotted with distant trees and crossed by fog; nearer ranges with a darker double edge on the sides away from the light, wooded with groves of small trees and pines, with temples and pagodas on terraces cut into their faces or standing at their feet, and a river falling from a saddle and winding down into a ${p.scene}. The water mirrors the mountains and temples in broken, shimmering pieces, with fish hovering under it and sampans with ${p.boats.includes('fisherman') ? 'fishermen' : 'boatmen'} on it. The near bank is set with stones, grass, lily pads and lotus, a moored fishing boat, ${[...new Set(p.trees)].map((t) => GROVE_WORDS[t]).join(' and ')}, rocks, bonsai and ponds. ${p.light === 'moon' ? 'A small orange moon outline hangs in the sky' : 'An orange setting sun sinks behind the far ranges'}.`,
   setup: ({ h, rng, params }) => {
     const noise = noise2(rng);
     const base = Math.floor(rng() * 0x7fffffff);
