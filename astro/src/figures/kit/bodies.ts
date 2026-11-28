@@ -1,4 +1,5 @@
 import type { Vec3 } from './camera';
+import { drafting, ROUND_DRAFT } from './drafting';
 
 /** Solid shapes for city parts (`kit/city.ts`) in the hard-surface look (`kit/hardsurface.ts`):
  *  triangles in the part's own frame (centred, ground at y = 0, w across x, d across z, h
@@ -7,6 +8,7 @@ import type { Vec3 } from './camera';
  *  has trees, rock and machines. */
 
 export type Tris = number[];
+
 const TAU = Math.PI * 2;
 
 const tri = (o: Tris, a: Vec3, b: Vec3, c: Vec3): void => void o.push(...a, ...b, ...c);
@@ -53,7 +55,8 @@ export function frustum(
   cz = 0,
 ): void {
   const [a0, k] = n === 4 ? [Math.PI / 4, Math.SQRT2] : [0, 1];
-  loft(o, [ring(n, rx0 * k, rz0 * k, y0, a0, cx, cz), ring(n, rx1 * k, rz1 * k, y1, a0, cx, cz)]);
+  const m = drafting() && n >= 12 ? ROUND_DRAFT : n;
+  loft(o, [ring(m, rx0 * k, rz0 * k, y0, a0, cx, cz), ring(m, rx1 * k, rz1 * k, y1, a0, cx, cz)]);
 }
 export function cone(o: Tris, n: number, rx: number, rz: number, y0: number, y1: number, cx = 0, cz = 0, a0 = 0): void {
   const r = ring(n, rx, rz, y0, a0, cx, cz);
@@ -114,6 +117,7 @@ export function gable(o: Tris, w: number, d: number, y: number, rise: number): v
 
 /** A box with its vertical and top edges bevelled by c, so an edge catches the light. */
 export function bevelled(o: Tris, w: number, d: number, h: number, c: number): void {
+  if (drafting()) return cuboid(o, -w / 2, 0, -d / 2, w / 2, h, d / 2);
   const [hw, hd] = [w / 2, d / 2];
   const oct = (y: number, k: number): Vec3[] => [
     [-hw + c, y, -hd + k],

@@ -42,7 +42,7 @@ export const detailed = (p: Part): boolean => !OWN_LINES.has(p.kind) && !LANDMAR
 
 /** One part's triangles in the part's frame: its own shape if it has one, else its body (a
  *  box bevelled, any other body from the shared unit solid scaled to the part). */
-function local(p: Part, geo: Record<string, BufferGeometry>): Tris {
+export function local(p: Part, geo: Record<string, BufferGeometry>): Tris {
   const o: Tris = [];
   if (tall(p)) {
     const sides = p.kind === 'block' ? 4 : p.kind === 'hex' ? 6 : p.kind === 'tri' ? 3 : 12;

@@ -91,16 +91,10 @@ export function hydro(rng: Rng): District {
     ],
     0.13,
   );
+  // The road runs past the powerhouse's side, its near edge clear of the wall.
   const r = (z: number): Vec3 => [xd + T * 0.6, 0.004, z];
-  P.road(
-    [
-      r(side * (L / 2 - 0.04)),
-      [xp + 0.1, 0.004, side * (span / 2 + 0.1)],
-      [xp - 0.06, 0.004, side * (span / 2 + 0.08)],
-      r(side * 0.2),
-    ],
-    0.035,
-  );
+  const past = side * (span / 2 + 0.08 + 0.045);
+  P.road([r(side * (L / 2 - 0.04)), [xp + 0.1, 0.004, past], [xp - 0.06, 0.004, past], r(side * 0.2)], 0.035);
 
   // Trees on both banks downstream and on the slopes above the lake.
   for (let x = xp + 0.15; x < BW - 0.1; x += 0.22)
