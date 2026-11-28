@@ -164,7 +164,7 @@ export default defineTemplate<P, S>({
   },
   name: (p) => `${p.layers.length}-layer ${p.shape}`,
   alt: (p) =>
-    `A hairline drawing of ${p.layers.length} ${p.shape} slabs stacked and lifted apart in 3D, each patterned, one outlined in teal.`,
+    `A hairline drawing of ${p.layers.length} ${p.shape} slabs stacked and lifted apart in 3D, each patterned, one outlined in orange.`,
   setup: () => ({ open: 0 }),
   draw: ({ ctx, w, h, t, dt, pointer, hover, still, params, state }) => {
     const n = params.layers.length;

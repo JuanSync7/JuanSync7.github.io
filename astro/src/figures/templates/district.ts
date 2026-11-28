@@ -91,7 +91,7 @@ export default defineTemplate<P, S>({
   }),
   name: (p) => p.board[2],
   alt: (p) =>
-    `A wireframe ${p.board[2]} on a thin board, seen from above at an angle, its buildings outlined in grey with teal flowing along its pipes and lines, and small vehicles moving on its roads.`,
+    `A wireframe ${p.board[2]} on a thin board, seen from above at an angle, its buildings outlined in grey with orange flowing along its pipes and lines, and small vehicles moving on its roads.`,
   setup: ({ params }) => {
     const [kind, k] = params.board;
     const rng = mulberry32(params.salt);

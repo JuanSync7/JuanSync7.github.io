@@ -53,7 +53,7 @@ export default defineTemplate<P, S>({
   },
   name: (p) => (p.form === 'vortex' ? 'vortex' : `${p.form} tunnel`),
   alt: (p) =>
-    `A ${p.form} tunnel drawn in grey lines receding to a vanishing point, its frames flowing toward the viewer, one of them teal.`,
+    `A ${p.form} tunnel drawn in grey lines receding to a vanishing point, its frames flowing toward the viewer, one of them orange.`,
   setup: () => ({ vx: 0.5, vy: 0.5 }),
   draw: ({ ctx, w, h, t, dt, pointer, hover, still, params, state }) => {
     const tx = pointer.active ? 0.5 + (pointer.x - 0.5) * 0.7 * hover : 0.5 + Math.sin(t * 0.25) * 0.04;

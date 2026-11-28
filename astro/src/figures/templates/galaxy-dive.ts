@@ -51,7 +51,7 @@ export default defineTemplate<P, S>({
   }),
   name: () => 'galaxy dive',
   alt: () =>
-    'An endless zoom into spiral galaxies: grey arms of points and soft light stream past as the camera flies into a bright teal core, which opens into the next spiral, and so on.',
+    'An endless zoom into spiral galaxies: grey arms of points and soft light stream past as the camera flies into a bright orange core, which opens into the next spiral, and so on.',
   setup: ({ params }) => ({ u: 0.3 + (params.salt % 7) / 10, pace: params.speed, cache: new Map() }),
   draw: ({ ctx, w, h, dt, t, hover, pointer, params, state }) => {
     // The pace eases to the pointer's, so slowing and speeding up are never a jolt.

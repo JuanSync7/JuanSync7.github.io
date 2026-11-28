@@ -20,7 +20,7 @@ const DEPTH = 9;
 export default defineCanvasFigure<State>({
   id: 'prefill-tunnel',
   title: 'Prefill tunnel',
-  alt: 'Square outlines receding down a tunnel to a vanishing point; a bright wave runs through them all, then single frames light one at a time, the newest in teal, and travel toward the viewer.',
+  alt: 'Square outlines receding down a tunnel to a vanishing point; a bright wave runs through them all, then single frames light one at a time, the newest in orange, and travel toward the viewer.',
   idea: 'Prefill and decode as one tunnel: the prompt is read in a single sweep, then each new token is made alone and comes out to meet you.',
   style: 'perspective',
   motion: 'ambient',

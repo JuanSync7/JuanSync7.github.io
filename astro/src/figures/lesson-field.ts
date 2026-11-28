@@ -43,7 +43,7 @@ const PITCH = 0.45;
 export default defineCanvasFigure<State>({
   id: 'lesson-field',
   title: 'Lesson field',
-  alt: 'A field of small dark tiles, one per day over sixteen weeks: days with a lesson stand up as columns, the chosen day lit teal.',
+  alt: 'A field of small dark tiles, one per day over sixteen weeks: days with a lesson stand up as columns, the chosen day lit orange.',
   idea: 'The lesson calendar drawn as voxel tiles: lessons stand up as columns, a swell runs across the empty days, the chosen day is lit, and the day under the pointer lifts.',
   style: 'pixel',
   motion: 'ambient',

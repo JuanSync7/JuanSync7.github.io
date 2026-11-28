@@ -32,7 +32,7 @@ function pickSorted(rng: () => number, n: number, of: number): number[] {
 export default defineCanvasFigure<State>({
   id: 'metal-routing',
   title: 'Metal routing',
-  alt: 'A grid of faint via dots with eight wires routed across it in right angles, each from a square pin on the left to one on the right, none crossing; one wire is teal.',
+  alt: 'A grid of faint via dots with eight wires routed across it in right angles, each from a square pin on the left to one on the right, none crossing; one wire is orange.',
   idea: 'Place and route seen from above: wires are laid pin to pin on the via grid, one net at a time, each jog placed so no wire ever crosses another.',
   style: 'trace',
   motion: 'ambient',

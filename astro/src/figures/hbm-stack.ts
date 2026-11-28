@@ -85,7 +85,7 @@ function sprite(a: Assembly, cam: Camera, dpr: number, lit: string, open: boolea
 export default defineCanvasFigure<State>({
   id: 'hbm-stack',
   title: 'HBM stack',
-  alt: 'A line drawing in perspective of one high-bandwidth memory stack cut open and lifted apart: a slice of silicon interposer with its wiring and deep-trench capacitors, a field of bumps, the base logic die with its PHY and test pads, seven DRAM dies and a thick top die, each pierced by rows of copper through-silicon vias with a layer of microbumps between every pair, and the outline of the mould they were cast in. One part at a time is outlined in teal.',
+  alt: 'A line drawing in perspective of one high-bandwidth memory stack cut open and lifted apart: a slice of silicon interposer with its wiring and deep-trench capacitors, a field of bumps, the base logic die with its PHY and test pads, seven DRAM dies and a thick top die, each pierced by rows of copper through-silicon vias with a layer of microbumps between every pair, and the outline of the mould they were cast in. One part at a time is outlined in orange.',
   idea: 'An HBM stack that opens: its dies lift apart on staggered springs, top first, so the vias through them and the bumps between them show, and the signal walks down naming each part; pointer height picks a layer, a click closes it back up.',
   style: 'perspective',
   motion: 'ambient',

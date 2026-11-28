@@ -54,7 +54,7 @@ function cube(ctx: CanvasRenderingContext2D, cam: Camera, x: number, z: number, 
 export default defineCanvasFigure<null>({
   id: 'systolic-array',
   title: 'Systolic array',
-  alt: 'A six by six grid of small wireframe cubes seen in perspective, joined by thin links; small squares travel along the links from the left and from the back, and a diagonal band of cubes rises and brightens as they pass; one cube is teal.',
+  alt: 'A six by six grid of small wireframe cubes seen in perspective, joined by thin links; small squares travel along the links from the left and from the back, and a diagonal band of cubes rises and brightens as they pass; one cube is orange.',
   idea: 'How a matrix unit multiplies: operands pulse through a grid of simple cells, each doing one multiply-add per beat, and the answer forms along a moving diagonal.',
   style: 'wireframe',
   motion: 'ambient',

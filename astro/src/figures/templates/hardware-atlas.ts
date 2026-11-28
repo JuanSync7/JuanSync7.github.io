@@ -54,7 +54,7 @@ export default defineTemplate<Params, State>({
   grammar: (rng) => ({ kind: pick(rng, HARDWARE_KINDS), detail: 3 + Math.floor(rng() * 3), wire: rng() < 0.5 }),
   name: (p) => `${p.wire ? 'wire' : 'solid'} ${p.kind}`,
   alt: (p) =>
-    `A detailed ${p.kind} assembly, drawn in ${p.wire ? 'wireframe' : 'isometric hairlines'}, with one part outlined in teal.`,
+    `A detailed ${p.kind} assembly, drawn in ${p.wire ? 'wireframe' : 'isometric hairlines'}, with one part outlined in orange.`,
   setup: ({ params }) => ({
     model: hardwareModel(params.kind, params.detail),
     detail: params.detail,
